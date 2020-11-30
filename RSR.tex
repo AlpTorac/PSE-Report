@@ -8,14 +8,44 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+\usepackage{enumitem}
 
 \title{Requirements Specification Document}
 \author{Alp Toraç Genç, Kerem Kara, Xhulio Pernoca, Manuel Schenk, Ege Uzhan}
 \date{\today}
 
+% Format for the chapters/sections/subsections
 \titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp{}}{0pt}{\Huge\bfseries}
 \titlespacing{\chapter}{0cm}{0cm}{0.5cm} % distance from {right}{left}{next line} for chapter
 \titlespacing{\subsection}{0cm}{0cm}{0cm} % distance from {right}{left}{next line} for subsection
+
+%Functional requirements list
+\newlist{FR}{enumerate}{1}
+\setlist[FR]{label=FR-\arabic*}
+
+%Optional functional requirements list
+\newlist{FRO}{enumerate}{1}
+\setlist[FRO]{label=FRO-\arabic*}
+
+% Macro for describing the functional requirements
+% #1: Name of the functional requirement
+% #2: Goal
+% #3: Importance
+% #4: Precondition
+% #5: Post Condition (success)
+% #6: Post Condition (fail)
+% #7: Triggering Event(s)
+% #8: Description
+\newcommand{\FRDescription}[8]{
+    \textbf{#1} \\
+    \textbf{Goal: } #2 \\
+    \textbf{Importance: } #3 \\
+    \textbf{Precondition: } #4 \\
+    \textbf{Post Condition (success): } #5 \\
+    \textbf{Post Condition (fail): } #6 \\
+    \textbf{Triggering Event(s): } #7 \\
+    \textbf{Description: } \\ 
+    #8}
 
 \begin{document}
 \maketitle
@@ -24,7 +54,6 @@
 \chapter{Purpose}
 \section{Product Goal}
 \section{Target Audience}
-
 \chapter{Scenarios}
 
 \chapter{Overall Description}
@@ -36,10 +65,221 @@
 
 \chapter{Specific Requirements}
 \section{Requirements Overview}
-\subsection{Mandatory Requirements}
-\subsection{Optional Requirements}
+\subsection{Mandatory Requirements List}
+
+\begin{FR}
+    \item Opening Liberty Files \label{FR-1}
+    \item Visualising liberty files \label{FR-2}
+    \item Visualising attributes \label{FR-3}
+    \item Viewing specific values \label{FR-4}
+    \item Viewing statistics \label{FR-5}
+    \item Visual comparison of attributes \label{FR-6}
+    \item Merging liberty files \label{FR-7}
+    \item Resolving merge conflicts \label{FR-8}
+    \item Saving a modified liberty file \label{FR-9}
+    \item Scaling values \label{FR-10}
+    \item Copying data into another liberty file \label{FR-11}
+    \item Moving cells to another library \label{FR-12}
+    \item Searching for a library/cell/pin by name \label{FR-13}
+\end{FR}
+\subsection{Optional Requirements List}
+
+\begin{FRO}
+    \item Magnifying the hitbox of a value on a histogram \label{FRO-1}
+    \item Modifying the type of the graph \label{FRO-2}
+    \item Saving the state of a project \label{FRO-3}
+    \item Loading a past project \label{FRO-4}
+    \item Exporting visualisations (graphs) \label{FRO-5}
+    \item Applying formulas to graphs \label{FRO-6}
+    \item Changing graph colour/font \label{FRO-7}
+    \item Changing the default font size/colour \label{FRO-8}
+    \item Exporting data as CSV \label{FRO-9}
+    \item Changing how the data is summarised \label{FRO-10}
+    \item Changing attributes through GUI \label{FRO-11}
+    \item Creating liberty files from scratch \label{FRO-12}
+    \item Saving liberty files as baseline for comparison \label{FRO-13}
+    \item Saving a liberty file via File Explorer through drag-and-drop \label{FRO-14}
+    \item Setting default attribute filters \label{FRO-15}
+    \item Changing display colours \label{FRO-16}
+    \item Shortcuts \label{FRO-17}
+    \item Undo/Redo \label{FRO-18}
+    \item Renaming liberty file components (libraries/cells/pins) \label{FRO-19}
+    \item Viewing file properties \label{FRO-20}
+    \item Sorting \label{FRO-21}
+    \item Changing the language \label{FRO-22}
+\end{FRO}
+
 \section{Functional Requirements}
 \subsection{Mandatory Requirements}
+\begin{FR}
+
+    \item \FRDescription{Opening Liberty Files}
+    {Ability to load, parse and create data objects from liberty files with the desktop application}
+    {Primary}
+    {The selected files are in liberty file format, are not corrupted and fit into the memory}
+    {The selected file(s) are:
+    \begin{itemize}
+        \item read,
+        \item parsed and
+        \item data objects based on the stored data are created
+    \end{itemize}}
+    {\begin{itemize}
+        \item The selected file(s) are not loaded with the editor
+        \item An appropriate IO error message is shown with the names of the problematic files and brief error description
+    \end{itemize}}
+    {\begin{itemize}
+        \item Files are selected via file explorer
+        \item Files are dragged onto the desktop application and are dropped
+    \end{itemize}}
+    \item \FRDescription{Visualising liberty files}
+    {Ability to view the hierarchical structure of parsed liberty files (from \ref{FR-1}) in a panel}
+    {Primary}
+    {\ref{FR-1} is performed successfully on the liberty files to be viewed and the files fit into the memory}
+    {The liberty files from \ref{FR-1} can be viewed in a list of drop-down lists in the said panel.}
+    {\begin{itemize}
+        \item The hierarchical structure of the liberty files are not shown in the panel
+        \item What was shown in the panel before remains unchanged
+        \item An appropriate error message is shown
+    \end{itemize}}
+    {The successful execution of \ref{FR-1}}
+    \item \FRDescription{Visualising attributes}
+    {Ability to view the values of attributes in a liberty file}
+    {Primary}
+    {\ref{FR-2} is executed on given a liberty file successfully}
+    {For each selected attribute, a histogram is drawn.}
+    {
+    \begin{itemize}
+        \item What is shown in the panel from FR-2 about the liberty file is unchanged
+        \item An appropriate error message is shown
+    \end{itemize}
+    }
+    {A double click upon a library/cell}
+    \item \FRDescription{Viewing specific values}
+    {Ability to view a certain value in a histogram}
+    {Primary}
+    {\ref{FR-3} is executed on given a liberty file successfully and the mouse pointer is on the said value}
+    {The source of the said value and the value itself is highlighted}
+    {
+    \begin{itemize}
+        \item The histogram drawn with FR-3 remains unchanged
+        \item An appropriate error message is shown
+    \end{itemize}
+    }
+    {Hovering the mouse pointer over the said value}
+    {
+    \begin{itemize}
+        \item The library, the cell and the pin of the said value are highlighted
+        \item If the liberty file containing the library is open with the text editor of the desktop application, also the value itself is highlighted in the text editor.
+    \end{itemize}
+    }
+    \item \FRDescription{Viewing statistics}
+    {Ability to view the desired statistics of the values of an attribute in a liberty file}
+    {Primary}
+    {\ref{FR-1} is executed on given a liberty file successfully}
+    {The desired statistics of the said attributes are shown in text (?)}
+    {\begin{itemize}
+        \item No new statistics are shown
+        \begin{itemize}
+            \item If other statistics were already being shown, they remain unchanged
+        \end{itemize}
+        \item An appropriate error message is shown
+    \end{itemize}
+    }
+    {Clicking on the dedicated component.}
+    \item \FRDescription{Visual comparison of attributes}
+    {Compare the same type of attributes of different libraries/cells/pins}
+    {Primary}
+    {\ref{FR-1} performed successfully on the liberty files, which contain the different libraries/cells/pins.}
+    {\ref{FR-3} is executed for each desired attribute (if they do not already exist) and the result histograms are combined in a new histogram.}
+    {
+    \begin{itemize}
+        \item Other histograms are unchanged
+        \item An appropriate error message is shown
+    \end{itemize}
+    }
+    {Clicking on the dedicated component after/and selecting the libraries/cells/pins to compare and selecting, which attribute(s) to compare.}
+    {\begin{itemize}
+        \item Definition of “combined”: Each relevant histogram will be put on top of each other, will be made transparent and coloured differently, so that each histogram is still visible and clearly identifiable by looking in a new view panel, without modifying any existing histogram.
+    \end{itemize}}
+    \item \FRDescription{Merging liberty files}
+    {Ability to merge multiple liberty files into a new liberty file}
+    {Primary}
+    {\ref{FR-1} is performed on the said liberty files successfully}
+    {Given liberty files are merged into a new liberty file}
+    {\ref{FR-8} will be executed}
+    {Clicking on the dedicated component after/and selecting the liberty files to be merged.}
+    \item \FRDescription{Resolving merge conflicts}
+    {Ability to resolve merge conflicts to merge multiple liberty files into a new liberty file}
+    {Primary}
+    {\ref{FR-1} is performed on the said liberty files successfully and the files contain conflicting names}
+    {A review of the new liberty file (the result liberty file) is shown with the conflicts and an “abort” and a “re-try” button.}
+    {An appropriate error message is shown}
+    {\ref{FR-7} with conflicting files}
+    {\begin{itemize}
+        \item If the user clicks on the “re-try” button:
+        \begin{itemize}
+            \item If all the conflicts are resolved, the said liberty files will be reattempted to merge
+            \item If there are still conflicts, an appropriate message will be shown and the user will be returned to the review
+        \end{itemize}
+        \item If the user clicks on the “abort” button, the merging operation will be cancelled, no new liberty file will be changed and no existing liberty file will be changed and the review will be closed.
+    \end{itemize}}
+    \item \FRDescription{Saving a modified liberty file}
+    {Ability to save a modified liberty file as a new liberty file}
+    {Primary}
+    {\ref{FR-1} had been performed on the liberty file that has been modified}
+    {A new liberty file is created with the modifications made to the base liberty file.}
+    {\begin{itemize}
+        \item No new liberty file will be created
+        \item An appropriate error message will be shown
+    \end{itemize}
+    }
+    {Clicking on the dedicated component after modifying the base liberty file}
+    {\begin{itemize}
+        \item The base liberty file will not be changed throughout the whole process.
+    \end{itemize}}
+    \item \FRDescription{Scaling values}
+    {Scaling the specified values by a given factor}
+    {Primary}
+    {\ref{FR-1} is performed on the liberty file, which contains the above mentioned values}
+    {The mentioned values are scaled by the given factor}
+    {\begin{itemize}
+        \item No value will be changed
+        \item An appropriate error indicator will be shown. Examples:
+        \begin{itemize}
+            \item If the factor is to be written in a textbox and no buttons are involved:
+            \begin{itemize}
+                \item Highlighting the given factor
+                \item Displaying an “invalid value” text next to the textbox, in which the given factor is written
+            \end{itemize}
+            \item If there are buttons or dedicated windows are involved:
+            \begin{itemize}
+                \item An appropriate error message will be shown
+            \end{itemize}
+        \end{itemize}
+    \end{itemize}}
+    {Writing the factor into a dedicated component followed by another event that confirms this action.}
+    \item \FRDescription{Copying data into another liberty file}
+    {Ability to copy data from one liberty file A into another liberty file B}
+    {Primary}
+    {\ref{FR-1} is performed on both of the liberty files}
+    {The copied data from liberty file A is pasted into the liberty file B}
+    {The same review from FR-7 is shown}
+    {?}
+    \item \FRDescription{Moving cells to another library}
+    {Ability to move data about a cell from a liberty file A to another liberty file B}
+    {Primary}
+    {FR-1 is performed on both of the liberty files}
+    {The mentioned cell data from liberty file A is moved into another liberty file B}
+    {The same review from FR-7 is shown}
+    {Drag-Dropping the cell within the panel, which shows the hierarchical structure, from its own library into another library (?)}
+    \item \FRDescription{Searching for a library/cell/pin by name}
+    {Ability to search for a library/cell/pin by its name}
+    {Primary}
+    {\ref{FR-1} is performed on both of the liberty files}
+    {The mentioned cell data from liberty file A is moved into another liberty file B}
+    {Nothing is shown in the panel, which shows the hierarchical structure}
+    {Typing a string into the “search” textbox}
+\end{FR}
 \subsection{Optional Requirements}
 \section{Non-Functional Requirements}
 \subsection{Performance Requirements}
@@ -48,7 +288,6 @@
 \section{Global test case for functional requirements}
 \section{Global test case for optional requirements}
 \section{Test cases}
-
 \chapter{Importance Of Attributes}
 
 \chapter{GUI-Design}
