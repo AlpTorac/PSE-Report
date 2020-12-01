@@ -27,7 +27,23 @@
 \newlist{FRO}{enumerate}{1}
 \setlist[FRO]{label=FRO-\arabic*}
 
-% Macro for describing the functional requirements
+%Mandatory Non-Functional requirements (reliability) list
+\newlist{NFR-Rel}{enumerate}{1}
+\setlist[NFR-Rel]{label=NFR-Rel-\arabic*}
+
+%Mandatory Non-Functional requirements (performance) list
+\newlist{NFR-Perf}{enumerate}{1}
+\setlist[NFR-Perf]{label=NFR-Perf-\arabic*}
+
+%Optional Non-Functional requirements (usability) list
+\newlist{NFRO-Usability}{enumerate}{1}
+\setlist[NFRO-Usability]{label=NFRO-Usability-\arabic*}
+
+%Optional Non-Functional requirements (performance) list
+\newlist{NFRO-Perf}{enumerate}{1}
+\setlist[NFRO-Perf]{label=NFRO-Perf-\arabic*}
+
+% Macro for describing the mandatory functional requirements
 % #1: Name of the functional requirement
 % #2: Goal
 % #3: Importance
@@ -37,6 +53,26 @@
 % #7: Triggering Event(s)
 % #8: Description
 \newcommand{\FRDescription}[8]{
+    \textbf{#1} \\
+    \textbf{Goal: } #2 \\
+    \textbf{Importance: } #3 \\
+    \textbf{Precondition: } #4 \\
+    \textbf{Post Condition (success): } #5 \\
+    \textbf{Post Condition (fail): } #6 \\
+    \textbf{Triggering Event(s): } #7 \\
+    \textbf{Description: } \\ 
+    #8}
+    
+% Macro for describing the optional functional requirements
+% #1: Name of the functional requirement
+% #2: Goal
+% #3: Importance
+% #4: Precondition
+% #5: Post Condition (success)
+% #6: Post Condition (fail)
+% #7: Triggering Event(s)
+% #8: Description
+\newcommand{\FRODescription}[8]{
     \textbf{#1} \\
     \textbf{Goal: } #2 \\
     \textbf{Importance: } #3 \\
@@ -81,6 +117,7 @@
     \item Copying data into another liberty file \label{FR-11}
     \item Moving cells to another library \label{FR-12}
     \item Searching for a library/cell/pin by name \label{FR-13}
+    \item Setting Filters for a search funtion by attribute \label{FR-14}
 \end{FR}
 \subsection{Optional Requirements List}
 
@@ -263,14 +300,14 @@
     {Primary}
     {\ref{FR-1} is performed on both of the liberty files}
     {The copied data from liberty file A is pasted into the liberty file B}
-    {The same review from FR-7 is shown}
+    {The same review from \ref{FR-7} is shown}
     {?}
     \item \FRDescription{Moving cells to another library}
     {Ability to move data about a cell from a liberty file A to another liberty file B}
     {Primary}
-    {FR-1 is performed on both of the liberty files}
+    {\ref{FR-1} is performed on both of the liberty files}
     {The mentioned cell data from liberty file A is moved into another liberty file B}
-    {The same review from FR-7 is shown}
+    {The same review from \ref{FR-7} is shown}
     {Drag-Dropping the cell within the panel, which shows the hierarchical structure, from its own library into another library (?)}
     \item \FRDescription{Searching for a library/cell/pin by name}
     {Ability to search for a library/cell/pin by its name}
@@ -279,10 +316,287 @@
     {The mentioned cell data from liberty file A is moved into another liberty file B}
     {Nothing is shown in the panel, which shows the hierarchical structure}
     {Typing a string into the “search” textbox}
+    \item \FRDescription{Setting Filters for a search funtion by attribute}
+    {Ability to add/remove a filter of a library/cell/pin for its attribute value}
+    {Primary}
+    {None}
+    {Filter is added or removed as a search filter}
+    {\begin{itemize}
+        \item An appropriate error indicator will be shown. Examples:
+        \begin{itemize}
+            \item Invalid attribute name
+            \item Invalid value
+        \end{itemize}
+        \item Attribute filters for the search bar remain unchanged
+    \end{itemize}}
+    {Modifying filters components in the “Filter” component}
+    {Upon clicking the “Filter” component a new pop-up panel opens up that shows all active filters. There filters can be removed by clicking the “Remove“ component next to the Filter. Filters can be added by selecting Attribute name, Filter type, adding filter value and then clicking the “Add Filter” component}
 \end{FR}
+
 \subsection{Optional Requirements}
+
+\begin{FRO}
+    \item \FRODescription{Magnifying the hitbox of a value on a histogram}
+    {Ability to make the hitbox of a value on a histogram bigger}
+    {Optional}
+    {FR-3 is performed on an attribute of a liberty file successfully}
+    {The desired value in the histogram gets a larger hitbox}
+    {\begin{itemize}
+        \item The histogram is unchanged
+        \item An appropriate error message is shown
+    \end{itemize}}
+    {Left clicking on a value in a histogram}
+    \item \FRODescription{Modifying the type of the graph}
+    {Making different types of visualisation possible}
+    {Optional}
+    {FR-3 is performed on an attribute of a liberty file successfully}
+    {The type of the graph changes to the desired graph type}
+    {\begin{itemize}
+        \item The histogram is unchanged
+        \item An appropriate error message is shown
+    \end{itemize}}
+    {Clicking on the designated component and choosing the new type of the graph}
+    \item \FRODescription{Saving the state of a project}
+    {Storing status of a project for future use}
+    {Optional}
+    {A valid project has been created}
+    {The current status of a project will be saved in a file}
+    {\begin{itemize}
+        \item The project remains unchanged
+        \item No new files are made
+        \item An appropriate error message is shown
+    \end{itemize}}
+    {Clicking on the designated “save” component}
+    \item \FRODescription{Loading a past project}
+    {Re-using a (valid) past project}
+    {Optional}
+    {\begin{itemize}
+        \item A valid project has been created and FRO-3 has been successfully performed on it
+        \item Every liberty file it has used can be found at the same paths and have not been modified (?)
+        \begin{itemize}
+            \item Irrelevant, if the used files are also saved in FRO-3
+        \end{itemize}
+    \end{itemize}}
+    {The chosen past project is loaded along with all the graphs drawn (with FR-3)}
+    {\begin{itemize}
+        \item The current workspace is unchanged
+        \item No past project is loaded
+        \item An appropriate error message is shown
+    \end{itemize}}
+    {Clicking on the designated “open”/”load” component}
+    {If the current workspace is not empty, instead of fully replacing the current project only the files and graphs from the past project will be loaded.}
+    \item \FRODescription{Exporting visualisations (graphs)}
+    {Storing made graphs for future use}
+    {Optional}
+    {The said graph has been created successfully with FR-3}
+    {The mentioned graph is saved in an image file}
+    {\begin{itemize}
+        \item Mentioned graph is unchanged
+        \item No new files are made
+        \item An appropriate error message is shown
+    \end{itemize}}
+    {Clicking on the designated “export graph” component}
+    \item \FRODescription{Applying formulas to graphs}
+    {Using a given mathematical expression (such as a function) on the values shown in a graph}
+    {Optional}
+    {\begin{itemize}
+        \item The said graph has been created successfully with FR-3
+        \item The given mathematical expression is valid (semantically and syntactically)
+    \end{itemize}}
+    {The mentioned mathematical expression is used on the values shown in the selected graph and the graph is updated.}
+    {\begin{itemize}
+        \item Mentioned values are unchanged
+        \item Mentioned graph is unchanged
+        \item An appropriate error message is shown (for example in the input bar)
+    \end{itemize}}
+    {Typing a mathematical expression as a string in the “input bar” component}
+    \item \FRODescription{Changing graph colour/font}
+    {Customising the colour and used fonts of a graph}
+    {Optional}
+    {The said graph has been created successfully with FR-3}
+    {Colour/Font of the said graph is changed to the desired one}
+    {\begin{itemize}
+        \item Mentioned graph is unchanged
+        \item An appropriate error message is shown (for example in the input bar)
+    \end{itemize}}
+    {Clicking on the “customise” component on the frame of the graph and inputting the desired changes by using their designated components.}
+    \item \FRODescription{Changing the default font size/colour}
+    {Customising the colour and size of the default font}
+    {Optional}
+    {The desktop application has been opened successfully}
+    {Colour/Font of the default font is changed to the desired one}
+    {\begin{itemize}
+        \item The default font is unchanged
+        \item An appropriate error message is shown
+    \end{itemize}}
+    {Clicking on the “customise” tab and inputting the desired changes by using their designated components.}
+    \item \FRODescription{Exporting data as CSV}
+    {Exporting the data of a given liberty file in CSV format}
+    {Optional}
+    {FR-1 has been successfully performed on the given liberty file}
+    {The data within the said file has been exported as a new file in CSV format}
+    {\begin{itemize}
+        \item The current workspace and values in the loaded liberty files are unchanged
+        \item No new files are made
+        \item An appropriate error message is shown (for example in the input bar)
+    \end{itemize}}
+    {Clicking on the “export” component and choosing the desired path through the file explorer.}
+    \item \FRODescription{Changing how the data is summarised}
+    {Using statistics to view the summary of the data}
+    {Optional}
+    {FR-1 has been successfully performed on the given liberty file}
+    {The current summary is replaced by the desired statistics}
+    {\begin{itemize}
+        \item The current summary is unchanged
+        \item An appropriate error message is shown (for example in the input bar)
+    \end{itemize}}
+    {Clicking on the “statistics” component on the summary frame and choosing the desired statistic.}
+    \item \FRODescription{Changing attributes through GUI}
+    {Modifying the loaded values of a given liberty file through a text editor in the desktop application}
+    {Optional}
+    {FR-1 has been successfully performed on the given liberty file}
+    {Changes made in the text editor of the GUI are reflected in the graphs and summaries.}
+    {\begin{itemize}
+        \item Values return to their state before the change
+        \item An appropriate error message is shown
+    \end{itemize}}
+    {Textually replacing the loaded values of a loaded liberty file via the text editor in the desktop application.}
+    {The changes made are not saved immediately in the original liberty file. In order for them to be saved, the modified liberty files must be saved manually via the GUI.}
+    \item \FRODescription{Creating liberty files from scratch}
+    {Creating new liberty files via the text editor in the GUI of the desktop application}
+    {Optional}
+    {The input in the text editor is valid and in liberty file format}
+    {The input in the text editor is saved as a new liberty file}
+    {\begin{itemize}
+        \item The current input in the text editor of the GUI of the desktop application is unchanged.
+        \item An appropriate error message is shown
+    \end{itemize}}
+    {Clicking on the “new” component and choosing a path through the file explorer}
+    \item \FRODescription{Saving liberty files as baseline for comparison}
+    {Selecting a default liberty file FileA for FR-6}
+    {Optional}
+    {FR-1 has been successfully performed on the FileA}
+    {The values in FileA are saved as the default values for comparing other liberty files.}
+    {\begin{itemize}
+        \item The past default values for comparisons are unchanged
+        \item An appropriate error message is shown
+    \end{itemize}}
+    {Selecting a loaded liberty file FileA and clicking on the “Set as default for comparisons” component.}
+    \item \FRODescription{Saving a liberty file via File Explorer through drag-and-drop}
+    {Saving a loaded liberty file with File Explorer using drag-and-drop}
+    {Optional}
+    {FR-1 has been successfully performed on the liberty file to be saved}
+    {The mentioned liberty file is saved at the given path}
+    {\begin{itemize}
+        \item The current status of the loaded liberty file is unchanged
+        \item No new files are made
+        \item An appropriate error message is shown
+    \end{itemize}}
+    {Selecting a loaded liberty file and dragging it to the desired location via the file explorer}
+    \item \FRODescription{Setting default attribute filters}
+    {Saving a given set of attribute filters as the default filter}
+    {Optional}
+    {All the filters have valid parameters (if necessary)}
+    {The mentioned set of attribute filters are set as the default filter}
+    {\begin{itemize}
+        \item The past default filter is still the default filter
+        \item An appropriate error message is shown
+    \end{itemize}}
+    {Clicking on the “Set as default filter” component}
+    \item \FRODescription{Changing display colours}
+    {Customising the appearance of the GUI of the desktop application}
+    {Optional}
+    {The selected appearance (i.e. skin) is compatible with the current version/state of the desktop application}
+    {The appearance of the GUI of the desktop application changes to the desired one}
+    {\begin{itemize}
+        \item The past appearance of the GUI of the desktop application is unchanged
+        \item An appropriate error message is shown
+    \end{itemize}}
+    {Clicking on the “Appearance” component and selecting a skin via the designated component (drop-list ?)}
+    \item \FRODescription{Shortcuts}
+    {Allowing the user to access the functionality faster}
+    {Optional}
+    {\begin{itemize}
+        \item The shortcut is performed correctly by the user
+        \item The corresponding functionality can be used in the current state of the workspace
+    \end{itemize}}
+    {The corresponding functionality is executed without their triggering event}
+    {\begin{itemize}
+        \item The past state of the workspace is unchanged
+        \item An appropriate error message is shown
+    \end{itemize}}
+    {Executing the shortcut and (if necessary) selecting the requirements of the functionality (i.e. the files to merge before executing the shortcut)}
+    \item \FRODescription{Undo/Redo}
+    {Allowing the user to move backward (Undo)/forward (Redo) in the history of the workspace}
+    {Optional}
+    {There are actions done, which can be undone/redone}
+    {The desired state of the workspace is set as the current state}
+    {\begin{itemize}
+        \item The current state of the workspace is unchanged
+        \item The undo/redo component is disabled
+    \end{itemize}}
+    {Clicking on the “undo”/”redo” component}
+    \item \FRODescription{Renaming liberty file components (libraries/cells/pins)}
+    {Renaming liberty file components in a loaded liberty file (FR-1)}
+    {Optional}
+    {The new name of the component is not conflicting with the name of one of the existing ones}
+    {The mentioned components are renamed to their desired new names}
+    {\begin{itemize}
+        \item The current name of the component to be renamed is unchanged
+        \item An appropriate error message is shown
+    \end{itemize}}
+    {Right clicking on a loaded liberty file in the panel and selecting the “rename” component (drop-list ?)}
+    \item \FRODescription{Viewing file properties}
+    {Viewing the properties of a liberty file, such as: file location, file size}
+    {Optional}
+    {FR-1 has been performed successfully on the liberty file}
+    {A window with the properties of the loaded liberty file is shown}
+    {An appropriate error message is shown}
+    {Right clicking on a loaded liberty file in the panel and selecting the “properties” component (drop-list ?)}
+    \item \FRODescription{Sorting}
+    {Sorting the shown information to make viewing easier}
+    {Optional}
+    {(?)}
+    {The desired piece of shown information in the GUI of the desktop application is sorted}
+    {An appropriate error message is shown}
+    {Clicking on the “Sort by” component and selecting how and what to sort after (i.e.: name, value, ascending, descending) using the designated component (drop-list ?)}
+    {No changes to the loaded liberty files will be made permanent, unless they are saved after sorting}
+    \item \FRODescription{Changing the language}
+    {Allowing the user to change the default language of the desktop application}
+    {Optional}
+    {The files regarding the new language exist and can be located by the desktop application}
+    {The current language will be replaced with the desired one}
+    {An appropriate error message is shown}
+    {Clicking on the “Options” tab and selecting “Change language” component.}
+\end{FRO}
+
 \section{Non-Functional Requirements}
-\subsection{Performance Requirements}
+\subsection{Core}
+\subsubsection{Reliability}
+\begin{NFR-Rel}
+    \item The desktop application should be able to open at least 2 Liberty Files at the same time
+    \item At least 10 drawn graphs should be able to exist
+    \item It should be able to handle Liberty Files up to [Example file *10] MB
+\end{NFR-Rel}
+
+\subsubsection{Performance}
+\begin{NFR-Perf}
+    \item A liberty file should take no longer than 1 second to load
+    \item A graph should be drawn in no longer than 5 seconds
+    \item It should not be able to run twice at the same time
+\end{NFR-Perf}
+
+\subsection{Optional}
+\subsubsection{Usability}
+\begin{NFRO-Usability}
+    \item It should be able to support English, German, French, Albanian and Turkish
+\end{NFRO-Usability}
+
+\subsubsection{Performance}
+\begin{NFRO-Perf}
+    \item A liberty file should take no longer than 20 milliseconds to load
+    \item A graph should be drawn in no longer than 1 second
+\end{NFRO-Perf}
 
 \chapter{Global Test Cases}
 \section{Global test case for functional requirements}
