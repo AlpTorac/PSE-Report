@@ -105,45 +105,48 @@
 
 \begin{FR}
     \item Opening Liberty Files \label{FR-1}
-    \item Visualising liberty files \label{FR-2}
+    \item Visualising Liberty files \label{FR-2}
     \item Visualising attributes \label{FR-3}
-    \item Viewing specific values \label{FR-4}
-    \item Viewing statistics \label{FR-5}
-    \item Visual comparison of attributes \label{FR-6}
-    \item Merging liberty files \label{FR-7}
-    \item Resolving merge conflicts \label{FR-8}
-    \item Saving a modified liberty file \label{FR-9}
-    \item Scaling values \label{FR-10}
-    \item Copying data into another liberty file \label{FR-11}
-    \item Moving cells to another library \label{FR-12}
-    \item Searching for a library/cell/pin by name \label{FR-13}
-    \item Setting Filters for a search function by attribute \label{FR-14}
+    \item Visual comparison of attributes \label{FR-4}
+    \item Merging libraries \label{FR-5}
+    \item Resolving merge conflicts \label{FR-6}
+    \item Saving a Liberty file \label{FR-7}
+    \item Saving a library as a new file \label{FR-8}
+    \item Copying data into another library \label{FR-9}
+    \item Removing a library \label{FR-10}
+    \item Deleting a Cell \label{FR-11}
+    \item Changing attributes through raw text \label{FR-12}
+    \item Scaling values \label{FR-13}
+    \item Viewing specific values \label{FR-14}
+    \item Viewing statistics for graphs \label{FR-15}
+    \item Searching for an element by name \label{FR-16}
 \end{FR}
 \subsection{Optional Requirements List}
 
 \begin{FRO}
-    \item Magnifying the hitbox of a value on a histogram \label{FRO-1}
-    \item Modifying the type of the graph \label{FRO-2}
-    \item Saving the state of a project \label{FRO-3}
-    \item Loading a past project \label{FRO-4}
-    \item Exporting visualisations (graphs) \label{FRO-5}
-    \item Applying formulas to graphs \label{FRO-6}
-    \item Changing graph colour/font \label{FRO-7}
-    \item Changing the default font size/colour \label{FRO-8}
-    \item Exporting data as CSV \label{FRO-9}
-    \item Changing how the data is summarised \label{FRO-10}
-    \item Changing attributes through GUI \label{FRO-11}
-    \item Creating liberty files from scratch \label{FRO-12}
-    \item Saving liberty files as baseline for comparison \label{FRO-13}
-    \item Saving a liberty file via File Explorer through drag-and-drop \label{FRO-14}
-    \item Setting default attribute filters \label{FRO-15}
+    \item Moving cells to another library \label{FRO-1}
+    \item Renaming elements \label{FRO-2}
+    \item Creating Liberty files from scratch \label{FRO-3}
+    \item Changing attributes through GUI \label{FRO-4}
+    \item Exporting data as CSV \label{FRO-5}
+    \item Saving a Liberty file into File Manager through drag-and-drop \label{FRO-6}
+    \item Saving the state of a project \label{FRO-7}
+    \item Loading a project \label{FRO-8}
+    \item Exporting visualisations (graphs) \label{FRO-9}
+    \item Changing how the graph data is summarised \label{FRO-10}
+    \item Modifying the type of the graph \label{FRO-11}
+    \item Applying formulas to graphs \label{FRO-12}
+    \item Magnifying the hitbox of a value on a histogram \label{FRO-13}
+    \item Changing graph colour/font \label{FRO-14}
+    \item Changing the default font size/colour \label{FRO-15}
     \item Changing display colours \label{FRO-16}
-    \item Shortcuts \label{FRO-17}
-    \item Undo/Redo \label{FRO-18}
-    \item Renaming liberty file components (libraries/cells/pins) \label{FRO-19}
+    \item Changing the language \label{FRO-17}
+    \item Shortcuts \label{FRO-18}
+    \item Undo/Redo \label{FRO-19}
     \item Viewing file properties \label{FRO-20}
     \item Sorting \label{FRO-21}
-    \item Changing the language \label{FRO-22}
+    \item Setting Filters for a search \label{FRO-22}
+    \item Setting default attribute filters\label{FRO-23}
 \end{FRO}
 
 \section{Functional Requirements}
@@ -151,9 +154,9 @@
 \begin{FR}
 
     \item \FRDescription{Opening Liberty Files}
-    {Ability to load, parse and create data objects from liberty files with the desktop application}
+    {Ability to load, parse and create data objects from Liberty files with the desktop application}
     {Primary}
-    {The selected files are in liberty file format(not necessarily of the .lib extension), are not corrupted and fit into the memory}
+    {The selected files are in Liberty file format(not necessarily of the .lib extension), are not corrupted and fit into the memory}
     {The selected file(s) are:
     \begin{itemize}
         \item read,
@@ -168,20 +171,20 @@
         \item Files are selected via File Manager (File >> Open)
         \item Files are dragged onto the desktop application and are dropped
     \end{itemize}}
-    \item \FRDescription{Visualising liberty files}
-    {Ability to view the hierarchical structure of parsed liberty files (from \ref{FR-1}) in a panel}
+    \item \FRDescription{Visualising Liberty files}
+    {Ability to view the hierarchical structure of parsed Liberty files (from \ref{FR-1}) in a panel}
     {Primary}
-    {\ref{FR-1} is performed successfully on the liberty files to be viewed and the files fit into the memory}
-    {The liberty files from \ref{FR-1} can be viewed in Tree view in the said panel (left panel).}
+    {\ref{FR-1} is performed successfully on the Liberty files to be viewed and the files fit into the memory}
+    {The Liberty files from \ref{FR-1} can be viewed in Tree view in the said panel (left panel).}
     {\begin{itemize}
-        \item The hierarchical structure of the added liberty files is not shown in the panel
-        \item The added liberty files are removed from the project
+        \item The hierarchical structure of the added Liberty files is not shown in the panel
+        \item The added Liberty files are removed from the project
         \item What was shown in the panel before \ref{FR-2} remains unchanged
         \item An appropriate error message is shown
     \end{itemize}}
     {The successful execution of \ref{FR-1}}
     \item \FRDescription{Visualising attributes}
-    {Ability to view the values of attributes in a liberty file}
+    {Ability to view the values of attributes in a Liberty file}
     {Primary}
     {Said library is successfully loaded into the project}
     {For selected attributes, a graph is drawn in the right panel.}
@@ -256,7 +259,7 @@
         \item An appropriate error message is shown
     \end{itemize}}
     {Clicking on the Save component (Right-Click on the desired Library  >> Save)}
-    \item \FRDescription{Saving a library file as a new file}
+    \item \FRDescription{Saving a library as a new file}
     {Ability to save a library as a new Liberty file}
     {Primary}
     {Said library is successfully loaded into the project}
@@ -267,7 +270,7 @@
     \end{itemize}}
     {Clicking on the Save As component (Right-Click on the desired Library  >> Save As)}
     {\begin{itemize}
-        \item The corresponding base liberty file (if present) will not be changed throughout the entire process.
+        \item The corresponding base Liberty file (if present) will not be changed throughout the entire process.
     \end{itemize}}
     \item \FRDescription{Copying data into another library}
     {Ability to copy data from one library into another}
@@ -317,11 +320,11 @@
         \item An appropriate error message is shown
     \end{itemize}
     }
-    {Textually replacing the loaded values of a loaded liberty file via the text editor in the middle panel.}
+    {Textually replacing the loaded values of a loaded Liberty file via the text editor in the middle panel.}
     \item \FRDescription{Scaling values}
     {Scaling the specified values by a given factor}
     {Primary}
-    {\ref{FR-2} is performed on the liberty file, which contains the above mentioned values}
+    {\ref{FR-2} is performed on the Liberty file, which contains the above mentioned values}
     {The mentioned values are scaled by the given factor}
     {\begin{itemize}
         \item No value will be changed
@@ -395,10 +398,10 @@
         \item An appropriate error message is shown
     \end{itemize}}
     {Clicking on the "Rename" component (Right-Click on the desired Element  >> Rename)}
-    \item \FRODescription{Creating liberty files from scratch}
-    {Ability to create new liberty files via the text editor in the GUI of the desktop application}
+    \item \FRODescription{Creating Liberty files from scratch}
+    {Ability to create new Liberty files via the text editor in the GUI of the desktop application}
     {Optional}
-    {The input in the text editor is valid and in liberty file format}
+    {The input in the text editor is valid and in Liberty file format}
     {The input in the text editor is opened into the project as a new library}
     {\begin{itemize}
         \item The current input in the text editor of the GUI of the desktop application is unchanged.
@@ -406,7 +409,7 @@
     \end{itemize}}
     {Clicking on the “New” component (File >> New)}
     \item \FRODescription{Changing attributes through GUI}
-    {Ability to modify the loaded values of a given liberty file through a text editor in the desktop application}
+    {Ability to modify the loaded values of a given Liberty file through a text editor in the desktop application}
     {Optional}
     {Said library is successfully loaded into the project}
     {\begin{itemize}
@@ -430,17 +433,17 @@
         \item An appropriate error message is shown (for example in the input bar)
     \end{itemize}}
     {Clicking on the “export” component and choosing the desired path through the file explorer.}
-    \item \FRODescription{Saving a liberty file into File Manager through drag-and-drop}
-    {Ability to save a loaded liberty file into File Manager by using drag-and-drop}
+    \item \FRODescription{Saving a Liberty file into File Manager through drag-and-drop}
+    {Ability to save a loaded Liberty file into File Manager by using drag-and-drop}
     {Optional}
     {Said library is successfully loaded into the project}
-    {The mentioned liberty file is saved at the given path}
+    {The mentioned Liberty file is saved at the given path}
     {\begin{itemize}
-        \item The current status of the loaded liberty file is unchanged
+        \item The current status of the loaded Liberty file is unchanged
         \item No new files are created
         \item An appropriate error message is shown
     \end{itemize}}
-    {Selecting a/multiple loaded liberty file(s) and dragging it/them to the desired location in the File Manager}
+    {Selecting a/multiple loaded Liberty file(s) and dragging it/them to the desired location in the File Manager}
     \item \FRODescription{Saving the state of a project}
     {Ability to store the state of a project for future use}
     {Optional}
@@ -462,7 +465,7 @@
         \item An appropriate error message is shown
     \end{itemize}}
     {Clicking on the designated “Open Project” component (File >> Open Project) and selecting said project file through the File Manager}
-    {Fully replaces the current project. If the current project is not empty, a pop-up window will show to confirm the action. In case one of the liberty files is not found on the specified path, a pop-up panel notifies the error and the said file doesn’t show up in the hierarchical structure.}
+    {Fully replaces the current project. If the current project is not empty, a pop-up window will show to confirm the action. In case one of the Liberty files is not found on the specified path, a pop-up panel notifies the error and the said file doesn’t show up in the hierarchical structure.}
     \item \FRODescription{Exporting visualisations (graphs)}
     {Ability to store created graphs for future use}
     {Optional}
@@ -476,7 +479,7 @@
     \item \FRODescription{Changing how the graph data is summarised}
     {Ability to change a graphs data to represent minimum, maximum or average values if possible}
     {Optional}
-    {\ref{FR-3} has been successfully performed on the given liberty file and the desired attribute has minimum and maximum values specified}
+    {\ref{FR-3} has been successfully performed on the given Liberty file and the desired attribute has minimum and maximum values specified}
     {The current graph is replaced by one with the desired data}
     {\begin{itemize}
         \item The current graph is unchanged
@@ -510,7 +513,7 @@
     \item \FRODescription{Magnifying the hitbox of a value on a histogram}
     {Ability to make the hitbox of a value on a graph bigger}
     {Optional}
-    {\ref{FR-3} is performed on an attribute of a liberty file successfully}
+    {\ref{FR-3} is performed on an attribute of a Liberty file successfully}
     {The desired value in the graph gets a larger hitbox}
     {\begin{itemize}
         \item The histogram is unchanged
@@ -520,7 +523,7 @@
     \item \FRODescription{Changing graph colour/font}
     {Ability to customise the colour and used fonts of a graph}
     {Optional}
-    {\ref{FR-3} is performed on an attribute of a liberty file successfully}
+    {\ref{FR-3} is performed on an attribute of a Liberty file successfully}
     {Colour/Font of the said graph is changed to the desired one}
     {\begin{itemize}
         \item Mentioned graph is unchanged
@@ -578,10 +581,10 @@
     \end{itemize}}
     {Clicking on the “undo”/”redo” component}
     \item \FRODescription{Viewing file properties}
-    {Ability to view the properties of a liberty file, such as: file location, file size}
+    {Ability to view the properties of a Liberty file, such as: file location, file size}
     {Optional}
     {Corresponding library is successfully loaded into the project}
-    {A window with the properties of the loaded liberty file is shown}
+    {A window with the properties of the loaded Liberty file is shown}
     {An appropriate error message is shown}
     {Clicking on the "Properties" component (Right-Click on the corresponding library  >> Properties)}
     \item \FRODescription{Sorting}
@@ -629,7 +632,7 @@
 
 \subsubsection{Performance}
 \begin{NFR-Perf}
-    \item A liberty file should take no longer than 1 second to load
+    \item A Liberty file should take no longer than 1 second to load
     \item A graph should be drawn in no longer than 5 seconds
     \item It should not be able to run twice at the same time
     \item It shouldn’t be able to support more than 5 visible elements in the same graph if they are put on top of one another
@@ -644,7 +647,7 @@
 
 \subsubsection{Performance}
 \begin{NFRO-Perf}
-    \item A liberty file should take no longer than 20 milliseconds to load
+    \item A Liberty file should take no longer than 20 milliseconds to load
     \item A graph should be drawn in no longer than 1 second
 \end{NFRO-Perf}
 
