@@ -10,6 +10,12 @@
 \usepackage{amssymb}
 \usepackage{enumitem}
 
+\usepackage{caption}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
 \title{Requirements Specification Document}
 \author{Alp Toraç Genç, Kerem Kara, Xhulio Pernoca, Manuel Schenk, Ege Uzhan}
 \date{\today}
@@ -43,6 +49,31 @@
 \newlist{NFRO-Perf}{enumerate}{1}
 \setlist[NFRO-Perf]{label=NFRO-Perf-\arabic*}
 
+%Global test cases for core functional requirements
+\newlist{GTC}{enumerate}{1}
+\setlist[GTC]{label=+GTC-\arabic*}
+
+%Global test cases for optional functional requirements
+\newlist{GTCO}{enumerate}{1}
+\setlist[GTCO]{label=+GTCO-\arabic*}
+
+%MACROS
+
+% Macros for describing functional requirements/test cases
+% #1: Precondition/Action/State/Reaction
+\newcommand{\precondition}[1]{
+    \textbf{Precondition: } #1 \leavevmode \\
+}
+\newcommand{\action}[1]{
+    \textbf{Action: } #1 \leavevmode \\
+}
+\newcommand{\state}[1]{
+    \textbf{State: } #1 \leavevmode \\
+}
+\newcommand{\reaction}[1]{
+    \textbf{Reaction: } #1 \leavevmode \\
+}
+
 % Macro for describing the mandatory functional requirements
 % #1: Name of the functional requirement
 % #2: Goal
@@ -56,7 +87,7 @@
     \textbf{#1} \leavevmode \\
     \textbf{Goal: } #2 \leavevmode \\
     \textbf{Importance: } #3 \leavevmode \\
-    \textbf{Precondition: } #4 \leavevmode \\
+    \precondition{#4}
     \textbf{Post Condition (success): } #5 \leavevmode \\
     \textbf{Post Condition (fail): } #6 \leavevmode \\
     \textbf{Triggering Event(s): } #7 \leavevmode \\
@@ -76,15 +107,67 @@
     \textbf{#1} \leavevmode \\
     \textbf{Goal: } #2 \leavevmode \\
     \textbf{Importance: } #3 \leavevmode \\
-    \textbf{Precondition: } #4 \leavevmode \\
+    \precondition{#4}
     \textbf{Post Condition (success): } #5 \leavevmode \\
     \textbf{Post Condition (fail): } #6 \leavevmode \\
     \textbf{Triggering Event(s): } #7 \leavevmode \\
     \textbf{Description: } \leavevmode \\
     #8}
 
+% Macro for describing global test cases for mandatory/optional functional requirements
+% #1: Bullet points of functional requirements (ex: FR-1, FRO-2 and FR-5)
+% #2: Name of the test case
+\newcommand{\GTCDescription}[2]{
+    (\textbf{Tests: #1}) \textbf{#2} \leavevmode \\
+}
+\newcommand{\GTCODescription}[2]{
+    (\textbf{Tests: #1}) \textbf{#2} \leavevmode \\
+}
+
+% Macro for referencing another section in the document
+% #1 Name of referenced section
+% #2 Text of link
+\definecolor{col:reference}{HTML}{2f5399}
+\newcommand{\refer}[2]{\hyperref[#1]{\textcolor{col:reference}{#2}}}
+
+%Macro for Highlighting
+% #1 Text to highlight
+\definecolor{col:highlight}{HTML}{63b53e}
+\newcommand{\h}[1]{\textcolor{col:highlight}{#1}}
+
+%Macro for creating a Glossary entry
+% #1 name(reference)
+% #2 name(display)
+% #3 description
+\newcommand{\defg}[3]{\label{glo:#1}\section{#2}#3\\}
+
+%Macro for referencing glossary entries
+% 1 name of glossary entry
+% 2 display text
+\newcommand{\refg}[2]{\refer{glo:#1}{#2}}
+
+% Aligns captions to the left of the images
+\captionsetup{
+  font=footnotesize,
+  justification=raggedright,
+  singlelinecheck=false
+}
+
+% Macro for including images
+\newcommand{\includeimage}[5]{
+    \begin{figure}[H]
+        #1
+        \includegraphics[scale=#2]{#3.png}
+        \caption{#4}
+        \label{fig:#5}
+    \end{figure}
+}
+
+\graphicspath{{Images/}}
+
 \begin{document}
 \maketitle
+\label{sec:title}
 \tableofcontents
 
 \chapter{Purpose}
@@ -105,21 +188,23 @@
 
 \begin{FR}
     \item Opening Liberty Files \label{FR-1}
-    \item Visualising Liberty files \label{FR-2}
-    \item Visualising attributes \label{FR-3}
-    \item Visual comparison of attributes \label{FR-4}
-    \item Merging libraries \label{FR-5}
-    \item Resolving merge conflicts \label{FR-6}
-    \item Saving a Liberty file \label{FR-7}
-    \item Saving a library as a new file \label{FR-8}
-    \item Copying data into another library \label{FR-9}
-    \item Removing a library \label{FR-10}
-    \item Deleting a Cell \label{FR-11}
-    \item Changing attributes through raw text \label{FR-12}
-    \item Scaling values \label{FR-13}
-    \item Viewing specific values \label{FR-14}
-    \item Viewing statistics for graphs \label{FR-15}
-    \item Searching for an element by name \label{FR-16}
+    \item Visualising Liberty Files \label{FR-2}
+    \item Selecting elements \label{FR-3} %Needs to be added
+    \item Collapsing/Expanding Element view \label{FR-4.5} %needs to be added
+    \item Visualising attributes \label{FR-4}
+    \item Visual comparison of attributes \label{FR-5}
+    \item Merging libraries \label{FR-6}
+    \item Resolving merge conflicts \label{FR-7}
+    \item Copying Cells into another Library\label{FR-8}
+    \item Removing a Library \label{FR-9}
+    \item Deleting a Cell \label{FR-10}
+    \item Changing attributes through raw text \label{FR-11}
+    \item Scaling values \label{FR-12}
+    \item Viewing specific values \label{FR-13}
+    \item Viewing statistics for Graphs \label{FR-14}
+    \item Searching for an element \label{FR-15}
+    \item Saving a Liberty file \label{FR-16}
+    \item Saving a Library as a new File \label{FR-17}
 \end{FR}
 \subsection{Optional Requirements List}
 
@@ -129,8 +214,10 @@
     \item Creating Liberty files from scratch \label{FRO-3}
     \item Changing attributes through GUI \label{FRO-4}
     \item Exporting data as CSV \label{FRO-5}
+    \item Hiding an element \label{FRO-5.5}
     \item Saving a Liberty file into File Manager through drag-and-drop \label{FRO-6}
     \item Saving the state of a project \label{FRO-7}
+    \item Saving all the Liberty \label{FRO-7.5} %needs to be added
     \item Loading a project \label{FRO-8}
     \item Exporting visualisations (graphs) \label{FRO-9}
     \item Changing how the graph data is summarised \label{FRO-10}
@@ -144,6 +231,7 @@
     \item Shortcuts \label{FRO-18}
     \item Undo/Redo \label{FRO-19}
     \item Viewing file properties \label{FRO-20}
+    \item Info panel \label{20.5} %has manual, github, version
     \item Sorting \label{FRO-21}
     \item Setting Filters for a search \label{FRO-22}
     \item Setting default attribute filters\label{FRO-23}
@@ -249,29 +337,6 @@
             \item The review will be closed.
         \end{itemize}
     \end{itemize}}
-    \item \FRDescription{Saving a Liberty file}
-    {Ability to save changes made to a Liberty file}
-    {Primary}
-    {Corresponding library is successfully loaded into the project}
-    {Said Liberty file is modified corresponding to the version in the project}
-    {\begin{itemize}
-        \item No Liberty file is modified
-        \item An appropriate error message is shown
-    \end{itemize}}
-    {Clicking on the Save component (Right-Click on the desired Library  >> Save)}
-    \item \FRDescription{Saving a library as a new file}
-    {Ability to save a library as a new Liberty file}
-    {Primary}
-    {Said library is successfully loaded into the project}
-    {A new Liberty file is created corresponding to the version in the project}
-    {\begin{itemize}
-        \item No new Liberty file is created
-        \item An appropriate error message is shown
-    \end{itemize}}
-    {Clicking on the Save As component (Right-Click on the desired Library  >> Save As)}
-    {\begin{itemize}
-        \item The corresponding base Liberty file (if present) will not be changed throughout the entire process.
-    \end{itemize}}
     \item \FRDescription{Copying data into another library}
     {Ability to copy data from one library into another}
     {Primary}
@@ -353,7 +418,7 @@
         \item The elements (the library, the cell and the pin) of the said value are highlighted.
         \item If the library is open with the text editor of the middle panel, the value itself is also highlighted in the text editor.
     \end{itemize}}
-    \item \FRDescription{Viewing statistics for graphs}
+    \item \FRDescription{Viewing statistics for graphs} %checkboxes on the bottom of the screen [min, max, avg, median]
     {Ability to view the desired statistics of the values of an attribute in a graph}
     {Primary}
     {\ref{FR-3} is executed on a given element successfully}
@@ -373,6 +438,29 @@
     {The elements which contain the given string in their name are shown in the left panel}
     {Nothing is shown in the left panel}
     {Typing a string into the “search” textbox and pressing "Enter" key}
+    \item \FRDescription{Saving a Liberty file}
+    {Ability to save changes made to a Liberty file}
+    {Primary}
+    {Corresponding library is successfully loaded into the project}
+    {Said Liberty file is modified corresponding to the version in the project}
+    {\begin{itemize}
+        \item No Liberty file is modified
+        \item An appropriate error message is shown
+    \end{itemize}}
+    {Clicking on the Save component (Right-Click on the desired Library  >> Save)}
+    \item \FRDescription{Saving a library as a new file}
+    {Ability to save a library as a new Liberty file}
+    {Primary}
+    {Said library is successfully loaded into the project}
+    {A new Liberty file is created corresponding to the version in the project}
+    {\begin{itemize}
+        \item No new Liberty file is created
+        \item An appropriate error message is shown
+    \end{itemize}}
+    {Clicking on the Save As component (Right-Click on the desired Library  >> Save As)}
+    {\begin{itemize}
+        \item The corresponding base Liberty file (if present) will not be changed throughout the entire process.
+    \end{itemize}}
 \end{FR}
 
 \subsection{Optional Requirements}
@@ -476,7 +564,7 @@
         \item An appropriate error message is shown
     \end{itemize}}
     {Clicking on the designated “Export Graph” component and then selecting where to save the image and in what format through the File Manager}
-    \item \FRODescription{Changing how the graph data is summarised}
+    \item \FRODescription{Changing how the graph data is summarised} %Values for a library
     {Ability to change a graphs data to represent minimum, maximum or average values if possible}
     {Optional}
     {\ref{FR-3} has been successfully performed on the given Liberty file and the desired attribute has minimum and maximum values specified}
@@ -652,16 +740,120 @@
 \end{NFRO-Perf}
 
 \chapter{Global Test Cases}
+
 \section{Global test case for functional requirements}
+\begin{GTC}
+    \item example GTC
+\end{GTC}
+
 \section{Global test case for optional requirements}
+\begin{GTCO}
+    \item example GTCO
+\end{GTCO}
+
 \section{Test cases}
+\begin{GTC}
+    \item \GTCDescription{FR-x, FR-y and FR-z}{Exemplary test case} \leavevmode \\ \precondition{some precondition}\action{some action}\state{some state}\reaction{some reaction}
+\end{GTC}
+\begin{GTCO}
+    \item \GTCODescription{FRO-x, FRO-y and FRO-z}{Exemplary test case} \leavevmode \\ \precondition{some precondition}\action{some action}\state{some state}\reaction{some reaction}
+\end{GTCO}
+
 \chapter{Importance Of Attributes}
 
+%GUI
 \chapter{GUI-Design}
-\section{Component 1}
-\section{...}
-\section{Component n}
+\section{Overview}
+\includeimage{}{0.4}{Main Window}{Main Window}{main_window}
 
+%Outliner
+\section{Outliner}
+\label{sec:outliner}
+\includeimage{}{0.4}{Outliner}{Outliner}{outliner}
+The \h{Outliner} presents the user with a \refer{sec:outliner:search}{search bar}, to search for \refg{library}{libraries}, \refg{cell}{cells} or \refg{pin}{pins} by name as well as a \refer{sec:outliner:menu}{menu bar} and a \refer{sec:outliner:hierarchy}{hierarchical view} of opened liberty files.
+
+\subsection{Search Bar}
+\label{sec:outliner:search}
+
+\includeimage{}{0.4}{Outliner Search Bar}{Outliner Search Bar}{outliner_search_bar}
+
+\subsection{Menu Bar}
+\label{sec:outliner:menu}
+
+\includeimage{}{0.4}{Outliner Menu Bar}{Outliner Menu Bar}{outliner_menu_bar}
+
+\subsection{Hierarchy}
+\label{sec:outliner:hierarchy}
+
+\includeimage{}{0.4}{Hierarchy}{Hierarchy}{hierarchy}
+
+%Editor
+\section{Editor}
+\label{sec:editor}
+\includeimage{}{0.4}{Editor}{Editor}{editor}
+The \h{editor} presents the user with an interface to directly modify an opened liberty file's contents as well as a \refer{sec:editor:search}{search bar} to search said file and a \refer{sec:editor:menu}{menu bar}.
+
+\subsection{Search Bar}
+\label{sec:editor:search}
+
+\includeimage{}{0.4}{Editor Search Bar}{Editor Search Bar}{editor_search_bar}
+
+\subsection{Menu Bar}
+\label{sec:editor:menu}
+
+\includeimage{}{0.4}{Editor Menu Bar}{Editor Menu Bar}{editor_menu_bar}
+
+\subsection{Text Editor}
+\label{sec:editor:text_editor}
+
+\includeimage{}{0.4}{Editor Text Editor}{Editor Text Editor}{editor_text_editor}
+
+%Visualizer
+\section{Visualizer}
+\includeimage{}{0.4}{Visualizer}{Visualizer}{visualizer}
+\label{sec:visualizer}
+The \h{visualizer} consists of a \refer{sec:visualizer:menu}{menu bar} and a \refer{sec:visualizer:statistics}{statistics bar} which let the user define what kind if data is displayed in which way in the \refer{sec:visualizer:viewport}{viewport section}.
+
+
+\subsection{Menu Bar}
+\label{sec:visualizer:menu}
+
+\includeimage{}{0.4}{Visualizer Menu Bar}{Visualizer Menu Bar}{visualizer_menu_bar}
+
+\subsection{Viewport}
+\label{sec:visualizer:viewport}
+
+\includeimage{}{0.4}{Viewport}{Viewport}{viewport}
+
+\subsection{Statistics Bar}
+\label{sec:visualizer:statistics}
+
+\includeimage{}{0.4}{Visualizer Statistics Bar}{Visualizer Statistics Bar}{visualizer_statistics_bar}
+
+%Main Menu
+\section{Main Menu Bar}
+\label{sec:menu}
+
+\includeimage{}{0.4}{Menu Bar}{Menu Bar}{menu_bar}
+
+%Info Bar
+\section{Info bar}
+\label{sec:info}
+
+\includeimage{}{0.4}{Info Bar}{Info Bar}{info_bar}
+
+%Glossary
 \chapter{Glossary}
-
+\defg{library}{Library}{
+    LIBRARY DEFINITION
+}
+\defg{cell}{Cell}{
+    CELL DEFINITION
+}
+\defg{pin}{Pin}{
+    PIN DEFINITION
+}
+\defg{element}{Element}{
+    Collective term for \refg{library}{library}/\refg{cell}{cell}/\refg{pin}{pin}
+}
 \end{document}
