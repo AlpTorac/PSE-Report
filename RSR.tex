@@ -41,6 +41,10 @@
 \newlist{NFR-Perf}{enumerate}{1}
 \setlist[NFR-Perf]{label=NFR-Perf-\arabic*}
 
+%Mandatory Non-Functional requirements (robustness) list
+\newlist{NFR-Rob}{enumerate}{1}
+\setlist[NFR-Rob]{label=NFR-Rob-\arabic*}
+
 %Optional Non-Functional requirements (usability) list
 \newlist{NFRO-Usability}{enumerate}{1}
 \setlist[NFRO-Usability]{label=NFRO-Usability-\arabic*}
@@ -141,6 +145,24 @@
 % #3 description
 \newcommand{\defg}[3]{\label{glo:#1}\section{#2}#3\\}
 
+%Macro for Interaction Type Definitions
+% #1 name
+% #2 interaction type
+% #3 definition
+\newcommand{\defit}[3]{\subsection{#2}\label{it:#1}#3}
+
+%Macro for UI Element Definitions
+% #1 name
+% #2 interaction type
+% #3 related functional requirement(s)
+\newcommand{\ui}[3]{
+    \begin{description}
+        \item[Name]{#1}
+        \item[Interaction]{#2}
+        \item[Related FR]{#3}
+    \end{description}
+}
+
 %Macro for referencing glossary entries
 % 1 name of glossary entry
 % 2 display text
@@ -188,20 +210,25 @@
 
 \begin{FR}
     \item Opening Liberty Files \label{FR-1}
-    \item Visualising Liberty Files \label{FR-2}
+    \item Displaying Tree View of Liberty Files \label{FR-2}
     \item Selecting elements \label{FR-3} %Needs to be added
     \item Collapsing/Expanding Element view \label{FR-4.5} %needs to be added
-    \item Visualising attributes \label{FR-4}
-    \item Visual comparison of attributes \label{FR-5}
+    \item Navigating through elements in a display \label{FR-(-i)/67}
+    \item Displaying a library \label{FR-4.420/9}
+    \item Displaying a cell \label{FR-47}
+    \item Displaying a pin \label{FR-576476}
+    \item Visual comparison of libraries \label{FR-69}
+    \item Visual comparison of cells \label{FR-543}
+    \item Visual comparison of pins \label{FR-567}
+    \item Changing attributes through text editor \label{FR-11}
     \item Merging libraries \label{FR-6}
     \item Resolving merge conflicts \label{FR-7}
     \item Copying Cells into another Library\label{FR-8}
     \item Removing a Library \label{FR-9}
     \item Deleting a Cell \label{FR-10}
-    \item Changing attributes through raw text \label{FR-11}
-    \item Scaling values \label{FR-12}
-    \item Viewing specific values \label{FR-13}
-    \item Viewing statistics for Graphs \label{FR-14}
+    \item Scaling graph values \label{FR-12}
+    \item Highlighting graph values \label{FR-13}
+    \item Displaying statistics for Graphs \label{FR-14}
     \item Searching for an element \label{FR-15}
     \item Saving a Liberty file \label{FR-16}
     \item Saving a Library as a new File \label{FR-17}
@@ -214,14 +241,19 @@
     \item Creating Liberty files from scratch \label{FRO-3}
     \item Changing attributes through GUI \label{FRO-4}
     \item Exporting data as CSV \label{FRO-5}
-    \item Hiding an element \label{FRO-5.5}
+    \item Resizing panel \label{FRO-xy}
+    \item Popping panels out \label{FRO-xyz}
+    \item Re-positioning panels \label{FRO-xyzt}
     \item Saving a Liberty file into File Manager through drag-and-drop \label{FRO-6}
+    \item Saving all the Liberty files \label{FRO-7.5} %needs to be added 
     \item Saving the state of a project \label{FRO-7}
-    \item Saving all the Liberty \label{FRO-7.5} %needs to be added
     \item Loading a project \label{FRO-8}
     \item Exporting visualisations (graphs) \label{FRO-9}
     \item Changing how the graph data is summarised \label{FRO-10}
     \item Modifying the type of the graph \label{FRO-11}
+    \item Interpolating \label{FR-(x1-x)/(y1-y)}
+    \item Adding graph function visualisation through interpolation \label{FR-NaN}
+    \item 3D graphs \label{FR-3D}
     \item Applying formulas to graphs \label{FRO-12}
     \item Magnifying the hitbox of a value on a histogram \label{FRO-13}
     \item Changing graph colour/font \label{FRO-14}
@@ -232,16 +264,16 @@
     \item Undo/Redo \label{FRO-19}
     \item Viewing file properties \label{FRO-20}
     \item Info panel \label{20.5} %has manual, github, version
-    \item Sorting \label{FRO-21}
+    % \item Sorting \label{FRO-21}
     \item Setting Filters for a search \label{FRO-22}
-    \item Setting default attribute filters\label{FRO-23}
+    \item Setting default filters\label{FRO-23}
 \end{FRO}
 
 \section{Functional Requirements}
 \subsection{Mandatory Requirements}
 \begin{FR}
 
-    \item \FRDescription{Opening Liberty Files}
+    \item \FRDescription{Loading Liberty Files}
     {Ability to load, parse and create data objects from Liberty files with the desktop application}
     {Primary}
     {The selected files are in Liberty file format(not necessarily of the .lib extension), are not corrupted and fit into the memory}
@@ -259,7 +291,7 @@
         \item Files are selected via File Manager (File >> Open)
         \item Files are dragged onto the desktop application and are dropped
     \end{itemize}}
-    \item \FRDescription{Visualising Liberty files}
+    \item \FRDescription{Displaying Tree View of Liberty Files}
     {Ability to view the hierarchical structure of parsed Liberty files (from \ref{FR-1}) in a panel}
     {Primary}
     {\ref{FR-1} is performed successfully on the Liberty files to be viewed and the files fit into the memory}
@@ -271,25 +303,137 @@
         \item An appropriate error message is shown
     \end{itemize}}
     {The successful execution of \ref{FR-1}}
-    \item \FRDescription{Visualising attributes}
-    {Ability to view the values of attributes in a Liberty file}
+    \item \FRDescription{Opening an element in the working area}
+    {Ability to open an element in order to view or edit}
     {Primary}
-    {Said library is successfully loaded into the project}
-    {For selected attributes, a graph is drawn in the right panel.}
+    {Said element is successfully loaded into the project}
+    {An element panel is opened with:
+    \begin{itemize}
+        \item A close button 
+        \item The tabs "Editor", "View" and "Both". The "Both" tab is active by default, when the panel is created.
+        \item On the left side of the panel, "Editor" panel from \label{FR-PLACEHOLDER} is open. % FR-PLACEHOLDER is for the functionality the Editor is associated with
+        On the right side of the panel "View" panel is open from
+        \begin{itemize}
+        \item \label{FR-grca} for libraries
+        \item \label{FR-grca} for libraries
+        \item \label{FR-grca} for libraries 
+    \end{itemize}
+    \end{itemize}}
     {An appropriate error message is shown}
     {\begin{itemize}
         \item A double click on an element
-        \item A click on the visibility key next to the element
+        \item Clicking on the Open component (Right-Click on the desired element >> Open)
     \end{itemize}}
     {\begin{itemize}
-        \item The view can be switched through element types (Library, Cell and Node)
-        \item The view can be switched to “All”, “Visible” and “Active”.
+        \item When clicking on the "View" tab, only the "View" panel is visible, and the "Editor" panel is minimised(not visible)
+        \item When clicking on the "Editor" tab, only the "Editor" panel is visible, and the "View" panel is minimised(not visible)
+        \item When clicking back on the "Both" tab while it's not active, the panel returns to the original display where both "Editor" and "View" sub-panels stand next to one another.
+        \item When clicking the close button, the element panel is closed and removed from the working area 
+    \end{itemize}}
+    \item \FRDescription{Displaying a Library}
+    {Ability to view the values of attributes in a library}
+    {Primary}
+    {Said library is successfully loaded into the project}
+    {On the View panel opened from \label{FR-PREVIOUS} for a library
         \begin{itemize}
-            \item “All” shows information about all the elements in the project
-            \item “Active” shows information only about the most recently double-clicked element of the said type.
-            \item “Visible” is further explained in \ref{FR-4}
+            \item The navigation view for Libraries is open
+            \item A drop down list with the available attributes(input internal power,output internal power, power leakage, output timing)
+            \item A drop down list with the available sub-attributes
+            \begin{itemize}
+                \item For internal power: fall-power and rise-power
+                \item For output timing: timing-sense, timing-type and then cell-fall, cell-rise, fall-transition, rise-transition
+            \end{itemize}
+            \item For the selected attribute (average values by default), a graph is drawn in the panel.
+        \end{itemize}}
+    {An appropriate error message is shown}
+    {\begin{itemize}
+        \item The "View" or "Both" tab is made active
+    \end{itemize}}
+    {\begin{itemize}
+        \item The navigation view for Libraries simply contains the cell names. Clicking on a cell name switches the element panel to that of the corresponding cell that is shown through \label{FR-BLABLABLA}
+        \item Single value average default leakage power will be shown
+        According to the selected attribute, the following graph is drawn
+        \begin{itemize}
+            \item For the input internal power, a histogram with average input internal power is shown
+            \item For the output internal power and output timing, a heatmap with the average will be shown
+            \item For the power leakage, a bar chart is drawn with the averages of different input state powers (Like 001, 000, etc.)
+                \begin{itemize}
+                    \item In case a cell has 2 pins while another has 3, input state powers with 3 digits will be shown, but the power leakage will be taken by taking the last 2 digits into account
+                \end{itemize}
         \end{itemize}
-        \item The value in question and it’s type can be selected on the right panel. According to the parameters, a corresponding graph will be shown.
+        \item 
+    \end{itemize}}
+    \item \FRDescription{Displaying a Cell}
+    {Ability to view the values of attributes in a cell}
+    {Primary}
+    {Said cell is successfully loaded into the project}
+    {On the View panel opened from \label{FR-PREVIOUS} for a cell
+    \begin{itemize}
+        \item The navigation view for Cells is open
+        \item A drop down list with the available attributes(input internal power,output internal power, power leakage, output timing)
+        \item A drop down list with the available sub-attributes
+        \begin{itemize}
+            \item For internal power: fall-power and rise-power
+            \item For output timing: timing-sense, timing-type and then cell-fall, cell-rise, fall-transition, rise-transition
+        \end{itemize}
+        \item For the selected attribute (average values by default), a graph is drawn in the panel.
+    \end{itemize}}
+    {An appropriate error message is shown}
+    {\begin{itemize}
+        \item The "View" or "Both" tab is made active
+    \end{itemize}}
+    {\begin{itemize}
+        \item The navigation view for cell contains a visual representation of a cell. It has the correct number of drawn input/output pins and their names as well as checkboxes to the left of the input names. To the right of the output names is the output formula. On it's left is a backwards arrow.
+        \begin{itemize}
+            \item Clicking on the backwards arrow switches the element panel to that of the parent library from \label{FR-BLABLABLA}
+            \item Clicking on an input/output pin switches the element panel to that of the corresponding pin from \label{FR-BLABLABLA}
+            \item If the cell has more than 5 input pins or 3 output pins, the Visual representation gets changed with simple columns of input and output pins.
+        \end{itemize}
+        \item Single value default leakage power will be shown
+        \item Single value leakage power will be shown calculated with the state of the active checkboxes close to the input pins alongside the formula. (When the checkbox is selected, current is flowing through it)
+        According to the selected attribute, the following graph is drawn
+        \begin{itemize}
+            \item For the input internal power, a histogram with average input internal power is shown
+            \item For the output internal power and output timing, a heatmap with the average will be shown
+            \item For the power leakage, a bar chart is drawn with the different input state powers (Like 001, 000, etc.)
+        \end{itemize}
+    \end{itemize}}
+    \item \FRDescription{Displaying a Pin}
+    {Ability to view the values of attributes in a pin}
+    {Primary}
+    {Said pin is successfully loaded into the project}
+    {On the View panel opened from \label{FR-PREVIOUS} for a pin
+        \begin{itemize}
+            \item The navigation view for pins is open
+            \item A drop down list with the available attributes(input internal power,output internal power, output timing)
+            \begin{itemize}
+                \item For input pins: internal power
+                \item For output pins: internal power and timing
+            \end{itemize}
+            \item A drop down list with the available sub-attributes
+            \begin{itemize}
+                \item For internal power: fall-power and rise-power
+                \item For timing: timing-sense, timing-type and then cell-fall, cell-rise, fall-transition, rise-transition
+            \end{itemize}
+            \item For the selected attribute, a graph is drawn in the panel.
+        \end{itemize}}
+    {An appropriate error message is shown}
+    {\begin{itemize}
+        \item The "View" or "Both" tab is made active
+    \end{itemize}}
+    {\begin{itemize}
+        \item The navigation view for a pin contains a visual representation of its parent cell with the highlighted current pin. It has the correct number of drawn input/output pins and their names as well as checkboxes(only one can be selected. 1st one is selected by default) to the left of the input names. To the right of the output names is the output formula. On it's left is a backwards arrow.
+        \begin{itemize}
+            \item Clicking on the backwards arrow switches the element panel to that of the parent cell from \label{FR-BLABLABLA}
+            \item Clicking on an input/output pin switches the element panel to that of the corresponding pin from \label{FR-BLABLABLA}
+            \item If the cell has more than 5 input pins or 3 output pins, the Visual representation gets changed with simple columns of input and output pins.
+        \end{itemize}
+        \item For output pins, function will be shown
+        According to the selected attribute, the following graph is drawn
+        \begin{itemize}
+            \item For the input internal power, a histogram with average input internal power is shown
+            \item For the output internal power and output timing, a heatmap with the will be shown according to the input pin whose checkbox is selected
+        \end{itemize}
     \end{itemize}}
     \item \FRDescription{Visual comparison of attributes}
     {Compare the same type of attributes of different elements}
@@ -726,6 +870,11 @@
     \item It shouldn’t be able to support more than 5 visible elements in the same graph if they are put on top of one another
 \end{NFR-Perf}
 
+\subsection{Robustness}
+\begin{NFR-Rob}
+    \item Taking different library units into account
+\end{NFR-Rob}
+
 \subsection{Optional}
 \subsubsection{Usability}
 \begin{NFRO-Usability}
@@ -763,8 +912,39 @@
 
 %GUI
 \chapter{GUI-Design}
+%Overview
 \section{Overview}
 \includeimage{}{0.4}{Main Window}{Main Window}{main_window}
+
+%Interaction Type Definitions
+\section{Interaction Types}
+\defit{button}{Button}{
+    \begin{description}
+        \item[Left Click]{executes functionality depending on the button}
+    \end{description}
+}
+\defit{dropdown_menu}{Dropdown Menu}{
+    \begin{description}
+            \item[Left Click]{expands the dropdown to reveal more UI Elements}
+    \end{description}
+}
+\defit{dropdown_selector}{Dropdown Selector}{
+    \begin{description}
+            \item[Left Click]{expands the dropdown selector to reveal several options to choose from by clicking on the desired choice}
+    \end{description}
+}
+\defit{input_box}{Input Box}{
+    \begin{description}
+        \item[Left Click]{activates \h{input mode}}
+        \item[Keyboard Characters]{are being input into the box when in \h{input mode}}
+        \item[Enter Key]{deactivates \h{input mode}}
+    \end{description}
+}
+\defit{checkbox}{Checkbox}{
+    \begin{description}
+        \item[Left Click]{Toggles the status of the checkbox (true/false)}
+    \end{description}
+}
 
 %Outliner
 \section{Outliner}
@@ -774,8 +954,8 @@ The \h{Outliner} presents the user with a \refer{sec:outliner:search}{search bar
 
 \subsection{Search Bar}
 \label{sec:outliner:search}
-
 \includeimage{}{0.4}{Outliner Search Bar}{Outliner Search Bar}{outliner_search_bar}
+\ui{Search}{\refer{it:input_box}{Input Box}}{TODO}
 
 \subsection{Menu Bar}
 \label{sec:outliner:menu}
@@ -854,6 +1034,12 @@ The \h{visualizer} consists of a \refer{sec:visualizer:menu}{menu bar} and a \re
     PIN DEFINITION
 }
 \defg{element}{Element}{
-    Collective term for \refg{library}{library}/\refg{cell}{cell}/\refg{pin}{pin}
+    Collective term for \refg{library}{library}/\refg{cell}{cell}/\refg{pin}{pin}.
+}
+\defg{user}{User}{
+    The person making use of the application.
+}
+\defg{display_element}{Displaying Elements}{
+    The operation of viewing the attributes of an \refg{element}{element} via graphs.
 }
 \end{document}
