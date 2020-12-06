@@ -272,7 +272,6 @@
 \section{Functional Requirements}
 \subsection{Mandatory Requirements}
 \begin{FR}
-
     \item \FRDescription{Loading Liberty Files}
     {Ability to load, parse and create data objects from Liberty files with the desktop application}
     {Primary}
@@ -310,14 +309,16 @@
     {An element panel is opened with:
     \begin{itemize}
         \item A close button 
-        \item The tabs "Editor", "View" and "Both". The "Both" tab is active by default, when the panel is created.
-        \item On the left side of the panel, "Editor" panel from \label{FR-PLACEHOLDER} is open. % FR-PLACEHOLDER is for the functionality the Editor is associated with
-        On the right side of the panel "View" panel is open from
+        \item The tabs "Editor", "View" and "Both". The "Both" tab is active by default, when the panel is created, where:
         \begin{itemize}
-        \item \label{FR-grca} for libraries
-        \item \label{FR-grca} for libraries
-        \item \label{FR-grca} for libraries 
-    \end{itemize}
+            \item Inside the "Both" panel, on the left, "Editor" panel from \label{FR-PLACEHOLDER} is open. % FR-PLACEHOLDER is for the functionality the Editor is associated with
+            Inside the "Both" panel, on the right, "View" panel is open based on the opened element:
+            \begin{itemize}
+                \item \label{FR-grca} for libraries
+                \item \label{FR-grca} for cells
+                \item \label{FR-grca} for pins 
+            \end{itemize}
+        \end{itemize}
     \end{itemize}}
     {An appropriate error message is shown}
     {\begin{itemize}
@@ -351,8 +352,7 @@
     \end{itemize}}
     {\begin{itemize}
         \item The navigation view for Libraries simply contains the cell names. Clicking on a cell name switches the element panel to that of the corresponding cell that is shown through \label{FR-BLABLABLA}
-        \item Single value average default leakage power will be shown
-        According to the selected attribute, the following graph is drawn
+        \item Single value average default leakage power will be shown. According to the selected attribute, the following graph is drawn
         \begin{itemize}
             \item For the input internal power, a histogram with average input internal power is shown
             \item For the output internal power and output timing, a heatmap with the average will be shown
@@ -361,7 +361,6 @@
                     \item In case a cell has 2 pins while another has 3, input state powers with 3 digits will be shown, but the power leakage will be taken by taking the last 2 digits into account
                 \end{itemize}
         \end{itemize}
-        \item 
     \end{itemize}}
     \item \FRDescription{Displaying a Cell}
     {Ability to view the values of attributes in a cell}
@@ -383,7 +382,7 @@
         \item The "View" or "Both" tab is made active
     \end{itemize}}
     {\begin{itemize}
-        \item The navigation view for cell contains a visual representation of a cell. It has the correct number of drawn input/output pins and their names as well as checkboxes to the left of the input names. To the right of the output names is the output formula. On it's left is a backwards arrow.
+        \item The navigation view for a cell contains the visual representation of the cell. It has the correct number of drawn input/output pins and their names as well as checkboxes to the left of the input names. To the right of the output names is the output formula. On it's left is a backwards arrow.
         \begin{itemize}
             \item Clicking on the backwards arrow switches the element panel to that of the parent library from \label{FR-BLABLABLA}
             \item Clicking on an input/output pin switches the element panel to that of the corresponding pin from \label{FR-BLABLABLA}
@@ -422,14 +421,13 @@
         \item The "View" or "Both" tab is made active
     \end{itemize}}
     {\begin{itemize}
-        \item The navigation view for a pin contains a visual representation of its parent cell with the highlighted current pin. It has the correct number of drawn input/output pins and their names as well as checkboxes(only one can be selected. 1st one is selected by default) to the left of the input names. To the right of the output names is the output formula. On it's left is a backwards arrow.
+        \item The navigation view for a pin contains a visual representation of its parent cell with the highlighted current pin. It has the correct number of drawn input/output pins and their names as well as checkboxes(only one can be selected. First one is selected by default) to the left of the input names. To the right of the output names is the output formula. On it's left is a backwards arrow.
         \begin{itemize}
             \item Clicking on the backwards arrow switches the element panel to that of the parent cell from \label{FR-BLABLABLA}
             \item Clicking on an input/output pin switches the element panel to that of the corresponding pin from \label{FR-BLABLABLA}
-            \item If the cell has more than 5 input pins or 3 output pins, the Visual representation gets changed with simple columns of input and output pins.
+            \item If the cell has more than 5 input pins or 3 output pins, the visual representation gets changed with simple columns of input and output pins.
         \end{itemize}
-        \item For output pins, function will be shown
-        According to the selected attribute, the following graph is drawn
+        \item For output pins, function will be shown. According to the selected attribute, the following graph is drawn
         \begin{itemize}
             \item For the input internal power, a histogram with average input internal power is shown
             \item For the output internal power and output timing, a heatmap with the will be shown according to the input pin whose checkbox is selected
@@ -439,14 +437,12 @@
     {Compare the same type of attributes of different elements}
     {Primary}
     {The library, which contains the different elements,  is successfully loaded into the project}
-    {\ref{FR-3} is executed for a desired attribute (if not already done) and the resulting histograms are combined in a new histogram.}
-    {
-    \begin{itemize}
-        \item the right panel is empty
+    {\ref{FR-3} is executed for a desired attribute (if not already done) and the resulting histograms are combined in a new histogram in a new element panel.}
+    {\begin{itemize}
+        \item No new element panels are created
         \item An appropriate error message is shown
-    \end{itemize}
-    }
-    {Selecting the “visible” view after selecting the elements that will be compared and selecting which attribute(s) will be compared.}
+    \end{itemize}}
+    {Selecting the new element panel after selecting the elements that will be compared and then selecting which attribute(s) will be compared in the new element panel.}
     {\begin{itemize}
         \item Definition of “combined”: Each relevant graph will be put on top of one another, made transparent and coloured differently.
     \end{itemize}}
@@ -474,18 +470,18 @@
             \item \ref{FR-1} will be executed for the review
             \item If \ref{FR-1} fails, an appropriate message will be shown and the user will be returned to the review
         \end{itemize}
-        \item If the user clicks on the “abort” button
+        \item If the user clicks on the “abort” button:
         \begin{itemize}
             \item The merging operation will be cancelled
             \item No new library will be created
             \item The review will be closed.
         \end{itemize}
     \end{itemize}}
-    \item \FRDescription{Copying data into another library}
-    {Ability to copy data from one library into another}
+    \item \FRDescription{Copying element(s) into another library}
+    {Ability to copy element(s) from one library into another}
     {Primary}
     {Both of the libraries successfully loaded into the project}
-    {The copied data from the origin library is pasted into the destination library}
+    {The copied element(s) from the original library is pasted into the destination library}
     {The same conflict resolution from \ref{FR-6} takes place with minor differences.
     \begin{itemize}
         \item Instead of creating a new library, the destination library is modified
@@ -505,31 +501,30 @@
         \item An appropriate error message is shown
     \end{itemize}}
     {Clicking on the Remove component (Right-Click on the desired Library  >> Remove)}
-    \item \FRDescription{Deleting a Cell}
-    {Ability to delete a/multiple Cell(s) from the library}
+    \item \FRDescription{Deleting cell(s)}
+    {Ability to delete a/multiple cell(s) from a library}
     {Primary}
-    {Said library is successfully loaded into the project}
-    {The mentioned cell(s) is/are deleted from the library and removed from the left panel}
+    {The library, which contains the mentioned cell(s), is successfully loaded into the project}
+    {The mentioned cell(s) is/are deleted from their library and removed from the left panel}
     {\begin{itemize}
-        \item No library is modified
+        \item No library is modified (no cell(s) is/are removed)
         \item An appropriate error message is shown
     \end{itemize}}
     {Clicking on the Delete component (Right-Click on the desired Cell  >> Delete)}
     \item \FRDescription{Changing attributes through raw text}
-    {Ability to modify the loaded values of a library through a text editor in the application}
+    {Ability to modify the loaded values of a library through the text editor in the "Editor" panel in the element panel of the library in the desktop application}
     {Primary}
-    {Said library is successfully loaded into the project}
+    {Said library is successfully loaded into the project and has an element panel}
     {\begin{itemize}
-        \item Changes made in the text editor are reflected in the graphs and summaries.
+        \item Changes made in the text editor in the said "Editor" panel are reflected in the graphs and summaries.
         \item The corresponding library is modified.
     \end{itemize}}
     {\begin{itemize}
-        \item Values in the library don’t change
-        \item The text editor goes back to its original value
+        \item Values in the library do not change
+        \item The text editor in the said "Editor" panel goes back to its original value
         \item An appropriate error message is shown
-    \end{itemize}
-    }
-    {Textually replacing the loaded values of a loaded Liberty file via the text editor in the middle panel.}
+    \end{itemize}}
+    {Textually replacing the loaded values of a loaded Liberty file via the text editor in the said "Editor" panel.}
     \item \FRDescription{Scaling values}
     {Scaling the specified values by a given factor}
     {Primary}
@@ -557,16 +552,20 @@
     {\ref{FR-3} is executed on a given element successfully}
     {The source of the said value and the value itself is highlighted}
     {An appropriate error message is shown}
-    {Hovering the mouse pointer over the said value}
+    {Hovering the mouse pointer over the said value in it's graph}
     {\begin{itemize}
-        \item The elements (the library, the cell and the pin) of the said value are highlighted.
-        \item If the library is open with the text editor of the middle panel, the value itself is also highlighted in the text editor.
+        \item The element, which contains the mentioned value, and it's parent elements are highlighted in the hierarchical view.
+        \item If the element panel of the said element has the "Both" panel active, the value itself in the text editor (from "Editor" panel within the "Both" panel) will be highlighted as well.
     \end{itemize}}
     \item \FRDescription{Viewing statistics for graphs} %checkboxes on the bottom of the screen [min, max, avg, median]
     {Ability to view the desired statistics of the values of an attribute in a graph}
     {Primary}
     {\ref{FR-3} is executed on a given element successfully}
-    {The desired statistics of the said attributes are shown in text}
+    {The desired statistics of the said attributes are shown in the graph with:
+    \begin{itemize}
+        \item Horizontal line(s) (y = value of the desired statistic, in a cartesian coordinate system), if the said graph is a histogram.
+        \item Re-colouring the values that are similar (or are) the values of the desired statistics, if the said graph is a heatmap.
+    \end{itemize}}
     {\begin{itemize}
         \item No statistics are shown
         \begin{itemize}
@@ -575,11 +574,15 @@
         \item An appropriate error message is shown
     \end{itemize}}
     {Clicking on the dedicated component.}
+    {\begin{itemize}
+        \item (?) The similarity mentioned in the "Post Condition (success)" part can be modified via it's dedicated component (?)
+        \item The way of showing statistics in graphs mentioned in the "Post Condition (success)" and the graphs use different colours to make it easier for the user to distinguish them from each other.
+    \end{itemize}}
     \item \FRDescription{Searching for an element by name}
     {Ability to search for an element by its name}
     {Primary}
-    {None}
-    {The elements which contain the given string in their name are shown in the left panel}
+    {There is an element with the given prefix}
+    {The elements which contain the given prefix in their name are shown in the left panel}
     {Nothing is shown in the left panel}
     {Typing a string into the “search” textbox and pressing "Enter" key}
     \item \FRDescription{Saving a Liberty file}
@@ -596,14 +599,14 @@
     {Ability to save a library as a new Liberty file}
     {Primary}
     {Said library is successfully loaded into the project}
-    {A new Liberty file is created corresponding to the version in the project}
+    {A new liberty file is created corresponding to the version in the project}
     {\begin{itemize}
-        \item No new Liberty file is created
+        \item No new liberty file is created
         \item An appropriate error message is shown
     \end{itemize}}
     {Clicking on the Save As component (Right-Click on the desired Library  >> Save As)}
     {\begin{itemize}
-        \item The corresponding base Liberty file (if present) will not be changed throughout the entire process.
+        \item The corresponding base liberty file (if present) will not be changed throughout the entire process.
     \end{itemize}}
 \end{FR}
 
@@ -611,15 +614,15 @@
 
 \begin{FRO}
     \item \FRDescription{Moving cells to another library}
-    {Ability to move data about a/multiple cell(s) from a library to another}
+    {Ability to move a/multiple cell(s) from a library to another}
     {Optional}
     {Both libraries are successfully loaded into the project}
     {\begin{itemize}
-        \item The mentioned cell data from the origin library is created in the destination library
-        \item The mentioned cell data is deleted in the origin library
+        \item The mentioned cell from the original library is moved to the destination library
+        \item The mentioned cell is deleted from the origin library
     \end{itemize}}
     {The same conflict resolution from \ref{FR-6} takes place with the minor adjustments further explained in the Post Condition (fail) from \ref{FR-9}}
-    {Drag and Dropping the cell(s) within the left panel, from its own library into another library}
+    {Drag-dropping the cell(s) within the left panel, from it's own library into another library}
     \item \FRODescription{Renaming elements}
     {Ability to rename elements in a loaded library}
     {Optional}
@@ -631,30 +634,34 @@
     \end{itemize}}
     {Clicking on the "Rename" component (Right-Click on the desired Element  >> Rename)}
     \item \FRODescription{Creating Liberty files from scratch}
-    {Ability to create new Liberty files via the text editor in the GUI of the desktop application}
+    {Ability to create a new liberty file via the text editor in the "Editor" panel of the element panel of the new library, opened after the triggering event, in the GUI of the desktop application}
     {Optional}
-    {The input in the text editor is valid and in Liberty file format}
-    {The input in the text editor is opened into the project as a new library}
+    {The input in the said text editor is valid and in liberty file format}
+    {The input in the said text editor is opened into the project as a new library}
     {\begin{itemize}
         \item The current input in the text editor of the GUI of the desktop application is unchanged.
         \item An appropriate error message is shown
     \end{itemize}}
-    {Clicking on the “New” component (File >> New)}
+    {\begin{itemize}
+        \item Clicking on the “New” component (File >> New) to open the element panel mentioned above
+        \item Clicking on the "Save as" component (File >> Save as) to save the input in the said text editor as a new liberty file.
+    \end{itemize}}
+    {Making a new liberty file this way (inputting the content of the file into the said text editor and clicking on the "Save as" component) automatically opens the liberty file in the editor.}
     \item \FRODescription{Changing attributes through GUI}
-    {Ability to modify the loaded values of a given Liberty file through a text editor in the desktop application}
+    {Ability to modify the values of an element in a loaded liberty file through the text editor in the "Editor" panel of the element panel of the said element desktop application}
     {Optional}
     {Said library is successfully loaded into the project}
     {\begin{itemize}
-        \item Changes made in the editor of the GUI are reflected in the graphs and summaries.
+        \item Changes made in the said text editor are reflected in the graphs and summaries.
         \item The corresponding library is modified.
     \end{itemize}}
     {\begin{itemize}
         \item Values in the library don’t change
-        \item Values in the GUI go back to their original values
+        \item Values in the said text editor go back to their original values
         \item An appropriate error message is shown
     \end{itemize}}
-    {Replacing the loaded values of a library in the corresponding text fields in the middle panel of the application}
-    {By selecting an active element on the left panel and “Normal” view on the middle panel, attributes will be listed in text fields in the middle panel alongside their values. Changing them should change the values in the library loaded into the project.}
+    {Replacing the loaded values of a library in the said text editor and then confirming the changes by (?)}
+    {By double clicking an element on the hierarchical view, that element's element panel will be open. Using the text editor in that panel to change the values should change those values in the library loaded into the project.}
     \item \FRODescription{Exporting data as CSV}
     {Ability to export the data of a given library in CSV format}
     {Optional}
@@ -665,13 +672,13 @@
         \item An appropriate error message is shown (for example in the input bar)
     \end{itemize}}
     {Clicking on the “export” component and choosing the desired path through the file explorer.}
-    \item \FRODescription{Saving a Liberty file into File Manager through drag-and-drop}
-    {Ability to save a loaded Liberty file into File Manager by using drag-and-drop}
+    \item \FRODescription{Saving a liberty file into File Manager through drag-drop}
+    {Ability to save a loaded liberty file into File Manager by using drag-drop}
     {Optional}
     {Said library is successfully loaded into the project}
-    {The mentioned Liberty file is saved at the given path}
+    {The mentioned liberty file is saved at the given path}
     {\begin{itemize}
-        \item The current status of the loaded Liberty file is unchanged
+        \item The current status of the loaded liberty file is unchanged
         \item No new files are created
         \item An appropriate error message is shown
     \end{itemize}}
@@ -697,8 +704,8 @@
         \item An appropriate error message is shown
     \end{itemize}}
     {Clicking on the designated “Open Project” component (File >> Open Project) and selecting said project file through the File Manager}
-    {Fully replaces the current project. If the current project is not empty, a pop-up window will show to confirm the action. In case one of the Liberty files is not found on the specified path, a pop-up panel notifies the error and the said file doesn’t show up in the hierarchical structure.}
-    \item \FRODescription{Exporting visualisations (graphs)}
+    {Fully replaces the current project. If the current project is not empty, a pop-up window will show to confirm the action. In case one of the liberty files is not found on the specified path, a pop-up panel notifies the error and the said file does not show up in the hierarchical structure.}
+    \item \FRODescription{Exporting graphs}
     {Ability to store created graphs for future use}
     {Optional}
     {The said graph has been created successfully through \ref{FR-3}}
@@ -708,26 +715,27 @@
         \item An appropriate error message is shown
     \end{itemize}}
     {Clicking on the designated “Export Graph” component and then selecting where to save the image and in what format through the File Manager}
-    \item \FRODescription{Changing how the graph data is summarised} %Values for a library
-    {Ability to change a graphs data to represent minimum, maximum or average values if possible}
-    {Optional}
-    {\ref{FR-3} has been successfully performed on the given Liberty file and the desired attribute has minimum and maximum values specified}
-    {The current graph is replaced by one with the desired data}
-    {\begin{itemize}
-        \item The current graph is unchanged
-        \item An appropriate error message is shown
-    \end{itemize}}
-    {Clicking on the drop-down box component and selecting the type of summary}
+    % Already in core functional requirements ?
+%    \item \FRODescription{Changing how the graph data is summarised} %Values for a library
+%    {Ability to change a graphs data to represent minimum, maximum or average values if possible}
+%    {Optional}
+%    {\ref{FR-3} has been successfully performed on the given Liberty file and the desired attribute %has minimum and maximum values specified}
+%    {The current graph is replaced by one with the desired data}
+%    {\begin{itemize}
+%        \item The current graph is unchanged
+%        \item An appropriate error message is shown
+%    \end{itemize}}
+%    {Clicking on the drop-down box component and selecting the type of summary}
     \item \FRODescription{Modifying the type of the graph}
-    {Making different types of visualisation possible}
+    {Making viewing the values of desired attributes of desired elements possible}
     {Optional}
-    {\ref{FR-3} is performed on an attribute of a Liberty file successfully}
+    {\ref{FR-3} is performed on an attribute of a liberty file successfully}
     {The type of the graph changes to the desired graph type}
     {\begin{itemize}
         \item The graph is unchanged
         \item An appropriate error message is shown
     \end{itemize}}
-    {Clicking on the corresponding drop down component in the View section of the right panel and choosing the new type of the graph}
+    {Clicking on the corresponding drop down component in the "View" panel of the element panel and choosing the new type of the graph}
     \item \FRODescription{Applying formulas to graphs}
     {Using a given mathematical expression (such as a function) on the values shown in a graph}
     {Optional}
@@ -755,7 +763,7 @@
     \item \FRODescription{Changing graph colour/font}
     {Ability to customise the colour and used fonts of a graph}
     {Optional}
-    {\ref{FR-3} is performed on an attribute of a Liberty file successfully}
+    {\ref{FR-3} is performed on an attribute of a liberty file successfully}
     {Colour/Font of the said graph is changed to the desired one}
     {\begin{itemize}
         \item Mentioned graph is unchanged
@@ -813,19 +821,20 @@
     \end{itemize}}
     {Clicking on the “undo”/”redo” component}
     \item \FRODescription{Viewing file properties}
-    {Ability to view the properties of a Liberty file, such as: file location, file size}
+    {Ability to view the properties of a liberty file, such as: file location, file size}
     {Optional}
     {Corresponding library is successfully loaded into the project}
-    {A window with the properties of the loaded Liberty file is shown}
+    {A window with the properties of the loaded liberty file is shown}
     {An appropriate error message is shown}
     {Clicking on the "Properties" component (Right-Click on the corresponding library  >> Properties)}
-    \item \FRODescription{Sorting}
-    {Ability to sort the shown information in order to make viewing easier}
-    {Optional}
-    {None}
-    {The desired piece of shown information in the left panel is sorted}
-    {An appropriate error message is shown}
-    {Clicking on the “Sort by” component and selecting how and what to sort after (i.e.: name, value, ascending, descending) using the designated component}
+    % Decided as unnecessary last time?
+%    \item \FRODescription{Sorting}
+%    {Ability to sort the shown information in order to make viewing easier}
+%    {Optional}
+%    {None}
+%    {The desired piece of shown information in the left panel is sorted}
+%    {An appropriate error message is shown}
+%   {Clicking on the “Sort by” component and selecting how and what to sort after (i.e.: name, value, % %   ascending, descending) using the designated component}
     \item \FRDescription{Setting Filters for a search}
     {Ability to add/remove a filter of an element for its attribute values or lack thereof}
     {Optional}
@@ -840,11 +849,11 @@
         \item Attribute filters for the search bar remain unchanged
     \end{itemize}}
     {Modifying filters components in the “Filter” component}
-    {Upon clicking the “Filter” component a new pop-up panel opens up that shows all active filters. There filters can be removed by clicking the “Remove“ component next to the Filter. Filters can be added by selecting Attribute name, Filter type, adding filter value and then clicking the “Add Filter” component}
+    {Upon clicking the “Filter” component a new pop-up panel opens up that shows all active filters. There filters can be removed by clicking the “Remove“ component next to the filter. Filters can be added by selecting attribute name, filter type, adding filter value and then clicking the “Add Filter” component}
     \item \FRODescription{Setting default attribute filters}
     {Saving a given set of attribute filters as the default filter}
     {Optional}
-    {At least 1 Filter added through \ref{FRO-22} is active}
+    {At least 1 filter added through \ref{FRO-22} is active}
     {The mentioned set of attribute filters are set as the default filter for whenever the application is run anew.}
     {\begin{itemize}
         \item The past default filter is still the default filter
@@ -857,17 +866,17 @@
 \subsection{Core}
 \subsubsection{Reliability}
 \begin{NFR-Rel}
-    \item The desktop application should be able to open at least 2 Liberty Files at the same time
+    \item The desktop application should be able to open at least 2 liberty files at the same time
     \item At least 10 drawn graphs should be able to exist
-    \item It should be able to handle Liberty Files up to [Example file *10] MB
+    \item The desktop application should be able to handle liberty files with a size of up to [Example file *10] MB
 \end{NFR-Rel}
 
 \subsubsection{Performance}
 \begin{NFR-Perf}
-    \item A Liberty file should take no longer than 1 second to load
+    \item A liberty file should take no longer than 1 second to load
     \item A graph should be drawn in no longer than 5 seconds
-    \item It should not be able to run twice at the same time
-    \item It shouldn’t be able to support more than 5 visible elements in the same graph if they are put on top of one another
+    \item The desktop application should not be able to run twice at the same time
+    \item The desktop application should not be able to support more than 5 visible elements in the same graph if they are put on top of one another
 \end{NFR-Perf}
 
 \subsection{Robustness}
@@ -878,8 +887,8 @@
 \subsection{Optional}
 \subsubsection{Usability}
 \begin{NFRO-Usability}
-    \item It should be able to support English, German, French, Albanian and Turkish
-    \item It should be able to restore at least the 5 previous states for the undo/redo operations 
+    \item The desktop application should be able to support English, German, French, Albanian and Turkish
+    \item The desktop application should be able to restore at least the 5 previous states for the undo/redo operations 
 \end{NFRO-Usability}
 
 \subsubsection{Performance}
