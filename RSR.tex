@@ -205,21 +205,20 @@
 \chapter{Stored Data}
 
 \chapter{Specific Requirements}
+Graphically viewing the attributes cell area and pin capacitance are considered to be optional
 \section{Functional Requirements Overview}
 \subsection{Mandatory Requirements List}
 
 \begin{FR}
     \item Opening Liberty Files \label{FR-1}
     \item Displaying Tree View of Liberty Files \label{FR-2}
-    \item Selecting elements \label{FR-3} %Needs to be added
-    \item Collapsing/Expanding Element view \label{FR-4.5} %needs to be added
-    \item Navigating through elements in a display \label{FR-(-i)/67}
+    \item Opening an element in the working area \label{FR-3}
+    \item Selecting elements \label{FR-4.5}
+    % \item Navigating through elements in a display \label{FR-(-i)/67} % already described in the "Description" part of Displaying library/cell/pin
     \item Displaying a library \label{FR-4.420/9}
     \item Displaying a cell \label{FR-47}
     \item Displaying a pin \label{FR-576476}
-    \item Visual comparison of libraries \label{FR-69}
-    \item Visual comparison of cells \label{FR-543}
-    \item Visual comparison of pins \label{FR-567}
+    \item Visual comparison of attributes \label{FR-34432} % Can merge this one, because how displaying works has already been explained in Displaying a library/cell/pin. Merely describing how comparing works for different types of graphs should work.
     \item Changing attributes through text editor \label{FR-11}
     \item Merging libraries \label{FR-6}
     \item Resolving merge conflicts \label{FR-7}
@@ -251,11 +250,10 @@
     \item Exporting visualisations (graphs) \label{FRO-9}
     \item Changing how the graph data is summarised \label{FRO-10}
     \item Modifying the type of the graph \label{FRO-11}
+    %\item Adding graph function visualisation through interpolation , 3D graphs scatter plot
     \item Interpolating \label{FR-(x1-x)/(y1-y)}
-    \item Adding graph function visualisation through interpolation \label{FR-NaN}
-    \item 3D graphs \label{FR-3D}
-    \item Applying formulas to graphs \label{FRO-12}
-    \item Magnifying the hitbox of a value on a histogram \label{FRO-13}
+    % \item Applying formulas to graphs \label{FRO-12}
+    % \item Magnifying the hitbox of a value on a histogram \label{FRO-13}
     \item Changing graph colour/font \label{FRO-14}
     \item Changing the default font size/colour \label{FRO-15}
     \item Changing display colours \label{FRO-16}
@@ -302,6 +300,20 @@
         \item An appropriate error message is shown
     \end{itemize}}
     {The successful execution of \ref{FR-1}}
+    {\begin{itemize}
+        \item Clicking on the collapse/expand component next to the name of the said parent element collapses/expands it's child elements
+        \begin{itemize}
+            \item If the said parent element is collapsed and the mentioned collapse/expand component is clicked, the said parent element is expanded.
+            \item If the said parent element is expanded and the mentioned collapse/expand component is clicked, the said parent element is collapsed.
+        \end{itemize}
+    \end{itemize}}
+    \item \FRDescription{Collapsing/Expanding Element view}
+    {Ability to collapse/expand child elements of a parent element in the hierarchical view to hide/show their child elements}
+    {Primary}
+    {Said parent element is successfully loaded into the project}
+    {Child elements of the said parent element are hidden/shown}
+    {An appropriate error message is shown}
+    {Clicking on the collapse/expand component next to the name of the said parent element}
     \item \FRDescription{Opening an element in the working area}
     {Ability to open an element in order to view or edit}
     {Primary}
@@ -434,17 +446,22 @@
         \end{itemize}
     \end{itemize}}
     \item \FRDescription{Visual comparison of attributes}
-    {Compare the same type of attributes of different elements}
+    {Compare the same type of attributes of different elements of the same type}
     {Primary}
     {The library, which contains the different elements,  is successfully loaded into the project}
-    {\ref{FR-3} is executed for a desired attribute (if not already done) and the resulting histograms are combined in a new histogram in a new element panel.}
+    {\ref{FR-3} is executed for a desired attribute (if not already done) and the resulting graphs are combined in a new graph in a new element panel.}
     {\begin{itemize}
         \item No new element panels are created
         \item An appropriate error message is shown
     \end{itemize}}
     {Selecting the new element panel after selecting the elements that will be compared and then selecting which attribute(s) will be compared in the new element panel.}
     {\begin{itemize}
-        \item Definition of “combined”: Each relevant graph will be put on top of one another, made transparent and coloured differently.
+        \item For comparing attributes with single values, a bar chart will be drawn.
+        \item Definition of “combined”:
+            \begin{itemize}
+                \item For histograms: The both histograms will be overlaid on top of each other with different colours in a transparent way, so that each histogram is still identifiable. Only 2 histograms can be compared this way.
+                \item For heatmaps: A new heatmap will be made based on the both heatmaps. The differences between the values of these heatmaps will be shown via the new heatmap, whose values are the said differences. Only 2 heatmaps can be compared this way.
+            \end{itemize}
     \end{itemize}}
     \item \FRDescription{Merging libraries}
     {Ability to merge libraries into a new library}
@@ -715,17 +732,16 @@
         \item An appropriate error message is shown
     \end{itemize}}
     {Clicking on the designated “Export Graph” component and then selecting where to save the image and in what format through the File Manager}
-    % Already in core functional requirements ?
-%    \item \FRODescription{Changing how the graph data is summarised} %Values for a library
-%    {Ability to change a graphs data to represent minimum, maximum or average values if possible}
-%    {Optional}
-%    {\ref{FR-3} has been successfully performed on the given Liberty file and the desired attribute %has minimum and maximum values specified}
-%    {The current graph is replaced by one with the desired data}
-%    {\begin{itemize}
-%        \item The current graph is unchanged
-%        \item An appropriate error message is shown
-%    \end{itemize}}
-%    {Clicking on the drop-down box component and selecting the type of summary}
+    \item \FRODescription{Changing how the attributes of child elements are summarised}
+    {Ability to change a graphs data to represent minimum, maximum or average values if possible}
+    {Optional}
+    {\ref{FR-3} has been successfully performed on the given Liberty file and the desired attribute has minimum and maximum values specified}
+    {The current graph is replaced by one with the desired data}
+    {\begin{itemize}
+        \item The current graph is unchanged
+        \item An appropriate error message is shown
+    \end{itemize}}
+    {Clicking on the drop-down box component and selecting the type of summary}
     \item \FRODescription{Modifying the type of the graph}
     {Making viewing the values of desired attributes of desired elements possible}
     {Optional}
@@ -736,30 +752,32 @@
         \item An appropriate error message is shown
     \end{itemize}}
     {Clicking on the corresponding drop down component in the "View" panel of the element panel and choosing the new type of the graph}
-    \item \FRODescription{Applying formulas to graphs}
-    {Using a given mathematical expression (such as a function) on the values shown in a graph}
-    {Optional}
-    {\begin{itemize}
-        \item The said graph has been created successfully with \ref{FR-3}
-        \item The given mathematical expression is valid (semantically and syntactically)
-    \end{itemize}}
-    {The mentioned mathematical expression is used on the values shown in the selected graph and the graph is updated.}
-    {\begin{itemize}
-        \item Mentioned values are unchanged
-        \item Mentioned graph is unchanged
-        \item An appropriate error message is shown (for example in the input bar)
-    \end{itemize}}
-    {Typing a mathematical expression as a string in the “input bar” component}
-    \item \FRODescription{Magnifying the hitbox of a value on a histogram}
-    {Ability to make the hitbox of a value on a graph bigger}
-    {Optional}
-    {\ref{FR-3} is performed on an attribute of a Liberty file successfully}
-    {The desired value in the graph gets a larger hitbox}
-    {\begin{itemize}
-        \item The histogram is unchanged
-        \item An appropriate error message is shown
-    \end{itemize}}
-    {Left clicking on a value in a histogram}
+    %Decided as unnecessary
+%    \item \FRODescription{Applying formulas to graphs}
+%    {Using a given mathematical expression (such as a function) on the values shown in a graph}
+%    {Optional}
+%    {\begin{itemize}
+%        \item The said graph has been created successfully with \ref{FR-3}
+%        \item The given mathematical expression is valid (semantically and syntactically)
+%    \end{itemize}}
+%    {The mentioned mathematical expression is used on the values shown in the selected graph and the %      graph is updated.}
+%    {\begin{itemize}
+%        \item Mentioned values are unchanged
+%        \item Mentioned graph is unchanged
+%        \item An appropriate error message is shown (for example in the input bar)
+%    \end{itemize}}
+%    {Typing a mathematical expression as a string in the “input bar” component}
+    % Decided as unnecessary
+%    \item \FRODescription{Magnifying the hitbox of a value on a histogram}
+%    {Ability to make the hitbox of a value on a graph bigger}
+%    {Optional}
+%    {\ref{FR-3} is performed on an attribute of a Liberty file successfully}
+%    {The desired value in the graph gets a larger hitbox}
+%    {\begin{itemize}
+%        \item The histogram is unchanged
+%        \item An appropriate error message is shown
+%    \end{itemize}}
+%    {Left clicking on a value in a histogram}
     \item \FRODescription{Changing graph colour/font}
     {Ability to customise the colour and used fonts of a graph}
     {Optional}
