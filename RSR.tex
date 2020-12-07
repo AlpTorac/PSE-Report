@@ -205,7 +205,7 @@
 \chapter{Stored Data}
 
 \chapter{Specific Requirements}
-Graphically viewing the attributes cell area and pin capacitance are considered to be optional
+Graphically viewing the attributes cell area and pin capacitance are considered to be optional.
 \section{Functional Requirements Overview}
 \subsection{Mandatory Requirements List}
 
@@ -219,6 +219,8 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     \item Displaying a cell \label{FR-47}
     \item Displaying a pin \label{FR-576476}
     \item Visual comparison of attributes \label{FR-34432} % Can merge this one, because how displaying works has already been explained in Displaying a library/cell/pin. Merely describing how comparing works for different types of graphs should work.
+    \item Searching for an element by name \label{FR-15}
+    \item Searching in the text editor \label{FR-SEARCH}
     \item Changing attributes through text editor \label{FR-11}
     \item Merging libraries \label{FR-6}
     \item Resolving merge conflicts \label{FR-7}
@@ -228,7 +230,6 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     \item Scaling graph values \label{FR-12}
     \item Highlighting graph values \label{FR-13}
     \item Displaying statistics for Graphs \label{FR-14}
-    \item Searching for an element \label{FR-15}
     \item Saving a Liberty file \label{FR-16}
     \item Saving a Library as a new File \label{FR-17}
 \end{FR}
@@ -307,13 +308,16 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
             \item If the said parent element is expanded and the mentioned collapse/expand component is clicked, the said parent element is collapsed.
         \end{itemize}
     \end{itemize}}
-    \item \FRDescription{Collapsing/Expanding Element view}
-    {Ability to collapse/expand child elements of a parent element in the hierarchical view to hide/show their child elements}
+    \item \FRDescription{Selecting an element}
+    {Ability to select an element or multiple elements from the Tree View}
     {Primary}
-    {Said parent element is successfully loaded into the project}
-    {Child elements of the said parent element are hidden/shown}
+    {Said element is successfully loaded into the project}
+    {Said elements is highlighted and selected}
     {An appropriate error message is shown}
-    {Clicking on the collapse/expand component next to the name of the said parent element}
+    {\begin{itemize}
+                \item Clicking an element
+                \item Clicking multiple elements while holding CTRL key
+            \end{itemize} }
     \item \FRDescription{Opening an element in the working area}
     {Ability to open an element in order to view or edit}
     {Primary}
@@ -321,16 +325,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     {An element panel is opened with:
     \begin{itemize}
         \item A close button 
-        \item The tabs "Editor", "View" and "Both". The "Both" tab is active by default, when the panel is created, where:
-        \begin{itemize}
-            \item Inside the "Both" panel, on the left, "Editor" panel from \label{FR-PLACEHOLDER} is open. % FR-PLACEHOLDER is for the functionality the Editor is associated with
-            Inside the "Both" panel, on the right, "View" panel is open based on the opened element:
-            \begin{itemize}
-                \item \label{FR-grca} for libraries
-                \item \label{FR-grca} for cells
-                \item \label{FR-grca} for pins 
-            \end{itemize}
-        \end{itemize}
+        \item The tabs "Editor" and "View". The "View" tab is active by default, when the panel is created, where the "Editor" and "View" tabs are based on the open element.
     \end{itemize}}
     {An appropriate error message is shown}
     {\begin{itemize}
@@ -340,7 +335,6 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     {\begin{itemize}
         \item When clicking on the "View" tab, only the "View" panel is visible, and the "Editor" panel is minimised(not visible)
         \item When clicking on the "Editor" tab, only the "Editor" panel is visible, and the "View" panel is minimised(not visible)
-        \item When clicking back on the "Both" tab while it's not active, the panel returns to the original display where both "Editor" and "View" sub-panels stand next to one another.
         \item When clicking the close button, the element panel is closed and removed from the working area 
     \end{itemize}}
     \item \FRDescription{Displaying a Library}
@@ -360,7 +354,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \end{itemize}}
     {An appropriate error message is shown}
     {\begin{itemize}
-        \item The "View" or "Both" tab is made active
+        \item The "View" tab is made active
     \end{itemize}}
     {\begin{itemize}
         \item The navigation view for Libraries simply contains the cell names. Clicking on a cell name switches the element panel to that of the corresponding cell that is shown through \label{FR-BLABLABLA}
@@ -391,7 +385,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     \end{itemize}}
     {An appropriate error message is shown}
     {\begin{itemize}
-        \item The "View" or "Both" tab is made active
+        \item The "View" tab is made active
     \end{itemize}}
     {\begin{itemize}
         \item The navigation view for a cell contains the visual representation of the cell. It has the correct number of drawn input/output pins and their names as well as checkboxes to the left of the input names. To the right of the output names is the output formula. On it's left is a backwards arrow.
@@ -430,7 +424,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \end{itemize}}
     {An appropriate error message is shown}
     {\begin{itemize}
-        \item The "View" or "Both" tab is made active
+        \item The "View" tab is made active
     \end{itemize}}
     {\begin{itemize}
         \item The navigation view for a pin contains a visual representation of its parent cell with the highlighted current pin. It has the correct number of drawn input/output pins and their names as well as checkboxes(only one can be selected. First one is selected by default) to the left of the input names. To the right of the output names is the output formula. On it's left is a backwards arrow.
@@ -470,7 +464,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     {Given libraries are merged into a new library}
     {\ref{FR-6} will be executed}
     {\begin{itemize}
-        \item Clicking on Merge Visible component (Edit >> Merge Visible) after making visible the libraries to be merged.
+        \item Clicking on Merge component (Right click after selecting the libraries >> Merge).
         \item Clicking on Merge (Edit >> Merge) and then selecting the libraries to be merged
     \end{itemize}}
     \item \FRDescription{Resolving merge conflicts}
@@ -528,6 +522,16 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \item An appropriate error message is shown
     \end{itemize}}
     {Clicking on the Delete component (Right-Click on the desired Cell  >> Delete)}
+    \item \FRDescription{Searching in the text editor}
+    {Ability to search for a given string in the text editor}
+    {Primary}
+    {\begin{itemize}
+        \item The element panel of an element is open
+        \item Either "Editor" tab is active
+        \item The contents of the liberty file containing the element is being textually displayed in the text editor
+    \end{itemize}}
+    {An appropriate error message is shown}
+    {Inputting a string in the search bar and clicking "Enter"}
     \item \FRDescription{Changing attributes through raw text}
     {Ability to modify the loaded values of a library through the text editor in the "Editor" panel in the element panel of the library in the desktop application}
     {Primary}
@@ -572,7 +576,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     {Hovering the mouse pointer over the said value in it's graph}
     {\begin{itemize}
         \item The element, which contains the mentioned value, and it's parent elements are highlighted in the hierarchical view.
-        \item If the element panel of the said element has the "Both" panel active, the value itself in the text editor (from "Editor" panel within the "Both" panel) will be highlighted as well.
+        \item If the element panel of the said element has the "Editor" tab active as well, the value itself in the text editor in the "Editor" tab will be highlighted.
     \end{itemize}}
     \item \FRDescription{Viewing statistics for graphs} %checkboxes on the bottom of the screen [min, max, avg, median]
     {Ability to view the desired statistics of the values of an attribute in a graph}
@@ -919,7 +923,8 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
 
 \section{Global test case for functional requirements}
 \begin{GTC}
-    \item example GTC
+    \item GTC-1 (tests FR-1) Load a Liberty file
+    \item GTC-2 (tests FR-2) 
 \end{GTC}
 
 \section{Global test case for optional requirements}
