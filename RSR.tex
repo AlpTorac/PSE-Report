@@ -68,6 +68,9 @@
 \newcommand{\precondition}[1]{
     \textbf{Precondition: } #1 \leavevmode \\
 }
+\newcommand{\postcondition}[1]{
+    \textbf{Postcondition: } #1 \leavevmode \\
+}
 \newcommand{\action}[1]{
     \textbf{Action: } #1 \leavevmode \\
 }
@@ -126,6 +129,13 @@
 }
 \newcommand{\GTCODescription}[2]{
     (\textbf{Tests: #1}) \textbf{#2} \leavevmode \\
+}
+
+% Macro for adding attributes
+% #1: Name of the attribute
+% #2: Description of the attribute
+\newcommand{\attribute}[2]{
+    #1 \leavevmode \\ #2
 }
 
 % Macro for referencing another section in the document
@@ -197,26 +207,85 @@
 \bigskip
 "Liberty, when it begins to take root, is a plant of rapid growth." 
 
-George Washington \\
+-George Washington \\
 
 
-Liberty format is a text based file format where cell libraries are stored.These cell libraries can store  a lot of information about components. However, the liberty files usually contain thousands of lines of text, which makes them not practical to read, to find desired values or to compare cells/pins with each other. \bigskip
+Liberty format is a text based file format where cell libraries are stored. These cell libraries can store a lot of information about components. However, the liberty files usually contain thousands of lines of text, which makes them impractical to read, to find desired values or to compare cells/pins with each other. \bigskip
 
 What we aim to achieve is to make it easier for everyone to understand liberty files and also to easily make operations on them.  \bigskip
 
-With the help of a hierarchical display of the files the user will be able to navigate through the levels of the library easily. By using different types of statistics and visualizations it will be easier to see the behaviors of components and also comparing them with each other. GELF's way of visualizing stuff like drawing complicated values in a graph makes the viewer examine different component attributes and behaviours. Instead of being forced to read thousands of lines of hard to understand text, GELF will provide the same information in a much more direct and manageable way, so that the user can work around these complicated files with ease.\bigskip
+With the help of a hierarchical display of the files the user will be able to navigate through the levels of the library easily. By using different types of statistics and visualizations it will be easier to see the behaviors of components and also to compare them with each other. GELF's(Graphical Editor for Liberty Files) way of visualizing Liberty Files by drawing complicated values in a graph makes the viewer examine different component attributes and behaviours. Instead of being forced to read thousands of lines of hard to understand text, GELF will provide the same information in a much more direct and manageable way, so that the user can work around these complicated files with ease.\bigskip
 
 GELF is going to give this liberty to everyone trying to understand Liberty Files or work with them.
 \section{Target Audience}
-Target audience for GELF desktop app is mainly hardware and software engineers, who are dealing with Liberty Files. GELF can be used by anyone with a computer with Linux or Windows. It provides an easier to work environment for Liberty Files, which will help engineers to observe and examine behaviors of components. It also make it possible to compare different components by their different attributes, which would further help engineers to spot the characteristics of components and make decisions about them.
+Target audience for GELF desktop app is mainly hardware and electrical engineers, who are dealing with Liberty Files. GELF can be used by anyone with a computer with Linux. It provides an easier to work environment for Liberty Files, which will help engineers to observe and examine behaviors of components. It also make it possible to compare different components by their different attributes, which would further help engineers to spot the characteristics of components and make decisions about them.
 \chapter{Scenarios}
+\section{Comparing Components}
+A portable device manufacturer aims to make their new device's battery last longer than the devices 
+of rival companies. For that to happen the device should have the least possible amount of power 
+leakage while in sleep mode. So they decide to compare different components by their 
+leakage information. 
 
+They open GELF desktop app, then open two liberty files through file manager. 
+The liberty files get displayed hierarchically in a tree view.
+
+First they select their libraries and open them in two different panels with
+the options of "Editor" and "View". They select "View" to visualize information about the libraries.
+From the drop down menu of attributes they select leakage power in both panels and a bar chart is drawn in
+both panels, showing the averages of leakage powers of cells in the libraries. 
+
+Then they select these two libraries from the tree view on the left and click on "Compare". 
+A new panel opens with just "View" option for comparison. They again select leakage power and see that the two bar charts 
+from before are put on top of each other.
+
+With a click on a name of the cell on the first two panels, the cell view is opened in the panels with images
+of the cells. They click on different checkboxes near pin names to change the function of cells and to see the leakage 
+power values accordingly.
+
+They select two cells from the tree view, click on "Compare" and select leakage power. The 
+bar charts are put on top of each other with functions of cells as indexes. At last they select 10 different cells and select
+default leakage value and a bar chart appears, which has a single value for each selected cell.
+
+With all the information at their hand, they decide which components would be more beneficial for them to use. 
+They make some adjustments in the text editor and merge the components they want to use in a new file. They save the file 
+on the computer and close the program.
 \chapter{Overall Description}
 \section{Product Environment}
+The program GELF only has a desktop application
+\subsection{Hardware Requirements}
+\begin{itemize}
+    \item 2 GiB RAM
+    \item 300 MiB free device storage space
+\end{itemize}
+\subsection{Software Requirements}
+\begin{itemize}
+    \item Ubuntu 18.04 or newer (Recommended)
+    \item Java SE 12 Platform or newer
+\end{itemize}
+
 \section{Use Case Diagram}
-\section{System Model}
+\includeimage{}{0.25}{Use Case}{Use Case Diagram}{}
 
 \chapter{Stored Data}
+All data stored by the desktop application is for optional functional requirements.
+
+\section{Settings Data}
+
+Stored data regarding settings include:
+
+\begin{itemize}
+    \item Graph colours and fonts (\ref{FRO-17})
+    \item Default font scale (\ref{FRO-18})
+    \item Display colours of the desktop application (skins) (\ref{FRO-17})
+    \item Language preference (\ref{FRO-19})
+    \item Default filters (\ref{FRO-25})
+    \item Preferences (\ref{FRO-18}):
+        \begin{itemize}
+            \item History size for Undo/Redo operations at a given time
+            \item Maximum number of bars shown in a bar chart when comparing single values
+            \item Set the default subpanel opened when a new visualizer is opened (Editor or View)
+        \end{itemize}
+\end{itemize}
 
 \chapter{Specific Requirements}
 Graphically viewing the attributes cell area and pin capacitance are considered to be optional.
@@ -224,7 +293,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
 \subsection{Mandatory Requirements List}
 
 \begin{FR}
-    \item Opening Liberty Files \label{FR-1}
+    \item Loading Liberty Files \label{FR-1}
     \item Displaying Tree View of Liberty Files \label{FR-2}
     \item Selecting elements \label{FR-3}
     \item Opening an element in the working area \label{FR-4}
@@ -240,10 +309,10 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     \item Resolving merge conflicts \label{FR-13}
     \item Copying Cells into another Library \label{FR-14}
     \item Removing a Library \label{FR-15}
-    \item Deleting a Cell \label{FR-16}
+    \item Deleting Cells \label{FR-16}
     \item Scaling graph values \label{FR-17}
     \item Highlighting graph values \label{FR-18}
-    \item Displaying statistics for Graphs \label{FR-19}
+    \item Viewing statistics for graphs \label{FR-19}
     \item Saving a Liberty file \label{FR-20}
     \item Saving a Library as a new File \label{FR-21}
 \end{FR}
@@ -255,31 +324,30 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     \item Creating Liberty files from scratch \label{FRO-3}
     \item Changing attributes through GUI \label{FRO-4}
     \item Exporting data as CSV \label{FRO-5}
-    \item Resizing panel \label{FRO-6}
-    \item Popping panels out \label{FRO-7}
-    \item Re-positioning panels \label{FRO-8}
+    \item Resizing visualizer \label{FRO-6}
+    \item Popping visualizers out \label{FRO-7}
+    \item Re-positioning visualizers \label{FRO-8}
     \item Saving a Liberty file into File Manager through drag-and-drop \label{FRO-9}
     \item Saving all the Liberty files \label{FRO-10} %needs to be added 
     \item Saving the state of a project \label{FRO-11}
     \item Loading a project \label{FRO-12}
     \item Exporting visualisations (graphs) \label{FRO-13}
-    \item Changing how the graph data is summarised \label{FRO-14}
+    \item Changing how the attributes of child elements are summarized \label{FRO-14}
     \item Modifying the type of the graph \label{FRO-15}
     %\item Adding graph function visualisation through interpolation , 3D graphs scatter plot
     \item Interpolating \label{FR-16}
     % \item Applying formulas to graphs \label{FRO-12}
     % \item Magnifying the hitbox of a value on a histogram \label{FRO-13}
-    \item Changing graph colour/font \label{FRO-17}
-    \item Changing the default font size/colour \label{FRO-18}
-    \item Changing display colours \label{FRO-19}
-    \item Changing the language \label{FRO-20}
-    \item Shortcuts \label{FRO-21}
-    \item Undo/Redo \label{FRO-22}
-    \item Viewing file properties \label{FRO-23}
-    \item Info panel \label{24} %has manual, github, version
+    \item Changing GUI appearance \label{FRO-17}
+    \item Changing the preferences \label{FRO-18}
+    \item Changing the language \label{FRO-19}
+    \item Shortcuts \label{FRO-20}
+    \item Undo/Redo \label{FRO-21}
+    \item Viewing file properties \label{FRO-22}
+    \item Viewing application information \label{FRO-23} %has manual, github, version
     % \item Sorting \label{FRO-21}
-    \item Setting Filters for a search \label{FRO-25}
-    \item Setting default filters\label{FRO-26}
+    \item Setting Filters for a search \label{FRO-24}
+    \item Setting default filters\label{FRO-25}
 \end{FRO}
 
 \section{Functional Requirements}
@@ -291,8 +359,8 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     {The selected files are in Liberty file format(not necessarily of the .lib extension), are not corrupted and fit into the memory}
     {The selected file(s) are:
     \begin{itemize}
-        \item read,
-        \item parsed and
+        \item read
+        \item parsed
         \item data objects based on the stored data are created
     \end{itemize}}
     {\begin{itemize}
@@ -307,7 +375,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     {Ability to view the hierarchical structure of parsed Liberty files (from \ref{FR-1}) in a panel}
     {Primary}
     {\ref{FR-1} is performed successfully on the Liberty files to be viewed and the files fit into the memory}
-    {The Liberty files from \ref{FR-1} can be viewed in Tree view in the said panel (left panel).}
+    {The Liberty files from \ref{FR-1} can be viewed in Tree view in the said panel (Outliner).}
     {\begin{itemize}
         \item The hierarchical structure of the added Liberty files is not shown in the panel
         \item The added Liberty files are removed from the project
@@ -322,11 +390,11 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
             \item If the said parent element is expanded and the mentioned collapse/expand component is clicked, the said parent element is collapsed.
         \end{itemize}
     \end{itemize}}
-    \item \FRDescription{Selecting an element}
+    \item \FRDescription{Selecting elements}
     {Ability to select an element or multiple elements from the Tree View}
     {Primary}
-    {Said element is successfully loaded into the project}
-    {Said elements is highlighted and selected}
+    {Said element(s) is/are successfully loaded into the project}
+    {Said element(s) is/are highlighted and selected}
     {An appropriate error message is shown}
     {\begin{itemize}
                 \item Clicking an element
@@ -336,7 +404,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     {Ability to open an element in order to view or edit}
     {Primary}
     {Said element is successfully loaded into the project}
-    {An element panel is opened with:
+    {A visualizer is opened with:
     \begin{itemize}
         \item A close button 
         \item The tabs "Editor" and "View". The "View" tab is active by default, when the panel is created, where the "Editor" and "View" tabs are based on the open element.
@@ -349,13 +417,13 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     {\begin{itemize}
         \item When clicking on the "View" tab, the "View" panel is visible, and the "Editor" panel is minimised(not visible)
         \item When clicking on the "Editor" tab, the "Editor" panel is visible, and the "View" panel is minimised(not visible)
-        \item When clicking the close button, the element panel is closed and removed from the working area 
+        \item When clicking the close button, the visualizer is closed and removed from the working area 
     \end{itemize}}
     \item \FRDescription{Displaying a Library}
     {Ability to view the values of attributes in a library}
     {Primary}
     {Said library is successfully loaded into the project}
-    {On the View panel opened from \label{FR-PREVIOUS} for a library
+    {On the View panel opened from \ref{FR-4} for a library
         \begin{itemize}
             \item The navigation view for Libraries is open
             \item A drop down list with the available attributes(input internal power,output internal power, leakage power, output timing)
@@ -371,12 +439,12 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \item The "View" tab is made active
     \end{itemize}}
     {\begin{itemize}
-        \item The navigation view for Libraries simply contains the cell names. Clicking on a cell name switches the element panel to that of the corresponding cell that is shown through \label{FR-BLABLABLA}
+        \item The navigation view for Libraries simply contains the cell names. Clicking on a cell name switches the visualizer to that of the corresponding cell that is shown through \ref{FR-6}
         \item Single value average default leakage power will be shown. According to the selected attribute, the following graph is drawn
         \begin{itemize}
             \item For the input internal power, a histogram with average input internal power is shown
             \item For the output internal power and output timing, a heatmap with the average will be shown
-            \item For the leakage power, a bar chart is drawn with the averages of different input state powers (Like 001, 000, etc.)
+            \item For the leakage power, a bar chart is drawn with the averages of different input state powers (Like 000, 001, etc.)
                 \begin{itemize}
                     \item In case a cell has 2 pins while another has 3, input state powers with 3 digits will be shown, but the leakage power will be taken by taking the last 2 digits into account for the 2 pin cells
                 \end{itemize}
@@ -386,14 +454,14 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     {Ability to view the values of attributes in a cell}
     {Primary}
     {Said cell is successfully loaded into the project}
-    {On the View panel opened from \label{FR-PREVIOUS} for a cell
+    {On the View panel opened from \ref{FR-4} for a cell
     \begin{itemize}
         \item The navigation view for Cells is open
         \item A drop down list with the available attributes(input internal power,output internal power, leakage power, output timing)
         \item Drop down lists with the available (given in the liberty file) sub-attributes
             \begin{itemize}
-                \item For internal power: power groups(fall-power, power and/or rise-power)
-                \item For output timing: timing-sense (positive-unate, negative-unate and/or non-unate) timing-type(combinational, three-state-enable, etc.) and then timing groups (cell-fall, cell-rise, fall-transition, rise-transition, etc)
+                \item For internal power: power groups
+                \item For output timing: timing-sense, timing-type and timing-group
             \end{itemize}
         \item For the selected attribute (average values by default), a graph is drawn in the panel.
     \end{itemize}}
@@ -404,8 +472,8 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     {\begin{itemize}
         \item The navigation view for a cell contains the visual representation of the cell. It has the correct number of drawn input/output pins and their names as well as checkboxes to the right of the input names. To the right of the output names is the output formula. Above the cell is the Library name
         \begin{itemize}
-            \item Clicking on the Library name switches the element panel to that of the parent library from \label{FR-BLABLABLA}
-            \item Clicking on an input/output pin switches the element panel to that of the corresponding pin from \label{FR-BLABLABLA}
+            \item Clicking on the Library name switches the visualizer to that of the parent library from \ref{FR-5}
+            \item Clicking on an input/output pin switches the visualizer to that of the corresponding pin from \ref{FR-7}
             \item If the cell has more than 5 input pins or 3 output pins, the Visual representation gets changed with simple columns of input and output pins.
         \end{itemize}
         \item Single value default leakage power will be shown
@@ -414,14 +482,14 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \begin{itemize}
             \item For the input internal power, a histogram with average input internal power is shown
             \item For the output internal power and output timing, a heatmap with the average will be shown
-            \item For the leakage power, a bar chart is drawn with the different input state powers (Like 001, 000, etc.)
+            \item For the leakage power, a bar chart is drawn with the different input state powers (Like 000, 001, etc.)
         \end{itemize}
     \end{itemize}}
     \item \FRDescription{Displaying a Pin}
     {Ability to view the values of attributes in a pin}
     {Primary}
     {Said pin is successfully loaded into the project}
-    {On the View panel opened from \label{FR-PREVIOUS} for a pin
+    {On the View panel opened from \ref{FR-4} for a pin
         \begin{itemize}
             \item The navigation view for pins is open
             \item A drop down list with the available attributes(input internal power,output internal power, output timing)
@@ -431,8 +499,8 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
             \end{itemize}
             \item Drop down lists with the available (given in the liberty file) sub-attributes
             \begin{itemize}
-                \item For internal power: power groups(fall-power, power and/or rise-power)
-                \item For timing: timing-sense (positive-unate, negative-unate and/or non-unate) timing-type(combinational, three-state-enable, etc.) and then timing groups (cell-fall, cell-rise, fall-transition, rise-transition, etc)
+                \item For internal power: power groups
+                \item For timing: timing-sense, timing-type and timing groups
             \end{itemize}
             \item For the selected attribute, a graph is drawn in the panel.
         \end{itemize}}
@@ -443,9 +511,9 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     {\begin{itemize}
         \item The navigation view for a pin contains a visual representation of its parent cell with the highlighted current pin. It has the correct number of drawn input/output pins and their names as well as checkboxes(Only visible if current pin is output pin. Only one can be selected. First one is selected by default) to the right of the input names. To the right of the output names is the output formula. Above the cell is the Library name
         \begin{itemize}
-            \item Clicking on the Library name switches the element panel to that of the parent Library from \label{FR-BLABLABLA}
-            \item Clicking on the Cell itself switches the element panel to that of the parent Cell from \label{FR-BLABLABLA}
-            \item Clicking on an input/output pin switches the element panel to that of the corresponding pin from \label{FR-BLABLABLA}
+            \item Clicking on the Library name switches the visualizer to that of the parent Library from \ref{FR-5}
+            \item Clicking on the Cell itself switches the visualizer to that of the parent Cell from \ref{FR-6}
+            \item Clicking on an input/output pin switches the visualizer to that of the corresponding pin from \ref{FR-7}
             \item If the cell has more than 5 input pins or 3 output pins, the visual representation gets changed with simple columns of input and output pins.
         \end{itemize}
         \item For output pins, function will be shown. 
@@ -459,7 +527,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     {Compare the same type of attributes of different elements of the same type}
     {Primary}
     {The library, which contains the different elements, is successfully loaded into the project}
-    {A comparison panel identical to the one in \label{FRO-TBD} except without the "Editor" subpanel is opened
+    {A comparison panel identical to the one in \ref{FR-4} except without the "Editor" subpanel is opened
         \begin{itemize}
             \item The selection view for the library or cells/pins is opened
             \item A drop down list with the available attributes(input internal power,output internal power, output timing, leakage power, default leakage power)
@@ -486,11 +554,11 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \begin{itemize}
             \item The libraries whose checkboxes are filled appear on the drawn graph
         \end{itemize}
-        \item The selection view for a comparison of cells or pins shows the visual representation of all the cells involved like in the navigation bar as it appears in \label{FR-Display of pins} for output pins
+        \item The selection view for a comparison of cells or pins shows the visual representation of all the cells involved like in the navigation bar as it appears in \ref{FR-7} for output pins
         \begin{itemize}
             \item By default, nothing is highlighted
             \item If the name of a cell, input pin or output pin is clicked, as long as no other element type is highlighted, it's highlighted and added to the graph.
-            \item Like in \label{FR-Display of pins} there are checkboxes on the left of the input pins that signify to which input pin the timing and internal power of the output pins are based on (The first one is selected by default)
+            \item Like in \ref{FR-7} there are checkboxes on the left of the input pins that signify to which input pin the timing and internal power of the output pins are based on (The first one is selected by default)
         \end{itemize}
         \item According to the selected attribute, the following graph is drawn including only 2 elements
         \begin{itemize}
@@ -503,77 +571,27 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \end{itemize}
         \item If default average leakage power is selected, a bar chart is drawn comparing up to 10 elements.
     \end{itemize}}
-    \item \FRDescription{Merging libraries}
-    {Ability to merge libraries into a new library}
+    \item \FRDescription{Searching for an element by name}
+    {Ability to search for an element by its name}
     {Primary}
-    {Both libraries are successfully loaded into the project}
-    {Given libraries are merged into a new library}
-    {\ref{FR-6} will be executed}
+    {There is an element with the given prefix}
+    {The elements which contain the given prefix in their name are shown in the Outliner}
+    {Nothing is shown in the Outliner}
+    {Typing a string into the “search” textbox in the Tree view and pressing "Enter" key}
+    \item \FRDescription{Changing attributes through text editor}
+    {Ability to modify the loaded values of a library through the text editor in the "Editor" panel in the visualizer in the desktop application}
+    {Primary}
+    {Said library is successfully loaded into the project and has an visualizer opened through \ref{FR-4}}
     {\begin{itemize}
-        \item Clicking on Merge component (Right click after selecting the libraries >> Merge).
-        % \item Clicking on Merge (Edit >> Merge) and then selecting the libraries to be merged
-    \end{itemize}}
-    \item \FRDescription{Resolving merge conflicts}
-    {Ability to resolve merge conflicts caused by \ref{FR-9}}
-    {Primary}
-    {Both libraries are successfully loaded into the project and they contain conflicting element names}
-    {A review of the new library (the resulting library) is shown with the conflicts and an “Abort” and a “Retry” button.}
-    {An appropriate error message is shown}
-    {Executing \ref{FR-9} with conflicting files}
-    {The user will be able to modify the text of the review of the library in order to resolve pointed conflicts
-    \begin{itemize}
-        \item If the user clicks on the “Retry” button:
-        \begin{itemize}
-            \item \ref{FR-1} will be executed for the review
-            \item If \ref{FR-1} fails, an appropriate message will be shown and the user will be returned to the review
-        \end{itemize}
-        \item If the user clicks on the “abort” button:
-        \begin{itemize}
-            \item The merging operation will be cancelled
-            \item No new library will be created
-            \item The review will be closed.
-        \end{itemize}
-    \end{itemize}}
-    \item \FRDescription{Copying element(s) into another library}
-    {Ability to copy element(s) from one library into another}
-    {Primary} 
-    {Both of the libraries successfully loaded into the project}
-    {The copied element(s) from the original library is pasted into the destination library}
-    {The same conflict resolution from \ref{FR-10} takes place with minor differences.
-    \begin{itemize}
-        \item Instead of creating a new library, the destination library is modified
-        \item In case the Abort button is clicked, neither of the libraries in question is modified
+        \item Changes made in the text editor in the said "Editor" panel are reflected in the graphs and summaries.
+        \item The corresponding library is modified.
     \end{itemize}}
     {\begin{itemize}
-        \item Selecting an element/elements and pressing CTRL+C followed by selecting another element and pressing CTRL+V
-        \item Clicking on the Copy component (Right-Click on the desired element >> Copy) followed by clicking on the paste component (Right-Click on the desired element >> Paste)
-    \end{itemize}}
-    \item \FRDescription{Removing a library}
-    {Ability to remove a library from the project}
-    {Primary}
-    {Said library is successfully loaded into the project}
-    {The opened library is removed from the project and the left panel}
-    {\begin{itemize}
-        \item No library is modified
+        \item Values in the library do not change
+        \item The text editor in the said "Editor" panel goes back to its original value
         \item An appropriate error message is shown
     \end{itemize}}
-    {\begin{itemize}
-        \item Clicking on the "Remove" component (Right-Click on the desired library >> Remove)
-        \item Selecting multiple libraries and clicking on the "Remove" component (Right-Click on one of the selected libraries  >> Remove)
-    \end{itemize}}
-    \item \FRDescription{Deleting cell(s)}
-    {Ability to delete a/multiple cell(s) from a library}
-    {Primary}
-    {The library, which contains the mentioned cell(s), is successfully loaded into the project}
-    {The mentioned cell(s) is/are deleted from their library and removed from the left panel}
-    {\begin{itemize}
-        \item No library is modified (no cell(s) is/are removed)
-        \item An appropriate error message is shown
-    \end{itemize}}
-    {\begin{itemize}
-        \item Clicking on the "Delete" component (Right-Click on the desired Cell  >> Delete)
-        \item Selecting multiple cells and clicking on the "Delete" component (Right-Click on one of the selected cells  >> Delete)
-    \end{itemize}}
+    {Textually replacing the loaded values of a loaded Liberty file via the text editor in the said "Editor" panel.}
     \item \FRDescription{Searching in the text editor}
     {Ability to search for a given string in the text editor}
     {Primary}
@@ -588,20 +606,77 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     {An appropriate error message is shown}
     {Inputting a string in the search bar and pressing the "Enter" key}
     {Pressing the "Enter" key again scrolls the text to the next occurrence of the input string}
-    \item \FRDescription{Changing attributes through text editor}
-    {Ability to modify the loaded values of a library through the text editor in the "Editor" panel in the element panel in the desktop application}
+    \item \FRDescription{Merging libraries}
+    {Ability to merge libraries into a new library}
     {Primary}
-    {Said library is successfully loaded into the project and has an element panel opened through \label{FR-4}}
+    {Both libraries are successfully loaded into the project}
+    {Given libraries are merged into a new library}
+    {\ref{FR-13} will be executed}
     {\begin{itemize}
-        \item Changes made in the text editor in the said "Editor" panel are reflected in the graphs and summaries.
-        \item The corresponding library is modified.
+        \item Clicking on Merge component (Right click after selecting the libraries >> Merge).
+        % \item Clicking on Merge (Edit >> Merge) and then selecting the libraries to be merged
+    \end{itemize}}
+    \item \FRDescription{Resolving merge conflicts}
+    {Ability to resolve merge conflicts caused by \ref{FR-12}}
+    {Primary}
+    {Both libraries are successfully loaded into the project and they contain conflicting element names}
+    {A review of the new library (the resulting library) is shown with the conflicts and an “Abort” and a “Retry” button.}
+    {An appropriate error message is shown}
+    {Executing \ref{FR-12} with conflicting files}
+    {The user will be able to modify the text of the review of the library in order to resolve pointed conflicts
+    \begin{itemize}
+        \item If the user clicks on the “Retry” button:
+        \begin{itemize}
+            \item \ref{FR-1} will be executed for the review
+            \item If \ref{FR-1} fails, an appropriate message will be shown and the user will be returned to the review
+        \end{itemize}
+        \item If the user clicks on the “abort” button:
+        \begin{itemize}
+            \item The merging operation will be cancelled
+            \item No new library will be created
+            \item The review will be closed.
+        \end{itemize}
+    \end{itemize}}
+    \item \FRDescription{Copying cells into another library}
+    {Ability to copy cells from one library into another}
+    {Primary} 
+    {Both of the libraries successfully loaded into the project}
+    {The copied cells from the original library is pasted into the destination library}
+    {The same conflict resolution from \ref{FR-13} takes place with minor differences.
+    \begin{itemize}
+        \item Instead of creating a new library, the destination library is modified
+        \item In case the Abort button is clicked, neither of the libraries in question is modified
     \end{itemize}}
     {\begin{itemize}
-        \item Values in the library do not change
-        \item The text editor in the said "Editor" panel goes back to its original value
+        \item Selecting a/multiple cell(s) and pressing CTRL+C followed by selecting another element and pressing CTRL+V
+        \item Clicking on the Copy component (Right-Click on the desired cell >> Copy) followed by clicking on the paste component (Right-Click on the desired element >> Paste)
+    \end{itemize}}
+    \item \FRDescription{Removing a library}
+    {Ability to remove a library from the project}
+    {Primary}
+    {Said library is successfully loaded into the project}
+    {The opened library is removed from the project and the Outliner}
+    {\begin{itemize}
+        \item No library is modified
         \item An appropriate error message is shown
     \end{itemize}}
-    {Textually replacing the loaded values of a loaded Liberty file via the text editor in the said "Editor" panel.}
+    {\begin{itemize}
+        \item Clicking on the "Remove" component (Right-Click on the desired library >> Remove)
+        \item Selecting multiple libraries and clicking on the "Remove" component (Right-Click on one of the selected libraries  >> Remove)
+    \end{itemize}}
+    \item \FRDescription{Deleting cells}
+    {Ability to delete a/multiple cell(s) from a library}
+    {Primary}
+    {The library, which contains the mentioned cell(s), is successfully loaded into the project}
+    {The mentioned cell(s) is/are deleted from their library and removed from the Outliner}
+    {\begin{itemize}
+        \item No library is modified (no cell(s) is/are removed)
+        \item An appropriate error message is shown
+    \end{itemize}}
+    {\begin{itemize}
+        \item Clicking on the "Delete" component (Right-Click on the desired Cell  >> Delete)
+        \item Selecting multiple cells and clicking on the "Delete" component (Right-Click on one of the selected cells  >> Delete)
+    \end{itemize}}
     \item \FRDescription{Scaling graph values}
     {Scaling the values of a graph by a given factor}
     {Primary}
@@ -623,16 +698,16 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         %\end{itemize}
     \end{itemize}}
     {Clicking on "Scale by value" Component (Right-Click on said graph >> Scale by value). Then entering the desired value on the input box and clicking "Confirm"}
-    \item \FRDescription{Viewing specific values}
-    {Ability to view a certain value in a graph}
+    \item \FRDescription{Highlighting graph values}
+    {Ability to highlight a certain value from a graph}
     {Primary}
-    {\ref{FR-3} is executed on a given element successfully}
+    {\ref{FR-4} is executed on a given element successfully}
     {The source of the said value and the value itself is highlighted}
     {An appropriate error message is shown}
     {Hovering the mouse pointer over the said value in it's graph}
     {\begin{itemize}
-        \item The element, which contains the mentioned value, and it's parent elements are highlighted in the hierarchical view.
-        \item If the element panel of the said element has the "Editor" tab active as well, the value itself in the text editor in the "Editor" tab will be highlighted.
+        \item The element, which contains the mentioned value, and it's parent elements are highlighted in the tree view.
+        \item If the visualizer of the said element has the "Editor" tab active as well, the value itself in the text editor in the "Editor" tab will be highlighted.
     \end{itemize}}
     \item \FRDescription{Viewing statistics for graphs}
     {Ability to view the desired statistics of the values of an attribute in a graph}
@@ -658,13 +733,6 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \item The way of showing statistics in graphs mentioned in the "Post Condition (success)" and the graphs use different colours to make it easier for the user to distinguish them from each other.
         \item In comparison graphs, only one unique statistic appears for the entire graph.
     \end{itemize}}
-    \item \FRDescription{Searching for an element by name}
-    {Ability to search for an element by its name}
-    {Primary}
-    {There is an element with the given prefix}
-    {The elements which contain the given prefix in their name are shown in the left panel}
-    {Nothing is shown in the left panel}
-    {Typing a string into the “search” textbox in the Tree view and pressing "Enter" key}
     \item \FRDescription{Saving a Liberty file}
     {Ability to save changes made to a Liberty file}
     {Primary}
@@ -701,8 +769,8 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \item The mentioned cell from the original library is moved to the destination library
         \item The mentioned cell is deleted from the origin library
     \end{itemize}}
-    {The same conflict resolution from \ref{FR-10} takes place with the minor adjustments further explained in the Post Condition (fail) from \ref{FR-????}}
-    {Drag-dropping the cell(s) within the left panel, from it's own library into another library}
+    {The same conflict resolution from \ref{FR-13} takes place with the minor adjustments further explained in the Post Condition (fail) from \ref{FR-14}}
+    {Drag-dropping the cell(s) within the Outliner, from it's own library into another library}
     \item \FRODescription{Renaming elements}
     {Ability to rename elements in a loaded library}
     {Optional}
@@ -727,7 +795,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \item Clicking on the "Save" component (Top right screen of the opened editor) to save the input in the said text editor as a new liberty file.
     \end{itemize}}
     {\begin{itemize}
-    \item The text editor looks like the normal editor opened in the element panels from \label{FR-4} except:
+    \item The text editor looks like the normal editor opened in the visualizers from \ref{FR-4} except:
         \begin{itemize}
             \item It has no "View" panel.
             \item It doesn't dynamically update.
@@ -738,7 +806,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     \item \FRODescription{Changing attributes through GUI}
     {Ability to modify the values of an element from it's value occurrence in the "View" panel}
     {Optional}
-    {\label{FR-5}, \label{FR-6} or \label{FR-7} is successfully performed on said element}
+    {\ref{FR-5}, \ref{FR-6} or \ref{FR-7} is successfully performed on said element}
     {\begin{itemize}
         \item Changes made in the "View" panel are reflected in the graphs and summaries.
         \item The corresponding library is modified.
@@ -760,44 +828,44 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \item An appropriate error message is shown
     \end{itemize}}
     {Clicking on the “Export as CSV” component (Right-click on the desired element >> Export as CSV) and choosing the desired path through the File Manager.}
-    \item \FRODescription{Resizing element panels}
-    {Ability to resize an element panel opened}
+    \item \FRODescription{Resizing visualizers}
+    {Ability to resize an visualizer opened}
     {Optional}
-    {Said element panel is successfully opened through \label{FR-4}}
-    {The element panels have different sizes}
+    {Said visualizer is successfully opened through \ref{FR-4}}
+    {The visualizers have different sizes}
     {\begin{itemize}
-        \item No element panels are changed
+        \item No visualizers are changed
         \item An appropriate error message is shown
     \end{itemize}}
-    {Clicking on on the border between two element panels and adjusting it to modify their sizes}
+    {Clicking on on the border between two visualizers and adjusting it to modify their sizes}
         \item \FRODescription{Popping elements panels out}
-    {Ability to pop out an element panel as a new window}
+    {Ability to pop out an visualizer as a new window}
     {Optional}
     {\begin{itemize}
-        \item Said element panel is successfully opened through \label{FR-4}
-        \item Said element is loaded into the project and 3 (three) element panels are already open.
+        \item Said visualizer is successfully opened through \ref{FR-4}
+        \item Said element is loaded into the project and 3 (three) visualizers are already open.
     \end{itemize}}
-    {The element panel is opened as a new window}
+    {The visualizer is opened as a new window}
     {\begin{itemize}
-        \item No element panels are changed
+        \item No visualizers are changed
         \item An appropriate error message is shown
     \end{itemize}}
     {\begin{itemize}
-        \item Clicking on an element panels title and dragging it outside of the working area area
-        \item Trying to open a new element panel through \label{FR-4} once 3 (three) element panels are already opened in the working area
+        \item Clicking on an visualizers title and dragging it outside of the working area area
+        \item Trying to open a new visualizer through \ref{FR-4} once 3 (three) visualizers are already opened in the working area
     \end{itemize}}
-    {Popped out element panels can be returned to the working area by dragging them and dropping them in the working area} %?????????? THIS DECIDES HOW THE TITLE SHOULD LOOK LIKE
-    \item \FRODescription{Re-positioning element panels}
-    {Ability to change the order of the element panels in the working area}
+    {Popped out visualizers can be returned to the working area by dragging them and dropping them in the working area} %?????????? THIS DECIDES HOW THE TITLE SHOULD LOOK LIKE
+    \item \FRODescription{Re-positioning visualizers}
+    {Ability to change the order of the visualizers in the working area}
     {Optional}
-    {At least 2(two) element panels are successfully opened through \label{FR-4}}
-    {The element panels have the new specified positions}
+    {At least 2(two) visualizers are successfully opened through \ref{FR-4}}
+    {The visualizers have the new specified positions}
     {\begin{itemize}
-        \item No element panels have switched positions
+        \item No visualizers have switched positions
         \item An appropriate error message is shown
     \end{itemize}}
-    {Clicking on an element panels title and dragging it to the new position desired within the working area}
-    {Element panels shift to the left or right so that the dropped element panel is placed on the position it was dropped}
+    {Clicking on an visualizers title and dragging it to the new position desired within the working area}
+    {visualizers shift to the left or right so that the dropped visualizer is placed on the position it was dropped}
     \item \FRODescription{Saving a liberty file into File Manager through drag-drop}
     {Ability to save a loaded liberty file into File Manager by using drag-drop}
     {Optional}
@@ -808,7 +876,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \item No new files are created
         \item An appropriate error message is shown
     \end{itemize}}
-    {Selecting a/multiple loaded Liberty file(s) and dragging it/them to the desired location in the File Manager}
+    {Selecting a/multiple loaded Liberty file(s) in the Tree view and dragging it/them to the desired location in the File Manager}
     \item \FRDescription{Saving all the Liberty files}
     {Ability to save changes made to all Liberty file}
     {Optional}
@@ -835,7 +903,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     \item \FRODescription{Loading a project}
     {Ability to re-use a (valid) past project}
     {Optional}
-    {The selected project save file (created from \label{FRO-PREVIOUS}) has the right format, is not corrupted and fits into the memory}
+    {The selected project save file (created from \ref{FRO-11}) has the right format, is not corrupted and fits into the memory}
     {The chosen past project is loaded}
     {\begin{itemize}
         \item The current project is unchanged
@@ -847,10 +915,10 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     \item If the current project is not empty, a pop-up window will show to confirm the action. 
     \item In case one of the liberty files is not found on the specified path, a pop-up panel notifies the error and the said file does not show up in the hierarchical structure or open in the working area
     \end{itemize}}
-    \item \FRODescription{Exporting graphs}
+    \item \FRODescription{Exporting visualisations (graphs)}
     {Ability to store created graphs for future use}
     {Optional}
-    {The said graph has been created successfully through \ref{FR-3}}
+    {The said graph has been created successfully through \ref{FR-5}, \ref{FR-6} or \ref{FR-7}}
     {The mentioned graph is saved as an image file}
     {\begin{itemize}
         \item No new files are created
@@ -860,13 +928,13 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     \item \FRODescription{Changing how the attributes of child elements are summarised}
     {Ability to change a graphs data to represent minimum, maximum or average values if possible}
     {Optional}
-    {\ref{FR-3} has been successfully performed on the given Liberty file and the desired attribute has minimum and maximum values specified}
+    {\ref{FR-5}, \ref{FR-6} or \ref{FR-7} has been successfully performed on the given element and the desired attribute has minimum and maximum values specified}
     {The current graph is replaced by one with the desired data}
     {\begin{itemize}
         \item The current graph is unchanged
         \item An appropriate error message is shown
     \end{itemize}}
-    {Clicking on the drop-down box component and selecting the type of summary}
+    {Clicking on the dropdown box component and selecting the type of summary}
     \item \FRODescription{Modifying the type of the graph}
     {Making viewing the values of desired attributes of desired elements in different graph types possible}
     {Optional}
@@ -876,7 +944,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \item The graph is unchanged
         \item An appropriate error message is shown
     \end{itemize}}
-    {Clicking on the corresponding drop down component in the "View" panel of the element panel and choosing the new type of the graph}
+    {Clicking on the corresponding drop down component in the "View" panel of the visualizer and choosing the new type of the graph}
     {The graph types to be added are:
     \begin{itemize}
         \item Scatterplot that would work in every instance of Histograms. in Histogram comparisons, the values would have different colors according to the corresponding element.
@@ -917,43 +985,43 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
 %        \item An appropriate error message is shown
 %    \end{itemize}}
 %    {Left clicking on a value in a histogram}
-    \item \FRODescription{Changing graph colour/font}
-    {Ability to customise the colour and used fonts of a graph}
-    {Optional}
-    {\ref{FR-3} is performed on an attribute of a liberty file successfully}
-    {Colour/Font of the said graph is changed to the desired one}
-    {\begin{itemize}
-        \item Mentioned graph is unchanged
-        \item An appropriate error message is shown
-    \end{itemize}}
-    {Clicking on the “customise” component on the frame of the graph and inputting the desired changes by using their designated components.} %What?
-    \item \FRODescription{Changing the default font size/colour}
-    {Customising the colour and size of the default font}
+    \item \FRODescription{Changing GUI appearance}
+    {Ability to customise the appearance of the GUI}
     {Optional}
     {None}
-    {Colour/Font of the default font is changed to the desired one}
+    {The desired GUI appearance has been changed.}
     {\begin{itemize}
-        \item The default font is unchanged
+        \item Appearance remains unchanged
         \item An appropriate error message is shown
     \end{itemize}}
-    {Clicking on the “customise” tab and inputting the desired changes by using their designated components.} %What?
-    \item \FRODescription{Changing display colours}
-    {Ability to customise the appearance of the GUI of the desktop application}
+    {Appearance can be changed under the “Appearance” panel (Edit panel >> Settings >> Appearance) . Then changing the desired appearance element}
+    {\begin{itemize}
+        \item Change graph default type, their color or the color/ size/ type of their fonts
+        \item Changing the overall theme/ background color
+        \item Scaling the font size
+    \end{itemize}}
+    \item \FRODescription{Changing the preferences}
+    {Ability to customise the functionality of the desktop application}
     {Optional}
-    {The selected appearance is compatible with the current version/state of the desktop application}
-    {The appearance of the GUI of the desktop application changes to the desired one}
+    {None}
+    {The functionalities of the desktop application changes to the desired one}
     {\begin{itemize}
-        \item The past appearance of the GUI of the desktop application is unchanged
+        \item The past functionality of the desktop application is unchanged
         \item An appropriate error message is shown
     \end{itemize}}
-    {Clicking on the “Appearance” component and selecting an appearance via the designated component (drop-list ?)} %What?
+    {Preferences can be changed under the “Preferences” panel (Edit panel >> Settings >> Preferences) . Then changing the desired preferences}
+    {\begin{itemize}
+        \item Set the number of undo/redo operations the application should try to support
+        \item Set the maximum number of bars able to be displayed in a bar chart
+        \item Set the default subpanel opened when a new visualizer is opened (Editor or View)
+    \end{itemize}}
     \item \FRODescription{Changing the language}
     {Ability to change the default language of the desktop application}
     {Optional}
     {The files regarding the new language exist and can be located by the desktop application}
     {The current language will be replaced with the desired one}
     {An appropriate error message is shown}
-    {Clicking on the “Change language” component (Edit panel >> Settings >> Preferences >> Change Language) . Then selecting the desired language} %What?
+    {Clicking on the “Change language” component (Edit panel >> Settings >> Preferences >> Change Language) . Then selecting the desired language}
     \item \FRODescription{Shortcuts}
     {Ability to access the functionality faster}
     {Optional}
@@ -967,7 +1035,8 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \item An appropriate error message is shown
     \end{itemize}}
     {Pressing the shortcut keys}
-    \item \FRODescription{Undo/Redo} %What?
+    {Shortcuts can be changed under the “Shortcuts” panel (Edit panel >> Settings >> Shortcuts) . Then setting the desired keys for the set events}
+    \item \FRODescription{Undo/Redo}
     {Ability to move backward (Undo)/forward (Redo) in the history of the project}
     {Optional}
     {There are actions done, which can be undone/redone}
@@ -977,6 +1046,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \item The undo/redo component is disabled
     \end{itemize}}
     {Clicking on the “undo”/”redo” component}
+    {The maximum amount of actions a user can undo at a given time is 10 by default (if \ref{FRO-18} is not implemented).}
     \item \FRODescription{Viewing file properties}
     {Ability to view the properties of a liberty file, such as: file location, file size}
     {Optional}
@@ -994,14 +1064,14 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     {\begin{itemize}
         \item Manual opens a document containing instructions to the applications functionality
         \item Github activates a hyperlink to the applications github website
-        \item Version opens a window with information of the application
+        \item Version opens a window with general information about the application
     \end{itemize}}
     % Decided as unnecessary last time?
 %    \item \FRODescription{Sorting}
 %    {Ability to sort the shown information in order to make viewing easier}
 %    {Optional}
 %    {None}
-%    {The desired piece of shown information in the left panel is sorted}
+%    {The desired piece of shown information in the Outliner is sorted}
 %    {An appropriate error message is shown}
 %   {Clicking on the “Sort by” component and selecting how and what to sort after (i.e.: name, value, % %   ascending, descending) using the designated component}
     \item \FRDescription{Setting Filters for a search}
@@ -1022,13 +1092,13 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     \item \FRODescription{Setting default attribute filters}
     {Saving a given set of attribute filters as the default filter}
     {Optional}
-    {At least 1 filter added through \ref{PREVIOUS} is active}
+    {At least 1 filter added through \ref{FRO-24} is active}
     {The mentioned set of attribute filters are set as the default filter for whenever the application is run anew.}
     {\begin{itemize}
         \item The past default filter is still the default filter
         \item An appropriate error message is shown
     \end{itemize}}
-    {Clicking on the “Set as default filter” component in the Filter component from \ref{PREVIOUS}}
+    {Clicking on the “Set as default filter” component in the Filter component from \ref{FRO-24}}
 \end{FRO}
 
 \section{Non-Functional Requirements}
@@ -1046,7 +1116,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     \item A graph should be drawn in no longer than 5 seconds
     \item The desktop application should not be able to run twice at the same time
     \item The desktop application should not be able to support more than 5 visible elements in the same graph if they are put on top of one another
-    \item  The desktop application should not be able to support more than 3 element panels in the working area
+    \item  The desktop application should not be able to support more than 3 visualizers in the working area
 \end{NFR-Perf}
 
 \subsection{Robustness}
@@ -1069,32 +1139,323 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
 
 \chapter{Global Test Cases}
 
-\section{Global test case for functional requirements}
+\section{Global test cases for functional requirements}
+
+
 \begin{GTC}
-    \item GTC-1 (tests FR-1) Load a Liberty file
-    \item GTC-2 (tests FR-2) 
+    \item  (tests FR-1 and FR-2) Successfully open a Liberty file
+    \item  (tests FR-1 and FR-2) Successfully open multiple Liberty files
+    \item  (tests FR-1) Failed loading of a file
+    \item  (tests FR-3) Select an element
+    \item  (tests FR-3) Select multiple elements
+    \item  (tests FR-3) Collapse and expand elements
+    \item  (tests FR-4, FR-5) Open the library in the working panel
+    \item  (test FR-5) Display a histogram for average internal power of input pins of the selected library
+    \item  (tests FR-5) Display a heat map for internal power or timing of output pins of the selected library
+    \item  (tests FR-5) Display a bar chart for the power leakage values of cells with same number of input pins
+    \item  (tests FR-5) Display a bar chart for the power leakage values of cells with different number of input pins
+    \item  (tests FR-5) Click on a cell name on the library view to go that cell's view
+    \item  (tests FR-6) Display a cell with an image
+    \item  (tests FR-6) Display a cell with too many inputs
+    \item  (tests FR-6, FR-5) Click the library name to go from the cell view to library view
+    \item  (tests FR-6) Select checkboxes of input pins to determine the function of the cell
+    \item  (tests FR-6) Display leakage value of a cell with a bar chart
+    \item  (tests FR-6, FR-7) Click on the name of a pin to go from the cell view to pin view
+    \item  (tests FR-7) Display a pin
+    \item  (tests FR-7) Display timing or internal power of output pins with a heat map
+    \item  (tests FR-7) Display internal power for input pins with a histogram
+    \item  (tests FR-7) Click on the name of the cell the pin belongs to in order to go from pin view to cell view
+    \item  (tests FR-8) Compare input pins with each other
+    \item  (tests FR-8) Compare output pins with each other
+    \item  (tests FR-8) Compare cells with each other
+    \item  (tests FR-8) Compare libraries with each other
+    \item  (tests FR-9) Merging two libraries
+    \item  (tests FR-9 and FR-10) Retrying merge
+    \item  (tests FR-9 and FR-10) Aborting merge conflict
+    \item  (tests FR-11) Copying a cell into another library which does not have a cell with the same name
+    \item  (tests FR-11) Copying a cell into another library where a cell with the same name exists.
+    \item  (tests FR-12) Removing a library
+    \item  (tests FR-13) Deleting a cell from a library
+    \item  (tests FR-14) Searching for an attribute in the text editor
+    \item  (tests FR-15) Editing a cells default leakage power through text editor panel
+    \item  (tests FR-15) Editing a cells default leakage power through text editor with an invalid value
+    \item  (tests FR-16) Scaling with a valid value
+    \item  (tests FR-16) Scaling with an invalid value
+    \item  (tests FR-17) Highlighting an attribute of a cell through a graph
+    \item  (tests FR-18)  Displaying minimum value for input internal power on a histogram
+    \item  (tests FR-18)  Displaying maximum value for output internal power on the heat map
+    \item  (tests FR-18)  Displaying the average and median values for leakage powers on a graph
+    \item  (tests FR-19) Searching for a cell
+    \item  (tests FR-19) Searching for a cell that does not exist in the loaded library
+    \item  (tests FR-20) Saving changes in a library
+    \item  (tests FR-21) Saving a library as a new file
+    
 \end{GTC}
 
-\section{Global test case for optional requirements}
+\section{Global test cases for optional requirements}
 \begin{GTCO}
-    \item example GTCO
+    \item  (tests FRO-1) Move a cell to another library
+    \item  (tests FRO-2) Rename an element
+    \item  (tests FRO-3) Create a liberty file
+    \item  (tests FRO-4) Change attributes from the UI 
+    \item  (tests FRO-5) Export data as CSV
+    \item  (tests FRO-6) Resize an visualizer
+    \item  (tests FRO-7) Pop out the panel of an element
+    \item  (tests FRO-8) Switch positions of visualizers
+    \item  (tests FRO-9) Save a Liberty File using drag-drop
+    \item  (tests FRO-10) Save all Liberty files at the same time
+    \item  (tests FRO-11) Save the current state of a project
+    \item  (tests FRO-12) Load a project 
+    \item  (tests FRO-13) Export a graph
+    \item  (tests FRO-14) Showing only minimum and maximum input internal power of a pin
+    \item  (tests FRO-15) Changing the heat map of a pin’s timing values to a 3D graph
+    \item  (tests FRO-15) Changing the bar chart of leakage power values to a scatterplot
+    \item  (tests FRO-16) Interpolating a histogram
+    \item  (tests FRO-17)  Changing chart’s colour 
+    \item  (tests FRO-17) Changing font size of an attribute on a chart
+    \item  (tests FRO-18) Changing default chart colour 
+    \item  (tests FRO-18) Changing the default font size
+    \item  (tests FRO-19) Changing GUI display colour
+    \item  (tests FRO-20) Changing the language to German
+    \item  (tests FRO-21) Using a shortcut
+    \item  (tests FRO-22) Undoing a change
+    \item  (tests FRO-22) Reverting an undo
+    \item  (tests FRO-23) Viewing the properties of the library baseline.lib
+    \item  (tests FRO-24) Viewing app information
+    \item  (tests FRO-25) Setting a value filter for an attribute.
+    \item  (tests FRO-26) Setting a default attribute filter
+    
 \end{GTCO}
 
 \section{Test cases}
+
+  baseline.lib and different1.lib are Liberty files that were provided, which are used in the following tests to evaluate the functionality. The files test1.lib, MergeResult1.lib and MergeResult2.lib are used to compare the actual results to the results obtained from the tests.
+  
 \begin{GTC}
-    \item \GTCDescription{FR-x, FR-y and FR-z}{Exemplary test case} \leavevmode \\ \precondition{some precondition}\action{some action}\state{some state}\reaction{some reaction}
+    \item \GTCDescription{\ref{FR-1} and \ref{FR-2}}{Successfully open a Liberty File} \leavevmode \\ \action{User selects "Open" in the menu and selects baseline.lib from the File Manager.}\reaction{baseline.lib is displayed hierarchically in a tree view on the left side
+    of the desktop app.
+}
+    \item \GTCDescription{\ref{FR-1} and \ref{FR-2}}{Successfully open multiple Liberty Files} \leavevmode \\ \action{User selects "Open" in the menu to select baseline.lib and different1.lib.}\reaction{Both liberty files are displayed hierarchically in a tree view on the left side of the desktop app.
+}
+    \item \GTCDescription{\ref{FR-1}}{Failed loading of a file} \leavevmode \\ \precondition{Selected file is not on liberty format.}\action{User selects "Open" in the menu and selects said file.}\reaction{No file is displayed on the app. A file not found error is displayed.
+}
+    \item \GTCDescription{\ref{FR-3}}{Select an element} \leavevmode \\ \precondition{At least one Liberty File is opened in the app and the file has at least one element.}\action{User clicks on the desired element.}\reaction{The element is highlighted.
+}
+
+    \item \GTCDescription{\ref{FR-3}}{Select multiple elements} \leavevmode \\ \precondition{At least one Liberty File is opened in the app and the file has at least two elements.}\action{User holds CTRL and clicks multiple elements.}\reaction{Clicked elements are highlighted.
+}
+    \item \GTCDescription{\ref{FR-2}}{Collapse and expand elements} \leavevmode \\ \precondition{Elements expanded or collapsed have child elements.}\state{Liberty file is opened and it's tree view is displayed on the left.}\action{User clicks on collapse button next to the element (Library or Cell).}\reaction{Child elements are hidden. Cells are hidden for the selected library and pins are hidden for a selected cell.}\action{User clicks on expand button next to the element (Library or Cell).}\reaction{Child elements are visible again. Cells of the selected library are visible and pins are visible for the selected cell. 
+}
+    \item \GTCDescription{\ref{FR-4} and \ref{FR-5}}{Open the library in the working panel} \leavevmode \\ \precondition{At least one Liberty File is opened in the app.}\state{Tree view of the Liberty file is displayed on the left.}\action{User right clicks the library in the tree view and clicks "Open".}\reaction{The selected library is opened in a new panel.}\state{The new panel has the options "Editor" and "View" and "View" is opened by default. In the "View" section the navigation menu is opened and cell names are displayed. Dropdown menu of attributes is available. 
+}
+    \item \GTCDescription{\ref{FR-5}}{ Display a histogram for average internal power of input pins of the selected library} \leavevmode \\ \precondition{At least one Liberty File is opened in the app. }\state{A selected library with the navigation menu of cells is opened in the new panel.}\action{User selects input internal power from the dropdown menu. }\reaction{The average (by default) values of internal power values of every input pin of the selected library are displayed in a histogram.
+}
+    \item \GTCDescription{\ref{FR-5}}{Display a heat map for internal power or timing of output pins of the selected library} \leavevmode \\ \precondition{At least one Liberty File is opened in the app.}\state{A selected library with the navigation menu of cells is opened in the new panel.}\action{User selects output internal power or timing from the dropdown menu.}\reaction{The average (default) timing or output internal power values of every output pin are displayed in a heat map.
+}
+    \item \GTCDescription{\ref{FR-5}}{Display a bar chart for the power leakage values of cells with same number of input pins} \leavevmode \\ \precondition{At least one Liberty File is opened in the app. The cells of the selected library have the same number of input pins.}\state{A selected library with the navigation menu of cells is opened in the new panel.}\action{User selects leakage power from the drop down menu.}\reaction{The averages (default) of different input state powers are displayed with a bar chart. \label{GTC-10}
+}
+    \item \GTCDescription{\ref{FR-5}}{Display a bar chart for the power leakage values of cells with different number of input pins} \leavevmode \\ \precondition{At least one Liberty File is opened in the app. The cells of the selected library have different numbers of input pins.}\state{A selected library with the navigation menu of cells is opened in the new panel.}\action{User selects leakage power from the drop down menu.}\reaction{The averages (default) of different input state powers are displayed with a bar chart.
+}
+    \item \GTCDescription{\ref{FR-5}}{Click on a cell name on the library view to go that cell's view} \leavevmode \\ \precondition{At least one Liberty File is opened in the app. The library has at least one cell.}\state{A selected library with the navigation menu of cells is opened in the new panel.}\action{User clicks on the cell's name.}\reaction{The cell's view is opened on the existing panel in the place of the view for library.
+}
+    \item \GTCDescription{\ref{FR-6}}{Display a cell with an image} \leavevmode \\ \precondition{At least one Liberty File is opened in the app. The library has at least one cell. The selected cell does not have more than 5 input pins and 3 output pins.}\state{The tree view of the library is opened on the left.}\action{User right clicks on the desired cell and clicks "Open".}\reaction{The cell is opened in a new panel with the options "Editor" and  "View". “View” is opened as default. The image of cell appears with pin names and checkboxes near them. The leakage information and a dropdown for other attributes are displayed.
+}
+    \item \GTCDescription{\ref{FR-6}}{Display a cell with too many inputs} \leavevmode \\ \precondition{At least one Liberty File is opened in the app. The library has at least one cell. The selected cell has more than 5 input pins and 3 output pins.}\state{The tree view of the library is opened on the left.}\action{User right clicks on the desired cell in the tree view and clicks "Open".}\reaction{The cell is opened in a new panel with the options "Editor" and "View". “View” is opened by default. The cell appears with columns of pin names and checkboxes near them. The leakage information and a dropdown for other attributes and sub attributes are displayed.
+}
+    \item \GTCDescription{\ref{FR-6} and \ref{FR-5}}{Click the library name to go from the cell view to library view} \leavevmode \\ \precondition{At least one Liberty File is opened in the app. The library has at least one cell.}\state{The tree view of the library is opened on the left. The cell view is opened on the “View” panel.}\action{User clicks on the library name.}\reaction{The library view is opened in the same panel instead of the cell view.
+}
+    
+    \item \GTCDescription{\ref{FR-6}}{Select checkboxes of input pins to determine the function of the cell} \leavevmode \\ \precondition{At least one Liberty File is opened in the app. The library has at least one cell. The cell has at least one input pin.}\state{The tree view of the library is opened on the left. The cell view is opened on the “View” panel.}\action{User clicks on the checkbox of an input pin. }\reaction{The function of the cell changes according to the selected checkbox.}
+    
+    
+    \item \GTCDescription{\ref{FR-6}}{Display leakage value of a cell with a bar chart} \leavevmode \\ \precondition{At least one Liberty File is opened in the app. The library has at least one cell. The cell has at least one input pin.}\state{The tree view of the library is opened on the left. The selected cell is displayed in the panel.}\action{User selects power leakage from the dropdown menu of attributes. }\reaction{A bar chart appears with different input state powers.
+}
+    
+    \item \GTCDescription{\ref{FR-6} and \ref{FR-7}}{Click on the name of a pin to go from the cell view to pin view} \leavevmode \\ \precondition{At least one Liberty File is opened in the app. The library has at least one cell. The cell has at least one pin.}\state{A selected cell is opened in the panel with all of it's pin names.}\action{User clicks on a name of a pin.}\reaction{The selected pin is highlighted.}\state{Dropdown menus of attributes change accordingly. For input pins there is only internal power and for output pins there is internal power and timing.
+}
+    
+    \item \GTCDescription{\ref{FR-7}}{Display a pin} \leavevmode \\ \precondition{At least one Liberty File is opened in the app. The library has at least one cell. The cell has at least one pin.}\state{The library is opened in a tree view on the left.}\action{User right clicks on a pin in the tree view and clicks "Open".}\reaction{The cell image appears and the selected pin on it is highlighted.}\state{Dropdown menus of attributes appear. For input pins there is only internal power and for output pins there are internal power and timing.
+}
+    
+    \item \GTCDescription{\ref{FR-7}}{Display timing or internal power of output pins with a heat map} \leavevmode \\ \precondition{At least one Liberty File is opened in the app. The library has at least one cell. The cell has at least one pin.}\state{A selected output pin is displayed in the panel. Input pins have checkboxes next to them.}\action{User clicks on the checkbox next to an input pin.}\reaction{The input pin is selected as the related pin to the output pin.}\action{User selects the desired attribute (internal power or timing).}\reaction{The desired attribute is selected.}\action{User selects the desired subattribute.}\reaction{A heat map of desired attribute of the output pin related to the selected
+	input pin appears.
+}
+    
+    \item \GTCDescription{\ref{FR-7}}{Display internal power for input pins with a histogram} \leavevmode \\ \precondition{At least one Liberty File is opened in the app. The library has at least one cell. The cell has at least one pin.}\state{A selected input pin is displayed in the panel.}\action{User selects the desired subattribute of internal power.}\reaction{A histogram of desired attribute of the selected input pin appears.
+}
+    
+    \item \GTCDescription{\ref{FR-7} and \ref{FR-6}}{Click on the name of the cell the pin belongs to in order to go from pin view to cell view} \leavevmode \\ \precondition{At least one Liberty File is opened in the app. The library has at least one cell. The cell has at least one pin.}\state{A selected pin is displayed in the panel. }\action{User clicks on the cell name above the image of the cell.}\reaction{The pin is not highlighted anymore.
+}
+    
+    \item \GTCDescription{\ref{FR-8}}{Compare input pins with each other} \leavevmode \\ \precondition{At least one Liberty File is opened in the app. The library has at least one cell. There are at least 2 input pins.}\state{2 input pins are selected. (FR-3)}\action{User right clicks and selects "Compare".}\reaction{2 histograms of input internal power (average) are displayed on top of each other with different colors in a comparison panel without "Editor".
+}
+    
+    \item \GTCDescription{\ref{FR-8}}{Compare output pins with each other} \leavevmode \\ \precondition{At least one Liberty File is opened in the app. The library has at least one cell. There are at least 2 output pins.}\state{2 output pins are selected. (FR-3)}\action{User right clicks and selects "Compare".}\reaction{A comparison panel is opened.}\action{User selects output internal power or output timing from the dropdown list of attributes.}\reaction{A heat map showing the differences of values from the 2 output pins is displayed.
+}
+    
+    \item \GTCDescription{\ref{FR-8}}{Compare cells with each other} \leavevmode \\ \precondition{At least one Liberty File is opened in the app. There are at least 2 cells.}\state{2 cells are selected. (FR-3)}\action{User right clicks and selects "Compare".}\reaction{A bar chart is displayed, showing the power leakage, with bars with different colors on top of each other for different input state powers.}\action{User selects more cells (up to 10) and selects "default leakage power".}\reaction{A bar chart with up to 10 bars for each cell's default leakage power value is displayed.
+}
+    
+    \item \GTCDescription{\ref{FR-8}}{Compare libraries with each other} \leavevmode \\ \precondition{At least 2 libraries are opened in the app.}\state{2 libraries are selected.}\action{User right clicks and selects "Compare".}\reaction{ A "Compare" panel is opened with no "Editor".}\action{User clicks on an attribute from the dropdown list.}\reaction{Two histograms are put on top of each other for input internal power, a heat map  showing the differences is displayed for timing and output internal power, 2 bar   charts are put on top of each other for power leakage, 1 bar chart with up to 10 elements (cells) is displayed for default leakage value.}
+    
+    \item \GTCDescription{\ref{FR-12}}{Merge two libraries} \leavevmode \\ \precondition{baseline.lib and test1.lib have been loaded.}\state{baseline.lib and merge1.lib are shown on the Outliner.}\action{User selects the libraries baseline.lib and merge1.lib using \ref{FR-3}.}\reaction{Mentioned libraries are selected and are highlighted.}\action{User right-clicks on baseline.lib.}\reaction{A dropdown menu is shown.}\action{User clicks “Merge”.}\reaction{A new library is created as a result and is added to the Outliner.}\postcondition{The created library is the same library as the test file MergeResult1.lib.}
+    
+    \item \GTCDescription{\ref{FR-12} and \ref{FR-13}}{Retry merge} \leavevmode \\ \precondition{baseline.lib and different1.lib have been loaded, which have conflicting cell names.}\state{baseline.lib and different1.lib are shown on the Outliner.}\action{User selects the libraries baseline.lib and different1.lib using \ref{FR-3}}\reaction{Mentioned libraries are selected and are highlighted.}\action{User right-clicks on baseline.lib.}\reaction{A dropdown menu is shown.}\action{User clicks “Merge”.}\reaction{A review of the new library is shown which displays the conflicts.}\action{User resolves the naming conflicts and clicks on “Retry”.}\reaction{A new library is created as a result and is added to the Outliner.}\postcondition{The created library is the same library as the test file MergeResult2.lib.}
+    
+    \item \GTCDescription{\ref{FR-12} and \ref{FR-13}}{Abort merge conflict} \leavevmode \\ \precondition{baseline.lib and different1.lib have been loaded, which have conflicting cell names.}\state{baseline.lib and different1.lib are shown on the Outliner.}\action{User selects the libraries baseline.lib and different1.lib using \ref{FR-3}.}\reaction{Mentioned libraries are selected and are highlighted.}\action{User right-clicks on baseline.lib.}\reaction{A dropdown menu is shown.}\action{User clicks “Merge”.}\reaction{A review of the new library is shown which displays the conflicts.}\action{User clicks on “Abort”.}\reaction{Merging is aborted and no new library is created, app is in the same state as the beginning of this test case.
+}
+    
+    \item \GTCDescription{\ref{FR-14}}{Copy a cell into another library which does not have a cell with the same name} \leavevmode \\ \precondition{Two libraries with different cells are loaded}\state{ Libraries are shown in the Outliner.}\action{User selects a cell to copy from a library and presses CTRL+C}\reaction{The selected cell is highlighted.}\action{User selects the other library and presses CTRL+V.}\reaction{The cell and its pins are copied into the other library. On the Outliner the copied cell is shown under both of the libraries}
+    
+    \item \GTCDescription{\ref{FR-14}}{Copy a cell into another library where a cell with the same name exists.} \leavevmode \\ \precondition{baseline.lib and different1.lib have been loaded.}\state{Libraries of baseline.lib and different1.lib are shown in the Outliner.}\action{User selects a cell to copy from different1.lib, right-clicks on the cell and presses “Copy”.}\reaction{Selected cell is highlighted.}\action{User right-clicks on baseline.lib and presses “Paste”.}\reaction{A review window showing the conflicts appears. }\action{User modifies baseline.lib to resolve the naming conflict and presses “Retry”.}\reaction{Selected cell is copied into baseline.lib, copied cell is shown under both test1.lib and baseline.lib.
+}
+    
+    \item \GTCDescription{\ref{FR-15}}{Remove a library} \leavevmode \\ \precondition{At least one library has been loaded.	}\state{Loaded library is shown on the Outliner.}\action{User right-clicks on baseline.lib on the Outliner.}\reaction{Dropdown menu is shown.}\action{User clicks on “Remove” on the dropdown.}\reaction{Library is removed from the project and it disappears from the Outliner.
+}
+    
+    \item \GTCDescription{\ref{FR-16}}{Delete a cell from a library} \leavevmode \\ \precondition{At least one library has been loaded.}\state{Loaded library is shown on the Outliner.}\action{User right-clicks on a cell on the Outliner.}\reaction{Dropdown menu is shown.}\action{User clicks on “Delete” on the dropdown.}\reaction{Selected cell is deleted from the project permanently and it is removed from the Outliner.
+}
+    
+    \item \GTCDescription{\ref{FR-11}}{Search for an attribute in the text editor} \leavevmode \\ \precondition{ baseline.lib has been loaded.}\state{baseline.lib is shown on the Outliner and FR-3 has been performed on baseline.lib, text editor is opened on the “View” panel.}\action{User writes “transition” on the search box.}\reaction{Text editor scrolls down to the next part of the data where “transition” exists. All “transition” strings in the text are highlighted.}\action{User presses Enter.}\reaction{Text editor scrolls down to the next “transition” in the text.
+}
+    
+    \item \GTCDescription{\ref{FR-10}}{Edit a cells default leakage power through the text editor panel} \leavevmode \\ \precondition{baseline.lib has been loaded and a panel with a Text Editor  has already been opened.}\state{Text editor is shown on the screen.}\action{User changes the default leakage power to “0.002342”.}\reaction{Cell and library is modified. Change in the leakage power is shown on the bar chart in the view panel.\label{GTC-35}
+}
+    
+    \item \GTCDescription{\ref{FR-10}}{Edit a cells default leakage power through text editor with an invalid value} \leavevmode \\ \precondition{baseline.lib has been loaded and a panel with Text Editor has already been opened.}\state{Text editor is shown on the screen.}\action{User changes the default leakage power to “abc”.}\reaction{An error message is shown, which states the entered value is not valid. The value is not changed}
+    
+    \item \GTCDescription{\ref{FR-17}}{Scale with a valid value} \leavevmode \\ \precondition{A library has been loaded and \ref{FR-4} and \ref{FR-6} have been performed on a cell.}\state{Loaded library is shown in the Outliner, histogram for the input internal power is shown on the “View” panel.}\action{User right-clicks on the created histogram and presses “Scale by value”}\reaction{An input box appears.}\action{User enters a value to scale and presses “Confirm”.}\reaction{Value is scaled by the entered value and graph is updated.}
+    
+     \item \GTCDescription{\ref{FR-17}}{Scale with an invalid value} \leavevmode \\ \precondition{A library has been loaded and \ref{FR-4} and \ref{FR-7} have been performed }\state{Loaded library shown in the Outliner, histogram for the input internal power is shown on the right panel.}\action{User right-clicks on the created histogram and presses “Scale by value”}\reaction{An input box appears.}\action{User enters “:D” to scale and presses “Confirm”.}\reaction{An error screen is shown which states that the entered value is invalid. Graph is not changed.}
+    
+    \item \GTCDescription{\ref{FR-18}}{Highlight an attribute of a cell through a chart} \leavevmode \\ \precondition{baseline.lib has been loaded and a “View” panel has been opened for a cell in this library.}\state{baseline.lib and its components are shown in the Outliner, “Editor” and “View” panel for a cell is shown on the right panels.}\action{User hovers the mouse pointer over the default leakage power value on the corresponding graph on the right panel.}\reaction{The corresponding values in the editor and the cell containing this value on the left hierarchical display are highlighted}
+    
+     \item \GTCDescription{\ref{FR-19}}{Display minimum value for input internal power on a histogram} \leavevmode \\ \precondition{baseline.lib has been loaded and \ref{FR-4} and \ref{FR-7} have been performed on a pin.}\state{baseline.lib is shown on the Outliner and “View” panel is shown on the right side.}\action{User clicks on the checkbox “Min”.}\reaction{Minimum value is displayed on the histogram.}
+    
+    \item \GTCDescription{\ref{FR-19}}{Display maximum value for output internal power on the heat map } \leavevmode \\ \precondition{ baseline.lib has been loaded and \ref{FR-4} and \ref{FR-7} have been performed on a pin.}\state{baseline.lib is shown on the Outliner and “View” panel is shown on the right side.}\action{User clicks on the checkbox “Max”.}\reaction{ Maximum value is highlighted on the heat map.}
+    
+     \item \GTCDescription{\ref{FR-19}}{Display the average and median values for leakage powers on a graph } \leavevmode \\ \precondition{baseline.lib has been loaded and \ref{FR-4} and \ref{FR-6} have been performed on a cell.}\state{baseline.lib is shown on the Outliner and “View” panel is shown on the right side, with the bar chart drawn on the panel.}\action{User clicks on the checkbox “Average”.}\reaction{Average value of all leakage powers is drawn in the graph.}\action{User clicks on the checkbox	“Average” and clicks on “Median”.}\reaction{Median of all leakage powers is drawn in the graph.}
+     
+    \item \GTCDescription{\ref{FR-9}}{Search for a cell} \leavevmode \\ \precondition{A library has been loaded.}\action{User types a cell’s name on the search bar.}\reaction{ All of the elements that have the searched name as a prefix show up on the Outliner.}
+    
+    \item \GTCDescription{\ref{FR-9}}{Search for a cell that does not exist in the loaded library} \leavevmode \\ \precondition{A library has been loaded.}\action{User types a name that does not exist as a name of a cell in the loaded library.}\reaction{Nothing is shown on the Outliner.}
+    
+    \item \GTCDescription{\ref{FR-20}}{Save changes in a library} \leavevmode \\ \precondition{\ref{GTC-35} has been performed on the cell.}\state{Text editor is shown for the loaded cell and the library is shown on the Outliner.}\action{User right-clicks on the library that has a changed cell in it.}\reaction{A dropdown menu appears.}\action{User clicks on “Save”.}\reaction{Changes in the cell are saved.}
+    
+    \item \GTCDescription{\ref{FR-21}}{Save a library as a new file.} \leavevmode \\ \precondition{\ref{GTC-35} has been performed on the cell.}\state{Text editor is shown for the loaded cell and the library is shown on the Outliner.}\action{User right-clicks on the library that has a changed cell in it.}\reaction{A dropdown menu appears.}\action{User clicks on “Save As”.}\reaction{Changes in the cell are saved on a new file.}
+    
+    
+    
+    
+    
+    
 \end{GTC}
+
+
 \begin{GTCO}
-    \item \GTCODescription{FRO-x, FRO-y and FRO-z}{Exemplary test case} \leavevmode \\ \precondition{some precondition}\action{some action}\state{some state}\reaction{some reaction}
+    \item \GTCODescription{\ref{FRO-1}}{Move a cell to another library} \leavevmode \\ 
+    \precondition{At least 2 libraries are opened in the project. There is at least one cell.}\state{Libraries are displayed with a tree view on the left.}
+    \action{User drags a cell from its own library and drops it on another library.}
+    \reaction{The cell is copied to its destination library and deleted from it's own}
+    
+    \item \GTCODescription{\ref{FRO-2}}{Rename an element} \leavevmode \\ \precondition{At least one library is opened in the app. The new name cannot be the same as another element's name in the same library.}\state{The library is displayed with a tree view on the left.}\action{User right clicks on an element and selects "Rename".}\reaction{The selected element is renamed as desired.}
+    
+    \item \GTCODescription{\ref{FRO-3}}{Create a liberty file} \leavevmode \\ \precondition{The input for the text editor is in liberty file format.}\action{User clicks "File" and then "New"}\reaction{Text Editor is opened.}\action{User puts valid input into text editor and clicks "Save".}\reaction{The Liberty File is created and saved.}
+    
+    \item \GTCODescription{\ref{FRO-4}}{Change attributes from the UI} \leavevmode \\ \precondition{At least one liberty file is opened in the app.}\state{An element is visualized in a "View" panel.}\action{User makes changes on the graphs through double clicking on a value and inserting a new value in the input box.}\reaction{The library is updated according to the inserted value.}
+    
+    \item \GTCODescription{\ref{FRO-5}}{Export data as CSV} \leavevmode \\ \precondition{At least one liberty file is opened in the app}\action{User right clicks on an element and selects "Export as CSV" and chooses the path through the file manager.}\reaction{The data is exported as a new file in CSV format.}
+    
+    
+    \item \GTCODescription{\ref{FRO-6}}{Resize a visualizer} \leavevmode \\ \precondition{At least one liberty file is opened in the app.}\state{A selected element is opened in a panel with "View" and "Editor" options.}\action{User drags the borders of the panel to resize it.}\reaction{The size of the panel is changed.}
+    
+    \item \GTCODescription{\ref{FRO-7}}{Pop out the panel of an element} \leavevmode \\ \precondition{At least one liberty file is opened in the app.}\state{A selected element is opened in a panel with "View" and "Editor" options.}\action{User drags the visualizer outside of the current window.}\reaction{The visualizer is opened as a new window.}
+    
+    \item \GTCODescription{\ref{FRO-8}}{Switch positions of visualizers} \leavevmode \\ \precondition{At least one liberty file is opened in the app. There are at least 2 elements.}\state{Two elements are opened in two different panels.}\action{User clicks on a panel’s title and drags it to a desired position.}\reaction{Locations of panels are changed.}
+    
+    
+    \item \GTCODescription{\ref{FRO-9}}{Save a Liberty File using drag-drop} \leavevmode \\ \precondition{At least one liberty file is opened in the app.}\action{User drags the library into the file manager and drops it.}\reaction{The liberty file is saved at the desired path.}
+    
+    \item \GTCODescription{\ref{FRO-10}}{Save all Liberty files at the same time} \leavevmode \\ \precondition{At least two liberty files are opened in the app.}\action{User right clicks on component and selects "Save all"}\reaction{All changes made in the working area for all liberty files are saved.}
+    
+    \item \GTCODescription{\ref{FRO-11}}{Save the current state of a project}\leavevmode \\ \precondition{ At least two liberty files are opened in the app.}\action{User clicks "File" and then clicks "Save Project".}\reaction{The current state of the project will be saved in a JSON file.}
+    
+    \item \GTCODescription{\ref{FRO-12}}{Load a project} \leavevmode \\ \precondition{At least one liberty file is saved in the past.}\action{User clicks "File" and then "Open Project" and selects the file from the file manager.}\reaction{The selected project replaces the current project.}
+    
+    \item \GTCODescription{\ref{FRO-13}}{Export a graph} \leavevmode \\ \precondition{At least one liberty file is opened in the app. At least one graph is drawn in the "View" panel.}\action{User right clicks on the graph and selects "Export Graph" and selects the path to save the image of the graph.}\reaction{The image of the graph is saved to the desired path.}
+    
+    \item \GTCODescription{\ref{FRO-14}}{Show only minimum and maximum input internal power of a pin} \leavevmode \\ \precondition{\ref{FR-4} and \ref{FR-7} have been performed.}\state{“View” panel shows the histogram for the input internal power, “Min” and “Max” checkboxes are selected.}\action{User clicks the dropdown menu and selects the type of the summary.}\reaction{Histogram is updated with the desired data.}
+  
+   \item \GTCODescription{\ref{FRO-15}}{Change the heat map of a pin’s timing values to a 3D graph.} \leavevmode \\ \precondition{baseline.lib has been loaded and \ref{FR-4} and \ref{FR-7} have been performed to create a heat map for timing values.}\state{Heat map for the pin is shown on the “View” panel.}\action{User chooses the 3D graph from the corresponding dropdown menu.}\reaction{Heat map is changed into a 3D graph that represents the same values.}
+    
+    \item \GTCODescription{\ref{FRO-15}}{Change the bar chart of leakage power values to a scatterplot} \leavevmode \\ \precondition{baseline.lib has been loaded and \ref{FR-4} and \ref{FR-7} have been performed to create a histogram}\state{Leakage power values are shown on the histogram on the “View” panel.}\action{User chooses “Scatterplot” from the corresponding dropdown menu.}\reaction{Histogram is changed into a scatterplot that represents the same attributes.}
+    
+    \item \GTCODescription{\ref{FRO-16}}{Interpolate a histogram} \leavevmode \\ \precondition{baseline.lib has been loaded and \ref{FR-4} and \ref{FR-7} have been performed.}\state{“View” panel shows a histogram for the selected cell.}\action{User clicks on the “Interpolate” component.}\reaction{An input window for the required index appears.}\action{User enters a value and presses enter.}\reaction{Final value is shown on a text box and the graph is updated accordingly.}
+    
+    
+    \item \GTCODescription{\ref{FRO-17}}{Change chart’s colour} \leavevmode \\ \precondition{\ref{GTC-10} has been performed}\state{Bar chart for the leakage power for a cell is shown on the “View” panel.}\action{User clicks on “Customize” and selects a colour.}\reaction{Chart’s colour is changed to the selected colour.}
+    
+    \item \GTCODescription{\ref{FRO-17}}{Change font size of an attribute on a chart} \leavevmode \\ \precondition{\ref{GTC-10} has been performed.}\state{Bar chart for the leakage power for a cell is shown on the “View” panel.}\action{User clicks on “Customize” and changes the default font }\reaction{Text’s font on the graph is changed with the entered amount.}
+    
+    \item \GTCODescription{\ref{FRO-18}}{Set the maximum number of bars displayed in the bar chart} \leavevmode \\ \state{App is opened.}\action{User clicks "Edit"}\reaction{Edit dropdown box is opened.}
+    \action{User clicks on "Settings"}
+    \reaction{Settings window is opened}\action{User clicks on "Preferences"} \reaction{Preferences tab is opened}\action{User changes the amount of maximum bars}
+    
+    
+    \item \GTCODescription{\ref{FRO-17}}{Change GUI background colour} \leavevmode \\ \state{App is opened.}\action{User clicks on “Appearance” component}\reaction{A drop down menu for GUI colours appears.}
+    \action{User selects}
+    \reaction{GUI background colour is changed to white}
+    
+    \item \GTCODescription{\ref{FRO-19}}{Change the language to German} \leavevmode \\ \state{App is running.}\action{User clicks on “Edit”}\reaction{Edit dropdown is shown}
+    \action{User clicks on “Settings”}\reaction{Settings are opened.}\action{User clicks on "Preferences"}\reaction{Preferences tab is opened}\action{User selects “German” from “Change Language” component.}\reaction{App’s language is changed to German.}
+    
+    
+    \item \GTCODescription{\ref{FRO-20}}{Use a shortcut} \leavevmode \\ \state{App is opened.} \action{User clicks the shortcut for Settings}\reaction{Settings window opens.}
+    
+    \item \GTCODescription{\ref{FRO-21}}{Undo a change} \leavevmode \\ \precondition{\ref{GTC-35} has been performed.}\state{Text editor is shown on the “View” panel.}\action{User clicks on the “Undo” component.}\reaction{Change done in \ref{GTC-35} is reverted.}
+    
+    \item \GTCODescription{\ref{FRO-21}}{Revert an undo} \leavevmode \\ \precondition{GTCO-25 has been performed.}\state{Text editor is shown on the “View” panel.}\action{User clicks on the “Redo” component.}\reaction{Undo done in GTCO-25 is reverted.}
+    
+     \item \GTCODescription{\ref{FRO-22}}{View the properties of a library} \leavevmode \\ \precondition{A library has been loaded.}\action{User right-clicks on the library on the Outliner.}\reaction{dropdown menu is shown.}\action{User clicks “Properties” on the dropdown menu.}\reaction{A window showing the properties of the library appears.}
+     
+     \item \GTCODescription{\ref{FRO-23}}{View app information - Manual} \leavevmode \\ \state{App is running}\action{User clicks on the Info panel}\reaction{Info dropdown is opened}\action{User clicks on "Manual"}\state{Manual appears}
+     
+     
+     \item \GTCODescription{\ref{FRO-23}}{View app information - Version} \leavevmode \\ \state{App is running}\action{User clicks on the Info panel}\reaction{Info dropdown is opened}\action{User clicks on "Version"}\reaction{A window opens which show some information about the program.}
+     
+     \item \GTCODescription{\ref{FRO-24}}{Set a value filter} \leavevmode \\ \precondition{A library has been loaded.}\action{User opens the “Filter” component.}\reaction{Filter window appears.}\action{User selects attribute name, filter type and types a filter value and clicks “Add Filter”.}\reaction{Filter is applied and the filtered values are shown.}
+    
+   
+    \item \GTCODescription{\ref{FRO-25}}{Set a default attribute filter} \leavevmode \\ \precondition{GTCO-30 has been performed.}\action{User clicks on “Set as default filter”}\reaction{Added filter in GTCO-30 is set as default filter.}\action{User restarts the application.}\state{Added filter is applied after the app is opened.}
+    
 \end{GTCO}
 
 \chapter{Importance Of Attributes}
+
+\begin{itemize}
+    \renewcommand\labelitemi{++}
+    \item \attribute{Functionality}{The amount of features and capabilities in the desktop application.}
+    \item \attribute{Adaptability}{The ease of changing different parts of the desktop application and it's functions.}
+    \item \attribute{Extendability}{The ease of adding in new functionality to the desktop application.}
+    \renewcommand\labelitemi{+}
+    \item \attribute{Compatibility}{The desktop application runs well with different versions of Linux.}
+    \item \attribute{Installability}{Ease of installing the desktop application.}
+    \item \attribute{Portability}{The desktop application also works on other operating systems (e.g. Windows).}
+    \item \attribute{Testability}{The amount of testing supported by the code.}
+    \item \attribute{Usability}{Ease of use for the users of the desktop application.}
+    \item \attribute{Response time}{The time it takes for the desktop application to process user input and give the proper output.}
+    \renewcommand\labelitemi{o}
+    \item \attribute{Robustness}{The ability of the desktop application to deal with inappropriate user input without throwing exceptions.}
+    \renewcommand\labelitemi{-}
+    \item \attribute{Security}{The desktop application does not provide a backdoor for malicious users.}
+\end{itemize}
 
 %GUI
 \chapter{GUI-Design}
 %Overview
 \section{Overview}
-\includeimage{}{0.4}{Main Window}{Main Window}{main_window}
+\includeimage{}{0.25}{Main Window}{Main Window}{main_window}
+Go to the \href{https://www.figma.com/file/GP708HBs3aSgKMK5QeQZb5/GELF?node-id=0\%3A1}{\h{Full Design}} for easier navigation while viewing.
 
 %Interaction Type Definitions
 \section{Interaction Types}
@@ -1129,23 +1490,25 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
 %Outliner
 \section{Outliner}
 \label{sec:outliner}
-\includeimage{}{0.4}{Outliner}{Outliner}{outliner}
-The \h{Outliner} presents the user with a \refer{sec:outliner:search}{search bar}, to search for \refg{library}{libraries}, \refg{cell}{cells} or \refg{pin}{pins} by name as well as a \refer{sec:outliner:menu}{menu bar} and a \refer{sec:outliner:hierarchy}{hierarchical view} of opened liberty files.
+\includeimage{}{0.3}{Outliner}{Outliner}{outliner}
+The \h{Outliner} presents the user with a \refer{sec:outliner:search}{search bar}, to search for \refg{library}{libraries}, \refg{cell}{cells} or \refg{pin}{pins} by name as well as a \refer{sec:outliner:menu}{menu bar} and a \refer{sec:outliner:Outliner}{tree view} of opened liberty files.
 
 \subsection{Search Bar}
 \label{sec:outliner:search}
-\includeimage{}{0.4}{Outliner Search Bar}{Outliner Search Bar}{outliner_search_bar}
-\ui{Search}{\refer{it:input_box}{Input Box}}{TODO}
+\ui{Search}{\refer{it:input_box}{Input Box}}{\refer{FR-19}{FR-19}}
 
 \subsection{Menu Bar}
 \label{sec:outliner:menu}
+\ui{Menu Bar}{\refer{it:button}{Buttons}}{TODO}
 
-\includeimage{}{0.4}{Outliner Menu Bar}{Outliner Menu Bar}{outliner_menu_bar}
+\subsection{Outliner}
+\label{sec:outliner:Outliner}
+\ui{Outliner}{\refer{it:button}{Button}}{\refer{FR-2}{FR-2}, \refer{FR-3}{FR-3}, \refer{FR-4}{FR-4}, \refer{FR-11}{FR-11}, , \refer{FR-12}{FR-12}, , \refer{FR-13}{FR-13}, \refer{FRO-1}{FRO-1}, \refer{FRO-2}{FRO-2}, \refer{FRO-5}{FRO-5}, \refer{FRO-23}{FRO-23}, \refer{FRO-25}{FRO-25}}
 
-\subsection{Hierarchy}
-\label{sec:outliner:hierarchy}
-
-\includeimage{}{0.4}{Hierarchy}{Hierarchy}{hierarchy}
+%Filters
+\subsection{Filters(Optional)}
+\label{sec:outliner:filters}
+\ui{Filters Panel}{\refg{tba}{TBA}}{\refer{FRO-25}{FRO-25}, \refer{FRO-25}{FRO-25}}
 
 %Editor
 \section{Editor}
@@ -1155,18 +1518,15 @@ The \h{editor} presents the user with an interface to directly modify an opened 
 
 \subsection{Search Bar}
 \label{sec:editor:search}
-
-\includeimage{}{0.4}{Editor Search Bar}{Editor Search Bar}{editor_search_bar}
+\ui{Search}{\refer{it:input_box}{Input Box}}{\refer{FR-14}{FR-14}}
 
 \subsection{Menu Bar}
 \label{sec:editor:menu}
-
-\includeimage{}{0.4}{Editor Menu Bar}{Editor Menu Bar}{editor_menu_bar}
+\ui{Menu Bar}{\refer{it:button}{Button},  \refer{it:dropdown_selector}{Dropdown Selector}}{\refer{FR-4}{FR-4}}
 
 \subsection{Text Editor}
 \label{sec:editor:text_editor}
-
-\includeimage{}{0.4}{Editor Text Editor}{Editor Text Editor}{editor_text_editor}
+\ui{Text Editor}{\refer{it:input_box}{Input Box}}{\refer{FR-15}{FR-15}}
 
 %Visualizer
 \section{Visualizer}
@@ -1177,41 +1537,61 @@ The \h{visualizer} consists of a \refer{sec:visualizer:menu}{menu bar} and a \re
 
 \subsection{Menu Bar}
 \label{sec:visualizer:menu}
+\ui{Menu Bar}{\refer{it:button}{Button}, \refer{it:dropdown_selector}{Dropdown Selector}}{\refer{FR-4}{FR-4}}
 
-\includeimage{}{0.4}{Visualizer Menu Bar}{Visualizer Menu Bar}{visualizer_menu_bar}
+\subsection{Representation}
+\label{sec:visualizer:representation}
+\ui{Library/Cell/Pin Representation}{\refer{it:button}{Button}, 
+\refer{it:checkbox}{Checkbox}}{\refer{FR-5}{FR-5}, \refer{FR-6}{FR-6}, \refer{FR-7}{FR-7}, \refer{FR-8}{FR-8}}
+
+\subsection{Data Section}
+\label{sec:visualizer:data_section}
+\ui{Data}{Display Only}{\refer{FR-5}{FR-5}, \refer{FR-6}{FR-6}, \refer{FR-7}{FR-7}, \refer{FR-8}{FR-8}}
+
+\subsection{Selection Bar}
+\label{sec:visualizer:statistics}
+\ui{Selection Bar}{\refer{it:dropdown_selector}{Dropdown Selector}}{\refer{FR-5}{FR-5}, \refer{FR-6}{FR-6}, \refer{FR-7}{FR-7}, \refer{FR-8}{FR-8}, \refer{FRO-14}{FRO-14}, \refer{FRO-15}{FRO-15}}
 
 \subsection{Viewport}
 \label{sec:visualizer:viewport}
-
-\includeimage{}{0.4}{Viewport}{Viewport}{viewport}
+\ui{View}{\h{Display Only}}{\refer{FR-5}{FR-5}, \refer{FR-6}{FR-6}, \refer{FR-7}{FR-7}, \refer{FR-8}{FR-8}, \refer{FR-16}{FR-16}, \refer{FR-17}{FR-17}, \refer{FRO-13}{FRO-13}, \refer{FRO-16}{FRO-16}, \refer{FRO-17}{FRO-17}}
 
 \subsection{Statistics Bar}
 \label{sec:visualizer:statistics}
-
-\includeimage{}{0.4}{Visualizer Statistics Bar}{Visualizer Statistics Bar}{visualizer_statistics_bar}
+\ui{Statistics Selection}{\refer{it:checkbox}{Checkboxes}}{\refer{FR-5}{FR-5}, \refer{FR-6}{FR-6}, \refer{FR-7}{FR-7}, \refer{FR-8}{FR-8}, \refer{FR-18}{FR-18}}
 
 %Main Menu
 \section{Main Menu Bar}
 \label{sec:menu}
+\includeimage{}{0.8}{Main Menu Bar}{Main Menu Bar}{Main Menu Bar}
 
-\includeimage{}{0.4}{Menu Bar}{Menu Bar}{menu_bar}
+\ui{Main Menu}{\refer{it:dropdown_menu}{Dropdown Menus}}{\refer{FR-1}{FR-1}, \refer{FR-9}{FR-9}, \refer{FR-20}{FR-20}, \refer{FR-21}{FR-21}, \refer{FRO-3}{FRO-3}, \refer{FRO-10}{FRO-10}, \refer{FRO-11}{FRO-11}, \refer{FRO-22}{FRO-22}, \refer{FRO-24}{FRO-24}}
+
+%Settings
+\subsection{Settings}
+\label{sec:settings}
+\includeimage{}{0.5}{Settings Dialog}{Settings}{Settings}
+\ui{Settings Panel(Optional)}{\refg{tba}{TBA}}{\refer{FRO-18}{FRO-18}, \refer{FRO-19}{FRO-19}, \refer{FRO-20}{FRO-20}, \refer{FRO-21}{FRO-21}}
 
 %Info Bar
-\section{Info bar}
+\section{Info Bar}
 \label{sec:info}
+\includeimage{}{0.4}{Info Bar}{Info Bar}{Info Bar}
 
-\includeimage{}{0.4}{Info Bar}{Info Bar}{info_bar}
+\ui{Info}{\h{Display Only}}{\refg{tba}{TBA}}
 
 %Glossary
 \chapter{Glossary}
 \defg{library}{Library}{
-    LIBRARY DEFINITION
+    An liberty file's outer scope. Consists of one or multiple \refg{cell}{cells} as well as additional global information.
 }
 \defg{cell}{Cell}{
-    CELL DEFINITION
+    Part of a \refg{library}{library}.
+    Consists of one or multiple \refg{pin}{pins} as well as additional cell-level information.
 }
 \defg{pin}{Pin}{
-    PIN DEFINITION
+    Part of a \refg{cell}{cell}.
+    Consists of pin-level information.
 }
 \defg{element}{Element}{
     Collective term for \refg{library}{library}/\refg{cell}{cell}/\refg{pin}{pin}.
@@ -1221,5 +1601,8 @@ The \h{visualizer} consists of a \refer{sec:visualizer:menu}{menu bar} and a \re
 }
 \defg{display_element}{Displaying Elements}{
     The operation of viewing the attributes of an \refg{element}{element} via graphs.
+}
+\defg{tba}{TBA}{
+    Acronym for "To be added."
 }
 \end{document}
