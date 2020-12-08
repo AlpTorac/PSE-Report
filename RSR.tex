@@ -194,7 +194,21 @@
 
 \chapter{Purpose}
 \section{Product Goal}
+\bigskip
+"Liberty, when it begins to take root, is a plant of rapid growth." 
+
+George Washington \\
+
+
+Liberty format is a text based file format where cell libraries are stored.These cell libraries can store  a lot of information about components. However, the liberty files usually contain thousands of lines of text, which makes them not practical to read, to find desired values or to compare cells/pins with each other. \bigskip
+
+What we aim to achieve is to make it easier for everyone to understand liberty files and also to easily make operations on them.  \bigskip
+
+With the help of a hierarchical display of the files the user will be able to navigate through the levels of the library easily. By using different types of statistics and visualizations it will be easier to see the behaviors of components and also comparing them with each other. GELF's way of visualizing stuff like drawing complicated values in a graph makes the viewer examine different component attributes and behaviours. Instead of being forced to read thousands of lines of hard to understand text, GELF will provide the same information in a much more direct and manageable way, so that the user can work around these complicated files with ease.\bigskip
+
+GELF is going to give this liberty to everyone trying to understand Liberty Files or work with them.
 \section{Target Audience}
+Target audience for GELF desktop app is mainly hardware and software engineers, who are dealing with Liberty Files. GELF can be used by anyone with a computer with Linux or Windows. It provides an easier to work environment for Liberty Files, which will help engineers to observe and examine behaviors of components. It also make it possible to compare different components by their different attributes, which would further help engineers to spot the characteristics of components and make decisions about them.
 \chapter{Scenarios}
 
 \chapter{Overall Description}
@@ -212,26 +226,26 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
 \begin{FR}
     \item Opening Liberty Files \label{FR-1}
     \item Displaying Tree View of Liberty Files \label{FR-2}
-    \item Opening an element in the working area \label{FR-3}
-    \item Selecting elements \label{FR-4.5}
+    \item Selecting elements \label{FR-3}
+    \item Opening an element in the working area \label{FR-4}
     % \item Navigating through elements in a display \label{FR-(-i)/67} % already described in the "Description" part of Displaying library/cell/pin
-    \item Displaying a library \label{FR-4.420/9}
-    \item Displaying a cell \label{FR-47}
-    \item Displaying a pin \label{FR-576476}
-    \item Visual comparison of attributes \label{FR-34432} % Can merge this one, because how displaying works has already been explained in Displaying a library/cell/pin. Merely describing how comparing works for different types of graphs should work.
-    \item Searching for an element by name \label{FR-15}
-    \item Searching in the text editor \label{FR-SEARCH}
-    \item Changing attributes through text editor \label{FR-11}
-    \item Merging libraries \label{FR-6}
-    \item Resolving merge conflicts \label{FR-7}
-    \item Copying Cells into another Library\label{FR-8}
-    \item Removing a Library \label{FR-9}
-    \item Deleting a Cell \label{FR-10}
-    \item Scaling graph values \label{FR-12}
-    \item Highlighting graph values \label{FR-13}
-    \item Displaying statistics for Graphs \label{FR-14}
-    \item Saving a Liberty file \label{FR-16}
-    \item Saving a Library as a new File \label{FR-17}
+    \item Displaying a library \label{FR-5}
+    \item Displaying a cell \label{FR-6}
+    \item Displaying a pin \label{FR-7}
+    \item Visual comparison of attributes \label{FR-8} % Can merge this one, because how displaying works has already been explained in Displaying a library/cell/pin. Merely describing how comparing works for different types of graphs should work.
+    \item Searching for an element by name \label{FR-9}
+    \item Changing attributes through text editor \label{FR-10}
+    \item Searching in the text editor \label{FR-11}
+    \item Merging libraries \label{FR-12}
+    \item Resolving merge conflicts \label{FR-13}
+    \item Copying Cells into another Library \label{FR-14}
+    \item Removing a Library \label{FR-15}
+    \item Deleting a Cell \label{FR-16}
+    \item Scaling graph values \label{FR-17}
+    \item Highlighting graph values \label{FR-18}
+    \item Displaying statistics for Graphs \label{FR-19}
+    \item Saving a Liberty file \label{FR-20}
+    \item Saving a Library as a new File \label{FR-21}
 \end{FR}
 \subsection{Optional Requirements List}
 
@@ -241,31 +255,31 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     \item Creating Liberty files from scratch \label{FRO-3}
     \item Changing attributes through GUI \label{FRO-4}
     \item Exporting data as CSV \label{FRO-5}
-    \item Resizing panel \label{FRO-xy}
-    \item Popping panels out \label{FRO-xyz}
-    \item Re-positioning panels \label{FRO-xyzt}
-    \item Saving a Liberty file into File Manager through drag-and-drop \label{FRO-6}
-    \item Saving all the Liberty files \label{FRO-7.5} %needs to be added 
-    \item Saving the state of a project \label{FRO-7}
-    \item Loading a project \label{FRO-8}
-    \item Exporting visualisations (graphs) \label{FRO-9}
-    \item Changing how the graph data is summarised \label{FRO-10}
-    \item Modifying the type of the graph \label{FRO-11}
+    \item Resizing panel \label{FRO-6}
+    \item Popping panels out \label{FRO-7}
+    \item Re-positioning panels \label{FRO-8}
+    \item Saving a Liberty file into File Manager through drag-and-drop \label{FRO-9}
+    \item Saving all the Liberty files \label{FRO-10} %needs to be added 
+    \item Saving the state of a project \label{FRO-11}
+    \item Loading a project \label{FRO-12}
+    \item Exporting visualisations (graphs) \label{FRO-13}
+    \item Changing how the graph data is summarised \label{FRO-14}
+    \item Modifying the type of the graph \label{FRO-15}
     %\item Adding graph function visualisation through interpolation , 3D graphs scatter plot
-    \item Interpolating \label{FR-(x1-x)/(y1-y)}
+    \item Interpolating \label{FR-16}
     % \item Applying formulas to graphs \label{FRO-12}
     % \item Magnifying the hitbox of a value on a histogram \label{FRO-13}
-    \item Changing graph colour/font \label{FRO-14}
-    \item Changing the default font size/colour \label{FRO-15}
-    \item Changing display colours \label{FRO-16}
-    \item Changing the language \label{FRO-17}
-    \item Shortcuts \label{FRO-18}
-    \item Undo/Redo \label{FRO-19}
-    \item Viewing file properties \label{FRO-20}
-    \item Info panel \label{20.5} %has manual, github, version
+    \item Changing graph colour/font \label{FRO-17}
+    \item Changing the default font size/colour \label{FRO-18}
+    \item Changing display colours \label{FRO-19}
+    \item Changing the language \label{FRO-20}
+    \item Shortcuts \label{FRO-21}
+    \item Undo/Redo \label{FRO-22}
+    \item Viewing file properties \label{FRO-23}
+    \item Info panel \label{24} %has manual, github, version
     % \item Sorting \label{FRO-21}
-    \item Setting Filters for a search \label{FRO-22}
-    \item Setting default filters\label{FRO-23}
+    \item Setting Filters for a search \label{FRO-25}
+    \item Setting default filters\label{FRO-26}
 \end{FRO}
 
 \section{Functional Requirements}
@@ -333,8 +347,8 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \item Clicking on the Open component (Right-Click on the desired element >> Open)
     \end{itemize}}
     {\begin{itemize}
-        \item When clicking on the "View" tab, only the "View" panel is visible, and the "Editor" panel is minimised(not visible)
-        \item When clicking on the "Editor" tab, only the "Editor" panel is visible, and the "View" panel is minimised(not visible)
+        \item When clicking on the "View" tab, the "View" panel is visible, and the "Editor" panel is minimised(not visible)
+        \item When clicking on the "Editor" tab, the "Editor" panel is visible, and the "View" panel is minimised(not visible)
         \item When clicking the close button, the element panel is closed and removed from the working area 
     \end{itemize}}
     \item \FRDescription{Displaying a Library}
@@ -344,11 +358,11 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     {On the View panel opened from \label{FR-PREVIOUS} for a library
         \begin{itemize}
             \item The navigation view for Libraries is open
-            \item A drop down list with the available attributes(input internal power,output internal power, power leakage, output timing)
-            \item A drop down list with the available sub-attributes
+            \item A drop down list with the available attributes(input internal power,output internal power, leakage power, output timing)
+            \item Drop down lists with the available (given in the liberty file) sub-attributes
             \begin{itemize}
-                \item For internal power: fall-power and rise-power
-                \item For output timing: timing-sense, timing-type and then cell-fall, cell-rise, fall-transition, rise-transition
+                \item For internal power: power groups(fall-power, power and/or rise-power)
+                \item For output timing: timing-sense (positive-unate, negative-unate and/or non-unate) timing-type(combinational, three-state-enable, etc.) and then timing groups (cell-fall, cell-rise, fall-transition, rise-transition, etc)
             \end{itemize}
             \item For the selected attribute (average values by default), a graph is drawn in the panel.
         \end{itemize}}
@@ -362,9 +376,9 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \begin{itemize}
             \item For the input internal power, a histogram with average input internal power is shown
             \item For the output internal power and output timing, a heatmap with the average will be shown
-            \item For the power leakage, a bar chart is drawn with the averages of different input state powers (Like 001, 000, etc.)
+            \item For the leakage power, a bar chart is drawn with the averages of different input state powers (Like 001, 000, etc.)
                 \begin{itemize}
-                    \item In case a cell has 2 pins while another has 3, input state powers with 3 digits will be shown, but the power leakage will be taken by taking the last 2 digits into account
+                    \item In case a cell has 2 pins while another has 3, input state powers with 3 digits will be shown, but the leakage power will be taken by taking the last 2 digits into account for the 2 pin cells
                 \end{itemize}
         \end{itemize}
     \end{itemize}}
@@ -375,12 +389,12 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     {On the View panel opened from \label{FR-PREVIOUS} for a cell
     \begin{itemize}
         \item The navigation view for Cells is open
-        \item A drop down list with the available attributes(input internal power,output internal power, power leakage, output timing)
-        \item A drop down list with the available sub-attributes
-        \begin{itemize}
-            \item For internal power: fall-power and rise-power
-            \item For output timing: timing-sense, timing-type and then cell-fall, cell-rise, fall-transition, rise-transition
-        \end{itemize}
+        \item A drop down list with the available attributes(input internal power,output internal power, leakage power, output timing)
+        \item Drop down lists with the available (given in the liberty file) sub-attributes
+            \begin{itemize}
+                \item For internal power: power groups(fall-power, power and/or rise-power)
+                \item For output timing: timing-sense (positive-unate, negative-unate and/or non-unate) timing-type(combinational, three-state-enable, etc.) and then timing groups (cell-fall, cell-rise, fall-transition, rise-transition, etc)
+            \end{itemize}
         \item For the selected attribute (average values by default), a graph is drawn in the panel.
     \end{itemize}}
     {An appropriate error message is shown}
@@ -388,9 +402,9 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \item The "View" tab is made active
     \end{itemize}}
     {\begin{itemize}
-        \item The navigation view for a cell contains the visual representation of the cell. It has the correct number of drawn input/output pins and their names as well as checkboxes to the left of the input names. To the right of the output names is the output formula. On it's left is a backwards arrow.
+        \item The navigation view for a cell contains the visual representation of the cell. It has the correct number of drawn input/output pins and their names as well as checkboxes to the right of the input names. To the right of the output names is the output formula. Above the cell is the Library name
         \begin{itemize}
-            \item Clicking on the backwards arrow switches the element panel to that of the parent library from \label{FR-BLABLABLA}
+            \item Clicking on the Library name switches the element panel to that of the parent library from \label{FR-BLABLABLA}
             \item Clicking on an input/output pin switches the element panel to that of the corresponding pin from \label{FR-BLABLABLA}
             \item If the cell has more than 5 input pins or 3 output pins, the Visual representation gets changed with simple columns of input and output pins.
         \end{itemize}
@@ -400,7 +414,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \begin{itemize}
             \item For the input internal power, a histogram with average input internal power is shown
             \item For the output internal power and output timing, a heatmap with the average will be shown
-            \item For the power leakage, a bar chart is drawn with the different input state powers (Like 001, 000, etc.)
+            \item For the leakage power, a bar chart is drawn with the different input state powers (Like 001, 000, etc.)
         \end{itemize}
     \end{itemize}}
     \item \FRDescription{Displaying a Pin}
@@ -415,10 +429,10 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
                 \item For input pins: internal power
                 \item For output pins: internal power and timing
             \end{itemize}
-            \item A drop down list with the available sub-attributes
+            \item Drop down lists with the available (given in the liberty file) sub-attributes
             \begin{itemize}
-                \item For internal power: fall-power and rise-power
-                \item For timing: timing-sense, timing-type and then cell-fall, cell-rise, fall-transition, rise-transition
+                \item For internal power: power groups(fall-power, power and/or rise-power)
+                \item For timing: timing-sense (positive-unate, negative-unate and/or non-unate) timing-type(combinational, three-state-enable, etc.) and then timing groups (cell-fall, cell-rise, fall-transition, rise-transition, etc)
             \end{itemize}
             \item For the selected attribute, a graph is drawn in the panel.
         \end{itemize}}
@@ -427,35 +441,67 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \item The "View" tab is made active
     \end{itemize}}
     {\begin{itemize}
-        \item The navigation view for a pin contains a visual representation of its parent cell with the highlighted current pin. It has the correct number of drawn input/output pins and their names as well as checkboxes(only one can be selected. First one is selected by default) to the left of the input names. To the right of the output names is the output formula. On it's left is a backwards arrow.
+        \item The navigation view for a pin contains a visual representation of its parent cell with the highlighted current pin. It has the correct number of drawn input/output pins and their names as well as checkboxes(Only visible if current pin is output pin. Only one can be selected. First one is selected by default) to the right of the input names. To the right of the output names is the output formula. Above the cell is the Library name
         \begin{itemize}
-            \item Clicking on the backwards arrow switches the element panel to that of the parent cell from \label{FR-BLABLABLA}
+            \item Clicking on the Library name switches the element panel to that of the parent Library from \label{FR-BLABLABLA}
+            \item Clicking on the Cell itself switches the element panel to that of the parent Cell from \label{FR-BLABLABLA}
             \item Clicking on an input/output pin switches the element panel to that of the corresponding pin from \label{FR-BLABLABLA}
             \item If the cell has more than 5 input pins or 3 output pins, the visual representation gets changed with simple columns of input and output pins.
         \end{itemize}
-        \item For output pins, function will be shown. According to the selected attribute, the following graph is drawn
+        \item For output pins, function will be shown. 
+        \item According to the selected attribute, the following graph is drawn
         \begin{itemize}
             \item For the input internal power, a histogram with average input internal power is shown
-            \item For the output internal power and output timing, a heatmap with the will be shown according to the input pin whose checkbox is selected
+            \item For the output internal power and output timing, a heatmap with be shown according to the input pin whose checkbox is selected
         \end{itemize}
     \end{itemize}}
     \item \FRDescription{Visual comparison of attributes}
     {Compare the same type of attributes of different elements of the same type}
     {Primary}
-    {The library, which contains the different elements,  is successfully loaded into the project}
-    {\ref{FR-3} is executed for a desired attribute (if not already done) and the resulting graphs are combined in a new graph in a new element panel.}
+    {The library, which contains the different elements, is successfully loaded into the project}
+    {A comparison panel identical to the one in \label{FRO-TBD} except without the "Editor" subpanel is opened
+        \begin{itemize}
+            \item The selection view for the library or cells/pins is opened
+            \item A drop down list with the available attributes(input internal power,output internal power, output timing, leakage power, default leakage power)
+            \begin{itemize}
+                \item For libraries: input/output internal power, timing, leakage power, default leakage power
+                \item For cells: input/output internal power, timing, leakage power, default leakage power
+                \item For input pins: internal power
+                \item For output pins: internal power and timing
+            \end{itemize}
+            \item Drop down lists with the available (given in the liberty file) sub-attributes
+            \begin{itemize}
+                \item For internal power: power groups(fall-power, power and/or rise-power)
+                \item For timing: timing-sense (positive-unate, negative-unate and/or non-unate) timing-type(combinational, three-state-enable, etc.) and then timing groups (cell-fall, cell-rise, fall-transition, rise-transition, etc)
+            \end{itemize}
+            \item For the selected attribute, a graph is drawn in the panel.
+        \end{itemize}}
     {\begin{itemize}
-        \item No new element panels are created
+        \item No new panel is opened
         \item An appropriate error message is shown
     \end{itemize}}
-    {Selecting the new element panel after selecting the elements that will be compared and then selecting which attribute(s) will be compared in the new element panel.}
+    {Clicking on Compare component (Right click after selecting multiple elements >> Compare).}
     {\begin{itemize}
-        \item For comparing attributes with single values, a bar chart will be drawn.
-        \item Definition of “combined”:
+        \item The selection view for a comparison of libraries contains a list of the selected libraries as well as checkboxes to their left (checkboxes filled by default).
+        \begin{itemize}
+            \item The libraries whose checkboxes are filled appear on the drawn graph
+        \end{itemize}
+        \item The selection view for a comparison of cells or pins shows the visual representation of all the cells involved like in the navigation bar as it appears in \label{FR-Display of pins} for output pins
+        \begin{itemize}
+            \item By default, nothing is highlighted
+            \item If the name of a cell, input pin or output pin is clicked, as long as no other element type is highlighted, it's highlighted and added to the graph.
+            \item Like in \label{FR-Display of pins} there are checkboxes on the left of the input pins that signify to which input pin the timing and internal power of the output pins are based on (The first one is selected by default)
+        \end{itemize}
+        \item According to the selected attribute, the following graph is drawn including only 2 elements
+        \begin{itemize}
+            \item For the input internal power, a histogram with the (average) input internal power is shown where histograms of different colors of are overlapping
+            \item For the output internal power and output timing, a heatmap with the will be shown with the difference of the values being compared.
+            \item For the leakage power, a bar chart is drawn with overlapping bars of different colors for the different input state powers (Like 001, 000, etc.)
             \begin{itemize}
-                \item For histograms: The both histograms will be overlaid on top of each other with different colours in a transparent way, so that each histogram is still identifiable. Only 2 histograms can be compared this way.
-                \item For heatmaps: A new heatmap will be made based on the both heatmaps. The differences between the values of these heatmaps will be shown via the new heatmap, whose values are the said differences. Only 2 heatmaps can be compared this way.
+                \item In case a cell has 2 pins while another has 3, input state powers with 3 digits will be shown, but the leakage power will be taken by taking the last 2 digits into account for the 2 pin cells
             \end{itemize}
+        \end{itemize}
+        \item If default average leakage power is selected, a bar chart is drawn comparing up to 10 elements.
     \end{itemize}}
     \item \FRDescription{Merging libraries}
     {Ability to merge libraries into a new library}
@@ -465,15 +511,15 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     {\ref{FR-6} will be executed}
     {\begin{itemize}
         \item Clicking on Merge component (Right click after selecting the libraries >> Merge).
-        \item Clicking on Merge (Edit >> Merge) and then selecting the libraries to be merged
+        % \item Clicking on Merge (Edit >> Merge) and then selecting the libraries to be merged
     \end{itemize}}
     \item \FRDescription{Resolving merge conflicts}
-    {Ability to resolve merge conflicts caused by \ref{FR-5}}
+    {Ability to resolve merge conflicts caused by \ref{FR-9}}
     {Primary}
     {Both libraries are successfully loaded into the project and they contain conflicting element names}
     {A review of the new library (the resulting library) is shown with the conflicts and an “Abort” and a “Retry” button.}
     {An appropriate error message is shown}
-    {Executing \ref{FR-5} with conflicting files}
+    {Executing \ref{FR-9} with conflicting files}
     {The user will be able to modify the text of the review of the library in order to resolve pointed conflicts
     \begin{itemize}
         \item If the user clicks on the “Retry” button:
@@ -490,10 +536,10 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     \end{itemize}}
     \item \FRDescription{Copying element(s) into another library}
     {Ability to copy element(s) from one library into another}
-    {Primary}
+    {Primary} 
     {Both of the libraries successfully loaded into the project}
     {The copied element(s) from the original library is pasted into the destination library}
-    {The same conflict resolution from \ref{FR-6} takes place with minor differences.
+    {The same conflict resolution from \ref{FR-10} takes place with minor differences.
     \begin{itemize}
         \item Instead of creating a new library, the destination library is modified
         \item In case the Abort button is clicked, neither of the libraries in question is modified
@@ -511,7 +557,10 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \item No library is modified
         \item An appropriate error message is shown
     \end{itemize}}
-    {Clicking on the Remove component (Right-Click on the desired Library  >> Remove)}
+    {\begin{itemize}
+        \item Clicking on the "Remove" component (Right-Click on the desired library >> Remove)
+        \item Selecting multiple libraries and clicking on the "Remove" component (Right-Click on one of the selected libraries  >> Remove)
+    \end{itemize}}
     \item \FRDescription{Deleting cell(s)}
     {Ability to delete a/multiple cell(s) from a library}
     {Primary}
@@ -521,21 +570,28 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \item No library is modified (no cell(s) is/are removed)
         \item An appropriate error message is shown
     \end{itemize}}
-    {Clicking on the Delete component (Right-Click on the desired Cell  >> Delete)}
+    {\begin{itemize}
+        \item Clicking on the "Delete" component (Right-Click on the desired Cell  >> Delete)
+        \item Selecting multiple cells and clicking on the "Delete" component (Right-Click on one of the selected cells  >> Delete)
+    \end{itemize}}
     \item \FRDescription{Searching in the text editor}
     {Ability to search for a given string in the text editor}
     {Primary}
     {\begin{itemize}
-        \item The element panel of an element is open
-        \item Either "Editor" tab is active
+        \item The "Editor" panel of an element is opened
         \item The contents of the liberty file containing the element is being textually displayed in the text editor
     \end{itemize}}
+    {\begin{itemize}
+        \item The "Editor" scrolls to the point in text where the input string appears
+        \item Every instance of the input string in the text is highlighted
+    \end{itemize}}
     {An appropriate error message is shown}
-    {Inputting a string in the search bar and clicking "Enter"}
-    \item \FRDescription{Changing attributes through raw text}
-    {Ability to modify the loaded values of a library through the text editor in the "Editor" panel in the element panel of the library in the desktop application}
+    {Inputting a string in the search bar and pressing the "Enter" key}
+    {Pressing the "Enter" key again scrolls the text to the next occurrence of the input string}
+    \item \FRDescription{Changing attributes through text editor}
+    {Ability to modify the loaded values of a library through the text editor in the "Editor" panel in the element panel in the desktop application}
     {Primary}
-    {Said library is successfully loaded into the project and has an element panel}
+    {Said library is successfully loaded into the project and has an element panel opened through \label{FR-4}}
     {\begin{itemize}
         \item Changes made in the text editor in the said "Editor" panel are reflected in the graphs and summaries.
         \item The corresponding library is modified.
@@ -546,27 +602,27 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \item An appropriate error message is shown
     \end{itemize}}
     {Textually replacing the loaded values of a loaded Liberty file via the text editor in the said "Editor" panel.}
-    \item \FRDescription{Scaling values}
-    {Scaling the specified values by a given factor}
+    \item \FRDescription{Scaling graph values}
+    {Scaling the values of a graph by a given factor}
     {Primary}
-    {\ref{FR-2} is performed on the Liberty file, which contains the above mentioned values}
-    {The mentioned values are scaled by the given factor}
+    {\ref{FR-5},\ref{FR-6} or \ref{FR-7} is performed on the element, which contains the above mentioned values}
+    {The mentioned values are scaled by the given factor and changes are reflected in the loaded element.}
     {\begin{itemize}
         \item No value will be changed
-        \item An appropriate error indicator will be shown. Examples:
-        \begin{itemize}
-            \item If the factor is to be written in a textbox and no buttons are involved:
-            \begin{itemize}
-                \item Highlighting the given factor
-                \item Displaying an “invalid value” text next to the textbox, in which the given factor is written
-            \end{itemize}
-            \item If there are buttons or dedicated windows are involved:
-            \begin{itemize}
-                \item An appropriate error message will be shown
-            \end{itemize}
-        \end{itemize}
+        \item An appropriate error indicator will be shown. %Examples:
+        %\begin{itemize}
+            %\item If the factor is to be written in a textbox and no buttons are involved:
+            %\begin{itemize}
+            %    \item Highlighting the given factor
+            %    \item Displaying an “invalid value” text next to the textbox, in which the given factor is written
+            %\end{itemize}
+            %\item If there are buttons or dedicated windows are involved:
+            %\begin{itemize}
+            %    \item An appropriate error message will be shown
+            %\end{itemize}
+        %\end{itemize}
     \end{itemize}}
-    {Writing the factor into a dedicated component followed by another event that confirms this action.}
+    {Clicking on "Scale by value" Component (Right-Click on said graph >> Scale by value). Then entering the desired value on the input box and clicking "Confirm"}
     \item \FRDescription{Viewing specific values}
     {Ability to view a certain value in a graph}
     {Primary}
@@ -578,14 +634,15 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \item The element, which contains the mentioned value, and it's parent elements are highlighted in the hierarchical view.
         \item If the element panel of the said element has the "Editor" tab active as well, the value itself in the text editor in the "Editor" tab will be highlighted.
     \end{itemize}}
-    \item \FRDescription{Viewing statistics for graphs} %checkboxes on the bottom of the screen [min, max, avg, median]
+    \item \FRDescription{Viewing statistics for graphs}
     {Ability to view the desired statistics of the values of an attribute in a graph}
     {Primary}
-    {\ref{FR-3} is executed on a given element successfully}
+    {\ref{FR-5},\ref{FR-6} or \ref{FR-7} is executed on a given element successfully}
     {The desired statistics of the said attributes are shown in the graph with:
     \begin{itemize}
-        \item Horizontal line(s) (y = value of the desired statistic, in a cartesian coordinate system), if the said graph is a histogram.
+        \item Horizontal line(s) (y = value of the desired statistic, in a cartesian coordinate system), if the said graph is a histogram or we need the average value in a bar chart or median in a bar chart with even entries.
         \item Re-colouring the values that are similar (or are) the values of the desired statistics, if the said graph is a heatmap.
+        \item Highlighting the bar that fulfills the desired statistic in a bar chart.
     \end{itemize}}
     {\begin{itemize}
         \item No statistics are shown
@@ -594,10 +651,12 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \end{itemize}
         \item An appropriate error message is shown
     \end{itemize}}
-    {Clicking on the dedicated component.}
+    {Clicking on the checkboxes below the graph.}
     {\begin{itemize}
-        \item (?) The similarity mentioned in the "Post Condition (success)" part can be modified via it's dedicated component (?)
+        %%% I don't get this -Xhulio %%% \item (?) The similarity mentioned in the "Post Condition (success)" part can be modified via it's dedicated component (?)
+        \item The available statistics are Min(minimum), Max(maximum), Average and Median.
         \item The way of showing statistics in graphs mentioned in the "Post Condition (success)" and the graphs use different colours to make it easier for the user to distinguish them from each other.
+        \item In comparison graphs, only one unique statistic appears for the entire graph.
     \end{itemize}}
     \item \FRDescription{Searching for an element by name}
     {Ability to search for an element by its name}
@@ -605,7 +664,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     {There is an element with the given prefix}
     {The elements which contain the given prefix in their name are shown in the left panel}
     {Nothing is shown in the left panel}
-    {Typing a string into the “search” textbox and pressing "Enter" key}
+    {Typing a string into the “search” textbox in the Tree view and pressing "Enter" key}
     \item \FRDescription{Saving a Liberty file}
     {Ability to save changes made to a Liberty file}
     {Primary}
@@ -642,7 +701,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \item The mentioned cell from the original library is moved to the destination library
         \item The mentioned cell is deleted from the origin library
     \end{itemize}}
-    {The same conflict resolution from \ref{FR-6} takes place with the minor adjustments further explained in the Post Condition (fail) from \ref{FR-9}}
+    {The same conflict resolution from \ref{FR-10} takes place with the minor adjustments further explained in the Post Condition (fail) from \ref{FR-????}}
     {Drag-dropping the cell(s) within the left panel, from it's own library into another library}
     \item \FRODescription{Renaming elements}
     {Ability to rename elements in a loaded library}
@@ -655,7 +714,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     \end{itemize}}
     {Clicking on the "Rename" component (Right-Click on the desired Element  >> Rename)}
     \item \FRODescription{Creating Liberty files from scratch}
-    {Ability to create a new liberty file via the text editor in the "Editor" panel of the element panel of the new library, opened after the triggering event, in the GUI of the desktop application}
+    {Ability to create a new liberty file via the text editor}
     {Optional}
     {The input in the said text editor is valid and in liberty file format}
     {The input in the said text editor is opened into the project as a new library}
@@ -664,35 +723,81 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \item An appropriate error message is shown
     \end{itemize}}
     {\begin{itemize}
-        \item Clicking on the “New” component (File >> New) to open the element panel mentioned above
-        \item Clicking on the "Save as" component (File >> Save as) to save the input in the said text editor as a new liberty file.
+        \item Clicking on the “New” component (File >> New) to open the text editor
+        \item Clicking on the "Save" component (Top right screen of the opened editor) to save the input in the said text editor as a new liberty file.
     \end{itemize}}
-    {Making a new liberty file this way (inputting the content of the file into the said text editor and clicking on the "Save as" component) automatically opens the liberty file in the editor.}
-    \item \FRODescription{Changing attributes through GUI}
-    {Ability to modify the values of an element in a loaded liberty file through the text editor in the "Editor" panel of the element panel of the said element desktop application}
-    {Optional}
-    {Said library is successfully loaded into the project}
     {\begin{itemize}
-        \item Changes made in the said text editor are reflected in the graphs and summaries.
+    \item The text editor looks like the normal editor opened in the element panels from \label{FR-4} except:
+        \begin{itemize}
+            \item It has no "View" panel.
+            \item It doesn't dynamically update.
+            \item It has a Save button on the top right corner.
+        \end{itemize}
+    \item The inputted library is automatically opened in the project
+    \end{itemize}}
+    \item \FRODescription{Changing attributes through GUI}
+    {Ability to modify the values of an element from it's value occurrence in the "View" panel}
+    {Optional}
+    {\label{FR-5}, \label{FR-6} or \label{FR-7} is successfully performed on said element}
+    {\begin{itemize}
+        \item Changes made in the "View" panel are reflected in the graphs and summaries.
         \item The corresponding library is modified.
     \end{itemize}}
     {\begin{itemize}
         \item Values in the library don’t change
-        \item Values in the said text editor go back to their original values
+        \item Values in the "View" panel don't change
         \item An appropriate error message is shown
     \end{itemize}}
-    {Replacing the loaded values of a library in the said text editor and then confirming the changes by (?)}
-    {By double clicking an element on the hierarchical view, that element's element panel will be open. Using the text editor in that panel to change the values should change those values in the library loaded into the project.}
+    {Double-clicking on a value, inserting a new value in the input box and then pressing the "Enter" Key}
+    {Said value can be a single value printed in the "View Panel or part of a drawn graph}
     \item \FRODescription{Exporting data as CSV}
-    {Ability to export the data of a given library in CSV format}
+    {Ability to export the data of a given element in CSV format}
     {Optional}
-    {Said library is successfully loaded into the project}
-    {The data within the said library has been exported as a new file in CSV format}
+    {Said element is successfully loaded into the project}
+    {The data within the said element has been exported as a new file in CSV format}
     {\begin{itemize}
         \item No new files are made
-        \item An appropriate error message is shown (for example in the input bar)
+        \item An appropriate error message is shown
     \end{itemize}}
-    {Clicking on the “export” component and choosing the desired path through the file explorer.}
+    {Clicking on the “Export as CSV” component (Right-click on the desired element >> Export as CSV) and choosing the desired path through the File Manager.}
+    \item \FRODescription{Resizing element panels}
+    {Ability to resize an element panel opened}
+    {Optional}
+    {Said element panel is successfully opened through \label{FR-4}}
+    {The element panels have different sizes}
+    {\begin{itemize}
+        \item No element panels are changed
+        \item An appropriate error message is shown
+    \end{itemize}}
+    {Clicking on on the border between two element panels and adjusting it to modify their sizes}
+        \item \FRODescription{Popping elements panels out}
+    {Ability to pop out an element panel as a new window}
+    {Optional}
+    {\begin{itemize}
+        \item Said element panel is successfully opened through \label{FR-4}
+        \item Said element is loaded into the project and 3 (three) element panels are already open.
+    \end{itemize}}
+    {The element panel is opened as a new window}
+    {\begin{itemize}
+        \item No element panels are changed
+        \item An appropriate error message is shown
+    \end{itemize}}
+    {\begin{itemize}
+        \item Clicking on an element panels title and dragging it outside of the working area area
+        \item Trying to open a new element panel through \label{FR-4} once 3 (three) element panels are already opened in the working area
+    \end{itemize}}
+    {Popped out element panels can be returned to the working area by dragging them and dropping them in the working area} %?????????? THIS DECIDES HOW THE TITLE SHOULD LOOK LIKE
+    \item \FRODescription{Re-positioning element panels}
+    {Ability to change the order of the element panels in the working area}
+    {Optional}
+    {At least 2(two) element panels are successfully opened through \label{FR-4}}
+    {The element panels have the new specified positions}
+    {\begin{itemize}
+        \item No element panels have switched positions
+        \item An appropriate error message is shown
+    \end{itemize}}
+    {Clicking on an element panels title and dragging it to the new position desired within the working area}
+    {Element panels shift to the left or right so that the dropped element panel is placed on the position it was dropped}
     \item \FRODescription{Saving a liberty file into File Manager through drag-drop}
     {Ability to save a loaded liberty file into File Manager by using drag-drop}
     {Optional}
@@ -704,11 +809,24 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \item An appropriate error message is shown
     \end{itemize}}
     {Selecting a/multiple loaded Liberty file(s) and dragging it/them to the desired location in the File Manager}
+    \item \FRDescription{Saving all the Liberty files}
+    {Ability to save changes made to all Liberty file}
+    {Optional}
+    {None}
+    {\begin{itemize}
+        \item All imported Liberty files are modified corresponding to the version in the working area
+        \item A pop up window reminds the user of the libraries not yet assigned a path where they can be saved as Liberty files
+    \end{itemize}}
+    {\begin{itemize}
+        \item No Liberty file is modified
+        \item An appropriate error message is shown
+    \end{itemize}}
+    {Clicking on the "Save all" component (Right-Click on the desired Library  >> Save all)}
     \item \FRODescription{Saving the state of a project}
     {Ability to store the state of a project for future use}
     {Optional}
     {At least one library is successfully loaded into the project}
-    {The current status of a project will be saved in a JSON file}
+    {The current status of the project will be saved in a JSON file}
     {\begin{itemize}
         \item The project remains unchanged
         \item An appropriate error message is shown
@@ -717,15 +835,18 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     \item \FRODescription{Loading a project}
     {Ability to re-use a (valid) past project}
     {Optional}
-    {The selected project save file (created from FRO-7) has the right format, is not corrupted and fits into the memory}
+    {The selected project save file (created from \label{FRO-PREVIOUS}) has the right format, is not corrupted and fits into the memory}
     {The chosen past project is loaded}
     {\begin{itemize}
         \item The current project is unchanged
-        \item No past project is loaded
         \item An appropriate error message is shown
     \end{itemize}}
     {Clicking on the designated “Open Project” component (File >> Open Project) and selecting said project file through the File Manager}
-    {Fully replaces the current project. If the current project is not empty, a pop-up window will show to confirm the action. In case one of the liberty files is not found on the specified path, a pop-up panel notifies the error and the said file does not show up in the hierarchical structure.}
+    {Fully replaces the current project. 
+    \begin{itemize}
+    \item If the current project is not empty, a pop-up window will show to confirm the action. 
+    \item In case one of the liberty files is not found on the specified path, a pop-up panel notifies the error and the said file does not show up in the hierarchical structure or open in the working area
+    \end{itemize}}
     \item \FRODescription{Exporting graphs}
     {Ability to store created graphs for future use}
     {Optional}
@@ -735,7 +856,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \item No new files are created
         \item An appropriate error message is shown
     \end{itemize}}
-    {Clicking on the designated “Export Graph” component and then selecting where to save the image and in what format through the File Manager}
+    {Clicking on the designated “Export Graph” component (Right-click on said graph >> Export Graph) and then selecting where to save the image and in what format through the File Manager}
     \item \FRODescription{Changing how the attributes of child elements are summarised}
     {Ability to change a graphs data to represent minimum, maximum or average values if possible}
     {Optional}
@@ -747,15 +868,29 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     \end{itemize}}
     {Clicking on the drop-down box component and selecting the type of summary}
     \item \FRODescription{Modifying the type of the graph}
-    {Making viewing the values of desired attributes of desired elements possible}
+    {Making viewing the values of desired attributes of desired elements in different graph types possible}
     {Optional}
-    {\ref{FR-3} is performed on an attribute of a liberty file successfully}
+    {\ref{FR-5}, \ref{FR-6},\ref{FR-7} or \ref{FR-8} is performed on an element or multiple elements successfully}
     {The type of the graph changes to the desired graph type}
     {\begin{itemize}
         \item The graph is unchanged
         \item An appropriate error message is shown
     \end{itemize}}
     {Clicking on the corresponding drop down component in the "View" panel of the element panel and choosing the new type of the graph}
+    {The graph types to be added are:
+    \begin{itemize}
+        \item Scatterplot that would work in every instance of Histograms. in Histogram comparisons, the values would have different colors according to the corresponding element.
+        \item Function graph that would work in every instance of Histograms by interpolating the values. In comparison, graphs would be overlaid with different colors.
+        \item 3D graphs that would work in every instance of heatmaps. In comparisons it would represent the difference between the values being compared.
+    \end{itemize}}
+    \item \FRODescription{Interpolating}
+    {Calculating approximations for the values of indexes that aren't given in the Liberty File}
+    {Optional}
+    {\ref{FR-5}, \ref{FR-6} or \ref{FR-7} is performed on an element successfully}
+    {The value is shown in the text box}
+    {An appropriate error message is shown}
+    {Clicking on the corresponding "Interpolate" Component on the bottom right of the graph, inserting a value (or two) and pressing "Enter" key}
+    {The opened window when pressing the Interpolate component has an input (or two) box, a text box where the final value is shown and a "Close" button}
     %Decided as unnecessary
 %    \item \FRODescription{Applying formulas to graphs}
 %    {Using a given mathematical expression (such as a function) on the values shown in a graph}
@@ -791,7 +926,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \item Mentioned graph is unchanged
         \item An appropriate error message is shown
     \end{itemize}}
-    {Clicking on the “customise” component on the frame of the graph and inputting the desired changes by using their designated components.}
+    {Clicking on the “customise” component on the frame of the graph and inputting the desired changes by using their designated components.} %What?
     \item \FRODescription{Changing the default font size/colour}
     {Customising the colour and size of the default font}
     {Optional}
@@ -801,7 +936,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \item The default font is unchanged
         \item An appropriate error message is shown
     \end{itemize}}
-    {Clicking on the “customise” tab and inputting the desired changes by using their designated components.}
+    {Clicking on the “customise” tab and inputting the desired changes by using their designated components.} %What?
     \item \FRODescription{Changing display colours}
     {Ability to customise the appearance of the GUI of the desktop application}
     {Optional}
@@ -811,14 +946,14 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \item The past appearance of the GUI of the desktop application is unchanged
         \item An appropriate error message is shown
     \end{itemize}}
-    {Clicking on the “Appearance” component and selecting a skin via the designated component (drop-list ?)}
+    {Clicking on the “Appearance” component and selecting an appearance via the designated component (drop-list ?)} %What?
     \item \FRODescription{Changing the language}
     {Ability to change the default language of the desktop application}
     {Optional}
     {The files regarding the new language exist and can be located by the desktop application}
     {The current language will be replaced with the desired one}
     {An appropriate error message is shown}
-    {Clicking on the “Options” tab and selecting “Change language” component.}
+    {Clicking on the “Change language” component (Edit panel >> Settings >> Preferences >> Change Language) . Then selecting the desired language} %What?
     \item \FRODescription{Shortcuts}
     {Ability to access the functionality faster}
     {Optional}
@@ -832,7 +967,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \item An appropriate error message is shown
     \end{itemize}}
     {Pressing the shortcut keys}
-    \item \FRODescription{Undo/Redo}
+    \item \FRODescription{Undo/Redo} %What?
     {Ability to move backward (Undo)/forward (Redo) in the history of the project}
     {Optional}
     {There are actions done, which can be undone/redone}
@@ -849,6 +984,18 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     {A window with the properties of the loaded liberty file is shown}
     {An appropriate error message is shown}
     {Clicking on the "Properties" component (Right-Click on the corresponding library  >> Properties)}
+    \item \FRODescription{Viewing application information}
+    {Ability to view the information related to the desktop application}
+    {Optional}
+    {None}
+    {Corresponding information is shown as detailed in the description}
+    {An appropriate error message is shown}
+    {Clicking on the desired information (Info panel >> Manual/Github/Version)}
+    {\begin{itemize}
+        \item Manual opens a document containing instructions to the applications functionality
+        \item Github activates a hyperlink to the applications github website
+        \item Version opens a window with information of the application
+    \end{itemize}}
     % Decided as unnecessary last time?
 %    \item \FRODescription{Sorting}
 %    {Ability to sort the shown information in order to make viewing easier}
@@ -875,13 +1022,13 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     \item \FRODescription{Setting default attribute filters}
     {Saving a given set of attribute filters as the default filter}
     {Optional}
-    {At least 1 filter added through \ref{FRO-22} is active}
+    {At least 1 filter added through \ref{PREVIOUS} is active}
     {The mentioned set of attribute filters are set as the default filter for whenever the application is run anew.}
     {\begin{itemize}
         \item The past default filter is still the default filter
         \item An appropriate error message is shown
     \end{itemize}}
-    {Clicking on the “Set as default filter” component in the Filter component from \ref{FRO-22}}
+    {Clicking on the “Set as default filter” component in the Filter component from \ref{PREVIOUS}}
 \end{FRO}
 
 \section{Non-Functional Requirements}
@@ -899,6 +1046,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     \item A graph should be drawn in no longer than 5 seconds
     \item The desktop application should not be able to run twice at the same time
     \item The desktop application should not be able to support more than 5 visible elements in the same graph if they are put on top of one another
+    \item  The desktop application should not be able to support more than 3 element panels in the working area
 \end{NFR-Perf}
 
 \subsection{Robustness}
