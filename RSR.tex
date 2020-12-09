@@ -61,6 +61,17 @@
 \newlist{GTCO}{enumerate}{1}
 \setlist[GTCO]{label=+GTCO-\arabic*}
 
+%Macro for Glossary entries
+% #1: Name of the label (glo:#1)
+% #2: Display in Glossary
+% #3: Description
+\newcommand{\itemglo}[3]{
+    \label{glo:#1}\textbf{#2}
+    \begin{itemize}[noitemsep, topsep=0pt, label=]
+        \item #3
+    \end{itemize}
+}
+
 %MACROS
 
 % Macros for describing functional requirements/test cases
@@ -153,7 +164,7 @@
 % #1 name(reference)
 % #2 name(display)
 % #3 description
-\newcommand{\defg}[3]{\label{glo:#1}\section{#2}#3\\}
+%\newcommand{\defg}[3]{\label{glo:#1}\section{#2}#3\\}
 
 %Macro for Interaction Type Definitions
 % #1 name
@@ -335,7 +346,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     \item Changing how the attributes of child elements are summarized \label{FRO-14}
     \item Modifying the type of the graph \label{FRO-15}
     %\item Adding graph function visualisation through interpolation , 3D graphs scatter plot
-    \item Interpolating \label{FR-16}
+    \item Interpolating \label{FRO-16}
     % \item Applying formulas to graphs \label{FRO-12}
     % \item Magnifying the hitbox of a value on a histogram \label{FRO-13}
     \item Changing GUI appearance \label{FRO-17}
@@ -397,8 +408,8 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     {Said element(s) is/are highlighted and selected}
     {An appropriate error message is shown}
     {\begin{itemize}
-                \item Clicking an element
-                \item Clicking multiple elements while holding CTRL key
+                \item Clicking on an element
+                \item Clicking on multiple elements while holding CTRL key
             \end{itemize} }
     \item \FRDescription{Opening an element in the working area}
     {Ability to open an element in order to view or edit}
@@ -577,7 +588,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     {There is an element with the given prefix}
     {The elements which contain the given prefix in their name are shown in the Outliner}
     {Nothing is shown in the Outliner}
-    {Typing a string into the “search” textbox in the Tree view and pressing "Enter" key}
+    {Typing a string into the “search” textbox in the Outliner and pressing "Enter" key}
     \item \FRDescription{Changing attributes through text editor}
     {Ability to modify the loaded values of a library through the text editor in the "Editor" panel in the visualizer in the desktop application}
     {Primary}
@@ -610,7 +621,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     {Ability to merge libraries into a new library}
     {Primary}
     {Both libraries are successfully loaded into the project}
-    {Given libraries are merged into a new library}
+    {A new library will be created containing all the cells from both initial libraries}
     {\ref{FR-13} will be executed}
     {\begin{itemize}
         \item Clicking on Merge component (Right click after selecting the libraries >> Merge).
@@ -819,7 +830,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     {Double-clicking on a value, inserting a new value in the input box and then pressing the "Enter" Key}
     {Said value can be a single value printed in the "View Panel or part of a drawn graph}
     \item \FRODescription{Exporting data as CSV}
-    {Ability to export the data of a given element in CSV format}
+    {Ability to export the data of a given element in Comma-Separated Values (CSV) format}
     {Optional}
     {Said element is successfully loaded into the project}
     {The data within the said element has been exported as a new file in CSV format}
@@ -882,7 +893,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     {Optional}
     {None}
     {\begin{itemize}
-        \item All imported Liberty files are modified corresponding to the version in the working area
+        \item All Liberty files loaded through \ref{FR-1} are modified corresponding to the version in the working area
         \item A pop up window reminds the user of the libraries not yet assigned a path where they can be saved as Liberty files
     \end{itemize}}
     {\begin{itemize}
@@ -1074,7 +1085,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
 %    {The desired piece of shown information in the Outliner is sorted}
 %    {An appropriate error message is shown}
 %   {Clicking on the “Sort by” component and selecting how and what to sort after (i.e.: name, value, % %   ascending, descending) using the designated component}
-    \item \FRDescription{Setting Filters for a search}
+    \item \FRODescription{Setting Filters for a search}
     {Ability to add/remove a filter of an element for its attribute values or lack thereof}
     {Optional}
     {None}
@@ -1115,7 +1126,6 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     \item A liberty file should take no longer than 1 second to load
     \item A graph should be drawn in no longer than 5 seconds
     \item The desktop application should not be able to run twice at the same time
-    \item The desktop application should not be able to support more than 5 visible elements in the same graph if they are put on top of one another
     \item  The desktop application should not be able to support more than 3 visualizers in the working area
 \end{NFR-Perf}
 
@@ -1232,10 +1242,9 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
   baseline.lib and different1.lib are Liberty files that were provided, which are used in the following tests to evaluate the functionality. The files test1.lib, MergeResult1.lib and MergeResult2.lib are used to compare the actual results to the results obtained from the tests.
   
 \begin{GTC}
-    \item \GTCDescription{\ref{FR-1} and \ref{FR-2}}{Successfully open a Liberty File} \leavevmode \\ \action{User selects "Open" in the menu and selects baseline.lib from the File Manager.}\reaction{baseline.lib is displayed hierarchically in a tree view on the left side
-    of the desktop app.
+    \item \GTCDescription{\ref{FR-1} and \ref{FR-2}}{Successfully open a Liberty File} \leavevmode \\ \action{User selects "Open" in the menu and selects baseline.lib from the File Manager.}\reaction{baseline.lib is displayed hierarchically in a tree view on the left side (Outliner) of the desktop app.
 }
-    \item \GTCDescription{\ref{FR-1} and \ref{FR-2}}{Successfully open multiple Liberty Files} \leavevmode \\ \action{User selects "Open" in the menu to select baseline.lib and different1.lib.}\reaction{Both liberty files are displayed hierarchically in a tree view on the left side of the desktop app.
+    \item \GTCDescription{\ref{FR-1} and \ref{FR-2}}{Successfully open multiple Liberty Files} \leavevmode \\ \action{User selects "Open" in the menu to select baseline.lib and different1.lib.}\reaction{Both liberty files are displayed hierarchically in a tree view on the left side (Outliner) of the desktop app.
 }
     \item \GTCDescription{\ref{FR-1}}{Failed loading of a file} \leavevmode \\ \precondition{Selected file is not on liberty format.}\action{User selects "Open" in the menu and selects said file.}\reaction{No file is displayed on the app. A file not found error is displayed.
 }
@@ -1549,7 +1558,7 @@ The \h{visualizer} consists of a \refer{sec:visualizer:menu}{menu bar} and a \re
 \ui{Data}{Display Only}{\refer{FR-5}{FR-5}, \refer{FR-6}{FR-6}, \refer{FR-7}{FR-7}, \refer{FR-8}{FR-8}}
 
 \subsection{Selection Bar}
-\label{sec:visualizer:statistics}
+\label{sec:visualizer:selection_bar}
 \ui{Selection Bar}{\refer{it:dropdown_selector}{Dropdown Selector}}{\refer{FR-5}{FR-5}, \refer{FR-6}{FR-6}, \refer{FR-7}{FR-7}, \refer{FR-8}{FR-8}, \refer{FRO-14}{FRO-14}, \refer{FRO-15}{FRO-15}}
 
 \subsection{Viewport}
@@ -1582,27 +1591,74 @@ The \h{visualizer} consists of a \refer{sec:visualizer:menu}{menu bar} and a \re
 
 %Glossary
 \chapter{Glossary}
-\defg{library}{Library}{
-    An liberty file's outer scope. Consists of one or multiple \refg{cell}{cells} as well as additional global information.
-}
-\defg{cell}{Cell}{
+
+\begin{itemize}[label=]
+    \item \itemglo{library}{Library}
+    {An liberty file's outer scope. Consists of one or multiple \refg{cell}{cells} as well as additional global information.}
+    \item \itemglo{cell}{Cell}{
     Part of a \refg{library}{library}.
-    Consists of one or multiple \refg{pin}{pins} as well as additional cell-level information.
-}
-\defg{pin}{Pin}{
+    Consists of one or multiple \refg{pin}{pins} as well as additional cell-level information.}
+    \item \itemglo{pin}{Pin}{
     Part of a \refg{cell}{cell}.
-    Consists of pin-level information.
-}
-\defg{element}{Element}{
-    Collective term for \refg{library}{library}/\refg{cell}{cell}/\refg{pin}{pin}.
-}
-\defg{user}{User}{
-    The person making use of the application.
-}
-\defg{display_element}{Displaying Elements}{
-    The operation of viewing the attributes of an \refg{element}{element} via graphs.
-}
-\defg{tba}{TBA}{
-    Acronym for "To be added."
-}
+    Consists of pin-level information.}
+    \item \itemglo{element}{Element}{
+    Collective term for \refg{library}{library}/\refg{cell}{cell}/\refg{pin}{pin}.}
+    \item \itemglo{user}{User}{
+    The person making use of the application.}
+    \item \itemglo{display_element}{Displaying Elements}{
+    The operation of viewing the attributes of an \refg{element}{element} via graphs.}
+    \item \itemglo{tba}{TBA}{
+    Acronym for "To be added."}
+    \item \itemglo{working_area}{Working area}{}
+    \item \itemglo{project}{Project}{}
+    \item \itemglo{timing_sense}{Timing sense}{}
+    \item \itemglo{timing_type}{Timing type}{}
+    \item \itemglo{timing_group}{Timing group}{}
+    \item \itemglo{internal_power_group}{Internal power group}{}
+    \item \itemglo{cell_area}{Cell area}{}
+    \item \itemglo{pin_capacitance}{Pin capacitance}{}
+    \item \itemglo{leakage_power}{Leakage power}{}
+    \item \itemglo{tree_view}{Tree view}{}
+    \item \itemglo{bar_chart}{Bar chart}{}
+    \item \itemglo{histogram}{Histogram}{}
+    \item \itemglo{heatmap}{Heatmap}{}
+    \item \itemglo{scatterplot}{Scatterplot}{}
+    \item \itemglo{3d_graph}{3D Graph}{}
+    \item \itemglo{function_graph}{Function graph}{}
+    \item \itemglo{interpolation}{Interpolation}{}
+    \item \itemglo{io}{IO}{}
+    \item \itemglo{liberty_file}{Liberty file}{}
+    \item \itemglo{csv}{CSV (Comma Separated Value)}{}
+    \item \itemglo{highlighting}{Highlighting}{}
+    \item \itemglo{merge_conflicts}{Merge conflicts}{}
+    \item \itemglo{file_manager}{File manager}{}
+    \item \itemglo{filter}{Filter}{}
+    \item \itemglo{export}{Export}{}
+    \item \itemglo{scale}{Scale}{}
+\end{itemize}
+
+%\defg{library}{Library}{
+%    An liberty file's outer scope. Consists of one or multiple \refg{cell}{cells} as well as additional global %information.
+%}
+%\defg{cell}{Cell}{
+%    Part of a \refg{library}{library}.
+%    Consists of one or multiple \refg{pin}{pins} as well as additional cell-level information.
+%}
+%\defg{pin}{Pin}{
+%    Part of a \refg{cell}{cell}.
+%    Consists of pin-level information.
+%}
+%\defg{element}{Element}{
+%    Collective term for \refg{library}{library}/\refg{cell}{cell}/\refg{pin}{pin}.
+%}
+%\defg{user}{User}{
+%    The person making use of the application.
+%}
+%\defg{display_element}{Displaying Elements}{
+%    The operation of viewing the attributes of an \refg{element}{element} via graphs.
+%}
+%\defg{tba}{TBA}{
+%    Acronym for "To be added."
+%}
+
 \end{document}
