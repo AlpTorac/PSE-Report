@@ -18,7 +18,8 @@
 
 \title{\includegraphics[scale=6.0]{App Icon}\\Requirement Specification for Graphical Editor for Liberty Files}
 
-\author{Alp Toraç Genç, Kerem Kara, Xhulio Pernoca, Manuel Schenk, Ege Uzhan}
+\author{Alp Toraç Genç, Kerem Kara, Xhulio Pernoca, Manuel Schenk, Ege Uzhan \leavevmode \\---------------------------------------------------------------------------------------\\
+Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 \date{\today}
 
 % Format for the chapters/sections/subsections
@@ -1312,7 +1313,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
         \state{Tree view of the Liberty file is displayed on the left.}
         \action{User right clicks the library in the tree view and clicks "Open".}
         \reaction{The selected library is opened in a new panel.}
-        \state{The new panel has the options "Editor" and "View" ."View" is opened by default. In the "View" section the navigation menu is opened and cell names are displayed. dropdown menu of attributes is available.}\label{GTC-7}
+        \state{The new panel has the options "Editor" and "View" ."View" is opened by default. In the "View" section the navigation menu is opened and cell names are displayed. Dropdown menu of attributes is available.}\label{GTC-7}
     
     \item \GTCDescription{\ref{FR-5}}
     {Display a histogram for average internal power of input pins of the selected library} \leavevmode \\ 
@@ -1571,7 +1572,7 @@ Graphically viewing the attributes cell area and pin capacitance are considered 
     \item \GTCDescription{\ref{FR-11}}
     {Search for an attribute in the text editor} \leavevmode \\ 
         \precondition{A library which has at least one cell has been loaded.}
-        \state{Loaded library is shown on the Outliner and FR-3 has been performed on the loaded library, text editor is opened for the library on the “View” panel.}
+        \state{Loaded library is shown on the Outliner and FR-3 has been performed on the loaded library, text editor has been opened for the library.}
         \action{User writes an attribute's name on the search box.}
         \reaction{Text editor scrolls down to the next part of the data where the searched attribute exists. All same strings in the text are highlighted.}
         \action{User presses Enter.}
@@ -2065,19 +2066,17 @@ The \h{visualizer} consists of a \refer{sec:visualizer:menu}{menu bar} and a \re
 \subsubsection{Histogram}
 
 \includegraph{\graphpath}{}{0.4}{Histogram}{Histogram}{histogram}{\imagepath}
-See \refg{histogram}{Histogram}
+See \refg{histogram}{Histogram} for more details.
 
 \subsubsection{Bar Chart}
 
 \includegraph{\graphpath}{}{0.4}{Bar Chart}{Bar Chart}{bar_chart}{\imagepath}
-See \refg{bar_chart}{Bar Chart}
+See \refg{bar_chart}{Bar Chart} for more details.
 
 \subsubsection{Heat Map}
 
 \includegraph{\graphpath}{}{0.4}{Heat Map}{Heat Map}{heat_map}{\imagepath}
-See \refg{heatmap}{Heat Map}
-
-\subsubsection{Table}
+See \refg{heatmap}{Heat Map} for more details.
 
 \subsection{Statistics Bar}
 \label{sec:visualizer:statistics}
