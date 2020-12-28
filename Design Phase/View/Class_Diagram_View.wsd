@@ -1,0 +1,164 @@
+@startuml Class_Diagram
+'Style Settings
+skinparam {
+    BackgroundColor #bababa
+    Shadowing false
+    Nodesep 20
+    Ranksep 50
+}
+skinparam Arrow {
+    Color #2e2e2e
+    Thickness 1.5
+}
+skinparam CircledCharacter {
+    Radius 8
+    FontSize 10
+}
+skinparam class {
+    BackgroundColor #d1d1d1
+    BorderColor #2e2e2e
+    BorderThickness 1.5
+    HeaderBackgroundColor #a6a6a6
+}
+skinparam package {
+    BackgroundColor #bcbfd6
+    BorderThickness 1.8
+}
+skinparam Note {
+    BackgroundColor #297547
+    BorderColor #171a17
+    FontColor #e8e8e8
+}
+'Class Diagram
+'Class Definitions
+    'Basic UI Components
+    package Components {
+        interface UIElement
+        class Button implements UIElement
+        class Dropdown implements UIElement
+        class InputBox implements UIElement
+        class Checkbox implements UIElement
+        class Slider implements UIElement
+        class TextBox implements UIElement
+        class Frame implements UIElement {
+            +Frame(int sx, int sy)
+            +addElement(UIElement e, int x, int y)
+            +resize(int x, int y)
+        }
+    }
+    
+    'UI Generators
+    package Generators {
+        enum InfoBarID {
+            VERSION
+            SELECTED
+            LASTACTION
+        }
+        class InfoBar {
+            -Frame
+            -Map<InfoBarID,TextBox>
+            +setText(InfoBarID, String)
+        }
+        InfoBarID <-- InfoBar : <<uses>>
+        class MainMenuBar
+        class MainWindow
+        class SubWindow
+        class SubWindowArea
+
+        class Outliner
+        class Editor
+        class Visualizer
+    }
+    'Diagrams
+    package Diagrams {
+        abstract Class Diagram {
+            '#Element element
+            +SomeGraphData export() // or file
+            +void refresh()
+            +void update()
+        }
+        abstract class 2DDiagram extends Diagram {
+            #DiagramAxis xAxis
+            #DiagramAxis yAxis
+        }
+        abstract class 3DDiagram extends Diagram {
+            #DiagramAxis xAxis
+            #DiagramAxis yAxis
+            #DiagramAxis zAxis
+        }
+        class Histogram extends 2DDiagram {
+            -DiagramBar[] bars
+        }
+        class BarChart extends 2DDiagram {
+            -DiagramBar[] bars
+        }
+        class HeatMap extends 2DDiagram {
+            -ColorScale colorScale
+        }
+        class FunctionGraph extends 2DDiagram {
+            -DiagramPoint[] points
+        }
+        class 3DHistogram extends 3DDiagram
+
+        interface Hoverable {
+            +default boolean isBeingHovered()
+        }
+        abstract class DiagramComponent implements Hoverable {
+            #Color color
+            #Number xPos
+            #Number yPos
+        }
+        abstract class DiagramBar extends DiagramComponent {
+            #Number size
+        }
+        abstract class DiagramAxis extends DiagramComponent {
+            #Number min
+            #Number max
+            #int steps
+            #boolean showValues
+        }
+        abstract class DiagramLabel extends DiagramComponent {
+            #String caption
+        }
+        abstract class DiagramPoint extends DiagramComponent {
+
+        }
+        class 2DPoint extends DiagramPoint
+        class 3DPoint extends DiagramPoint
+        class 2DBar extends DiagramBar
+        class 3DBar extends DiagramBar
+        class 2DAxis extends DiagramAxis
+        class 3DAxis extends DiagramAxis
+        class HeatMapLabel extends DiagramLabel {
+
+        }
+        'Shows value that is being
+        'hovered over
+        class HoverLabel {
+            -String caption
+            -Color color
+            -Number xPos // mouse pointer
+            -Number yPos // mouse pointer
+        }
+    }
+
+'Class Relations
+    'Ui
+    Dropdown *-- Button
+    Visualizer -> Diagram
+    SubWindow *-- "1"Visualizer
+    SubWindow *-- "1"Editor
+    SubWindowArea *-- "0..3"SubWindow
+
+    MainWindow *-- "1"Outliner
+    MainWindow *-- "1"SubWindowArea
+    MainWindow *-- "1"InfoBar
+    MainWindow *-- "1"MainMenuBar
+    'UIElement Implementers
+    Frame *.. UIElement
+
+    HeatMap "1" *-- "*" HeatMapLabel
+    Diagram *-- "*" DiagramComponent
+    Hoverable "1" *-- "1" HoverLabel : > creates when hovered
+'Package Relations
+@enduml
