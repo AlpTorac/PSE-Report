@@ -76,7 +76,7 @@ package Diagrams {
         +void refresh()
         +void update()
     }
-    package Diagram.Utils {
+    package Diagram.Indicators {
         abstract class DiagramViewHelper implements IDiagram {
             -IDiagram diagram
         }
@@ -87,7 +87,7 @@ package Diagrams {
             
         }
     }
-    note bottom of Diagram.Utils
+    note bottom of Diagram.Indicators
     Things that will be shown on top of diagrams
     that are not actually a part of them go here
     end note
