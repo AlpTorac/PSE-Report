@@ -1,0 +1,268 @@
+@startuml Class_Diagram
+'Style Settings
+skinparam {
+    BackgroundColor #bababa
+    Shadowing false
+    Nodesep 20
+    Ranksep 50
+}
+skinparam Arrow {
+    Color #2e2e2e
+    Thickness 1.5
+}
+skinparam CircledCharacter {
+    Radius 8
+    FontSize 10
+}
+skinparam class {
+    BackgroundColor #d1d1d1
+    BorderColor #2e2e2e
+    BorderThickness 1.5
+    HeaderBackgroundColor #a6a6a6
+}
+skinparam package {
+    BackgroundColor #bcbfd6
+    BorderThickness 1.8
+}
+skinparam Note {
+    BackgroundColor #297547
+    BorderColor #171a17
+    FontColor #e8e8e8
+}
+'Class Diagram
+'Class Definitions
+'Basic UI Components
+package Components {
+    interface UIElement
+    class Button implements UIElement
+    class Dropdown implements UIElement
+    class InputBox implements UIElement
+    class Checkbox implements UIElement
+    class Slider implements UIElement
+    class TextBox implements UIElement
+    class Frame implements UIElement {
+        +Frame(int sx, int sy)
+        +addElement(UIElement e, int x, int y)
+        +resize(int x, int y)
+    }
+}
+
+'UI Generators
+package Generators {
+    enum InfoBarID {
+        VERSION
+        SELECTED
+        LASTACTION
+    }
+    class InfoBar {
+        -Frame
+        -Map<InfoBarID,TextBox>
+        +setText(InfoBarID, String)
+    }
+    InfoBarID <-- InfoBar : <<uses>>
+    class MainMenuBar
+    class MainWindow
+    class SubWindow
+    class SubWindowArea
+
+    class Outliner
+    class Editor
+    class Visualizer
+}
+'Diagrams
+package Diagrams {
+    interface IDiagram {
+        +SomeGraphDataCollection export() // or File
+        +void refresh()
+        +void update()
+    }
+    package Diagram.Utils {
+        abstract class DiagramViewHelper implements IDiagram {
+            -IDiagram diagram
+        }
+        class StaticsDisplayer extends DiagramViewHelper {
+
+        }
+        class HelperLineDisplayer extends DiagramViewHelper {
+            
+        }
+    }
+    note bottom of Diagram.Utils
+    Things that will be shown on top of diagrams
+    that are not actually a part of them go here
+    end note
+    interface IDiagramComparer {
+        +IDiagram getDiagram()
+        +IDiagram setDiagram()
+        +boolean addDiagram()
+        +boolean removeDiagram()
+        +IDiagram compare()
+    }
+    package Diagram.Comparer {
+        abstract class DiagramComparer implements IDiagramComparer {
+            -Collection<IDiagram> diagrams
+            -IDiagramCompareStrategy compareStrategy
+            +DiagramComparer()
+        }
+        interface IDiagramCompareStrategy {
+            +IDiagram compare()
+        }
+        class FunctionGraphComparer implements IDiagramCompareStrategy {
+            -FunctionGraph[] functionGraphs
+            +FunctionGraph compare()
+        }
+        class HistogramComparer implements IDiagramCompareStrategy {
+            -Histogram histogram1
+            -Histogram histogram2
+            +Histogram compare()
+        }
+        class HeatMapComparer implements IDiagramCompareStrategy {
+            -HeatMap heatMap1
+            -HeatMap heatMap2
+            +HeatMap compare()
+        }
+        class BarChartComparer implements IDiagramCompareStrategy {
+            -BarChart[] barCharts
+            +BarChart compare()
+        }
+    }
+    package Diagram.Components {
+        interface Hoverable {
+            +default boolean isBeingHovered()
+            +default void hoverAction()
+        }
+        note right of Hoverable::hoverAction
+            show label as default
+            override if there is more
+        end note
+        abstract class DiagramComponent implements Hoverable {
+            #Number xPos
+            #Number yPos
+        }
+        abstract class DiagramBar extends DiagramComponent {
+        }
+        abstract class DiagramAxis extends DiagramComponent {
+            #Number min
+            #Number max
+            #int steps
+            #boolean showValues
+        }
+        abstract class DiagramLabel extends DiagramComponent {
+            #String caption
+        }
+        abstract class DiagramPoint extends DiagramComponent {
+            #Number size
+        }
+        abstract class DiagramLine extends DiagramComponent {
+
+        }
+        class HelperLine extends DiagramLine {
+
+        }
+        note bottom of HelperLine
+            Horizontal and vertical lines that
+            help user identify coordinates easier
+        end note
+        class Theme {
+            -Map<ThemeColors, Color> colors
+        }
+        enum ThemeColors {
+
+        }
+        class ConcretePoint extends DiagramPoint
+        class HistogramBar extends DiagramBar
+        class BarChartBar extends DiagramBar
+        class ConcreteAxis extends DiagramAxis
+        class HeatMapLabel extends DiagramLabel
+        class ValueDisplayLabel extends DiagramLabel
+        'Shows value that is being
+        'hovered over
+        class HoverLabel {
+            -String caption
+            -Theme theme
+            -Number xPos // mouse pointer
+            -Number yPos // mouse pointer
+        }
+    }
+    package Diagram.Data {
+        class DiagramData {
+            -Collection<?> data;
+            -DiagramDataFormatter ddf;
+            +DiagramData(Collection<?> data)
+            +<T extends Collection<?>> T getData();
+            +void update()
+            +void setFormat(DiagramDataFormatter ddf)
+        }
+        note right of DiagramData::getData
+        Run ddf on data and return result.
+        If ddf = null, return a deep copy.
+        end note
+        abstract class DiagramDataFormatter {
+            +<T extends Collection<?>> format(T data)
+        }
+        class ArrayListDataFormatter extends DiagramDataFormatter {
+            +<T extends Collection<?>> ArrayList<?> format(T data)
+        }
+        class ArrayDataFormatter extends DiagramDataFormatter {
+            +<E, T extends Collection<E>> E[] format(T data)
+        }
+    }
+    package Diagram.Type {
+        abstract class Diagram implements IDiagram {
+            -DiagramComponent[] components
+        }
+        class Histogram extends Diagram {
+            -HistogramBar[] bars
+        }
+        class BarChart extends Diagram {
+            -BarChartBar[] bars
+        }
+        class HeatMap extends Diagram {
+            -ColorScale colorScale
+            -HeatMapLabel[] heatMapLabels
+        }
+        class FunctionGraph extends Diagram {
+            -DiagramPoint[] points
+        }
+    }
+    note as N1
+    Decorator pattern:
+    
+    -IDiagram as Component
+    -Diagram subclasses as ConcreteComponents
+    -DiagramViewHelper as BaseDecorator
+        -Its subclasses as ConcreteDecorators 
+    end note
+    note as N2
+    Strategy pattern:
+
+    -IDiagramCompareStrategy as abstract strategy
+        -Its subclasses as concrete strategies
+    end note
+}
+
+'Class Relations
+'Ui
+Dropdown *-- Button
+IDiagram <-- Visualizer
+IDiagramComparer <-- Visualizer
+SubWindow *-- "1"Visualizer
+SubWindow *-- "1"Editor
+SubWindowArea *-- "0..3"SubWindow
+
+MainWindow *-- "1"Outliner
+MainWindow *-- "1"SubWindowArea
+MainWindow *-- "1"InfoBar
+MainWindow *-- "1"MainMenuBar
+'UIElement Implementers
+Frame *.. UIElement
+DiagramComparer --> Diagram : > creates on compare
+DiagramComparer o-- IDiagramCompareStrategy
+DiagramData "1" *--> "1" DiagramDataFormatter
+Diagram *--> DiagramData
+Theme --> ThemeColors : > uses
+DiagramComponent o-- Theme
+Diagram *-- "*" DiagramComponent
+Hoverable "1" *-- "1" HoverLabel : > creates when hovered
+'Package Relations
+@enduml
