@@ -2,11 +2,11 @@ IDiagramCompareStrategy - General idea: Make a new diagram, which is the visual 
 
 FunctionGraphComparer: Color points of different function graphs differently and put them all into the DiagramComponents[] in the new diagram.
 
-HistogramComparer: Combine the index1 in the attribute shown in histogram1 and in histogram2 into index1_comparisonHistogram. Make 2 new bars for each index in index1_comparisonHistogram if the said index is used in both of the graphs, if it is only in one of them, make only 1 new bar. Give one of them the value histogram1 has in that index and the value of histogram2 in that index to the other. Color bars made for histogram1 and histogram2 differently and put them all into the DiagramComponents[] in the new diagram. Indicate differences by for example:
+HistogramComparer: Combine the index1 in the attribute shown in histogram1 and in histogram2 into index1_comparisonHistogram. Make 2 new bars for each index in index1_comparisonHistogram if the said index is used in both of the graphs, if it is only in one of them, make only 1 new bar. Give one of them the value histogram1 has in that index and the value of histogram2 in that index to the other. Put the new bars made all into the DiagramComponents[] in the new diagram, which is supposed to show the comparison. Indicate differences by for example:
 
 	idea 1: Make it so that shorter bars are at the front, larger ones are at the back.
-	idea 2: Mix the colors of bars of histogram1 and histogram2, paint the shorter bar with that color.
+	idea 2: Mix the colors of bars of histogram1 and histogram2, paint the shorter bar with that color. (probably better)
 
 HeatMapComparer: Partition labels into sub-labels by taking the cross product of the indices from heatMap1 and heatMap2 combined (cross product of all the used index1 in heatMap1 and heatMap2 with all the used index2 in heatMap1 and heatMap2) and using these as ranges for labels (without overlapping them), if (for example) heatMap1’s value in the range of the sub-label is greater color it green, red if lesser and yellow if same.
 
-BarChartComparer: Color bars of different BarCharts differently and put the bars of one value (such as input value power) next to each other and color them differently
+BarChartComparer: Color bars of different BarCharts differently and put the bars of one value (such as input value power) next to each other and color them differently.
