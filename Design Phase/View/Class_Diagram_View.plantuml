@@ -76,21 +76,6 @@ package Diagrams {
         +void refresh()
         +void update()
     }
-    package Diagram.Indicators {
-        abstract class DiagramViewHelper implements IDiagram {
-            -IDiagram diagram
-        }
-        class StaticsDisplayer extends DiagramViewHelper {
-
-        }
-        class HelperLineDisplayer extends DiagramViewHelper {
-            
-        }
-    }
-    note bottom of Diagram.Indicators
-    Things that will be shown on top of diagrams
-    that are not actually a part of them go here
-    end note
     interface IDiagramComparer {
         +IDiagram getDiagram()
         +IDiagram setDiagram()
@@ -117,6 +102,7 @@ package Diagrams {
             +Histogram compare()
         }
         class HeatMapComparer implements IDiagramCompareStrategy {
+            -DiagramColorScale compareColors
             -HeatMap heatMap1
             -HeatMap heatMap2
             +HeatMap compare()
@@ -135,11 +121,15 @@ package Diagrams {
             show label as default
             override if there is more
         end note
-        abstract class DiagramComponent implements Hoverable {
+        abstract class DiagramComponent {
             #Number xPos
             #Number yPos
         }
-        abstract class DiagramBar extends DiagramComponent {
+        abstract class DiagramValueDisplayComponent extends DiagramComponent implements Hoverable {
+            #Number value
+        }
+        abstract class DiagramBar extends DiagramValueDisplayComponent {
+            #Number width
         }
         abstract class DiagramAxis extends DiagramComponent {
             #Number min
@@ -148,21 +138,68 @@ package Diagrams {
             #boolean showValues
         }
         abstract class DiagramLabel extends DiagramComponent {
-            #String caption
-        }
-        abstract class DiagramPoint extends DiagramComponent {
-            #Number size
+
         }
         abstract class DiagramLine extends DiagramComponent {
+            #Number length
+        }
+        class ConcreteLine extends DiagramLine {
 
         }
-        class HelperLine extends DiagramLine {
-
+        abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
+            #String caption
         }
-        note bottom of HelperLine
-            Horizontal and vertical lines that
-            help user identify coordinates easier
+        abstract class DiagramPoint extends DiagramValueDisplayComponent {
+            #Number size
+        }
+        abstract class DiagramColorScale extends DiagramComponent {
+            +Color valueToColor(Number value)
+            +Number[] getValues()
+            +Color[] getColors()
+            +final Object[] matchingsAsArray()
+        }
+        note right of DiagramColorScale::matchingsAsArray
+            return new Object[]
+            {getValues(), getColors()}
         end note
+        abstract class DiagramMultiColorScale extends DiagramColorScale {
+            -Collection<ValueColorPair> pairs
+            +DiagramMultiColorScale(Collection<ValueColorPair> pairs)
+            +void addMatching(Number value, Color c)
+            +void removeMatching(Number value, Color c)
+        }
+        class SortedColorScale extends DiagramMultiColorScale {
+            +SortedColorScale()
+        }
+        note left of SortedColorScale::SortedColorScale
+            super(new TreeSet<ValueColorPair>)
+        end note
+        class ValueColorPair {
+            -final Number value
+            -final Number Color
+            -ValueColorPair(Number value, Color c)
+            +Number getValue()
+            +Color getColor()
+        }
+        DiagramMultiColorScale +-- ValueColorPair : < protected inner class
+        abstract class DiagramFixColorScale extends DiagramColorScale {
+            +Number[] getValues()
+            +Color[] getColors()
+        }
+        class 2ColorScale extends DiagramFixColorScale {
+            -Color minValueColor
+            -Color maxValueColor
+            +Number minValue
+            +Number maxValue
+        }
+        class 3ColorScale extends DiagramFixColorScale {
+            -Color minValueColor
+            -Color percentileValueColor
+            -Color maxValueColor
+            +Number minValue
+            +Number percentileValue
+            +Number maxValue
+        }
         class Theme {
             -Map<ThemeColors, Color> colors
         }
@@ -173,7 +210,7 @@ package Diagrams {
         class HistogramBar extends DiagramBar
         class BarChartBar extends DiagramBar
         class ConcreteAxis extends DiagramAxis
-        class HeatMapLabel extends DiagramLabel
+        class HeatMapLabel extends DiagramValueLabel
         class ValueDisplayLabel extends DiagramLabel
         'Shows value that is being
         'hovered over
@@ -208,9 +245,15 @@ package Diagrams {
         }
     }
     package Diagram.Type {
-        abstract class Diagram implements IDiagram {
-            -DiagramComponent[] components
+        interface ValueDisplayComponentAccessPoint {
+            +DiagramValueDisplayComponent[] getValueDisplayComponents()
         }
+        abstract class Diagram implements IDiagram, ValueDisplayComponentAccessPoint {
+            
+        }
+        note right of ValueDisplayComponentAccessPoint::getValueDisplayComponents
+        Make a deep copy
+        end note
         class Histogram extends Diagram {
             -HistogramBar[] bars
         }
@@ -218,13 +261,47 @@ package Diagrams {
             -BarChartBar[] bars
         }
         class HeatMap extends Diagram {
-            -ColorScale colorScale
+            -DiagramColorScale colorScale
             -HeatMapLabel[] heatMapLabels
         }
         class FunctionGraph extends Diagram {
             -DiagramPoint[] points
         }
     }
+    package Diagram.Indicators {
+        abstract class DiagramViewHelper implements IDiagram, ValueDisplayComponentAccessPoint {
+            -IDiagram diagram
+            -List<ViewHelperComponent> helperComponents
+        }
+        abstract class StatisticsDisplayer extends DiagramViewHelper {
+
+        }
+        class StatisticsLineDisplayer extends StatisticsDisplayer
+        note bottom of StatisticsLineDisplayer
+        Displays lines for statistics checked
+        in the checkbox part
+        end note
+        class StatisticsColorDisplayer extends StatisticsDisplayer
+        note bottom of StatisticsColorDisplayer
+        Overshadows DiagramValueDisplayComponents
+        with the ones that display statistics
+        with colors
+        end note
+        abstract class HelperLineDisplayer extends DiagramViewHelper {
+
+        }
+        class CoordinateIndicatorLineDisplayer extends HelperLineDisplayer {
+
+        }
+        class ViewHelperComponent extends DiagramComponent {
+
+        }
+        DiagramViewHelper *--> ViewHelperComponent
+    }
+    note top of Diagram.Indicators
+    Things that will be shown on top of diagrams
+    that are not actually a part of them go here
+    end note
     note as N1
     Decorator pattern:
     
