@@ -1,0 +1,59 @@
+@startuml example
+    package MVC.view {
+        class GuessingGame {
+            +main()
+        }
+        note right of GuessingGame::main
+        Initializes all 3 within the main method
+        Calls registerListener from View
+        end note
+        class View extends JFrame {
+            -UIElements
+            +View() // Initialize UI
+            +registerListener(ActionListener listener)
+            +wasLowerButton(ActionEvent e)
+            +wasCorrectButton(ActionEvent e)
+            +wasHigherButton(ActionEvent e)
+        }
+        note right of View::registerListener
+        Registers actionListeners to components
+        end note
+    }
+    package MVC.model {
+        interface IObserver {
+            +update(changed variables)
+        }
+        class Model {
+            -IObserver listener
+            +setChangeListener(GuessingChange listener)
+            +someDataFunction1()
+            +...()
+            +someDataFunctionN()
+            -notifyChange()
+        }
+        note right of Model::someDataFunction1
+        Uses notifyChange to notify listener attribute
+        end note
+    }
+    package MVC.controller {
+        class Control implements ActionListener, IObserver {
+            Model model
+            View view
+            +actionPerformed(ActionEvent ae)
+            +update(variable)
+        }
+        note right of Control::actionPerformed
+        Uses a big if-statement with
+        wasLower/Correct/HigherButton methods
+        to decide what the event was and then
+        uses someDataFunctionX from Model
+        end note
+    }
+    Control --> Model
+    Control --> View
+    Model --> IObserver
+
+    GuessingGame --> Model : initializes and contains (from GuessingGame to Model)
+    GuessingGame --> Control : initializes and contains
+    GuessingGame --> View : initializes and contains
+@enduml

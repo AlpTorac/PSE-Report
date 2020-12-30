@@ -1,0 +1,23 @@
+i think now i understand how the EditPart class in Softwaretechnik II is supposed to work: (04_CleanArchitecture.pdf slide 23)
+
+we give the event happened to the Controller class (for example in form of an ActionEnum enum), which Controller class then receives (Controller is registered as a listener of View). then we can just encapsulate the options within each if-statement-block as a an EditPart class (implements IEventHandler, the Handlers) and map these two instead of making a gigantic if-statement (so Map<ActionEnum, IEventHandler>).
+
+View class has a reference to Controller class but not to Model class.
+
+Controller class has a reference to Model class but not to View class. Controller class has references to EditParts via the Map mentioned above.
+
+Model class has a reference to neither Controller class nor to View class. Model class has references to UI components as a collection of IObserver<? super IModel> interfaces.
+
+the way i think it works is:
+
+1) View class sends the event happened to the Controller class as ActionEnum. the Controller class then chooses an appropriate EditPart from the Map above. this EditPart, which implements the IEventHandler abstract class, activates its handleEvent() method. this updates the Model class, which forwards the change to the Model class. (The UML diagram there is trying to say that we have * EditParts (aka Handlers) for each UI component)
+
+2) the IObserver<T> (T is a generic parameter for the Model interfaces, such as IModel) interface in the Model package is implemented by every UI component inside View package with "implements IObserver<IModel>". this interface implements a method "void update(IModel model)", where IModel is the interface Model class implements. Model class contains a set of IObserver<? super IModel> and informs the UI components that they are outdated by calling a method that iterates through all the observers registered within the Model class and calling "update(this)" method (this refers to the Model class) (regardless of what the change was, does not matter if they actually are outdated or not, each UI component will be forced to update this way by getting data from Model class). hereby View class gets the changes from the IModel object (model), pretty much like refresh or re-draw.
+
+so: we store handlers in form of concrete EditPart classes inside View package (EditPart itself is an abstract class, which implements IEventHandler from Controller package), to those the Controller class references via the Map above. these EditParts then manipulate the Model class. when the Model class is manipulated, it notifies every single UI component - whose references it contains as a collection of IObserver<? super IModel> - by iterating through all of these stored references. this ultimately forces all the UI components to call their implemented "void update(IModel model)" method to get data (if a UI component needs no data from the Model class itself, such as a close window button, it basically has that method empty).
+
+some notes:
+
+1) IEventHandler contains references to the Controller class (and thus also to Model class). These will be implemented as protected final variables (types will be the IController and IModel interfaces). I have tested it, the Controller and Model are not accessible from main class in View class without explicit getter-methods in EditPart class this way.
+
+2) IEventHandler constructor will register the object made into the Map above.
