@@ -122,8 +122,10 @@ package Diagrams {
             override if there is more
         end note
         abstract class DiagramComponent {
+            #Color color
             #Number xPos
             #Number yPos
+            +{abstract} clone()
         }
         abstract class DiagramValueDisplayComponent extends DiagramComponent implements Hoverable {
             #Number value
@@ -200,18 +202,12 @@ package Diagrams {
             +Number percentileValue
             +Number maxValue
         }
-        class Theme {
-            -Map<ThemeColors, Color> colors
-        }
-        enum ThemeColors {
-
-        }
         class ConcretePoint extends DiagramPoint
         class HistogramBar extends DiagramBar
         class BarChartBar extends DiagramBar
         class ConcreteAxis extends DiagramAxis
         class HeatMapLabel extends DiagramValueLabel
-        class ValueDisplayLabel extends DiagramLabel
+        class Label extends DiagramLabel
         'Shows value that is being
         'hovered over
         class HoverLabel {
@@ -219,6 +215,17 @@ package Diagrams {
             -Theme theme
             -Number xPos // mouse pointer
             -Number yPos // mouse pointer
+        }
+        class DiagramComponentFactory {
+            -DiagramComponentFactory DiagramComponentFactory()
+            +DiagramComponentFactory getDiagramComponentFactory() // return this
+            +DiagramPoint createPoint()
+            +DiagramValueLabel createValueLabel()
+            +DiagramBar createBar()
+            +DiagramLabel createLabel()
+            +DiagramAxis createAxis()
+            +DiagramColorScale createColorScale()
+            +DiagramLine createLine()
         }
     }
     package Diagram.Data {
@@ -245,15 +252,18 @@ package Diagrams {
         }
     }
     package Diagram.Type {
-        interface ValueDisplayComponentAccessPoint {
-            +DiagramValueDisplayComponent[] getValueDisplayComponents()
+        interface DiagramComponentAccessPoint {
+            +DiagramComponent[] getNonValueDisplayDiagramComponentPrototypes()
+            +DiagramValueDisplayComponent[] getDiagramValueDisplayComponentPrototypes()
         }
-        abstract class Diagram implements IDiagram, ValueDisplayComponentAccessPoint {
+        note top of DiagramComponentAccessPoint
+        Provide a deep copy of each DiagramComponent
+        appropriate for the method name
+        (only one each type)
+        end note
+        abstract class Diagram implements IDiagram, DiagramComponentAccessPoint {
             
         }
-        note right of ValueDisplayComponentAccessPoint::getValueDisplayComponents
-        Make a deep copy
-        end note
         class Histogram extends Diagram {
             -HistogramBar[] bars
         }
@@ -269,10 +279,18 @@ package Diagrams {
         }
     }
     package Diagram.Indicators {
-        abstract class DiagramViewHelper implements IDiagram, ValueDisplayComponentAccessPoint {
+        abstract class DiagramViewHelper implements IDiagram, DiagramComponentAccessPoint {
             -IDiagram diagram
             -List<ViewHelperComponent> helperComponents
+            -boolean isVisible
+            +void show()
+            +void hide()
         }
+        note right of DiagramViewHelper
+        For DiagramComponentAccessPoint methods:
+        Keep looking for a Diagram by recursively
+        going through the Decorators.
+        end note
         abstract class StatisticsDisplayer extends DiagramViewHelper {
 
         }
@@ -294,8 +312,14 @@ package Diagrams {
 
         }
         class ViewHelperComponent extends DiagramComponent {
-
+            -boolean isVisible
+            +void show()
+            +void hide()
         }
+        note bottom of ViewHelperComponent
+        Wraps DiagramComponents that the
+        decorators create and use
+        end note
         DiagramViewHelper *--> ViewHelperComponent
     }
     note top of Diagram.Indicators
@@ -316,6 +340,39 @@ package Diagrams {
     -IDiagramCompareStrategy as abstract strategy
         -Its subclasses as concrete strategies
     end note
+
+    note as N3
+    Builder Pattern:
+
+    -DiagramDirector as singleton director
+        -Its subclasses as builders
+    end note
+    class DiagramDirector {
+        -DiagramBuilder builder
+        -DiagramDirector DiagramDirector()
+        +DiagramDirector getDiagramDirector()
+        +void changeBuilder()
+    }
+    abstract class DiagramBuilder {
+        -Settings settings
+        -DiagramData data
+        #DiagramAxis buildAxes()
+        #DiagramValueDisplayComponent[] buildValueDisplayComponents()
+        #DiagramComponent[] buildDiagramSpecificComponent()
+        +IDiagram buildDiagram()
+    }
+    class BarChartBuilder extends DiagramBuilder {
+
+    }
+    class HistogramBuilder extends DiagramBuilder {
+
+    }
+    class FunctionGraphBuilder extends DiagramBuilder {
+
+    }
+    class HeatMapBuilder extends DiagramBuilder {
+
+    }
 }
 
 'Class Relations
@@ -333,12 +390,14 @@ MainWindow *-- "1"InfoBar
 MainWindow *-- "1"MainMenuBar
 'UIElement Implementers
 Frame *.. UIElement
-DiagramComparer --> Diagram : > creates on compare
+DiagramViewHelper --> Diagram : > Wraps and decorates
+DiagramDirector --> DiagramBuilder
+DiagramDirector --> Diagram : <<creates>>
+DiagramComponentFactory --> DiagramComponent : <<creates>>
+DiagramComparer --> Diagram : > creates on compare using DiagramDirector
 DiagramComparer o-- IDiagramCompareStrategy
 DiagramData "1" *--> "1" DiagramDataFormatter
 Diagram *--> DiagramData
-Theme --> ThemeColors : > uses
-DiagramComponent o-- Theme
 Diagram *-- "*" DiagramComponent
 Hoverable "1" *-- "1" HoverLabel : > creates when hovered
 'Package Relations
