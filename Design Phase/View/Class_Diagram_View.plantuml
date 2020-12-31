@@ -323,7 +323,7 @@ package Diagrams {
         DiagramViewHelper *--> ViewHelperComponent
     }
     note top of Diagram.Indicators
-    Things that will be shown on top of diagrams
+    Things that will be shown on diagrams
     that are not actually a part of them go here
     end note
     note as N1
@@ -348,13 +348,16 @@ package Diagrams {
         -Its subclasses as builders
     end note
     class DiagramDirector {
+        -Settings settings
         -DiagramBuilder builder
         -DiagramDirector DiagramDirector()
         +DiagramDirector getDiagramDirector()
-        +void changeBuilder()
+        +void changeBuilder(Builder b)
+        +void changeSettings(Settings s)
+        +Settings getSettings() // deep copy
     }
     abstract class DiagramBuilder {
-        -Settings settings
+        -Settings settings = DiagramDirector.getSettings
         -DiagramData data
         #DiagramAxis buildAxes()
         #DiagramValueDisplayComponent[] buildValueDisplayComponents()
