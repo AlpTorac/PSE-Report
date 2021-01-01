@@ -108,7 +108,8 @@ package Diagrams {
             +HeatMap compare()
         }
         class BarChartComparer implements IDiagramCompareStrategy {
-            -BarChart[] barCharts
+            -BarChart barChart1
+            -BarChart barChart2
             +BarChart compare()
         }
     }

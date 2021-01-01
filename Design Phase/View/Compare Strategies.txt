@@ -9,4 +9,4 @@ HistogramComparer: Combine the index1 in the attribute shown in histogram1 and i
 
 HeatMapComparer: Partition labels into sub-labels by taking the cross product of the indices from heatMap1 and heatMap2 combined (cross product of all the used index1 in heatMap1 and heatMap2 with all the used index2 in heatMap1 and heatMap2) and using these as ranges for labels (without overlapping them), if (for example) heatMap1’s value in the range of the sub-label is greater color it green, red if lesser and yellow if same.
 
-BarChartComparer: Color bars of different BarCharts differently and put the bars of one value (such as input value power) next to each other and color them differently.
+BarChartComparer: Color bars of different BarCharts differently and put the bars of one value (such as input value power) on top of each other like with histograms.
