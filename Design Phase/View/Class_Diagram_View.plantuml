@@ -164,42 +164,10 @@ package Diagrams {
             return new Object[]
             {getValues(), getColors()}
         end note
-        abstract class DiagramMultiColorScale extends DiagramColorScale {
-            -Collection<ValueColorPair> pairs
-            +DiagramMultiColorScale(Collection<ValueColorPair> pairs)
-            +void addMatching(Number value, Color c)
-            +void removeMatching(Number value, Color c)
-        }
-        class SortedColorScale extends DiagramMultiColorScale {
-            +SortedColorScale()
-        }
-        note left of SortedColorScale::SortedColorScale
-            super(new TreeSet<ValueColorPair>)
-        end note
-        class ValueColorPair {
-            -final Number value
-            -final Number Color
-            -ValueColorPair(Number value, Color c)
-            +Number getValue()
-            +Color getColor()
-        }
-        DiagramMultiColorScale +-- ValueColorPair : < protected inner class
-        abstract class DiagramFixColorScale extends DiagramColorScale {
-            +Number[] getValues()
-            +Color[] getColors()
-        }
-        class 2ColorScale extends DiagramFixColorScale {
+        class 2ColorScale extends DiagramColorScale {
             -Color minValueColor
             -Color maxValueColor
             +Number minValue
-            +Number maxValue
-        }
-        class 3ColorScale extends DiagramFixColorScale {
-            -Color minValueColor
-            -Color percentileValueColor
-            -Color maxValueColor
-            +Number minValue
-            +Number percentileValue
             +Number maxValue
         }
         class ConcretePoint extends DiagramPoint
