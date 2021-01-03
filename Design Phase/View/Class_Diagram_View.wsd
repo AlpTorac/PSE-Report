@@ -1,9 +1,10 @@
 @startuml Class_Diagram
 'Style Settings
 skinparam {
+    Linetype ortho
     BackgroundColor #bababa
     Shadowing false
-    Nodesep 20
+    Nodesep 60
     Ranksep 50
 }
 skinparam Arrow {
@@ -31,45 +32,155 @@ skinparam Note {
 }
 'Class Diagram
 'Class Definitions
-    'Basic UI Components
+    'Basic UI Components, extend/use Swing components
     package Components {
-        interface UIElement
-        class Button implements UIElement
-        class Dropdown implements UIElement
-        class InputBox implements UIElement
-        class Checkbox implements UIElement
-        class Slider implements UIElement
-        class TextBox implements UIElement
-        class Frame implements UIElement {
-            +Frame(int sx, int sy)
-            +addElement(UIElement e, int x, int y)
-            +resize(int x, int y)
-        }
+        'Swing
+            together {
+                class Container extends Component
+                class JComponent extends Container {
+                    .
+                    .
+                    --
+                    .
+                    .
+                }
+                class JFrame 
+                class JFileChooser
+                class JPanel extends JComponent
+                class JButton extends JComponent
+                class JLabel extends JComponent
+                class JTextField extends JComponent
+                class JTextPane extends JComponent
+                class JComboBox extends JComponent
+                class JTree extends JComponent
+                class JScrollPane extends JComponent
+                class JMenuBar extends JComponent
+                class JCheckBox extends JComponent
+            }
+            'Listeners
+                together {
+                    interface EventListener
+                    interface ComponentListener extends EventListener {
+                        +componentHidden(ComponentEvent e)
+                        +componentMoved(ComponentEvent e)
+                        +componentResized(ComponentEvent e)
+                        +componentShown(ComponentEvent e)
+                    }
+                    interface ActionListener extends EventListener {
+                        +actionPerformed(ActionEvent e)
+                    }
+                    interface KeyListener extends EventListener {
+                        +keyPressed(KeyEvent e)
+                        +keyReleased(KeyEvent e)
+                        +keyTyped(KeyEvent e)
+                    }
+                }
+        'Custom
+            class Tree extends JTree
+            class Button extends JButton
+            class DropdownSelector extends JComboBox
+            class InputBox extends JTextField
+            class Checkbox extends JCheckBox
+            class Label extends JLabel
+            class ScrollPane extends JScrollPane
+            class MenuBar extends JMenuBar
+            class TextPane extends JTextPane
+
+            'Frames/Panels
+            together {
+                enum ResizeMode {
+                    ABSOLUTE_TOP_LEFT
+                    ABSOLUTE_BOTTOM_RIGHT
+                    RELATIVE
+                }
+                class Resizer {
+                    +Resizer(ResizeMode t, ResizeModer r, ResizeMode b, ResizeMode l)
+                    +resize(Component, int width, int height, int newWidth, int newHeight)
+                }
+                interface AutoResizing extends ComponentListener {
+                    +setResizer(Component, Resizer)
+                }
+
+                class Panel extends JPanel implements AutoResizing {
+                    -Map<Component, ComponentResizer>
+                    +setResizer(Component, Resizer)
+                }
+                class Window implements AutoResizing {
+                    -Map<Component, ComponentResizer>
+                    +setResizer(Component, Resizer)
+                }
+                ResizeMode <-- Resizer
+            }
     }
     
-    'UI Generators
-    package Generators {
+    'UI Composites
+    package Composites {
         enum InfoBarID {
             VERSION
             SELECTED
             LASTACTION
         }
-        class InfoBar {
-            -Frame
+        class InfoBar extends Panel {
             -Map<InfoBarID,TextBox>
             +setText(InfoBarID, String)
         }
         InfoBarID <-- InfoBar : <<uses>>
-        class MainMenuBar
-        class MainWindow
-        class SubWindow
-        class SubWindowArea
 
-        class Outliner
-        class Editor
-        class Visualizer
+        class MainWindow extends Window {
+            -MenuBar mainMenu
+
+            +MainWindow()
+            + {static} void main(String[] args)
+        }
+
+        class SubWindowArea extends Panel{
+            +addSubWindow(SubWindow)
+            +removeSubWindow(SubWindow)
+        }
+        class SubWindow extends Panel {
+            -MenuBar
+            +SubWindow(Element)
+            +setElement(Element)
+        }
+        abstract class ElementManipulator extends Panel {
+            +setElement(Element)
+        }
+        class TextEditor implements ElementManipulator {
+            -TextPane
+            +TextEditor(Element)
+        }
+        class Visualizer implements ElementManipulator {
+            -TextArea Info
+            -MenuBar diagramOptions
+            -MenuBar statisticsOptions
+            +Visualizer(Element)
+        }
+        SubWindow *-- "1..[num subtypes]" ElementManipulator
+        SubWindowArea *-- "0..3" SubWindow
+
+        class Outliner extends Panel {
+            -MenuBar
+            -Tree
+            -DAO
+            +Outliner(DAO data)
+        }
+
+        class MergeDialog extends Window {
+            Label prompt
+            Label left
+            Label right
+            InputBox left
+            InputBox right
+            Button renameLeft
+            Button renameRight
+            Button keepLeft
+            Button keepRight
+            +MergeDialog()
+            +open(Element eLeft, Element eRight)
+        }
+        MergeDialog --* MainWindow
     }
-    'Diagrams
+'Diagrams
     package Diagrams {
         abstract Class Diagram {
             '#Element element
@@ -144,19 +255,13 @@ skinparam Note {
 
 'Class Relations
     'Ui
-    Dropdown *-- Button
+    AutoResizing --> Resizer
     Visualizer -> Diagram
-    SubWindow *-- "1"Visualizer
-    SubWindow *-- "1"Editor
-    SubWindowArea *-- "0..3"SubWindow
 
     MainWindow *-- "1"Outliner
     MainWindow *-- "1"SubWindowArea
     MainWindow *-- "1"InfoBar
-    MainWindow *-- "1"MainMenuBar
     'UIElement Implementers
-    Frame *.. UIElement
-
     HeatMap "1" *-- "*" HeatMapLabel
     Diagram *-- "*" DiagramComponent
     Hoverable "1" *-- "1" HoverLabel : > creates when hovered
