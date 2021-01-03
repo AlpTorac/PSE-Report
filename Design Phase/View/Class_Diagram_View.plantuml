@@ -181,46 +181,69 @@ skinparam Note {
         MergeDialog --* MainWindow
     }
 'Diagrams
-    package Diagrams {
-        abstract Class Diagram {
-            '#Element element
-            +SomeGraphData export() // or file
-            +void refresh()
-            +void update()
+package Diagrams {
+    interface IDiagram {
+        +SomeGraphDataCollection export() // or File
+        +void refresh()
+        +void update()
+    }
+    interface IDiagramComparer {
+        +IDiagram getDiagram()
+        +IDiagram setDiagram()
+        +boolean addDiagram()
+        +boolean removeDiagram()
+        +IDiagram compare()
+    }
+    package Diagram.Comparer {
+        abstract class DiagramComparer implements IDiagramComparer {
+            -Collection<IDiagram> diagrams
+            -IDiagramCompareStrategy compareStrategy
+            +DiagramComparer()
         }
-        abstract class 2DDiagram extends Diagram {
-            #DiagramAxis xAxis
-            #DiagramAxis yAxis
+        interface IDiagramCompareStrategy {
+            +IDiagram compare()
         }
-        abstract class 3DDiagram extends Diagram {
-            #DiagramAxis xAxis
-            #DiagramAxis yAxis
-            #DiagramAxis zAxis
+        class FunctionGraphComparer implements IDiagramCompareStrategy {
+            -FunctionGraph[] functionGraphs
+            +FunctionGraph compare()
         }
-        class Histogram extends 2DDiagram {
-            -DiagramBar[] bars
+        class HistogramComparer implements IDiagramCompareStrategy {
+            -Histogram histogram1
+            -Histogram histogram2
+            +Histogram compare()
         }
-        class BarChart extends 2DDiagram {
-            -DiagramBar[] bars
+        class HeatMapComparer implements IDiagramCompareStrategy {
+            -DiagramColorScale compareColors
+            -HeatMap heatMap1
+            -HeatMap heatMap2
+            +HeatMap compare()
         }
-        class HeatMap extends 2DDiagram {
-            -ColorScale colorScale
+        class BarChartComparer implements IDiagramCompareStrategy {
+            -BarChart barChart1
+            -BarChart barChart2
+            +BarChart compare()
         }
-        class FunctionGraph extends 2DDiagram {
-            -DiagramPoint[] points
-        }
-        class 3DHistogram extends 3DDiagram
-
+    }
+    package Diagram.Components {
         interface Hoverable {
             +default boolean isBeingHovered()
+            +default void hoverAction()
         }
-        abstract class DiagramComponent implements Hoverable {
+        note right of Hoverable::hoverAction
+            show label as default
+            override if there is more
+        end note
+        abstract class DiagramComponent {
             #Color color
             #Number xPos
             #Number yPos
+            +{abstract} clone()
         }
-        abstract class DiagramBar extends DiagramComponent {
-            #Number size
+        abstract class DiagramValueDisplayComponent extends DiagramComponent implements Hoverable {
+            #Number value
+        }
+        abstract class DiagramBar extends DiagramValueDisplayComponent {
+            #Number width
         }
         abstract class DiagramAxis extends DiagramComponent {
             #Number min
@@ -229,41 +252,234 @@ skinparam Note {
             #boolean showValues
         }
         abstract class DiagramLabel extends DiagramComponent {
+
+        }
+        abstract class DiagramLine extends DiagramComponent {
+            #Number length
+        }
+        class ConcreteLine extends DiagramLine {
+
+        }
+        abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
             #String caption
         }
-        abstract class DiagramPoint extends DiagramComponent {
-
+        abstract class DiagramPoint extends DiagramValueDisplayComponent {
+            #Number size
         }
-        class 2DPoint extends DiagramPoint
-        class 3DPoint extends DiagramPoint
-        class 2DBar extends DiagramBar
-        class 3DBar extends DiagramBar
-        class 2DAxis extends DiagramAxis
-        class 3DAxis extends DiagramAxis
-        class HeatMapLabel extends DiagramLabel {
-
+        abstract class DiagramColorScale extends DiagramComponent {
+            +Color valueToColor(Number value)
+            +Number[] getValues()
+            +Color[] getColors()
+            +final Object[] matchingsAsArray()
         }
+        note right of DiagramColorScale::matchingsAsArray
+            return new Object[]
+            {getValues(), getColors()}
+        end note
+        class 2ColorScale extends DiagramColorScale {
+            -Color minValueColor
+            -Color maxValueColor
+            +Number minValue
+            +Number maxValue
+        }
+        class ConcretePoint extends DiagramPoint
+        class HistogramBar extends DiagramBar
+        class BarChartBar extends DiagramBar
+        class ConcreteAxis extends DiagramAxis
+        class HeatMapLabel extends DiagramValueLabel
+        class ConcreteLabel extends DiagramLabel
         'Shows value that is being
         'hovered over
         class HoverLabel {
             -String caption
-            -Color color
+            -Theme theme
             -Number xPos // mouse pointer
             -Number yPos // mouse pointer
         }
+        class DiagramComponentFactory {
+            -DiagramComponentFactory DiagramComponentFactory()
+            +DiagramComponentFactory getDiagramComponentFactory() // return this
+            +DiagramPoint createPoint()
+            +DiagramValueLabel createValueLabel()
+            +DiagramBar createBar()
+            +DiagramLabel createLabel()
+            +DiagramAxis createAxis()
+            +DiagramColorScale createColorScale()
+            +DiagramLine createLine()
+        }
     }
+    package Diagram.Data {
+        class DiagramData {
+            -Collection<?> data;
+            -DiagramDataFormatter ddf;
+            +DiagramData(Collection<?> data)
+            +<T extends Collection<?>> T getData();
+            +void update()
+            +void setFormat(DiagramDataFormatter ddf)
+        }
+        note right of DiagramData::getData
+        Run ddf on data and return result.
+        If ddf = null, return a deep copy.
+        end note
+        abstract class DiagramDataFormatter {
+            +<T extends Collection<?>> format(T data)
+        }
+        class ArrayListDataFormatter extends DiagramDataFormatter {
+            +<T extends Collection<?>> ArrayList<?> format(T data)
+        }
+        class ArrayDataFormatter extends DiagramDataFormatter {
+            +<E, T extends Collection<E>> E[] format(T data)
+        }
+    }
+    package Diagram.Type {
+        interface DiagramComponentAccessPoint {
+            +DiagramComponent[] getNonValueDisplayDiagramComponentPrototypes()
+            +DiagramValueDisplayComponent[] getDiagramValueDisplayComponentPrototypes()
+        }
+        note top of DiagramComponentAccessPoint
+        Provide a deep copy of each DiagramComponent
+        appropriate for the method name
+        (only one each type)
+        end note
+        abstract class Diagram implements IDiagram, DiagramComponentAccessPoint {
+            
+        }
+        class Histogram extends Diagram {
+            -HistogramBar[] bars
+        }
+        class BarChart extends Diagram {
+            -BarChartBar[] bars
+        }
+        class HeatMap extends Diagram {
+            -DiagramColorScale colorScale
+            -HeatMapLabel[] heatMapLabels
+        }
+        class FunctionGraph extends Diagram {
+            -DiagramPoint[] points
+        }
+    }
+    package Diagram.Indicators {
+        abstract class DiagramViewHelper implements IDiagram, DiagramComponentAccessPoint {
+            -IDiagram diagram
+            -List<ViewHelperComponent> helperComponents
+            -boolean isVisible
+            +void show()
+            +void hide()
+        }
+        note right of DiagramViewHelper
+        For DiagramComponentAccessPoint methods:
+        Keep looking for a Diagram by recursively
+        going through the Decorators.
+        end note
+        abstract class StatisticsDisplayer extends DiagramViewHelper {
+
+        }
+        class StatisticsLineDisplayer extends StatisticsDisplayer
+        note bottom of StatisticsLineDisplayer
+        Displays lines for statistics checked
+        in the checkbox part
+        end note
+        class StatisticsColorDisplayer extends StatisticsDisplayer
+        note bottom of StatisticsColorDisplayer
+        Overshadows DiagramValueDisplayComponents
+        with the ones that display statistics
+        with colors
+        end note
+        abstract class HelperLineDisplayer extends DiagramViewHelper {
+
+        }
+        class CoordinateIndicatorLineDisplayer extends HelperLineDisplayer {
+
+        }
+        class ViewHelperComponent extends DiagramComponent {
+            -boolean isVisible
+            +void show()
+            +void hide()
+        }
+        note bottom of ViewHelperComponent
+        Wraps DiagramComponents that the
+        decorators create and use
+        end note
+        DiagramViewHelper *--> ViewHelperComponent
+    }
+    note top of Diagram.Indicators
+    Things that will be shown on diagrams
+    that are not actually a part of them go here
+    end note
+    note as N1
+    Decorator pattern:
+    
+    -IDiagram as Component
+    -Diagram subclasses as ConcreteComponents
+    -DiagramViewHelper as BaseDecorator
+        -Its subclasses as ConcreteDecorators 
+    end note
+    note as N2
+    Strategy pattern:
+
+    -IDiagramCompareStrategy as abstract strategy
+        -Its subclasses as concrete strategies
+    end note
+
+    note as N3
+    Builder Pattern:
+
+    -DiagramDirector as singleton director
+        -Its subclasses as builders
+    end note
+    class DiagramDirector {
+        -Settings settings
+        -DiagramBuilder builder
+        -DiagramDirector DiagramDirector()
+        +DiagramDirector getDiagramDirector()
+        +void changeBuilder(Builder b)
+        +void changeSettings(Settings s)
+        +Settings getSettings() // deep copy
+    }
+    abstract class DiagramBuilder {
+        -Settings settings = DiagramDirector.getSettings
+        -DiagramData data
+        #DiagramAxis buildAxes()
+        #DiagramValueDisplayComponent[] buildValueDisplayComponents()
+        #DiagramComponent[] buildDiagramSpecificComponent()
+        +IDiagram buildDiagram()
+    }
+    class BarChartBuilder extends DiagramBuilder {
+
+    }
+    class HistogramBuilder extends DiagramBuilder {
+
+    }
+    class FunctionGraphBuilder extends DiagramBuilder {
+
+    }
+    class HeatMapBuilder extends DiagramBuilder {
+
+    }
+}
 
 'Class Relations
     'Ui
-    AutoResizing --> Resizer
-    Visualizer -> Diagram
+        AutoResizing --> Resizer
+        Visualizer -> Diagram
 
-    MainWindow *-- "1"Outliner
-    MainWindow *-- "1"SubWindowArea
-    MainWindow *-- "1"InfoBar
-    'UIElement Implementers
-    HeatMap "1" *-- "*" HeatMapLabel
-    Diagram *-- "*" DiagramComponent
-    Hoverable "1" *-- "1" HoverLabel : > creates when hovered
+        MainWindow *-- "1"Outliner
+        MainWindow *-- "1"SubWindowArea
+        MainWindow *-- "1"InfoBar
+    'Diagram
+        HeatMap "1" *-- "*" HeatMapLabel
+        Diagram *-- "*" DiagramComponent
+        Hoverable "1" *-- "1" HoverLabel : > creates when hovered
+
+        DiagramViewHelper --> Diagram : > Wraps and decorates
+        DiagramDirector --> DiagramBuilder
+        DiagramDirector --> Diagram : <<creates>>
+        DiagramComponentFactory --> DiagramComponent : <<creates>>
+        DiagramComparer --> Diagram : > creates on compare using DiagramDirector
+        DiagramComparer o-- IDiagramCompareStrategy
+        DiagramData "1" *--> "1" DiagramDataFormatter
+        Diagram *--> DiagramData
+        Diagram *-- "*" DiagramComponent
+        Hoverable "1" *-- "1" HoverLabel : > creates when hovered
 'Package Relations
 @enduml
