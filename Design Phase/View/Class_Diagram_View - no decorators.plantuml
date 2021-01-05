@@ -182,13 +182,14 @@ skinparam Note {
     }
 'Diagrams
 package Diagrams {
-    interface ISettingsUser {
-        +void changeSettings(Settings s)
-    }
     interface IDiagram {
         +Collection<?> cloneData()
         +void refresh()
         +void update()
+        +boolean addDiagramViewHelper(String uniqueIdentifier, DiagramViewHelper dvh)
+        +boolean removeDiagramViewHelper(String uniqueIdentifier, DiagramViewHelper dvh)
+        +boolean showDiagramViewHelper(String uniqueIdentifier)
+        +boolean hideDiagramViewHelper(String uniqueIdentifier)
     }
     interface IDiagramComparer {
         +IDiagram getDiagram(int index)
@@ -267,23 +268,24 @@ package Diagrams {
             +void show()
             +void hide()
         }
-        note left of DiagramComponent {
-            xPos and yPos are the coordinates of
-            the middle of the component
-        }
         abstract class DiagramValueDisplayComponent extends DiagramComponent implements Hoverable {
             #Number value
             #DiagramAxis[] axes
-            #DiagramValueDisplayComponent(Number xPos, Number yPos, Color color, Number value, DiagramAxis[] axes)
+            #Number[] coordinatesInAxes
+            #DiagramValueDisplayComponent(Color color, Number value, DiagramAxis[] axes, Number[] coordinatesInAxes)
             +Number valueToCoordinate(int axisIndex)
             +void setValue()
             +Number getValue()
             +{abstract} void refreshValueRelevantAttributes()
         }
+        note left of DiagramComponent
+            xPos and yPos are the coordinates of
+            the middle of the component
+        end note
         abstract class DiagramBar extends DiagramValueDisplayComponent {
             #Number width
             #Number height
-            #DiagramBar(Number xPos, Number yPos, Color color, Number value, Number width, DiagramAxis[] axes)
+            #DiagramBar(Color color, Number value, DiagramAxis[] axes, Number[] coordinatesInAxes)
             #void refreshHeight()
             #void calculateHeight()
             #void refreshWidth()
@@ -378,14 +380,14 @@ package Diagrams {
         }
         abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
             #String caption
-            #DiagramValueLabel(Number xPos, Number yPos, Color color, Number value, DiagramAxis[] axes)
+            #DiagramValueLabel(Color color, Number value, DiagramAxis[] axes, Number[] coordinatesInAxes)
             #void refreshCaption()
             #void setCaption(String caption)
             +String getCaption()
         }
         abstract class DiagramPoint extends DiagramValueDisplayComponent {
             #Number size
-            #DiagramPoint(Number xPos, Number yPos, Color color, Number value, Number size, DiagramAxis[] axes)
+            #DiagramPoint(Color color, Number value, DiagramAxis[] axes, Number[] coordinatesInAxes)
             +void setSize(Number size)
             +Number getSize()
         }
@@ -448,17 +450,18 @@ package Diagrams {
             +void show()
             +void hide()
         }
-        class DiagramComponentFactory implements ISettingsUser {
+        class DiagramComponentFactory {
             -DiagramComponentFactory instance = new DiagramComponentFactory
             -DiagramComponentFactory()
-            +DiagramComponentFactory getDiagramComponentFactory() // return this
-            +DiagramPoint createPoint()
-            +DiagramValueLabel createValueLabel()
-            +DiagramBar createBar()
-            +DiagramLabel createLabel()
-            +DiagramAxis createAxis()
-            +DiagramColorScale createColorScale()
-            +DiagramLine createLine()
+            +DiagramComponentFactory getDiagramComponentFactory()
+            +DiagramPoint createPoint(Number value, DiagramAxis[] axes, Number[] coordinatesInAxes)
+            +DiagramValueLabel createValueLabel(Number value, DiagramAxis[] axes, Number[] coordinatesInAxes)
+            +DiagramBar createBar(Number value, DiagramAxis[] axes, Number[] coordinatesInAxes)
+            +DiagramLabel createLabel(Number xPos, Number yPos, Color color, String caption)
+            +DiagramAxis createAxis(DiagramLine axisLine, Number min, Number max, int steps)
+            +DiagramColorScale createColorScale(Number xPos, Number yPos, Color borderColor, Number[] values, Color[] valueColors)
+            +DiagramLine createLine(Number xPos, Number yPos, Number length, Color color, Number thickess)
+            +DiagramLine createLine(Number x1, Number y1, Number x2, Number y2, Color color, Number thickess)
         }
     }
     package Diagram.Data {
@@ -500,8 +503,13 @@ package Diagrams {
             -DiagramAxis[] axes
             -DiagramValueDisplayComponent[] valueDisplayComponents
             -DiagramComponent[] nonValueDisplayComponents
+            -Map<String, DiagramViewHelper> viewHelpers
             +Diagram(DiagramData data)
             +Diagram(axes, valueDisplayComponents, nonValueDisplayComponents)
+            +boolean addDiagramViewHelper(String uniqueIdentifier, DiagramViewHelper dvh)
+            +boolean removeDiagramViewHelper(String uniqueIdentifier, DiagramViewHelper dvh)
+            +boolean showDiagramViewHelper(String uniqueIdentifier)
+            +boolean hideDiagramViewHelper(String uniqueIdentifier)
             'Collection<?> cloneData()
             'void refresh()
             'void update()
@@ -541,36 +549,40 @@ package Diagrams {
         FunctionGraph -- Diagram1
     }
     package Diagram.Indicators {
-        abstract class DiagramViewHelper implements IDiagram, DiagramComponentAccessPoint {
+        class DiagramViewHelperFactory {
+            -DiagramViewHelperFactory instance
+            -DiagramViewHelperFactory()
+            +DiagramViewHelperFactory getInstance()
+            +HelperComponentDisplayer createValueColorDisplayer(IDiagram diagram)
+            +HelperLineDisplayer createCoordinateGridDisplayer(IDiagram diagram, DiagramAxis[] axes)
+            +HelperLineDisplayer createValueLineDisplayer(IDiagram diagram, Number value)
+        }
+        abstract class DiagramViewHelper implements DiagramComponentAccessPoint {
             -int layer
-            -IDiagram inner
-            -DiagramViewHelper outer
             -List<ViewHelperComponent> helperComponents
             +DiagramViewHelper(IDiagram inner, int layer)
             #{abstract} void generateHelperComponents()
             +int getLayerNumber()
-            +IDiagram getInner()
-            +DiagramViewHelper getOuter()
-            +boolean hasOuter()
-            +boolean isInnerDiagramViewHelper()
             +void remove()
             +void show()
             +void hide()
-            +boolean addViewHelperComponent(ViewHelperComponent vhc)
-            +boolean removeViewHelperComponent(ViewHelperComponent vhc)
-            +boolean clearViewHelperComponents()
+            +void update()
+            #boolean addViewHelperComponent(ViewHelperComponent vhc)
+            #boolean removeViewHelperComponent(ViewHelperComponent vhc)
+            #boolean clearViewHelperComponents()
             '+DiagramComponent[] getNonValueDisplayDiagramComponentPrototypes()
             '+DiagramValueDisplayComponent[] getDiagramValueDisplayComponentPrototypes()
             '+Collection<?> cloneData()
             '+void refresh()
             '+void update()
         }
+        DiagramViewHelperFactory -- DiagramViewHelper : > <<creates>>
         abstract class HelperLineDisplayer extends DiagramViewHelper {
             +HelperLineDisplayer(IDiagram inner)
             #void generateHelperComponents()
         }
         note right of DiagramViewHelper::layer
-            Indicates how much in the front the decorator is.
+            Indicates how much in the front the DiagramViewHelper is.
 
             For example with JLayeredPane
         end note
@@ -578,26 +590,6 @@ package Diagrams {
             For DiagramComponentAccessPoint methods:
             Keep looking for a Diagram by recursively
             going through the Decorators.
-        end note
-        note right of DiagramViewHelper
-            DiagramViewHelper(IDiagram inner) sets inner
-            and ((DiagramViewHelper) this.inner).outer = this,
-            if (isInnerDiagramViewHelper()) 
-        end note
-        note left of DiagramViewHelper::outer
-            Must always be a DiagramViewHelper or null
-        end note
-        note left of DiagramViewHelper::isInnerDiagramViewHelper
-            {return this.inner instanceof DiagramViewHelper;}
-
-            Inner can never be null, because the most inner
-            object is always a Diagram.
-        end note
-        note left of DiagramViewHelper::remove
-            {this.outer.inner = this.inner;
-            if (isInnerDiagramViewHelper()) {
-                this.inner.outer = this.outer
-            }}
         end note
         class StatisticsLineDisplayer extends HelperLineDisplayer {
             -DiagramAxis axis
@@ -652,7 +644,7 @@ package Diagrams {
         }
         note bottom of ViewHelperComponent
             Wraps DiagramComponents that the
-            decorators create and use
+            DiagramViewHelpers create and use
         end note
         note as ViewHelperComponentGeneration
             Call getDiagramValueDisplayComponentPrototypes() or
@@ -678,26 +670,18 @@ package Diagrams {
         that are not actually a part of them go here
     end note
     note as N1
-        Decorator pattern:
-        
-        -IDiagram as Component
-        -Diagram subclasses as ConcreteComponents
-        -DiagramViewHelper as BaseDecorator
-        -Its subclasses as ConcreteDecorators 
-    end note
-    note as N2
         Strategy pattern:
 
         -IDiagramCompareStrategy as abstract strategy
         -Its subclasses as concrete strategies
     end note
-    note as N3
+    note as N2
         Builder Pattern:
 
         -DiagramDirector as singleton director
         -Its subclasses as builders
     end note
-    class DiagramDirector implements ISettingsUser {
+    class DiagramDirector {
         -DiagramBuilder builder
         -DiagramData data
         -DiagramDirector instance = new DiagramDirector
@@ -708,7 +692,6 @@ package Diagrams {
         +IDiagram build()
     }
     abstract class DiagramBuilder {
-        -Settings settings = SettingsProvider.getSettings
         -DiagramData data
         #DiagramAxis buildAxes()
         #DiagramValueDisplayComponent[] buildValueDisplayComponents()
@@ -729,18 +712,13 @@ package Diagrams {
         +HeatMapBuilder(DiagramData data)
     }
     class SettingsProvider {
-        -List<ISettingsUser> ISettingsUsers
         -SettingsProvider instance = new SettingsProvider
         -Settings s
         -SettingsProvider()
         +SettingsProvider getInstance()
         +void changeSettings(Settings s)
         +Settings getSettings()
-        +void addSettingsUser(ISettingsUser settingsUser)
-        +void removeSettingsUser(ISettingsUser settingsUser)
     }
-    SettingsProvider -- DiagramDirector
-    SettingsProvider -- DiagramComponentFactory
 }
 
 'Class Relations
