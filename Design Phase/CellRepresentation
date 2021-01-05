@@ -1,0 +1,113 @@
+@startuml
+
+'Style Settings
+skinparam {
+    Linetype ortho
+    BackgroundColor #bababa
+    Shadowing false
+    Nodesep 20
+    Ranksep 50
+}
+skinparam Arrow {
+    Color #2e2e2e
+    Thickness 1.5
+}
+skinparam CircledCharacter {
+    Radius 8
+    FontSize 10
+}
+skinparam class {
+    BackgroundColor #d1d1d1
+    BorderColor #2e2e2e
+    BorderThickness 1.5
+    HeaderBackgroundColor #a6a6a6
+}
+skinparam package {
+    BackgroundColor #bcbfd6
+    BorderThickness 1.8
+}
+skinparam Note {
+    BackgroundColor #297547
+    BorderColor #171a17
+    FontColor #e8e8e8
+}   
+
+
+package Components{
+    class ScrollPane
+    class Button
+    class Checkbox 
+}
+
+package Generators{
+    class Visualizer
+}
+
+package images {
+
+}
+
+package representation{
+
+    class DataPanel{
+        -Label label
+        -Text text
+        +DataPanel()
+        
+
+    }
+
+    class CellPanel{
+        -Label label
+        -List<Button> buttons
+        -List<Checkbox> buttons
+        -CellImageGenerator cellGenerator
+        +CellPanel(Cell cell)
+        +CellPanel(Pin pin)
+        
+
+    
+        
+
+    }
+
+    class LibraryPanel{
+        -List<Button> buttons
+        -List<Cell> cells
+        +LibraryPanel(Element e)
+        
+        
+    }
+
+    
+    interface ICellImageGenerator{
+        +buildCell(int inputPins, int outputPins)
+    }
+
+    class CellImageGenerator implements ICellImageGenerator{
+        -BufferedImage pinIcon
+        -BufferedImage cellIcon
+        +CellImageGenerator()
+        +buildCell(int inputPins, int outputPins): int
+        
+    }
+
+    
+
+
+Visualizer *-- LibraryPanel
+Visualizer *-- DataPanel
+Visualizer *-- CellPanel
+LibraryPanel --> CellPanel
+CellPanel --> CellImageGenerator
+CellPanel --> Button
+CellPanel --> Checkbox
+LibraryPanel --> ScrollPane
+CellImageGenerator --> images
+}
+
+
+
+
+
+@enduml
