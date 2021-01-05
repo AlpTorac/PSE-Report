@@ -1,0 +1,168 @@
+@startuml Hallo
+package handlers{
+    interface multiple_Handlers
+} 
+package model{    
+    package element{
+        package enums{
+            class Timing {
+            -TimingSense timsense
+            -TimingType timtype
+            -TimingGroup timgroup
+            -float[][] values
+            -Pin relatedPin
+        }
+        class InputPower {
+            -PowerGroup powgroup 
+            -float[] values
+        }
+        class OutputPower {
+            -PowerGroup powgroup 
+            -float[][] values
+            -Pin relatedPin
+        }
+            enum Mode {
+                MINIMUM
+                AVERAGE
+                MAXIMUM
+            }
+            enum TimingSense {
+            POSITIVE
+            NEGATIVE
+            NON
+            }
+            enum TimingType {
+            COMBINATIONAL
+            COMBRISE
+            COMBFALL
+            TSDISABLE
+            TSENABLE
+            TSDISABLERISE
+            TSDISABLEFALL
+            TSENABLERISE
+            TSENABLEFALL
+        }
+        enum TimingGroup {
+            CELLRISE
+            CELLFALL
+            FALLTRANSITION
+            RISETRANSITION
+        }
+        enum PowerGroup {
+            RISEPOWER
+            FALLPOWER
+            POWER
+        }
+    }   
+        abstract class Element{
+            - Mode mode
+            - String name
+            __
+            + {abstract} void calculate()
+            + void changeMode(Mode)
+            + getName() : String
+            + {static} compare(Element, Element) : int
+        }
+        
+        class Library{
+            - String path
+            - Cell[] cells
+            - float defaultLeakage
+            - float[] leakage
+            - HashMap<float, float> inputPower
+            - HashMap<float, Hashmap<float,float>> outputPower
+            - HashMap<float, Hashmap<float,float>> timing
+            __
+            + void calculate()
+            + getPath() : String
+            + void setPath(String)
+
+        }
+        class Cell{
+            - Library parentLibrary
+            - InputPin[] inPins
+            - OutputPin[] outPins
+            - float[] index1 
+            - float[] index2
+            - float area
+            - float defaultLeakage
+            - float[] leakage
+            - HashMap<float, float> inputPower
+            - HashMap<float, Hashmap<float,float>> outputPower
+            - HashMap<float, Hashmap<float,float>> timing
+            __ 
+            + void calculate()
+        }
+        abstract class Pin{
+            - Cell parentCell
+            - float capacitance
+        }
+        class InputPin{
+            - HashMap<float, float> inputPower
+        }
+        class OutputPin{
+            - HashMap<float, Hashmap<float,float>> outputPower
+            - HashMap<float, Hashmap<float,float>> timing
+        }
+        
+
+        
+    }
+    class Project{
+        library[] libraries
+        library[] selectedLibraries
+        cells[] selectedCells
+        pin[] selectedpins
+        __
+        notify()
+    
+    }
+
+    class Settings
+    class Interpolation
+    class Shortcuts
+    class UndoHistory
+    package exceptions{
+        interface Exception
+        class InvalidComparisonException
+        class InvalidFileFormatException
+        class ExceedingFileSizeException
+    }
+    package functionality{
+        class FileChooser
+        class DirChooser
+        class Parser
+        class Filter
+        class Project
+        class Undo
+        class Merge
+    }
+}
+handlers --> Project:call the necessary functions
+handlers --> Interpolation
+handlers --> Settings
+handlers --> Shortcuts
+Project --> FileChooser
+Project --> DirChooser
+Project --> Parser
+Project --> Merge
+Project --> Filter
+Project --> Undo
+Project --> UndoHistory
+Undo --> UndoHistory
+Element <|-- Library
+Element <|-- Cell
+Element <|-- Pin
+Pin <|-- InputPin
+Pin <|-- OutputPin
+Library *-- Cell
+Cell *-- Pin
+Visualiser_panel --> Project: take updated change
+Graphic --> Project: take updated change
+Project --> Visualiser_panel: notify Change
+Project --> Tree_view_panel: notify Change
+Tree_view_panel --> Project: take updated change
+Exception --> InvalidComparisonException 
+Exception --> InvalidFileFormatException
+Exception --> ExceedingFileSizeException
+@enduml
