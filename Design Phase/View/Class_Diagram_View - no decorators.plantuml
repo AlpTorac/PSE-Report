@@ -449,8 +449,8 @@ package Diagrams {
             -Label label
             #DescriptionLabel(Color color, String caption, PositionInFrame bottomLeft, PositionInFrame topRight)
         }
-        'Shows value that is being
-        'hovered over
+        /'Shows value that is being
+        hovered over'/
         class HoverLabel {
             -String caption
             -Theme theme
@@ -491,8 +491,8 @@ package Diagrams {
             +void setFormat(DiagramDataFormatter ddf)
         }
         note right of DiagramData::getData
-        Run ddf on data and return result.
-        If ddf = null, return a deep copy.
+            Run ddf on data and return result.
+            If ddf = null, return a deep copy.
         end note
         abstract class DiagramDataFormatter {
             +DiagramDataFormatter()
@@ -560,7 +560,7 @@ package Diagrams {
         HeatMap -- Diagram1
         FunctionGraph -- Diagram1
     }
-    package Diagram.Indicators {
+    package Diagram.Indicator {
         class DiagramViewHelperFactory {
             -DiagramViewHelperFactory instance
             -DiagramViewHelperFactory()
@@ -647,16 +647,16 @@ package Diagrams {
             add them to helperComponents.
         end note
         DiagramViewHelper *--> ViewHelperComponent
-        class CoordinateIndicatorLine  extends DiagramLine {
+        class CoordinateIndicatorLine extends DiagramLine {
             #CoordinateIndicatorLine(DiagramAxis parallelAxis, Number value, Color color, Number thickness)
         }
-        class ValueLine  extends DiagramLine {
+        class ValueLine extends DiagramLine {
             #ValueLine(DiagramAxis parallelAxis, Number value, Color color, Number thickness)
         }
         ValueLineDisplayer --> ValueLine : > <<creates>>
         CoordinateIndicatorLineDisplayer --> CoordinateIndicatorLine : > <<creates>>
     }
-    note top of Diagram.Indicators
+    note top of Diagram.Indicator
         Things that will be shown on diagrams
         that are not actually a part of them go here
     end note
@@ -670,7 +670,7 @@ package Diagrams {
         Builder Pattern:
 
         -DiagramDirector as singleton director
-        -Its subclasses as builders
+        -DiagramBuilder class' subclasses as builders
     end note
     class DiagramDirector {
         -DiagramBuilder builder
