@@ -366,8 +366,7 @@ Model --> Settings
 Model --> Shortcuts
 Model --> FileChooser
 Model --> Parser
-Model --> SearchAction
-MergeAction ..> Library: <<creates>>
+MergeAction ..> Library :  <<creates>> 
 Parser ..> Library: <<creates>>
 Model --> MergeAction
 Model --> FilterAction
@@ -380,18 +379,13 @@ Model --> RemoveAction
 Model --> LibertyCompiler
 Model --> CSVCompiler
 Model --> ActionHistory
-Model --> CompareAction
-Model --> OpenAction
-Model --> CloseAction
 Model --> OpenFileAction
-Model --> SelectDropdownAction
-Model --> SelectStatAction
 TextEdit --> Parser
 Parser --> Library
 Parser --> Cell
 Parser --> Pin
-SelectDropdownAction --> Attribute
-SelectStatAction --> Attribute
+/'SelectDropdownAction --> Attribute
+SelectStatAction --> Attribute '/
 OpenFileAction --> FileChooser
 OpenFileAction --> Parser
 UndoAction --> ActionHistory
@@ -412,4 +406,35 @@ Cell *-- Pin
 Exception --> InvalidComparisonException 
 Exception --> InvalidFileFormatException
 Exception --> ExceedingFileSizeException
+
+
+/' alignment1 '/
+/'
+Controller -[hidden]-> project
+commands -[hidden]> project
+project -[hidden]> exceptions
+parser -[hidden]> element
+commands -[hidden]-> compiler
+PowerGroup -[hidden]> Attribute
+commands -[hidden]> compiler
+'/
+
+
+/' alignment2 '/
+/'
+Controller -[hidden]> project
+project -[hidden]> compiler
+compiler -[hidden]-> parser
+parser -[hidden]> element
+project-[hidden]> commands
+'/
+
+
+/' alignment3 '/
+
+Controller -[hidden]-> model
+project -[hidden]> compiler
+compiler -[hidden]-> parser
+parser -[hidden]> element
+project-[hidden]> commands
 @enduml
