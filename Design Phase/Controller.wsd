@@ -3,12 +3,12 @@ left to right direction
 
 'Style Settings
 skinparam {
-    
+    Linetype ortho
     BackgroundColor #bababa
     Shadowing false
     Nodesep 60
     Ranksep 50
-    groupInheritence 3
+    
 }
 skinparam Arrow {
     Color #2e2e2e
@@ -37,13 +37,11 @@ skinparam Note {
 package model{
     
 
-    interface IModel{
+    interface IObserver 
 
-    }
+    class Project 
 
-    class Project implements IModel{
-
-    }
+    
 
 }
 
@@ -62,7 +60,7 @@ package view{
         }
 
         interface ItemListener extends EventListener{
-            +itemStateChanged(TextEvent e)
+            +itemStateChanged(ItemEvent e)
         }
 
         interface DocumentListener extends EventListener{
@@ -74,17 +72,17 @@ package view{
         interface Hoverable
     }
 
-    interface IView{
+    
 
-    }
-
-    class MainWindow implements IView{
+    class MainWindow {
         -MenuBar mainMenu
 
         +MainWindow()
-        + {static} void main(String[] args)
-        +subscribeListeners(ActionListener listeners)
+        +{static} void main(String[] args)
+        +subscribeListener(ActionListener listener)
     }
+
+    class Panel 
 
     class Outliner
     class TextEditor
@@ -101,198 +99,204 @@ package controller{
 
     together {
         class EventManager{
-            -IModel model
-            -IView view
-
-            +EventManager(IModel project, IView view)
-            -initListeners()
+            -Project project
+            -MainWindow view
+            +EventManager(Project project, MainWindow view)
+            +initListeners()
         }
 
         
+
+        class UpdateHandler implements IObserver{
+                -Project project
+                -MainWindow view
+                -Tree e
+                +UpdateHandler(Project project, MainWindow view)
+                +update()
+
+            }
+       
         
-        class Shortcuts {
-            Map<Shortcuts, Event>
-
-
-        }
+        
+        
     }
 
     package listeners{
 
             class LoadLibraryListener implements ActionListener{
-                -IModel model
-                -IView view
-                +LoadLibraryListener(IModel project, IView view)
+                -Project project
+                -Panel panel
+                +LoadLibraryListener(Project project, Panel panel)
                 +actionPerformed(ActionEvent e)
             }
             
             class OpenElementListener implements ActionListener{
-                -IModel model
-                -IView view
-                +OpenElementListener(IModel project, IView view)
+                -Project project
+                -Panel panel
+                +OpenElementListener(Project project, Panel panel)
                 +actionPerformed(ActionEvent e)
             }
 
             class DeleteCellListener implements ActionListener{
-               -IModel model
-               -IView view
-               +DeleteCellListener(IModel project, IView view)
+               -Project project
+               -Panel panel
+               +DeleteCellListener(Project project, Panel panel)
                +actionPerformed(ActionEvent e)
             }
 
             class RemoveCellListener implements ActionListener{
-                -IModel model
-                -IView view
-                +RemoveCellListener(IModel project, IView view)
+                -Project project
+                -Panel panel
+                +RemoveCellListener(Project project, Panel panel)
                 +actionPerformed(ActionEvent e)
             }
 
             class SelectListener implements ActionListener{
-                -IModel model
-                -IView view
-                +SelectCellListener(IModel project, IView view)
+                -Project project
+                -Panel panel
+                +SelectCellListener(Project project, Panel panel)
                 +actionPerformed(ActionEvent e)
             }
 
             class ExpandCollapseListener implements ActionListener{
-                -IView view
-                +ExpandCollapseListener(IView view)
+                -Panel panel
+                +ExpandCollapseListener(Panel panel)
                 +actionPerformed(ActionEvent e)
            
             }
             class RenameListener implements ActionListener{
-                -IModel model
-                -IView view
-                +RenameListener(IModel project, IView view)
+                -Project project
+                -Panel panel
+                +RenameListener(Project project, Panel panel)
                 +actionPerformed(ActionEvent e)
             }
 
             class EditListener implements ActionListener, DocumentListener{
-                -IModel model
-                -IView view
-                +EditListener(IModel project, IView view)
+                -Project project
+                -Panel panel
+                +EditListener(Project project, Panel panel)
                 +actionPerformed(ActionEvent e)
             }
 
             class SaveListener implements ActionListener{
-                -IModel model
-                -IView view
-               +SaveListener(IModel project, IView view)
+                -Project project
+                -Panel panel
+               +SaveListener(Project project, Panel panel)
                +actionPerformed(ActionEvent e)
             }
 
             class SaveAsListener implements ActionListener{
-                -IModel model
-                -IView view
-                +SaveAsListener(IModel project, IView view)
+                -Project project
+                -Panel panel
+                +SaveAsListener(Project project, Panel panel)
                 +actionPerformed(ActionEvent e)
             }
 
             class MergeListener implements ActionListener{
-                -IModel model
-                -IView view
-                +MergeListener(IModel project, IView view)
+                -Project project
+                -Panel panel
+                +MergeListener(Project project, Panel panel)
                 +actionPerformed(ActionEvent e)
             }
 
             class ScaleListener implements ActionListener{
-                -IModel model
-                -IView view
-                +ScaleListener(IModel project, IView view)
+                -Project project
+                -Panel panel
+                +ScaleListener(Project project, Panel panel)
                 +actionPerformed(ActionEvent e)
             }
 
             class InterpolationListener implements ActionListener{
-                -IModel model
-                -IView view
-                +InterpolationListener(IModel project, IView view)
+                -Project project
+                -Panel panel
+                +InterpolationListener(Project project, Panel panel)
                 +actionPerformed(ActionEvent e)
             }
 
             class SettingsListener implements ActionListener{
-                -IView view
-                +SettingsListener(IView view)
+                -Panel panel
+                +SettingsListener(Panel panel)
                 +actionPerformed(ActionEvent e)
             }
 
             class UndoListener implements ActionListener{
-               -IModel model
-               -IView view
-               +UndoListener(IModel project, IView view)
+               -Project project
+               -Panel panel
+               +UndoListener(Project project, Panel panel)
                +actionPerformed(ActionEvent e)
             }
 
             class RedoListener implements ActionListener{
-                -IModel model
-                -IView view
-                +RedoListener(IModel project, IView view)
+                -Project project
+                -Panel panel
+                +RedoListener(Project project, Panel panel)
                 +actionPerformed(ActionEvent e)
             }
 
             class StatisticsListener implements ItemListener{
-               -IView view
-               -IModel model
-               +StatisticsListener(IModel project, IView view)
-               +actionPerformed(ActionEvent e)
+               -Panel panel
+               -Project project
+               +StatisticsListener(Project project, Panel panel)
+               +itemStateChanged(ItemEvent e)
             }
 
             class PopUpListener implements ActionListener{
-                -IView view
-                +PopUpHandler(IView view)
+                -Panel panel
+                +PopUpHandler(Panel panel)
                 +actionPerformed(ActionEvent e)
             }
 
             class SearchListener implements TextListener{
-                -IView view
-                +SearchListener(IView view)
-                +actionPerformed(ActionEvent e)
+                -Panel panel
+                +SearchListener(Panel panel)
+                +textValueChanged(TextEvent e)
             }
 
             class CompareListener implements ActionListener{
-                -IModel model
-                -IView view
-                +CompareListener(IModel project, IView view)
+                -Project project
+                -Panel panel
+                +CompareListener(Project project, Panel panel)
                 +actionPerformed(ActionEvent e)
             }
 
             class MoveListener implements ActionListener{
-                -IModel model
-                -IView view
-                +MoveListener(IModel project, IView view)
+                -Project project
+                -Panel panel
+                +MoveListener(Project project, Panel panel)
                 +actionPerformed(ActionEvent e)
             } 
 
             class CopyListener implements ActionListener{
-                -IModel model
-                -IView view
-                +CopyListener(IModel project, IView view)
+                -Project project
+                -Panel panel
+                +CopyListener(Project project, Panel panel)
                 +actionPerformed(ActionEvent e)
             }
 
             class InfoListener implements ActionListener{
-                -IView view
-                +InfoListener(IView view)
+                -Panel panel
+                +InfoListener(Panel panel)
                 +actionPerformed(ActionEvent e)
             }
 
             class PasteListener implements ActionListener{
-                -IModel model
-                -IView view
-                +PasteListener(IModel project, IView view)
+                -Project project
+                -Panel panel
+                +PasteListener(Project project, Panel panel)
                 +actionPerformed(ActionEvent e)
             }
 
             class HoverListener implements Hoverable{
-                -IModel model 
-                -IView view
-                +HoverListener(IModel project, IView view)
-                +...()
+                -Project project 
+                -Panel panel
+                +HoverListener(Project project, Panel panel)
+                
             }
 
             class FilterListener implements ActionListener{
-                -IModel model
-                -IView view
-                +FilterListener(IModel project, IView view)
+                -Project project
+                -Panel panel
+                +FilterListener(Project project, Panel panel)
             }
 
 
@@ -303,7 +307,7 @@ package controller{
 }   
        
     EventListener --> CellPanel: > observes
-    EventListener --> MainWindow: > observes
+    EventListener --> Panel: > observes
     EventListener --> TextEditor: > observes
     EventListener --> LibraryPanel: > observes
     EventListener --> Outliner: > observes
@@ -311,10 +315,18 @@ package controller{
     EventListener --> InfoBar: > observes
     EventListener --> Project
 
-    EventManager --> IModel
+    EventManager --> Project
 
     Hoverable --> Diagram: > observes
   
+    UpdateHandler --> DataPanel
+    UpdateHandler --> CellPanel
+    UpdateHandler --> LibraryPanel
+    UpdateHandler --> Diagram
+    UpdateHandler --> Outliner
+
+    IObserver -> Project: > observes
+   
    
             
 
