@@ -520,7 +520,7 @@ package Diagrams {
             -DiagramComponent[] nonValueDisplayComponents
             -Map<Enum, DiagramViewHelper> viewHelpers
             +Diagram(DiagramData data)
-            +Diagram(axes, valueDisplayComponents, nonValueDisplayComponents)
+            #Diagram assemble(axes, valueDisplayComponents, nonValueDisplayComponents)
             +boolean addDiagramViewHelper(Enum uniqueIdentifier, DiagramViewHelper dvh)
             +boolean removeDiagramViewHelper(Enum uniqueIdentifier, DiagramViewHelper dvh)
             +boolean showDiagramViewHelper(Enum uniqueIdentifier)
@@ -528,19 +528,19 @@ package Diagrams {
         }
         class Histogram extends Diagram {
             +Histogram(DiagramData data)
-            +Histogram(axes, valueDisplayComponents, nonValueDisplayComponents)
+            #Histogram assemble(axes, valueDisplayComponents, nonValueDisplayComponents)
         }
         class BarChart extends Diagram {
             +BarChart(DiagramData data)
-            +BarChart(axes, valueDisplayComponents, nonValueDisplayComponents)
+            #BarChart assemble(axes, valueDisplayComponents, nonValueDisplayComponents)
         }
         class HeatMap extends Diagram {
             +HeatMap(DiagramData data)
-            +HeatMap(axes, valueDisplayComponents, nonValueDisplayComponents)
+            #HeatMap assemble(axes, valueDisplayComponents, nonValueDisplayComponents)
         }
         class FunctionGraph extends Diagram {
             +FunctionGraph(DiagramData data)
-            +FunctionGraph(axes, valueDisplayComponents, nonValueDisplayComponents)
+            #FunctionGraph assemble(axes, valueDisplayComponents, nonValueDisplayComponents)
         }
         note as Diagram1
             Diagram(DiagramData data) constructor call
