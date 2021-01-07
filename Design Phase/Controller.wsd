@@ -1,0 +1,336 @@
+@startuml
+left to right direction
+
+'Style Settings
+skinparam {
+    Linetype ortho
+    BackgroundColor #bababa
+    Shadowing false
+    Nodesep 60
+    Ranksep 50
+    
+}
+skinparam Arrow {
+    Color #2e2e2e
+    Thickness 1.5
+}
+skinparam CircledCharacter {
+    Radius 8
+    FontSize 10
+}
+skinparam class {
+    BackgroundColor #d1d1d1
+    BorderColor #2e2e2e
+    BorderThickness 1.5
+    HeaderBackgroundColor #a6a6a6
+}
+skinparam package {
+    BackgroundColor #bcbfd6
+    BorderThickness 1.8
+}
+skinparam Note {
+    BackgroundColor #297547
+    BorderColor #171a17
+    FontColor #e8e8e8
+}
+
+package model{
+    
+
+    interface IObserver 
+
+    class Project 
+
+    
+
+}
+
+
+package view{
+    together {
+        interface EventListener 
+
+
+        interface ActionListener extends EventListener{
+            +actionPerformed(ActionEvent e)
+        }
+
+        interface TextListener extends EventListener{
+            +textValueChanged(TextEvent e)
+        }
+
+        interface ItemListener extends EventListener{
+            +itemStateChanged(ItemEvent e)
+        }
+
+        interface DocumentListener extends EventListener{
+            +changedUpdate(DocumentEvent e)
+            +insertUpdate(DocumentEvent e)
+            +removeUpdate(DocumentEvent e)
+        }
+        
+        interface Hoverable
+    }
+
+    
+
+    class MainWindow {
+        -MenuBar mainMenu
+
+        +MainWindow()
+        +{static} void main(String[] args)
+        +subscribeListener(ActionListener listener)
+    }
+
+    class Panel 
+
+    class Outliner
+    class TextEditor
+    class Visualizer
+    class InfoBar
+    class CellPanel
+    class LibraryPanel
+    class DataPanel
+    class Diagram
+}
+
+
+package controller{
+
+    together {
+        class EventManager{
+            -Project project
+            -MainWindow view
+            +EventManager(Project project, MainWindow view)
+            +initListeners()
+        }
+
+        
+
+        class UpdateHandler implements IObserver{
+                -Project project
+                -MainWindow view
+                -Tree e
+                +UpdateHandler(Project project, MainWindow view)
+                +update()
+
+            }
+       
+        
+        
+        
+    }
+
+    package listeners{
+
+            class LoadLibraryListener implements ActionListener{
+                -Project project
+                -Panel panel
+                +LoadLibraryListener(Project project, Panel panel)
+                +actionPerformed(ActionEvent e)
+            }
+            
+            class OpenElementListener implements ActionListener{
+                -Project project
+                -Panel panel
+                +OpenElementListener(Project project, Panel panel)
+                +actionPerformed(ActionEvent e)
+            }
+
+            class DeleteCellListener implements ActionListener{
+               -Project project
+               -Panel panel
+               +DeleteCellListener(Project project, Panel panel)
+               +actionPerformed(ActionEvent e)
+            }
+
+            class RemoveCellListener implements ActionListener{
+                -Project project
+                -Panel panel
+                +RemoveCellListener(Project project, Panel panel)
+                +actionPerformed(ActionEvent e)
+            }
+
+            class SelectListener implements ActionListener{
+                -Project project
+                -Panel panel
+                +SelectCellListener(Project project, Panel panel)
+                +actionPerformed(ActionEvent e)
+            }
+
+            class ExpandCollapseListener implements ActionListener{
+                -Panel panel
+                +ExpandCollapseListener(Panel panel)
+                +actionPerformed(ActionEvent e)
+           
+            }
+            class RenameListener implements ActionListener{
+                -Project project
+                -Panel panel
+                +RenameListener(Project project, Panel panel)
+                +actionPerformed(ActionEvent e)
+            }
+
+            class EditListener implements ActionListener, DocumentListener{
+                -Project project
+                -Panel panel
+                +EditListener(Project project, Panel panel)
+                +actionPerformed(ActionEvent e)
+            }
+
+            class SaveListener implements ActionListener{
+                -Project project
+                -Panel panel
+               +SaveListener(Project project, Panel panel)
+               +actionPerformed(ActionEvent e)
+            }
+
+            class SaveAsListener implements ActionListener{
+                -Project project
+                -Panel panel
+                +SaveAsListener(Project project, Panel panel)
+                +actionPerformed(ActionEvent e)
+            }
+
+            class MergeListener implements ActionListener{
+                -Project project
+                -Panel panel
+                +MergeListener(Project project, Panel panel)
+                +actionPerformed(ActionEvent e)
+            }
+
+            class ScaleListener implements ActionListener{
+                -Project project
+                -Panel panel
+                +ScaleListener(Project project, Panel panel)
+                +actionPerformed(ActionEvent e)
+            }
+
+            class InterpolationListener implements ActionListener{
+                -Project project
+                -Panel panel
+                +InterpolationListener(Project project, Panel panel)
+                +actionPerformed(ActionEvent e)
+            }
+
+            class SettingsListener implements ActionListener{
+                -Panel panel
+                +SettingsListener(Panel panel)
+                +actionPerformed(ActionEvent e)
+            }
+
+            class UndoListener implements ActionListener{
+               -Project project
+               -Panel panel
+               +UndoListener(Project project, Panel panel)
+               +actionPerformed(ActionEvent e)
+            }
+
+            class RedoListener implements ActionListener{
+                -Project project
+                -Panel panel
+                +RedoListener(Project project, Panel panel)
+                +actionPerformed(ActionEvent e)
+            }
+
+            class StatisticsListener implements ItemListener{
+               -Panel panel
+               -Project project
+               +StatisticsListener(Project project, Panel panel)
+               +itemStateChanged(ItemEvent e)
+            }
+
+            class PopUpListener implements ActionListener{
+                -Panel panel
+                +PopUpHandler(Panel panel)
+                +actionPerformed(ActionEvent e)
+            }
+
+            class SearchListener implements TextListener{
+                -Panel panel
+                +SearchListener(Panel panel)
+                +textValueChanged(TextEvent e)
+            }
+
+            class CompareListener implements ActionListener{
+                -Project project
+                -Panel panel
+                +CompareListener(Project project, Panel panel)
+                +actionPerformed(ActionEvent e)
+            }
+
+            class MoveListener implements ActionListener{
+                -Project project
+                -Panel panel
+                +MoveListener(Project project, Panel panel)
+                +actionPerformed(ActionEvent e)
+            } 
+
+            class CopyListener implements ActionListener{
+                -Project project
+                -Panel panel
+                +CopyListener(Project project, Panel panel)
+                +actionPerformed(ActionEvent e)
+            }
+
+            class InfoListener implements ActionListener{
+                -Panel panel
+                +InfoListener(Panel panel)
+                +actionPerformed(ActionEvent e)
+            }
+
+            class PasteListener implements ActionListener{
+                -Project project
+                -Panel panel
+                +PasteListener(Project project, Panel panel)
+                +actionPerformed(ActionEvent e)
+            }
+
+            class HoverListener implements Hoverable{
+                -Project project 
+                -Panel panel
+                +HoverListener(Project project, Panel panel)
+                
+            }
+
+            class FilterListener implements ActionListener{
+                -Project project
+                -Panel panel
+                +FilterListener(Project project, Panel panel)
+            }
+
+
+    }
+
+    
+
+}   
+       
+    EventListener --> CellPanel: > observes
+    EventListener --> Panel: > observes
+    EventListener --> TextEditor: > observes
+    EventListener --> LibraryPanel: > observes
+    EventListener --> Outliner: > observes
+    EventListener --> Visualizer: > observes
+    EventListener --> InfoBar: > observes
+    EventListener --> Project
+
+    EventManager --> Project
+
+    Hoverable --> Diagram: > observes
+  
+    UpdateHandler --> DataPanel
+    UpdateHandler --> CellPanel
+    UpdateHandler --> LibraryPanel
+    UpdateHandler --> Diagram
+    UpdateHandler --> Outliner
+
+    IObserver -> Project: > observes
+   
+   
+            
+
+       
+
+
+@enduml

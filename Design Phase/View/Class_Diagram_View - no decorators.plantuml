@@ -185,63 +185,75 @@ package Diagrams {
     interface IDiagram {
         +Collection<?> cloneData()
         +void refresh()
-        +void update()
-        +boolean addDiagramViewHelper(String uniqueIdentifier, DiagramViewHelper dvh)
-        +boolean removeDiagramViewHelper(String uniqueIdentifier, DiagramViewHelper dvh)
-        +boolean showDiagramViewHelper(String uniqueIdentifier)
-        +boolean hideDiagramViewHelper(String uniqueIdentifier)
+        +void update(DiagramData data)
+        +boolean addDiagramViewHelper(Enum uniqueIdentifier, DiagramViewHelper dvh)
+        +boolean removeDiagramViewHelper(Enum uniqueIdentifier, DiagramViewHelper dvh)
+        +boolean showDiagramViewHelper(Enum uniqueIdentifier)
+        +boolean hideDiagramViewHelper(Enum uniqueIdentifier)
     }
-    interface IDiagramComparer {
+    interface IDiagramOverlayer {
         +IDiagram getDiagram(int index)
         +void setDiagram(int index, IDiagram diagram)
         +boolean addDiagram(IDiagram diagram)
         +boolean removeDiagram(IDiagram diagram)
-        +IDiagram compare(int[] indices)
-        +IDiagram compare(IDiagram[] diagrams)
+        +IDiagram overlay(int[] indices)
+        +IDiagram overlay(IDiagram[] diagrams)
     }
-    package Diagram.Comparer {
-        class DiagramComparer implements IDiagramComparer {
+    package Diagram.Overlayer {
+        class DiagramOverlayer implements IDiagramOverlayer {
             -Collection<? extends IDiagram> diagrams
-            -IDiagramCompareStrategy compareStrategy
-            +DiagramComparer()
-            #void setCompareStrategy()
+            -IDiagramOverlayStrategy overlayStrategy
+            +DiagramOverlayer()
+            #void setOverlayStrategy()
         }
-        interface IDiagramCompareStrategy {
-            +IDiagram compare()
+        interface IDiagramOverlayStrategy {
+            +IDiagram overlay()
         }
-        class FunctionGraphCompareStrategy implements IDiagramCompareStrategy {
+        class FunctionGraphOverlayStrategy implements IDiagramOverlayStrategy {
             -FunctionGraph[] functionGraphs
-            +FunctionGraphCompareStrategy(FunctionGraph[] functionGraphs)
-            +FunctionGraph compare()
+            +FunctionGraphOverlayStrategy(FunctionGraph[] functionGraphs)
+            +FunctionGraph overlay()
         }
-        class HistogramCompareStrategy implements IDiagramCompareStrategy {
+        class HistogramOverlayStrategy implements IDiagramOverlayStrategy {
             -Histogram histogram1
             -Histogram histogram2
-            +HistogramCompareStrategy(Histogram histogram1, Histogram histogram2)
-            +Histogram compare()
+            +HistogramOverlayStrategy(Histogram histogram1, Histogram histogram2)
+            +Histogram overlay()
         }
-        class HeatMapCompareStrategy implements IDiagramCompareStrategy {
-            -DiagramColorScale compareColors
-            -HeatMap heatMap1
-            -HeatMap heatMap2
-            +HeatMapCompareStrategy(HeatMap heatMap1, HeatMap heatMap2)
-            +HeatMapCompareStrategy(HeatMap heatMap1, HeatMap heatMap2, DiagramColorScale compareColors)
-            +HeatMap compare()
-        }
-        note bottom of HeatMapCompareStrategy
-            Use a 2ColorScale with the color-value-pairs
-            (red, minValue) and (green, maxValue) to make
-            a heat map from the differences between the
-            heat maps.
-        end note
-        class BarChartCompareStrategy implements IDiagramCompareStrategy {
+        class BarChartOverlayStrategy implements IDiagramOverlayStrategy {
             -BarChart barChart1
             -BarChart barChart2
-            +BarChartCompareStrategy(BarChart barChart1, BarChart barChart2)
-            +BarChart compare()
+            +BarChartOverlayStrategy(BarChart barChart1, BarChart barChart2)
+            +BarChart overlay()
         }
     }
     package Diagram.Components {
+        class PositionInFrame {
+            -Number xPos
+            -Number yPos
+            +PositionInFrame(Number xPos, Number yPos)
+            +Number getXPos()
+            +void setXPos(Number xPos)
+            +Number getYPos()
+            +void setYPos(Number yPos)
+        }
+        abstract class PositionInDiagram {
+            -DiagramAxis[] axes
+            -Number[] positionsInAxes
+            +PositionInDiagram(DiagramAxis[] axes, Number[] coordinatesInAxes)
+            +Number axisCoordinateToFrameCoordinate(int index)
+            +PositionInFrame toPositionInFrame()
+            #void setAxisCoordinate(int index, Number position)
+            #void setAxisCoordinates(Number[] coordinates)
+            #Number getAxisPos(int index)
+        }
+        class PositionIn2DDiagram extends PositionInDiagram{
+            +PositionInDiagram(DiagramAxis xAxis, Number xCoordinate, DiagramAxis yAxis, Number yCoordinate)
+            +void setXAxisCoordinate(Number xCoordinate)
+            +void setYAxisCoordinate(Number yCoordinate)
+            +Number getXAxisCoordinate()
+            +Number getYAxisCoordinate()
+        }
         interface Hoverable {
             +default boolean isBeingHovered()
             +default void hoverAction()
@@ -254,59 +266,40 @@ package Diagrams {
             override if there is more
         end note
         abstract class DiagramComponent {
-            #Color color
-            #Number xPos
-            #Number yPos
-            #DiagramComponent(Number xPos, Number yPos, Color color)
+            -Color color
+            #DiagramComponent(Color color)
             +{abstract} clone()
             +void setColor(Color color)
-            +void setXPos(Number xPos)
-            +void setYPos(Number yPos)
-            +Number getXPos()
-            +Number getYPos()
             +Number getColor()
             +void show()
             +void hide()
         }
         abstract class DiagramValueDisplayComponent extends DiagramComponent implements Hoverable {
-            #Number value
-            #DiagramAxis[] axes
-            #Number[] coordinatesInAxes
-            #DiagramValueDisplayComponent(Color color, Number value, DiagramAxis[] axes, Number[] coordinatesInAxes)
+            -Number value
+            #DiagramValueDisplayComponent(Color color, Number value)
             +Number valueToCoordinate(int axisIndex)
             +void setValue()
             +Number getValue()
             +{abstract} void refreshValueRelevantAttributes()
         }
-        note left of DiagramComponent
-            xPos and yPos are the coordinates of
-            the middle of the component
-        end note
         abstract class DiagramBar extends DiagramValueDisplayComponent {
-            #Number width
-            #Number height
-            #DiagramBar(Color color, Number value, DiagramAxis[] axes, Number[] coordinatesInAxes)
-            #void refreshHeight()
-            #void calculateHeight()
-            #void refreshWidth()
-            #void calculateWidth()
-            #void setHeight()
-            #void setWidth()
+            -PositionIn2DDiagram bottomLeft
+            -PositionIn2DDiagram topRight
+            -Number borderThickness
+            #DiagramBar(Color color, Number value, PositionIn2DDiagram bottomLeft, PositionIn2DDiagram topRight, Number borderThickness)
             +Number getHeight()
             +Number getWidth()
+            +void setBottomLeftInDiagram(Number x1, Number y1)
+            +void setTopRightInDiagram(Number x2, Number y2)
+            +PositionIn2DDiagram getBottomLeftInDiagram()
+            +PositionIn2DDiagram getTopRightInDiagram()
         }
-        note left of DiagramBar::refreshHeight
-            setValue calls refreshHeight(), which
-            calibrates the height anew.
-        end note
         abstract class DiagramAxis extends DiagramComponent {
-            #Number xPos = axisLine.getXPos
-            #Number yPos = axisLine.getYPos
-            #Number min
-            #Number max
-            #int steps
-            #boolean showValues
-            #DiagramLine axisLine
+            -Number min
+            -Number max
+            -int steps
+            -boolean showValues
+            -DiagramLine axisLine
             #DiagramAxis(DiagramLine axisLine, Number min, Number max, int steps)
             +void setMin(Number min)
             +Number getMin()
@@ -320,7 +313,6 @@ package Diagrams {
             +void paintAxis()
             +Number valueToCoordinate(Number value)
             +Number CoordinateToValue(Number coordinate)
-            +void setLineByLength(Number length)
             +void setLineByPos(Number minValXPos, Number minValYPos, Number maxValXPos, Number maxValYPos)
             +void setLineColor(Color color)
             +void setLineThickness(Number thickness)
@@ -340,76 +332,91 @@ package Diagrams {
             axisLine)
         end note
         abstract class DiagramLabel extends DiagramComponent {
-            #String caption
-            #DiagramLabel(Number xPos, Number yPos, Color color, String caption)
+            -String caption
+            -PositionInFrame bottomLeft
+            -PositionInFrame topRight
+            -Number borderThickness
+            #DiagramLabel(PositionInFrame bottomLeft, PositionInFrame topRight, Color color, String caption, Number borderThickness)
             +void setCaption(String caption)
             +String getCaption()
+            +void setBottomLeftInFrame(Number x1, Number y1)
+            +void setTopRightInFrame(Number x2, Number y2)
+            +PositionInFrame getBottomLeftInFrame()
+            +PositionInFrame getTopRightInFrame()
         }
         abstract class DiagramLine extends DiagramComponent {
-            #Number x1
-            #Number y1
-            #Number x2
-            #Number y2
-            #Number thickness
-            #DiagramLine(Number xPos, Number yPos, Number length, Color color, Number thickess)
-            #DiagramLine(Number x1, Number y1, Number x2, Number y2, Color color, Number thickess)
+            -PositionInFrame start
+            -PositionInFrame end
+            -Number thickness
+            #DiagramLine(PositionInFrame start, PositionInFrame end, Color color, Number thickness)
             #Number calculateLength()
-            +void setPos(Number x1, Number y1, Number x2, Number y2)
             +void setThickness(Number thickness)
-            +void setX1()
-            +void setY1()
-            +void setX2()
-            +void setY2()
+            +void setBottomLeftInFrame(Number x1, Number y1)
+            +void setTopRightInFrame(Number x2, Number y2)
+            +PositionInFrame getBottomLeftInFrame()
+            +PositionInFrame getTopRightInFrame()
             +Number getLength()
-            +Number getX1()
-            +Number getY1()
-            +Number getX2()
-            +Number getY2()
             +Number getThickness()
         }
         note top of DiagramLine
-            Make a horizontal line, if the
-            length is given.
-
             Calculate length with Pythagoras'
             formula
         end note
         class SolidLine extends DiagramLine {
-            #SolidLine(Number xPos, Number yPos, Number length, Color color)
-            #SolidLine(Number x1, Number y1, Number x2, Number y2, Color color)
+            -Line line
+            #SolidLine(PositionInFrame start, PositionInFrame end, Color color, Number thickness)
         }
         abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
-            #String caption
-            #DiagramValueLabel(Color color, Number value, DiagramAxis[] axes, Number[] coordinatesInAxes)
+            -PositionIn2DDiagram topLeft
+            -PositionIn2DDiagram bottomRight
+            -String caption
+            -Number[] sizesInAxes
+            -Number borderThickness
+            #DiagramValueLabel(PositionIn2DDiagram bottomRight, PositionIn2DDiagram topLeft, Color color, Number value, Number borderThickness)
             #void refreshCaption()
             #void setCaption(String caption)
             +String getCaption()
+            +void setBottomLeftInDiagram(Number x1, Number y1)
+            +void setTopRightInDiagram(Number x2, Number y2)
+            +PositionIn2DDiagram getBottomLeftInDiagram()
+            +PositionIn2DDiagram getTopRightInDiagram()
         }
         abstract class DiagramPoint extends DiagramValueDisplayComponent {
-            #Number size
-            #DiagramPoint(Color color, Number value, DiagramAxis[] axes, Number[] coordinatesInAxes)
+            -PositionIn2DDiagram position
+            -Number size
+            #DiagramPoint(PositionIn2DDiagram position, Color color, Number value, Number size)
             +void setSize(Number size)
             +Number getSize()
+            +void setPositionInDiagram(Number x2, Number y2)
+            +PositionIn2DDiagram getPositionInDiagram()
         }
         abstract class DiagramColorScale extends DiagramComponent {
-            #Color color = borderColor
-            #DiagramColorScale(Number xPos, Number yPos, Color borderColor, Number[] values, Color[] valueColors)
+            '-Color color = borderColor
+            -PositionIn2DDiagram bottomLeft
+            -PositionIn2DDiagram topRight
+            -Number borderThickness
+            #DiagramColorScale(PositionIn2DDiagram bottomLeft, PositionIn2DDiagram topRight, Color borderColor, Number[] values, Color[] valueColors, Number borderThickness)
             +Color valueToColor(Number value)
             +Number[] getValues()
             +Color[] getColors()
             +final Object[] matchingsAsArray()
+            +void setBottomLeftInFrame(Number x1, Number y1)
+            +void setTopRightInFrame(Number x2, Number y2)
+            +PositionInFrame getBottomLeftInFrame()
+            +PositionInFrame getTopRightInFrame()
         }
         note right of DiagramColorScale::matchingsAsArray
             return new Object[]
             {getValues(), getColors()}
         end note
         class 2ColorScale extends DiagramColorScale {
-            #Color color = borderColor
+            '-Color color = borderColor
+            -WritableImage colorScale
             -Color minValueColor
             -Color maxValueColor
-            +Number minValue
-            +Number maxValue
-            #2ColorScale(Number xPos, Number yPos, Color borderColor, Number minVal, Number maxVal, Color minValColor, Color maxValColor)
+            -Number minValue
+            -Number maxValue
+            #2ColorScale(PositionIn2DDiagram bottomLeft, PositionIn2DDiagram topRight, Color borderColor, Number minVal, Number maxVal, Color minValColor, Color maxValColor, Number borderThickness)
             +Color getMinValueColor()
             +Color getMaxValueColor()
             +void setMinValueColor(Color minValueColor)
@@ -420,22 +427,27 @@ package Diagrams {
             +void setMaxValue(Number maxValue)
         }
         class ValueDisplayPoint extends DiagramPoint {
-            #ValueDisplayPoint(Number xPos, Number yPos, Color color, Number value, Number size, DiagramAxis[] axes)
+            -Point point
+            #ValueDisplayPoint(Color color, Number value, Number size, PositionIn2DDiagram position)
         }
         class HistogramBar extends DiagramBar {
-            #HistogramBar(Number xPos, Number yPos, Color color, Number value, DiagramAxis[] axes)
+            -Label label
+            #HistogramBar(Color color, Number value, PositionIn2DDiagram bottomLeft, PositionIn2DDiagram topRight)
         }
         class BarChartBar extends DiagramBar {
-            #BarChartBar(Number xPos, Number yPos, Color color, Number value, Number width, DiagramAxis[] axes)
+            -Label label
+            #BarChartBar(Color color, Number value, Number width, PositionIn2DDiagram bottomLeft, PositionIn2DDiagram topRight)
         }
         class SolidAxis extends DiagramAxis {
             #SolidAxis(SolidLine axisLine, Number min, Number max, int steps)
         }
         class HeatMapLabel extends DiagramValueLabel {
-            #HeatMapLabel(Number xPos, Number yPos, DiagramColorScale, Number value, DiagramAxis[] axes)
+            -Label label
+            #HeatMapLabel(DiagramColorScale cs, Number value, PositionIn2DDiagram bottomLeft, PositionIn2DDiagram topRight)
         }
         class DescriptionLabel extends DiagramLabel {
-            #DescriptionLabel(Number xPos, Number yPos, Color color, String caption)
+            -Label label
+            #DescriptionLabel(Color color, String caption, PositionInFrame bottomLeft, PositionInFrame topRight)
         }
         'Shows value that is being
         'hovered over
@@ -444,24 +456,29 @@ package Diagrams {
             -Theme theme
             -Number xPos
             -Number yPos
+            -Number width
+            -Number height
             -HoverLabel hoverLabel
             -HoverLabel()
             +HoverLabel getHoverLabel()
             +void show()
             +void hide()
+            +void setWidth(Number width)
+            +void setHeight(Number height)
+            +Number getWidth()
+            +Number getHeight()
         }
         class DiagramComponentFactory {
             -DiagramComponentFactory instance = new DiagramComponentFactory
             -DiagramComponentFactory()
             +DiagramComponentFactory getDiagramComponentFactory()
-            +DiagramPoint createPoint(Number value, DiagramAxis[] axes, Number[] coordinatesInAxes)
-            +DiagramValueLabel createValueLabel(Number value, DiagramAxis[] axes, Number[] coordinatesInAxes)
-            +DiagramBar createBar(Number value, DiagramAxis[] axes, Number[] coordinatesInAxes)
-            +DiagramLabel createLabel(Number xPos, Number yPos, Color color, String caption)
+            +DiagramPoint createPoint(Number value, PositionIn2DDiagram position, Number size)
+            +DiagramValueLabel createValueLabel(Number value, PositionIn2DDiagram bottomLeft, PositionIn2DDiagram topRight, Number borderThickness)
+            +DiagramBar createBar(Number value, PositionIn2DDiagram bottomLeft, PositionIn2DDiagram topRight, Number borderThickness)
+            +DiagramLabel createLabel(PositionInFrame bottomLeft, PositionInFrame topRight, Color color, String caption, Number borderThickness)
             +DiagramAxis createAxis(DiagramLine axisLine, Number min, Number max, int steps)
-            +DiagramColorScale createColorScale(Number xPos, Number yPos, Color borderColor, Number[] values, Color[] valueColors)
-            +DiagramLine createLine(Number xPos, Number yPos, Number length, Color color, Number thickess)
-            +DiagramLine createLine(Number x1, Number y1, Number x2, Number y2, Color color, Number thickess)
+            +DiagramColorScale createColorScale(PositionInFrame bottomLeft, PositionInFrame topRight, Color borderColor, Number[] values, Color[] valueColors, Number borderThickness)
+            +DiagramLine createLine(PositionInFrame bottomLeft, PositionInFrame topRight, Color color, Number thickness)
         }
     }
     package Diagram.Data {
@@ -494,25 +511,20 @@ package Diagrams {
             +DiagramValueDisplayComponent[] getDiagramValueDisplayComponentPrototypes()
         }
         note top of DiagramComponentAccessPoint
-            Provide a deep copy of each DiagramComponent
-            appropriate for the method name
-            (only one each type)
+            Provide only deep copies
         end note
         abstract class Diagram implements IDiagram, DiagramComponentAccessPoint {
             -DiagramData data
             -DiagramAxis[] axes
             -DiagramValueDisplayComponent[] valueDisplayComponents
             -DiagramComponent[] nonValueDisplayComponents
-            -Map<String, DiagramViewHelper> viewHelpers
+            -Map<Enum, DiagramViewHelper> viewHelpers
             +Diagram(DiagramData data)
             +Diagram(axes, valueDisplayComponents, nonValueDisplayComponents)
-            +boolean addDiagramViewHelper(String uniqueIdentifier, DiagramViewHelper dvh)
-            +boolean removeDiagramViewHelper(String uniqueIdentifier, DiagramViewHelper dvh)
-            +boolean showDiagramViewHelper(String uniqueIdentifier)
-            +boolean hideDiagramViewHelper(String uniqueIdentifier)
-            'Collection<?> cloneData()
-            'void refresh()
-            'void update()
+            +boolean addDiagramViewHelper(Enum uniqueIdentifier, DiagramViewHelper dvh)
+            +boolean removeDiagramViewHelper(Enum uniqueIdentifier, DiagramViewHelper dvh)
+            +boolean showDiagramViewHelper(Enum uniqueIdentifier)
+            +boolean hideDiagramViewHelper(Enum uniqueIdentifier)
         }
         class Histogram extends Diagram {
             +Histogram(DiagramData data)
@@ -539,7 +551,7 @@ package Diagrams {
             Diagram(axes, valueDisplayComponents,
             nonValueDisplayComponents) is used by the
             builders after the components are built.
-            They are also used by the Comparers to
+            They are also used by the Overlayers to
             combine multiple diagrams into one for
             comparing.
         end note
@@ -557,49 +569,38 @@ package Diagrams {
             +HelperLineDisplayer createCoordinateGridDisplayer(IDiagram diagram, DiagramAxis[] axes)
             +HelperLineDisplayer createValueLineDisplayer(IDiagram diagram, Number value)
         }
-        abstract class DiagramViewHelper implements DiagramComponentAccessPoint {
+        abstract class DiagramViewHelper {
             -int layer
             -List<ViewHelperComponent> helperComponents
             +DiagramViewHelper(IDiagram inner, int layer)
-            #{abstract} void generateHelperComponents()
             +int getLayerNumber()
             +void remove()
             +void show()
             +void hide()
             +void update()
-            #boolean addViewHelperComponent(ViewHelperComponent vhc)
-            #boolean removeViewHelperComponent(ViewHelperComponent vhc)
-            #boolean clearViewHelperComponents()
-            '+DiagramComponent[] getNonValueDisplayDiagramComponentPrototypes()
-            '+DiagramValueDisplayComponent[] getDiagramValueDisplayComponentPrototypes()
-            '+Collection<?> cloneData()
-            '+void refresh()
-            '+void update()
+            +boolean addViewHelperComponent(ViewHelperComponent vhc)
+            +boolean removeViewHelperComponent(ViewHelperComponent vhc)
+            +boolean clearViewHelperComponents()
         }
         DiagramViewHelperFactory -- DiagramViewHelper : > <<creates>>
         abstract class HelperLineDisplayer extends DiagramViewHelper {
             +HelperLineDisplayer(IDiagram inner)
             #void generateHelperComponents()
         }
-        note right of DiagramViewHelper::layer
+        note left of DiagramViewHelper::layer
             Indicates how much in the front the DiagramViewHelper is.
 
             For example with JLayeredPane
         end note
-        note right of DiagramViewHelper
-            For DiagramComponentAccessPoint methods:
-            Keep looking for a Diagram by recursively
-            going through the Decorators.
-        end note
-        class StatisticsLineDisplayer extends HelperLineDisplayer {
-            -DiagramAxis axis
+        class ValueLineDisplayer extends HelperLineDisplayer {
+            -DiagramAxis parallelAxis
             -Color color
             -Number thickness
             -Number value
-            +StatisticsLineDisplayer(IDiagram inner, DiagramAxis axis, Color color, Number thickness, Number value)
-            -void createStatisticLine()
+            +ValueLineDisplayer(IDiagram inner, DiagramAxis parallelAxis, Color color, Number thickness, Number value)
+            -void createValueLine()
         }
-        note bottom of StatisticsLineDisplayer
+        note bottom of ValueLineDisplayer
             Displays lines for statistics checked
             in the checkbox part
         end note
@@ -609,24 +610,16 @@ package Diagrams {
         class ValueFixColorDisplayer extends HelperComponentDisplayer {
             -TreeMap<Number, Color> mapping
             +ValueFixColorDisplayer(IDiagram inner, TreeMap<Number, Color> mapping)
-            #void generateHelperComponents()
         }
         class ValueScaleColorDisplayer extends HelperComponentDisplayer {
             -DiagramColorScale colorScale
             +ValueScaleColorDisplayer(IDiagram inner, DiagramColorScale colorScale)
-            #void generateHelperComponents()
         }
         note left of HelperComponentDisplayer
             Overshadows DiagramComponents with the ViewHelperComponents
             that are wanted to be seen by the user.
 
             Layer is set within the constructor.
-        end note
-        note as ValueColorDisplayers
-            Call getDiagramValueDisplayComponentPrototypes(),
-            adjust the returned elements, color them accordingly,
-            wrap them with ViewHelperComponent object
-            add them to helperComponents.
         end note
         ValueColorDisplayers -- ValueScaleColorDisplayer
         ValueColorDisplayers -- ValueFixColorDisplayer
@@ -655,14 +648,12 @@ package Diagrams {
         end note
         DiagramViewHelper *--> ViewHelperComponent
         class CoordinateIndicatorLine  extends DiagramLine {
-            #CoordinateIndicatorLine(Number xPos, Number yPos, Number length, Color color, Number thickness)
-            #CoordinateIndicatorLine(Number x1, Number y1, Number x2, Number y2, Color color, Number thickness)
+            #CoordinateIndicatorLine(DiagramAxis parallelAxis, Number value, Color color, Number thickness)
         }
-        class StatisticLine  extends DiagramLine {
-            #StatisticLine(Number xPos, Number yPos, Number length, Color color, Number thickness)
-            #StatisticLine(Number x1, Number y1, Number x2, Number y2, Color color, Number thickness)
+        class ValueLine  extends DiagramLine {
+            #ValueLine(DiagramAxis parallelAxis, Number value, Color color, Number thickness)
         }
-        StatisticsLineDisplayer --> StatisticLine : > <<creates>>
+        ValueLineDisplayer --> ValueLine : > <<creates>>
         CoordinateIndicatorLineDisplayer --> CoordinateIndicatorLine : > <<creates>>
     }
     note top of Diagram.Indicators
@@ -672,7 +663,7 @@ package Diagrams {
     note as N1
         Strategy pattern:
 
-        -IDiagramCompareStrategy as abstract strategy
+        -IDiagramOverlayStrategy as abstract strategy
         -Its subclasses as concrete strategies
     end note
     note as N2
@@ -737,7 +728,7 @@ package Diagrams {
         DiagramDirector --> DiagramBuilder
         DiagramDirector --> Diagram : <<creates>>
         DiagramComponentFactory --> DiagramComponent : <<creates>>
-        DiagramComparer o-- IDiagramCompareStrategy
+        DiagramOverlayer o-- IDiagramOverlayStrategy
         DiagramData "1" *--> "1" DiagramDataFormatter
         Diagram *--> DiagramData
         Diagram *-- "*" DiagramComponent
