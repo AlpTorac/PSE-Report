@@ -1,0 +1,301 @@
+\documentclass[10pt,a4paper]{report}
+
+\usepackage[T1]{fontenc}
+\usepackage{titlesec, blindtext, color}
+\newcommand{\hsp}{\hspace{10pt}}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{enumitem}
+
+\usepackage{caption}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\title{\includegraphics[scale=6.0]{App Icon}\\Design for Graphical Editor for Liberty Files}
+
+\author{Alp Toraç Genç, Kerem Kara, Xhulio Pernoca, Manuel Schenk, Ege Uzhan \leavevmode \\---------------------------------------------------------------------------------------\\
+Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
+\date{\today}
+
+% Format for the chapters/sections/subsections
+\titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp{}}{0pt}{\Huge\bfseries}
+\titlespacing{\chapter}{0cm}{0cm}{0.5cm} % distance from {right}{left}{next line} for chapter
+\titlespacing{\subsection}{0cm}{0cm}{0.5cm} % distance from {right}{left}{next line} for subsection
+
+%Macros
+% Macro for referencing another section in the document
+% #1 Name of referenced section
+% #2 Text of link
+\definecolor{col:reference}{HTML}{2f5399}
+\newcommand{\refer}[2]{\hyperref[#1]{\textcolor{col:reference}{#2}}}
+
+%Macro for Highlighting
+% #1 Text to highlight
+\definecolor{col:highlight}{HTML}{63b53e}
+\newcommand{\h}[1]{\textcolor{col:highlight}{#1}}
+
+% Aligns captions to the left of the images
+\captionsetup{
+  font=footnotesize,
+  justification=raggedright,
+  singlelinecheck=false
+}
+
+% Macro for including images
+\newcommand{\includeimage}[5]{
+    \begin{figure}[H]
+        #1
+        \includegraphics[scale=#2]{#3.png}
+        \caption{#4}
+        \label{fig:#5}
+    \end{figure}
+}
+
+% Macro for adding graph images
+\newcommand{\includegraph}[7]{
+    \graphicspath{{#1}}
+    \includeimage{#2}{#3}{#4}{#5}{#6}
+    \graphicspath{{#7}}
+}
+
+\newcommand{\imagepath}{Images/}
+\newcommand{\graphpath}{Images/Graphs/}
+
+%Macros for keywords
+\definecolor{col:public}{HTML}{499632}
+\definecolor{col:private}{HTML}{bf5050}
+\definecolor{col:class}{HTML}{9a50bf}
+\definecolor{col:sub}{HTML}{5052bf}
+\definecolor{col:static}{HTML}{bfb650}
+
+\newcommand{\public}{\textcolor{col:public}{public }}
+\newcommand{\private}{\textcolor{col:private}{private }}
+
+\newcommand{\class}{\textcolor{col:class}{class }}
+\newcommand{\type}[1]{\textcolor{col:class}{#1}}
+
+\newcommand{\extends}{\textcolor{col:sub}{extends }}
+\newcommand{\implements}{\textcolor{col:sub}{implements }}
+
+\newcommand{\static}{\textcolor{col:static}{static }}
+
+%Macros for sections (package/class/interface/...)
+%#1 place in hierarchy
+%#2 type
+%#3 name
+\newcommand{\desc}[3]{
+    #1{#2 #3}
+}
+\newcommand{\classdesc}[1]{
+    \desc{\subsection}{Class}{#1}
+}
+\newcommand{\absclassdesc}[1]{
+    \desc{\subsection}{Class}{#1}
+}
+\newcommand{\interfacedesc}[1]{
+    \desc{\subsection}{Interface}{#1}
+}
+\newcommand{\packagedesc}[1]{
+    \desc{\section}{Package}{#1}
+}
+
+%Macros for design patterns
+%#1 place in hierarchy
+%#2 name
+\newcommand{\patternentry}[2]{
+    #1{#2}
+}
+\newcommand{\pattern}[1]{
+    \patternentry{\section}{#1}
+}
+
+%Macro for defining classes
+%#1 declaration
+%#2 attributes
+%#3 constructors
+%#4 methods
+\newcommand{\defineclass}[4]{
+\textbf{Declaration:}
+\\\indent #1
+\\\textbf{Attributes:}
+\\\indent#2
+\\\textbf{Constructors:}
+\\\indent#3
+\\\textbf{Methods:}
+\\\indent#4
+}
+
+%Macro for defining methods
+%#1 signature
+%#2 return type
+%#3 definition
+\newcommand{\method}{
+
+}
+
+\graphicspath{\imagepath}
+
+\begin{document}
+\maketitle
+\label{sec:title}
+\tableofcontents
+
+\chapter{Packages}
+    \section{Model}
+    \section{View}
+    \section{Controller}
+
+\chapter{Class Descriptions}
+\section{GUI}
+\subsection{MainWindow}
+Description
+\\\defineclass{\public \class MainWindow \extends Frame, \implements AutoResizing}
+{\private subArea}
+{\public MainWindow()}
+{\public \static \type{void} Main(\type{String[]} args)}
+
+\packagedesc{edu.kit.informatik.pse.gelf.view.diagrams}
+
+\interfacedesc{IDiagram}
+
+\interfacedesc{IDiagramOverlayer}
+
+\classdesc{DiagramDirector}
+
+\classdesc{SettingsProvider}
+
+\packagedesc{edu.kit.informatik.pse.gelf.view.diagrams.overlayer}
+
+\interfacedesc{IDiagramOverlayStrategy}
+
+\classdesc{DiagramOverlayer}
+
+\classdesc{FunctionGraphOverlayStrategy}
+
+\classdesc{HistogramOverlayStrategy}
+
+\classdesc{BarChartOverlayStrategy}
+
+\packagedesc{edu.kit.informatik.pse.gelf.view.diagrams.components}
+
+\interfacedesc{Hoverable}
+
+\absclassdesc{PositionInDiagram}
+
+\absclassdesc{DiagramComponent}
+
+\absclassdesc{DiagramValueDisplayComponent}
+
+\absclassdesc{DiagramBar}
+
+\absclassdesc{DiagramAxis}
+
+\absclassdesc{DiagramLabel}
+
+\absclassdesc{DiagramLine}
+
+\absclassdesc{DiagramValueLabel}
+
+\absclassdesc{DiagramPoint}
+
+\absclassdesc{DiagramColorScale}
+
+\classdesc{PositionInFrame}
+
+\classdesc{PositionIn2DDiagram}
+
+\classdesc{SolidLine}
+
+\classdesc{2ColorScale}
+
+\classdesc{ValueDisplayPoint}
+
+\classdesc{HistogramBar}
+
+\classdesc{BarChartBar}
+
+\classdesc{SolidAxis}
+
+\classdesc{HeatMapLabel}
+
+\classdesc{DescriptionLabel}
+
+\classdesc{HoverLabel}
+
+\classdesc{DiagramComponentFactory}
+
+\packagedesc{edu.kit.informatik.pse.gelf.view.diagrams.data}
+
+\absclassdesc{DiagramDataFormatter}
+
+\classdesc{DiagramData}
+
+\classdesc{ArrayListDataFormatter}
+
+\classdesc{ArrayDataFormatter}
+
+\packagedesc{edu.kit.informatik.pse.gelf.view.diagrams.type}
+
+\interfacedesc{DiagramComponentAccessPoint}
+
+\absclassdesc{Diagram}
+
+\classdesc{Histogram}
+
+\classdesc{BarChart}
+
+\classdesc{HeatMap}
+
+\classdesc{FunctionGraph}
+
+\packagedesc{edu.kit.informatik.pse.gelf.view.diagrams.indicator}
+
+\absclassdesc{DiagramViewHelper}
+
+\absclassdesc{HelperLineDisplayer}
+
+\absclassdesc{HelperComponentDisplayer}
+
+\classdesc{DiagramViewHelperFactory}
+
+\classdesc{ValueLineDisplayer}
+
+\classdesc{ValueFixColorDisplayer}
+
+\classdesc{ValueScaleColorDisplayer}
+
+\classdesc{CoordinateIndicatorLineDisplayer}
+
+\classdesc{ViewHelperComponent}
+
+\classdesc{CoordinateIndicatorLine}
+
+\classdesc{ValueLine}
+
+\packagedesc{edu.kit.informatik.pse.gelf.view.diagrams.builder}
+
+\absclassdesc{DiagramBuilder}
+
+\classdesc{BarChartBuilder}
+
+\classdesc{HistogramBuilder}
+
+\classdesc{FunctionGraphBuilder}
+
+\classdesc{HeatMapBuilder}
+
+\chapter{Class Diagrams}
+
+\chapter{Sequence Diagrams}
+
+\chapter{Design Patterns}
+\pattern{Strategy}
+\pattern{Builder}
+\pattern{Singleton}
+
+\end{document}
