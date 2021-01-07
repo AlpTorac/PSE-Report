@@ -682,26 +682,6 @@ package Diagrams {
         +void setDiagramData(DiagramData data)
         +IDiagram build()
     }
-    abstract class DiagramBuilder {
-        -DiagramData data
-        #DiagramAxis buildAxes()
-        #DiagramValueDisplayComponent[] buildValueDisplayComponents()
-        #DiagramComponent[] buildDiagramSpecificComponent()
-        +DiagramBuilder(DiagramData data)
-        +IDiagram buildDiagram()
-    }
-    class BarChartBuilder extends DiagramBuilder {
-        +BarChartBuilder(DiagramData data)
-    }
-    class HistogramBuilder extends DiagramBuilder {
-        +HistogramBuilder(DiagramData data)
-    }
-    class FunctionGraphBuilder extends DiagramBuilder {
-        +FunctionGraphBuilder(DiagramData data)
-    }
-    class HeatMapBuilder extends DiagramBuilder {
-        +HeatMapBuilder(DiagramData data)
-    }
     class SettingsProvider {
         -SettingsProvider instance = new SettingsProvider
         -Settings s
@@ -709,6 +689,28 @@ package Diagrams {
         +SettingsProvider getInstance()
         +void changeSettings(Settings s)
         +Settings getSettings()
+    }
+    package Diagram.Builder {
+        abstract class DiagramBuilder {
+            -DiagramData data
+            #DiagramAxis buildAxes()
+            #DiagramValueDisplayComponent[] buildValueDisplayComponents()
+            #DiagramComponent[] buildDiagramSpecificComponent()
+            +DiagramBuilder(DiagramData data)
+            +IDiagram buildDiagram()
+        }
+        class BarChartBuilder extends DiagramBuilder {
+            +BarChartBuilder(DiagramData data)
+        }
+        class HistogramBuilder extends DiagramBuilder {
+            +HistogramBuilder(DiagramData data)
+        }
+        class FunctionGraphBuilder extends DiagramBuilder {
+            +FunctionGraphBuilder(DiagramData data)
+        }
+        class HeatMapBuilder extends DiagramBuilder {
+            +HeatMapBuilder(DiagramData data)
+        }
     }
 }
 
