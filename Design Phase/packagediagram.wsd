@@ -1,0 +1,54 @@
+@startuml packagediagram
+skinparam {
+    Linetype ortho
+    BackgroundColor #bababa
+    Shadowing false
+    Nodesep 60
+    Ranksep 50
+}
+skinparam Arrow {
+    Color #2e2e2e
+    Thickness 1.5
+}
+skinparam CircledCharacter {
+    Radius 8
+    FontSize 10
+}
+
+skinparam package {
+    BackgroundColor #bcbfd6
+    BorderThickness 1.8
+}
+skinparam Note {
+    BackgroundColor #297547
+    BorderColor #171a17
+    FontColor #e8e8e8
+}
+package model #C2FFED {
+    package project{}
+    package compiler{}
+    package parser{}
+    package commands{}
+    package element {
+        package attribute #B1ADEB{}
+    }
+    package exceptions{}
+
+}
+package view #8CC9F8 {
+    package diagrams {
+        package diagramtype #B1ADEB{}
+        package diagramdata #B1ADEB{}
+        package diagramcomponents #B1ADEB{}
+        package diagramindicators #B1ADEB{}
+        package diagramoverlayer #B1ADEB{}
+    }
+    package components{}
+    package composites{}
+}
+package controller #D4B5AF {
+    package listeners{}
+}
+model -[hidden]-> controller 
+controller -[hidden]-> view 
+@enduml
