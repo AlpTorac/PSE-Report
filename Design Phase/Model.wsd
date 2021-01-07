@@ -1,6 +1,6 @@
 @startuml Hallo
 skinparam linetype ortho
-package model{    
+package model{
     package element{
         class Stat {
             -float min 
@@ -12,6 +12,7 @@ package model{
             abstract class Attribute{ 
                 __
                 # void calculate()
+                + void scale(int)
             }
             enum TimingSense {
             POSITIVE
@@ -86,6 +87,8 @@ package model{
             - List<TimingType> availableTimType
             - List<PowerGroup> availableOutputPower
             - List<PowerGroup> availableInputPower
+            - float[] index1
+            - float[] index2
             - String path
             - Cell[] cells
             - float averageDefaultLeakage
@@ -161,8 +164,27 @@ package model{
             # void execute()
             # void undo()
         }
-        class UndoHistory
-
+        class ActionHistory{
+            Command[] actions
+            Command[] undoneActions
+            Command PreviousAction
+            __
+            - void resetUndoneActions()
+            + void addAction(Command)
+            + getLatestActions() : Command
+        }
+        class CreateLibrary implements Command{
+            __
+            + CreateLibrary(String)
+            + void execute()
+            + void undo()
+        }
+        class Scale implements Command{
+            __
+            + Scale(Attribute, float)
+            + void execute()
+            + void undo()
+        }
         class ElementSearchAction implements Command{
             __
             + SearchAction(String, Element[])
@@ -300,17 +322,16 @@ package model{
         }
     }
     
-    
-    
     package project {
         class Model {
+        ArrayList<Element> shownElements
+        ArrayList<Element> greyedElements
+        ArrayList<Element> filteredElements
+        ArrayList<Element> searchedElements
         ArrayList<Library> libraries
-        ArrayList<Library> selectedLibraries
-        ArrayList<Library> openedLibraries
-        ArrayList<Cell> selectedCells
-        ArrayList<Cell> openedCells
-        ArrayList<Pin> selectedPins
-        ArrayList<Pin> openedPins
+        ArrayList<Element> selectedElements
+        ArrayList<Element> openedInTextElements
+        ArrayList<Element> greyedElements
         __
         + notify()
         + getLibraries() : ArrayList<Library>
@@ -358,22 +379,22 @@ Model --> MoveAction
 Model --> RemoveAction
 Model --> LibertyCompiler
 Model --> CSVCompiler
-Model --> UndoHistory
+Model --> ActionHistory
 Model --> CompareAction
 Model --> OpenAction
 Model --> CloseAction
 Model --> OpenFileAction
 Model --> SelectDropdownAction
 Model --> SelectStatAction
-TextEdit --> Parser 
-Parser --> Library 
-Parser --> Cell 
+TextEdit --> Parser
+Parser --> Library
+Parser --> Cell
 Parser --> Pin
 SelectDropdownAction --> Attribute
 SelectStatAction --> Attribute
 OpenFileAction --> FileChooser
 OpenFileAction --> Parser
-UndoAction --> UndoHistory
+UndoAction --> ActionHistory
 Filter --* FilterAction
 Element <|-- Library
 Element <|-- Cell
