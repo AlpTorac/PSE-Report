@@ -2,39 +2,12 @@
 skinparam linetype ortho
 package model{    
     package element{
-        abstract StatFactory {
-            -Attribute attribute
-            -Element element 
-            -int min 
-            -int max
-            -int avg
-            __
-            Stat()
-            calculateMin()
-            calculateMax()
-            calculateAvg()
+        class Stat {
+            -float min 
+            -float max
+            -float avg
+            -float median
         }
-        class LibraryStat {
-            __
-            calculateMin()
-            calculateMax()
-            calculateAvg()
-        }
-        class CellStat {
-            __
-            calculateMin()
-            calculateMax()
-            calculateAvg()
-        }
-        class PinStat {
-            __
-            calculateMin()
-            calculateMax()
-            calculateAvg()
-        }
-        LibraryStat --|> StatFactory
-        CellStat --|> StatFactory
-        PinStat --|> StatFactory
         package attribute {
             abstract class Attribute{ 
                 __
@@ -68,44 +41,36 @@ package model{
             POWER
             }
             class Timing implements Attribute {
-                - List<TimingSense> availableTimSen
-                - List<TimingGroup> availableTimGr
-                - List<TimingType> availableTimType
                 -TimingSense timsense
                 -TimingType timtype
                 -TimingGroup timgroup
                 -float[][] values
                 -InputPin relatedPin
+                -Stat stats
                 __
                 + void calculate()
             }
             class InputPower implements Attribute {
-                -List<PowerGroup> availablePower
                 -PowerGroup powgroup
                 -float[] values
+                -Stat stats
                 __
                 + void calculate()
             }
             class OutputPower implements Attribute {
-                -List<PowerGroup> availablePower
                 -PowerGroup powgroup 
                 -float[][] values
                 -InputPin relatedPin
+                -Stat stats
                 __
                 + void calculate()
             }
             class Leakage implements Attribute {
-                -String outputfunction
-                -float value
+                float[] values
+                -Stat stats
                 __
                 + void calculate()
             }
-        }
-        enum Mode {
-            MAX
-            AVG
-            MIN
-            MEDIAN
         }
         abstract class Element{
             - String name
@@ -116,21 +81,40 @@ package model{
         }
         
         class Library{
+            - List<TimingSense> availableTimSen
+            - List<TimingGroup> availableTimGr
+            - List<TimingType> availableTimType
+            - List<PowerGroup> availableOutputPower
+            - List<PowerGroup> availableInputPower
             - String path
             - Cell[] cells
             - float averageDefaultLeakage
+            - Map<Sense<Group<Type, Stat>>> timingStat
+            - Map<Group, Stat> inPowerStat
+            - Map<Group, Stat> outPowerStat
             __
-            + void calculate()
+            + void calculateLeakage()
+            + void calculateInPow()
+            + void calculateOutPow()
+            + void calculateTiming()
             + getPath() : String
             + void setPath(String)
-
         }
         class Cell{
+            - List<TimingSense> availableTimSen
+            - List<TimingGroup> availableTimGr
+            - List<TimingType> availableTimType
+            - List<PowerGroup> availableOutputPower
+            - List<PowerGroup> availableInputPower
             - Library parentLibrary
             - InputPin[] inPins
             - OutputPin[] outPins
             - Leakage[] leakages
+            - Map<Sense<Group<Type, Stat>>> timingStat
+            - Map<Group, Stat> inPowerStat
+            - Map<Group, Stat> outPowerStat
             __
+            + void calculateLeakage()
             + void calculateInPow()
             + void calculateOutPow()
             + void calculateTiming()
@@ -141,6 +125,7 @@ package model{
         abstract class Pin{
             - Cell parentCell
             - float capacitance
+            - List<PowerGroup> availablePower
             __
             + getName() : String
             + void setName(String)
@@ -148,31 +133,19 @@ package model{
         }
         class InputPin{
             - InputPower[] inputPowers
-            - float avgInputPower
-            - float minInputPower
-            - float maxInputPower
-            - float medInputPower 
             __
             + void calculatePower()
         }
         class OutputPin{
+            - List<TimingSense> availableTimSen
+            - List<TimingGroup> availableTimGr
+            - List<TimingType> availableTimType
             - OutputPower[] outputPowers
             - Timing[] timings
-            - float avgOutputPower
-            - float minOutputPower
-            - float maxOutputPower
-            - float medOutputPower 
-            - float avgTiming 
-            - float minTiming
-            - float maxTiming
-            - float medTiming
             __
             + void calculatePower()
             + void calculateTiming()
         }
-        
-
-        
     }
 
     
