@@ -16,6 +16,9 @@
 \usepackage{hyperref}
 \usepackage{xcolor}
 
+\usepackage{tocloft}
+\usepackage{etoc}
+
 \title{\includegraphics[scale=6.0]{App Icon}\\Design for Graphical Editor for Liberty Files}
 
 \author{Alp Toraç Genç, Kerem Kara, Xhulio Pernoca, Manuel Schenk, Ege Uzhan \leavevmode \\---------------------------------------------------------------------------------------\\
@@ -84,24 +87,78 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 
 \newcommand{\static}{\textcolor{col:static}{static }}
 
-%Macros for sections (package/class/interface/...)
+\newcommand{\packagebeginning}{edu.kit.informatik.pse.gelf}
+
+%Macros for headers of package/class/interface/abstract class descriptions
 %#1 place in hierarchy
 %#2 type
 %#3 name
 \newcommand{\desc}[3]{
     #1{#2 #3}
 }
-\newcommand{\classdesc}[1]{
-    \desc{\subsection}{Class}{#1}
+
+%Macro for class descriptions
+%#1 name
+%#2 Declaration
+%#3 Constructors
+%#4 Methods
+\newcommand{\classdesc}[4]{
+    \desc{\subsection}{Class}{#1} \leavevmode \\
+    \textbf{Declaration:} \leavevmode \\
+    #2 \leavevmode \\
+    \textbf{Constructors:} \leavevmode \\
+    #3 \leavevmode \\
+    \textbf{Methods:} \leavevmode \\
+    #4
 }
-\newcommand{\absclassdesc}[1]{
-    \desc{\subsection}{Class}{#1}
+
+%Macro for abstract class descriptions
+%#1 name
+%#2 Declaration
+%#3 All known subclasses
+%#4 Constructors
+%#5 Methods
+\newcommand{\absclassdesc}[5]{
+    \desc{\subsection}{Abstract Class}{#1} \leavevmode \\
+    \textbf{Declaration:} \leavevmode \\
+    #2 \leavevmode \\
+    \textbf{All known subclasses:} \leavevmode \\
+    #3 \leavevmode \\
+    \textbf{Constructors:} \leavevmode \\
+    #4 \leavevmode \\
+    \textbf{Methods:} \leavevmode \\
+    #5
 }
-\newcommand{\interfacedesc}[1]{
-    \desc{\subsection}{Interface}{#1}
+
+%Macro for interface descriptions
+%#1 name
+%#2 Declaration
+%#3 All known subinterfaces
+%#4 All known implementing classes
+%#5 Methods
+\newcommand{\interfacedesc}[5]{
+    \desc{\subsection}{Interface}{#1} \leavevmode \\
+    \textbf{Declaration:} \leavevmode \\
+    #2 \leavevmode \\
+    \textbf{All known subinterfaces:} \leavevmode \\
+    #3 \leavevmode \\
+    \textbf{All known implementing classes:} \leavevmode \\
+    #4 \leavevmode \\
+    \textbf{Methods:} \leavevmode \\
+    #5
 }
+
+%Macro for package descriptions
+%#1 name
 \newcommand{\packagedesc}[1]{
     \desc{\section}{Package}{#1}
+    \renewcommand{\contentsname}{\small\textit{Package contents}
+    \hfill
+    \small\textit{Page}}
+    \setlength{\cftbeforetoctitleskip}{0em} % removes space before (local) table of contents
+    \setlength{\cftaftertoctitleskip}{0em} % removes space between the heading and the list parts of (local) table of contents
+    \setlength{\cftsubsecindent}{1em} % shortens the spacing from left
+    \localtableofcontents % makes a local table of contents
 }
 
 %Macros for design patterns
@@ -159,135 +216,135 @@ Description
 {\public MainWindow()}
 {\public \static \type{void} Main(\type{String[]} args)}
 
-\packagedesc{edu.kit.informatik.pse.gelf.view.diagrams}
+\packagedesc{\packagebeginning.view.diagrams}
 
-\interfacedesc{IDiagram}
+\interfacedesc{IDiagram}{a}{b}{c}{d}
 
-\interfacedesc{IDiagramOverlayer}
+\interfacedesc{IDiagramOverlayer}{a}{b}{c}{d}
 
-\classdesc{DiagramDirector}
+\classdesc{DiagramDirector}{a}{b}{c}
 
-\classdesc{SettingsProvider}
+\classdesc{SettingsProvider}{a}{b}{c}
 
-\packagedesc{edu.kit.informatik.pse.gelf.view.diagrams.overlayer}
+\packagedesc{\packagebeginning.view.diagrams.overlayer}
 
-\interfacedesc{IDiagramOverlayStrategy}
+\interfacedesc{IDiagramOverlayStrategy}{a}{b}{c}{d}
 
-\classdesc{DiagramOverlayer}
+\classdesc{DiagramOverlayer}{a}{b}{c}
 
-\classdesc{FunctionGraphOverlayStrategy}
+\classdesc{FunctionGraphOverlayStrategy}{a}{b}{c}
 
-\classdesc{HistogramOverlayStrategy}
+\classdesc{HistogramOverlayStrategy}{a}{b}{c}
 
-\classdesc{BarChartOverlayStrategy}
+\classdesc{BarChartOverlayStrategy}{a}{b}{c}
 
-\packagedesc{edu.kit.informatik.pse.gelf.view.diagrams.components}
+\packagedesc{\packagebeginning.view.diagrams.components}
 
-\interfacedesc{Hoverable}
+\interfacedesc{Hoverable}{a}{b}{c}{d}
 
-\absclassdesc{PositionInDiagram}
+\absclassdesc{PositionInDiagram}{a}{b}{c}{d}
 
-\absclassdesc{DiagramComponent}
+\absclassdesc{DiagramComponent}{a}{b}{c}{d}
 
-\absclassdesc{DiagramValueDisplayComponent}
+\absclassdesc{DiagramValueDisplayComponent}{a}{b}{c}{d}
 
-\absclassdesc{DiagramBar}
+\absclassdesc{DiagramBar}{a}{b}{c}{d}
 
-\absclassdesc{DiagramAxis}
+\absclassdesc{DiagramAxis}{a}{b}{c}{d}
 
-\absclassdesc{DiagramLabel}
+\absclassdesc{DiagramLabel}{a}{b}{c}{d}
 
-\absclassdesc{DiagramLine}
+\absclassdesc{DiagramLine}{a}{b}{c}{d}
 
-\absclassdesc{DiagramValueLabel}
+\absclassdesc{DiagramValueLabel}{a}{b}{c}{d}
 
-\absclassdesc{DiagramPoint}
+\absclassdesc{DiagramPoint}{a}{b}{c}{d}
 
-\absclassdesc{DiagramColorScale}
+\absclassdesc{DiagramColorScale}{a}{b}{c}{d}
 
-\classdesc{PositionInFrame}
+\classdesc{PositionInFrame}{a}{b}{c}
 
-\classdesc{PositionIn2DDiagram}
+\classdesc{PositionIn2DDiagram}{a}{b}{c}
 
-\classdesc{SolidLine}
+\classdesc{SolidLine}{a}{b}{c}
 
-\classdesc{2ColorScale}
+\classdesc{2ColorScale}{a}{b}{c}
 
-\classdesc{ValueDisplayPoint}
+\classdesc{ValueDisplayPoint}{a}{b}{c}
 
-\classdesc{HistogramBar}
+\classdesc{HistogramBar}{a}{b}{c}
 
-\classdesc{BarChartBar}
+\classdesc{BarChartBar}{a}{b}{c}
 
-\classdesc{SolidAxis}
+\classdesc{SolidAxis}{a}{b}{c}
 
-\classdesc{HeatMapLabel}
+\classdesc{HeatMapLabel}{a}{b}{c}
 
-\classdesc{DescriptionLabel}
+\classdesc{DescriptionLabel}{a}{b}{c}
 
-\classdesc{HoverLabel}
+\classdesc{HoverLabel}{a}{b}{c}
 
-\classdesc{DiagramComponentFactory}
+\classdesc{DiagramComponentFactory}{a}{b}{c}
 
-\packagedesc{edu.kit.informatik.pse.gelf.view.diagrams.data}
+\packagedesc{\packagebeginning.view.diagrams.data}
 
-\absclassdesc{DiagramDataFormatter}
+\absclassdesc{DiagramDataFormatter}{a}{b}{c}{d}
 
-\classdesc{DiagramData}
+\classdesc{DiagramData}{a}{b}{c}
 
-\classdesc{ArrayListDataFormatter}
+\classdesc{ArrayListDataFormatter}{a}{b}{c}
 
-\classdesc{ArrayDataFormatter}
+\classdesc{ArrayDataFormatter}{a}{b}{c}
 
-\packagedesc{edu.kit.informatik.pse.gelf.view.diagrams.type}
+\packagedesc{\packagebeginning.view.diagrams.type}
 
-\interfacedesc{DiagramComponentAccessPoint}
+\interfacedesc{DiagramComponentAccessPoint}{a}{b}{c}{d}
 
-\absclassdesc{Diagram}
+\absclassdesc{Diagram}{a}{b}{c}{d}
 
-\classdesc{Histogram}
+\classdesc{Histogram}{a}{b}{c}
 
-\classdesc{BarChart}
+\classdesc{BarChart}{a}{b}{c}
 
-\classdesc{HeatMap}
+\classdesc{HeatMap}{a}{b}{c}
 
-\classdesc{FunctionGraph}
+\classdesc{FunctionGraph}{a}{b}{c}
 
-\packagedesc{edu.kit.informatik.pse.gelf.view.diagrams.indicator}
+\packagedesc{\packagebeginning.view.diagrams.indicator}
 
-\absclassdesc{DiagramViewHelper}
+\absclassdesc{DiagramViewHelper}{a}{b}{c}{d}
 
-\absclassdesc{HelperLineDisplayer}
+\absclassdesc{HelperLineDisplayer}{a}{b}{c}{d}
 
-\absclassdesc{HelperComponentDisplayer}
+\absclassdesc{HelperComponentDisplayer}{a}{b}{c}{d}
 
-\classdesc{DiagramViewHelperFactory}
+\classdesc{DiagramViewHelperFactory}{a}{b}{c}
 
-\classdesc{ValueLineDisplayer}
+\classdesc{ValueLineDisplayer}{a}{b}{c}
 
-\classdesc{ValueFixColorDisplayer}
+\classdesc{ValueFixColorDisplayer}{a}{b}{c}
 
-\classdesc{ValueScaleColorDisplayer}
+\classdesc{ValueScaleColorDisplayer}{a}{b}{c}
 
-\classdesc{CoordinateIndicatorLineDisplayer}
+\classdesc{CoordinateIndicatorLineDisplayer}{a}{b}{c}
 
-\classdesc{ViewHelperComponent}
+\classdesc{ViewHelperComponent}{a}{b}{c}
 
-\classdesc{CoordinateIndicatorLine}
+\classdesc{CoordinateIndicatorLine}{a}{b}{c}
 
-\classdesc{ValueLine}
+\classdesc{ValueLine}{a}{b}{c}
 
-\packagedesc{edu.kit.informatik.pse.gelf.view.diagrams.builder}
+\packagedesc{\packagebeginning.view.diagrams.builder}
 
-\absclassdesc{DiagramBuilder}
+\absclassdesc{DiagramBuilder}{a}{b}{c}{d}
 
-\classdesc{BarChartBuilder}
+\classdesc{BarChartBuilder}{a}{b}{c}
 
-\classdesc{HistogramBuilder}
+\classdesc{HistogramBuilder}{a}{b}{c}
 
-\classdesc{FunctionGraphBuilder}
+\classdesc{FunctionGraphBuilder}{a}{b}{c}
 
-\classdesc{HeatMapBuilder}
+\classdesc{HeatMapBuilder}{a}{b}{c}
 
 \chapter{Class Diagrams}
 
