@@ -413,7 +413,6 @@ package compiler {
 
 package project {
     class Model {
-    ArrayList<Panel> panels
     ArrayList<Element> shownElements
     ArrayList<Element> greyedElements
     ArrayList<Element> filteredElements
@@ -421,7 +420,6 @@ package project {
     ArrayList<Library> libraries
     ArrayList<Element> selectedElements
     ArrayList<Element> openedInTextElements
-    ArrayList<Element> greyedElements
     __
     + notify()
     + getLibraries() : ArrayList<Library>
