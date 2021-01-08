@@ -60,7 +60,7 @@ package representation{
     class CellPanel{
         -Label label
         -List<Button> buttons
-        -List<Checkbox> buttons
+        -List<Checkbox> checkboxes
         -CellImageGenerator cellGenerator
         +CellPanel(Cell cell)
         +CellPanel(Pin pin)
