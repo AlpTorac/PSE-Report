@@ -75,78 +75,78 @@ package panelData{
     }
 }
 /' package panelData{
-        enum Mode{
-            MAX
-            MIN
-            AVG
-        }
-        enum ElementType {
-            LIBRARY
-            CELL
-            INPIN
-            OUTPIN
-        }
-        enum AttributeType{
-            OUTPOWER
-            INPOWER
-            DEFLEAKAGE
-            LEAKAGE
-            TIMING
-            AREA
-            CAPACITANCE
-        }
-        abstract class Panel{
-            ElementType elementType
-            String panelName
-        }
-        class TextEditor extends Panel{
-            - Element element
-            - String Content
-            - String greyedBeforeContent
-            - String greyedAfterContent
-            __
-            + search(String) : int
-            + switchToElementView()
-            + updateData()
-        }
-        interface GraphicImp{
-            AttributeType attribute
-            PowerGroup powgroup
-            TimingGroup timgroup
-            TimingType timtype
-            TimingSense timsense
-            Mode mode
-            __
-            {abstract} getData()
-        }
-        interface CompareView{
-            __
-            {abstract} void selectElement(Element)
-            {abstract} void deselectElement(Element)
-        }
-        class CompareLibraryView extends Panel implements GraphicImp, CompareView{
-            Element[] openedLibraries
-            Library[] selectedLibraries
-            __
-            + void getData()
-            + void selectElement(Element)
-            + void deselectElement(Element)
-        }
-        class CompareCellPinView extends Panel implements GraphicImp, CompareView{
-            Cell[] openedCells
-            Element[] selectedElements
-            __
-            + void getData()
-            + void selectElement(Element)
-            + void deselectElement(Element)
-        }
-        class ElementView extends Panel implements GraphicImp{
-            Element element
-            __
-            + void switchToTextEditor()
-            + getData()
-        }
-    }'/
+    enum Mode{
+        MAX
+        MIN
+        AVG
+    }
+    enum ElementType {
+        LIBRARY
+        CELL
+        INPIN
+        OUTPIN
+    }
+    enum AttributeType{
+        OUTPOWER
+        INPOWER
+        DEFLEAKAGE
+        LEAKAGE
+        TIMING
+        AREA
+        CAPACITANCE
+    }
+    abstract class Panel{
+        ElementType elementType
+        String panelName
+    }
+    class TextEditor extends Panel{
+        - Element element
+        - String Content
+        - String greyedBeforeContent
+        - String greyedAfterContent
+        __
+        + search(String) : int
+        + switchToElementView()
+        + updateData()
+    }
+    interface GraphicImp{
+        AttributeType attribute
+        PowerGroup powgroup
+        TimingGroup timgroup
+        TimingType timtype
+        TimingSense timsense
+        Mode mode
+        __
+        {abstract} getData()
+    }
+    interface CompareView{
+        __
+        {abstract} void selectElement(Element)
+        {abstract} void deselectElement(Element)
+    }
+    class CompareLibraryView extends Panel implements GraphicImp, CompareView{
+        Element[] openedLibraries
+        Library[] selectedLibraries
+        __
+        + void getData()
+        + void selectElement(Element)
+        + void deselectElement(Element)
+    }
+    class CompareCellPinView extends Panel implements GraphicImp, CompareView{
+        Cell[] openedCells
+        Element[] selectedElements
+        __
+        + void getData()
+        + void selectElement(Element)
+        + void deselectElement(Element)
+    }
+    class ElementView extends Panel implements GraphicImp{
+        Element element
+        __
+        + void switchToTextEditor()
+        + getData()
+    }
+}'/
 package element{
     class Stat {
         -float min 
@@ -226,7 +226,6 @@ package element{
         + getName() : String
         + {static} compare(Element, Element) : int
     }
-    
     class Library{
         - List<TimingSense> availableTimSen
         - List<TimingGroup> availableTimGr
@@ -325,37 +324,45 @@ package commands{
         + getLatestActions() : Command
     }
     class CreateLibrary implements Command{
+        Library library
         __
         + CreateLibrary(String)
         + void execute()
         + void undo()
     }
     class Scale implements Command{
+        Attribute attribute
+        float scale
         __
         + Scale(Attribute, float)
         + void execute()
         + void undo()
     }
     class ElementSearchAction implements Command{
+        String searchKey
         __
-        + SearchAction(String, Element[])
-        + execute() {Element[]???}
+        + SearchAction(String)
+        + execute()
         + undo()
     }
-    class EditorSearchAction implements Command{
-        __
-        + SearchAction(String, String)
-        + execute() 
-        + undo()
-    }
-    class FilterAction implements Command{
+    class RemoveFilterAction implements Command{
         Filter[] filters
         __
-        + FilterAction(Element[], Filter[])
-        + execute() {Element[]?}
+        + FilterAction(Filter[])
+        + execute()
+        + undo()
+    }
+    class AddFilterAction implements Command{
+        Filter[] filters
+        __
+        + FilterAction(Filter[])
+        + execute()
         + undo()
     }
     class TextEdit implements Command{
+        String oldContent
+        String newContent
+        Element element
         __
         + TextEdit (String, Element)
         + void execute()
@@ -368,47 +375,56 @@ package commands{
         + coid undo()
     }
     class MergeAction implements Command{
+        Library[] mergedLibraries
+        Library productLibrary
         __
         + MergeAction(Library[])
         + void execute()
         + void undo ()
     }
     class DeleteAction implements Command{
+        Cell deletedCell
         __
         + DeleteAction(Cell)
         + void execute()
         + void undo()
     }
     class RemoveAction implements Command{
+        Library removedLibrary
         __
         + RemoveAction(Library)
         + void execute()
         + void undo()
     }
     class MoveAction implements Command{
+        Map<Element, Library> initialPositions
+        Libary destinationLibrary
         __
         + MoveAction(Element[], Library)
         + void execute()
         + void undo()
     }
     class RenameAction implements Command{
+        String oldName
+        String newName
         __
         + RenameAction(Element, String)
         + void execute()
         + void undo()
     }
-    enum Operation{
-        LESS
-        EQUAL
-        BIGGER
-    }
-    class Filter{
-        Attribute attribute
-        Mode mode
-        float value
-        Operation operation
+    class SelectAction implements Command{
+        Element[] elements
         __
-        + Element[] filter(Element[])
+        SelectAction(Element)
+        + void execute()
+        + void undo()
+    }
+    class DeselectAction implements Command{
+        Element[] elements
+        __
+        SelectAction(Element)
+        + void execute()
+        + void undo()
     }
     
     class OpenFileAction implements Command {
@@ -504,18 +520,12 @@ enum LanguageEnum{
         TURK
         SHQIP
         FRANCAIS
-        日本人
     }
     enum ColorThemeEnum{
-        COOLRED
-        ICYBLUE
-        NIGHTMODE
-        SLEEPINGHAWK
-        SOVIETANTHEM
-        ERDOGAN
-        BARBIEWORLD
-        LIBERTY
-        WISHYOUDONTHAVEOIL
+        Theme1
+        Theme2
+        Theme3
+        ANDSOON
     }
     class Settings{
         - Language currentlanguage
@@ -553,6 +563,19 @@ enum LanguageEnum{
     + void resetKeys()
     + COMMAND getCommand(Key)
     }
+    enum Operation{
+        LESS
+        EQUAL
+        BIGGER
+    }
+    class Filter{
+        Attribute attribute
+        Mode mode
+        float value
+        Operation operation
+        __
+        + Element[] filter(Element[])
+    }
 }
 Model --> Interpolation
 Model --> Settings
@@ -563,7 +586,13 @@ Model --> Panel
 MergeAction ..> Library :  <<creates>> 
 Parser ..> Library: <<creates>>
 Model --> MergeAction
-Model --> FilterAction
+Model --> SelectAction
+Model --> DeselectAction
+Model --> AddFilterAction
+Model --> RemoveFilterAction
+Model --> Scale
+Model --> ElementSearchAction
+Model --> CreateLibrary
 Model --> UndoAction
 Model --> RenameAction
 Model --> DeleteAction
@@ -583,7 +612,8 @@ SelectStatAction --> Attribute '/
 OpenFileAction --> FileChooser
 OpenFileAction --> Parser
 UndoAction --> ActionHistory
-Filter --* FilterAction
+Filter <-- AddFilterAction
+Filter <-- RemoveFilterAction
 Element <|-- Library
 Element <|-- Cell
 Element <|-- Pin
@@ -618,7 +648,6 @@ PowerGroup -[hidden]> Attribute
 commands -[hidden]> compiler
 '/
 
-
 /' alignment2 '/
 /'
 Controller -[hidden]> project
@@ -628,10 +657,8 @@ parser -[hidden]> element
 project-[hidden]> commands
 '/
 
-
 /' alignment3 '/
 
-Controller -[hidden]-> model
 project -[hidden]> compiler
 compiler -[hidden]-> parser
 parser -[hidden]> element
