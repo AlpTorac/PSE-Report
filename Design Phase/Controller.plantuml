@@ -62,7 +62,12 @@ together {
 
 
     class FilterUpdateHandler implements IObserver{
-        +FilterUpdateHandler(Model model, MainWindow view)
+        +FilterUpdateHandler(Model model, Panel panel)
+        +update()
+    }
+    
+    class InterpolationHandler implements IObserver{
+        +InterpolationHandler(Model model, Panel panel)
         +update()
     }
 
@@ -103,12 +108,6 @@ package listeners{
             +actionPerformed(ActionEvent e)
         }
 
-        class ExpandCollapseListener implements ActionListener{
-            -Panel panel
-            +ExpandCollapseListener(Panel panel)
-            +actionPerformed(ActionEvent e)
-        
-        }
         class RenameListener implements ActionListener{
             -Model model
             +RenameListener(Model model)
@@ -175,12 +174,6 @@ package listeners{
             +textValueChanged(TextEvent e)
         }
 
-        class EditorSearchListener implements TextListener{
-            -Model model
-            +SearchListener(Model model)
-            
-        }
-
         class CompareListener implements ActionListener{
             -Model model
             +CompareListener(Model model)
@@ -205,23 +198,9 @@ package listeners{
             +actionPerformed(ActionEvent e)
         }
 
-        class HoverListener implements Hoverable{
-            -Model model 
-            -Panel panel
-            +HoverListener(Model model, Panel panel)
-            
-        }
-
         class AddFilterListener implements ActionListener{
             -Model model
             +AddFilterListener(Model model)
-            +actionPerformed(ActionEvent e)
-        }
-
-        class TabListener implements ActionListener{
-            -Model model
-            -Panel panel
-            +TabListener(Model model, Panel panel)
             +actionPerformed(ActionEvent e)
         }
 
