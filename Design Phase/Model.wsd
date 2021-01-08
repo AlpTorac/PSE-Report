@@ -1,7 +1,7 @@
 @startuml Hallo
 skinparam linetype ortho
 package model{
-    package panelData{
+    /' package panelData{
         enum Mode{
             MAX
             MIN
@@ -73,7 +73,7 @@ package model{
             + void switchToTextEditor()
             + getData()
         }
-    }
+    }'/
     package element{
         class Stat {
             -float min 
@@ -421,8 +421,53 @@ package model{
             + void interpolate(float , PolynomialSplineFunction)
             + void bicubicInterpolate(float, float, BicubicInterpolatingFunction)
         }
-    
-        class Settings
+        enum LanguageEnum{
+            ENGLISH
+            DEUTSCH
+            TURK
+            SHQIP
+            FRANCAIS
+            日本人
+        }
+        enum ColorThemeEnum{
+            COOLRED
+            ICYBLUE
+            NIGHTMODE
+            SLEEPINGINDIAN
+            SOVIETANTHEM
+            ERDOGAN
+            BARBIEWORLD
+            LIBERTY
+            WISHYOUDONTHAVEOIL
+        }
+        class Settings{
+            - Language currentlanguage
+            - ColorTheme colors
+            - String FontType
+            - int FontSize
+            - int barNumber
+            - int UndoNumber
+            - boolean editorOpenedFirst
+            __
+            + changeLanguage(LanguageEnum)
+            + changeLanguage(ColorThemeEnum)
+        }
+        class ColorTheme{
+            int[] colors
+            __
+            getColors()
+        }
+        class Language{
+            String appname
+            String[] Elements
+            String[] Menus
+            String[] Methods
+            String[] Attributes
+            __
+            getBlablabal(): String
+        }
+        Settings *-- ColorTheme
+        Settings *-- Language
         class Shortcuts{
         - Map<Keys(??), COMMAND> defaultCommands
         - Map<Keys(??), COMMAND> commands
@@ -441,7 +486,7 @@ Model --> Settings
 Model --> Shortcuts
 Model --> FileChooser
 Model --> Parser
-Model --> Panel
+/' Model --> Panel '/
 MergeAction ..> Library :  <<creates>> 
 Parser ..> Library: <<creates>>
 Model --> MergeAction
