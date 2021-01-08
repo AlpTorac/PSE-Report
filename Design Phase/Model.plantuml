@@ -231,6 +231,10 @@ package exceptions{
     class InvalidComparisonException
     class InvalidFileFormatException
     class ExceedingFileSizeException
+    class TooManySelectedException
+    class TooManyPanelsOpenedException
+    class SearchedStringNotFoundException
+    class InvalidNameException
 }
 package commands{
     interface Command{
@@ -478,6 +482,10 @@ Cell *-- Pin
 Exception --> InvalidComparisonException 
 Exception --> InvalidFileFormatException
 Exception --> ExceedingFileSizeException
+Exception --> TooManyPanelsOpenedException
+Exception --> TooManySelectedException
+Exception --> InvalidNameException
+Exception --> SearchedStringNotFoundException
 !endsub
 
 
