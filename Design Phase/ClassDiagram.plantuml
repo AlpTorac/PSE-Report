@@ -41,7 +41,6 @@ package Controller {
 }
 'From Controller
 EventListener --> CellPanel: > observes
-EventListener --> Panel: > observes
 EventListener --> TextEditor: > observes
 EventListener --> LibraryPanel: > observes
 EventListener --> Outliner: > observes
