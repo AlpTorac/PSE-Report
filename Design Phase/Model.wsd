@@ -1,6 +1,79 @@
 @startuml Hallo
 skinparam linetype ortho
 package model{
+    package panelData{
+        enum Mode{
+            MAX
+            MIN
+            AVG
+        }
+        enum ElementType {
+            LIBRARY
+            CELL
+            INPIN
+            OUTPIN
+        }
+        enum AttributeType{
+            OUTPOWER
+            INPOWER
+            DEFLEAKAGE
+            LEAKAGE
+            TIMING
+            AREA
+            CAPACITANCE
+        }
+        abstract class Panel{
+            ElementType elementType
+            String panelName
+        }
+        class TextEditor extends Panel{
+            - Element element
+            - String Content
+            - String greyedBeforeContent
+            - String greyedAfterContent
+            __
+            + search(String) : int
+            + switchToElementView()
+            + updateData()
+        }
+        interface GraphicImp{
+            AttributeType attribute
+            PowerGroup powgroup
+            TimingGroup timgroup
+            TimingType timtype
+            TimingSense timsense
+            Mode mode
+            __
+            {abstract} getData()
+        }
+        interface CompareView{
+            __
+            {abstract} void selectElement(Element)
+            {abstract} void deselectElement(Element)
+        }
+        class CompareLibraryView extends Panel implements GraphicImp, CompareView{
+            Element[] openedLibraries
+            Library[] selectedLibraries
+            __
+            + void getData()
+            + void selectElement(Element)
+            + void deselectElement(Element)
+        }
+        class CompareCellPinView extends Panel implements GraphicImp, CompareView{
+            Cell[] openedCells
+            Element[] selectedElements
+            __
+            + void getData()
+            + void selectElement(Element)
+            + void deselectElement(Element)
+        }
+        class ElementView extends Panel implements GraphicImp{
+            Element element
+            __
+            + void switchToTextEditor()
+            + getData()
+        }
+    }
     package element{
         class Stat {
             -float min 
@@ -90,6 +163,7 @@ package model{
             - float[] index1
             - float[] index2
             - String path
+            - String[] fileData
             - Cell[] cells
             - float averageDefaultLeakage
             - Map<Sense<Group<Type, Stat>>> timingStat
@@ -324,6 +398,7 @@ package model{
     
     package project {
         class Model {
+        ArrayList<Panel> panels
         ArrayList<Element> shownElements
         ArrayList<Element> greyedElements
         ArrayList<Element> filteredElements
@@ -366,6 +441,7 @@ Model --> Settings
 Model --> Shortcuts
 Model --> FileChooser
 Model --> Parser
+Model --> Panel
 MergeAction ..> Library :  <<creates>> 
 Parser ..> Library: <<creates>>
 Model --> MergeAction
