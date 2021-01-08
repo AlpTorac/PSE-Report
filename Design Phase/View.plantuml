@@ -30,6 +30,7 @@ skinparam Note {
     BorderColor #171a17
     FontColor #e8e8e8
 }
+!startsub DIAGRAM
 'Class Diagram
 'Class Definitions
     'Basic UI Components, extend/use Swing components
@@ -73,6 +74,19 @@ skinparam Note {
                         +keyPressed(KeyEvent e)
                         +keyReleased(KeyEvent e)
                         +keyTyped(KeyEvent e)
+                    }
+                    interface TextListener extends EventListener{
+                        +textValueChanged(TextEvent e)
+                    }
+
+                    interface ItemListener extends EventListener{
+                        +itemStateChanged(ItemEvent e)
+                    }
+
+                    interface DocumentListener extends EventListener{
+                        +changedUpdate(DocumentEvent e)
+                        +insertUpdate(DocumentEvent e)
+                        +removeUpdate(DocumentEvent e)
                     }
                 }
         'Custom
@@ -734,5 +748,65 @@ package Diagrams {
         DiagramData "1" *--> "1" DiagramDataFormatter
         Diagram *--> DiagramData
         Diagram *-- "*" DiagramComponent
-'Package Relations
+
+'Cell Representation
+package representation{
+
+    class DataPanel {
+        -Label label
+        -Text text
+        +DataPanel()
+        
+
+    }
+
+    class CellPanel{
+        -Label label
+        -List<Button> buttons
+        -List<Checkbox> checkboxes
+        -CellImageGenerator cellGenerator
+        +CellPanel(Cell cell)
+        +CellPanel(Pin pin)
+        
+
+    
+        
+
+    }
+
+    class LibraryPanel{
+        -List<Button> buttons
+        -List<Cell> cells
+        +LibraryPanel(Element e)
+        
+        
+    }
+
+    
+    interface ICellImageGenerator{
+        +buildCell(int inputPins, int outputPins)
+    }
+
+    class CellImageGenerator implements ICellImageGenerator{
+        -BufferedImage pinIcon
+        -BufferedImage cellIcon
+        +CellImageGenerator()
+        +buildCell(int inputPins, int outputPins): int
+        
+    }
+
+    
+
+
+    Visualizer *-- LibraryPanel
+    Visualizer *-- DataPanel
+    Visualizer *-- CellPanel
+    LibraryPanel --> CellPanel
+    CellPanel --> CellImageGenerator
+    CellPanel --> Button
+    CellPanel --> Checkbox
+    LibraryPanel --> ScrollPane
+    CellImageGenerator --> images
+}
+!endsub
 @enduml
