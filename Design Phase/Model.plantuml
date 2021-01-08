@@ -487,7 +487,6 @@ Model --> Settings
 Model --> Shortcuts
 Model --> FileChooser
 Model --> Parser
-Model --> Panel
 MergeAction ..> Library :  <<creates>> 
 Parser ..> Library: <<creates>>
 Model --> MergeAction
