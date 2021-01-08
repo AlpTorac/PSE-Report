@@ -39,9 +39,10 @@ package model{
 
     interface IObserver 
 
-    class Project 
-
-    
+   class Model {
+        -IObserver[] subscribers
+        +update()
+    }
 
 }
 
@@ -68,6 +69,7 @@ package view{
             +insertUpdate(DocumentEvent e)
             +removeUpdate(DocumentEvent e)
         }
+        interface KeyListener extends EventListener
         
         interface Hoverable
     }
@@ -99,62 +101,69 @@ package controller{
 
     together {
         class EventManager{
-            -Project project
+            -Model model
             -MainWindow view
-            +EventManager(Project project, MainWindow view)
+            +EventManager(Model model, MainWindow view)
             +initListeners()
         }
 
         
 
-        class UpdateHandler implements IObserver{
-                -Project project
-                -MainWindow view
-                -Tree e
-                +UpdateHandler(Project project, MainWindow view)
-                +update()
+        class DataUpdateHandler implements IObserver{
+            -Model model
+            -MainWindow view
+            -List<Element> elements
+            +UpdateHandler(Model model, MainWindow view)
+            +update()
 
-            }
-       
-        
-        
+        }
+
+        class SettingsUpdateHandler implements IObserver{
+            +SettingsUpdateHandler(Model model, MainWindow view)
+            +update()
+
+        }
+
+
+        class FilterUpdateHandler implements IObserver{
+            +FilterUpdateHandler(Model model, MainWindow view)
+            +update()
+        }
+
+          
         
     }
 
     package listeners{
 
             class LoadLibraryListener implements ActionListener{
-                -Project project
-                -Panel panel
-                +LoadLibraryListener(Project project, Panel panel)
+                -Model model
+                +LoadLibraryListener(Model model)
                 +actionPerformed(ActionEvent e)
             }
             
             class OpenElementListener implements ActionListener{
-                -Project project
-                -Panel panel
-                +OpenElementListener(Project project, Panel panel)
+                -Model model
+                +OpenElementListener(Model model)
                 +actionPerformed(ActionEvent e)
             }
 
             class DeleteCellListener implements ActionListener{
-               -Project project
-               -Panel panel
-               +DeleteCellListener(Project project, Panel panel)
+               -Model model
+               +DeleteCellListener(Model model)
                +actionPerformed(ActionEvent e)
             }
 
             class RemoveCellListener implements ActionListener{
-                -Project project
-                -Panel panel
-                +RemoveCellListener(Project project, Panel panel)
+                -Model model
+                +RemoveCellListener(Model model,)
                 +actionPerformed(ActionEvent e)
             }
 
             class SelectListener implements ActionListener{
-                -Project project
+                -Model model
                 -Panel panel
-                +SelectCellListener(Project project, Panel panel)
+                +SelectCellListener(Model model, Panel panel)
                 +actionPerformed(ActionEvent e)
             }
 
@@ -165,138 +174,157 @@ package controller{
            
             }
             class RenameListener implements ActionListener{
-                -Project project
-                -Panel panel
-                +RenameListener(Project project, Panel panel)
+                -Model model
+                +RenameListener(Model model)
                 +actionPerformed(ActionEvent e)
             }
 
             class EditListener implements ActionListener, DocumentListener{
-                -Project project
-                -Panel panel
-                +EditListener(Project project, Panel panel)
+                -Model model
+                +EditListener(Model model)
                 +actionPerformed(ActionEvent e)
             }
 
             class SaveListener implements ActionListener{
-                -Project project
-                -Panel panel
-               +SaveListener(Project project, Panel panel)
+                -Model model
+               +SaveListener(Model model)
                +actionPerformed(ActionEvent e)
             }
 
             class SaveAsListener implements ActionListener{
-                -Project project
-                -Panel panel
-                +SaveAsListener(Project project, Panel panel)
+                -Model model
+                +SaveAsListener(Model model)
                 +actionPerformed(ActionEvent e)
             }
 
             class MergeListener implements ActionListener{
-                -Project project
-                -Panel panel
-                +MergeListener(Project project, Panel panel)
+                -Model model
+                +MergeListener(Model model)
                 +actionPerformed(ActionEvent e)
             }
 
             class ScaleListener implements ActionListener{
-                -Project project
-                -Panel panel
-                +ScaleListener(Project project, Panel panel)
+                -Model model
+                +ScaleListener(Model model)
                 +actionPerformed(ActionEvent e)
             }
 
             class InterpolationListener implements ActionListener{
-                -Project project
-                -Panel panel
-                +InterpolationListener(Project project, Panel panel)
-                +actionPerformed(ActionEvent e)
-            }
-
-            class SettingsListener implements ActionListener{
-                -Panel panel
-                +SettingsListener(Panel panel)
+                -Model model
+                +InterpolationListener(Model model)
                 +actionPerformed(ActionEvent e)
             }
 
             class UndoListener implements ActionListener{
-               -Project project
-               -Panel panel
-               +UndoListener(Project project, Panel panel)
+               -Model model
+               +UndoListener(Model model)
                +actionPerformed(ActionEvent e)
             }
 
             class RedoListener implements ActionListener{
-                -Project project
-                -Panel panel
-                +RedoListener(Project project, Panel panel)
+                -Model model
+                +RedoListener(Model model)
                 +actionPerformed(ActionEvent e)
             }
 
             class StatisticsListener implements ItemListener{
-               -Panel panel
-               -Project project
-               +StatisticsListener(Project project, Panel panel)
+               -Model model
+               +StatisticsListener(Model model)
                +itemStateChanged(ItemEvent e)
             }
 
-            class PopUpListener implements ActionListener{
-                -Panel panel
-                +PopUpHandler(Panel panel)
-                +actionPerformed(ActionEvent e)
-            }
-
             class SearchListener implements TextListener{
-                -Panel panel
-                +SearchListener(Panel panel)
+                -Model model
+                +SearchListener(Model model)
                 +textValueChanged(TextEvent e)
             }
 
+            class EditorSearchListener implements TextListener{
+                -Model model
+                +SearchListener(Model model)
+                
+            }
+
             class CompareListener implements ActionListener{
-                -Project project
-                -Panel panel
-                +CompareListener(Project project, Panel panel)
+                -Model model
+                +CompareListener(Model model)
                 +actionPerformed(ActionEvent e)
             }
 
             class MoveListener implements ActionListener{
-                -Project project
-                -Panel panel
-                +MoveListener(Project project, Panel panel)
+                -Model model
+                +MoveListener(Model model)
                 +actionPerformed(ActionEvent e)
             } 
 
             class CopyListener implements ActionListener{
-                -Project project
-                -Panel panel
-                +CopyListener(Project project, Panel panel)
-                +actionPerformed(ActionEvent e)
-            }
-
-            class InfoListener implements ActionListener{
-                -Panel panel
-                +InfoListener(Panel panel)
+                -Model model
+                +CopyListener(Model model)
                 +actionPerformed(ActionEvent e)
             }
 
             class PasteListener implements ActionListener{
-                -Project project
-                -Panel panel
-                +PasteListener(Project project, Panel panel)
+                -Model model
+                +PasteListener(Model model)
                 +actionPerformed(ActionEvent e)
             }
 
             class HoverListener implements Hoverable{
-                -Project project 
+                -Model model 
                 -Panel panel
-                +HoverListener(Project project, Panel panel)
+                +HoverListener(Model model, Panel panel)
                 
             }
 
-            class FilterListener implements ActionListener{
-                -Project project
+            class AddFilterListener implements ActionListener{
+                -Model model
+                +AddFilterListener(Model model)
+                +actionPerformed(ActionEvent e)
+            }
+
+            class TabListener implements ActionListener{
+                -Model model
                 -Panel panel
-                +FilterListener(Project project, Panel panel)
+                +TabListener(Model model, Panel panel)
+                +actionPerformed(ActionEvent e)
+            }
+
+            class AttributeDropdownListener implements ActionListener{
+                -Model model
+                +AttributeDropdownListener(Model model)
+                +actionPerformed(ActionEvent e)
+            }
+
+            class SubAttributeDropdownListener implements ActionListener{
+                -Model model
+                +SubAttributeDropdownListener(Model model)
+                +actionPerformed(ActionEvent e)
+            }
+
+            class GraphDropdownListener implements ActionListener{
+                -Model model
+                +GraphDropdownListener(Model model)
+                +actionPerformed(ActionEvent e)
+            }
+
+            class PinSelectListener implements ActionListener{
+                -Model model
+                -Panel panel
+                +PinSelectListener(Model model, Panel panel)
+                +actionPerformed(ActionEvent e)
+            }
+
+            class ShortcutSettingsListener implements KeyListener{
+                -Model model
+                +ShortcutSettingsListener(Model model)
+                +actionPerformed(ActionEvent e)
+            }
+
+            class PreferencesSettingsListener implements ActionListener{
+                -Model model
+                +PreferencesSettingsListener(Model model)
+                +actionPerformed(ActionEvent e)
+
             }
 
 
@@ -313,24 +341,21 @@ package controller{
     EventListener --> Outliner: > observes
     EventListener --> Visualizer: > observes
     EventListener --> InfoBar: > observes
-    EventListener --> Project
+    EventListener --> Model
 
-    EventManager --> Project
+    EventManager --> Model
 
     Hoverable --> Diagram: > observes
   
-    UpdateHandler --> DataPanel
-    UpdateHandler --> CellPanel
-    UpdateHandler --> LibraryPanel
-    UpdateHandler --> Diagram
-    UpdateHandler --> Outliner
+    DataUpdateHandler --> DataPanel
+    DataUpdateHandler --> CellPanel
+    DataUpdateHandler --> LibraryPanel
+    DataUpdateHandler --> Diagram
+    DataUpdateHandler --> Outliner
 
-    IObserver -> Project: > observes
+    IObserver -> Model: > observes
    
    
-            
-
-       
-
+          
 
 @enduml
