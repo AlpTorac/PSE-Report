@@ -266,13 +266,7 @@ package commands{
         + void execute()
         + void undo()
     }
-    class ElementSearchAction implements Command{
-        String searchKey
-        __
-        + SearchAction(String)
-        + execute()
-        + undo()
-    }
+    
     class RemoveFilterAction implements Command{
         Filter[] filters
         __
