@@ -18,6 +18,7 @@
 
 \usepackage{tocloft}
 \usepackage{etoc}
+\usepackage[at]{easylist}
 
 \title{\includegraphics[scale=6.0]{App Icon}\\Design for Graphical Editor for Liberty Files}
 
@@ -72,12 +73,15 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 %Macros for keywords
 \definecolor{col:public}{HTML}{499632}
 \definecolor{col:private}{HTML}{bf5050}
+\definecolor{col:protected}{HTML}{808000}
 \definecolor{col:class}{HTML}{9a50bf}
 \definecolor{col:sub}{HTML}{5052bf}
 \definecolor{col:static}{HTML}{bfb650}
+\definecolor{col:default}{HTML}{bfb650}
 
 \newcommand{\public}{\textcolor{col:public}{public }}
 \newcommand{\private}{\textcolor{col:private}{private }}
+\newcommand{\proted}{\textcolor{col:protected}{protected }}
 
 \newcommand{\class}{\textcolor{col:class}{class }}
 \newcommand{\type}[1]{\textcolor{col:class}{#1}}
@@ -86,8 +90,41 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 \newcommand{\implements}{\textcolor{col:sub}{implements }}
 
 \newcommand{\static}{\textcolor{col:static}{static }}
+\newcommand{\deflt}{\textcolor{col:default}{default }}
 
 \newcommand{\packagebeginning}{edu.kit.informatik.pse.gelf} %root package name
+
+%Macro for Method description
+%#1 visibility modifier
+%#2 optional keyword
+%#3 output type
+%#4 method name
+%#5 parameters
+%#6 description
+%#7 list of parameters
+%#8 output description
+\newcommand{\methoddesc}[8]{
+#4
+\leavevmode \\
+\leavevmode \\
+#1#2\type{#3} #4(#5)
+\begin{itemize}[label=-]
+    \item Description: \leavevmode \\ #6 \leavevmode \\
+    \item Parameters: \leavevmode \\ #7 \leavevmode \\
+    \item Returns: \leavevmode \\ #8
+\end{itemize}
+}
+
+%Macro for constructor description
+%#1 visibility modifier
+%#2 method name
+%#3 parameters
+\newcommand{\constrdesc}[3]{
+#2
+\leavevmode \\
+\leavevmode \\
+#1#2(#3)
+}
 
 %Macros for headers of package/class/interface/abstract class descriptions
 %#1 place in hierarchy
@@ -218,29 +255,142 @@ Description
 
 \packagedesc{view.diagrams}
 
-\interfacedesc{IDiagram}{a}{b}{c}{d}
+\interfacedesc{IDiagram}{a}{b}{c}{
+\begin{itemize}
+    \item \methoddesc{\public}{}{Collection<?>}{cloneData}{}
+    {}{}{}
+    \item \methoddesc{\public}{}{void}{refresh}{}
+    {}{}{}
+    \item \methoddesc{\public}{}{void}{update}{\type{DiagramData} data}
+    {}{}{}
+    \item \methoddesc{\public}{}{boolean}{addDiagramViewHelper}{\type{Enum} uniqueIdentifier, \type{DiagramViewHelper} dvh}
+    {}{}{}
+    \item \methoddesc{\public}{}{boolean}{removeDiagramViewHelper}{\type{Enum} uniqueIdentifier, \type{DiagramViewHelper} dvh}
+    {}{}{}
+    \item \methoddesc{\public}{}{boolean}{showDiagramViewHelper}{\type{Enum} uniqueIdentifier}
+    {}{}{}
+    \item \methoddesc{\public}{}{boolean}{hideDiagramViewHelper}{\type{Enum} uniqueIdentifier}
+    {}{}{}
+\end{itemize}}
 
-\interfacedesc{IDiagramOverlayer}{a}{b}{c}{d}
+\interfacedesc{IDiagramOverlayer}{a}{b}{c}{
+\begin{itemize}
+    \item \methoddesc{\public}{}{IDiagram}{getDiagram}{\type{int} index}
+    {}{}{}
+    \item \methoddesc{\public}{}{void}{setDiagram}{\type{int} index, IDiagram diagram}
+    {}{}{}
+    \item \methoddesc{\public}{}{boolean}{addDiagram}{\type{IDiagram} diagram}
+    {}{}{}
+    \item \methoddesc{\public}{}{boolean}{removeDiagram}{\type{IDiagram} diagram}
+    {}{}{}
+    \item \methoddesc{\public}{}{IDiagram}{overlay}{\type{int[]} indices}
+    {}{}{}
+    \item \methoddesc{\public}{}{IDiagram}{overlay}{\type{IDiagram[]} diagrams}
+    {}{}{}
+\end{itemize}
+}
 
-\classdesc{DiagramDirector}{a}{b}{c}
+\classdesc{DiagramDirector}{a}{
+    \begin{itemize}
+        \item \constrdesc{\private}{DiagramDirector}{}
+    \end{itemize}
+}{
+\begin{itemize}
+    \item \methoddesc{\public}{}{DiagramDirector}{getDiagramDirector}{}
+    {}{}{}
+    \item \methoddesc{\public}{}{void}{changeBuilder}{\type{DiagramBuilder} builder}
+    {}{}{}
+    \item \methoddesc{\public}{}{void}{setDiagramData}{\type{DiagramData} data}
+    {}{}{}
+    \item \methoddesc{\public}{}{IDiagram}{build}{}
+    {}{}{}
+\end{itemize}
+}
 
-\classdesc{SettingsProvider}{a}{b}{c}
+\classdesc{SettingsProvider}{a}{
+    \begin{itemize}
+        \item \constrdesc{\private}{SettingsProvider}{}
+    \end{itemize}  
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{SettingsProvider}{getInstance}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{changeSettings}{Settings s}
+        {}{}{}
+        \item \methoddesc{\public}{}{Settings}{getSettings}{}
+        {}{}{}        
+    \end{itemize}
+}
 
 \packagedesc{view.diagrams.overlayer}
 
-\interfacedesc{IDiagramOverlayStrategy}{a}{b}{c}{d}
+\interfacedesc{IDiagramOverlayStrategy}{a}{b}{c}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{IDiagram}{overlay}{}
+        {}{}{}
+    \end{itemize}
+}
 
-\classdesc{DiagramOverlayer}{a}{b}{c}
+\classdesc{DiagramOverlayer}{a}{
+    \begin{itemize}
+        \item \constrdesc{\public}{DiagramOverlayer}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\proted}{}{void}{setOverlayStrategy}{}
+        {}{}{}
+    \end{itemize}
+}
 
-\classdesc{FunctionGraphOverlayStrategy}{a}{b}{c}
+\classdesc{FunctionGraphOverlayStrategy}{a}{
+    \begin{itemize}
+        \item \constrdesc{\public}{FunctionGraphOverlayStrategy}{\type{FunctionGraph[]} functionGraphs}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{FunctionGraph}{overlay}{}
+        {}{}{}
+    \end{itemize}
+}
 
-\classdesc{HistogramOverlayStrategy}{a}{b}{c}
+\classdesc{HistogramOverlayStrategy}{a}{
+    \begin{itemize}
+        \item \constrdesc{\public}{HistogramOverlayStrategy}{\type{Histogram} histogram1, \type{Histogram} histogram2}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{Histogram}{overlay}{}
+        {}{}{}
+    \end{itemize}
+}
 
-\classdesc{BarChartOverlayStrategy}{a}{b}{c}
+\classdesc{BarChartOverlayStrategy}{a}{
+    \begin{itemize}
+        \item \constrdesc{\public}{BarChartOverlayStrategy}{\type{BarChart} barChart1, \type{BarChart} barChart2}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{BarChart}{overlay}{}
+        {}{}{}
+    \end{itemize}
+}
 
 \packagedesc{view.diagrams.components}
 
-\interfacedesc{Hoverable}{a}{b}{c}{d}
+\interfacedesc{Hoverable}{a}{b}{c}{
+    \begin{itemize}
+        \item \methoddesc{\public}{\deflt}{boolean}{isBeingHovered}{}
+        {}{}{}
+        \item \methoddesc{\public}{\deflt}{void}{hoverAction}{}
+        {}{}{}
+        \item \methoddesc{\public}{\deflt}{void}{refreshHoverLabelPosition}{}
+        {}{}{}
+        \item \methoddesc{\public}{\deflt}{void}{showHoverLabel}{}
+        {}{}{}
+        \item \methoddesc{\public}{\deflt}{void}{hideHoverLabel}{}
+        {}{}{}
+    \end{itemize}
+}
 
 \absclassdesc{PositionInDiagram}{a}{b}{c}{d}
 
