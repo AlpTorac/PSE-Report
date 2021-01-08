@@ -87,7 +87,7 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 
 \newcommand{\static}{\textcolor{col:static}{static }}
 
-\newcommand{\packagebeginning}{edu.kit.informatik.pse.gelf}
+\newcommand{\packagebeginning}{edu.kit.informatik.pse.gelf} %root package name
 
 %Macros for headers of package/class/interface/abstract class descriptions
 %#1 place in hierarchy
@@ -151,7 +151,7 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 %Macro for package descriptions
 %#1 name
 \newcommand{\packagedesc}[1]{
-    \desc{\section}{Package}{#1}
+    \desc{\section}{Package}{\packagebeginning.#1}
     \renewcommand{\contentsname}{\small\textit{Package contents}
     \hfill
     \small\textit{Page}}
@@ -216,7 +216,7 @@ Description
 {\public MainWindow()}
 {\public \static \type{void} Main(\type{String[]} args)}
 
-\packagedesc{\packagebeginning.view.diagrams}
+\packagedesc{view.diagrams}
 
 \interfacedesc{IDiagram}{a}{b}{c}{d}
 
@@ -226,7 +226,7 @@ Description
 
 \classdesc{SettingsProvider}{a}{b}{c}
 
-\packagedesc{\packagebeginning.view.diagrams.overlayer}
+\packagedesc{view.diagrams.overlayer}
 
 \interfacedesc{IDiagramOverlayStrategy}{a}{b}{c}{d}
 
@@ -238,7 +238,7 @@ Description
 
 \classdesc{BarChartOverlayStrategy}{a}{b}{c}
 
-\packagedesc{\packagebeginning.view.diagrams.components}
+\packagedesc{view.diagrams.components}
 
 \interfacedesc{Hoverable}{a}{b}{c}{d}
 
@@ -286,7 +286,7 @@ Description
 
 \classdesc{DiagramComponentFactory}{a}{b}{c}
 
-\packagedesc{\packagebeginning.view.diagrams.data}
+\packagedesc{view.diagrams.data}
 
 \absclassdesc{DiagramDataFormatter}{a}{b}{c}{d}
 
@@ -296,7 +296,7 @@ Description
 
 \classdesc{ArrayDataFormatter}{a}{b}{c}
 
-\packagedesc{\packagebeginning.view.diagrams.type}
+\packagedesc{view.diagrams.type}
 
 \interfacedesc{DiagramComponentAccessPoint}{a}{b}{c}{d}
 
@@ -310,7 +310,7 @@ Description
 
 \classdesc{FunctionGraph}{a}{b}{c}
 
-\packagedesc{\packagebeginning.view.diagrams.indicator}
+\packagedesc{view.diagrams.indicator}
 
 \absclassdesc{DiagramViewHelper}{a}{b}{c}{d}
 
@@ -334,7 +334,7 @@ Description
 
 \classdesc{ValueLine}{a}{b}{c}
 
-\packagedesc{\packagebeginning.view.diagrams.builder}
+\packagedesc{view.diagrams.builder}
 
 \absclassdesc{DiagramBuilder}{a}{b}{c}{d}
 
