@@ -76,8 +76,13 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 \definecolor{col:protected}{HTML}{808000}
 \definecolor{col:class}{HTML}{9a50bf}
 \definecolor{col:sub}{HTML}{5052bf}
+\definecolor{col:impl}{HTML}{5052bf}
+\definecolor{col:throws}{HTML}{5052bf}
 \definecolor{col:static}{HTML}{bfb650}
 \definecolor{col:default}{HTML}{bfb650}
+\definecolor{col:abstract}{HTML}{bfb650}
+\definecolor{col:final}{HTML}{bfb650}
+\definecolor{col:generic}{HTML}{9a50bf}
 
 \newcommand{\public}{\textcolor{col:public}{public }}
 \newcommand{\private}{\textcolor{col:private}{private }}
@@ -85,12 +90,17 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 
 \newcommand{\class}{\textcolor{col:class}{class }}
 \newcommand{\type}[1]{\textcolor{col:class}{#1}}
+\newcommand{\generic}[1]{\textcolor{col:generic}{#1}}
+\newcommand{\typewgeneric}[2]{\textcolor{col:class}{#1}<\generic{#2}>}
 
 \newcommand{\extends}{\textcolor{col:sub}{extends }}
-\newcommand{\implements}{\textcolor{col:sub}{implements }}
+\newcommand{\implements}{\textcolor{col:impl}{implements }}
+\newcommand{\throws}{\textcolor{col:throws}{throws }}
 
 \newcommand{\static}{\textcolor{col:static}{static }}
 \newcommand{\deflt}{\textcolor{col:default}{default }}
+\newcommand{\abstr}{\textcolor{col:abstract}{abstract }}
+\newcommand{\final}{\textcolor{col:final}{final }}
 
 \newcommand{\packagebeginning}{edu.kit.informatik.pse.gelf} %root package name
 
@@ -113,6 +123,17 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     \item Parameters: \leavevmode \\ #7 \leavevmode \\
     \item Returns: \leavevmode \\ #8
 \end{itemize}
+}
+
+%Macro for Enum fields
+%#1 Enum name
+%#2 Field name (all UPPER case and words separated with _)
+%#3 Field description
+\newcommand{\fielddesc}[3]{
+    \public \static \final \type{#1} #2 \leavevmode \\
+    \begin{itemize}[label=-]
+        \item #3
+    \end{itemize}
 }
 
 %Macro for constructor description
@@ -183,6 +204,34 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     #4 \leavevmode \\
     \textbf{Methods:} \leavevmode \\
     #5
+}
+
+%Macro for enum descriptions
+%#1 name
+%#2 Declaration
+%#3 Fields (Enum values)
+%#4 Methods
+\newcommand{\enumdesc}[4]{
+    \desc{\subsection}{Class}{#1} \leavevmode \\
+    \textbf{Declaration:} \leavevmode \\
+    #2 \leavevmode \\
+    \textbf{Fields:} \leavevmode \\
+    #3 \leavevmode \\
+    \textbf{Methods:} \leavevmode \\
+    #4 \leavevmode \\
+    \textbf{Members inherited from class Enum:} \leavevmode \\
+    java.lang.Enum \leavevmode \\
+    \begin{itemize}
+        \item \proted \final \type{Object} \textbf{clone}() \throws CloneNotSupportedException
+        \item \public \final \type{int} \textbf{compareTo}(\type{Enum} arg0)
+        \item \public \final \type{boolean} \textbf{equals}(\type{Object} arg0)
+        \item \proted \final \type{void} \textbf{finalize}()
+        \item \public \final \type{int} \textbf{hashCode}()
+        \item \public \final \type{String} \textbf{name}()
+        \item \public \final \type{int} \textbf{ordinal}()
+        \item \public \type{String} \textbf{toString}()
+        \item \public \static \type{Enum} \textbf{valueOf}(\type{Class} arg0, \type{String} arg1)
+    \end{itemize}
 }
 
 %Macro for package descriptions
@@ -263,13 +312,13 @@ Description
     {}{}{}
     \item \methoddesc{\public}{}{void}{update}{\type{DiagramData} data}
     {}{}{}
-    \item \methoddesc{\public}{}{boolean}{addDiagramViewHelper}{\type{Enum} uniqueIdentifier, \type{DiagramViewHelper} dvh}
+    \item \methoddesc{\public}{}{boolean}{addDiagramViewHelper}{\type{DiagramViewHelper} dvh}
     {}{}{}
-    \item \methoddesc{\public}{}{boolean}{removeDiagramViewHelper}{\type{Enum} uniqueIdentifier, \type{DiagramViewHelper} dvh}
+    \item \methoddesc{\public}{}{boolean}{removeDiagramViewHelper}{\type{DiagramViewHelper} dvh}
     {}{}{}
-    \item \methoddesc{\public}{}{boolean}{showDiagramViewHelper}{\type{Enum} uniqueIdentifier}
+    \item \methoddesc{\public}{}{boolean}{showDiagramViewHelper}{\type{Enum} id}
     {}{}{}
-    \item \methoddesc{\public}{}{boolean}{hideDiagramViewHelper}{\type{Enum} uniqueIdentifier}
+    \item \methoddesc{\public}{}{boolean}{hideDiagramViewHelper}{\type{Enum} id}
     {}{}{}
 \end{itemize}}
 
@@ -392,110 +441,660 @@ Description
     \end{itemize}
 }
 
-\absclassdesc{PositionInDiagram}{a}{b}{c}{d}
+\absclassdesc{PositionInDiagram}{a}{
+    \begin{itemize}
+        \item \constrdesc{\public}{PositionInDiagram}{\type{DiagramAxis[]} axes, \type{Number[]} coordinatesInAxes}
+    \end{itemize}
+}{c}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{Number}{axisCoordinateToFrameCoordinate}{\type{int} index}
+        {}{}{}
+        \item \methoddesc{\public}{}{PositionInFrame}{toPositionInFrame}{}
+        {}{}{}
+        \item \methoddesc{\proted}{}{void}{setAxisCoordinate}{\type{int} index, \type{Number} position}
+        {}{}{}
+        \item \methoddesc{\proted}{}{void}{setAxisCoordinates}{\type{Number[]} coordinates}
+        {}{}{}
+        \item \methoddesc{\proted}{}{Number}{getAxisPos}{\type{int} index}
+        {}{}{}
+    \end{itemize}
+}
 
-\absclassdesc{DiagramComponent}{a}{b}{c}{d}
+\absclassdesc{DiagramComponent}{a}{
+    \begin{itemize}
+        \item \constrdesc{\proted}{DiagramComponent}{\type{Color} color}
+    \end{itemize}
+}{c}{
+    \begin{itemize}
+        \item \methoddesc{\public}{\abstr}{DiagramComponent}{clone}{}
+        {}{}{}
+        \item \methoddesc{\public}{\abstr}{DiagramComponent}{clone}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{setColor}{\type{Color} color}
+        {}{}{}
+        \item \methoddesc{\public}{}{Number}{getColor}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{show}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{hide}{}
+        {}{}{}
+    \end{itemize}
+}
 
-\absclassdesc{DiagramValueDisplayComponent}{a}{b}{c}{d}
+\absclassdesc{DiagramValueDisplayComponent}{a}{
+    \begin{itemize}
+        \item \constrdesc{\proted}{DiagramValueDisplayComponent}{\type{Color} color, \type{Number} value}
+    \end{itemize}
+}{c}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{Number}{valueToCoordinate}{\type{int} axisIndex}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{setValue}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{Number}{getValue}{}
+        {}{}{}
+        \item \methoddesc{\public}{\abstr}{void}{refreshValueRelevantAttributes}{}
+        {}{}{}
+    \end{itemize}
+}
 
-\absclassdesc{DiagramBar}{a}{b}{c}{d}
+\absclassdesc{DiagramBar}{a}{
+    \begin{itemize}
+        \item \constrdesc{\proted}{DiagramBar}{\type{Color} color, \type{Number} value, \type{PositionIn2DDiagram} bottomLeft, \type{PositionIn2DDiagram} topRight, \type{Number} borderThickness}
+    \end{itemize}
+}{c}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{Number}{getHeight}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{Number}{getWidth}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{setBottomLeftInDiagram}{\type{Number} x1, \type{Number} y1}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{setTopRightInDiagram}{\type{Number} x2, \type{Number} y2}
+        {}{}{}
+        \item \methoddesc{\public}{}{PositionIn2DDiagram}{getBottomLeftInDiagram}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{PositionIn2DDiagram}{getTopRightInDiagram}{}
+        {}{}{}
+    \end{itemize}
+}
 
-\absclassdesc{DiagramAxis}{a}{b}{c}{d}
+\absclassdesc{DiagramAxis}{a}{
+    \begin{itemize}
+        \item \constrdesc{\proted}{DiagramAxis}{\type{DiagramLine} axisLine, \type{Number} min, \type{Number} max, \type{int} steps}
+    \end{itemize}
+}{c}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{void}{setMin}{\type{Number} min}
+        {}{}{}
+        \item \methoddesc{\public}{}{Number}{getMin}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{setMax}{\type{Number} max}
+        {}{}{}
+        \item \methoddesc{\public}{}{Number}{getMax}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{setSteps}{\type{int} steps}
+        {}{}{}
+        \item \methoddesc{\public}{}{int}{getSteps}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{showValues}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{hideValues}{}
+        {}{}{}
+        \item \methoddesc{\proted}{}{void}{paintComponent}{\type{Graphics} g}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{paintAxis}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{Number}{valueToCoordinate}{\type{Number} value}
+        {}{}{}
+        \item \methoddesc{\public}{}{Number}{CoordinateToValue}{\type{Number} coordinate}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{setLineByPos}{\type{Number} minValXPos, \type{Number} minValYPos, \type{Number} maxValXPos, \type{Number} maxValYPos}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{setLineColor}{\type{Color} color}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{setLineThickness}{\type{Number} thickness}
+        {}{}{}
+        \item \methoddesc{\public}{}{Number}{getLineLength}{}
+        {}{}{}
+    \end{itemize}
+}
 
-\absclassdesc{DiagramLabel}{a}{b}{c}{d}
+\absclassdesc{DiagramLabel}{a}{
+    \begin{itemize}
+        \item \constrdesc{\proted}{DiagramLabel}{\type{PositionInFrame} bottomLeft, \type{PositionInFrame} topRight, \type{Color} color, \type{String} caption, \type{Number} borderThickness}
+    \end{itemize}
+}{c}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{void}{setCaption}{\type{String} caption}
+        {}{}{}
+        \item \methoddesc{\public}{}{String}{getCaption}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{setBottomLeftInFrame}{\type{Number} x1, \type{Number} y1}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{setTopRightInFrame}{\type{Number} x2, \type{Number} y2}
+        {}{}{}
+        \item \methoddesc{\public}{}{PositionInFrame}{getBottomLeftInFrame}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{PositionInFrame}{getTopRightInFrame}{}
+        {}{}{}
+    \end{itemize}
+}
 
-\absclassdesc{DiagramLine}{a}{b}{c}{d}
+\absclassdesc{DiagramLine}{a}{
+    \begin{itemize}
+        \item \constrdesc{\proted}{DiagramLine}{\type{PositionInFrame} start, \type{PositionInFrame} end, \type{Color} color, \type{Number} thickness}
+    \end{itemize}
+}{c}{
+    \begin{itemize}
+        \item \methoddesc{\proted}{}{Number}{calculateLength}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{setThickness}{\type{Number} thickness}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{setBottomLeftInFrame}{\type{Number} x1, \type{Number} y1}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{setTopRightInFrame}{\type{Number} x2, \type{Number} y2}
+        {}{}{}
+        \item \methoddesc{\public}{}{PositionInFrame}{getBottomLeftInFrame}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{PositionInFrame}{getTopRightInFrame}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{Number}{getLength}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{Number}{getThickness}{}
+        {}{}{}
+    \end{itemize}
+}
 
-\absclassdesc{DiagramValueLabel}{a}{b}{c}{d}
+\absclassdesc{DiagramValueLabel}{a}{
+    \begin{itemize}
+        \item \constrdesc{\proted}{DiagramValueLabel}{\type{PositionIn2DDiagram} bottomLeft, \type{PositionIn2DDiagram} topRight, \type{Color} color, \type{Number} value, \type{Number} borderThickness}
+    \end{itemize}
+}{c}{
+    \begin{itemize}
+        \item \methoddesc{\proted}{}{void}{refreshCaption}{}
+        {}{}{}
+        \item \methoddesc{\proted}{}{void}{setCaption}{\type{String} caption}
+        {}{}{}
+        \item \methoddesc{\public}{}{String}{getCaption}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{setBottomLeftInDiagram}{\type{Number} x1, \type{Number} y1}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{setTopRightInDiagram}{\type{Number} x2, \type{Number} y2}
+        {}{}{}
+        \item \methoddesc{\public}{}{PositionIn2DDiagram}{getBottomLeftInDiagram}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{PositionIn2DDiagram}{getTopRightInDiagram}{}
+        {}{}{}
+    \end{itemize}
+}
 
-\absclassdesc{DiagramPoint}{a}{b}{c}{d}
+\absclassdesc{DiagramPoint}{a}{
+    \begin{itemize}
+        \item \constrdesc{\proted}{DiagramPoint}{\type{PositionIn2DDiagram} position, \type{Color} color, \type{Number} value, \type{Number} size}
+    \end{itemize}
+}{c}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{void}{setSize}{\type{Number} size}
+        {}{}{}
+        \item \methoddesc{\public}{}{Number}{getSize}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{setPositionInDiagram}{\type{Number} x, \type{Number} y}
+        {}{}{}
+        \item \methoddesc{\public}{}{PositionIn2DDiagram}{getPositionInDiagram}{}
+        {}{}{}
+    \end{itemize}
+}
 
-\absclassdesc{DiagramColorScale}{a}{b}{c}{d}
+\absclassdesc{DiagramColorScale}{a}{
+    \begin{itemize}
+        \item \constrdesc{\proted}{}{\type{PositionIn2DDiagram} bottomLeft, \type{PositionIn2DDiagram} topRight, \type{Color} borderColor, \type{Number[]} values, \type{Color[]} valueColors, \type{Number} borderThickness}
+    \end{itemize}
+}{c}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{Color}{valueToColor}{\type{Number} value}
+        {}{}{}
+        \item \methoddesc{\public}{}{Number[]}{getValues}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{Color[]}{getColors}{}
+        {}{}{}
+        \item \methoddesc{\public}{\final}{Object[]}{matchingsAsArray}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{setBottomLeftInFrame}{\type{Number} x1, \type{Number} y1}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{setTopRightInFrame}{\type{Number} x2, \type{Number} y2}
+        {}{}{}
+        \item \methoddesc{\public}{}{PositionInFrame}{getBottomLeftInFrame}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{PositionInFrame}{getTopRightInFrame}{}
+        {}{}{}
+    \end{itemize}
+}
 
-\classdesc{PositionInFrame}{a}{b}{c}
+\classdesc{PositionInFrame}{a}{
+    \begin{itemize}
+        \item \constrdesc{\public}{PositionInFrame}{\type{Number} xPos, \type{Number} yPos}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{Number}{getXPos}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{setXPos}{\type{Number} xPos}
+        {}{}{}
+        \item \methoddesc{\public}{}{Number}{getYPos}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{setYPos}{\type{Number} yPos}
+        {}{}{}
+    \end{itemize}
+}
 
-\classdesc{PositionIn2DDiagram}{a}{b}{c}
+\classdesc{PositionIn2DDiagram}{a}{
+    \begin{itemize}
+        \item \constrdesc{\public}{PositionIn2DDiagram}{\type{DiagramAxis} xAxis, \type{Number} xCoordinate, \type{DiagramAxis} yAxis, \type{Number} yCoordinate}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{void}{setXCoordinate}{\type{Number} xCoordinate}
+        {}{}{}
+        \item \methoddesc{\public}{}{Number}{getXCoordinate}{\type{Number} xCoordinate}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{setYCoordinate}{\type{Number} yCoordinate}
+        {}{}{}
+        \item \methoddesc{\public}{}{Number}{getYCoordinate}{\type{Number} yCoordinate}
+        {}{}{}
+    \end{itemize}
+}
 
-\classdesc{SolidLine}{a}{b}{c}
+\classdesc{SolidLine}{a}{
+    \begin{itemize}
+        \item \constrdesc{\proted}{SolidLine}{\type{PositionInFrame} start, \type{PositionInFrame} end, \type{Color} color, \type{Number} thickness}
+    \end{itemize}
+}{}
 
-\classdesc{2ColorScale}{a}{b}{c}
+\classdesc{2ColorScale}{a}{
+    \begin{itemize}
+        \item \constrdesc{\proted}{2ColorScale}{\type{PositionIn2DDiagram} bottomLeft, \type{PositionIn2DDiagram} topRight, \type{Color} borderColor, \type{Number} minVal, \type{Number} maxVal, \type{Color} minValColor, \type{Color} maxValColor, \type{Number} borderThickness}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{void}{setMinValueColor}{\type{Color} minValueColor}
+        {}{}{}
+        \item \methoddesc{\public}{}{Color}{getMinValueColor}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{setMaxValueColor}{\type{Color} maxValueColor}
+        {}{}{}
+        \item \methoddesc{\public}{}{Color}{getMaxValueColor}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{setMinValue}{\type{Number} minValue}
+        {}{}{}
+        \item \methoddesc{\public}{}{Number}{getMinValue}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{setMaxValue}{\type{Number} maxValue}
+        {}{}{}
+        \item \methoddesc{\public}{}{Number}{getMaxValue}{}
+        {}{}{}
+    \end{itemize}
+}
 
-\classdesc{ValueDisplayPoint}{a}{b}{c}
+\classdesc{ValueDisplayPoint}{a}{
+    \begin{itemize}
+        \item \constrdesc{\proted}{ValueDisplayPoint}{\type{Color} color, \type{Number} value, \type{Number} size, \type{PositionIn2DDiagram} position}
+    \end{itemize}
+}{}
 
-\classdesc{HistogramBar}{a}{b}{c}
+\classdesc{HistogramBar}{a}{
+    \begin{itemize}
+        \item \constrdesc{\proted}{HistogramBar}{\type{Color} color, \type{Number} value, \type{PositionIn2DDiagram} bottomLeft, \type{PositionIn2DDiagram} topRight}
+    \end{itemize}
+}{}
 
-\classdesc{BarChartBar}{a}{b}{c}
+\classdesc{BarChartBar}{a}{
+    \begin{itemize}
+        \item \constrdesc{\proted}{BarChartBar}{\type{Color} color, \type{Number} value, \type{Number} width, \type{PositionIn2DDiagram} bottomLeft, \type{PositionIn2DDiagram} topRight}
+    \end{itemize}
+}{}
 
-\classdesc{SolidAxis}{a}{b}{c}
+\classdesc{SolidAxis}{a}{
+\begin{itemize}
+    \item \constrdesc{\proted}{SolidAxis}{\type{SolidLine} axisLine, \type{Number} min, \type{Number} max, \type{int} steps}
+\end{itemize}
+}{}
 
-\classdesc{HeatMapLabel}{a}{b}{c}
+\classdesc{HeatMapLabel}{a}{
+    \begin{itemize}
+        \item \constrdesc{\proted}{HeatMapLabel}{\type{DiagramColorScale} cs, \type{Number} value, \type{PositionIn2DDiagram} bottomLeft, \type{PositionIn2DDiagram} topRight}
+    \end{itemize}
+}{}
 
-\classdesc{DescriptionLabel}{a}{b}{c}
+\classdesc{DescriptionLabel}{a}{
+    \begin{itemize}
+        \item \constrdesc{\proted}{DescriptionLabel}{\type{Color} color, \type{String} caption, \type{PositionInFrame} bottomLeft, \type{PositionInFrame} topRight}
+    \end{itemize}
+}{}
 
-\classdesc{HoverLabel}{a}{b}{c}
+\classdesc{HoverLabel}{a}{
+    \begin{itemize}
+        \item \constrdesc{\private}{HoverLabel}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{HoverLabel}{getHoverLabel}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{show}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{hide}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{setWidth}{\type{Number} width}
+        {}{}{}
+        \item \methoddesc{\public}{}{Number}{getWidth}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{setHeight}{\type{Number} height}
+        {}{}{}
+        \item \methoddesc{\public}{}{Number}{getHeight}{}
+        {}{}{}
+    \end{itemize}
+}
 
-\classdesc{DiagramComponentFactory}{a}{b}{c}
+\classdesc{DiagramComponentFactory}{a}{
+    \begin{itemize}
+        \item \constrdesc{\private}{DiagramComponentFactory}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{DiagramComponentFactory}{getDiagramComponentFactory}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{DiagramPoint}{createPoint}{\type{Number} value, \type{PositionIn2DDiagram} position, \type{Number} size}
+        {}{}{}
+        \item \methoddesc{\public}{}{DiagramValueLabel}{createValueLabel}{\type{Number} value, \type{PositionIn2DDiagram} bottomLeft, \type{PositionIn2DDiagram} topRight, \type{Number} borderThickness}
+        {}{}{}
+        \item \methoddesc{\public}{}{DiagramBar}{createBar}{\type{Number} value, \type{PositionIn2DDiagram} bottomLeft, \type{PositionIn2DDiagram} topRight, \type{Number} borderThickness}
+        {}{}{}
+        \item \methoddesc{\public}{}{DiagramLabel}{createLabel}{\type{PositionInFrame} bottomLeft, \type{PositionInFrame} topRight, \type{Color} color, \type{String} caption, \type{Number} borderThickness}
+        {}{}{}
+        \item \methoddesc{\public}{}{DiagramAxis}{createAxis}{\type{DiagramLine} axisLine, \type{Number} min, \type{Number} max, \type{int} steps}
+        {}{}{}
+        \item \methoddesc{\public}{}{DiagramColorScale}{createColorScale}{\type{PositionInFrame} bottomLeft, \type{PositionInFrame} topRight, \type{Color} borderColor, \type{Number[]} values, \type{Color[]} valueColors, \type{Number} borderThickness}
+        {}{}{}
+        \item \methoddesc{\public}{}{DiagramLine}{createLine}{\type{PositionInFrame} start, \type{PositionInFrame} end, \type{Color} color, \type{Number} thickness}
+        {}{}{}
+    \end{itemize}
+}
 
 \packagedesc{view.diagrams.data}
 
-\absclassdesc{DiagramDataFormatter}{a}{b}{c}{d}
+\absclassdesc{DiagramDataFormatter}{a}{
+    \begin{itemize}
+        \item \constrdesc{\public}{DiagramDataFormatter}{}
+    \end{itemize}
+}{c}{
+    \begin{itemize}
+        \item \methoddesc{\public}{<\generic{T} \extends \typewgeneric{Collection}{?} >}{\generic{T}}{format}{\generic{T} data}
+        {}{}{}
+    \end{itemize}
+}
 
-\classdesc{DiagramData}{a}{b}{c}
+\classdesc{DiagramData}{a}{
+    \begin{itemize}
+        \item \constrdesc{\public}{DiagramData}{\typewgeneric{Collection}{?} data}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{<\generic{T} \extends \typewgeneric{Collection}{?} >}{\generic{T}}{getData}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{update}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{setFormat}{\type{DiagramDataFormatter} ddf}
+        {}{}{}
+    \end{itemize}
+}
 
-\classdesc{ArrayListDataFormatter}{a}{b}{c}
+\classdesc{ArrayListDataFormatter}{a}{
+    \begin{itemize}
+        \item \constrdesc{\public}{ArrayListDataFormatter}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{<\generic{T} \extends \typewgeneric{Collection}{?} > }{\typewgeneric{ArrayList}{?}}{format}{\generic{T} data}
+        {}{}{}
+    \end{itemize}
+}
 
-\classdesc{ArrayDataFormatter}{a}{b}{c}
-
+\classdesc{ArrayDataFormatter}{a}{
+    \begin{itemize}
+        \item \constrdesc{\public}{ArrayDataFormatter}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{<\generic{E}, \generic{T} \extends \typewgeneric{Collection}{E} > }{E[]}{format}{\generic{T} data}
+        {}{}{}
+    \end{itemize}
+}
 \packagedesc{view.diagrams.type}
 
-\interfacedesc{DiagramComponentAccessPoint}{a}{b}{c}{d}
+\interfacedesc{DiagramComponentAccessPoint}{a}{b}{c}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{DiagramComponent[]}{getNonValueDisplayDiagramComponentPrototypes}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{DiagramValueDisplayComponent[]}{getDiagramValueDisplayComponentPrototypes}{}
+        {}{}{}
+    \end{itemize}
+}
 
-\absclassdesc{Diagram}{a}{b}{c}{d}
+\absclassdesc{Diagram}{a}{
+    \begin{itemize}
+        \item \constrdesc{\public}{Diagram}{\type{DiagramData} data}
+    \end{itemize}
+}{c}{
+    \begin{itemize}
+        \item \methoddesc{\proted}{}{void}{assemble}{\type{DiagramAxis[]} axes, \type{DiagramValueDisplayComponent[]} valueDisplayComponents, \type{DiagramComponent[]} nonValueDisplayComponents}
+        {}{}{}
+        \item \methoddesc{\public}{}{boolean}{addDiagramViewHelper}{\type{DiagramViewHelper} dvh}
+        {}{}{}
+        \item \methoddesc{\public}{}{boolean}{removeDiagramViewHelper}{\type{DiagramViewHelper} dvh}
+        {}{}{}
+        \item \methoddesc{\public}{}{boolean}{showDiagramViewHelper}{\type{IndicatorIdentifier} id}
+        {}{}{}
+        \item \methoddesc{\public}{}{boolean}{hideDiagramViewHelper}{\type{IndicatorIdentifier} id}
+        {}{}{}
+    \end{itemize}
+}
 
-\classdesc{Histogram}{a}{b}{c}
+\classdesc{Histogram}{a}{
+    \begin{itemize}
+        \item \constrdesc{\public}{Histogram}{\type{DiagramData} data}
+    \end{itemize}
+}{}
 
-\classdesc{BarChart}{a}{b}{c}
+\classdesc{BarChart}{a}{
+    \begin{itemize}
+        \item \constrdesc{\public}{BarChart}{\type{DiagramData} data}
+    \end{itemize}
+}{}
 
-\classdesc{HeatMap}{a}{b}{c}
+\classdesc{HeatMap}{a}{
+    \begin{itemize}
+        \item \constrdesc{\public}{HeatMap}{\type{DiagramData} data}
+    \end{itemize}
+}{}
 
-\classdesc{FunctionGraph}{a}{b}{c}
+\classdesc{FunctionGraph}{a}{
+    \begin{itemize}
+        \item \constrdesc{\public}{FunctionGraph}{\type{DiagramData} data}
+    \end{itemize}
+}{}
 
 \packagedesc{view.diagrams.indicator}
 
-\absclassdesc{DiagramViewHelper}{a}{b}{c}{d}
+\absclassdesc{DiagramViewHelper}{a}{
+    \begin{itemize}
+        \item \constrdesc{\public}{DiagramViewHelper}{\type{IDiagram} diagram, \type{int} layer, \type{IndicatorIdentifier} id}
+    \end{itemize}
+}{c}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{int}{getLayerNumber}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{remove}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{show}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{hide}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{update}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{boolean}{addViewHelperComponent}{\type{ViewHelperComponent} vhc}
+        {}{}{}
+        \item \methoddesc{\public}{}{boolean}{removeViewHelperComponent}{\type{ViewHelperComponent} vhc}
+        {}{}{}
+        \item \methoddesc{\public}{}{boolean}{clearViewHelperComponents}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{IndicatorIdentifier}{getID}{}
+        {}{}{}
+    \end{itemize}
+}
 
-\absclassdesc{HelperLineDisplayer}{a}{b}{c}{d}
+\absclassdesc{HelperLineDisplayer}{a}{
+    \begin{itemize}
+        \item \constrdesc{\public}{HelperLineDisplayer}{\type{IDiagram} diagram, \type{IndicatorIdentifier} id}
+    \end{itemize}
+}{c}{
+    \begin{itemize}
+        \item \methoddesc{\proted}{}{void}{generateHelperComponents}{}
+        {}{}{}
+    \end{itemize}
+}
 
-\absclassdesc{HelperComponentDisplayer}{a}{b}{c}{d}
+\absclassdesc{HelperComponentDisplayer}{a}{
+    \begin{itemize}
+        \item \constrdesc{\public}{HelperComponentDisplayer}{\type{IDiagram} diagram, \type{IndicatorIdentifier} id}
+    \end{itemize}
+}{c}{}
 
-\classdesc{DiagramViewHelperFactory}{a}{b}{c}
+\enumdesc{IndicatorIdentifier}{a}{
+    \begin{itemize}
+        \item \fielddesc{IndicatorIdentifier}{MIN}{}
+        \item \fielddesc{IndicatorIdentifier}{MAX}{}
+        \item \fielddesc{IndicatorIdentifier}{AVG}{}
+        \item \fielddesc{IndicatorIdentifier}{MED}{}
+        \item \fielddesc{IndicatorIdentifier}{X_COORDINATE_INDICATOR}{}
+        \item \fielddesc{IndicatorIdentifier}{Y_COORDINATE_INDICATOR}{}
+    \end{itemize}
+}{}
 
-\classdesc{ValueLineDisplayer}{a}{b}{c}
+\classdesc{DiagramViewHelperFactory}{a}{
+    \begin{itemize}
+        \item \constrdesc{\private}{DiagramViewHelperFactory}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{HelperComponentDisplayer}{createValueColorDisplayer}{\type{IDiagram} diagram, \type{IndicatorIdentifier} id}
+        {}{}{}
+        \item \methoddesc{\public}{}{HelperLineDisplayer}{createCoordinateGridDisplayer}{\type{IDiagram} diagram, \type{DiagramAxis} axis, \type{IndicatorIdentifier} id}
+        {}{}{}
+        \item \methoddesc{\public}{}{HelperLineDisplayer}{createValueLineDisplayer}{\type{IDiagram} diagram, \type{Number} value, \type{IndicatorIdentifier} id}
+        {}{}{}
+    \end{itemize}
+}
 
-\classdesc{ValueFixColorDisplayer}{a}{b}{c}
+\classdesc{ValueLineDisplayer}{a}{
+    \begin{itemize}
+        \item \constrdesc{\proted}{ValueLineDisplayer}{\type{IDiagram} diagram, \type{DiagramAxis} parallelAxis, \type{Color} color, \type{Number} thickness, \type{Number} value, \type{IndicatorIdentifier} id}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\private}{}{void}{createValueLine}{}
+        {}{}{}
+    \end{itemize}
+}
 
-\classdesc{ValueScaleColorDisplayer}{a}{b}{c}
+\classdesc{ValueFixColorDisplayer}{a}{
+    \begin{itemize}
+        \item \constrdesc{\proted}{ValueFixColorDisplayer}{\type{IDiagram} diagram, \typewgeneric{TreeMap}{Number, Color} mapping, \type{IndicatorIdentifier} id}
+    \end{itemize}
+}{}
 
-\classdesc{CoordinateIndicatorLineDisplayer}{a}{b}{c}
+\classdesc{ValueScaleColorDisplayer}{a}{
+    \begin{itemize}
+        \item \constrdesc{\proted}{ValueScaleColorDisplayer}{\type{IDiagram} diagram, \type{DiagramColorScale} colorScale, \type{IndicatorIdentifier} id}
+    \end{itemize}
+}{}
 
-\classdesc{ViewHelperComponent}{a}{b}{c}
+\classdesc{CoordinateIndicatorLineDisplayer}{a}{
+    \begin{itemize}
+        \item \constrdesc{\proted}{CoordinateIndicatorLineDisplayer}{\type{IDiagram} diagram, \type{DiagramAxis} axis, \type{Color} color, \type{Number} thickness, \type{IndicatorIdentifier} id}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\private}{}{void}{createCoordinateIndicatorLines}{}
+        {}{}{}
+    \end{itemize}
+}
 
-\classdesc{CoordinateIndicatorLine}{a}{b}{c}
+\classdesc{ViewHelperComponent}{a}{
+    \begin{itemize}
+        \item \constrdesc{\proted}{ViewHelperComponent}{\type{DiagramComponent} dc}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{void}{show}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{hide}{}
+        {}{}{}
+    \end{itemize}
+}
 
-\classdesc{ValueLine}{a}{b}{c}
+\classdesc{CoordinateIndicatorLine}{a}{
+    \begin{itemize}
+        \item \constrdesc{\proted}{CoordinateIndicatorLine}{\type{DiagramAxis} parallelAxis, \type{Number} value, \type{Color} color, \type{Number} thickness}
+    \end{itemize}
+}{}
+
+\classdesc{ValueLine}{a}{
+    \begin{itemize}
+        \item \constrdesc{\proted}{ValueLine}{\type{DiagramAxis} parallelAxis, \type{Number} value, \type{Color} color, \type{Number} thickness}
+    \end{itemize}
+}{c}
 
 \packagedesc{view.diagrams.builder}
 
-\absclassdesc{DiagramBuilder}{a}{b}{c}{d}
+\absclassdesc{DiagramBuilder}{a}{
+    \begin{itemize}
+        \item \constrdesc{\public}{DiagramBuilder}{\type{DiagramData} data}
+    \end{itemize}
+}{c}{
+    \begin{itemize}
+        \item \methoddesc{\proted}{}{DiagramAxis}{buildAxes}{}
+        {}{}{}
+        \item \methoddesc{\proted}{}{DiagramValueDisplayComponent[]}{buildValueDisplayComponents}{}
+        {}{}{}
+        \item \methoddesc{\proted}{}{DiagramComponent[]}{buildDiagramSpecificComponent}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{IDiagram}{buildDiagram}{}
+        {}{}{}
+    \end{itemize}
+}
 
-\classdesc{BarChartBuilder}{a}{b}{c}
+\classdesc{BarChartBuilder}{a}{
+    \begin{itemize}
+        \item \constrdesc{\public}{BarChartBuilder}{\type{DiagramData} data}
+    \end{itemize}
+}{}
 
-\classdesc{HistogramBuilder}{a}{b}{c}
+\classdesc{HistogramBuilder}{a}{
+    \begin{itemize}
+        \item \constrdesc{\public}{HistogramBuilder}{\type{DiagramData} data}
+    \end{itemize}
+}{}
 
-\classdesc{FunctionGraphBuilder}{a}{b}{c}
-
-\classdesc{HeatMapBuilder}{a}{b}{c}
-
+\classdesc{FunctionGraphBuilder}{a}{
+    \begin{itemize}
+        \item \constrdesc{\public}{FunctionGraphBuilder}{\type{DiagramData} data}
+    \end{itemize}
+}{}
+\classdesc{HeatMapBuilder}{a}{
+    \begin{itemize}
+        \item \constrdesc{\public}{HeatMapBuilder}{\type{DiagramData} data}
+    \end{itemize}
+}{}
 \chapter{Class Diagrams}
 
 \chapter{Sequence Diagrams}
