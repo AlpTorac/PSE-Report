@@ -3,11 +3,6 @@ skinparam linetype ortho
 !startsub DIAGRAM
 
 /' package panelData{
-    enum Mode{
-        MAX
-        MIN
-        AVG
-    }
     enum ElementType {
         LIBRARY
         CELL
@@ -95,9 +90,39 @@ package element{
     }
     package attribute {
         abstract class Attribute{ 
+            - Stat stats
+            __
+            + void calculate()
+            + void scale(int)
+            + getStats(): Stats
+        }
+        abstract class InAttribute extends Attribute{ 
+            -float[] index1
+            -float[] values
             __
             # void calculate()
             + void scale(int)
+            + getIndex1() : float[]
+            + getValues() : float[][]
+            + void setIndex1(float[])
+            + void setValues(float[][])
+        }
+        abstract class OutAttribute extends Attribute{ 
+            -float[] index1 
+            -float[] index2
+            -float[][] values
+            -InputPin relatedPin
+            __
+            # void calculate()
+            + void scale(int)
+            + getIndex1() : float[]
+            + getIndex2() : float[]
+            + getValues() : float[][]
+            + getRelatedPin() : InputPin
+            + void setIndex1(float[])
+            + void setIndex2(float[])
+            + void setValues(float[][])
+            + void setRelatedPin(InputPin)
         }
         enum TimingSense {
         POSITIVE
@@ -126,71 +151,28 @@ package element{
         FALLPOWER
         POWER
         }
-        class Timing implements Attribute {
+        class Timing implements OutAttribute {
             -TimingSense timsense
             -TimingType timtype
             -TimingGroup timgroup
-            -float[] index1 
-            -float[] index2
-            -float[][] values
-            -InputPin relatedPin
-            -Stat stats
             __
-            + Timing(TimingSense, TimingType
-                TimingGroup, InputPin,
-                 float[][])
-            + void calculate()
-            + getIndex1() : float[]
-            + getIndex2() : float[]
-            + getValues() : float[][]
-            + getRelatedPin() : InputPin
-            + getStats(): Stat
-            + void setIndex1(float[])
-            + void setIndex2(float[])
-            + void setValues(float[][])
-            + void setRelatedPin(InputPin)
+            + Timing(TimingSense, TimingType,
+            TimingGroup, InputPin, float[][])
         }
-        class InputPower implements Attribute {
+        class InputPower implements InAttribute {
             -PowerGroup powgroup
-            -float[] index1
-            -float[] values            
-            -Stat stats
             __
             + InputPower(PowerGroup, float[])
-            + void calculate()
-            + getIndex1() : float[]
-            + getValues() : float[][]
-            + getStats(): Stat
-            + void setIndex1(float[])
-            + void setValues(float[][])
         }
-        class OutputPower implements Attribute {
+        class OutputPower implements OutAttribute {
             -PowerGroup powgroup 
-            -float[] index1 
-            -float[] index2
-            -float[][] values
-            -InputPin relatedPin
-            -Stat stats
             __
             + OutputPower(PowerGroup, float[][])
-            + void calculate()
-            + getIndex1() : float[]
-            + getIndex2() : float[]
-            + getValues() : float[][]
-            + getRelatedPin() : InputPin
-            + getStats(): Stat
-            + void setIndex1(float[])
-            + void setIndex2(float[])
-            + void setValues(float[][])
-            + void setRelatedPin(InputPin)
         }
         class Leakage implements Attribute {
-            float[] values
-            -Stat stats
+            - float[] values
             __
             + Leakage(float[])
-            + void calculate()
-            + getStats(): Stat 
         }
     }
     abstract class Element{
@@ -291,10 +273,12 @@ package commands{
     class ActionHistory{
         - Command[] actions
         - Command[] undoneActions
-        - Command PreviousAction
+        - int undoNumber
         __
+        + void setUndoNumber(int)
         - void resetUndoneActions()
         + void addAction(Command)
+        + void resetActions()
         + getLatestActions() : Command
     }
     class CreateLibrary implements Command{
@@ -314,16 +298,16 @@ package commands{
     }
     
     class RemoveFilterAction implements Command{
-        - Filter[] filters
+        - Filter removedFilter
         __
-        + FilterAction(Filter[])
+        + RemoveFilterAction(Filter)
         + execute()
         + undo()
     }
     class AddFilterAction implements Command{
-        - Filter[] filters
+        - Filter addedFilter
         __
-        + FilterAction(Filter[])
+        + AddFilterAction(Filter)
         + execute()
         + undo()
     }
@@ -381,7 +365,7 @@ package commands{
         + void undo()
     }
     class SelectAction implements Command{
-        - Element[] elements
+        - Set<Element> elements
         __
         + SelectAction(Element)
         + void execute()
@@ -459,26 +443,39 @@ package compiler {
 
 package project {
     class Model {
-    - ArrayList<Library> libraries
-    - ArrayList<Element> shownElements
-    - ArrayList<Element> greyedElements
-    - ArrayList<Element> filteredElements
-    - ArrayList<Element> searchedElement
-    - ArrayList<Element> selectedElements
-    - ArrayList<Element> openedInTextElements
+    - Set<Library> libraries
+    - Set<Element> shownElements
+    - Set<Element> greyedElements
+    - Set<Element> filteredElements
+    - Set<Element> searchedElement
+    - Set<Element> selectedElements
+    - Set<Element> openedInTextElements
     __
+    + Model()
     + notify()
-    + getLibraries() : ArrayList<Library>
-    + getShownElements(): ArrayList<Element>
-    + getGreyedElements(): ArrayList<Element>
-    + getFilteredElements(): ArrayList<Element>
-    + getSearchedElements(): ArrayList<Element>
-    + getSelectedElements(): ArrayList<Element>
-    + getOpenedInTextElements(): ArrayList<Element>
+    + getLibraries() : Set<Library>
+    + getShownElements(): Set<Element>
+    + getGreyedElements(): Set<Element>
+    + getFilteredElements(): Set<Element>
+    + getSearchedElements(): Set<Element>
+    + getSelectedElements(): Set<Element>
+    + getOpenedInTextElements(): Set<Element>
+    + setLibraries() : Set<Library> 
+    + setShownElements(): Set<Element>
+    + setGreyedElements(): Set<Element>
+    + setFilteredElements(): Set<Element>
+    + setSearchedElements(): Set<Element>
+    + setSelectedElements(): Set<Element>
+    + setOpenedInTextElements(): Set<Element>
+    + Settings getSettings()
+    + void saveProject()
+    + void loadProject()
+    + void getFilter()
+    + void getShortcuts()
     }
     class FileChooser{
-    + openFile(): File
-    + void saveFile()
+    + openFile(String[]): File
+    + void saveFile(String, String)
     }
     class Interpolation{
         __
@@ -504,11 +501,26 @@ enum LanguageEnum{
         - String FontType
         - int FontSize
         - int barNumber
-        - int UndoNumber
+        - int undoNumber
         - boolean editorOpenedFirst
         __
-        + changeLanguage(LanguageEnum)
-        + changeColor(ColorThemeEnum)
+        + Settings()
+        + setLanguage(LanguageEnum)
+        + setColor(ColorThemeEnum)
+        + setFontType()
+        + setFontSize()
+        + setBarNumber()
+        + setUndoNumber()
+        + setEditorOpenedFirst()
+        + getLanguage(LanguageEnum)
+        + getColor(ColorThemeEnum)
+        + getFontType()
+        + getFontSize()
+        + getBarNumber()
+        + getUndoNumber()
+        + getEditorOpenedFirst()
+        + saveSettings()
+        + refreshView()
     }
     LanguageEnum -- Settings
     ColorThemeEnum -- Settings
@@ -545,7 +557,14 @@ enum LanguageEnum{
         EQUAL
         BIGGER
     }
+    enum Mode{
+        MAX
+        MIN
+        AVG
+        MED
+    }
     class Filter{
+        - {static} Filter filters[]
         - Attribute attribute
         - Mode mode
         - float value
@@ -554,6 +573,8 @@ enum LanguageEnum{
         + Filter(Attribute, Mode, float,
         Operation)
         + Element[] filter(Element[])
+        + saveDefaultFilters()
+        + loadDefaultFilters()
     }
 }
 Model --> Interpolation
@@ -597,6 +618,7 @@ Element <|-- Pin
 Pin <|-- InputPin
 Pin <|-- OutputPin
 Operation -- Filter
+Mode -- Filter
 TimingSense -- Timing
 TimingType -- Timing
 TimingGroup -- Timing
