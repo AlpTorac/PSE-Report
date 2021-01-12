@@ -442,6 +442,16 @@ package compiler {
 }
 
 package project {
+    class ModelManager {
+        - {static} ModelManager instance = new ModelManager()
+        - Model currentModel
+        __
+        - ModelManager()
+        + {static} ModelManager getInstance()
+        + Model getCurrentModel()
+        + void loadModel()
+        + void saveModel()
+    }
     class Model {
     - Set<Library> libraries
     - Set<Element> shownElements
@@ -452,6 +462,8 @@ package project {
     - Set<Element> openedInTextElements
     __
     + Model()
+    + getCurrentModel()
+    + setCurrentModel()
     + notify()
     + getLibraries() : Set<Library>
     + getShownElements(): Set<Element>
@@ -469,7 +481,6 @@ package project {
     + setOpenedInTextElements(): Set<Element>
     + Settings getSettings()
     + void saveProject()
-    + void loadProject()
     + void getFilter()
     + void getShortcuts()
     }
@@ -521,6 +532,16 @@ enum LanguageEnum{
         + getEditorOpenedFirst()
         + saveSettings()
         + refreshView()
+    }
+    class SettingsManager {
+        - {static} SettingsManager instance = new SettingsManager()
+        - Settings currentSettings
+        __
+        - SettingsManager()
+        + {static} SettingsManager getInstance()
+        + Settings getCurrentSettings()
+        + void loadModel()
+        + void saveModel()
     }
     LanguageEnum -- Settings
     ColorThemeEnum -- Settings
@@ -601,6 +622,8 @@ Model --> LibertyCompiler
 Model --> CSVCompiler
 Model --> ActionHistory
 Model --> OpenFileAction
+Model --* ModelManager
+Settings --* SettingsManager
 TextEdit --> Parser
 Parser --> Library
 Parser --> Cell
