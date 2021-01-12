@@ -81,6 +81,17 @@ package element{
         -float max
         -float avg
         -float median
+        __
+        + Stat(float,float,float,float)
+        + getMin() : float
+        + getMax() : float
+        + getAvg() : float
+        + getMed() : float
+        + void setMin(float)
+        + void setMax(float)
+        + void setAvg(float)
+        + void setMed(float)
+
     }
     package attribute {
         abstract class Attribute{ 
@@ -119,32 +130,67 @@ package element{
             -TimingSense timsense
             -TimingType timtype
             -TimingGroup timgroup
+            -float[] index1 
+            -float[] index2
             -float[][] values
             -InputPin relatedPin
             -Stat stats
             __
+            + Timing(TimingSense, TimingType
+                TimingGroup, InputPin,
+                 float[][])
             + void calculate()
+            + getIndex1() : float[]
+            + getIndex2() : float[]
+            + getValues() : float[][]
+            + getRelatedPin() : InputPin
+            + getStats(): Stat
+            + void setIndex1(float[])
+            + void setIndex2(float[])
+            + void setValues(float[][])
+            + void setRelatedPin(InputPin)
         }
         class InputPower implements Attribute {
             -PowerGroup powgroup
-            -float[] values
+            -float[] index1
+            -float[] values            
             -Stat stats
             __
+            + InputPower(PowerGroup, float[])
             + void calculate()
+            + getIndex1() : float[]
+            + getValues() : float[][]
+            + getStats(): Stat
+            + void setIndex1(float[])
+            + void setValues(float[][])
         }
         class OutputPower implements Attribute {
             -PowerGroup powgroup 
+            -float[] index1 
+            -float[] index2
             -float[][] values
             -InputPin relatedPin
             -Stat stats
             __
+            + OutputPower(PowerGroup, float[][])
             + void calculate()
+            + getIndex1() : float[]
+            + getIndex2() : float[]
+            + getValues() : float[][]
+            + getRelatedPin() : InputPin
+            + getStats(): Stat
+            + void setIndex1(float[])
+            + void setIndex2(float[])
+            + void setValues(float[][])
+            + void setRelatedPin(InputPin)
         }
         class Leakage implements Attribute {
             float[] values
             -Stat stats
             __
+            + Leakage(float[])
             + void calculate()
+            + getStats(): Stat 
         }
     }
     abstract class Element{
@@ -243,24 +289,24 @@ package commands{
         # void undo()
     }
     class ActionHistory{
-        Command[] actions
-        Command[] undoneActions
-        Command PreviousAction
+        - Command[] actions
+        - Command[] undoneActions
+        - Command PreviousAction
         __
         - void resetUndoneActions()
         + void addAction(Command)
         + getLatestActions() : Command
     }
     class CreateLibrary implements Command{
-        Library library
+        - Library library
         __
         + CreateLibrary(String)
         + void execute()
         + void undo()
     }
     class Scale implements Command{
-        Attribute attribute
-        float scale
+        - Attribute attribute
+        - float scale
         __
         + Scale(Attribute, float)
         + void execute()
@@ -268,25 +314,25 @@ package commands{
     }
     
     class RemoveFilterAction implements Command{
-        Filter[] filters
+        - Filter[] filters
         __
         + FilterAction(Filter[])
         + execute()
         + undo()
     }
     class AddFilterAction implements Command{
-        Filter[] filters
+        - Filter[] filters
         __
         + FilterAction(Filter[])
         + execute()
         + undo()
     }
     class TextEdit implements Command{
-        String oldContent
-        String newContent
-        Element element
+        - String oldContent
+        - String newContent
+        - Element element
         __
-        + TextEdit (String, Element)
+        + TextEdit (String, String, Element)
         + void execute()
         + void undo()
     }
@@ -297,54 +343,54 @@ package commands{
         + coid undo()
     }
     class MergeAction implements Command{
-        Library[] mergedLibraries
-        Library productLibrary
+        - Library[] mergedLibraries
+        - Library productLibrary
         __
         + MergeAction(Library[])
         + void execute()
         + void undo ()
     }
     class DeleteAction implements Command{
-        Cell deletedCell
+        - Cell deletedCell
         __
         + DeleteAction(Cell)
         + void execute()
         + void undo()
     }
     class RemoveAction implements Command{
-        Library removedLibrary
+        - Library removedLibrary
         __
         + RemoveAction(Library)
         + void execute()
         + void undo()
     }
     class MoveAction implements Command{
-        Map<Element, Library> initialPositions
-        Libary destinationLibrary
+        - Map<Element, Library> initialPositions
+        - Libary destinationLibrary
         __
         + MoveAction(Element[], Library)
         + void execute()
         + void undo()
     }
     class RenameAction implements Command{
-        String oldName
-        String newName
+        - String oldName
+        - String newName
         __
         + RenameAction(Element, String)
         + void execute()
         + void undo()
     }
     class SelectAction implements Command{
-        Element[] elements
+        - Element[] elements
         __
-        SelectAction(Element)
+        + SelectAction(Element)
         + void execute()
         + void undo()
     }
     class DeselectAction implements Command{
-        Element[] elements
+        - Element[] elements
         __
-        SelectAction(Element)
+        + SelectAction(Element)
         + void execute()
         + void undo()
     }
@@ -413,17 +459,22 @@ package compiler {
 
 package project {
     class Model {
-    ArrayList<Element> shownElements
-    ArrayList<Element> greyedElements
-    ArrayList<Element> filteredElements
-    ArrayList<Element> searchedElements
-    ArrayList<Library> libraries
-    ArrayList<Element> selectedElements
-    ArrayList<Element> openedInTextElements
+    - ArrayList<Library> libraries
+    - ArrayList<Element> shownElements
+    - ArrayList<Element> greyedElements
+    - ArrayList<Element> filteredElements
+    - ArrayList<Element> searchedElement
+    - ArrayList<Element> selectedElements
+    - ArrayList<Element> openedInTextElements
     __
     + notify()
     + getLibraries() : ArrayList<Library>
-
+    + getShownElements(): ArrayList<Element>
+    + getGreyedElements(): ArrayList<Element>
+    + getFilteredElements(): ArrayList<Element>
+    + getSearchedElements(): ArrayList<Element>
+    + getSelectedElements(): ArrayList<Element>
+    + getOpenedInTextElements(): ArrayList<Element>
     }
     class FileChooser{
     + openFile(): File
@@ -457,27 +508,33 @@ enum LanguageEnum{
         - boolean editorOpenedFirst
         __
         + changeLanguage(LanguageEnum)
-        + changeLanguage(ColorThemeEnum)
+        + changeColor(ColorThemeEnum)
     }
+    LanguageEnum -- Settings
+    ColorThemeEnum -- Settings
     class ColorTheme{
-        int[] colors
+        - int[] colors
         __
-        getColors()
+        + getColors(): int[]
     }
     class Language{
-        String appname
-        String[] Elements
-        String[] Menus
-        String[] Methods
-        String[] Attributes
+        - String appname
+        - String[] Elements
+        - String[] Menus
+        - String[] Methods
+        - String[] Attributes
         __
-        getBlablabal(): String
+        + getName(): String
+        + getElements(): String[]
+        + getMenus(): String[]
+        + getMethods(): String[]
+        + getAttributes(): String[]
     }
     Settings *-- ColorTheme
     Settings *-- Language
     class Shortcuts{
-    - Map<Keys(??), COMMAND> defaultCommands
-    - Map<Keys(??), COMMAND> commands
+    - Map<Keys, COMMAND> defaultCommands
+    - Map<Keys, COMMAND> commands
     __
     + void setKey(Key, COMMAND)
     + void resetKeys()
@@ -489,11 +546,13 @@ enum LanguageEnum{
         BIGGER
     }
     class Filter{
-        Attribute attribute
-        Mode mode
-        float value
-        Operation operation
+        - Attribute attribute
+        - Mode mode
+        - float value
+        - Operation operation
         __
+        + Filter(Attribute, Mode, float,
+        Operation)
         + Element[] filter(Element[])
     }
 }
@@ -502,15 +561,14 @@ Model --> Settings
 Model --> Shortcuts
 Model --> FileChooser
 Model --> Parser
-MergeAction ..> Library :  <<creates>> 
-Parser ..> Library: <<creates>>
+MergeAction ..> Library 
+Parser ..> Library
 Model --> MergeAction
 Model --> SelectAction
 Model --> DeselectAction
 Model --> AddFilterAction
 Model --> RemoveFilterAction
 Model --> Scale
-Model --> ElementSearchAction
 Model --> CreateLibrary
 Model --> UndoAction
 Model --> RenameAction
@@ -546,40 +604,24 @@ PowerGroup -- OutputPower
 PowerGroup -- InputPower
 Library *-- Cell
 Cell *-- Pin
-Exception --> InvalidComparisonException 
-Exception --> InvalidFileFormatException
-Exception --> ExceedingFileSizeException
-Exception --> TooManyPanelsOpenedException
-Exception --> TooManySelectedException
-Exception --> InvalidNameException
-Exception --> SearchedStringNotFoundException
+Exception <|.. InvalidComparisonException 
+Exception <|.. InvalidFileFormatException
+Exception <|.. ExceedingFileSizeException
+Exception <|.. TooManyPanelsOpenedException
+Exception <|.. TooManySelectedException
+Exception <|.. InvalidNameException
+Exception <|.. SearchedStringNotFoundException
 !endsub
 
 
-/' alignment1 '/
-/'
-Controller -[hidden]-> project
-commands -[hidden]> project
-project -[hidden]> exceptions
-parser -[hidden]> element
-commands -[hidden]-> compiler
-PowerGroup -[hidden]> Attribute
-commands -[hidden]> compiler
-'/
 
-/' alignment2 '/
-/'
-Controller -[hidden]> project
-project -[hidden]> compiler
+/' project -[hidden]> compiler
 compiler -[hidden]-> parser
 parser -[hidden]> element
-project-[hidden]> commands
-'/
-
-/' alignment3 '/
-
-project -[hidden]> compiler
-compiler -[hidden]-> parser
-parser -[hidden]> element
-project-[hidden]> commands
+project-[hidden]> commands '/
+OutputPower -[hidden]> InputPower
+InputPower -[hidden]-> PowerGroup
+Timing -[hidden]-> TimingType
+Timing -[hidden]-> TimingSense
+Timing -[hidden]-> TimingGroup
 @enduml
