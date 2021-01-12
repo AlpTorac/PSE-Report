@@ -540,8 +540,8 @@ enum LanguageEnum{
         - SettingsManager()
         + {static} SettingsManager getInstance()
         + Settings getCurrentSettings()
-        + void loadModel()
-        + void saveModel()
+        + void loadSettings()
+        + void saveSettings()
     }
     LanguageEnum -- Settings
     ColorThemeEnum -- Settings
