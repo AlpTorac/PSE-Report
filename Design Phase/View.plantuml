@@ -483,9 +483,9 @@ package Diagrams {
             +Number getHeight()
         }
         class DiagramComponentFactory {
-            -DiagramComponentFactory instance = new DiagramComponentFactory
+            -{static} DiagramComponentFactory instance = new DiagramComponentFactory
             -DiagramComponentFactory()
-            +DiagramComponentFactory getDiagramComponentFactory()
+            +{static} DiagramComponentFactory getDiagramComponentFactory()
             +DiagramPoint createPoint(Number value, PositionIn2DDiagram position, Number size)
             +DiagramValueLabel createValueLabel(Number value, PositionIn2DDiagram bottomLeft, PositionIn2DDiagram topRight, Number borderThickness)
             +DiagramBar createBar(Number value, PositionIn2DDiagram bottomLeft, PositionIn2DDiagram topRight, Number borderThickness)
@@ -582,9 +582,9 @@ package Diagrams {
             Y_COORDINATE_INDICATOR
         }
         class DiagramViewHelperFactory {
-            -DiagramViewHelperFactory instance
+            -{static} DiagramViewHelperFactory instance
             -DiagramViewHelperFactory()
-            +DiagramViewHelperFactory getInstance()
+            +{static} DiagramViewHelperFactory getInstance()
             +HelperComponentDisplayer createValueColorDisplayer(IDiagram diagram, IndicatorIdentifier id)
             +HelperLineDisplayer createCoordinateGridDisplayer(IDiagram diagram, DiagramAxis axis, IndicatorIdentifier id)
             +HelperLineDisplayer createValueLineDisplayer(IDiagram diagram, Number value, IndicatorIdentifier id)
@@ -698,18 +698,18 @@ package Diagrams {
     class DiagramDirector {
         -DiagramBuilder builder
         -DiagramData data
-        -DiagramDirector instance = new DiagramDirector
+        -{static} DiagramDirector instance = new DiagramDirector
         -DiagramDirector()
-        +DiagramDirector getDiagramDirector()
+        +{static} DiagramDirector getDiagramDirector()
         +void changeBuilder(Builder b)
         +void setDiagramData(DiagramData data)
         +IDiagram build()
     }
     class SettingsProvider {
-        -SettingsProvider instance = new SettingsProvider
+        -{static} SettingsProvider instance = new SettingsProvider
         -Settings s
         -SettingsProvider()
-        +SettingsProvider getInstance()
+        +{static} SettingsProvider getInstance()
         +void changeSettings(Settings s)
         +Settings getSettings()
     }
