@@ -70,7 +70,7 @@ skinparam linetype ortho
         + getData()
     }
 }'/
-package element{
+package elements{
     class Stat {
         -float min 
         -float max
@@ -88,7 +88,7 @@ package element{
         + void setMed(float)
 
     }
-    package attribute {
+    package attributes {
         abstract class Attribute{ 
             - Stat stats
             __
@@ -288,11 +288,11 @@ package commands{
         + void execute()
         + void undo()
     }
-    class Scale implements Command{
+    class ScaleAction implements Command{
         - Attribute attribute
         - float scale
         __
-        + Scale(Attribute, float)
+        + ScaleAction(Attribute, float)
         + void execute()
         + void undo()
     }
@@ -311,12 +311,12 @@ package commands{
         + execute()
         + undo()
     }
-    class TextEdit implements Command{
+    class TextEditAction implements Command{
         - String oldContent
         - String newContent
         - Element element
         __
-        + TextEdit (String, String, Element)
+        + TextEditAction (String, String, Element)
         + void execute()
         + void undo()
     }
@@ -406,7 +406,7 @@ package commands{
 }
 
 
-package parser{ 
+package parsers { 
     class Parser {
     - JsonParser parser
     - String json
@@ -416,7 +416,7 @@ package parser{
     + void parsePin(String)
     }
 }
-package compiler {
+package compilers {
     interface Compiler{
     + compile(Element): String
     - compilePin(Pin): String
@@ -610,12 +610,12 @@ Model --> SelectAction
 Model --> DeselectAction
 Model --> AddFilterAction
 Model --> RemoveFilterAction
-Model --> Scale
+Model --> ScaleAction
 Model --> CreateLibrary
 Model --> UndoAction
 Model --> RenameAction
 Model --> DeleteAction
-Model --> TextEdit
+Model --> TextEditAction
 Model --> MoveAction
 Model --> RemoveAction
 Model --> LibertyCompiler
@@ -624,7 +624,7 @@ Model --> ActionHistory
 Model --> OpenFileAction
 Model --* ModelManager
 Settings --* SettingsManager
-TextEdit --> Parser
+TextEditAction --> Parser
 Parser --> Library
 Parser --> Cell
 Parser --> Pin
