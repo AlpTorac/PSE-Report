@@ -176,13 +176,21 @@ package elements{
         }
     }
     abstract class Element{
+        - boolean filtered
+        - boolean searched
         - String name
         __
+        + getFiltered() : boolean
+        + void setFiltered(boolean)
+        + getSearched() : boolean
+        + void setSearched(boolean)
         + {abstract} void calculate()
         + getName() : String
+        + void setName(String)
         + {static} compare(Element, Element) : int
     }
     class Library{
+        - boolean hasShownElements
         - List<TimingSense> availableTimSen
         - List<TimingGroup> availableTimGr
         - List<TimingType> availableTimType
@@ -192,20 +200,26 @@ package elements{
         - float[] index2
         - String path
         - String[] fileData
-        - Cell[] cells
+        - ArrayList<Cell> cells
         - float averageDefaultLeakage
         - Map<Sense<Group<Type, Stat>>> timingStat
         - Map<Group, Stat> inPowerStat
         - Map<Group, Stat> outPowerStat
         __
+        + getCells() : ArrayList<Cell>
+        + void setCells(ArrayList<Cell>)
         + void calculateLeakage()
         + void calculateInPow()
         + void calculateOutPow()
         + void calculateTiming()
         + getPath() : String
         + void setPath(String)
+        + getHasShownElements() : boolean
+        + void setHasShownElements(boolean)
+        + void calculateHasShownElements()
     }
     class Cell{
+        - boolean hasShownElements
         - List<TimingSense> availableTimSen
         - List<TimingGroup> availableTimGr
         - List<TimingType> availableTimType
@@ -219,13 +233,15 @@ package elements{
         - Map<Group, Stat> inPowerStat
         - Map<Group, Stat> outPowerStat
         __
+        + getInPins() : InputPin[]
+        + getOutPins() : OutputPin[]
         + void calculateLeakage()
         + void calculateInPow()
         + void calculateOutPow()
         + void calculateTiming()
-        + getName() : String
-        + void setName(String)
-        
+        + getHasShownElements() : boolean
+        + void setHasShownElements(boolean)
+        + void calculateHasShownElements()
     }
     abstract class Pin{
         - Cell parentCell
@@ -234,7 +250,6 @@ package elements{
         __
         + getName() : String
         + void setName(String)
-        
     }
     class InputPin{
         - InputPower[] inputPowers
@@ -261,7 +276,7 @@ package exceptions{
     class ExceedingFileSizeException
     class TooManySelectedException
     class TooManyPanelsOpenedException
-    class SearchedStringNotFoundException
+    class InvalidArgumentException
     class InvalidNameException
 }
 package commands{
@@ -282,7 +297,7 @@ package commands{
         + getLatestActions() : Command
     }
     class CreateLibrary implements Command{
-        - Library library
+        - Library createdLibrary
         __
         + CreateLibrary(String)
         + void execute()
@@ -365,14 +380,14 @@ package commands{
         + void undo()
     }
     class SelectAction implements Command{
-        - Set<Element> elements
+        - HashSet<Element> selectedElements
         __
         + SelectAction(Element)
         + void execute()
         + void undo()
     }
-    class DeselectAction implements Command{
-        - Element[] elements
+    class DeselectAction implements Command{ /" Is this necessary??? "/
+        - HashSet<Element> deselectedElements
         __
         + SelectAction(Element)
         + void execute()
@@ -380,6 +395,7 @@ package commands{
     }
     
     class OpenFileAction implements Command {
+        - Library openedLibrary
         __
         + OpenFileAction()
         + void execute()
@@ -442,56 +458,49 @@ package compilers {
 }
 
 package project {
-    class ModelManager {
-        - {static} ModelManager instance = new ModelManager()
-        - Model currentModel
-        __
-        - ModelManager()
-        + {static} ModelManager getInstance()
-        + Model getCurrentModel()
-        + void loadModel()
-        + void saveModel()
-    }
     class Model {
-    - Set<Library> libraries
-    - Set<Element> shownElements
-    - Set<Element> greyedElements
-    - Set<Element> filteredElements
-    - Set<Element> searchedElement
-    - Set<Element> selectedElements
-    - Set<Element> openedInTextElements
+        - {static} Model instance = new Model()
+        - Project currentProject
+        - Settings currentSettings
+        - Shortcuts currentShortcuts
+        __
+        - Model()
+        + {static} Model getInstance()
+        + Model getCurrentModel()
+        + void loadProject()
+        + void saveProject()
+        + Settings getCurrentSettings()
+        + void saveSettings()
+        + void resetSettings()
+        + Shortcuts getCurrentShortcuts()
+        + void saveShortcuts()
+        + void resetShorcuts()
+    }
+    class Project {
+    - ArrayList<Library> libraries
+    - HashSet<Element> selectedElements
+    - HashSet<Element> openedInTextElements
     __
     + Model()
-    + getCurrentModel()
-    + setCurrentModel()
     + notify()
-    + getLibraries() : Set<Library>
-    + getShownElements(): Set<Element>
-    + getGreyedElements(): Set<Element>
-    + getFilteredElements(): Set<Element>
-    + getSearchedElements(): Set<Element>
-    + getSelectedElements(): Set<Element>
-    + getOpenedInTextElements(): Set<Element>
-    + setLibraries() : Set<Library> 
-    + setShownElements(): Set<Element>
-    + setGreyedElements(): Set<Element>
-    + setFilteredElements(): Set<Element>
-    + setSearchedElements(): Set<Element>
-    + setSelectedElements(): Set<Element>
-    + setOpenedInTextElements(): Set<Element>
-    + Settings getSettings()
-    + void saveProject()
-    + void getFilter()
-    + void getShortcuts()
+    + getLibraries() : ArrayList<Library>
+    + getSelectedElements(): HashSet<Element>
+    + getOpenedInTextElements(): HashSet<Element>
+    + setLibraries() : ArrayList<Library> 
+    + setSelectedElements(): HashSet<Element>
+    + setOpenedInTextElements(): HashSet<Element>
+    + void saveLibrary(Library)
+    + void saveLibraryAs(Library)
+    + void saveAsCSV(Element)
     }
     class FileChooser{
-    + openFile(String[]): File
+    + openFile(): File
     + void saveFile(String, String)
     }
     class Interpolation{
         __
-        + void interpolate(float , PolynomialSplineFunction)
-        + void bicubicInterpolate(float, float, BicubicInterpolatingFunction)
+        + {static} float[] interpolate(float[], float[], float[])
+        + {static} float[][] bicubicInterpolate(float[], float[], float[][], float[], float[])
     }
 enum LanguageEnum{
         ENGLISH
@@ -511,37 +520,26 @@ enum LanguageEnum{
         - ColorTheme colors
         - String FontType
         - int FontSize
-        - int barNumber
-        - int undoNumber
+        - int barCount
+        - int undoCount
         - boolean editorOpenedFirst
         __
         + Settings()
-        + setLanguage(LanguageEnum)
-        + setColor(ColorThemeEnum)
-        + setFontType()
-        + setFontSize()
-        + setBarNumber()
-        + setUndoNumber()
-        + setEditorOpenedFirst()
-        + getLanguage(LanguageEnum)
-        + getColor(ColorThemeEnum)
-        + getFontType()
-        + getFontSize()
-        + getBarNumber()
-        + getUndoNumber()
-        + getEditorOpenedFirst()
-        + saveSettings()
-        + refreshView()
-    }
-    class SettingsManager {
-        - {static} SettingsManager instance = new SettingsManager()
-        - Settings currentSettings
-        __
-        - SettingsManager()
-        + {static} SettingsManager getInstance()
-        + Settings getCurrentSettings()
-        + void loadSettings()
-        + void saveSettings()
+        + void setLanguage(LanguageEnum)
+        + void setColorTheme(ColorThemeEnum)
+        + void setFontType(String)
+        + void setFontSize(int)
+        + void setBarCount(int)
+        + void setUndoCount(int)
+        + void setEditorOpenedFirst(boolean)
+        + getLanguage() : LanguageEnum
+        + getColorTheme() : ColorThemeEnum
+        + getFontType() : String
+        + getFontSize() : int
+        + getBarCount() : int
+        + getUndoCount() : int
+        + getEditorOpenedFirst(): boolean
+        - void notify()
     }
     LanguageEnum -- Settings
     ColorThemeEnum -- Settings
@@ -552,25 +550,25 @@ enum LanguageEnum{
     }
     class Language{
         - String appname
-        - String[] Elements
-        - String[] Menus
-        - String[] Methods
-        - String[] Attributes
+        - String[] elements
+        - String[] menus
+        - String[] methods
+        - String[] attributes
+        - String[] text
         __
-        + getName(): String
+        + getAppname(): String
         + getElements(): String[]
         + getMenus(): String[]
         + getMethods(): String[]
         + getAttributes(): String[]
+        + gettext(): String[]
     }
     Settings *-- ColorTheme
     Settings *-- Language
     class Shortcuts{
-    - Map<Keys, COMMAND> defaultCommands
-    - Map<Keys, COMMAND> commands
+    - HashMap<Key, COMMAND> commands
     __
     + void setKey(Key, COMMAND)
-    + void resetKeys()
     + COMMAND getCommand(Key)
     }
     enum Operation{
@@ -585,7 +583,7 @@ enum LanguageEnum{
         MED
     }
     class Filter{
-        - {static} Filter filters[]
+        - {static} ArrayList<Filter> filters
         - Attribute attribute
         - Mode mode
         - float value
@@ -593,37 +591,20 @@ enum LanguageEnum{
         __
         + Filter(Attribute, Mode, float,
         Operation)
-        + Element[] filter(Element[])
-        + saveDefaultFilters()
-        + loadDefaultFilters()
+        + {static} void filter()
+        + {static} void saveDefaultFilters()
+        + {static} void loadDefaultFilters()
     }
 }
-Model --> Interpolation
+Project --> Compiler
+Project --> CSVCompiler
 Model --> Settings
 Model --> Shortcuts
 Model --> FileChooser
-Model --> Parser
+Filter --> FileChooser
 MergeAction ..> Library 
 Parser ..> Library
-Model --> MergeAction
-Model --> SelectAction
-Model --> DeselectAction
-Model --> AddFilterAction
-Model --> RemoveFilterAction
-Model --> ScaleAction
-Model --> CreateLibrary
-Model --> UndoAction
-Model --> RenameAction
-Model --> DeleteAction
-Model --> TextEditAction
-Model --> MoveAction
-Model --> RemoveAction
-Model --> LibertyCompiler
-Model --> CSVCompiler
-Model --> ActionHistory
-Model --> OpenFileAction
-Model --* ModelManager
-Settings --* SettingsManager
+Project --* Model
 TextEditAction --> Parser
 Parser --> Library
 Parser --> Cell
@@ -655,7 +636,7 @@ Exception <|.. ExceedingFileSizeException
 Exception <|.. TooManyPanelsOpenedException
 Exception <|.. TooManySelectedException
 Exception <|.. InvalidNameException
-Exception <|.. SearchedStringNotFoundException
+Exception <|.. InvalidArgumentException
 !endsub
 
 
