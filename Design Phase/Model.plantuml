@@ -91,15 +91,15 @@ package elements{
     }
     package attributes {
         abstract class Attribute{ 
-            - Stat stats
+            # Stat stats
             __
             + void calculate()
             + void scale(int)
             + getStats(): Stats
         }
         abstract class InAttribute extends Attribute{ 
-            -float[] index1
-            -float[] values
+            # float[] index1
+            # float[] values
             __
             # void calculate()
             + void scale(int)
@@ -109,10 +109,10 @@ package elements{
             + void setValues(float[][])
         }
         abstract class OutAttribute extends Attribute{ 
-            -float[] index1 
-            -float[] index2
-            -float[][] values
-            -InputPin relatedPin
+            # float[] index1 
+            # float[] index2
+            # float[][] values
+            # InputPin relatedPin
             __
             # void calculate()
             + void scale(int)
@@ -177,9 +177,9 @@ package elements{
         }
     }
     abstract class Element{
-        - boolean filtered
-        - boolean searched
-        - String name
+        # boolean filtered
+        # boolean searched
+        # String name
         __
         + getFiltered() : boolean
         + void setFiltered(boolean)
@@ -255,9 +255,9 @@ package elements{
         + void calculateTiming()
     }
     abstract class Pin extends Element{
-        - Cell parentCell
-        - float capacitance
-        - ArrayList<PowerGroup> availablePower
+        # Cell parentCell
+        # float capacitance
+        # ArrayList<PowerGroup> availablePower
         __
         + getName() : String
         + void setName(String)
