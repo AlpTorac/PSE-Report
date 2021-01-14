@@ -70,6 +70,7 @@ skinparam linetype ortho
         + getData()
     }
 }'/
+
 package elements{
     class Stat {
         -float min 
@@ -189,22 +190,37 @@ package elements{
         + void setName(String)
         + {static} compare(Element, Element) : int
     }
-    class Library{
+    abstract class HigherElement extends Element{
+        - ArrayList<TimingSense> availableTimSen
+        - ArrayList<TimingGroup> availableTimGr
+        - ArrayList<TimingType> availableTimType
+        - ArrayList<PowerGroup> availableOutputPower
+        - ArrayList<PowerGroup> availableInputPower
+        - MapMap<Sense, Map<Group, Map<Type, Stat>>> timingStat
+        - Map<Group, Stat> inPowerStat
+        - Map<Group, Stat> outPowerStat
         - boolean hasShownElements
-        - List<TimingSense> availableTimSen
-        - List<TimingGroup> availableTimGr
-        - List<TimingType> availableTimType
-        - List<PowerGroup> availableOutputPower
-        - List<PowerGroup> availableInputPower
+        - Stat leakage
+        __
+        + getAvailableOutputPower() : ArrayList<PowerGroup>
+        + getAvailableInputPower() : ArrayList<PowerGroup>
+        + getAvailableTimSen(): ArrayList<TimingSense>
+        + getAvailableTimGr(): ArrayList<TimingGroup>
+        + getAvailableTimType(): ArrayList<TimingType>
+        + getTimingStat() : Map<Sense, Map<Group, Map<Type, Stat>>>
+        + getInpowerStat() : Map<Group, Stat>
+        + getOutPowerStat() : Map<Group, Stat>
+        + getHasShownElements() : boolean
+        + void setHasShownElements(boolean)
+        + void calculateHasShownElements()
+    }
+    class Library extends HigherElement{
         - float[] index1
         - float[] index2
         - String path
         - String[] fileData
         - ArrayList<Cell> cells
-        - float averageDefaultLeakage
-        - Map<Sense<Group<Type, Stat>>> timingStat
-        - Map<Group, Stat> inPowerStat
-        - Map<Group, Stat> outPowerStat
+        - Stat defaultLeakage
         __
         + getCells() : ArrayList<Cell>
         + void setCells(ArrayList<Cell>)
@@ -212,57 +228,64 @@ package elements{
         + void calculateInPow()
         + void calculateOutPow()
         + void calculateTiming()
+        + void calculateDefaultLeakage()
         + getPath() : String
         + void setPath(String)
-        + getHasShownElements() : boolean
-        + void setHasShownElements(boolean)
-        + void calculateHasShownElements()
+        + getIndex1() : float[]
+        + getIndex2() : float[]
+        + getDefaultLeakage(): Stat
     }
-    class Cell{
-        - boolean hasShownElements
-        - List<TimingSense> availableTimSen
-        - List<TimingGroup> availableTimGr
-        - List<TimingType> availableTimType
-        - List<PowerGroup> availableOutputPower
-        - List<PowerGroup> availableInputPower
+    class Cell extends HigherElement{
         - Library parentLibrary
         - InputPin[] inPins
         - OutputPin[] outPins
         - Leakage[] leakages
-        - Map<Sense<Group<Type, Stat>>> timingStat
-        - Map<Group, Stat> inPowerStat
-        - Map<Group, Stat> outPowerStat
+        - float defaultLeakage
         __
         + getInPins() : InputPin[]
         + getOutPins() : OutputPin[]
+        + getParent() : Library
+        + getLeakage() : Leakage[]
+        + setLeakage(Leakage[])
+        + getDefaultLeakage() : float
+        + void setDefaultLeakage(float)
         + void calculateLeakage()
         + void calculateInPow()
         + void calculateOutPow()
         + void calculateTiming()
-        + getHasShownElements() : boolean
-        + void setHasShownElements(boolean)
-        + void calculateHasShownElements()
     }
-    abstract class Pin{
+    abstract class Pin extends Element{
         - Cell parentCell
         - float capacitance
-        - List<PowerGroup> availablePower
+        - ArrayList<PowerGroup> availablePower
         __
         + getName() : String
         + void setName(String)
+        + getParent() : Cell
+        + getAvailablePower() : ArrayList<PowerGroup>
     }
     class InputPin{
-        - InputPower[] inputPowers
+        - ArrayList<InputPower> inputPowers
         __
         + void calculatePower()
+        + getInputPowers(): ArrayList<InputPower>
+        + setInputPowers(ArrayList<InputPower>)
     }
     class OutputPin{
-        - List<TimingSense> availableTimSen
-        - List<TimingGroup> availableTimGr
-        - List<TimingType> availableTimType
-        - OutputPower[] outputPowers
-        - Timing[] timings
+        - ArrayList<TimingSense> availableTimSen
+        - ArrayList<TimingGroup> availableTimGr
+        - ArrayList<TimingType> availableTimType
+        - ArrayList<OutputPower> outputPowers
+        - ArrayList<Timing> timings
+        - String outPutFunction
         __
+        + getTimings(): ArrayList<Timing>
+        + getOutputPowers(): ArrayList<OutputPower>
+        + void setTiming(ArrayList<Timing>)
+        + void setOutputPower(ArrayList<OutputPower>)
+        + getAvailableTimSen(): ArrayList<TimingSense>
+        + getAvailableTimGr(): ArrayList<TimingGroup>
+        + getAvailableTimType(): ArrayList<TimingType>
         + void calculatePower()
         + void calculateTiming()
     }
@@ -609,9 +632,6 @@ OpenFileAction --> Parser
 UndoAction --> ActionHistory
 Filter <-- AddFilterAction
 Filter <-- RemoveFilterAction
-Element <|-- Library
-Element <|-- Cell
-Element <|-- Pin
 Pin <|-- InputPin
 Pin <|-- OutputPin
 Operation -- Filter
@@ -631,8 +651,6 @@ Exception <|.. TooManySelectedException
 Exception <|.. InvalidNameException
 Exception <|.. InvalidArgumentException
 !endsub
-
-
 
 /' project -[hidden]> compiler
 compiler -[hidden]-> parser
