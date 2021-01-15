@@ -217,8 +217,8 @@ package Diagrams {
         class DiagramOverlayer implements IDiagramOverlayer {
             -Collection<? extends IDiagram> diagrams
             -IDiagramOverlayStrategy overlayStrategy
-            +DiagramOverlayer()
-            #void setOverlayStrategy()
+            +DiagramOverlayer(IDiagram[] diagrams)
+            -void setOverlayStrategy()
         }
         interface IDiagramOverlayStrategy {
             +IDiagram overlay()
@@ -226,19 +226,19 @@ package Diagrams {
         class FunctionGraphOverlayStrategy implements IDiagramOverlayStrategy {
             -FunctionGraph[] functionGraphs
             +FunctionGraphOverlayStrategy(FunctionGraph[] functionGraphs)
-            +FunctionGraph overlay()
+            +IDiagram overlay()
         }
         class HistogramOverlayStrategy implements IDiagramOverlayStrategy {
             -Histogram histogram1
             -Histogram histogram2
             +HistogramOverlayStrategy(Histogram histogram1, Histogram histogram2)
-            +Histogram overlay()
+            +IDiagram overlay()
         }
         class BarChartOverlayStrategy implements IDiagramOverlayStrategy {
             -BarChart barChart1
             -BarChart barChart2
             +BarChartOverlayStrategy(BarChart barChart1, BarChart barChart2)
-            +BarChart overlay()
+            +IDiagram overlay()
         }
     }
     package Diagram.Components {
@@ -285,8 +285,8 @@ package Diagrams {
             +{abstract} DiagramComponent clone()
             +void setColor(Color color)
             +Number getColor()
-            +void show()
-            +void hide()
+            +{abstract} void show()
+            +{abstract} void hide()
         }
         abstract class DiagramValueDisplayComponent extends DiagramComponent implements Hoverable {
             -Number value
@@ -323,8 +323,10 @@ package Diagrams {
             +int getSteps()
             +void showValues()
             +void hideValues()
-            #void paintComponent(Graphics g)
-            +void paintAxis()
+            'not good for flexibility and redundant, paintAxis is enough
+            '#void paintComponent(Graphics g)
+            'void show is already being implemented
+            '+void paintAxis()
             +Number valueToCoordinate(Number value)
             +Number CoordinateToValue(Number coordinate)
             +void setLineByPos(Number minValXPos, Number minValYPos, Number maxValXPos, Number maxValYPos)
@@ -472,9 +474,9 @@ package Diagrams {
             -Number yPos
             -Number width
             -Number height
-            -HoverLabel hoverLabel
+            -{static} HoverLabel hoverLabel
             -HoverLabel()
-            +HoverLabel getHoverLabel()
+            +{static} HoverLabel getHoverLabel()
             +void show()
             +void hide()
             +void setWidth(Number width)
@@ -510,15 +512,15 @@ package Diagrams {
         end note
         abstract class DiagramDataFormatter {
             +DiagramDataFormatter()
-            +<T extends Collection<?>> T format(T data)
+            +<T extends Collection<?>> Object format(T data)
         }
         class ArrayListDataFormatter extends DiagramDataFormatter {
             +ArrayListDataFormatter()
-            +<T extends Collection<?>> ArrayList<?> format(T data)
+            +<T extends Collection<?>> Object format(T data)
         }
         class ArrayDataFormatter extends DiagramDataFormatter {
             +ArrayDataFormatter()
-            +<E, T extends Collection<E>> E[] format(T data)
+            +<E, T extends Collection<E>> Object format(T data)
         }
     }
     package Diagram.Type {
@@ -530,10 +532,10 @@ package Diagrams {
             Provide only deep copies
         end note
         abstract class Diagram implements IDiagram, DiagramComponentAccessPoint {
-            #DiagramData data
-            #DiagramAxis[] axes
-            #DiagramValueDisplayComponent[] valueDisplayComponents
-            #DiagramComponent[] nonValueDisplayComponents
+            -DiagramData data
+            -DiagramAxis[] axes
+            -DiagramValueDisplayComponent[] valueDisplayComponents
+            -DiagramComponent[] nonValueDisplayComponents
             -EnumMap<IndicatorIdentifier, DiagramViewHelper> viewHelpers
             +Diagram(DiagramData data)
             #void assemble(DiagramAxis[] axes, DiagramValueDisplayComponent[] valueDisplayComponents, DiagramComponent[] nonValueDisplayComponents)
@@ -608,7 +610,7 @@ package Diagrams {
         DiagramViewHelperFactory -- DiagramViewHelper : > <<creates>>
         abstract class HelperLineDisplayer extends DiagramViewHelper {
             #HelperLineDisplayer(IDiagram diagram, IndicatorIdentifier id)
-            #void generateHelperComponents()
+            #{abstract} void generateHelperComponents()
         }
         note left of DiagramViewHelper::layer
             Indicates how much in the front the DiagramViewHelper is.
