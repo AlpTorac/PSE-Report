@@ -106,6 +106,37 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 
 \newcommand{\packagebeginning}{edu.kit.informatik.pse.gelf} %root package name
 
+%Macro for label name
+\newcommand{\lblroot}{lbl} % root cascading label name (\casclabel)
+\newcommand{\lblpackage}{} % package name (without \packagebeginning)
+\newcommand{\lblpackageelement}{} % element inside the package (class/interface)
+\newcommand{\lblpackageelementmember}{} % member of the element inside the package (method/constructor/attribute)
+\newcommand{\lblpackageelementmemberparameter}{} % parameter of the member of the element inside the package (parameter)
+\newcommand{\casclabelname}{\lblroot\lblpackage\lblpackageelement\lblpackageelementmember\lblpackageelementmemberparameter}
+\newcommand{\casclabel}{\label{\casclabelname}}
+
+%Macro for placing labels
+%Places a label and resets the appropriate place in the hierarchy in the end
+%#1 one of these as representative of the hierarchy level: \lblpackage \lblpackageelement \lblpackageelementmember \lblpackageelementmemberparameter
+%#2 name to be added to \casclabel
+\newcommand{\putcasclabel}[3]{
+    \renewcommand{#1}{:#2}
+    \casclabel
+    #3
+    \renewcommand{#1}{}
+}
+
+%Macro for temporarily overriding \casclabelname
+%used for making labels of duplicate method names
+%or for same method and attribute names
+%#1 temporal name
+%#2 area, in which the overriding takes place
+\newcommand{\overridecasclabelname}[2]{
+    \renewcommand{\casclabelname}{#1}
+    #2
+    \renewcommand{\casclabelname}{\lblroot\lblpackage\lblpackageelement\lblpackageelementmember\lblpackageelementmemberparameter}
+}
+
 %Macro for Method description
 %#1 visibility modifier
 %#2 optional keyword
@@ -116,22 +147,24 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 %#7 list of parameter descriptions
 %#8 output description
 \newcommand{\methoddesc}[8]{
-#4
-\leavevmode \\
-\leavevmode \\
-#1#2\type{#3} #4(#5)
-\ifblank{#6#7#8}{}{
-    \begin{itemize}[label=-]
-        \ifblank{#6}{}{
-            \item Description: \leavevmode \\ #6 \leavevmode \\
-        }
-        \ifblank{#7}{}{
-            \item Parameters: \leavevmode \\ #7 \leavevmode \\
-        }
-        \ifblank{#8}{}{
-            \item Returns: \leavevmode \\ #8
-        }
-    \end{itemize}
+\putcasclabel{\lblpackageelementmember}{#4}{
+    #4
+    \leavevmode \\
+    \leavevmode \\
+    #1#2\type{#3} #4(#5)
+    \ifblank{#6#7#8}{}{
+        \begin{itemize}[label=-]
+            \ifblank{#6}{}{
+                \item Description: \leavevmode \\ #6 \leavevmode \\
+            }
+            \ifblank{#7}{}{
+                \item Parameters: \leavevmode \\ #7 \leavevmode \\
+            }
+            \ifblank{#8}{}{
+                \item Returns: \leavevmode \\ #8
+            }
+        \end{itemize}
+    }
 }
 }
 
@@ -146,22 +179,24 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 %#8 list of parameter descriptions
 %#9 output description
 \newcommand{\ovrdnmethoddesc}[9]{
-#4
-\leavevmode \\
-\leavevmode \\
-#1#2\type{#3} #4(#5) overrides the version of the method from #6
-\ifblank{#7#8#9}{}{
-    \begin{itemize}[label=-]
-        \ifblank{#7}{}{
-            \item Description: \leavevmode \\ #7 \leavevmode \\
-        }
-        \ifblank{#8}{}{
-            \item Parameters: \leavevmode \\ #8 \leavevmode \\
-        }
-        \ifblank{#9}{}{
-            \item Returns: \leavevmode \\ #9
-        }
-    \end{itemize}
+\putcasclabel{\lblpackageelementmember}{#4}{
+    #4
+    \leavevmode \\
+    \leavevmode \\
+    #1#2\type{#3} #4(#5) overrides the version of the method from #6
+    \ifblank{#7#8#9}{}{
+        \begin{itemize}[label=-]
+            \ifblank{#7}{}{
+                \item Description: \leavevmode \\ #7 \leavevmode \\
+            }
+            \ifblank{#8}{}{
+                \item Parameters: \leavevmode \\ #8 \leavevmode \\
+            }
+            \ifblank{#9}{}{
+                \item Returns: \leavevmode \\ #9
+            }
+        \end{itemize}
+    }
 }
 }
 
@@ -176,22 +211,24 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 %#8 list of parameter descriptions
 %#9 output description
 \newcommand{\implmethoddesc}[9]{
-#4
-\leavevmode \\
-\leavevmode \\
-#1#2\type{#3} #4(#5) implements the method from #6
-\ifblank{#7#8#9}{}{
-    \begin{itemize}[label=-]
-        \ifblank{#7}{}{
-            \item Description: \leavevmode \\ #7 \leavevmode \\
-        }
-        \ifblank{#8}{}{
-            \item Parameters: \leavevmode \\ #8 \leavevmode \\
-        }
-        \ifblank{#9}{}{
-            \item Returns: \leavevmode \\ #9
-        }
-    \end{itemize}
+\putcasclabel{\lblpackageelementmember}{#4}{
+    #4
+    \leavevmode \\
+    \leavevmode \\
+    #1#2\type{#3} #4(#5) implements the method from #6
+    \ifblank{#7#8#9}{}{
+        \begin{itemize}[label=-]
+            \ifblank{#7}{}{
+                \item Description: \leavevmode \\ #7 \leavevmode \\
+            }
+            \ifblank{#8}{}{
+                \item Parameters: \leavevmode \\ #8 \leavevmode \\
+            }
+            \ifblank{#9}{}{
+                \item Returns: \leavevmode \\ #9
+            }
+        \end{itemize}
+    }
 }
 }
 
@@ -199,7 +236,9 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 %#1 parameter name
 %#2 parameter description
 \newcommand{\paramdesc}[2]{
+\putcasclabel{\lblpackageelementmemberparameter}{#1}{
     \textbf{#1}: #2
+}
 }
 
 %Macro for subclass declaration
@@ -227,10 +266,12 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 %#4 attribute name
 %#5 attribute description
 \newcommand{\atrdesc}[5]{
+\putcasclabel{\lblpackageelementmember}{#4}{
     #1#2\type{#3} #4
     \ifblank{#5}{}{
         : #5
     }
+}
 }
 
 %Macro for Enum fields
@@ -238,32 +279,36 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 %#2 Field name (all UPPER case and words separated with _)
 %#3 Field description
 \newcommand{\fielddesc}[3]{
-    \public \static \final \type{#1} #2 \leavevmode \\
+\putcasclabel{\lblpackageelementmember}{#2}{
+    \public \static \final \type{#1} #2  \leavevmode \\
     \begin{itemize}[label=-]
         \item #3
     \end{itemize}
 }
+}
 
 %Macro for constructor description
 %#1 visibility modifier
-%#2 method name
+%#2 constructor name
 %#3 parameters
 %#4 description
 %#5 parameter description
 \newcommand{\constrdesc}[5]{
-#2
-\leavevmode \\
-\leavevmode \\
-#1#2(#3) \leavevmode \\
-\ifblank{#4#5}{}{
-    \begin{itemize}[label=-]
-        \ifblank{#4}{}{
-            \item \textbf{Description:} \leavevmode \\ #4
-        }
-        \ifblank{#5}{}{
-            \item \textbf{Parameters:} \leavevmode \\ #5
-        }
-    \end{itemize}
+\putcasclabel{\lblpackageelementmember}{#2}{
+    #2
+    \leavevmode \\
+    \leavevmode \\
+    #1#2(#3) \leavevmode \\
+    \ifblank{#4#5}{}{
+        \begin{itemize}[label=-]
+            \ifblank{#4}{}{
+                \item \textbf{Description:} \leavevmode \\ #4
+            }
+            \ifblank{#5}{}{
+                \item \textbf{Parameters:} \leavevmode \\ #5
+            }
+        \end{itemize}
+    }
 }
 }
 
@@ -282,6 +327,7 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 %#4 Constructors
 %#5 Methods
 \newcommand{\classdesc}[5]{
+\putcasclabel{\lblpackageelement}{#1}{
     \desc{\subsection}{Class}{#1} \leavevmode \\
     \ifblank{#2}{}{
             \textbf{Declaration:} \leavevmode \\
@@ -300,6 +346,7 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
             #5
     }
 }
+}
 
 %Macro for abstract class descriptions
 %#1 Name
@@ -309,6 +356,7 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 %#5 Constructors
 %#6 Methods
 \newcommand{\absclassdesc}[6]{
+\putcasclabel{\lblpackageelement}{#1}{
     \desc{\subsection}{Abstract Class}{#1} \leavevmode \\
     \ifblank{#2}{}{
             \textbf{Declaration:} \leavevmode \\
@@ -331,6 +379,7 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
             #6
     }
 }
+}
 
 %Macro for interface descriptions
 %#1 name
@@ -339,6 +388,7 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 %#4 All known implementing classes
 %#5 Methods
 \newcommand{\interfacedesc}[5]{
+\putcasclabel{\lblpackageelement}{#1}{
     \desc{\subsection}{Interface}{#1} \leavevmode \\
     \ifblank{#2}{}{
             \textbf{Declaration:} \leavevmode \\
@@ -357,6 +407,7 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
             #5
     }
 }
+}
 
 %Macro for enum descriptions
 %#1 name
@@ -364,6 +415,7 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 %#3 Fields (Enum values)
 %#4 Methods
 \newcommand{\enumdesc}[4]{
+\putcasclabel{\lblpackageelement}{#1}{
     \desc{\subsection}{Class}{#1} \leavevmode \\
     \ifblank{#2}{}{
             \textbf{Declaration:} \leavevmode \\
@@ -378,10 +430,13 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
             #4 \leavevmode \\
     }
 }
+}
 
 %Macro for package descriptions
 %#1 name
-\newcommand{\packagedesc}[1] {
+%#2 package content
+\newcommand{\packagedesc}[2]{
+\putcasclabel{\lblpackage}{#1}{
     \desc{\section}{Package}{\packagebeginning.#1}
     \renewcommand{\contentsname}{\small\textit{Package contents}
     \hfill
@@ -390,6 +445,8 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     \setlength{\cftaftertoctitleskip}{0em} % removes space between the heading and the list parts of (local) table of contents
     \setlength{\cftsubsecindent}{1em} % shortens the spacing from left
     \localtableofcontents % makes a local table of contents
+    #2
+}
 }
 
 %Macros for design patterns
@@ -440,7 +497,7 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 
 \chapter{Class Descriptions}
 %GUI
-\packagedesc{view.gui}
+\packagedesc{view.gui}{
 \classdesc{MainWindow}{}{}
     {
         \constrdesc{\public}{MainWindow}{}{}{}
@@ -483,8 +540,9 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     {}
     {}
     {}
+}
 %Components
-\packagedesc{view.components}
+\packagedesc{view.components}{
 \interfacedesc{AutoResizing}{}
     {}
     {}
@@ -508,26 +566,39 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     {}
     {}
     {}
+}
 %Diagrams
-\packagedesc{view.diagrams}
-\interfacedesc{IDiagram}{}{}{
+\packagedesc{view.diagrams}{
+\interfacedesc{IDiagram}{
+    An interface that is implemented by all diagrams.
+}{}{
     \begin{itemize}
         \item \implclsdec{Diagram}
     \end{itemize}
 }{
     \begin{itemize}
         \item \methoddesc{\public}{\typewgeneric{Collection}{?}}{}{cloneData}{}
-        {}{}{}
+        {
+            Makes a deep copy of the data which the diagram represents (the data attribute) in form of a \type{Collection} instance.
+        }{}{
+            A deep copy of the data of the diagram.
+        }
         \item \methoddesc{\public}{}{void}{refresh}{}
-        {}{}{}
+        {
+            Re-draws the diagram.
+        }{}{}
         \item \methoddesc{\public}{}{void}{update}{\type{DiagramData} data}
-        {}{
+        {
+            Replaces the data the diagram represents by the given data.
+        }{
             \begin{itemize}
-                \item \paramdesc{data}{}
+                \item \paramdesc{data}{The data to replace the current data of the diagram.}
             \end{itemize}
         }{}
         \item \methoddesc{\public}{}{boolean}{addDiagramViewHelper}{\type{DiagramViewHelper} dvh}
-        {}{
+        {
+            Adds the given \type{DiagramViewHelper}
+        }{
             \begin{itemize}
                 \item \paramdesc{dvh}{}
             \end{itemize}
@@ -538,18 +609,22 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
                 \item \paramdesc{dvh}{}
             \end{itemize}
         }{}
-        \item \methoddesc{\public}{}{boolean}{showDiagramViewHelper}{\type{Enum} id}
+        \item \methoddesc{\public}{}{boolean}{showDiagramViewHelper}{\type{IndicatorIdentifier} id}
         {}{
             \begin{itemize}
                 \item \paramdesc{id}{}
             \end{itemize}
         }{}
-        \item \methoddesc{\public}{}{boolean}{hideDiagramViewHelper}{\type{Enum} id}
+        \item \methoddesc{\public}{}{boolean}{hideDiagramViewHelper}{\type{IndicatorIdentifier} id}
         {}{
             \begin{itemize}
                 \item \paramdesc{id}{}
             \end{itemize}
         }{}
+        \item \methoddesc{\public}{}{DiagramComponent[]}{getNonValueDisplayDiagramComponentPrototypes}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{DiagramValueDisplayComponent[]}{getDiagramValueDisplayComponentPrototypes}{}
+        {}{}{}
     \end{itemize}
 }
 
@@ -584,18 +659,18 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
                 \item \paramdesc{diagram}{}
             \end{itemize}
         }{}
-        \item \methoddesc{\public}{}{IDiagram}{overlay}{\type{int[]} indices}
+        \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:(inds)overlay}{\methoddesc{\public}{}{IDiagram}{overlay}{\type{int[]} indices}
         {}{
             \begin{itemize}
-                \item \paramdesc{indices}{}
+                \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:(inds)overlay:indices}{\paramdesc{indices}{}}
             \end{itemize}
-        }{}
-        \item \methoddesc{\public}{}{IDiagram}{overlay}{\type{IDiagram[]} diagrams}
+        }{}}
+        \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:(dgrms)overlay}{\methoddesc{\public}{}{IDiagram}{overlay}{\type{IDiagram[]} diagrams}
         {}{
             \begin{itemize}
-                \item \paramdesc{diagrams}{}
+                \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:(dgrms)overlay:diagrams}{\paramdesc{diagrams}{}}
             \end{itemize}
-        }{}
+        }{}}
     \end{itemize}
 }
 
@@ -653,8 +728,8 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         {}{}{}        
     \end{itemize}
 }
-
-\packagedesc{view.diagrams.overlayer}
+}
+\packagedesc{view.diagrams.overlayer}{
 
 \interfacedesc{IDiagramOverlayStrategy}{}{}{
     \begin{itemize}
@@ -745,8 +820,8 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         {}{}{}
     \end{itemize}
 }
-
-\packagedesc{view.diagrams.components}
+}
+\packagedesc{view.diagrams.components}{
 
 \interfacedesc{Hoverable}{}{}{
     \begin{itemize}
@@ -835,8 +910,6 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{\abstr}{DiagramComponent}{clone}{}
-        {}{}{}
         \item \methoddesc{\public}{\abstr}{DiagramComponent}{clone}{}
         {}{}{}
         \item \methoddesc{\public}{}{void}{setColor}{\type{Color} color}
@@ -947,7 +1020,7 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         \item \atrdesc{\private}{}{Number}{min}{}
         \item \atrdesc{\private}{}{Number}{max}{}
         \item \atrdesc{\private}{}{int}{steps}{}
-        \item \atrdesc{\private}{}{boolean}{showValues}{}
+        \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:(atr)showValues}{\atrdesc{\private}{}{boolean}{showValues}{}}
         \item \atrdesc{\private}{}{DiagramLine}{axisLine}{}
     \end{itemize}
 }{
@@ -991,8 +1064,8 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         }{}
         \item \methoddesc{\public}{}{int}{getSteps}{}
         {}{}{}
-        \item \methoddesc{\public}{}{void}{showValues}{}
-        {}{}{}
+        \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:(mtd)showValues}{\methoddesc{\public}{}{void}{showValues}{}
+        {}{}{}}
         \item \methoddesc{\public}{}{void}{hideValues}{}
         {}{}{}
         \item \methoddesc{\public}{}{Number}{valueToCoordinate}{\type{Number} value}
@@ -1729,8 +1802,8 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         }{}
     \end{itemize}
 }
-
-\packagedesc{view.diagrams.data}
+}
+\packagedesc{view.diagrams.data}{
 
 \absclassdesc{DiagramDataFormatter}{}{}{
     \begin{itemize}
@@ -1809,20 +1882,8 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         }{}
     \end{itemize}
 }
-\packagedesc{view.diagrams.type}
-
-\interfacedesc{DiagramComponentAccessPoint}{}{}{
-    \begin{itemize}
-        \item \implclsdec{Diagram}
-    \end{itemize}
-}{
-    \begin{itemize}
-        \item \methoddesc{\public}{}{DiagramComponent[]}{getNonValueDisplayDiagramComponentPrototypes}{}
-        {}{}{}
-        \item \methoddesc{\public}{}{DiagramValueDisplayComponent[]}{getDiagramValueDisplayComponentPrototypes}{}
-        {}{}{}
-    \end{itemize}
 }
+\packagedesc{view.diagrams.type}{
 
 \absclassdesc{Diagram}{}{
     \begin{itemize}
@@ -1923,8 +1984,8 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         }
     \end{itemize}
 }{}
-
-\packagedesc{view.diagrams.indicator}
+}
+\packagedesc{view.diagrams.indicator}{
 
 \absclassdesc{DiagramViewHelper}{}{
     \begin{itemize}
@@ -2193,8 +2254,8 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         }
     \end{itemize}
 }{}
-
-\packagedesc{view.diagrams.builder}
+}
+\packagedesc{view.diagrams.builder}{
 
 \absclassdesc{DiagramBuilder}{}{
     \begin{itemize}
@@ -2266,8 +2327,8 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         }
     \end{itemize}
 }{}
-
-\packagedesc{view.representation}
+}
+\packagedesc{view.representation}{
 \interfacedesc{ICellImageBuilder}{}{}{}{}
 \classdesc{CellImageBuilder}{}{}{
 \begin{itemize}
@@ -2286,12 +2347,12 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 \begin{itemize}
         \item \constrdesc{\public}{LibraryPanel}{}{}{}
     \end{itemize}}{}{}
+}
 
-
-\packagedesc{model.elements.attributes}
-\absclassdesc{Attribute}{}{}{}{}
-\absclassdesc{InAttribute}{}{}{}{}
-\absclassdesc{OutAttribute}{}{}{}{}
+\packagedesc{model.elements.attributes}{
+\absclassdesc{Attribute}{}{}{}{}{}
+\absclassdesc{InAttribute}{}{}{}{}{}
+\absclassdesc{OutAttribute}{}{}{}{}{}
 \classdesc{Leakage}{}{}{}{}{}
 \classdesc{InputPower}{}{}{}{}{}
 \classdesc{OutputPower}{}{}{}{}{}
@@ -2300,17 +2361,17 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 \enumdesc{TimingGroup}{}{}{}
 \enumdesc{TimingType}{}{}{}
 \enumdesc{TimingSense}{}{}{}
-
-\packagedesc{model.elements}
-\absclassdesc{Element}{}{}{}{}
-\classdesc{Library}{}{}{}{}{}
-\classdesc{Cell}{}{}{}{}{}
-\absclassdesc{Pin}{}{}{}{}
-\classdesc{InputPin}{}{}{}{}{}
-\classdesc{OutputPin}{}{}{}{}{}
-\classdesc{Stat}{}{}{}{}{}
-
-\packagedesc{model.commands}
+}
+\packagedesc{model.elements}{
+\absclassdesc{Element}{}{}{}{}{}
+\classdesc{Library}{}{}{}{}
+\classdesc{Cell}{}{}{}{}
+\absclassdesc{Pin}{}{}{}{}{}
+\classdesc{InputPin}{}{}{}{}
+\classdesc{OutputPin}{}{}{}{}
+\classdesc{Stat}{}{}{}{}
+}
+\packagedesc{model.commands}{
 \interfacedesc{Command}{public interface Command}{}{}
 {
 \begin{itemize}
@@ -2514,16 +2575,16 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
      \end{itemize}
     }
     {}{}
-
-\packagedesc{model.parsers}
+}
+\packagedesc{model.parsers}{
 \classdesc{Parser}{}{}{}{}{}
-
-\packagedesc{model.compiler}
+}
+\packagedesc{model.compiler}{
 \interfacedesc{Compiler}{}{}{}{}
 \classdesc{CSVCompiler}{}{}{}{}{}
 \classdesc{LibertyCompiler}{}{}{}{}{}
-
-\packagedesc{model.project}
+}
+\packagedesc{model.project}{
 \classdesc{Model}{}{}{}{}{}
 \classdesc{Interpolation}{}{}{
     \begin{itemize}
@@ -2691,8 +2752,8 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 \enumdesc{Operation}{}{}{}
 \enumdesc{ColorThemeEnum}{}{}{}
 \enumdesc{LanguageEnum}{}{}{}
-
-\packagedesc{model.exceptions}
+}
+\packagedesc{model.exceptions}{
 \classdesc{TooManyPanelsOpenedException}{}{}{}{}{}
 \classdesc{SearchedStringNotFoundException}{}{}{}{}{}
 \classdesc{InvalidNameException}{}{}{}{}{}
@@ -2700,9 +2761,9 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 \classdesc{InvalidFileFormatException}{}{}{}{}{}
 \classdesc{ExceedingFileSizeException}{}{}{}{}{}
 \classdesc{TooManySelectedException}{}{}{}{}{}
+}
 
-
-\packagedesc{controller.listeners}
+\packagedesc{controller.listeners}{
 \classdesc{EventManager}{}{}{
     \begin{itemize}
         \item \constrdesc{\public}{EventManager}{}{}{}
@@ -2736,7 +2797,7 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     \begin{itemize}
         \item \constrdesc{\public}{DeleteListener}{}{}{}
     \end{itemize}
-}{
+}{  
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
         {}{}{}
@@ -2959,8 +3020,8 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
         {}{}{}
     \end{itemize}}{}
-
-\packagedesc{controller.updatehandlers}
+}
+\packagedesc{controller.updatehandlers}{
 \classdesc{DataUpdateHandler}{}{}{
     \begin{itemize}
         \item \constrdesc{\public}{DataUpdateHandler}{}{}{}
@@ -2994,7 +3055,7 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         \item \methoddesc{\public}{}{void}{update}{}
         {}{}{}
     \end{itemize}}{}
-
+}
 \chapter{Class Diagrams}
 
 \chapter{Sequence Diagrams}
