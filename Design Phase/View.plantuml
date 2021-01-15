@@ -200,10 +200,12 @@ package Diagrams {
         +Collection<?> cloneData()
         +void refresh()
         +void update(DiagramData data)
-        +boolean addDiagramViewHelper(Enum uniqueIdentifier, DiagramViewHelper dvh)
-        +boolean removeDiagramViewHelper(Enum uniqueIdentifier, DiagramViewHelper dvh)
-        +boolean showDiagramViewHelper(Enum uniqueIdentifier)
-        +boolean hideDiagramViewHelper(Enum uniqueIdentifier)
+        +boolean addDiagramViewHelper(DiagramViewHelper dvh)
+        +boolean removeDiagramViewHelper(DiagramViewHelper dvh)
+        +boolean showDiagramViewHelper(IndicatorIdentifier id)
+        +boolean hideDiagramViewHelper(IndicatorIdentifier id)
+        +DiagramComponent[] getNonValueDisplayDiagramComponentPrototypes()
+        +DiagramValueDisplayComponent[] getDiagramValueDisplayComponentPrototypes()
     }
     interface IDiagramOverlayer {
         +IDiagram getDiagram(int index)
@@ -524,14 +526,7 @@ package Diagrams {
         }
     }
     package Diagram.Type {
-        interface DiagramComponentAccessPoint {
-            +DiagramComponent[] getNonValueDisplayDiagramComponentPrototypes()
-            +DiagramValueDisplayComponent[] getDiagramValueDisplayComponentPrototypes()
-        }
-        note top of DiagramComponentAccessPoint
-            Provide only deep copies
-        end note
-        abstract class Diagram implements IDiagram, DiagramComponentAccessPoint {
+        abstract class Diagram implements IDiagram {
             -DiagramData data
             -DiagramAxis[] axes
             -DiagramValueDisplayComponent[] valueDisplayComponents
