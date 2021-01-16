@@ -21,6 +21,7 @@
 \usepackage[at]{easylist}
 
 \usepackage{etoolbox}
+\usepackage{url}
 
 \title{\includegraphics[scale=6.0]{App Icon}\\Design for Graphical Editor for Liberty Files}
 
@@ -416,7 +417,7 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 %#4 Methods
 \newcommand{\enumdesc}[4]{
 \putcasclabel{\lblpackageelement}{#1}{
-    \desc{\subsection}{Class}{#1} \leavevmode \\
+    \desc{\subsection}{Enum}{#1} \leavevmode \\
     \ifblank{#2}{}{
             \textbf{Declaration:} \leavevmode \\
             #2 \leavevmode \\
@@ -498,74 +499,73 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 \chapter{Class Descriptions}
 %GUI
 \packagedesc{view.gui}{
-\classdesc{MainWindow}{}{}
+\classdesc{MainWindow}{a}{a}
     {
-        \constrdesc{\public}{MainWindow}{}{}{}
+        \constrdesc{\public}{MainWindow}{a}{a}{a}
     }
-    {}
-\classdesc{SubWindowArea}{}{}
+    {a}
+\classdesc{SubWindowArea}{a}{a}
     {
-        \constrdesc{\public}{SubWindowArea}{}{}{}
+        \constrdesc{\public}{SubWindowArea}{a}{a}{a}
     }
-    {}
-\classdesc{Outliner}{}{}
+    {a}
+\classdesc{Outliner}{a}{a}
     {
-        \constrdesc{\public}{Outliner}{}{}{}
+        \constrdesc{\public}{Outliner}{a}{a}{a}
     }
-    {}
-\classdesc{InfoBar}{}{}
+    {a}
+\classdesc{InfoBar}{a}{a}
     {
-        \constrdesc{\public}{InfoBar}{}{}{}
+        \constrdesc{\public}{InfoBar}{a}{a}{a}
     }
-    {}
-\enumdesc{InfoBarID}{}{
+    {a}
+\enumdesc{InfoBarID}{a}{
     \begin{itemize}
-        \item \fielddesc{InfoBarID}{VERSION}{}
-        \item \fielddesc{InfoBarID}{SELECTED}{}
-        \item \fielddesc{InfoBarID}{LASTACTION}{}
+        \item \fielddesc{InfoBarID}{VERSION}{a}
+        \item \fielddesc{InfoBarID}{SELECTED}{a}
+        \item \fielddesc{InfoBarID}{LASTACTION}{a}
     \end{itemize}
-}{}
-\classdesc{SubWindow}{}{}
+}{a}
+\classdesc{SubWindow}{a}{a}
     {
-        \constrdesc{\public}{SubWindow}{}{}{}
+        \constrdesc{\public}{SubWindow}{a}{a}{a}
     }
-    {}
-\absclassdesc{ElementManipulator}{}{}
-    {}
-    {}
-    {}
-\implclsdec{TextEditor}
-\implclsdec{Visualizer}
-\classdesc{MergeDialog}{}{}
-    {}
-    {}
-    {}
+    {a}
+\absclassdesc{ElementManipulator}{a}{a}
+    {
+        \begin{itemize}
+            \item \subclsdec{TextEditor}
+            \item \subclsdec{Visualizer}
+        \end{itemize}
+    }
+    {a}
+    {a}
+\classdesc{MergeDialog}{a}{a}
+    {a}
+    {a}
 }
 %Components
 \packagedesc{view.components}{
-\interfacedesc{AutoResizing}{}
-    {}
-    {}
-    {}
-\classdesc{Resizer}{}{}
-    {}
-    {}
-    {}
-\enumdesc{ResizeMode}{}{
+\interfacedesc{AutoResizing}{a}
+    {a}
+    {a}
+    {a}
+\classdesc{Resizer}{a}{a}
+    {a}
+    {a}
+\enumdesc{ResizeMode}{a}{
     \begin{itemize}
-        \item \fielddesc{ResizeMode}{ABSOLUTE\_TOP\_LEFT}{}
-        \item \fielddesc{ResizeMode}{ABSOLUTE\_BOTTOM\_RIGHT}{}
-        \item \fielddesc{ResizeMode}{RELATIVE}{}
+        \item \fielddesc{ResizeMode}{ABSOLUTE-TOP-LEFT}{a}
+        \item \fielddesc{ResizeMode}{ABSOLUTE-BOTTOM-RIGHT}{a}
+        \item \fielddesc{ResizeMode}{RELATIVE}{a}
     \end{itemize}
-}{}
-\classdesc{Window}{}{}
-    {}
-    {}
-    {}
-\classdesc{Panel}{}{}
-    {}
-    {}
-    {}
+}{a}
+\classdesc{Window}{a}{a}
+    {a}
+    {a}
+\classdesc{Panel}{a}{a}
+    {a}
+    {a}
 }
 %Diagrams
 \packagedesc{view.diagrams}{
@@ -2083,8 +2083,8 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         \item \fielddesc{IndicatorIdentifier}{MAX}{}
         \item \fielddesc{IndicatorIdentifier}{AVG}{}
         \item \fielddesc{IndicatorIdentifier}{MED}{}
-        \item \fielddesc{IndicatorIdentifier}{X\_COORDINATE\_INDICATOR}{}
-        \item \fielddesc{IndicatorIdentifier}{Y\_COORDINATE\_INDICATOR}{}
+        \item \fielddesc{IndicatorIdentifier}{X-COORDINATE-INDICATOR}{}
+        \item \fielddesc{IndicatorIdentifier}{Y-COORDINATE-INDICATOR}{}
     \end{itemize}
 }{}
 
@@ -2329,34 +2329,94 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 }{}
 }
 \packagedesc{view.representation}{
-\interfacedesc{ICellImageBuilder}{}{}{}{}
-\classdesc{CellImageBuilder}{}{}{
-\begin{itemize}
-        \item \constrdesc{\public}{CellImageBuilder}{}{}{}
+\interfacedesc{ICellImageGenerator}{}{}{}{}
+\classdesc{CellImageGenerator}{protected class CellImageGenerator implements ICellImageGenerator}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{BufferedImage}{pinIcon}{}
+        \item \atrdesc{\private}{}{BufferedImage}{cellIcon}{}
     \end{itemize}
-}{}{}
-\classdesc{DataPanel}{}{}{
-\begin{itemize}
+}{
+    \begin{itemize}
+        \item \constrdesc{\public}{CellImageGenerator}{}{}{}
+    \end{itemize}
+}{  \begin{itemize}
+        \item \methoddesc{\public}{}{void}{buildCell}{int inputPins, int outputPins}
+        {}{}{}
+    \end{itemize}}{}
+\classdesc{DataPanel}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Label}{label}{}
+        \item \atrdesc{\private}{}{String}{Text}{}
+    \end{itemize}
+}{
+    \begin{itemize}
         \item \constrdesc{\public}{DataPanel}{}{}{}
-    \end{itemize}}{}{}
-\classdesc{CellPanel}{}{}{
-\begin{itemize}
-        \item \constrdesc{\public}{CellPanel}{}{}{}
-    \end{itemize}}{}{}
-\classdesc{LibraryPanel}{}{}{
-\begin{itemize}
-        \item \constrdesc{\public}{LibraryPanel}{}{}{}
-    \end{itemize}}{}{}
+    \end{itemize}}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{void}{setText}{String text}
+        {}{}{}
+    \end{itemize}}{}
+\classdesc{CellPanel}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Label}{label}{}
+        \item \atrdesc{\private}{}{Button[]}{buttons}{}
+        \item \atrdesc{\private}{}{Checkbox[]}{checkboxes}{}
+        \item \atrdesc{\private}{}{Element}{cell}{}
+        \item \atrdesc{\private}{}{Element[]}{pins}{}
+        \item \atrdesc{\private}{}{BufferedImage}{cellImage}{}
+        \item \atrdesc{\private}{}{CellImageGenerator}{cellGenerator}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \constrdesc{\public}{CellPanel}{Element element}{}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{void}{switchToLibrary}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{switchToPin}{Element element}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{switchToCell}{Element element}
+        {}{}{}
+    \end{itemize}
+}{}
+\classdesc{LibraryPanel}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{List<Button>}{buttons}{}
+        \item \atrdesc{\private}{}{List<Cell>}{cells}{}
+        \item \atrdesc{\private}{}{Library}{selectedLibrary}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \constrdesc{\public}{LibraryPanel}{Library Library}{}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{void}{switchToCell}{Element element}
+        {}{}{}
+    \end{itemize}
+    }{}
 }
 
 \packagedesc{model.elements.attributes}{
-\absclassdesc{Attribute}{}{}{}{}{}
+\absclassdesc{Attribute}{Attribute class}
+{\begin{itemize}
+    \item \atrdesc{\proted}{}{\type{Stat}}{stats}{}
+\end{itemize}
+}{
+\begin{itemize}
+    \item \implclsdec{Leakage}
+    \item \implclsdec{InAttribute}
+    \item \implclsdec{OutAttribute}
+\end{itemize}
+}{}{}
+
 \absclassdesc{InAttribute}{}{}{}{}{}
 \absclassdesc{OutAttribute}{}{}{}{}{}
-\classdesc{Leakage}{}{}{}{}{}
-\classdesc{InputPower}{}{}{}{}{}
-\classdesc{OutputPower}{}{}{}{}{}
-\classdesc{Timing}{}{}{}{}{}
+\classdesc{Leakage}{}{}{}{}
+\classdesc{InputPower}{}{}{}{}
+\classdesc{OutputPower}{}{}{}{}
+\classdesc{Timing}{}{}{}{}
 \enumdesc{PowerGroup}{}{}{}
 \enumdesc{TimingGroup}{}{}{}
 \enumdesc{TimingType}{}{}{}
@@ -2364,6 +2424,7 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 }
 \packagedesc{model.elements}{
 \absclassdesc{Element}{}{}{}{}{}
+\absclassdesc{HigherElement}{}{}{}{}{}
 \classdesc{Library}{}{}{}{}
 \classdesc{Cell}{}{}{}{}
 \absclassdesc{Pin}{}{}{}{}{}
@@ -2372,20 +2433,46 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 \classdesc{Stat}{}{}{}{}
 }
 \packagedesc{model.commands}{
-\interfacedesc{Command}{public interface Command}{}{}
-{
-\begin{itemize}
+\interfacedesc{Command}
+    {
+    An interface that is implemented by all commands.
+    }
+    {}
+    {
+    \begin{itemize}
+        \item \implclsdec{OpenFileAction}
+        \item \implclsdec{RemoveAction}
+        \item \implclsdec{AddFilterAction}
+        \item \implclsdec{RemoveFilterAction}
+        \item \implclsdec{DeleteAction}
+        \item \implclsdec{MergeAction}
+        \item \implclsdec{MoveAction}
+        \item \implclsdec{RenameAction}
+        \item \implclsdec{SelectAction}
+        \item \implclsdec{CreateLibraryAction}
+        \item \implclsdec{ScaleAction}
+        \item \implclsdec{UndoAction}
+        \item \implclsdec{TextEditAction}
+    \end{itemize}
+    }
+    {
+    \begin{itemize}
         \item \methoddesc{\public}{}{void}{execute}{}
-        {}{}{}
+        {}{}{}{}
         \item \methoddesc{\public}{}{void}{undo}{}
         {}{}{}
     \end{itemize}
     }
-\classdesc{OpenFileAction}{public class OpenFileAction}{}
+\classdesc{OpenFileAction}{Opens a file.} {   \begin{itemize}
+        \item \atrdesc{\private}{}{\type{Library}}{openedLibrary}{}
+    \end{itemize}
+}
+{
     {\begin{itemize}
         \item \constrdesc{\public}{OpenFileAction}{}{}{}
     \end{itemize}
-}
+    }}
+    
     {\begin{itemize}
         \item \methoddesc{\public}{}{void}{execute}{}
         {}{}{}
@@ -2394,9 +2481,17 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     \end{itemize}
     }
 
-
-\classdesc{RemoveAction}{public class RemoveAction}{} {\begin{itemize}
-        \item \constrdesc{\public}{RemoveAction}{Library}{}{Library}
+\classdesc{RemoveAction}{Removes a library from the view.}
+    {\begin{itemize}
+        \item \atrdesc{\private}{}{\type{Library}}{removedLibrary}{}
+    \end{itemize}} 
+{   \begin{itemize}
+        \item \constrdesc{\public}{RemoveAction}{\type{Library} library}{}
+        {
+            \begin{itemize}
+            \item \paramdesc{library}{The library that is going to be removed from the view.}
+            \end{itemize}
+        }
     \end{itemize}
 }
     {\begin{itemize}
@@ -2408,9 +2503,17 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     }
     
     
-\classdesc{AddFilterAction}{}{}
-{\begin{itemize}
-        \item \constrdesc{\public}{AddFilterAction}{Filter}{}{Filter}
+\classdesc{AddFilterAction}{Adds a filter.}
+    {\begin{itemize}
+        \item \atrdesc{\private}{}{\type{Filter}}{addedFilter}{}
+    \end{itemize}} 
+{   \begin{itemize}
+        \item \constrdesc{\public}{AddFilterAction}{\type{Filter} filter}{}
+        {
+            \begin{itemize}
+            \item \paramdesc{filter}{The filter that is going to be added.}
+            \end{itemize}
+        }
     \end{itemize}
 }
     {\begin{itemize}
@@ -2423,9 +2526,17 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 
 
 
-\classdesc{RemoveFilterAction}{}{}
-{\begin{itemize}
-        \item \constrdesc{\public}{RemoveFilterAction}{Filter}{}{Filter}
+\classdesc{RemoveFilterAction}{Removes a filter.}
+    {\begin{itemize}
+        \item \atrdesc{\private}{}{\type{Filter}}{removedFilter}{}
+    \end{itemize}} 
+{   \begin{itemize}
+        \item \constrdesc{\public}{RemoveFilterAction}{\type{Filter} filter}{}
+        {
+            \begin{itemize}
+            \item \paramdesc{filter}{The filter that is going to be removed.}
+            \end{itemize}
+        }
     \end{itemize}
 }
     {\begin{itemize}
@@ -2437,9 +2548,17 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     }
 
 
-\classdesc{DeleteAction}{}{}
-{\begin{itemize}
-        \item \constrdesc{\public}{DeleteAction}{Cell}{}{Cell}
+\classdesc{DeleteAction}{Deletes a cell from a library.}
+    {\begin{itemize}
+        \item \atrdesc{\private}{}{\type{Cell}}{deletedCell}{}
+    \end{itemize}} 
+{   \begin{itemize}
+        \item \constrdesc{\public}{DeleteAction}{\type{Cell} cell}{}
+        {
+            \begin{itemize}
+            \item \paramdesc{cell}{The cell that is going to be deleted.}
+            \end{itemize}
+        }
     \end{itemize}
 }
     {\begin{itemize}
@@ -2451,9 +2570,19 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     }
 
 
-\classdesc{MergeAction}{}{}
-{\begin{itemize}
-        \item \constrdesc{\public}{MergeAction}{Library[]}{}{Library[]}
+\classdesc{MergeAction}{Merges multiple libraries to a single library.}
+    {\begin{itemize}
+        \item \atrdesc{\private}{}{\type{Library[]}}{mergedLibraries}{}
+        \item
+        \atrdesc{\private}{}{\type{Library}}{productLibrary}{}
+    \end{itemize}} 
+{   \begin{itemize}
+        \item \constrdesc{\public}{MergeAction}{\type{Library[]} libraries}{}
+        {
+            \begin{itemize}
+            \item \paramdesc{libraries}{Array of libraries that are going to be merged.}
+            \end{itemize}
+        }
     \end{itemize}
 }
     {\begin{itemize}
@@ -2465,9 +2594,45 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     }
 
 
-\classdesc{MoveAction}{}{}
-{\begin{itemize}
-        \item \constrdesc{\public}{MoveAction}{Element[],Library}{}{Element[] , Library}
+\classdesc{MoveAction}{Moves selected cells to a desired library.}
+    {\begin{itemize}
+        \item \atrdesc{\private}{}{\type{Map<\type{Cell}, \type{Library}>}}{initialPositions}{}
+        \item
+        \atrdesc{\private}{}{Library}{destinationLibrary}{}
+    \end{itemize}} 
+{   \begin{itemize}
+        \item \constrdesc{\public}{MoveAction}{\type{Cell[]} cells, \type{Library} library}{}
+        {
+            \begin{itemize}
+            \item \paramdesc{cells}{Array of the selected cells that are going to be moved.}
+            \item \paramdesc{library}{The library that the cells are going to be moved to.}
+            \end{itemize}
+        }
+    \end{itemize}
+}
+    {\begin{itemize}
+        \item \methoddesc{\public}{}{void}{execute}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{undo}{}
+        {}{}{}
+    \end{itemize}
+    }
+
+\classdesc{RenameAction}{Changes the name of an element.}
+    {\begin{itemize}
+        \item \atrdesc{\private}{}{\type{Element}} {renamedElement}{}
+        \item \atrdesc{\private}{}{\type{String}} {oldName}{}
+        \item
+        \atrdesc{\private}{}{\type{String}}{newName}{}
+    \end{itemize}} 
+{   \begin{itemize}
+        \item \constrdesc{\public}{RenameAction}{\type{Element} element, \type{String} name}{}
+        {
+            \begin{itemize}
+            \item \paramdesc{element}{Element that is going to be renamed.}
+            \item \paramdesc{name}{The new name of the element.}
+            \end{itemize}
+        }
     \end{itemize}
 }
     {\begin{itemize}
@@ -2479,9 +2644,18 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     }
 
 
-\classdesc{RenameAction}{}{}
-{\begin{itemize}
-        \item \constrdesc{\public}{RenameAction}{Element, String}{}{Filter}
+\classdesc{SelectAction}{Selects an element.}
+    {\begin{itemize}
+        \item \atrdesc{\private}{}{\type{HashSet<Element>}} {selectedElements}{}
+        \item \atrdesc{\private}{}{\type{HashSet<Element>}} {deselectedElements}{}
+    \end{itemize}} 
+{   \begin{itemize}
+        \item \constrdesc{\public}{SelectAction}{\type{Element} element}{}
+        {
+            \begin{itemize}
+            \item \paramdesc{element}{Element that is going to be selected.}
+            \end{itemize}
+        }
     \end{itemize}
 }
     {\begin{itemize}
@@ -2492,38 +2666,17 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     \end{itemize}
     }
 
-
-\classdesc{SelectAction}{}{}
-{\begin{itemize}
-        \item \constrdesc{\public}{SelectAction}{Element}{}{Element}
-    \end{itemize}
-}
+\classdesc{CreateLibraryAction}{Creates a library.}
     {\begin{itemize}
-        \item \methoddesc{\public}{}{void}{execute}{}
-        {}{}{}
-        \item \methoddesc{\public}{}{void}{undo}{}
-        {}{}{}
-    \end{itemize}
-    }
-
-
-\classdesc{DeselectAction}{}{}
-{\begin{itemize}
-        \item \constrdesc{\public}{DeselectAction}{Element}{}{Element}
-    \end{itemize}
-}
-    {\begin{itemize}
-        \item \methoddesc{\public}{}{void}{execute}{}
-        {}{}{}
-        \item \methoddesc{\public}{}{void}{undo}{}
-        {}{}{}
-    \end{itemize}
-    }
-
-
-\classdesc{CreateLibraryAction}{}{}
-{\begin{itemize}
-        \item \constrdesc{\public}{CreateLibraryAction}{String}{}{Filter}
+        \item \atrdesc{\private}{}{\type{Library}} {createdLibrary}{}
+    \end{itemize}} 
+{   \begin{itemize}
+        \item \constrdesc{\public}{CreateLibraryAction}{\type{String} name}{}
+        {
+            \begin{itemize}
+            \item \paramdesc{name}{Name of the created library.}
+            \end{itemize}
+        }
     \end{itemize}
 }
     {\begin{itemize}
@@ -2533,9 +2686,19 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         {}{}{}
     \end{itemize}
     }{}
-\classdesc{ScaleAction}{}{}
-{\begin{itemize}
-        \item \constrdesc{\public}{ScaleAction}{Attribute,float}{}{Attribute, float}
+\classdesc{ScaleAction}{Scales the values of an attribute by a given float.}
+    {\begin{itemize}
+        \item \atrdesc{\private}{}{\type{Attribute}} {attribute}{}
+        \item \atrdesc{\private}{}{\type{float}} {scale}{}
+    \end{itemize}} 
+{   \begin{itemize}
+        \item \constrdesc{\public}{ScaleAction}{\type{Attribute} attribute, \type{float} scale}{}
+        {
+            \begin{itemize}
+            \item \paramdesc{attribute}{Attribute that is going to be scaled.}
+            \item \paramdesc{scale}{The value of scale.}
+            \end{itemize}
+        }
     \end{itemize}
 }
     {\begin{itemize}
@@ -2545,7 +2708,7 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         {}{}{}
     \end{itemize}
     }{}
-\classdesc{UndoAction}{}{}
+\classdesc{UndoAction}{Undoes an action.}{}
 {\begin{itemize}
         \item \constrdesc{\public}{UndoAction}{}{}{}
     \end{itemize}
@@ -2557,9 +2720,21 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         {}{}{}
     \end{itemize}
     }{}
-\classdesc{TextEditAction}{}{}
-{\begin{itemize}
-        \item \constrdesc{\public}{TextEditAction}{String, String, Element}{}{String, String, Element}
+\classdesc{TextEditAction}{Makes changes on the text.}
+    {\begin{itemize}
+        \item \atrdesc{\private}{}{\type{String}} {oldContent}{}
+        \item \atrdesc{\private}{}{\type{String}} {newContent}{}
+        \item \atrdesc{\private}{}{\type{Element}} {element}{}
+    \end{itemize}} 
+{   \begin{itemize}
+        \item \constrdesc{\public}{TextEditAction}{\type{String} oldContent, \type{String} newContent, \type{Element} element}{}
+        {
+            \begin{itemize}
+            \item \paramdesc{oldContent}{Old content of the changed text.}
+            \item \paramdesc{newContent}{New content of the changed text.}
+            \item \paramdesc{element}{The text of this element is going to be changed.}
+            \end{itemize}
+        }
     \end{itemize}
 }
     {\begin{itemize}
@@ -2569,65 +2744,282 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         {}{}{}
     \end{itemize}
     }{}
-\classdesc{ActionHistory}{}{}
+\classdesc{ActionHistory}{Keeps the history of the executed Commands and manages it.}
     {\begin{itemize}
+        \item \atrdesc{\private}{}{\type{Command[]}} {actions}{}
+        \item \atrdesc{\private}{}{\type{Command[]}} {undoneActions}{}
+        \item \atrdesc{\private}{}{\type{int}} {undoNumber}{}
+    \end{itemize}} 
+{   \begin{itemize}
         \item \constrdesc{\public}{ActionHistory}{}{}{}
-     \end{itemize}
-    }
-    {}{}
-}
-\packagedesc{model.parsers}{
-\classdesc{Parser}{}{}{}{}{}
-}
-\packagedesc{model.compiler}{
-\interfacedesc{Compiler}{}{}{}{}
-\classdesc{CSVCompiler}{}{}{}{}{}
-\classdesc{LibertyCompiler}{}{}{}{}{}
-}
-\packagedesc{model.project}{
-\classdesc{Model}{}{}{}{}{}
-\classdesc{Interpolation}{}{}{
-    \begin{itemize}
-        \item \constrdesc{\public}{Intepolation}{}{}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{\static}{\type{float[]}}{interpolate}{\type{float[]} indexes, \type{float[]} values, \type{float[]} newIndexes}
-        {}{
+        \item \methoddesc{\public}{}{void}{setUndoNumber}{\type{int} undoNumber}{}
+        {{\begin{itemize}
+        \item \paramdesc{undoNumber} {The number that decides how many undo operations can be done.}
+        \end{itemize}}
+        }{}
+        \item \methoddesc{\private}{}{void}{resetUndoneActions}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{AddAction}{\type{Command} action}
+        {}{{\begin{itemize}
+        \item \paramdesc{action} {An action that is added to the undo history.}
+        \end{itemize}}
+        }{}
+        \item \methoddesc{\public}{}{void}{resetActions}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{\type{Command}}{getLatestActions}{}
+        {}{}{{\begin{itemize}
+        \item \paramdesc{Command} {Latest action will be returned.}
+        \end{itemize}}}
+    \end{itemize}
+    }{}
+}
+\packagedesc{model.parsers}{
+\classdesc{LibertyParser}{}{}{
+    \begin{itemize}
+        \item \constrdesc{\private}{LibertyParser}{}{}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{\static}{Library}{parseLibrary}{String content}
+        {Parses the content in Liberty format into a library object}{
         \begin{itemize}
-                \item \paramdesc{indexes}{}
-                \item \paramdesc{values}{}
-                \item \paramdesc{newIndexes}{}
-            \end{itemize}
+            \item \paramdesc{content}{String Content to be parsed}
+        \end{itemize}
+        }{}
+        \item \methoddesc{\public}{\static}{Cell}{parseCell}{String content}
+        {Parses the content in Liberty format into a Cell object}{
+        \begin{itemize}
+            \item \paramdesc{content}{String Content to be parsed}
+        \end{itemize}
+        }{}
+        \item \methoddesc{\public}{\static}{Pin}{parsePin}{String content}
+        {Parses the content in Liberty format into a Pin object}{
+        \begin{itemize}
+            \item \paramdesc{content}{String Content to be parsed}
+        \end{itemize}
+        }{}
+    \end{itemize}
+}{}
+}
+\packagedesc{model.compiler}{
+\interfacedesc{Compiler}{
+    An interface that is implemented by all compilers.
+}{}{
+    \begin{itemize}
+        \item \implclsdec{CSVCompiler}
+        \item \implclsdec{LibertyCompiler}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{\static}{String}{compile}{Library library}
+        {Compiles a library into a certain Format}{
+        \begin{itemize}
+            \item \paramdesc{library}{Library object to be compiled}
+        \end{itemize}
+        }{}
+        \item \methoddesc{\public}{\static}{String}{compile}{Cell cell}
+        {Compiles a cell into a certain Format}{
+        \begin{itemize}
+            \item \paramdesc{cell}{Cell object to be compiled}
+        \end{itemize}
+        }{}
+        \item \methoddesc{\public}{\static}{String}{compile}{Pin pin}
+        {Compiles a pin into a certain Format}{
+        \begin{itemize}
+            \item \paramdesc{pin}{Pin object to be compiled}
+        \end{itemize}
+        }{}
+    \end{itemize}
+}
+
+\classdesc{CSVCompiler}{}{}{
+    \begin{itemize}
+        \item \constrdesc{\private}{CSVCompiler}{}{}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{\static}{String}{compile}{Library library}
+        {Compiles a library into CSV Format}{
+        \begin{itemize}
+            \item \paramdesc{library}{Library object to be compiled}
+        \end{itemize}
+        }{}
+        \item \methoddesc{\public}{\static}{String}{compile}{Cell cell}
+        {Compiles a cell into CSV Format}{
+        \begin{itemize}
+            \item \paramdesc{cell}{Cell object to be compiled}
+        \end{itemize}
+        }{}
+        \item \methoddesc{\public}{\static}{String}{compile}{Pin pin}
+        {Compiles a pin into CSV Format}{
+        \begin{itemize}
+            \item \paramdesc{pin}{Pin object to be compiled}
+        \end{itemize}
+        }{}
+    \end{itemize}
+}{}
+\classdesc{LibertyCompiler}{}{}{
+    \begin{itemize}
+        \item \constrdesc{\private}{LibertyCompiler}{}{}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{\static}{String}{compile}{Library library}
+        {Compiles a library into Liberty Format}{
+        \begin{itemize}
+            \item \paramdesc{library}{Library object to be compiled}
+        \end{itemize}
+        }{}
+        \item \methoddesc{\public}{\static}{String}{compile}{Cell cell}
+        {Compiles a cell into Liberty Format}{
+        \begin{itemize}
+            \item \paramdesc{cell}{Cell object to be compiled}
+        \end{itemize}
+        }{}
+        \item \methoddesc{\public}{\static}{String}{compile}{Pin pin}
+        {Compiles a pin into Liberty Format}{
+        \begin{itemize}
+            \item \paramdesc{pin}{Pin object to be compiled}
+        \end{itemize}
+        }{}
+    \end{itemize}
+}{}
+}
+
+\packagedesc{model.project}{
+\classdesc{Model}{}{}{
+    \begin{itemize}
+        \item \constrdesc{\private}{Model}{}{}{}
+    \end{itemize}
+}{  
+    \begin{itemize}
+        \item \methoddesc{\public}{\static}{Model}{getInstance}{}
+        {Returns the sole instance of the Model}{}{}
+        \item \methoddesc{\public}{}{void}{saveProject}{}
+        {Opens the OS File Manager in order to select where to save the current Project Object in JSON format.}{}{}
+        \item \methoddesc{\public}{}{void}{loadProject}{}
+        {Opens the OS File Manager in order to select a File in JSON Format that replaces the current Project Object if the format fits.}{}{}
+        \item \methoddesc{\public}{}{void}{saveSettings}{}
+        {Saves the Settings Object in the Program files (so that it reloads on rerun).}{}{}
+        \item \methoddesc{\public}{}{void}{resetSettings}{}
+        {Loads the default Settings Object from the Program Files and calls saveSettings.}{}{}
+        \item \methoddesc{\public}{}{void}{saveShortcuts}{}
+        {Saves the Shortcuts Object in the Program files (so that it reloads on rerun).}{}{}
+        \item \methoddesc{\public}{}{void}{resetShortcuts}{}
+        {Loads the default Shortcuts Object from the Program Files and calls saveShortcut.}{}{}
+        \item \methoddesc{\public}{}{void}{notify}{}
+        {Notifies the view of made changes}{}{}
+    \end{itemize}
+}{}{}
+\classdesc{Project}{}{}{
+    \begin{itemize}
+        \item \constrdesc{\public}{Project}{}{}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{\static}{void}{saveLibrary}{\type{Library} library}
+        {Saves library as a Liberty File in the path specified in the Library object. If the library doesn't have a physical copy yet, it instead calls the saveLibraryAs method of the same class}{
+        \begin{itemize}
+            \item \paramdesc{library}{Library to be saved}
+        \end{itemize}
+        }{}
+        \item \methoddesc{\public}{\static}{void}{saveLibraryAs}{\type{Library} library}
+        {Opens the OS File Manager in order to select where to save the Library as a Liberty File. Updates Path on Library object.}{
+        \begin{itemize}
+            \item \paramdesc{library}{Library to be saved}
+        \end{itemize}
+        }{}
+        \item \methoddesc{\public}{\static}{void}{saveAsCSV}{\type{Element} Element}
+        {Opens the OS File Manager in order to select where to save the Element as a CSV File. Updates Path on Library object.}{
+        \begin{itemize}
+            \item \paramdesc{library}{Element to be saved}
+        \end{itemize}
+        }{}
+    \end{itemize}
+}{}
+\classdesc{Interpolation}{}{}{
+    \begin{itemize}
+        \item \constrdesc{\public}{Intepolator}{}{}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{\static}{\type{float[]}}{interpolator}{\type{float[]} indexes, \type{float[]} values, \type{float[]} newIndexes}
+        {Interpolates a set of 2D coordinates (index1 and value) and gives a set of values for a given set of indexes}{
+        \begin{itemize}
+            \item \paramdesc{indexes}{Original indexes}
+            \item \paramdesc{values}{Original values}
+            \item \paramdesc{newIndexes}{New required indexes}
+        \end{itemize}
         }{}
         \item \methoddesc{\public}{\static}{\type{float[]}}{bicubicInterpolate}{\type{float[]} indexes1, {float[]} indexes2 \type{float[]} values, \type{float[]} newIndexes1, \type{float[]} newIndexes1}
-        {}{
+        {Interpolates a set of 3D coordinates (index1, index2 and value) and gives a set of values for a given set of indexes}{
         \begin{itemize}
-                \item \paramdesc{indexes1}{}
-                \item \paramdesc{indexes2}{}
-                \item \paramdesc{values}{}
-                \item \paramdesc{newIndexes1}{}
-                \item \paramdesc{newIndexes2}{}
-            \end{itemize}
+            \item \paramdesc{indexes1}{Original indexes1}
+            \item \paramdesc{indexes2}{Original indexes2}
+            \item \paramdesc{values}{Original}
+            \item \paramdesc{newIndexes1}{New required indexes1}
+            \item \paramdesc{newIndexes2}{New requires indexes2}
+        \end{itemize}
         }{}
     \end{itemize}
 }{}
 
-\classdesc{Shortcuts}{}{}{}{}{}
-\classdesc{ModelManager}{}{}{}{}{}
-\classdesc{FileChooser}{}{}{
+\classdesc{Shortcuts}{}{}{
     \begin{itemize}
-        \item \constrdesc{\public}{FileChooser}{}{}{}
+        \item \constrdesc{\public}{Shortcuts}{}{}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{void}{setKey}{\type{KeyStroke} key, \type{Action} action}
+        {Binds a key to the action in the model}{
+        \begin{itemize}
+                \item \paramdesc{key}{The pressed key.}
+                \item \paramdesc{action}{The action that corresponds to the key.}
+        \end{itemize}
+        }{}
+        \item \methoddesc{\public}{}{void}{removeKey}{\type{KeyStroke} key}
+        {Removes a key from the binding}{
+        \begin{itemize}
+                \item \paramdesc{key}{The pressed key.}
+        \end{itemize}
+        }{}
+        \item \methoddesc{\public}{}{ArrayList<KeyStroke>}{getKeys}{}
+        {Returns all the set keys}{}{}
+        \item \methoddesc{\public}{}{Action}{getAction}{\type{KeyStroke} key}
+        {Returns the action corresponding to a keystroke}{
+        \begin{itemize}
+                \item \paramdesc{key}{The pressed key.}
+        \end{itemize}
+        }{}
+    \end{itemize}
+}{}
+\classdesc{FileManager}{}{}{
+    \begin{itemize}
+        \item \constrdesc{\public}{FileManager}{}{}{}
     \end{itemize}
 }{
     \begin{itemize}
         \item \methoddesc{\public}{\static}{\type{File}}{openFile}{}
-        {}{}{}
-        \item \methoddesc{\public}{\static}{void}{saveFile}{\type{String} extension}
-        {}{
+        {Opens the OS File Manager in order to select which file will be opened}{}{}
+        \item \methoddesc{\public}{\static}{\type{File}}{openFile}{\type{String} path}
+        {Opens the file in the specified path}{}{}
+        \item \methoddesc{\public}{\static}{void}{saveFile}{\type{String} content, \type{String[]} extensions}
+        {Opens the OS File Manager in order to select where the file will be saved}{
         \begin{itemize}
-                \item \paramdesc{extension}{}
-            \end{itemize}
+                \item \paramdesc{content}{The content of the file.}
+                \item \paramdesc{extensions}{The extensions the file can be saved as.}
+        \end{itemize}
+        }{}
+        \item \methoddesc{\public}{\static}{void}{saveFile}{\type{String} content, \type{String} extension, \type{String} path}
+        {Saves the file in the specified path}{
+        \begin{itemize}
+                \item \paramdesc{content}{The content of the file.}
+                \item \paramdesc{extension}{The extension the file will be saved as.}
+                \item \paramdesc{path}{The path where the file will be saved.}
+        \end{itemize}
         }{}
     \end{itemize}
 }{}
@@ -2635,21 +3027,21 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     \begin{itemize}
         \item \constrdesc{\public}{Filter}{\type{Attribute} attribute, \type{Mode} mode, \type{float} value, \type{Operation} operation}{}{
         \begin{itemize}
-            \item \paramdesc{attribute}{}
-            \item \paramdesc{mode}{}
-            \item \paramdesc{value}{}
-            \item \paramdesc{operation}{}
+            \item \paramdesc{attribute}{The attribute that is being filtered.}
+            \item \paramdesc{mode}{The way the filtered attribute is calculated.}
+            \item \paramdesc{value}{The value that the attribute is being compared to.}
+            \item \paramdesc{operation}{The operation that is being executed in the filter.}
         \end{itemize}
         }
     \end{itemize}
 }{
     \begin{itemize}
         \item \methoddesc{\public}{\static}{void}{filter}{}
-        {}{}{}
+        {Filters all Elements by changing their Filtered attribute.}{}{}
         \item \methoddesc{\public}{\static}{void}{saveDefaultFilters}{}
-        {}{}{}
+        {Saves the current array of Filters in the program files.}{}{}
         \item \methoddesc{\public}{\static}{void}{loadDefaultFilters}{}
-        {}{}{}
+        {Loads the saved array of Filters from program files into the current Filter class.}{}{}
     \end{itemize}
 }{}
 \classdesc{Settings}{}{}{
@@ -2700,7 +3092,6 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
             \item \paramdesc{editorOpenedFirst}{}
         \end{itemize}
         }{}
-        
         \item \methoddesc{\public}{}{LanguageEnum}{getLanguage}{}
         {}{}{}
         \item \methoddesc{\public}{}{colorTheme}{getColorTheme}{}
@@ -2715,8 +3106,11 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         {}{}{}
         \item \methoddesc{\public}{}{boolean}{getEditorOpenedFirst}{}
         {}{}{}
+        \item \methoddesc{\private}{}{void}{notify}{}
+        {}{}{}
     \end{itemize}
 }{}
+
 \classdesc{ColorTheme}{}{}{
     \begin{itemize}
         \item \constrdesc{\public}{ColorTheme}{}{}{}
@@ -2726,7 +3120,7 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         \item \methoddesc{\public}{}{int[]}{getColors}{}
         {}{}{}
     \end{itemize}
-}{}
+}
 \classdesc{Language}{}{}{
     \begin{itemize}
         \item \constrdesc{\public}{Language}{}{}{}
@@ -2746,13 +3140,40 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         \item \methoddesc{\public}{\static}{String[]}{getText}{}
         {}{}{}
     \end{itemize}
-}{}
-\classdesc{SettingsManager}{}{}{}{}{}
-\enumdesc{Mode}{}{}{}
-\enumdesc{Operation}{}{}{}
-\enumdesc{ColorThemeEnum}{}{}{}
-\enumdesc{LanguageEnum}{}{}{}
 }
+\enumdesc{Mode}{Keeps track of the mode used to calculate the attribute used on the filter}{
+    \begin{itemize}
+        \item \fielddesc{Mode}{MAX}{Maximum: Takes the maximum value for the attribute}
+        \item \fielddesc{Mode}{MIN}{Minimum: Takes the minimal value for the attribute}
+        \item \fielddesc{Mode}{MIN}{Average: Takes the average value for the attribute}
+        \item \fielddesc{Mode}{Med}{Median: Takes the median value for the attribute}
+    \end{itemize}
+}{}
+\enumdesc{Operation}{Keeps track of the type of operation done by the Filter}{
+    \begin{itemize}
+        \item \fielddesc{Operation}{LESS}{Checks if attribute is less than value}
+        \item \fielddesc{Operation}{EQUAL}{Checks if attribute is equal than value}
+        \item \fielddesc{Operation}{BIGGER}{Checks if attribute is bigger than value}
+    \end{itemize}
+}{}
+\enumdesc{ColorThemeEnum}{Keeps track of the Color themes}{
+    \begin{itemize}
+        \item \fielddesc{ColorThemeEnum}{THEME1}{Theme name 1}
+        \item \fielddesc{ColorThemeEnum}{THEME2}{Theme name 2}
+        \item \fielddesc{ColorThemeEnum}{AND-SO-ON}{And further theme names}
+    \end{itemize}
+}{}
+\enumdesc{LanguageEnum}{Keeps track of the languages available for the program}{
+    \begin{itemize}
+        \item \fielddesc{LanguageEnum}{ENGLISH}{The default English language}
+        \item \fielddesc{LanguageEnum}{DEUTSCH}{German}
+        \item \fielddesc{LanguageEnum}{TURK}{Turkish}
+        \item \fielddesc{LanguageEnum}{SHQIP}{Albanian}
+        \item \fielddesc{LanguageEnum}{FRANCAIS}{French}
+    \end{itemize}
+}{}
+}
+
 \packagedesc{model.exceptions}{
 \classdesc{TooManyPanelsOpenedException}{}{}{}{}{}
 \classdesc{SearchedStringNotFoundException}{}{}{}{}{}
@@ -2764,265 +3185,452 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 }
 
 \packagedesc{controller.listeners}{
-\classdesc{EventManager}{}{}{
+\classdesc{EventManager}{public class EventManager}{
     \begin{itemize}
-        \item \constrdesc{\public}{EventManager}{}{}{}
+        \item \atrdesc{\private}{}{MainWindow}{view}{ }
+        \item \atrdesc{\private}{}{Model}{model}{}
+        \item \atrdesc{\private}{}{List<ActionListener>}{listeners}{List  }
+    \end{itemize}
+    }{
+    \begin{itemize}
+        \item \constrdesc{\public}{EventManager}{\type{MainWindow} {view}, \type{Model} model}{}{}
     \end{itemize}
 }{ 
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{initListeners}{}{}{}{}
-        \item \methoddesc{\public}{}{List<ActionListener>}{getListeners}{}{}{}{}
+        \item \methoddesc{\public}{}{void}{removeListener}{\type{}}{}{}{}
+        \item \methoddesc{\public}{}{void}{subscribeHandlers}{}{}{}{}
+        \item \methoddesc{\public}{}{void}{removeHandlers}{}{}{}{}
+        \item \methoddesc{\public}{}{void}{notifyHandlers}{\type{Model} model}{}{}{}
     \end{itemize}}{}
-\classdesc{LoadLibraryListener}{}{}{
+\classdesc{LoadLibraryListener}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Command}{command}{}
+        \item \atrdesc{\private}{}{File}{file}{}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\public}{LoadLibraryListener}{}{}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}
 }{}
-\classdesc{OpenElementListener}{}{}{
+\classdesc{OpenElementListener}{
+}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Command}{command}{}
+        \item \atrdesc{\private}{}{Element}{element}{}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\public}{OpenElementListener}{}{}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}
     }{}
-\classdesc{DeleteListener}{}{}{
+\classdesc{DeleteCellListener}{
+}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Command}{command}{}
+        \item \atrdesc{\private}{}{Cell[]}{cells}{}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\public}{DeleteListener}{}{}{}
     \end{itemize}
 }{  
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}
 }{}
-\classdesc{RemoveListener}{}{}{
+\classdesc{RemoveListener}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Command}{command}{}
+        \item \atrdesc{\private}{}{Element[]}{elements}{}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\public}{RemoveListener}{}{}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}
 }{}
-\classdesc{SelectListener}{}{}{
+\classdesc{SelectListener}{}{
     \begin{itemize}
-        \item \constrdesc{\public}{SelectListener}{}{}{}
+        \item \atrdesc{\private}{}{Command}{command}{}
+        \item \atrdesc{\private}{}{Element[]}{element}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
+        \item \constrdesc{\public}{SelectListener}{\type{Outliner} outliner}{}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{EditListener}{}{}{
+\classdesc{EditListener}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Command}{command}{}
+        \item \atrdesc{\private}{}{Element}{element}{}
+        \item \atrdesc{\private}{}{String}{newText}{}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\public}{EditListener}{}{}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{RenameListener}{}{}{
+\classdesc{RenameListener}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Command}{command}{}
+        \item \atrdesc{\private}{}{Element}{element}{}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\public}{RenameListener}{}{}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{SaveListener}{}{}{
+\classdesc{SaveListener}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Model}{model}{}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\public}{SaveListener}{}{}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{SaveAsListener}{}{}{
+\classdesc{SaveAsListener}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Model}{model}{}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\public}{SaveAsListener}{}{}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{MergeListener}{}{}{
+\classdesc{MergeListener}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Command}{command}{}
+        \item \atrdesc{\private}{}{Library[]}{libraries}{}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\public}{MergeListener}{}{}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{ScaleListener}{}{}{
+\classdesc{ScaleListener}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Command}{command}{}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\public}{ScaleListener}{}{}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{InterpolationListener}{}{}{
+\classdesc{InterpolationListener}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Command}{command}{}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\public}{InterpolationListener}{}{}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{UndoListener}{}{}{
+\classdesc{UndoListener}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Command}{command}{}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\public}{UndoListener}{}{}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{RedoListener}{}{}{
+\classdesc{RedoListener}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Command}{command}{}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\public}{RedoListener}{}{}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{StatisticsListener}{}{}{
+\classdesc{StatisticsListener}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Command}{command}{}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\public}{StatisticsListener}{}{}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{SelectListener}{}{}{
+\classdesc{CompareListener}{}{
     \begin{itemize}
-        \item \constrdesc{\public}{SelectListener}{}{}{}
+        \item \atrdesc{\private}{}{Command}{command}{}
     \end{itemize}
 }{
-    \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
-        {}{}{}
-    \end{itemize}}{}
-\classdesc{CompareListener}{}{}{
     \begin{itemize}
         \item \constrdesc{\public}{CompareListener}{}{}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{MoveListener}{}{}{
+\classdesc{MoveListener}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Command}{command}{}
+        \item \atrdesc{\private}{}{Element[]}{element}{}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\public}{MoveListener}{}{}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{CopyListener}{}{}{
+\classdesc{CopyListener}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Command}{command}{}
+        \item \atrdesc{\private}{}{Element[]}{element}{}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\public}{CopyListener}{}{}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{PasteListener}{}{}{
+\classdesc{AddFilterListener}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Command}{command}{}
+        \item \atrdesc{\private}{}{Filter}{filter}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \constrdesc{\public}{AddFilterListener}{}{}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
+        {}{}{}
+    \end{itemize}}{}
+\classdesc{RemoveFilterListener}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Command}{command}{}
+        \item \atrdesc{\private}{}{Filter}{filter}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \constrdesc{\public}{RemoveFilterListener}{}{}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
+        {}{}{}
+    \end{itemize}}{}
+\classdesc{PasteListener}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Command}{command}{}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\public}{PasteListener}{}{}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{FilterListener}{}{}{
+\classdesc{LoadProjectListener}{}{
     \begin{itemize}
-        \item \constrdesc{\public}{FilterListener}{}{}{}
+        \item \atrdesc{\private}{}{Command}{command}{}
+        \item \atrdesc{\private}{}{Project}{project}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
-        {}{}{}
-    \end{itemize}}{}
-\classdesc{AttributeDropdownListener}{}{}{
-    \begin{itemize}
-        \item \constrdesc{\public}{AttributeDropdownListener}{}{}{}
+        \item \constrdesc{\public}{LoadProjectListener}{}{}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{SubAttributeDropdownListener}{}{}{
+\classdesc{SaveProjectListener}{}{
     \begin{itemize}
-        \item \constrdesc{\public}{SubAttributeDropdownListener}{}{}{}
+        \item \atrdesc{\private}{}{Command}{command}{}
+        \item \atrdesc{\private}{}{Project}{project}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
-        {}{}{}
-    \end{itemize}}{}
-\classdesc{GraphDropdownListener}{}{}{
-    \begin{itemize}
-        \item \constrdesc{\public}{GraphDropdownListener}{}{}{}
+        \item \constrdesc{\public}{SaveProjectListener}{}{}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{PinSelectListener}{}{}{
+\classdesc{ShortcutSettingsListener}{}{
     \begin{itemize}
-        \item \constrdesc{\public}{PinSelectListener}{}{}{}
+        \item \atrdesc{\private}{}{Command}{command}{}
+        \item \atrdesc{\private}{}{Shortcuts}{shortcuts}{}
     \end{itemize}
 }{
-    \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
-        {}{}{}
-    \end{itemize}}{}
-\classdesc{ShortcutSettingsListener}{}{}{
     \begin{itemize}
         \item \constrdesc{\public}{ShortcutSettingsListener}{}{}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{PreferencesSettingsListener}{}{}{
+\classdesc{PreferencesSettingsListener}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Command}{command}{}
+        \item \atrdesc{\private}{}{Model}{model}{}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\public}{PreferencesSettingsListener}{}{}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{ActionEvent e}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
+\classdesc{LanguageSettingsListener}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Command}{command}{}
+        \item \atrdesc{\private}{}{Model}{Model}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \constrdesc{\public}{LanguageSettingsListener}{}{}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
+        {}{}{}
+    \end{itemize}}{}
+    
+\classdesc{AttributeDropdownListener}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Command}{command}{}
+        \item \atrdesc{\private}{}{Element[]}{element}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \constrdesc{\public}{AttributeDropdownListener}{}{}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
+        {}{}{}
+    \end{itemize}}{}
+\classdesc{SubAttributeDropdownListener}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Command}{command}{}
+        \item \atrdesc{\private}{}{Element[]}{element}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \constrdesc{\public}{SubAttributeDropdownListener}{}{}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
+        {}{}{}
+    \end{itemize}}{}
+\classdesc{GraphDropdownListener}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Command}{command}{}
+        \item \atrdesc{\private}{}{Element[]}{element}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \constrdesc{\public}{GraphDropdownListener}{}{}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
+        {}{}{}
+    \end{itemize}}{}
+\classdesc{PinSelectListener}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Command}{command}{}
+        \item \atrdesc{\private}{}{Element[]}{element}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \constrdesc{\public}{PinSelectListener}{}{}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
+        {}{}{}
+    \end{itemize}}{}
+
 }
 \packagedesc{controller.updatehandlers}{
-\classdesc{DataUpdateHandler}{}{}{
+\classdesc{DataUpdateHandler}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{MainWindow}{view}{}
+        \item \atrdesc{\private}{}{List<Element>}{elements}{}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\public}{DataUpdateHandler}{}{}{}
     \end{itemize}
@@ -3032,7 +3640,11 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         {}{}{}
     \end{itemize}
 }{}
-\classdesc{SettingsUpdateHandler}{}{}{
+\classdesc{SettingsUpdateHandler}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{}{command}{}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\public}{SettingsUpdateHandler}{}{}{}
     \end{itemize}
@@ -3041,14 +3653,22 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         \item \methoddesc{\public}{}{void}{update}{}
         {}{}{}
     \end{itemize}}{}
-\classdesc{FilterUpdateHandler}{}{}{
+\classdesc{FilterUpdateHandler}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Command}{command}{}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\public}{FilterUpdateHandler}{}{}{}
     \end{itemize}}{\begin{itemize}
         \item \methoddesc{\public}{}{void}{update}{}
         {}{}{}
     \end{itemize}}{}
-\classdesc{InterpolationUpdateHandler}{}{}{
+\classdesc{InterpolationUpdateHandler}{}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Command}{command}{}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\public}{InterpolationUpdateHandler}{}{}{}
     \end{itemize}}{\begin{itemize}
