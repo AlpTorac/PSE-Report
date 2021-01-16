@@ -36,40 +36,50 @@ skinparam Note {
 
 !startsub DIAGRAM
 together {
+    /'class Main{
+        +{static} main(String[] args): void
+    }'/
+
     class EventManager{
-        -Model model
         -MainWindow view
-        +EventManager(Model model, MainWindow view)
+        -Model model
+        -List<ActionListener> listeners
+        +EventManager(MainWindow view, Model model)
         +initListeners()
+        +subscribeHandlers()
+        +notifyHandlers(Settings settings, Project project, Shortcuts shortcuts)
+        /'+notifyListeners(Element[] selectedElements)
+        +notifyListeners(File file)'/
     }
 
     
 
     class DataUpdateHandler implements IObserver{
-        -Model model
         -MainWindow view
         -List<Element> elements
-        +UpdateHandler(Model model, MainWindow view)
-        +update()
+        +UpdateHandler(MainWindow view)
+        +update(List<Library> libraries)
 
     }
 
     class SettingsUpdateHandler implements IObserver{
-        +SettingsUpdateHandler(Model model, MainWindow view)
-        +update()
+        +SettingsUpdateHandler(MainWindow view)
+        +update(Settings settings)
 
     }
 
 
     class FilterUpdateHandler implements IObserver{
-        +FilterUpdateHandler(Model model, Panel panel)
-        +update()
+        +FilterUpdateHandler(MainWindow view)
+        +update(List<Filter> filters)
     }
-    
+
     class InterpolationHandler implements IObserver{
-        +InterpolationHandler(Model model, Panel panel)
-        +update()
+        +InterpolationHandler(MainWindow view)
+        +update(Interpolation interpolation)
     }
+
+    
 
         
     
@@ -78,45 +88,55 @@ together {
 package listeners{
 
         class LoadLibraryListener implements ActionListener{
-            -Model model
-            +LoadLibraryListener(Model model)
+            -Command command
+            -File file
+            +LoadLibraryListener()
             +actionPerformed(ActionEvent e)
+            
         }
         
         class OpenElementListener implements ActionListener{
-            -Model model
-            +OpenElementListener(Model model)
+            -Command command
+            -Element element
+            +OpenElementListener()
             +actionPerformed(ActionEvent e)
         }
 
         class DeleteCellListener implements ActionListener{
-            -Model model
-            +DeleteCellListener(Model model)
+            -Command command
+            -Cell[] cell
+            +DeleteCellListener()
             +actionPerformed(ActionEvent e)
         }
 
-        class RemoveCellListener implements ActionListener{
-            -Model model
-            +RemoveCellListener(Model model,)
+        class RemoveListener implements ActionListener{
+            -Command command
+            -Element[] element
+            +RemoveListener()
             +actionPerformed(ActionEvent e)
         }
 
-        class SelectListener implements ActionListener{
-            -Model model
-            -Panel panel
-            +SelectCellListener(Model model, Panel panel)
+        class SelectListener implements TreeSelection{
+            -Outliner outliner
+            -Command command
+            -Element[] element
+            +SelectListener(Outliner outliner)
             +actionPerformed(ActionEvent e)
         }
 
         class RenameListener implements ActionListener{
-            -Model model
-            +RenameListener(Model model)
+            -Command command
+            -Element element
+            +RenameListener()
             +actionPerformed(ActionEvent e)
         }
 
         class EditListener implements ActionListener, DocumentListener{
-            -Model model
-            +EditListener(Model model)
+            -Command command
+            -String editedText
+            -String newText
+            -Element element
+            +EditListener()
             +actionPerformed(ActionEvent e)
         }
 
@@ -133,105 +153,99 @@ package listeners{
         }
 
         class MergeListener implements ActionListener{
-            -Model model
-            +MergeListener(Model model)
+            -Command command
+            -Library[] libraries
+            +MergeListener()
             +actionPerformed(ActionEvent e)
         }
 
         class ScaleListener implements ActionListener{
-            -Model model
-            +ScaleListener(Model model)
+            -Command command
+            +ScaleListener()
             +actionPerformed(ActionEvent e)
         }
 
         class InterpolationListener implements ActionListener{
-            -Model model
-            +InterpolationListener(Model model)
+            -Command command
+            +InterpolationListener()
             +actionPerformed(ActionEvent e)
         }
 
         class UndoListener implements ActionListener{
-            -Model model
-            +UndoListener(Model model)
+            -Command command
+            +UndoListener()
             +actionPerformed(ActionEvent e)
         }
 
         class RedoListener implements ActionListener{
-            -Model model
-            +RedoListener(Model model)
+            -Command command
+            +RedoListener()
             +actionPerformed(ActionEvent e)
         }
 
-        class StatisticsListener implements ItemListener{
-            -Model model
-            +StatisticsListener(Model model)
-            +itemStateChanged(ItemEvent e)
-        }
-
-        class SearchListener implements TextListener{
-            -Model model
-            +SearchListener(Model model)
-            +textValueChanged(TextEvent e)
-        }
-
         class CompareListener implements ActionListener{
-            -Model model
-            +CompareListener(Model model)
+            -Command command
+            +CompareListener()
             +actionPerformed(ActionEvent e)
         }
 
         class MoveListener implements ActionListener{
-            -Model model
-            +MoveListener(Model model)
+            -Command command
+            -Element[] element
+            +MoveListener()
             +actionPerformed(ActionEvent e)
         } 
 
         class CopyListener implements ActionListener{
-            -Model model
-            +CopyListener(Model model)
+            -Command command
+            -Element[] element
+            +CopyListener()
             +actionPerformed(ActionEvent e)
         }
 
         class PasteListener implements ActionListener{
-            -Model model
-            +PasteListener(Model model)
+            -Command command
+            +PasteListener()
             +actionPerformed(ActionEvent e)
         }
 
         class AddFilterListener implements ActionListener{
-            -Model model
-            +AddFilterListener(Model model)
+            -Command command
+            +AddFilterListener()
             +actionPerformed(ActionEvent e)
         }
 
-        class AttributeDropdownListener implements ActionListener{
-            -Model model
-            +AttributeDropdownListener(Model model)
+         class RemoveFilterListener implements ActionListener{
+            -Command command
+            +RemoveFilterListener()
             +actionPerformed(ActionEvent e)
         }
 
-        class SubAttributeDropdownListener implements ActionListener{
-            -Model model
-            +SubAttributeDropdownListener(Model model)
+        class SaveProjectListener implements ActionListener{
+            -Command command
+            -Project project
+            +SaveProjectListener()
             +actionPerformed(ActionEvent e)
         }
 
-        class GraphDropdownListener implements ActionListener{
-            -Model model
-            +GraphDropdownListener(Model model)
+        class LoadProjectListener implements ActionListener{
+            -Command command 
+            -Project project
+            +LoadProjectListener()
             +actionPerformed(ActionEvent e)
         }
 
-        class PinSelectListener implements ActionListener{
-            -Model model
-            -Panel panel
-            +PinSelectListener(Model model, Panel panel)
-            +actionPerformed(ActionEvent e)
+        
+
+        class StatisticsListener implements ItemListener{
+            -Command command
+            +StatisticsListener()
+            +itemStateChanged(ItemEvent e)
         }
 
         class ShortcutSettingsListener implements KeyListener{
-            -Model model
-            +ShortcutSettingsListener(Model model)
+            -Shortcut shorcuts
+            +ShortcutSettingsListener(Shortcuts shortcuts)
             +actionPerformed(ActionEvent e)
         }
 
@@ -241,6 +255,42 @@ package listeners{
             +actionPerformed(ActionEvent e)
 
         }
+
+        class LanguageSettingsListener implements ActionListener{
+            -Model model
+            +LanguageSettingsListener(Model model)
+            +actionPerformed(ActionEvent e)
+        }
+
+
+        class AttributeDropdownListener implements ActionListener{
+            +AttributeDropdownListener()
+            +actionPerformed(ActionEvent e)
+        }
+
+        class SubAttributeDropdownListener implements ActionListener{
+            +SubAttributeDropdownListener()
+            +actionPerformed(ActionEvent e)
+        }
+
+        class GraphDropdownListener implements ActionListener{
+            +GraphDropdownListener()
+            +actionPerformed(ActionEvent e)
+        }
+
+        class PinSelectListener implements ActionListener{
+            +PinSelectListener()
+            +actionPerformed(ActionEvent e)
+        }
+
+        
+        /'class TabListener implements ActionListener{
+            -
+            
+            +TabListener(, )
+            +actionPerformed(ActionEvent e)
+        }
+        '/
 
 
 }
