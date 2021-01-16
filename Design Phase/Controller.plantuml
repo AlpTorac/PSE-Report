@@ -46,7 +46,9 @@ together {
         -List<ActionListener> listeners
         +EventManager(MainWindow view, Model model)
         +initListeners()
+        +removeListener(EventListener listener)
         +subscribeHandlers()
+        +removeHandler(IObserver handler)
         +notifyHandlers(Settings settings, Project project, Shortcuts shortcuts)
         /'+notifyListeners(Element[] selectedElements)
         +notifyListeners(File file)'/
@@ -55,27 +57,30 @@ together {
     
 
     class DataUpdateHandler implements IObserver{
-        -MainWindow view
+        -Outliner outliner
         -List<Element> elements
-        +UpdateHandler(MainWindow view)
+        +UpdateHandler(Outliner outliner)
         +update(List<Library> libraries)
 
     }
 
     class SettingsUpdateHandler implements IObserver{
-        +SettingsUpdateHandler(MainWindow view)
+        -Panel panel
+        +SettingsUpdateHandler(Panel panel)
         +update(Settings settings)
 
     }
 
 
     class FilterUpdateHandler implements IObserver{
-        +FilterUpdateHandler(MainWindow view)
+        -Panel panel
+        +FilterUpdateHandler(Panel panel)
         +update(List<Filter> filters)
     }
 
     class InterpolationHandler implements IObserver{
-        +InterpolationHandler(MainWindow view)
+        -Panel panel
+        +InterpolationHandler(Panel panel)
         +update(Interpolation interpolation)
     }
 
@@ -133,7 +138,6 @@ package listeners{
 
         class EditListener implements ActionListener, DocumentListener{
             -Command command
-            -String editedText
             -String newText
             -Element element
             +EditListener()
