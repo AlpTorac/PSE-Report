@@ -410,6 +410,13 @@ package commands{
         + void execute()
         + void undo()
     }
+    class AddToSelectionAction implements Command{
+        - HashSet<Element> newSelectedElements
+        __
+        + SelectAction(Element)
+        + void execute()
+        + void undo()
+    }
     class OpenFileAction implements Command {
         - Library openedLibrary
         __
@@ -439,37 +446,35 @@ package commands{
 
 
 package parsers { 
-    class Parser {
+    class LibertyParser {
     - JsonParser parser
     - String json
     __
-    + void parseLibrary(String)
-    + void parseCell(String)
-    + void parsePin(String)
+    + LibertyParser()
+    + {static} void parseLibrary(String)
+    + {static} void parseCell(String)
+    + {static} void parsePin(String)
     }
 }
 package compilers {
     interface Compiler{
-    + compile(Element): String
-    - compilePin(Pin): String
-    - compileCell(Cell): String
-    - compileLibrary(Library): String
-    + saveFile(String): void
+    __
+    + {Static} compile(Pin): String
+    + {Static} compile(Cell): String
+    + {Static} compile(Library): String
     }
     class CSVCompiler implements Compiler{
     __
-    + compile(Element): String
-    - compilePin(Pin): String
-    - compileCell(Cell): String
-    - compileLibrary(Library): String
-    + saveFile(String): void
+    + CSVCompiler()
+    + {Static} compile(Pin): String
+    + {Static} compile(Cell): String
+    + {Static} compile(Library): String
     }
     class LibertyCompiler implements Compiler{
-    + compile(Element): String
-    - compilePin(Pin): String
-    - compileCell(Cell): String
-    - compileLibrary(Library): String
-    + saveFile(String): void
+    + LibertyCompiler()
+    + {Static} compile(Pin): String
+    + {Static} compile(Cell): String
+    + {Static} compile(Library): String
     }
 }
 
@@ -482,7 +487,7 @@ package project {
         __
         - Model()
         + {static} Model getInstance()
-        + Model getCurrentModel()
+        + Project getCurrentProject()
         + void loadProject()
         + void saveProject()
         + Settings getCurrentSettings()
@@ -491,13 +496,14 @@ package project {
         + Shortcuts getCurrentShortcuts()
         + void saveShortcuts()
         + void resetShorcuts()
+        + notify()
     }
     class Project {
     - ArrayList<Library> libraries
     - HashSet<Element> selectedElements
     - HashSet<Element> openedInTextElements
     __
-    + Model()
+    + Project()
     + notify()
     + getLibraries() : ArrayList<Library>
     + getSelectedElements(): HashSet<Element>
@@ -505,16 +511,19 @@ package project {
     + setLibraries() : ArrayList<Library> 
     + setSelectedElements(): HashSet<Element>
     + setOpenedInTextElements(): HashSet<Element>
-    + void saveLibrary(Library)
-    + void saveLibraryAs(Library)
-    + void saveAsCSV(Element)
+    + {static} void saveLibrary(Library)
+    + {static} void saveLibraryAs(Library)
+    + {static} void saveAsCSV(Element)
     }
-    class FileChooser{
-    + openFile(): File
-    + void saveFile(String, String)
+    class FileManager{
+        + openFile(): File
+        + openFile(String): File
+        + void saveFile(String, String[])
+        + void saveFile(String, String, String)
     }
-    class Interpolation{
+    class Interpolator{
         __
+        + Interpolator()
         + {static} float[] interpolate(float[], float[], float[])
         + {static} float[][] bicubicInterpolate(float[], float[], float[][], float[], float[])
     }
@@ -582,10 +591,12 @@ enum LanguageEnum{
     Settings *-- ColorTheme
     Settings *-- Language
     class Shortcuts{
-    - HashMap<Key, COMMAND> commands
+    - HashMap<KeyStroke, COMMAND> commands
     __
-    + void setKey(Key, COMMAND)
-    + COMMAND getCommand(Key)
+    + void setKey(Keystroke, Action)
+    + void removeKey(Keystroke)
+    + void getKeys()
+    + Action getActions(Keystroke)
     }
     enum Operation{
         LESS
@@ -616,8 +627,8 @@ Project --> Compiler
 Project --> CSVCompiler
 Model --> Settings
 Model --> Shortcuts
-Model --> FileChooser
-Filter --> FileChooser
+Model --> FileManager
+Filter --> FileManager
 MergeAction ..> Library 
 Parser ..> Library
 Project --* Model
@@ -627,7 +638,7 @@ Parser --> Cell
 Parser --> Pin
 /'SelectDropdownAction --> Attribute
 SelectStatAction --> Attribute '/
-OpenFileAction --> FileChooser
+OpenFileAction --> FileManager
 OpenFileAction --> Parser
 UndoAction --> ActionHistory
 Filter <-- AddFilterAction
