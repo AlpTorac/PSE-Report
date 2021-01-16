@@ -760,32 +760,34 @@ package representation{
 
     class DataPanel {
         -Label label
-        -Text text
+        -String text
         +DataPanel()
+        +setText(String text)
         
-
     }
 
     class CellPanel{
         -Label label
-        -List<Button> buttons
-        -List<Checkbox> checkboxes
+        -Button[] buttons
+        -Checkbox[] checkboxes
+        -Element cell
+        -Element[] pins
+        -BufferedImage image
         -CellImageGenerator cellGenerator
-        +CellPanel(Cell cell)
-        +CellPanel(Pin pin)
-        
-
-    
-        
-
+        +CellPanel(Element element)
+        +switchToLibrary()
+        +switchToPin(Element element)
+        +switchToCell(Element element)
+     
     }
 
     class LibraryPanel{
         -List<Button> buttons
         -List<Cell> cells
+        -Library selectedLibrary
         +LibraryPanel(Element e)
-        
-        
+        +switchToCell(Cell cell)
+     
     }
 
     
