@@ -317,7 +317,7 @@ package commands{
         - void resetUndoneActions()
         + void addAction(Command)
         + void resetActions()
-        + getLatestActions() : Command
+        + getLatestAction() : Command
     }
     class CreateLibrary implements Command{
         - Library createdLibrary
@@ -405,13 +405,6 @@ package commands{
     class SelectAction implements Command{
         - HashSet<Element> selectedElements
         - HashSet<Element> deselectedElements
-        __
-        + SelectAction(Element)
-        + void execute()
-        + void undo()
-    }
-    class AddToSelectionAction implements Command{
-        - HashSet<Element> newSelectedElements
         __
         + SelectAction(Element)
         + void execute()
@@ -591,12 +584,12 @@ enum LanguageEnum{
     Settings *-- ColorTheme
     Settings *-- Language
     class Shortcuts{
-    - HashMap<KeyStroke, COMMAND> commands
+    - HashMap<char, COMMAND> commands
     __
-    + void setKey(Keystroke, Action)
-    + void removeKey(Keystroke)
-    + void getKeys()
-    + Action getActions(Keystroke)
+    + void setKey(char, COMMAND)
+    + void removeKey(char)
+    + ArrayList<char> getKeys()
+    + COMMAND getAction(char)
     }
     enum Operation{
         LESS
