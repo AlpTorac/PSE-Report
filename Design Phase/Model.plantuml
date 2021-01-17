@@ -152,7 +152,7 @@ package elements{
         FALLPOWER
         POWER
         }
-        class Timing implements OutAttribute {
+        class Timing extends OutAttribute {
             -TimingSense timsense
             -TimingType timtype
             -TimingGroup timgroup
@@ -160,17 +160,17 @@ package elements{
             + Timing(TimingSense, TimingType,
             TimingGroup, InputPin, float[][])
         }
-        class InputPower implements InAttribute {
+        class InputPower extends InAttribute {
             -PowerGroup powgroup
             __
             + InputPower(PowerGroup, float[])
         }
-        class OutputPower implements OutAttribute {
+        class OutputPower extends OutAttribute {
             -PowerGroup powgroup 
             __
             + OutputPower(PowerGroup, float[][])
         }
-        class Leakage implements Attribute {
+        class Leakage extends Attribute {
             - float[] values
             __
             + Leakage(float[])
@@ -388,7 +388,7 @@ package commands{
     }
     class MoveAction implements Command{
         - Map<Element, Library> initialPositions
-        - Libary destinationLibrary
+        - Library destinationLibrary
         __
         + MoveAction(Element[], Library)
         + void execute()
@@ -630,16 +630,16 @@ Model --> Shortcuts
 Model --> FileManager
 Filter --> FileManager
 MergeAction ..> Library 
-Parser ..> Library
+LibertyParser ..> Library
 Project --* Model
-TextEditAction --> Parser
-Parser --> Library
-Parser --> Cell
-Parser --> Pin
+TextEditAction --> LibertyParser
+LibertyParser --> Library
+LibertyParser --> Cell
+LibertyParser --> Pin
 /'SelectDropdownAction --> Attribute
 SelectStatAction --> Attribute '/
 OpenFileAction --> FileManager
-OpenFileAction --> Parser
+OpenFileAction --> LibertyParser
 UndoAction --> ActionHistory
 Filter <-- AddFilterAction
 Filter <-- RemoveFilterAction
