@@ -509,6 +509,7 @@ package project {
     + {static} void saveAsCSV(Element)
     }
     class FileManager{
+        __
         + openFile(): File
         + openFile(String): File
         + void saveFile(String, String[])
@@ -534,10 +535,10 @@ enum LanguageEnum{
         ANDSOON
     }
     class Settings{
-        - Language currentlanguage
-        - ColorTheme colors
-        - String FontType
-        - int FontSize
+        - Language currentLanguage
+        - ColorTheme colorTheme
+        - String fontType
+        - int fontSize
         - int barCount
         - int undoCount
         - boolean editorOpenedFirst
@@ -564,22 +565,24 @@ enum LanguageEnum{
     class ColorTheme{
         - int[] colors
         __
+        + ColorTheme()
         + getColors(): int[]
     }
     class Language{
-        - String appname
-        - String[] elements
+        - String[] liberty
         - String[] menus
         - String[] methods
         - String[] attributes
-        - String[] text
+        - String[] errors
+        - String[] misc
         __
-        + getAppname(): String
+        + getLiberty(): String
         + getElements(): String[]
         + getMenus(): String[]
         + getMethods(): String[]
         + getAttributes(): String[]
-        + gettext(): String[]
+        + getErrors(): String[]
+        + getMisc(): String[]
     }
     Settings *-- ColorTheme
     Settings *-- Language
