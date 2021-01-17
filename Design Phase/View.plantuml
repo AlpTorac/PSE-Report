@@ -286,14 +286,13 @@ package Diagrams {
             #DiagramComponent(Color color)
             +{abstract} DiagramComponent clone()
             +void setColor(Color color)
-            +Number getColor()
+            +Color getColor()
             +{abstract} void show()
             +{abstract} void hide()
         }
         abstract class DiagramValueDisplayComponent extends DiagramComponent implements Hoverable {
             -Number value
             #DiagramValueDisplayComponent(Color color, Number value)
-            +Number valueToCoordinate(int axisIndex)
             +void setValue(Number value)
             +Number getValue()
             +{abstract} void refreshValueRelevantAttributes()
@@ -329,8 +328,8 @@ package Diagrams {
             '#void paintComponent(Graphics g)
             'void show is already being implemented
             '+void paintAxis()
-            +Number valueToCoordinate(Number value)
-            +Number CoordinateToValue(Number coordinate)
+            +PositionInFrame valueToCoordinate(Number value)
+            +Number CoordinateToValue(PositionInFrame coordinate)
             +void setLineByPos(Number minValXPos, Number minValYPos, Number maxValXPos, Number maxValYPos)
             +void setLineColor(Color color)
             +void setLineThickness(Number thickness)
@@ -369,10 +368,10 @@ package Diagrams {
             #DiagramLine(PositionInFrame start, PositionInFrame end, Color color, Number thickness)
             #Number calculateLength()
             +void setThickness(Number thickness)
-            +void setBottomLeftInFrame(Number x1, Number y1)
-            +void setTopRightInFrame(Number x2, Number y2)
-            +PositionInFrame getBottomLeftInFrame()
-            +PositionInFrame getTopRightInFrame()
+            +void setStartInFrame(Number x1, Number y1)
+            +void setEndInFrame(Number x2, Number y2)
+            +PositionInFrame getStartInFrame()
+            +PositionInFrame getEndInFrame()
             +Number getLength()
             +Number getThickness()
         }
@@ -388,7 +387,6 @@ package Diagrams {
             -PositionIn2DDiagram topRight
             -PositionIn2DDiagram bottomLeft
             -String caption
-            -Number[] sizesInAxes
             -Number borderThickness
             #DiagramValueLabel(PositionIn2DDiagram bottomLeft, PositionIn2DDiagram topRight, Color color, Number value, Number borderThickness)
             #void refreshCaption()
@@ -413,11 +411,12 @@ package Diagrams {
             -PositionIn2DDiagram bottomLeft
             -PositionIn2DDiagram topRight
             -Number borderThickness
+            -Number[] values
+            -Color[] valueColors
             #DiagramColorScale(PositionIn2DDiagram bottomLeft, PositionIn2DDiagram topRight, Color borderColor, Number[] values, Color[] valueColors, Number borderThickness)
             +Color valueToColor(Number value)
             +Number[] getValues()
             +Color[] getColors()
-            +final Object[] matchingsAsArray()
             +void setBottomLeftInFrame(Number x1, Number y1)
             +void setTopRightInFrame(Number x2, Number y2)
             +PositionInFrame getBottomLeftInFrame()
@@ -430,10 +429,6 @@ package Diagrams {
         class 2ColorScale extends DiagramColorScale {
             '-Color color = borderColor
             -WritableImage colorScale
-            -Color minValueColor
-            -Color maxValueColor
-            -Number minValue
-            -Number maxValue
             #2ColorScale(PositionIn2DDiagram bottomLeft, PositionIn2DDiagram topRight, Color borderColor, Number minVal, Number maxVal, Color minValColor, Color maxValColor, Number borderThickness)
             +Color getMinValueColor()
             +Color getMaxValueColor()
