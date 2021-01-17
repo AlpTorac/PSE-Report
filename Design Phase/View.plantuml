@@ -201,7 +201,7 @@ package Diagrams {
         +void refresh()
         +void update(DiagramData data)
         +boolean addDiagramViewHelper(DiagramViewHelper dvh)
-        +boolean removeDiagramViewHelper(DiagramViewHelper dvh)
+        +boolean removeDiagramViewHelper(IndicatorIdentifier id)
         +boolean showDiagramViewHelper(IndicatorIdentifier id)
         +boolean hideDiagramViewHelper(IndicatorIdentifier id)
         +DiagramComponent[] getNonValueDisplayDiagramComponentPrototypes()
@@ -211,7 +211,7 @@ package Diagrams {
         +IDiagram getDiagram(int index)
         +void setDiagram(int index, IDiagram diagram)
         +boolean addDiagram(IDiagram diagram)
-        +boolean removeDiagram(IDiagram diagram)
+        +boolean removeDiagram(int index)
         +IDiagram overlay(int[] indices)
         +IDiagram overlay(IDiagram[] diagrams)
     }
@@ -535,7 +535,7 @@ package Diagrams {
             +Diagram(DiagramData data)
             #void assemble(DiagramAxis[] axes, DiagramValueDisplayComponent[] valueDisplayComponents, DiagramComponent[] nonValueDisplayComponents)
             +boolean addDiagramViewHelper(DiagramViewHelper dvh)
-            +boolean removeDiagramViewHelper(DiagramViewHelper dvh)
+            +boolean removeDiagramViewHelper(IndicatorIdentifier id)
             +boolean showDiagramViewHelper(IndicatorIdentifier id)
             +boolean hideDiagramViewHelper(IndicatorIdentifier id)
         }
