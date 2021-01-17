@@ -43,19 +43,53 @@ together {
     class EventManager{
         -MainWindow view
         -Model model
-        -List<ActionListener> listeners
+        -Map<Events, EventListener> events
+        -List<IObserver> handlers
         +EventManager(MainWindow view, Model model)
         +initListeners()
-        +removeListener(EventListener listener)
         +subscribeHandlers()
+        +removeListener(EventListener listener)
         +removeHandler(IObserver handler)
-        +notifyHandlers(Settings settings, Project project, Shortcuts shortcuts)
-        /'+notifyListeners(Element[] selectedElements)
-        +notifyListeners(File file)'/
+        +notifyHandlers(Model model, List<Filter> filters)
+        
     }
 
+    enum Events{
+    LOAD
+    OPEN
+    DELETE
+    REMOVE
+    SAVE
+    SAVEAS
+    SELECT
+    EDIT
+    RENAME
+    MERGE
+    COPY
+    MOVE
+    PASTE
+    REDO
+    UNDO
+    SCALE
+    COMPARE
+    INTERPOLATE
+    ADDFILTER
+    REMOVEFILTER
+    LOADPROJECT
+    SCSETTINGS
+    PRSETTINGS
+    LASETTINGS
+    ATTRDROPDOWN
+    GRAPHDROPDOWN
+    SUBATTRDROPDOWN
+    PIN
+    STATISTICS
+    }
     
-
+     interface IObserver{
+        +update()
+    }
+    
     class DataUpdateHandler implements IObserver{
         -Outliner outliner
         -List<Element> elements
@@ -95,45 +129,50 @@ package listeners{
         class LoadLibraryListener implements ActionListener{
             -Command command
             -File file
-            +LoadLibraryListener()
+            -Panel panel
+            +LoadLibraryListener(Panel panel)
             +actionPerformed(ActionEvent e)
             
         }
         
-        class OpenElementListener implements ActionListener{
+        class OpenElementListener implements ActionListener, TreeSelectionListener{
             -Command command
             -Element element
             +OpenElementListener()
             +actionPerformed(ActionEvent e)
+            +valueChanged(TreeSelectionEvent e)
         }
 
-        class DeleteCellListener implements ActionListener{
+        class DeleteCellListener implements ActionListener, TreeSelectionListener{
             -Command command
             -Cell[] cell
             +DeleteCellListener()
             +actionPerformed(ActionEvent e)
+            +valueChanged(TreeSelectionEvent e)
         }
 
-        class RemoveListener implements ActionListener{
+        class RemoveListener implements ActionListener, TreeSelectionListener{
             -Command command
             -Element[] element
             +RemoveListener()
             +actionPerformed(ActionEvent e)
+            +valueChanged(TreeSelectionEvent e)
         }
 
-        class SelectListener implements TreeSelection{
+        class SelectListener implements TreeSelectionListener{
             -Outliner outliner
             -Command command
             -Element[] element
             +SelectListener(Outliner outliner)
-            +actionPerformed(ActionEvent e)
+            +valueChanged(TreeSelectionEvent e)
         }
 
-        class RenameListener implements ActionListener{
+        class RenameListener implements ActionListener, TreeSelectionListener{
             -Command command
             -Element element
             +RenameListener()
             +actionPerformed(ActionEvent e)
+            +valueChanged(TreeSelectionEvent e)
         }
 
         class EditListener implements ActionListener, DocumentListener{
@@ -156,17 +195,21 @@ package listeners{
             +actionPerformed(ActionEvent e)
         }
 
-        class MergeListener implements ActionListener{
+        class MergeListener implements ActionListener, TreeSelectionListener{
             -Command command
             -Library[] libraries
             +MergeListener()
             +actionPerformed(ActionEvent e)
+            +valueChanged(TreeSelectionEvent e)
         }
 
         class ScaleListener implements ActionListener{
             -Command command
+            -Attribute attribute
+            -float float
             +ScaleListener()
             +actionPerformed(ActionEvent e)
+            
         }
 
         class InterpolationListener implements ActionListener{
@@ -187,28 +230,34 @@ package listeners{
             +actionPerformed(ActionEvent e)
         }
 
-        class CompareListener implements ActionListener{
+        class CompareListener implements ActionListener, TreeSelectionListener{
             -Command command
             +CompareListener()
             +actionPerformed(ActionEvent e)
+            +valueChanged(TreeSelectionEvent e)
         }
 
-        class MoveListener implements ActionListener{
+        class MoveListener implements ActionListener, TreeSelectionListener{
             -Command command
             -Element[] element
             +MoveListener()
             +actionPerformed(ActionEvent e)
+            +getElements(): Element[]
         } 
 
-        class CopyListener implements ActionListener{
+        class CopyListener implements ActionListener, TreeSelectionListener{
             -Command command
             -Element[] element
             +CopyListener()
             +actionPerformed(ActionEvent e)
+            +getElements(): Element[]
         }
 
-        class PasteListener implements ActionListener{
+        class PasteListener implements ActionListener, TreeSelectionListener{
             -Command command
+            -EventListener moveListener
+            -EventListener copyListener
+            -Library targetLibrary
             +PasteListener()
             +actionPerformed(ActionEvent e)
         }
@@ -225,13 +274,7 @@ package listeners{
             +actionPerformed(ActionEvent e)
         }
 
-        class SaveProjectListener implements ActionListener{
-            -Command command
-            -Project project
-            +SaveProjectListener()
-            +actionPerformed(ActionEvent e)
-        }
-
+        
         class LoadProjectListener implements ActionListener{
             -Command command 
             -Project project
@@ -242,7 +285,6 @@ package listeners{
         
 
         class StatisticsListener implements ItemListener{
-            -Command command
             +StatisticsListener()
             +itemStateChanged(ItemEvent e)
         }
