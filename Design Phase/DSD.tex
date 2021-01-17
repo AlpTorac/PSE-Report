@@ -851,8 +851,8 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 }
 
 \classdesc{FunctionGraphOverlayStrategy}{
-    The implementation of \refer{\lblroot:view.diagrams.overlayer:IDiagramOverlayStrategy}{IDiagramOverlayStrategy} for \refer{\lblroot:view.diagrams.type:FunctionGraph}{FunctionGraphs}.
-    \descnote{Currently arbitrary amount of \refer{\lblroot:view.diagrams.type:FunctionGraph}{FunctionGraphs} can be overlaid.}
+    \decl{\public \class FunctionGraphOverlayStrategy}{The implementation of \refer{\lblroot:view.diagrams.overlayer:IDiagramOverlayStrategy}{IDiagramOverlayStrategy} for \refer{\lblroot:view.diagrams.type:FunctionGraph}{FunctionGraphs}.
+    \descnote{Currently arbitrary amount of \refer{\lblroot:view.diagrams.type:FunctionGraph}{FunctionGraphs} can be overlaid.}}
 }{
     \begin{itemize}
         \item \atrdesc{\private}{}{FunctionGraph[]}{functionGraphs}{The \refer{\lblroot:view.diagrams.type:FunctionGraph}{FunctionGraphs} to be overlaid.}
@@ -868,8 +868,8 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 }{}
 
 \classdesc{HistogramOverlayStrategy}{
-    The implementation of \refer{\lblroot:view.diagrams.overlayer:IDiagramOverlayStrategy}{IDiagramOverlayStrategy} for \refer{\lblroot:view.diagrams.type:Histogram}{Histograms}.
-    \descnote{Currently only 2 given \refer{\lblroot:view.diagrams.type:Histogram}{Histograms} can be overlaid.}
+    \decl{\public \class HistogramOverlayStrategy}{The implementation of \refer{\lblroot:view.diagrams.overlayer:IDiagramOverlayStrategy}{IDiagramOverlayStrategy} for \refer{\lblroot:view.diagrams.type:Histogram}{Histograms}.
+    \descnote{Currently only 2 given \refer{\lblroot:view.diagrams.type:Histogram}{Histograms} can be overlaid.}}
 }{
     \begin{itemize}
         \item \atrdesc{\private}{}{Histogram}{histogram1}{A given \refer{\lblroot:view.diagrams.type:Histogram}{Histogram}}
@@ -887,8 +887,8 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 }{}
 
 \classdesc{BarChartOverlayStrategy}{
-    The implementation of \refer{\lblroot:view.diagrams.overlayer:IDiagramOverlayStrategy}{IDiagramOverlayStrategy} for \refer{\lblroot:view.diagrams.type:BarChart}{BarCharts}.
-    \descnote{Currently only 2 given \refer{\lblroot:view.diagrams.type:BarChart}{BarCharts} can be overlaid.}
+    \decl{\public \class BarChartOverlayStrategy}{The implementation of \refer{\lblroot:view.diagrams.overlayer:IDiagramOverlayStrategy}{IDiagramOverlayStrategy} for \refer{\lblroot:view.diagrams.type:BarChart}{BarCharts}.
+    \descnote{Currently only 2 given \refer{\lblroot:view.diagrams.type:BarChart}{BarCharts} can be overlaid.}}
 }{
     \begin{itemize}
         \item \atrdesc{\private}{}{BarChart}{barChart1}{A given \refer{\lblroot:view.diagrams.type:BarChart}{BarChart}}
@@ -907,60 +907,89 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 }
 \packagedesc{view.diagrams.components}{
 
-\interfacedesc{Hoverable}{}{}{
+\interfacedesc{Hoverable}{
+    \decl{\public \interface Hoverable}{An interface implemented by \refer{\lblroot:view.diagrams.components:DiagramValueDisplayComponent}{DiagramValueDisplayComponents}.
+    \leavevmode \\
+    \leavevmode \\
+    This interface is responsible for displaying the \refer{\lblroot:view.diagrams.components:HoverLabel}{HoverLabel}. The methods responsible for displaying the \refer{\lblroot:view.diagrams.components:HoverLabel}{HoverLabel} are implemented inside this interface by default.}
+}{}{
     \begin{itemize}
         \item \implclsdec{DiagramValueDisplayComponent}
     \end{itemize}
 }{
     \begin{itemize}
         \item \methoddesc{\public}{\deflt}{boolean}{isBeingHovered}{}
-        {}{}{}
+        {}{}{
+            \booldesc{the implementing class is being hovered with the mouse pointer}{not}
+        }
         \item \methoddesc{\public}{\deflt}{void}{hoverAction}{}
-        {}{}{}
+        {
+            Performs the action that will occur once the implementing class is being hovered with the mouse pointer.
+        }{}{}
         \item \methoddesc{\public}{\deflt}{void}{refreshHoverLabelPosition}{}
-        {}{}{}
+        {
+            Refreshes the position of the \refer{\lblroot:view.diagrams.components:HoverLabel}{HoverLabel} in relation to the mouse pointer.
+        }{}{}
         \item \methoddesc{\public}{\deflt}{void}{showHoverLabel}{}
-        {}{}{}
+        {
+            Displays the \refer{\lblroot:view.diagrams.components:HoverLabel}{HoverLabel}.
+        }{}{}
         \item \methoddesc{\public}{\deflt}{void}{hideHoverLabel}{}
-        {}{}{}
+        {
+            Hides the \refer{\lblroot:view.diagrams.components:HoverLabel}{HoverLabel}.
+        }{}{}
     \end{itemize}
 }
 
-\absclassdesc{PositionInDiagram}{}{
+\absclassdesc{PositionInDiagram}{
+    \decl{\public \abstr \class PositionInDiagram}{The abstract class inherited by the classes that represent a position inside an \refer{\lblroot:view.diagrams:IDiagram}{IDiagram}.}
+}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{DiagramAxis[]}{axes}{}
-        \item \atrdesc{\private}{}{Number[]}{positionsInAxes}{}
+        \item \atrdesc{\private}{}{DiagramAxis[]}{axes}{The axes, according to which the position inside the \refer{\lblroot:view.diagrams:IDiagram}{IDiagram} will be calculated.}
+        \item \atrdesc{\private}{}{Number[]}{positionsInAxes}{The coordinates on the \refer{\lblroot:view.diagrams.components:DiagramAxis}{DiagramAxes} given in axes attribute.}
     \end{itemize}
 }{
+    \subclsdec{PositionIn2DDiagram}
+}{    
     \begin{itemize}
         \item \constrdesc{\public}{PositionInDiagram}{\type{DiagramAxis[]} axes, \type{Number[]} coordinatesInAxes}{}{
             \begin{itemize}
-                \item \paramdesc{axes}{}
-                \item \paramdesc{coordinatesInAxes}{}
+                \item \paramdesc{axes}{The axes, according to which the position inside the \refer{\lblroot:view.diagrams:IDiagram}{IDiagram} will be calculated.}
+                \item \paramdesc{coordinatesInAxes}{The coordinates on the \refer{\lblroot:view.diagrams.components:DiagramAxis}{DiagramAxes} given in axes attribute.}
             \end{itemize}
         }
-    \end{itemize}
-}{c}{
+    \end{itemize}}
+{
     \begin{itemize}
         \item \methoddesc{\public}{}{Number}{axisCoordinateToFrameCoordinate}{\type{int} index}
-        {}{
+        {
+            Transforms the specified coordinate in \refer{\lblroot:view.diagrams.components:PositionInDiagram:positionsInAxes}{positionsInAxes} to the corresponding coordinate inside the frame the \refer{\lblroot:view.diagrams:IDiagram}{IDiagram} is on top of.
+        }{
             \begin{itemize}
-                \item \paramdesc{index}{}
+                \item \paramdesc{index}{The index of the coordinate to be transformed to a frame coordinate.}
             \end{itemize}
-        }{}
+        }{
+            The frame coordinate that corresponds to the specified coordinate on \refer{\lblroot:view.diagrams.components:PositionInDiagram:positionsInAxes}{positionsInAxes}.
+        }
         \item \methoddesc{\public}{}{PositionInFrame}{toPositionInFrame}{}
-        {}{}{}
+        {}{}{
+            The frame coordinates that correspond to the coordinates on \refer{\lblroot:view.diagrams.components:PositionInDiagram:positionsInAxes}{positionsInAxes}.
+        }
         \item \methoddesc{\proted}{}{void}{setAxisCoordinate}{\type{int} index, \type{Number} position}
-        {}{
+        {
+            Sets the specified coordinate in \refer{\lblroot:view.diagrams.components:PositionInDiagram:positionsInAxes}{positionsInAxes} with the given one.
+        }{
             \begin{itemize}
-                \item \paramdesc{index}{}
-                \item \paramdesc{position}{}
+                \item \paramdesc{index}{The index of the wanted coordinate in \refer{\lblroot:view.diagrams.components:PositionInDiagram:positionsInAxes}{positionsInAxes}.}
+                \item \paramdesc{position}{The new value of the coordinate at the specified index.}
             \end{itemize}
         }{}
         \item \methoddesc{\proted}{}{void}{setAxisCoordinates}{\type{Number[]} coordinates}
-        {}{
+        {
+            Sets \refer{\lblroot:view.diagrams.components:PositionInDiagram:positionsInAxes}{positionsInAxes} with the given new coordinates.
+        }{
             \begin{itemize}
-                \item \paramdesc{coordinates}{}
+                \item \paramdesc{coordinates}{The coordinates to replace \refer{\lblroot:view.diagrams.components:PositionInDiagram:positionsInAxes}{positionsInAxes}}
             \end{itemize}
         }{}
         \item \methoddesc{\proted}{}{Number}{getAxisPos}{\type{int} index}
@@ -968,19 +997,23 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
             \begin{itemize}
                 \item \paramdesc{index}{}
             \end{itemize}
-        }{}
+        }{
+            The specified coordinate in \refer{\lblroot:view.diagrams.components:PositionInDiagram:positionsInAxes}{positionsInAxes}.
+        }
     \end{itemize}
 }
 
-\absclassdesc{DiagramComponent}{}{
+\absclassdesc{DiagramComponent}{
+    \decl{\public \abstr \class DiagramComponent}{The abstract class that is implemented by classes that represents parts of \refer{\lblroot:view.diagrams.type:Diagram}{Diagrams}.}
+}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Color}{color}{}
+        \item \atrdesc{\private}{}{Color}{color}{The color of the instance.}
     \end{itemize}
 }{
     \begin{itemize}
         \item \constrdesc{\proted}{DiagramComponent}{\type{Color} color}{}{
             \begin{itemize}
-                \item \paramdesc{color}{}
+                \item \paramdesc{color}{The color of the instance.}
             \end{itemize}
         }
     \end{itemize}
@@ -995,34 +1028,37 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 }{
     \begin{itemize}
         \item \methoddesc{\public}{\abstr}{DiagramComponent}{clone}{}
-        {}{}{}
+        {}{}{
+            A deep copy of the instance.
+        }
         \item \methoddesc{\public}{}{void}{setColor}{\type{Color} color}
-        {}{
+        {
+            Sets the \refer{\lblroot:view.diagrams.components:DiagramComponent:color}{color} of the instance with the given one.
+        }{
             \begin{itemize}
-                \item \paramdesc{color}{}
+                \item \paramdesc{color}{The new color of the instance}
             \end{itemize}
         }{}
-        \item \methoddesc{\public}{}{Number}{getColor}{}
-        {}{}{}
+        \item \methoddesc{\public}{}{Color}{getColor}{}
+        {}{}{
+            The \refer{\lblroot:view.diagrams.components:DiagramComponent:color}{color} attribute.
+        }
         \item \methoddesc{\public}{\abstr}{void}{show}{}
-        {}{}{}
+        {
+            Shows the instance.
+        }{}{}
         \item \methoddesc{\public}{\abstr}{void}{hide}{}
-        {}{}{}
+        {
+            Hides the instance.
+        }{}{}
     \end{itemize}
 }
 
-\absclassdesc{DiagramValueDisplayComponent}{}{
-    \begin{itemize}
-        \item \atrdesc{\private}{}{Number}{value}{}
-    \end{itemize}
+\absclassdesc{DiagramValueDisplayComponent}{
+    \decl{\public \abstr \class DiagramValueDisplayComponent}{The abstract class that is implemented by classes that represents parts of \refer{\lblroot:view.diagrams.type:Diagram}{Diagrams}, which are responsible for displaying values inside \refer{\lblroot:view.diagrams.type:Diagram}{Diagrams}.}
 }{
     \begin{itemize}
-        \item \constrdesc{\proted}{DiagramValueDisplayComponent}{\type{Color} color, \type{Number} value}{}{
-            \begin{itemize}
-                \item \paramdesc{color}{}
-                \item \paramdesc{value}{}
-            \end{itemize}
-        }
+        \item \atrdesc{\private}{}{Number}{value}{The value, which will be represented by the instance on the \refer{\lblroot:view.diagrams.type:Diagram}{Diagrams}.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -1032,38 +1068,37 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{Number}{valueToCoordinate}{\type{int} axisIndex}
-        {}{
+        \item \constrdesc{\proted}{DiagramValueDisplayComponent}{\type{Color} color, \type{Number} value}{}{
             \begin{itemize}
-                \item \paramdesc{axisIndex}{}
+                \item \paramdesc{color}{The color of the instance.}
+                \item \paramdesc{value}{The value, which will be represented by the instance on the \refer{\lblroot:view.diagrams.type:Diagram}{Diagrams}.}
             \end{itemize}
-        }{}
-        \item \methoddesc{\public}{}{void}{setValue}{}
-        {}{}{}
-        \item \methoddesc{\public}{}{Number}{getValue}{}
-        {}{}{}
-        \item \methoddesc{\public}{\abstr}{void}{refreshValueRelevantAttributes}{}
-        {}{}{}
-    \end{itemize}
-}
-
-\absclassdesc{DiagramBar}{}{
-    \begin{itemize}
-        \item \atrdesc{\private}{}{PositionIn2DDiagram}{bottomLeft}{}
-        \item \atrdesc{\private}{}{PositionIn2DDiagram}{topRight}{}
-        \item \atrdesc{\private}{}{Number}{borderThickness}{}
+        }
     \end{itemize}
 }{
     \begin{itemize}
-        \item \constrdesc{\proted}{DiagramBar}{\type{Color} color, \type{Number} value, \type{PositionIn2DDiagram} bottomLeft, \type{PositionIn2DDiagram} topRight, \type{Number} borderThickness}{}{
-            \begin{itemize}
-                \item \paramdesc{color}{}
-                \item \paramdesc{value}{}
-                \item \paramdesc{bottomLeft}{}
-                \item \paramdesc{topRight}{}
-                \item \paramdesc{borderThickness}{}
-            \end{itemize}
+        \item \methoddesc{\public}{}{void}{setValue}{}
+        {
+            Sets the \refer{\lblroot:view.diagrams.components:DiagramValueDisplayComponent:value}{value} attribute.
+        }{}{}
+        \item \methoddesc{\public}{}{Number}{getValue}{}
+        {}{}{
+            The \refer{\lblroot:view.diagrams.components:DiagramValueDisplayComponent:value}{value} attribute.
         }
+        \item \methoddesc{\public}{\abstr}{void}{refreshValueRelevantAttributes}{}
+        {
+            Performs the appropriate actions when the \refer{\lblroot:view.diagrams.components:DiagramValueDisplayComponent:value}{value} attribute is modified.
+        }{}{}
+    \end{itemize}
+}
+
+\absclassdesc{DiagramBar}{
+    \decl{\public \abstr \class DiagramBar}{The abstract class inherited by the classes that represent bars of \refer{\lblroot:view.diagrams.type:Diagram}{Diagrams}.}
+}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{PositionIn2DDiagram}{bottomLeft}{The bottom left coordinates of the bar instance in the \refer{\lblroot:view.diagrams.type:Diagram}{Diagram} (on axes).}
+        \item \atrdesc{\private}{}{PositionIn2DDiagram}{topRight}{The top right coordinates of the bar instance in the \refer{\lblroot:view.diagrams.type:Diagram}{Diagram} (on axes).}
+        \item \atrdesc{\private}{}{Number}{borderThickness}{The thickness of the borders of the bar instance.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -1072,51 +1107,68 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{Number}{getHeight}{}
-        {}{}{}
-        \item \methoddesc{\public}{}{Number}{getWidth}{}
-        {}{}{}
-        \item \methoddesc{\public}{}{void}{setBottomLeftInDiagram}{\type{Number} x1, \type{Number} y1}
-        {}{
+        \item \constrdesc{\proted}{DiagramBar}{\type{Color} color, \type{Number} value, \type{PositionIn2DDiagram} bottomLeft, \type{PositionIn2DDiagram} topRight, \type{Number} borderThickness}{}{
             \begin{itemize}
-                \item \paramdesc{x1}{}
-                \item \paramdesc{y1}{}
+                \item \paramdesc{color}{The color of the bar instance.}
+                \item \paramdesc{value}{The value to be represented by the bar instance.}
+                \item \paramdesc{bottomLeft}{The bottom left coordinates of the bar instance in the \refer{\lblroot:view.diagrams.type:Diagram}{Diagram} (on axes).}
+                \item \paramdesc{topRight}{The top right coordinates of the bar instance in the \refer{\lblroot:view.diagrams.type:Diagram}{Diagram} (on axes).}
+                \item \paramdesc{borderThickness}{The thickness of the borders of the bar instance.}
             \end{itemize}
-        }{}
-        \item \methoddesc{\public}{}{void}{setTopRightInDiagram}{\type{Number} x2, \type{Number} y2}
-        {}{
-            \begin{itemize}
-                \item \paramdesc{x2}{}
-                \item \paramdesc{y2}{}
-            \end{itemize}
-        }{}
-        \item \methoddesc{\public}{}{PositionIn2DDiagram}{getBottomLeftInDiagram}{}
-        {}{}{}
-        \item \methoddesc{\public}{}{PositionIn2DDiagram}{getTopRightInDiagram}{}
-        {}{}{}
-        \item \ovrdnmethoddesc{\public}{\abstr}{void}{refreshValueRelevantAttributes}{}{DiagramValueDisplayComponent}
-        {}{}{}
-    \end{itemize}
-}
-
-\absclassdesc{DiagramAxis}{}{
-    \begin{itemize}
-        \item \atrdesc{\private}{}{Number}{min}{}
-        \item \atrdesc{\private}{}{Number}{max}{}
-        \item \atrdesc{\private}{}{int}{steps}{}
-        \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:(atr)showValues}{\atrdesc{\private}{}{boolean}{showValues}{}}
-        \item \atrdesc{\private}{}{DiagramLine}{axisLine}{}
+        }
     \end{itemize}
 }{
     \begin{itemize}
-        \item \constrdesc{\proted}{DiagramAxis}{\type{DiagramLine} axisLine, \type{Number} min, \type{Number} max, \type{int} steps}{}{
-            \begin{itemize}
-                \item \paramdesc{axisLine}{}
-                \item \paramdesc{min}{}
-                \item \paramdesc{max}{}
-                \item \paramdesc{steps}{}
-            \end{itemize}
+        \item \methoddesc{\public}{}{Number}{getHeight}{}
+        {}{}{
+            The height of the bar instance.
         }
+        \item \methoddesc{\public}{}{Number}{getWidth}{}
+        {}{}{
+            The width of the bar instance
+        }
+        \item \methoddesc{\public}{}{void}{setBottomLeftInDiagram}{\type{Number} x1, \type{Number} y1}
+        {}{
+            \begin{itemize}
+                \item \paramdesc{x1}{The new x-Coordinate of the bottom left corner.}
+                \item \paramdesc{y1}{The new y-Coordinate of the bottom left corner.}
+            \end{itemize}
+        }{
+            Sets \refer{\lblroot:view.diagrams.components:DiagramBar:bottomLeft}{bottomLeft}.
+        }
+        \item \methoddesc{\public}{}{void}{setTopRightInDiagram}{\type{Number} x2, \type{Number} y2}
+        {}{
+            \begin{itemize}
+                \item \paramdesc{x2}{The new x-Coordinate of the top right corner.}
+                \item \paramdesc{y2}{The new y-Coordinate of the top right corner.}
+            \end{itemize}
+        }{
+            Sets \refer{\lblroot:view.diagrams.components:DiagramBar:topRight}{topRight}.
+        }
+        \item \methoddesc{\public}{}{PositionIn2DDiagram}{getBottomLeftInDiagram}{}
+        {}{}{
+            \refer{\lblroot:view.diagrams.components:DiagramBar:bottomLeft}{bottomLeft}
+        }
+        \item \methoddesc{\public}{}{PositionIn2DDiagram}{getTopRightInDiagram}{}
+        {}{}{
+            \refer{\lblroot:view.diagrams.components:DiagramBar:topRight}{topRight}.
+        }
+        \item \ovrdnmethoddesc{\public}{\abstr}{void}{refreshValueRelevantAttributes}{}{DiagramValueDisplayComponent}
+        {
+            Sets the y-Coordinate of \refer{\lblroot:view.diagrams.components:DiagramBar:topRight}{topRight} and the value attribute to correlate each other.
+        }{}{}
+    \end{itemize}
+}
+
+\absclassdesc{DiagramAxis}{
+    \decl{\public \abstr \class DiagramAxis}{The abstract class inherited by the classes that represent axes in a \refer{\lblroot:view.diagrams.type:Diagram}{Diagram}.}
+}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Number}{min}{The minimum value on the axis.}
+        \item \atrdesc{\private}{}{Number}{max}{The maximum value on the axis.}
+        \item \atrdesc{\private}{}{int}{steps}{The amount of partitions the axis will have.}
+        \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:(atr)showValues}{\atrdesc{\private}{}{boolean}{showValues}{Indicates whether the values for each partition is shown.}}
+        \item \atrdesc{\private}{}{DiagramLine}{axisLine}{The \refer{\lblroot:view.diagrams.components:DiagramLine}{DiagramLine} part of the axis.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -1124,94 +1176,131 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{setMin}{\type{Number} min}
-        {}{
+        \item \constrdesc{\proted}{DiagramAxis}{\type{DiagramLine} axisLine, \type{Number} min, \type{Number} max, \type{int} steps}{}{
             \begin{itemize}
-                \item \paramdesc{min}{}
+                \item \paramdesc{axisLine}{The \refer{\lblroot:view.diagrams.components:DiagramLine}{DiagramLine} part of the axis.}
+                \item \paramdesc{min}{The minimum value on the axis.}
+                \item \paramdesc{max}{The maximum value on the axis.}
+                \item \paramdesc{steps}{The amount of partitions the axis will have.}
             \end{itemize}
-        }{}
-        \item \methoddesc{\public}{}{Number}{getMin}{}
-        {}{}{}
-        \item \methoddesc{\public}{}{void}{setMax}{\type{Number} max}
-        {}{
-            \begin{itemize}
-                \item \paramdesc{max}{}
-            \end{itemize}
-        }{}
-        \item \methoddesc{\public}{}{Number}{getMax}{}
-        {}{}{}
-        \item \methoddesc{\public}{}{void}{setSteps}{\type{int} steps}
-        {}{
-            \begin{itemize}
-                \item \paramdesc{steps}{}
-            \end{itemize}
-        }{}
-        \item \methoddesc{\public}{}{int}{getSteps}{}
-        {}{}{}
-        \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:(mtd)showValues}{\methoddesc{\public}{}{void}{showValues}{}
-        {}{}{}}
-        \item \methoddesc{\public}{}{void}{hideValues}{}
-        {}{}{}
-        \item \methoddesc{\public}{}{Number}{valueToCoordinate}{\type{Number} value}
-        {}{
-            \begin{itemize}
-                \item \paramdesc{value}{}
-            \end{itemize}
-        }{}
-        \item \methoddesc{\public}{}{Number}{CoordinateToValue}{\type{Number} coordinate}
-        {}{
-            \begin{itemize}
-                \item \paramdesc{coordinate}{}
-            \end{itemize}
-        }{}
-        \item \methoddesc{\public}{}{void}{setLineByPos}{\type{Number} minValXPos, \type{Number} minValYPos, \type{Number} maxValXPos, \type{Number} maxValYPos}
-        {}{
-            \begin{itemize}
-                \item \paramdesc{minValXPos}{}
-                \item \paramdesc{minValYPos}{}
-                \item \paramdesc{maxValXPos}{}
-                \item \paramdesc{maxValYPos}{}
-            \end{itemize}
-        }{}
-        \item \methoddesc{\public}{}{void}{setLineColor}{\type{Color} color}
-        {}{
-            \begin{itemize}
-                \item \paramdesc{color}{}
-            \end{itemize}
-        }{}
-        \item \methoddesc{\public}{}{void}{setLineThickness}{\type{Number} thickness}
-        {}{
-            \begin{itemize}
-                \item \paramdesc{thickness}{}
-            \end{itemize}
-        }{}
-        \item \methoddesc{\public}{}{Number}{getLineLength}{}
-        {}{}{}
-        \item \ovrdnmethoddesc{\public}{}{void}{show}{}{DiagramComponent}
-        {}{}{}
-        \item \ovrdnmethoddesc{\public}{}{void}{hide}{}{DiagramComponent}
-        {}{}{}
-    \end{itemize}
-}
-
-\absclassdesc{DiagramLabel}{}{
-    \begin{itemize}
-        \item \atrdesc{\private}{}{String}{caption}{}
-        \item \atrdesc{\private}{}{PositionInFrame}{bottomLeft}{}
-        \item \atrdesc{\private}{}{PositionInFrame}{topRight}{}
-        \item \atrdesc{\private}{}{Number}{borderThickness}{}
+        }
     \end{itemize}
 }{
     \begin{itemize}
-        \item \constrdesc{\proted}{DiagramLabel}{\type{PositionInFrame} bottomLeft, \type{PositionInFrame} topRight, \type{Color} color, \type{String} caption, \type{Number} borderThickness}{}{
+        \item \methoddesc{\public}{}{void}{setMin}{\type{Number} min}
+        {
+            Sets \refer{\lblroot:view.diagrams.components:DiagramAxis:min}{min} attribute.
+        }{
             \begin{itemize}
-                \item \paramdesc{bottomLeft}{}
-                \item \paramdesc{topRight}{}
-                \item \paramdesc{color}{}
-                \item \paramdesc{caption}{}
-                \item \paramdesc{borderThickness}{}
+                \item \paramdesc{min}{The new \refer{\lblroot:view.diagrams.components:DiagramAxis:min}{min}.}
             \end{itemize}
+        }{}
+        \item \methoddesc{\public}{}{Number}{getMin}{}
+        {}{}{
+            \refer{\lblroot:view.diagrams.components:DiagramAxis:min}{min}.
         }
+        \item \methoddesc{\public}{}{void}{setMax}{\type{Number} max}
+        {
+            Sets \refer{\lblroot:view.diagrams.components:DiagramAxis:max}{max} attribute.
+        }{
+            \begin{itemize}
+                \item \paramdesc{max}{The new \refer{\lblroot:view.diagrams.components:DiagramAxis:max}{max}.}
+            \end{itemize}
+        }{}
+        \item \methoddesc{\public}{}{Number}{getMax}{}
+        {}{}{
+            \refer{\lblroot:view.diagrams.components:DiagramAxis:min}{min}.
+        }
+        \item \methoddesc{\public}{}{void}{setSteps}{\type{int} steps}
+        {
+            Sets \refer{\lblroot:view.diagrams.components:DiagramAxis:steps}{steps} attribute.
+        }{
+            \begin{itemize}
+                \item \paramdesc{steps}{The new \refer{\lblroot:view.diagrams.components:DiagramAxis:steps}{steps}.}
+            \end{itemize}
+        }{}
+        \item \methoddesc{\public}{}{int}{getSteps}{}
+        {}{}{
+            \refer{\lblroot:view.diagrams.components:DiagramAxis:steps}{steps}.
+        }
+        \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:(mtd)showValues}{\methoddesc{\public}{}{void}{showValues}{}
+        {
+            Shows the values painted on the partitions of the axis.
+        }{}{}}
+        \item \methoddesc{\public}{}{void}{hideValues}{}
+        {
+            Hides the values painted on the partitions of the axis.
+        }{}{}
+        \item \methoddesc{\public}{}{PositionInFrame}{valueToCoordinate}{\type{Number} value}
+        {
+            Transforms the given coordinate on the axis (\refer{\lblroot:view.diagrams.components:DiagramValueDisplayComponent:value}{value}) to the corresponding frame coordinates.
+        }{
+            \begin{itemize}
+                \item \paramdesc{value}{The given coordinate on the axis.}
+            \end{itemize}
+        }{
+            The corresponding frame coordinates.
+        }
+        \item \methoddesc{\public}{}{Number}{CoordinateToValue}{\type{PositionInFrame} coordinate}
+        {
+            Transforms the given coordinates on the frame to the corresponding axis coordinate (\refer{\lblroot:view.diagrams.components:DiagramValueDisplayComponent:value}{value}).
+        }{
+            \begin{itemize}
+                \item \paramdesc{coordinate}{The given coordinates on the frame.}
+            \end{itemize}
+        }{
+            The corresponding coordinate on the axis (\refer{\lblroot:view.diagrams.components:DiagramValueDisplayComponent:value}{value}).
+        }
+        \item \methoddesc{\public}{}{void}{setLineByPos}{\type{Number} minValXPos, \type{Number} minValYPos, \type{Number} maxValXPos, \type{Number} maxValYPos}
+        {
+            Sets the position of \refer{\lblroot:view.diagrams.components:DiagramAxis:axisLine}{axisLine} to the given ones.
+        }{
+            \begin{itemize}
+                \item \paramdesc{minValXPos}{The x-Coordinate of where the minimum value on the axis will be.}
+                \item \paramdesc{minValYPos}{The y-Coordinate of where the minimum value on the axis will be.}
+                \item \paramdesc{maxValXPos}{The x-Coordinate of where the maximum value on the axis will be.}
+                \item \paramdesc{maxValYPos}{The y-Coordinate of where the maximum value on the axis will be.}
+            \end{itemize}
+        }{}
+        \item \methoddesc{\public}{}{void}{setLineColor}{\type{Color} color}
+        {
+            Sets the color of the \refer{\lblroot:view.diagrams.components:DiagramAxis:axisLine}{axisLine}.
+        }{
+            \begin{itemize}
+                \item \paramdesc{color}{The new color of \refer{\lblroot:view.diagrams.components:DiagramAxis:axisLine}{axisLine}.}
+            \end{itemize}
+        }{}
+        \item \methoddesc{\public}{}{void}{setLineThickness}{\type{Number} thickness}
+        {
+            Sets the thickness of the \refer{\lblroot:view.diagrams.components:DiagramAxis:axisLine}{axisLine}.
+        }{
+            \begin{itemize}
+                \item \paramdesc{thickness}{The new thickness of the \refer{\lblroot:view.diagrams.components:DiagramAxis:axisLine}{axisLine}.}
+            \end{itemize}
+        }{}
+        \item \methoddesc{\public}{}{Number}{getLineLength}{}
+        {}{}{
+            The length of \refer{\lblroot:view.diagrams.components:DiagramAxis:axisLine}{axisLine}
+        }
+        \item \ovrdnmethoddesc{\public}{}{void}{show}{}{DiagramComponent}
+        {
+            Shows the axis.
+        }{}{}
+        \item \ovrdnmethoddesc{\public}{}{void}{hide}{}{DiagramComponent}
+        {
+            Hides the axis.
+        }{}{}
+    \end{itemize}
+}
+
+\absclassdesc{DiagramLabel}{
+    \decl{\public \abstr \class DiagramLabel}{The abstract class inherited by classes that represent labels that are not responsible for displaying values on \refer{\lblroot:view.diagrams.type:Diagram}{Diagrams}.}
+}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{String}{caption}{The text that will be displayed by the label.}
+        \item \atrdesc{\private}{}{PositionInFrame}{bottomLeft}{The position of the bottom left corner of the label in the frame.}
+        \item \atrdesc{\private}{}{PositionInFrame}{topRight}{The position of the top right corner of the label in the frame.}
+        \item \atrdesc{\private}{}{Number}{borderThickness}{The thickness of the border of the label.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -1219,51 +1308,62 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{setCaption}{\type{String} caption}
-        {}{
+        \item \constrdesc{\proted}{DiagramLabel}{\type{PositionInFrame} bottomLeft, \type{PositionInFrame} topRight, \type{Color} color, \type{String} caption, \type{Number} borderThickness}{}{
             \begin{itemize}
-                \item \paramdesc{caption}{}
+                \item \paramdesc{bottomLeft}{The position of the bottom left corner of the label in the frame.}
+                \item \paramdesc{topRight}{The position of the top right corner of the label in the frame.}
+                \item \paramdesc{color}{The color of the label.}
+                \item \paramdesc{caption}{The text that will be displayed by the label.}
+                \item \paramdesc{borderThickness}{The thickness of the border of the label.}
+            \end{itemize}
+        }
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{void}{setCaption}{\type{String} caption}
+        {
+            Changes \refer{\lblroot:view.diagrams.components:DiagramLabel:caption}{caption} to the given one.
+        }{
+            \begin{itemize}
+                \item \paramdesc{caption}{The text that will be displayed by the label.}
             \end{itemize}
         }{}
         \item \methoddesc{\public}{}{String}{getCaption}{}
-        {}{}{}
+        {}{}{
+            \refer{\lblroot:view.diagrams.components:DiagramLabel:caption}{caption}.
+        }
         \item \methoddesc{\public}{}{void}{setBottomLeftInFrame}{\type{Number} x1, \type{Number} y1}
         {}{
             \begin{itemize}
-                \item \paramdesc{x1}{}
-                \item \paramdesc{y1}{}
+                \item \paramdesc{x1}{The new x-Coordinate of the bottom left corner.}
+                \item \paramdesc{y1}{The new y-Coordinate of the bottom left corner.}
             \end{itemize}
         }{}
         \item \methoddesc{\public}{}{void}{setTopRightInFrame}{\type{Number} x2, \type{Number} y2}
         {}{
             \begin{itemize}
-                \item \paramdesc{x2}{}
-                \item \paramdesc{y2}{}
+                \item \paramdesc{x2}{The new x-Coordinate of the top right corner.}
+                \item \paramdesc{y2}{The new y-Coordinate of the top right corner.}
             \end{itemize}
         }{}
         \item \methoddesc{\public}{}{PositionInFrame}{getBottomLeftInFrame}{}
-        {}{}{}
+        {}{}{
+            \refer{\lblroot:view.diagrams.components:DiagramLabel:bottomLeft}{bottomLeft}
+        }
         \item \methoddesc{\public}{}{PositionInFrame}{getTopRightInFrame}{}
-        {}{}{}
+        {}{}{
+            \refer{\lblroot:view.diagrams.components:DiagramLabel:topRight}{topRight}
+        }
     \end{itemize}
 }
 
-\absclassdesc{DiagramLine}{}{
-    \begin{itemize}
-        \item \atrdesc{\private}{}{PositionInFrame}{start}{}
-        \item \atrdesc{\private}{}{PositionInFrame}{end}{}
-        \item \atrdesc{\private}{}{Number}{thickness}{}
-    \end{itemize}
+\absclassdesc{DiagramLine}{
+    \decl{\public \abstr \class DiagramLine}{The abstract class inherited by the classes that represent a line in a \refer{\lblroot:view.diagrams.type:Diagram}{Diagram}.}
 }{
     \begin{itemize}
-        \item \constrdesc{\proted}{DiagramLine}{\type{PositionInFrame} start, \type{PositionInFrame} end, \type{Color} color, \type{Number} thickness}{}{
-            \begin{itemize}
-                \item \paramdesc{start}{}
-                \item \paramdesc{end}{}
-                \item \paramdesc{color}{}
-                \item \paramdesc{thickness}{}
-            \end{itemize}
-        }
+        \item \atrdesc{\private}{}{PositionInFrame}{start}{The position (in frame) of the start of the line (x1, y1).}
+        \item \atrdesc{\private}{}{PositionInFrame}{end}{The position (in frame) of the end of the line (x2, y2).}
+        \item \atrdesc{\private}{}{Number}{thickness}{The thickness of the line.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -1273,58 +1373,70 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\proted}{}{Number}{calculateLength}{}
-        {}{}{}
-        \item \methoddesc{\public}{}{void}{setThickness}{\type{Number} thickness}
-        {}{
+        \item \constrdesc{\proted}{DiagramLine}{\type{PositionInFrame} start, \type{PositionInFrame} end, \type{Color} color, \type{Number} thickness}{}{
             \begin{itemize}
-                \item \paramdesc{thickness}{}
+                \item \paramdesc{start}{The position (in frame) of the start of the line (x1, y1).}
+                \item \paramdesc{end}{The position (in frame) of the end of the line (x2, y2).}
+                \item \paramdesc{color}{The color of the line.}
+                \item \paramdesc{thickness}{The thickness of the line.}
             \end{itemize}
-        }{}
-        \item \methoddesc{\public}{}{void}{setBottomLeftInFrame}{\type{Number} x1, \type{Number} y1}
-        {}{
-            \begin{itemize}
-                \item \paramdesc{x1}{}
-                \item \paramdesc{y1}{}
-            \end{itemize}
-        }{}
-        \item \methoddesc{\public}{}{void}{setTopRightInFrame}{\type{Number} x2, \type{Number} y2}
-        {}{
-            \begin{itemize}
-                \item \paramdesc{x2}{}
-                \item \paramdesc{y2}{}
-            \end{itemize}
-        }{}
-        \item \methoddesc{\public}{}{PositionInFrame}{getBottomLeftInFrame}{}
-        {}{}{}
-        \item \methoddesc{\public}{}{PositionInFrame}{getTopRightInFrame}{}
-        {}{}{}
-        \item \methoddesc{\public}{}{Number}{getLength}{}
-        {}{}{}
-        \item \methoddesc{\public}{}{Number}{getThickness}{}
-        {}{}{}
-    \end{itemize}
-}
-
-\absclassdesc{DiagramValueLabel}{}{
-    \begin{itemize}
-        \item \atrdesc{\private}{}{PositionIn2DDiagram}{topRight}{}
-        \item \atrdesc{\private}{}{PositionIn2DDiagram}{bottomLeft}{}
-        \item \atrdesc{\private}{}{String}{caption}{}
-        \item \atrdesc{\private}{}{Number[]}{sizesInAxes}{}
-        \item \atrdesc{\private}{}{Number}{borderThickness}{}
+        }
     \end{itemize}
 }{
     \begin{itemize}
-        \item \constrdesc{\proted}{DiagramValueLabel}{\type{PositionIn2DDiagram} bottomLeft, \type{PositionIn2DDiagram} topRight, \type{Color} color, \type{Number} value, \type{Number} borderThickness}{}{
-            \begin{itemize}
-                \item \paramdesc{bottomLeft}{}
-                \item \paramdesc{topRight}{}
-                \item \paramdesc{color}{}
-                \item \paramdesc{value}{}
-                \item \paramdesc{borderThickness}{}
-            \end{itemize}
+        \item \methoddesc{\proted}{}{Number}{calculateLength}{}
+        {}{}{
+            The length of the line.
         }
+        \item \methoddesc{\public}{}{void}{setThickness}{\type{Number} thickness}
+        {
+            Set \refer{\lblroot:view.diagrams.components:DiagramLine:thickness}{thickness} to the given thickness.
+        }{
+            \begin{itemize}
+                \item \paramdesc{thickness}{The given thickness.}
+            \end{itemize}
+        }{}
+        \item \methoddesc{\public}{}{void}{setStartInFrame}{\type{Number} x1, \type{Number} y1}
+        {}{
+            \begin{itemize}
+                \item \paramdesc{x1}{The new x-Coordinate of the start of the line.}
+                \item \paramdesc{y1}{The new y-Coordinate of the start of the line.}
+            \end{itemize}
+        }{}
+        \item \methoddesc{\public}{}{void}{setEndInFrame}{\type{Number} x2, \type{Number} y2}
+        {}{
+            \begin{itemize}
+                \item \paramdesc{x2}{The new x-Coordinate of the end of the line.}
+                \item \paramdesc{y2}{The new y-Coordinate of the end of the line.}
+            \end{itemize}
+        }{}
+        \item \methoddesc{\public}{}{PositionInFrame}{getStartInFrame}{}
+        {}{}{
+            \refer{\lblroot:view.diagrams.components:DiagramLine:start}{start}.
+        }
+        \item \methoddesc{\public}{}{PositionInFrame}{getEndInFrame}{}
+        {}{}{
+            \refer{\lblroot:view.diagrams.components:DiagramLine:end}{end}.
+        }
+        \item \methoddesc{\public}{}{Number}{getLength}{}
+        {}{}{
+            The length of the line, based on \refer{\lblroot:view.diagrams.components:DiagramLine:start}{start} and \refer{\lblroot:view.diagrams.components:DiagramLine:end}{end}.
+        }
+        \item \methoddesc{\public}{}{Number}{getThickness}{}
+        {}{}{
+            \refer{\lblroot:view.diagrams.components:DiagramLine:thickness}{thickness}.
+        }
+    \end{itemize}
+}
+
+\absclassdesc{DiagramValueLabel}{
+    \decl{\public \abstr \class DiagramValueLabel}{The abstract class implemented by the classes that represent labels that are responsible for displaying values.}
+}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{PositionIn2DDiagram}{topRight}{The position of the top right corner of the label.}
+        \item \atrdesc{\private}{}{PositionIn2DDiagram}{bottomLeft}{The position of the bottom left corner of the label.}
+        \item \atrdesc{\private}{}{String}{caption}{The text that the label will display.}
+        \item \atrdesc{\private}{}{Number}{borderThickness}{The thickness of the border of the label.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -1332,52 +1444,65 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\proted}{}{void}{refreshCaption}{}
-        {}{}{}
-        \item \methoddesc{\proted}{}{void}{setCaption}{\type{String} caption}
-        {}{
+        \item \constrdesc{\proted}{DiagramValueLabel}{\type{PositionIn2DDiagram} bottomLeft, \type{PositionIn2DDiagram} topRight, \type{Color} color, \type{Number} value, \type{Number} borderThickness}{}{
             \begin{itemize}
-                \item \paramdesc{caption}{}
+                \item \paramdesc{bottomLeft}{The position of the bottom left corner of the label.}
+                \item \paramdesc{topRight}{The position of the top right corner of the label.}
+                \item \paramdesc{color}{The color of the label.}
+                \item \paramdesc{value}{The value that will be displayed by the label.}
+                \item \paramdesc{borderThickness}{The thickness of the border of the label.}
+            \end{itemize}
+        }
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\proted}{}{void}{refreshCaption}{}
+        {
+            Refreshes the \refer{\lblroot:view.diagrams.components:DiagramValueLabel:caption}{caption}, when events that affect the caption occur.
+        }{}{}
+        \item \methoddesc{\proted}{}{void}{setCaption}{\type{String} caption}
+        {
+            Sets the \refer{\lblroot:view.diagrams.components:DiagramValueLabel:caption}{caption}.
+        }{
+            \begin{itemize}
+                \item \paramdesc{caption}{The new \refer{\lblroot:view.diagrams.components:DiagramValueLabel:caption}{caption}.}
             \end{itemize}
         }{}
         \item \methoddesc{\public}{}{String}{getCaption}{}
-        {}{}{}
+        {}{}{
+            \refer{\lblroot:view.diagrams.components:DiagramValueLabel:caption}{caption}.
+        }
         \item \methoddesc{\public}{}{void}{setBottomLeftInDiagram}{\type{Number} x1, \type{Number} y1}
         {}{
             \begin{itemize}
-                \item \paramdesc{x1}{}
-                \item \paramdesc{y1}{}
+                \item \paramdesc{x1}{The new x-Coordinate of the bottom left corner.}
+                \item \paramdesc{y1}{The new y-Coordinate of the bottom left corner.}
             \end{itemize}
         }{}
         \item \methoddesc{\public}{}{void}{setTopRightInDiagram}{\type{Number} x2, \type{Number} y2}
         {}{
             \begin{itemize}
-                \item \paramdesc{x2}{}
-                \item \paramdesc{y2}{}
+                \item \paramdesc{x2}{The new x-Coordinate of the top right corner.}
+                \item \paramdesc{y2}{The new y-Coordinate of the top right corner.}
             \end{itemize}
         }{}
         \item \methoddesc{\public}{}{PositionIn2DDiagram}{getBottomLeftInDiagram}{}
-        {}{}{}
+        {}{}{
+            \refer{\lblroot:view.diagrams.components:DiagramValueLabel:bottomLeft}{bottomLeft}
+        }
         \item \methoddesc{\public}{}{PositionIn2DDiagram}{getTopRightInDiagram}{}
-        {}{}{}
+        {}{}{
+            \refer{\lblroot:view.diagrams.components:DiagramValueLabel:topRight}{topRight}
+        }
     \end{itemize}
 }
 
-\absclassdesc{DiagramPoint}{}{
-    \begin{itemize}
-        \item \atrdesc{\private}{}{PositionIn2DDiagram}{position}{}
-        \item \atrdesc{\private}{}{Number}{size}{}
-    \end{itemize}
+\absclassdesc{DiagramPoint}{
+    \decl{\public \abstr \class DiagramPoint}{The abstract class inherited by the classes that represent a point on a \refer{\lblroot:view.diagrams.type:Diagram}{Diagram}.}
 }{
     \begin{itemize}
-        \item \constrdesc{\proted}{DiagramPoint}{\type{PositionIn2DDiagram} position, \type{Color} color, \type{Number} value, \type{Number} size}{}{
-            \begin{itemize}
-                \item \paramdesc{position}{}
-                \item \paramdesc{color}{}
-                \item \paramdesc{value}{}
-                \item \paramdesc{size}{}
-            \end{itemize}
-        }
+        \item \atrdesc{\private}{}{PositionIn2DDiagram}{position}{The position of the point in the \refer{\lblroot:view.diagrams.type:Diagram}{Diagram}.}
+        \item \atrdesc{\private}{}{Number}{size}{The size of the point.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -1385,44 +1510,52 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{setSize}{\type{Number} size}
-        {}{
+        \item \constrdesc{\proted}{DiagramPoint}{\type{PositionIn2DDiagram} position, \type{Color} color, \type{Number} value, \type{Number} size}{}{
             \begin{itemize}
-                \item \paramdesc{size}{}
+                \item \paramdesc{position}{The position of the point in the \refer{\lblroot:view.diagrams.type:Diagram}{Diagram}.}
+                \item \paramdesc{color}{The color of the point.}
+                \item \paramdesc{value}{The value that the point represents.}
+                \item \paramdesc{size}{The size of the point.}
             \end{itemize}
-        }{}
-        \item \methoddesc{\public}{}{Number}{getSize}{}
-        {}{}{}
-        \item \methoddesc{\public}{}{void}{setPositionInDiagram}{\type{Number} x, \type{Number} y}
-        {}{
-            \begin{itemize}
-                \item \paramdesc{x}{}
-                \item \paramdesc{y}{}
-            \end{itemize}
-        }{}
-        \item \methoddesc{\public}{}{PositionIn2DDiagram}{getPositionInDiagram}{}
-        {}{}{}
-    \end{itemize}
-}
-
-\absclassdesc{DiagramColorScale}{}{
-    \begin{itemize}
-        \item \atrdesc{\private}{}{PositionIn2DDiagram}{bottomLeft}{}
-        \item \atrdesc{\private}{}{PositionIn2DDiagram}{topRight}{}
-        \item \atrdesc{\private}{}{Number}{borderThickness}{}
+        }
     \end{itemize}
 }{
     \begin{itemize}
-        \item \constrdesc{\proted}{}{\type{PositionIn2DDiagram} bottomLeft, \type{PositionIn2DDiagram} topRight, \type{Color} borderColor, \type{Number[]} values, \type{Color[]} valueColors, \type{Number} borderThickness}{}{
+        \item \methoddesc{\public}{}{void}{setSize}{\type{Number} size}
+        {
+            Sets the \refer{\lblroot:view.diagrams.components:DiagramPoint:size}{size}.
+        }{
             \begin{itemize}
-                \item \paramdesc{bottomLeft}{}
-                \item \paramdesc{topRight}{}
-                \item \paramdesc{borderColor}{}
-                \item \paramdesc{values}{}
-                \item \paramdesc{valueColors}{}
-                \item \paramdesc{borderThickness}{}
+                \item \paramdesc{size}{The new \refer{\lblroot:view.diagrams.components:DiagramPoint:size}{size}.}
             \end{itemize}
+        }{}
+        \item \methoddesc{\public}{}{Number}{getSize}{}
+        {}{}{
+            \refer{\lblroot:view.diagrams.components:DiagramPoint:size}{size}.
         }
+        \item \methoddesc{\public}{}{void}{setPositionInDiagram}{\type{Number} x, \type{Number} y}
+        {}{
+            \begin{itemize}
+                \item \paramdesc{x}{The new x-Coordinate of the point in the \refer{\lblroot:view.diagrams.type:Diagram}{Diagram}.}
+                \item \paramdesc{y}{The new y-Coordinate of the point in the \refer{\lblroot:view.diagrams.type:Diagram}{Diagram}.}
+            \end{itemize}
+        }{}
+        \item \methoddesc{\public}{}{PositionIn2DDiagram}{getPositionInDiagram}{}
+        {}{}{
+            \refer{\lblroot:view.diagrams.components:DiagramPoint:position}{position}.
+        }
+    \end{itemize}
+}
+
+\absclassdesc{DiagramColorScale}{
+    \decl{\public \abstr \class}{The abstract class inherited by the classes that represent color scales in \refer{\lblroot:view.diagrams.type:Diagram}{Diagrams}. \descnote{The color scale will have an array of values and another array of the same size with colors. Each value that is not in the array, which lies in the range of the minimum and the maximum value, will have a mixture of the colors of the values, to which it is the nearest to.}}
+}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{PositionIn2DDiagram}{bottomLeft}{The position of the bottom left corner of the color scale.}
+        \item \atrdesc{\private}{}{PositionIn2DDiagram}{topRight}{The position of the top right corner of the color scale.}
+        \item \atrdesc{\private}{}{Number}{borderThickness}{The thickness of the border of the color scale.}
+        \item \atrdesc{\private}{}{Number[]}{values}{The values that have a certain color.}
+        \item \atrdesc{\private}{}{Color[]}{valueColors}{The colors that represent the values.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -1430,103 +1563,149 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     \end{itemize}
 }{
     \begin{itemize}
+        \item \constrdesc{\proted}{}{\type{PositionIn2DDiagram} bottomLeft, \type{PositionIn2DDiagram} topRight, \type{Color} borderColor, \type{Number[]} values, \type{Color[]} valueColors, \type{Number} borderThickness}
+        {
+            Constructs and initializes the instance. \refer{\lblroot:view.diagrams.components:DiagramColorScale:values}{Values} and \refer{\lblroot:view.diagrams.components:DiagramColorScale:valueColors}{ValueColors} must have the same sizes. A value with the index i v[i] will be associated with the valueColor at the same index c[i].
+        }{
+            \begin{itemize}
+                \item \paramdesc{bottomLeft}{The position of the bottom left corner of the color scale.}
+                \item \paramdesc{topRight}{The position of the top right corner of the color scale.}
+                \item \paramdesc{borderColor}{The color of the border of the color scale.}
+                \item \paramdesc{values}{The values that have a certain color.}
+                \item \paramdesc{valueColors}{The colors that represent the values.}
+                \item \paramdesc{borderThickness}{The thickness of the border of the color scale.}
+            \end{itemize}
+        }
+    \end{itemize}
+}{
+    \begin{itemize}
         \item \methoddesc{\public}{}{Color}{valueToColor}{\type{Number} value}
         {}{
             \begin{itemize}
-                \item \paramdesc{value}{}
+                \item \paramdesc{value}{The given value.}
             \end{itemize}
-        }{}
+        }{
+            The color, which corresponds to the given value.
+        }
         \item \methoddesc{\public}{}{Number[]}{getValues}{}
-        {}{}{}
+        {}{}{
+            \refer{\lblroot:view.diagrams.components:DiagramColorScale:values}{values}.
+        }
         \item \methoddesc{\public}{}{Color[]}{getColors}{}
-        {}{}{}
-        \item \methoddesc{\public}{\final}{Object[]}{matchingsAsArray}{}
-        {}{}{}
+        {}{}{
+            \refer{\lblroot:view.diagrams.components:DiagramColorScale:valueColors}{valueColors}.
+        }
         \item \methoddesc{\public}{}{void}{setBottomLeftInFrame}{\type{Number} x1, \type{Number} y1}
         {}{
             \begin{itemize}
-                \item \paramdesc{x1}{}
-                \item \paramdesc{y1}{}
+                \item \paramdesc{x1}{The new x-Coordinate of the bottom left corner of the color scale.}
+                \item \paramdesc{y1}{The new y-Coordinate of the bottom left corner of the color scale.}
             \end{itemize}
         }{}
         \item \methoddesc{\public}{}{void}{setTopRightInFrame}{\type{Number} x2, \type{Number} y2}
         {}{
             \begin{itemize}
-                \item \paramdesc{x2}{}
-                \item \paramdesc{y2}{}
+                \item \paramdesc{x2}{The new x-Coordinate of the top right corner of the color scale.}
+                \item \paramdesc{y2}{The new y-Coordinate of the top right corner of the color scale.}
             \end{itemize}
         }{}
         \item \methoddesc{\public}{}{PositionInFrame}{getBottomLeftInFrame}{}
-        {}{}{}
+        {}{}{
+            \refer{\lblroot:view.diagrams.components:DiagramColorScale:bottomLeft}{bottomLeft}.
+        }
         \item \methoddesc{\public}{}{PositionInFrame}{getTopRightInFrame}{}
-        {}{}{}
+        {}{}{
+            \refer{\lblroot:view.diagrams.components:DiagramColorScale:topRight}{topRight}.
+        }
     \end{itemize}
 }
 
-\classdesc{PositionInFrame}{}{
+\classdesc{PositionInFrame}{
+    \decl{\public \class PositionInFrame}{The class, which represents a position in the frame by storing the x- and y-Coordinates.}
+}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Number}{xPos}{}
-        \item \atrdesc{\private}{}{Number}{yPos}{}
+        \item \atrdesc{\private}{}{Number}{xPos}{The x-Coordinate in the frame.}
+        \item \atrdesc{\private}{}{Number}{yPos}{The y-Coordinate in the frame.}
     \end{itemize}
 }{
     \begin{itemize}
         \item \constrdesc{\public}{PositionInFrame}{\type{Number} xPos, \type{Number} yPos}{}{
             \begin{itemize}
-                \item \paramdesc{xPos}{}
-                \item \paramdesc{yPos}{}
+                \item \paramdesc{xPos}{The x-Coordinate in the frame.}
+                \item \paramdesc{yPos}{The y-Coordinate in the frame.}
             \end{itemize}
         }
     \end{itemize}
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{Number}{getXPos}{}
-        {}{}{}
+        {}{}{
+            \refer{\lblroot:view.diagrams.components:PositionInFrame:xPos}{xPos}.
+        }
         \item \methoddesc{\public}{}{void}{setXPos}{\type{Number} xPos}
-        {}{
+        {
+            Sets \refer{\lblroot:view.diagrams.components:PositionInFrame:xPos}{xPos} to the given one.
+        }{
             \begin{itemize}
-                \item \paramdesc{xPos}{}
+                \item \paramdesc{xPos}{The new x-Coordinate in the frame.}
             \end{itemize}
         }{}
         \item \methoddesc{\public}{}{Number}{getYPos}{}
-        {}{}{}
+        {}{}{
+            \refer{\lblroot:view.diagrams.components:PositionInFrame:yPos}{yPos}.
+        }
         \item \methoddesc{\public}{}{void}{setYPos}{\type{Number} yPos}
-        {}{
+        {
+            Sets \refer{\lblroot:view.diagrams.components:PositionInFrame:yPos}{yPos} to the given one.
+        }{
             \begin{itemize}
-                \item \paramdesc{yPos}{}
+                \item \paramdesc{yPos}{The new y-Coordinate in the frame.}
             \end{itemize}
         }{}
     \end{itemize}
 }
 
-\classdesc{PositionIn2DDiagram}{}{}{
+\classdesc{PositionIn2DDiagram}{
+    \decl{\public \class PositionIn2DDiagram}{The class that represents a position in a 2 dimensional \refer{\lblroot:view.diagrams:IDiagram}{IDiagram} according to its x- and y-axis.\descnote{The x- and y-coordinates and axes will be stored in \refer{\lblroot:view.diagrams.components:PositionInDiagram:positionsInAxes}{positionsInAxes} and \refer{\lblroot:view.diagrams.components:PositionInDiagram:axes}{axes} attributes of the \refer{\lblroot:view.diagrams.components:PositionInDiagram}{PositionInDiagram} instance.}}
+}{
+
+}{
     \begin{itemize}
         \item \constrdesc{\public}{PositionIn2DDiagram}{\type{DiagramAxis} xAxis, \type{Number} xCoordinate, \type{DiagramAxis} yAxis, \type{Number} yCoordinate}{}{
             \begin{itemize}
-                \item \paramdesc{xAxis}{}
-                \item \paramdesc{xCoordinate}{}
-                \item \paramdesc{yAxis}{}
-                \item \paramdesc{yCoordinate}{}
+                \item \paramdesc{xAxis}{The x-axis of the \refer{\lblroot:view.diagrams:IDiagram}{IDiagram}.}
+                \item \paramdesc{xPos}{The x-Coordinate on the x-axis of the \refer{\lblroot:view.diagrams:IDiagram}{IDiagram}.}
+                \item \paramdesc{yAxis}{The y-axis of the \refer{\lblroot:view.diagrams:IDiagram}{IDiagram}.}
+                \item \paramdesc{yPos}{The y-Coordinate on the x-axis of the \refer{\lblroot:view.diagrams:IDiagram}{IDiagram}.}
             \end{itemize}
         }
     \end{itemize}
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{setXCoordinate}{\type{Number} xCoordinate}
-        {}{
+        {
+            Sets the x-coordinate to the given one.
+        }{
             \begin{itemize}
-                \item \paramdesc{xCoordinate}{}
+                \item \paramdesc{xCoordinate}{The given x-coordinate.}
             \end{itemize}
         }{}
         \item \methoddesc{\public}{}{Number}{getXCoordinate}{}
-        {}{}{}
+        {}{}{
+            The x-coordinate.
+        }
         \item \methoddesc{\public}{}{void}{setYCoordinate}{\type{Number} yCoordinate}
-        {}{
+        {
+            Sets the y-coordinate to the given one.
+        }{
             \begin{itemize}
-                \item \paramdesc{yCoordinate}{}
+                \item \paramdesc{yCoordinate}{The given y-coordinate.}
             \end{itemize}
         }{}
         \item \methoddesc{\public}{}{Number}{getYCoordinate}{}
-        {}{}{}
+        {}{}{
+            The y-coordinate.
+        }
     \end{itemize}
 }
 
@@ -2412,75 +2591,114 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     \end{itemize}
 }{}
 }
+
 \packagedesc{view.representation}{
-\interfacedesc{ICellImageGenerator}{}{}{}{}
-\classdesc{CellImageGenerator}{protected class CellImageGenerator implements ICellImageGenerator}{
+\interfacedesc{ICellImageGenerator}{\interface ICellImageGenerator}{
+}{CellImageGenerator}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{BufferedImage}{pinIcon}{}
-        \item \atrdesc{\private}{}{BufferedImage}{cellIcon}{}
+        \item \methoddesc{\public}{}{void}{buildCell}{\type{int} inputPins, \type{int} outputPins}
+        {Builds a cell representation image with the given amount of input and output pins.
+}{
+        \begin{itemize}
+            \item \paramdesc{inputPins}{Number of input pins of the cell}
+            \item \paramdesc{outputPins}{Number of output pins of the cell.}
+        \end{itemize}}{}
+    \end{itemize}}
+
+    
+\classdesc{CellImageGenerator}{\proted \class CellImageGenerator implements ICellImageGenerator, import java.awt.image.BufferedImage
+}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{BufferedImage}{pinIcon}{Image for pins of a cell}
+        \item \atrdesc{\private}{}{BufferedImage}{cellIcon}{Image for a cell representation}
     \end{itemize}
 }{
     \begin{itemize}
         \item \constrdesc{\public}{CellImageGenerator}{}{}{}
     \end{itemize}
 }{  \begin{itemize}
-        \item \methoddesc{\public}{}{void}{buildCell}{int inputPins, int outputPins}
-        {}{}{}
+        \item \methoddesc{\public}{}{void}{buildCell}{\type{int} inputPins, \type{int} outputPins}
+        {Builds a cell representation image with the given amount of input and output pins.
+}{
+        \begin{itemize}
+            \item \paramdesc{inputPins}{Number of input pins of the cell}
+            \item \paramdesc{outputPins}{Number of output pins of the cell.}
+        \end{itemize}}{}
     \end{itemize}}{}
 \classdesc{DataPanel}{}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Label}{label}{}
-        \item \atrdesc{\private}{}{String}{Text}{}
+        \item \atrdesc{\private}{}{Label}{label}{Label for the data text.}
+        \item \atrdesc{\private}{}{String}{text}{Certain information about the opened liberty file.}
     \end{itemize}
 }{
     \begin{itemize}
         \item \constrdesc{\public}{DataPanel}{}{}{}
     \end{itemize}}{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{setText}{String text}
-        {}{}{}
+        \item \methoddesc{\public}{}{void}{setText}{\type{String} text}
+        {Changes the text in the data panel.
+}{
+        \begin{itemize}
+            \item \paramdesc{text}{New data to be shown on the data panel.}
+        \end{itemize}
+        }{}
     \end{itemize}}{}
 \classdesc{CellPanel}{}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Label}{label}{}
-        \item \atrdesc{\private}{}{Button[]}{buttons}{}
-        \item \atrdesc{\private}{}{Checkbox[]}{checkboxes}{}
-        \item \atrdesc{\private}{}{Element}{cell}{}
-        \item \atrdesc{\private}{}{Element[]}{pins}{}
-        \item \atrdesc{\private}{}{BufferedImage}{cellImage}{}
-        \item \atrdesc{\private}{}{CellImageGenerator}{cellGenerator}{}
+        \item \atrdesc{\private}{}{Label}{label}{Label for the text on the cell panel}
+        \item \atrdesc{\private}{}{Button[]}{buttons}{Array of all buttons for the pins}
+        \item \atrdesc{\private}{}{Checkbox[]}{checkboxes}{Checkboxes for the used pins}
+        \item \atrdesc{\private}{}{Element}{cell}{Cell opened in the visualizer.}
+        \item \atrdesc{\private}{}{Element[]}{pins}{Pins of the opened cell.}
+        \item \atrdesc{\private}{}{BufferedImage}{cellImage}{Cell image which is generated by the cellGenerator.}
+        \item \atrdesc{\private}{}{CellImageGenerator}{cellGenerator}{Builds the cell representation image}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \constrdesc{\public}{CellPanel}{Element element}{}{}
+        \item \constrdesc{\public}{CellPanel}{\type{Element} element}{}{
+        \begin{itemize}
+            \item \paramdesc{element}{Pin/Cell to be opened in the cell panel.}
+        \end{itemize}
+        }
     \end{itemize}
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{switchToLibrary}{}
-        {}{}{}
-        \item \methoddesc{\public}{}{void}{switchToPin}{Element element}
-        {}{}{}
-        \item \methoddesc{\public}{}{void}{switchToCell}{Element element}
-        {}{}{}
+        {Switches to the parent library panel.}{}{}
+        \item \methoddesc{\public}{}{void}{switchToPin}{\type{Element} element}
+        {Switches the panel for a selected pin of the cell.}{
+        \begin{itemize}
+            \item \paramdesc{element}{Target pin}
+        \end{itemize}}{}
+        \item \methoddesc{\public}{}{void}{switchToCell}{\type{Element} element}
+        {Switches the panel for the parent cell.}{
+        \begin{itemize}
+            \item \paramdesc{element}{Target cell}
+        \end{itemize}
+        }{}
     \end{itemize}
 }{}
 \classdesc{LibraryPanel}{}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{List<Button>}{buttons}{}
-        \item \atrdesc{\private}{}{List<Cell>}{cells}{}
-        \item \atrdesc{\private}{}{Library}{selectedLibrary}{}
+        \item \atrdesc{\private}{}{List<Button>}{buttons}{List of the buttons for each cell.}
+        \item \atrdesc{\private}{}{List<Cell>}{cells}{List of every cell in the library}
+        \item \atrdesc{\private}{}{Library}{selectedLibrary}{Library which has been opened in the visualizer.}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \constrdesc{\public}{LibraryPanel}{Library Library}{}{}
+        \item \constrdesc{\public}{LibraryPanel}{\type{Library} Library}{}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{switchToCell}{Element element}
-        {}{}{}
+        \item \methoddesc{\public}{}{void}{switchToCell}{\type{Element} element}
+        {Switches from the library panel to the cell panel of the selected cell.}{
+        \begin{itemize}
+            \item \paramdesc{element}{Target cell.}
+        \end{itemize}}{}
     \end{itemize}
 }{}
 }
+
 
 \packagedesc{model.elements.attributes}{
 \absclassdesc{Attribute}{Attribute class}
@@ -2493,22 +2711,257 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     \item \implclsdec{InAttribute}
     \item \implclsdec{OutAttribute}
 \end{itemize}
-}{}{}
-
-\absclassdesc{InAttribute}{}{}{}{}{}
-\absclassdesc{OutAttribute}{}{}{}{}{}
-\classdesc{Leakage}{}{}{}{}
-\classdesc{InputPower}{}{}{}{}
-\classdesc{OutputPower}{}{}{}{}
-\classdesc{Timing}{}{}{}{}
-\enumdesc{PowerGroup}{}{}{}
-\enumdesc{TimingGroup}{}{}{}
-\enumdesc{TimingType}{}{}{}
-\enumdesc{TimingSense}{}{}{}
 }
+{a}
+{
+\begin{itemize}
+        \item \methoddesc{\public}{}{void}{calculate}{}{}
+        {}{}
+        \item \methoddesc{\private}{}{void}{scale}{\type{float} value}
+        {{\begin{itemize}
+        \item \paramdesc{value} {The scaling value.}
+        \end{itemize}}}{}{}
+        \item \methoddesc{\public}{}{\type{Stats}}{getStats}{}{}{}{
+        
+        Stats will be returned.}
+\end{itemize}
+}
+
+\absclassdesc{InAttribute}{}
+{\begin{itemize}
+    \item \atrdesc{\proted}{}{\type{float[]}}{index1}{}
+    \item \atrdesc{\proted}{}{\type{float[]}}{values}{}
+\end{itemize}}
+{\begin{itemize}
+    \item \implclsdec{InputPower}
+\end{itemize}}
+{a}
+{\begin{itemize}
+        \item \methoddesc{\public}{}{void}{calculate}{}{}
+        {}{}
+        \item \methoddesc{\public}{}{void}{scale}{\type{float} value}
+        {{\begin{itemize}
+        \item \paramdesc{value} {The scaling value.}
+        \end{itemize}}}{}{}
+        \item \methoddesc{\public}{}{\type{float[]}}{getIndex1}{}{}{}{
+        
+        1-dimensional index will be returned.}
+        \item \methoddesc{\public}{}{\type{float[]}}{getValues}{}{}{}{
+        
+        The array of values will be returned.}
+        \item \methoddesc{\public}{}{void}{setIndex1}{\type{float[]} index}
+        {{\begin{itemize}
+        \item \paramdesc{index} {The 1-dimensional index of the input pin attributes.}
+        \end{itemize}}}{}{}
+        \item \methoddesc{\public}{}{void}{setValues}{\type{float[]} values}
+        {{\begin{itemize}
+        \item \paramdesc{values} {The array of input pin attribute values.}
+        \end{itemize}}}{}{}
+\end{itemize}}
+
+
+\absclassdesc{OutAttribute}{}
+{\begin{itemize}
+    \item \atrdesc{\proted}{}{\type{float[]}}{index1}{}
+    \item \atrdesc{\proted}{}{\type{float[]}}{index2}{}
+    \item \atrdesc{\proted}{}{\type{float[][]}}{values}{}
+    \item \atrdesc{\proted}{}{\type{InputPin}}{relatedPin}{}
+\end{itemize}}
+{\begin{itemize}
+    \item \implclsdec{OutputPower}
+    \item \implclsdec{Timing}
+\end{itemize}}
+{a}
+{\begin{itemize}
+        \item \methoddesc{\public}{}{void}{calculate}{}{}
+        {}{}
+        \item \methoddesc{\public}{}{void}{scale}{\type{float} value}
+        {{\begin{itemize}
+        \item \paramdesc{value} {The scaling value.}
+        \end{itemize}}}{}{}
+        \item \methoddesc{\public}{}{\type{float[]}}{getIndex1}{}{}{}{
+        
+        1-dimensional first index array will be returned.}
+        \item \methoddesc{\public}{}{\type{float[]}}{getIndex2}{}{}{}{
+        
+        1-dimensional second index array will be returned.}
+        \item \methoddesc{\public}{}{\type{float[][]}}{getValues}{}{}{}{
+        
+        The array of values will be returned.}
+        \item \methoddesc{\public}{}{void}{setIndex1}{\type{float[]} index}
+        {{\begin{itemize}
+        \item \paramdesc{index} {The 1-dimensional first index array of the output pin attributes.}
+        \end{itemize}}}{}{}
+        \item \methoddesc{\public}{}{void}{setIndex2}{\type{float[]} index}
+        {{\begin{itemize}
+        \item \paramdesc{index} {The 1-dimensional second index array of the output pin attributes.}
+        \end{itemize}}}{}{}
+        \item \methoddesc{\public}{}{void}{setValues}{\type{float[][]} values}
+        {{\begin{itemize}
+        \item \paramdesc{values} {The array of input pin attribute values.}
+        \end{itemize}}}{}{}
+        \item
+        \methoddesc{\public}{}{void}{setRelatedPin}{\type{InputPin} inpin}
+        {{\begin{itemize}
+        \item \paramdesc{inpin} {The input pin that the output pin is going to be related to.}
+        \end{itemize}}}{}{}
+\end{itemize}}
+
+
+\classdesc{Leakage}{}
+{\begin{itemize}
+    \item \atrdesc{\private}{}{\type{float[]}}{values}{}
+\end{itemize}}
+{\begin{itemize}
+        \item \constrdesc{\public}{Leakage}{\type{float[]} values}{{\begin{itemize}
+        \item \paramdesc{values} {The array of leakages of a cell.}
+        \end{itemize}}}{}
+    \end{itemize}}
+{}
+
+
+\classdesc{InputPower}{}
+{\begin{itemize}
+    \item \atrdesc{\private}{}{\type{PowerGroup}}{powgroup}{}
+\end{itemize}}
+{{\begin{itemize}
+        \item \constrdesc{\public}{InputPower}{{\type{PowerGroup} powgroup, \type{float[]} values}}
+        {{\begin{itemize}
+        \item \paramdesc{powgroup} {The power group of the values.}
+        \item \paramdesc{values} {The array of power values of an input pin.}
+        \end{itemize}}}{}
+    \end{itemize}}}{}
+    
+    
+\classdesc{OutputPower}{}
+{\begin{itemize}
+    \item \atrdesc{\private}{}{\type{PowerGroup}}{powgroup}{}
+\end{itemize}}
+{\begin{itemize}
+        \item \constrdesc{\public}{OutputPower}{{\type{PowerGroup} powgroup, \type{float[][]} values}}
+        {{\begin{itemize}
+        \item \paramdesc{powgroup} {The power group of the values.}
+        \item \paramdesc{values} {The 2 dimensional array of power values of an output pin.}
+        \end{itemize}}}{}
+    \end{itemize}}
+{}
+
+
+\classdesc{Timing}{}
+{\begin{itemize}
+    \item \atrdesc{\private}{}{\type{TimingSense}}{timsense}{}
+    \item \atrdesc{\private}{}{\type{TimingType}}{timtype}{}
+    \item \atrdesc{\private}{}{\type{TimingGroup}}{timgroup}{}
+\end{itemize}}
+{\begin{itemize}
+        \item \constrdesc{\public}{Timing}{{\type{TimingSense} timsense, \type{TimingType} timtype, \type{TimingGroup} timgroup, \type{InputPin} relatedPin, \type{float[][]} values}}
+        {{\begin{itemize}
+        \item \paramdesc{timsense} {The timing sense of the values.}
+        \item \paramdesc{timtype} {The timing type of the values.}
+        \item \paramdesc{timgroup} {The timing group of the values.}
+        \item \paramdesc{relatedPin} {The input pin that is related to the output pin for the values.}
+        \item \paramdesc{values} {The 2 dimensional array of the values.}
+        \end{itemize}}}{}
+    \end{itemize}}
+{}
+
+\enumdesc{PowerGroup}
+{
+Keeps track of the power group of the input or output pin.
+}{
+    \begin{itemize}
+        \item \fielddesc{PowerGroup}{RISEPOWER}{RisePower: RisePower of the input or output pin.}
+        \item \fielddesc{PowerGroup}{FALLPOWER}{FallPower: FallPower of the input or output pin.}
+        \item \fielddesc{PowerGroup}{POWER}{Power: Default power of the input or output pin.}
+    \end{itemize}
+}{}
+
+
+
+\enumdesc{TimingGroup}
+{
+Keeps track of the timing group of the output pin.
+}{
+    \begin{itemize}
+        \item \fielddesc{TimingGroup}{CELLRISE}{}
+        \item
+        \fielddesc{TimingGroup}{CELLFALL}{}
+        \item \fielddesc{TimingGroup}{FALLTRANSITION}{}
+        \item \fielddesc{TimingGroup}{RISETRANSITION}{}
+    \end{itemize}
+}{}
+
+
+
+\enumdesc{TimingType}
+{
+Keeps track of the timing type of the output pin.
+}{
+    \begin{itemize}
+        \item \fielddesc{TimingType}{COMBINATIONAL}{}
+        \item \fielddesc{TimingType}{COMBRISE}{}
+        \item \fielddesc{TimingType}{COMBFALL}{}
+        \item \fielddesc{TimingType}{TSDISABLE}{}
+        \item \fielddesc{TimingType}{TSENABLE}{}
+        \item \fielddesc{TimingType}{TSDISABLERISE}{}
+        \item \fielddesc{TimingType}{TSDISABLEFALL}{}
+        \item \fielddesc{TimingType}{TSENABLERISE}{}
+        \item \fielddesc{TimingType}{TSENABLEFALL}{}
+    \end{itemize}
+}{}
+\enumdesc{TimingSense}
+{
+Keeps track of the timing sense of the output pin.
+}{
+    \begin{itemize}
+        \item \fielddesc{TimingSense}{POSITIVE}{}
+        \item
+        \fielddesc{TimingSense}{NEGATIVE}{}
+        \item \fielddesc{TimingSense}{NON}{}
+    \end{itemize}
+}{}
+}
+
+
 \packagedesc{model.elements}{
-\absclassdesc{Element}{}{}{}{}{}
-\absclassdesc{HigherElement}{}{}{}{}{}
+
+\absclassdesc{Element}{}
+{\begin{itemize}
+    \item \atrdesc{\proted}{}{\type{boolean}}{filtered}{}
+    \item \atrdesc{\proted}{}{\type{boolean}}{searched}{}
+    \item \atrdesc{\proted}{}{\type{String}}{name}{}
+\end{itemize}}
+{\begin{itemize}
+    \item \implclsdec{HigherElement}
+    \item \implclsdec{Pin}
+\end{itemize}}
+{a}
+{\begin{itemize}
+        \item \methoddesc{\public}{}{void}{calculate}{}{}
+        {}{}
+        \item \methoddesc{\public}{}{\type{int}}{compare}{\type{Element} firstEl, \type{Element} secondEl}{}{}{
+        
+        An integer will be returned.}
+\end{itemize}
+}
+{}
+
+
+
+\absclassdesc{HigherElement}{}
+{\begin{itemize}
+    \item \atrdesc{\proted}{}{\type{ArrayList<\type{TimingSense}>}}{availableTimSen}{}
+    \item \atrdesc{\proted}{}{\type{boolean}}{searched}{}
+    \item \atrdesc{\proted}{}{\type{String}}{name}{}
+\end{itemize}}
+{\begin{itemize}
+    \item \implclsdec{HigherElement}
+    \item \implclsdec{Pin}
+\end{itemize}}
+{a}
+{}{}
+
+
 \classdesc{Library}{}{}{}{}
 \classdesc{Cell}{}{}{}{}
 \absclassdesc{Pin}{}{}{}{}{}
@@ -2516,6 +2969,9 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 \classdesc{OutputPin}{}{}{}{}
 \classdesc{Stat}{}{}{}{}
 }
+
+
+
 \packagedesc{model.commands}{
 \interfacedesc{Command}
     {
@@ -2861,7 +3317,9 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     }{}
 }
 \packagedesc{model.parsers}{
-\classdesc{LibertyParser}{}{}{
+\classdesc{LibertyParser}{
+Provides functionality to parse pieces of Liberty File text format into their corresponding data objects.
+}{}{
     \begin{itemize}
         \item \constrdesc{\private}{LibertyParser}{}{}{}
     \end{itemize}
@@ -2919,7 +3377,9 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     \end{itemize}
 }
 
-\classdesc{CSVCompiler}{}{}{
+\classdesc{CSVCompiler}{
+Provides functionality to compile Element Data Objects into their corresponding CSV text format.
+}{}{
     \begin{itemize}
         \item \constrdesc{\private}{CSVCompiler}{}{}{}
     \end{itemize}
@@ -2945,7 +3405,9 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         }{}
     \end{itemize}
 }{}
-\classdesc{LibertyCompiler}{}{}{
+\classdesc{LibertyCompiler}{
+Provides functionality to compile Element Data Objects into their corresponding Liberty File text format.
+}{}{
     \begin{itemize}
         \item \constrdesc{\private}{LibertyCompiler}{}{}{}
     \end{itemize}
@@ -2974,7 +3436,16 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 }
 
 \packagedesc{model.project}{
-\classdesc{Model}{}{}{
+\classdesc{Model}{
+Keeps track of the objects of the entire model package by ensuring the singularity of Project, Settings and Shortcuts classes as well as managing their Files.
+}{
+    \begin{itemize}
+        \item \atrdesc{\private}{\static}{Model}{instance}{The single instance of the Model class}
+        \item \atrdesc{\private}{}{Project}{currentProject}{The active Project class}
+        \atrdesc{\private}{}{Settings}{currentSettings}{The active Settings class}
+        \atrdesc{\private}{}{Project}{currentShortcuts}{The active Shortcuts class}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\private}{Model}{}{}{}
     \end{itemize}
@@ -2997,8 +3468,16 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         \item \methoddesc{\public}{}{void}{notify}{}
         {Notifies the view of made changes}{}{}
     \end{itemize}
-}{}{}
-\classdesc{Project}{}{}{
+}
+\classdesc{Project}{
+Keeps track of the Elements loaded into the program and manages their Files
+}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{ArrayList<Library>}{libraries}{The array that keeps track of the libraries loaded into the program}
+        \item \atrdesc{\private}{}{HashSet<Element>}{selectedElements}{The Set that keeps track of the selected elements}
+        \atrdesc{\private}{}{HashSet<Element>}{openedInTextElements}{The Set that keeps track of the elements opened in a text editor}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\public}{Project}{}{}{}
     \end{itemize}
@@ -3024,7 +3503,9 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         }{}
     \end{itemize}
 }{}
-\classdesc{Interpolation}{}{}{
+\classdesc{Interpolator}{
+Provides interpolation functionality.
+}{}{
     \begin{itemize}
         \item \constrdesc{\public}{Intepolator}{}{}{}
     \end{itemize}
@@ -3054,14 +3535,18 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 }{}
 
 \classdesc{Shortcuts}{
-Maps the characters from pressed Key events with their corresponding Actions with the COMMAND enum.}{}{
+Maps the characters from pressed Key events with their corresponding Actions with the Event enum.}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{HashMap<char, Event>}{commands}{The map of characters and their corresponding actions}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\public}{Shortcuts}{}{}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{setKey}{\type{char} key, \type{COMMAND} action}
-        {Binds a char key to the action in the model}{
+        \item \methoddesc{\public}{}{void}{setKey}{\type{char} key, \type{Event} action}
+        {Binds a char key to the event in the controller}{
         \begin{itemize}
                 \item \paramdesc{key}{The pressed key.}
                 \item \paramdesc{action}{The action that corresponds to the key.}
@@ -3075,7 +3560,7 @@ Maps the characters from pressed Key events with their corresponding Actions wit
         }{}
         \item \methoddesc{\public}{}{ArrayList<char>}{getKeys}{}
         {Returns all the set char keys}{}{}
-        \item \methoddesc{\public}{}{COMMAND}{getAction}{\type{char} key}
+        \item \methoddesc{\public}{}{Event}{getAction}{\type{char} key}
         {Returns the action corresponding to a keystroke char}{
         \begin{itemize}
                 \item \paramdesc{key}{The pressed key.}
@@ -3083,7 +3568,9 @@ Maps the characters from pressed Key events with their corresponding Actions wit
         }{}
     \end{itemize}
 }{}
-\classdesc{FileManager}{}{}{
+\classdesc{FileManager}{
+Provides functionality to save and load Files.
+}{}{
     \begin{itemize}
         \item \constrdesc{\public}{FileManager}{}{}{}
     \end{itemize}
@@ -3110,14 +3597,24 @@ Maps the characters from pressed Key events with their corresponding Actions wit
         }{}
     \end{itemize}
 }{}
-\classdesc{Filter}{}{}{
+\classdesc{Filter}{
+Keeps track of the filters, a filters specific data and provides filtering functionality.
+}{
+    \begin{itemize}
+        \item \atrdesc{\private}{\static}{ArrayList<Filter>}{filters}{The array list of all currently active filters}
+        \item \atrdesc{\private}{}{Attribute}{attribute}{The attribute that is being filtered.}
+        \atrdesc{\private}{}{Mode}{mode}{The way the filtered attribute is calculated.}
+        \atrdesc{\private}{}{float}{value}{The value that the attribute is being compared to.}
+        \atrdesc{\private}{}{Operation}{operation}{The operation that is being executed in the filter.}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\public}{Filter}{\type{Attribute} attribute, \type{Mode} mode, \type{float} value, \type{Operation} operation}{}{
         \begin{itemize}
-            \item \paramdesc{attribute}{The attribute that is being filtered.}
-            \item \paramdesc{mode}{The way the filtered attribute is calculated.}
-            \item \paramdesc{value}{The value that the attribute is being compared to.}
-            \item \paramdesc{operation}{The operation that is being executed in the filter.}
+            \item \paramdesc{attribute}{}
+            \item \paramdesc{mode}{}
+            \item \paramdesc{value}{}
+            \item \paramdesc{operation}{}
         \end{itemize}
         }
     \end{itemize}
@@ -3131,7 +3628,19 @@ Maps the characters from pressed Key events with their corresponding Actions wit
         {Loads the saved array of Filters from program files into the current Filter class.}{}{}
     \end{itemize}
 }{}
-\classdesc{Settings}{}{}{
+\classdesc{Settings}{
+Keeps track off the settings
+}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Language}{currentLanguage}{The currently active Language}
+        \item \atrdesc{\private}{}{ColorTheme}{colors}{The currently active ColorTheme}
+        \atrdesc{\private}{}{String}{fontType}{The set Font type}
+        \atrdesc{\private}{}{int}{fontSize}{Ther set Font Size}
+        \atrdesc{\private}{}{int}{barCount}{The number of bars set to be displayed in a bar chart}
+        \atrdesc{\private}{}{int}{undoCount}{The set number of undoable Actions saved in the ActionHistory}
+        \atrdesc{\private}{}{boolean}{editorOpenedFirst}{If true, the Text Editor opens first upon opening an Element in the works space.}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\public}{Settings}{}{}{}
     \end{itemize}
@@ -3198,7 +3707,13 @@ Maps the characters from pressed Key events with their corresponding Actions wit
     \end{itemize}
 }{}
 
-\classdesc{ColorTheme}{}{}{
+\classdesc{ColorTheme}{
+Stores the colors included in the color theme.
+}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{int[]}{colors}{The colors corresponding to the theme}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\public}{ColorTheme}{}{}{}
     \end{itemize}
@@ -3208,26 +3723,22 @@ Maps the characters from pressed Key events with their corresponding Actions wit
         {}{}{}
     \end{itemize}
 }
-\classdesc{Language}{}{}{
+\classdesc{Language}{
+Stores the snippets of text that correspond to a specific language
+}{
     \begin{itemize}
-        \item \constrdesc{\public}{Language}{}{}{}
+        \item \atrdesc{\private}{}{String[]}{librety}{The element, attributes, modes names in the specified language}
+        \atrdesc{\private}{}{String[]}{menus}{The interface menu names in the specified language}
+        \atrdesc{\private}{}{String[]}{methods}{The method names in the specified language}
+        \atrdesc{\private}{}{String[]}{attributes}{The attribute names in the specified language}
+        \atrdesc{\private}{}{String[]}{errors}{The error texts in the specified language}
+        \atrdesc{\private}{}{String[]}{misc}{any other text element in the specified language}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{String}{getAppName}{}
-        {}{}{}
-        \item \methoddesc{\public}{\static}{String[]}{getElements}{}
-        {}{}{}
-        \item \methoddesc{\public}{\static}{String[]}{getMenus}{}
-        {}{}{}
-        \item \methoddesc{\public}{\static}{String[]}{getMethods}{}
-        {}{}{}
-        \item \methoddesc{\public}{\static}{String[]}{getAttributes}{}
-        {}{}{}
-        \item \methoddesc{\public}{\static}{String[]}{getText}{}
-        {}{}{}
+        \item \constrdesc{\public}{Language}{}{}{}
     \end{itemize}
-}
+}{}
 \enumdesc{Mode}{
 Keeps track of the mode used to calculate the attribute used on the filter
 }{
@@ -3273,12 +3784,14 @@ Keeps track of the mode used to calculate the attribute used on the filter
 \classdesc{TooManySelectedException}{}{}{}{}{}
 }
 
+
 \packagedesc{controller.listeners}{
 \classdesc{EventManager}{public class EventManager}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{MainWindow}{view}{ }
-        \item \atrdesc{\private}{}{Model}{model}{}
-        \item \atrdesc{\private}{}{List<ActionListener>}{listeners}{List of all listeners for initialization and subscription}
+        \item \atrdesc{\private}{}{MainWindow}{view}{Application GUI}
+        \item \atrdesc{\private}{}{Model}{model}{Main model data}
+        \item \atrdesc{\private}{}{Map<Events,ActionListener>}{listeners}{Map of all view listeners for subscription and initialization.}
+        \atrdesc{\private}{}{List<IObserver>}{handlers}{List of all model listeners}
     \end{itemize}
     }{
     \begin{itemize}
@@ -3286,16 +3799,58 @@ Keeps track of the mode used to calculate the attribute used on the filter
     \end{itemize}
 }{ 
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{initListeners}{}{}{}{}
-        \item \methoddesc{\public}{}{void}{removeListener}{\type{EventListener} listener}{}{}{}
-        \item \methoddesc{\public}{}{void}{subscribeHandlers}{}{}{}{}
-        \item \methoddesc{\public}{}{void}{removeHandlers}{\type{IObserver} handlers}{}{}{}
-        \item \methoddesc{\public}{}{void}{notifyHandlers}{\type{Model} model}{}{}{}
+        \item \methoddesc{\public}{}{Map<Events, EventListener>}{getListeners}{}{Initializes the view listeners}{}{}
+        \item \methoddesc{\public}{}{void}{subscribeHandlers}{}{Registers the update handlers}{}{}
+        \item \methoddesc{\public}{}{void}{removeHandler}{\type{IObserver} handlers}{Unsubscribes a handler}{}{}
+        \item \methoddesc{\public}{}{void}{notifyHandlers}{\type{Model} model}{Notifies the handlers of the changes in the model.}{
+        \begin{itemize}
+            \item \paramdesc{model}{Current model class}
+            \end{itemize}}{}
     \end{itemize}}{}
-\classdesc{LoadLibraryListener}{}{
+
+\enumdesc{Event}
+{
+Identifies each view listener for subscription.
+}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
-        \item \atrdesc{\private}{}{File}{file}{}
+        \item \fielddesc{Event}{LOAD}{}
+        \item\fielddesc{Event}{OPEN}{}
+        \item \fielddesc{Event}{DELETE}{}
+        \item \fielddesc{Event}{REMOVE}{}
+        \item \fielddesc{Event}{SAVE}{}
+        \item \fielddesc{Event}{SAVEAS}{}
+        \item \fielddesc{Event}{SELECT}{}
+        \item \fielddesc{Event}{EDIT}{}
+        \item \fielddesc{Event}{RENAME}{}
+        \item \fielddesc{Event}{MERGE}{}
+        \item \fielddesc{Event}{COPY}{}
+        \item \fielddesc{Event}{MOVE}{}
+        \item \fielddesc{Event}{PASTE}{}
+        \item \fielddesc{Event}{UNDO}{}
+        \item \fielddesc{Event}{REDO}{}
+        \item \fielddesc{Event}{SCALE}{}
+        \item \fielddesc{Event}{COMPARE}{}
+        \item \fielddesc{Event}{INTERPOLATE}{}
+        \item \fielddesc{Event}{ADDFILTER}{}
+        \item \fielddesc{Event}{REMOVEFILTER}{}
+        \item \fielddesc{Event}{LOADPROJECT}{}
+        \item \fielddesc{Event}{SCSETTINGS}{}
+        \item \fielddesc{Event}{PRSETTINGS}{}
+        \item \fielddesc{Event}{LASETTINGS}{}
+        \item \fielddesc{Event}{ATTRDROPDOWN}{}
+        \item \fielddesc{Event}{GRAPHDROPDOWN}{}
+        \item \fielddesc{Event}{SUBATTRDROPDOWN}{}
+        \item \fielddesc{Event}{PIN}{}
+        \item \fielddesc{Event}{STATISTICS}{}
+    \end{itemize}
+}{}
+
+
+
+\classdesc{LoadLibraryListener}{Listener for loading a liberty file into the app}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Command}{command}{Command for loading a liberty file}
+        \item \atrdesc{\private}{}{File}{file}{To be loaded file}
     \end{itemize}
 }{
     \begin{itemize}
@@ -3304,14 +3859,16 @@ Keeps track of the mode used to calculate the attribute used on the filter
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}}{}
     \end{itemize}
 }{}
-\classdesc{OpenElementListener}{
+\classdesc{OpenElementListener}{Listener for opening a file in the working area.
 }{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
-        \item \atrdesc{\private}{}{Element}{element}{}
+        \item \atrdesc{\private}{}{Command}{command}{Command for opening a liberty file in working area}
+        \item \atrdesc{\private}{}{Element}{element}{Opened element}
     \end{itemize}
 }{
     \begin{itemize}
@@ -3323,11 +3880,10 @@ Keeps track of the mode used to calculate the attribute used on the filter
         {}{}{}
     \end{itemize}
     }{}
-\classdesc{DeleteCellListener}{
-}{
+\classdesc{DeleteCellListener}{Listener for deleting a cell.}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
-        \item \atrdesc{\private}{}{Cell[]}{cells}{}
+        \item \atrdesc{\private}{}{Command}{command}{Command for deleting a cell.}
+        \item \atrdesc{\private}{}{Cell[]}{cells}{Cells to be deleted.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -3339,10 +3895,10 @@ Keeps track of the mode used to calculate the attribute used on the filter
         {}{}{}
     \end{itemize}
 }{}
-\classdesc{RemoveListener}{}{
+\classdesc{RemoveListener}{Listener for removing a file from the project.}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
-        \item \atrdesc{\private}{}{Element[]}{elements}{}
+        \item \atrdesc{\private}{}{Command}{command}{Command for removing a library}
+        \item \atrdesc{\private}{}{Element[]}{elements}{Libraries to be removed.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -3354,10 +3910,10 @@ Keeps track of the mode used to calculate the attribute used on the filter
         {}{}{}
     \end{itemize}
 }{}
-\classdesc{SelectListener}{}{
+\classdesc{SelectListener}{Listener for selections in the outliner.}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
-        \item \atrdesc{\private}{}{Element[]}{element}{}
+        \item \atrdesc{\private}{}{Command}{command}{Command for selecting elements in the outliner.}
+        \item \atrdesc{\private}{}{Element[]}{element}{Selected elements}
     \end{itemize}
 }{
     \begin{itemize}
@@ -3368,11 +3924,11 @@ Keeps track of the mode used to calculate the attribute used on the filter
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{EditListener}{}{
+\classdesc{EditListener}{Listener for changed values in the text editor.}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
-        \item \atrdesc{\private}{}{Element}{element}{}
-        \item \atrdesc{\private}{}{String}{newText}{}
+        \item \atrdesc{\private}{}{Command}{command}{Command for editing a liberty file in the text editor}
+        \item \atrdesc{\private}{}{Element}{element}{Edited liberty file}
+        \item \atrdesc{\private}{}{String}{newText}{Edited text in liberty file.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -3383,10 +3939,10 @@ Keeps track of the mode used to calculate the attribute used on the filter
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{RenameListener}{}{
+\classdesc{RenameListener}{Listener for renaming in the outliner.}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
-        \item \atrdesc{\private}{}{Element}{element}{}
+        \item \atrdesc{\private}{}{Command}{command}{Command for renaming an element.}
+        \item \atrdesc{\private}{}{Element}{element}{To be renamed element.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -3397,9 +3953,9 @@ Keeps track of the mode used to calculate the attribute used on the filter
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{SaveListener}{}{
+\classdesc{SaveListener}{Listener for saving changes made in the liberty file}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Model}{model}{}
+        \item \atrdesc{\private}{}{Model}{model}{Model holding the project data.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -3410,9 +3966,9 @@ Keeps track of the mode used to calculate the attribute used on the filter
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{SaveAsListener}{}{
+\classdesc{SaveAsListener}{Listener for saving changes made in the liberty file as a new file.}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Model}{model}{}
+        \item \atrdesc{\private}{}{Model}{model}{Model holding tghe project data.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -3423,10 +3979,10 @@ Keeps track of the mode used to calculate the attribute used on the filter
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{MergeListener}{}{
+\classdesc{MergeListener}{Listener for merging multiple libraries}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
-        \item \atrdesc{\private}{}{Library[]}{libraries}{}
+        \item \atrdesc{\private}{}{Command}{command}{Command for merging action}
+        \item \atrdesc{\private}{}{Library[]}{libraries}{Libraries selected for merge action.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -3437,9 +3993,9 @@ Keeps track of the mode used to calculate the attribute used on the filter
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{ScaleListener}{}{
+\classdesc{ScaleListener}{Listener for scaling.}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
+        \item \atrdesc{\private}{}{Command}{command}{Command for scaling action}
     \end{itemize}
 }{
     \begin{itemize}
@@ -3450,9 +4006,9 @@ Keeps track of the mode used to calculate the attribute used on the filter
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{InterpolationListener}{}{
+\classdesc{InterpolationListener}{Listener for interpolation action.}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
+        \item \atrdesc{\private}{}{Command}{command}{Command for interpolation action.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -3463,9 +4019,9 @@ Keeps track of the mode used to calculate the attribute used on the filter
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{UndoListener}{}{
+\classdesc{UndoListener}{Listener for the undo button.}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
+        \item \atrdesc{\private}{}{Command}{command}{Command for the undo action.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -3476,9 +4032,9 @@ Keeps track of the mode used to calculate the attribute used on the filter
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{RedoListener}{}{
+\classdesc{RedoListener}{Listener for the redo button.}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
+        \item \atrdesc{\private}{}{Command}{command}{Command for the redo action.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -3489,7 +4045,7 @@ Keeps track of the mode used to calculate the attribute used on the filter
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{StatisticsListener}{}{
+\classdesc{StatisticsListener}{Listener for the statistics checkboxes.}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{}
     \end{itemize}
@@ -3502,9 +4058,9 @@ Keeps track of the mode used to calculate the attribute used on the filter
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{CompareListener}{}{
+\classdesc{CompareListener}{Listener for the compare action.}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
+        \item \atrdesc{\private}{}{Command}{command}{Command for comparing.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -3515,10 +4071,11 @@ Keeps track of the mode used to calculate the attribute used on the filter
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{MoveListener}{}{
+\classdesc{MoveListener}{Listener for moving selected cells to another library.}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
-        \item \atrdesc{\private}{}{Element[]}{element}{}
+        \item \atrdesc{\private}{}{Command}{command}{Move action.}
+        \item \atrdesc{\private}{}{Element[]}{element}{Selected cells.}
+        \item \atrdesc{\private}{}{Library}{library}{Target library.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -3529,10 +4086,11 @@ Keeps track of the mode used to calculate the attribute used on the filter
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{CopyListener}{}{
+\classdesc{CopyListener}{Listener for copying selected cells to another library.}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
-        \item \atrdesc{\private}{}{Element[]}{element}{}
+        \item \atrdesc{\private}{}{Command}{command}{Copy action}
+        \item \atrdesc{\private}{}{Element[]}{element}{Elements selected for copying.}
+        \item \atrdesc{\private}{}{Library}{library}{Target library}
     \end{itemize}
 }{
     \begin{itemize}
@@ -3543,10 +4101,10 @@ Keeps track of the mode used to calculate the attribute used on the filter
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{AddFilterListener}{}{
+\classdesc{AddFilterListener}{Listener for add filter button.}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
-        \item \atrdesc{\private}{}{Filter}{filter}{}
+        \item \atrdesc{\private}{}{Command}{command}{Filter adding action.}
+        \item \atrdesc{\private}{}{Filter}{filter}{Filter to be added.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -3557,10 +4115,10 @@ Keeps track of the mode used to calculate the attribute used on the filter
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{RemoveFilterListener}{}{
+\classdesc{RemoveFilterListener}{Listener for remove filter button.}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
-        \item \atrdesc{\private}{}{Filter}{filter}{}
+        \item \atrdesc{\private}{}{Command}{command}{Filter removing action.}
+        \item \atrdesc{\private}{}{Filter}{filter}{Filter to be removed.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -3571,23 +4129,11 @@ Keeps track of the mode used to calculate the attribute used on the filter
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{PasteListener}{}{
+
+\classdesc{LoadProjectListener}{Listener for importing a project}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
-    \end{itemize}
-}{
-    \begin{itemize}
-        \item \constrdesc{\public}{PasteListener}{}{}{}
-    \end{itemize}
-}{
-    \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
-    \end{itemize}}{}
-\classdesc{LoadProjectListener}{}{
-    \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
-        \item \atrdesc{\private}{}{Project}{project}{}
+        \item \atrdesc{\private}{}{Command}{command}{Command for importing a project.}
+        \item \atrdesc{\private}{}{Project}{project}{Loaded project file}
     \end{itemize}
 }{
     \begin{itemize}
@@ -3598,24 +4144,10 @@ Keeps track of the mode used to calculate the attribute used on the filter
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{SaveProjectListener}{}{
+
+\classdesc{ShortcutSettingsListener}{Listener for changing shortcuts component.}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
-        \item \atrdesc{\private}{}{Project}{project}{}
-    \end{itemize}
-}{
-    \begin{itemize}
-        \item \constrdesc{\public}{SaveProjectListener}{}{}{}
-    \end{itemize}
-}{
-    \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
-    \end{itemize}}{}
-\classdesc{ShortcutSettingsListener}{}{
-    \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
-        \item \atrdesc{\private}{}{Shortcuts}{shortcuts}{}
+        \item \atrdesc{\private}{}{Shortcuts}{shortcuts}{Shortcut data in the model.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -3626,10 +4158,9 @@ Keeps track of the mode used to calculate the attribute used on the filter
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{PreferencesSettingsListener}{}{
+\classdesc{PreferencesSettingsListener}{Listener for application settings}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
-        \item \atrdesc{\private}{}{Model}{model}{}
+        \item \atrdesc{\private}{}{Model}{model}{Preferences data in the model.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -3640,10 +4171,9 @@ Keeps track of the mode used to calculate the attribute used on the filter
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{}{}
     \end{itemize}}{}
-\classdesc{LanguageSettingsListener}{}{
+\classdesc{LanguageSettingsListener}{Listener for language dropdown component.}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
-        \item \atrdesc{\private}{}{Model}{Model}{}
+        \item \atrdesc{\private}{}{Model}{Model}{Model holding the language data.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -3655,9 +4185,8 @@ Keeps track of the mode used to calculate the attribute used on the filter
         {}{}{}
     \end{itemize}}{}
     
-\classdesc{AttributeDropdownListener}{}{
+\classdesc{AttributeDropdownListener}{Listener for the attribute dropdown menu in the visualizer}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
         \item \atrdesc{\private}{}{Element[]}{element}{}
     \end{itemize}
 }{
@@ -3716,53 +4245,53 @@ Keeps track of the mode used to calculate the attribute used on the filter
 \packagedesc{controller.updatehandlers}{
 \classdesc{DataUpdateHandler}{}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{MainWindow}{view}{}
-        \item \atrdesc{\private}{}{List<Element>}{elements}{}
+        \item \atrdesc{\private}{}{Outliner}{outliner}{Application GUI}
+        \item \atrdesc{\private}{}{List<Element>}{elements}{Libraries from the model.}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \constrdesc{\public}{DataUpdateHandler}{}{}{}
+        \item \constrdesc{\public}{DataUpdateHandler}{\type{Outliner} outliner}{}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{update}{}
-        {}{}{}
+        \item \methoddesc{\public}{}{void}{update}{\type{List<Library>} libraries}
+        {Updates the view with the changed data.}{}{}
     \end{itemize}
 }{}
 \classdesc{SettingsUpdateHandler}{}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{}{command}{}
+        \item \atrdesc{\private}{}{Panel}{panel}{Settings window of the GUI}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \constrdesc{\public}{SettingsUpdateHandler}{}{}{}
+        \item \constrdesc{\public}{SettingsUpdateHandler}{\type{Panel} panel}{}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{update}{}
-        {}{}{}
+        \item \methoddesc{\public}{}{void}{update}{\type{Settings} settings}
+        {Updates the view with the changed settings data.}{}{}
     \end{itemize}}{}
 \classdesc{FilterUpdateHandler}{}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
+        \item \atrdesc{\private}{}{Panel}{panel}{Filter window of the UI}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \constrdesc{\public}{FilterUpdateHandler}{}{}{}
+        \item \constrdesc{\public}{FilterUpdateHandler}{\type{Panel} panel}{}{}
     \end{itemize}}{\begin{itemize}
-        \item \methoddesc{\public}{}{void}{update}{}
-        {}{}{}
+        \item \methoddesc{\public}{}{void}{update}{\type{List<Filter>} filters}
+        {Updates the view with the changed filters.}{}{}
     \end{itemize}}{}
 \classdesc{InterpolationUpdateHandler}{}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
+        \item \atrdesc{\private}{}{Panel}{panel}{Panel for interpolation}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \constrdesc{\public}{InterpolationUpdateHandler}{}{}{}
+        \item \constrdesc{\public}{InterpolationUpdateHandler}{\type{Panel} panel}{}{}
     \end{itemize}}{\begin{itemize}
-        \item \methoddesc{\public}{}{void}{update}{}
-        {}{}{}
+        \item \methoddesc{\public}{}{void}{update}{\type{Interpolation} interpolation}
+        {Updates the view with the changed data.}{}{}
     \end{itemize}}{}
 }
 \chapter{Class Diagrams}
