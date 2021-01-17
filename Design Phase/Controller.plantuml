@@ -54,7 +54,7 @@ together {
         
     }
 
-    enum Events{
+    enum Event{
     LOAD
     OPEN
     DELETE

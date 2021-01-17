@@ -587,12 +587,12 @@ enum LanguageEnum{
     Settings *-- ColorTheme
     Settings *-- Language
     class Shortcuts{
-    - HashMap<char, COMMAND> commands
+    - HashMap<char, Event> commands
     __
-    + void setKey(char, COMMAND)
+    + void setKey(char, Event)
     + void removeKey(char)
     + ArrayList<char> getKeys()
-    + COMMAND getAction(char)
+    + Event getAction(char)
     }
     enum Operation{
         LESS
