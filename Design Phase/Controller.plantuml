@@ -159,10 +159,9 @@ package listeners{
         }
 
         class SelectListener implements TreeSelectionListener{
-            -Outliner outliner
             -Command command
             -Element[] element
-            +SelectListener(Outliner outliner)
+            +SelectListener()
             +valueChanged(TreeSelectionEvent e)
         }
 
@@ -264,12 +263,14 @@ package listeners{
 
         class AddFilterListener implements ActionListener{
             -Command command
+            -Filter filter
             +AddFilterListener()
             +actionPerformed(ActionEvent e)
         }
 
          class RemoveFilterListener implements ActionListener{
             -Command command
+            -Filter filter
             +RemoveFilterListener()
             +actionPerformed(ActionEvent e)
         }
