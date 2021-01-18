@@ -43,10 +43,11 @@ together {
     class EventManager{
         -MainWindow view
         -Model model
-        -Map<Events, EventListener> events
+        -Map<Event, EventListener> events
         -List<IObserver> handlers
         +EventManager(MainWindow view, Model model)
         +initListeners()
+        +getListeners(): Map<Event, EventListener>
         +subscribeHandlers()
         +removeListener(EventListener listener)
         +removeHandler(IObserver handler)
@@ -86,9 +87,7 @@ together {
     STATISTICS
     }
     
-     interface IObserver{
-        +update()
-    }
+     
     
     class DataUpdateHandler implements IObserver{
         -Outliner outliner
@@ -181,6 +180,7 @@ package listeners{
             -Element element
             +EditListener()
             +actionPerformed(ActionEvent e)
+            +changedUpdate(DocumentEvent e)
         }
 
         class SaveListener implements ActionListener{
