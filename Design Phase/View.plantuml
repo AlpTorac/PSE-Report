@@ -467,10 +467,10 @@ package Diagrams {
         class HoverLabel {
             -String caption
             -Theme theme
-            -Number xPos
-            -Number yPos
+            -PositionInFrame mousePosition
             -Number width
             -Number height
+            -Label label
             -{static} HoverLabel hoverLabel
             -HoverLabel()
             +{static} HoverLabel getHoverLabel()
@@ -499,9 +499,10 @@ package Diagrams {
             -Collection<?> data;
             -DiagramDataFormatter ddf;
             +DiagramData(Collection<?> data)
-            +<T extends Collection<?>> T getData();
-            +void update()
+            +<T extends Collection<?>> T getData()
+            +void setData(Collection<?> data)
             +void setFormat(DiagramDataFormatter ddf)
+            +Object getFormattedData()
         }
         note right of DiagramData::getData
             Run ddf on data and return result.
@@ -527,37 +528,28 @@ package Diagrams {
             -DiagramValueDisplayComponent[] valueDisplayComponents
             -DiagramComponent[] nonValueDisplayComponents
             -EnumMap<IndicatorIdentifier, DiagramViewHelper> viewHelpers
-            +Diagram(DiagramData data)
-            #void assemble(DiagramAxis[] axes, DiagramValueDisplayComponent[] valueDisplayComponents, DiagramComponent[] nonValueDisplayComponents)
+            +Diagram(DiagramData data, DiagramAxis[] axes, DiagramValueDisplayComponent[] valueDisplayComponents, DiagramComponent[] nonValueDisplayComponents)
             +boolean addDiagramViewHelper(DiagramViewHelper dvh)
             +boolean removeDiagramViewHelper(IndicatorIdentifier id)
             +boolean showDiagramViewHelper(IndicatorIdentifier id)
             +boolean hideDiagramViewHelper(IndicatorIdentifier id)
         }
         class Histogram extends Diagram {
-            +Histogram(DiagramData data)
+            +Histogram(DiagramData data, DiagramAxis[] axes, DiagramValueDisplayComponent[] valueDisplayComponents, DiagramComponent[] nonValueDisplayComponents)
         }
         class BarChart extends Diagram {
-            +BarChart(DiagramData data)
+            +BarChart(DiagramData data, DiagramAxis[] axes, DiagramValueDisplayComponent[] valueDisplayComponents, DiagramComponent[] nonValueDisplayComponents)
         }
         class HeatMap extends Diagram {
-            +HeatMap(DiagramData data)
+            +HeatMap(DiagramData data, DiagramAxis[] axes, DiagramValueDisplayComponent[] valueDisplayComponents, DiagramComponent[] nonValueDisplayComponents)
         }
         class FunctionGraph extends Diagram {
-            +FunctionGraph(DiagramData data)
+            +FunctionGraph(DiagramData data, DiagramAxis[] axes, DiagramValueDisplayComponent[] valueDisplayComponents, DiagramComponent[] nonValueDisplayComponents)
         }
         note as Diagram1
-            Diagram(DiagramData data) constructor call
-            accesses DiagramDirector, sets the
-            DiagramBuilder and the DiagramData attributes
-            in DiagramDirector and builds the diagram
-
-            Diagram(axes, valueDisplayComponents,
-            nonValueDisplayComponents) is used by the
-            builders after the components are built.
-            They are also used by the Overlayers to
-            combine multiple diagrams into one for
-            comparing.
+            Diagrams' DiagramComponents are built via DiagramBuilders.
+            Upon constructor call, the Diagram calls
+            update(data) to modify the DiagramComponents stored.
         end note
         Histogram -- Diagram1
         BarChart -- Diagram1
@@ -579,7 +571,7 @@ package Diagrams {
             +{static} DiagramViewHelperFactory getInstance()
             +HelperComponentDisplayer createValueColorDisplayer(IDiagram diagram, IndicatorIdentifier id)
             +HelperLineDisplayer createCoordinateGridDisplayer(IDiagram diagram, DiagramAxis axis, IndicatorIdentifier id)
-            +HelperLineDisplayer createValueLineDisplayer(IDiagram diagram, Number value, IndicatorIdentifier id)
+            +HelperLineDisplayer createValueLineDisplayer(IDiagram diagram, Number value, DiagramAxis axis, IndicatorIdentifier id)
         }
         abstract class DiagramViewHelper {
             -int layer
@@ -599,7 +591,7 @@ package Diagrams {
         }
         DiagramViewHelperFactory -- DiagramViewHelper : > <<creates>>
         abstract class HelperLineDisplayer extends DiagramViewHelper {
-            #HelperLineDisplayer(IDiagram diagram, IndicatorIdentifier id)
+            #HelperLineDisplayer(IDiagram diagram, int layer, IndicatorIdentifier id)
             #{abstract} void generateHelperComponents()
         }
         note left of DiagramViewHelper::layer
@@ -608,11 +600,11 @@ package Diagrams {
             For example with JLayeredPane
         end note
         class ValueLineDisplayer extends HelperLineDisplayer {
-            -DiagramAxis parallelAxis
+            -DiagramAxis axis
             -Color color
             -Number thickness
             -Number value
-            #ValueLineDisplayer(IDiagram diagram, DiagramAxis parallelAxis, Color color, Number thickness, Number value, IndicatorIdentifier id)
+            #ValueLineDisplayer(IDiagram diagram, DiagramAxis axis, Color color, Number thickness, Number value, IndicatorIdentifier id)
             -void createValueLine()
         }
         note bottom of ValueLineDisplayer
@@ -620,7 +612,7 @@ package Diagrams {
             in the checkbox part
         end note
         abstract class HelperComponentDisplayer extends DiagramViewHelper {
-            #HelperComponentDisplayer(IDiagram diagram, IndicatorIdentifier id)
+            #HelperComponentDisplayer(IDiagram diagram, int layer, IndicatorIdentifier id)
         }
         class ValueFixColorDisplayer extends HelperComponentDisplayer {
             -TreeMap<Number, Color> mapping
@@ -663,7 +655,7 @@ package Diagrams {
         end note
         DiagramViewHelper *--> ViewHelperComponent
         class CoordinateIndicatorLine extends DiagramLine {
-            #CoordinateIndicatorLine(DiagramAxis parallelAxis, Number value, Color color, Number thickness)
+            #CoordinateIndicatorLine(DiagramAxis axis, Color color, Number thickness)
         }
         class ValueLine extends DiagramLine {
             #ValueLine(DiagramAxis parallelAxis, Number value, Color color, Number thickness)
