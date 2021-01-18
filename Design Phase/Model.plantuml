@@ -93,20 +93,22 @@ package elements{
         abstract class Attribute{ 
             # Stat stats
             __
-            + void calculate()
-            + void scale(int)
+            + Attribute()
+            # void calculate()
+            + void scale(float)
             + getStats(): Stats
         }
         abstract class InAttribute extends Attribute{ 
             # float[] index1
             # float[] values
             __
+            + InAttribute()
             # void calculate()
-            + void scale(int)
+            + void scale(float)
             + getIndex1() : float[]
-            + getValues() : float[][]
+            + getValues() : float[]
             + void setIndex1(float[])
-            + void setValues(float[][])
+            + void setValues(float[])
         }
         abstract class OutAttribute extends Attribute{ 
             # float[] index1 
@@ -114,8 +116,9 @@ package elements{
             # float[][] values
             # InputPin relatedPin
             __
+            + OutAttribute()
             # void calculate()
-            + void scale(int)
+            + void scale(float)
             + getIndex1() : float[]
             + getIndex2() : float[]
             + getValues() : float[][]
@@ -174,6 +177,8 @@ package elements{
             - float[] values
             __
             + Leakage(float[])
+            + getValues() : float[]
+            + setValues(float[])
         }
     }
     abstract class Element{
@@ -181,6 +186,7 @@ package elements{
         # boolean searched
         # String name
         __
+        + Element()
         + getFiltered() : boolean
         + void setFiltered(boolean)
         + getSearched() : boolean
@@ -188,7 +194,7 @@ package elements{
         + {abstract} void calculate()
         + getName() : String
         + void setName(String)
-        + {static} compare(Element, Element) : int
+        + compareTo(Element) : int
     }
     abstract class HigherElement extends Element{
         - ArrayList<TimingSense> availableTimSen
@@ -202,6 +208,7 @@ package elements{
         - boolean hasShownElements
         - Stat leakage
         __
+        + HigherElement()
         + getAvailableOutputPower() : ArrayList<PowerGroup>
         + getAvailableInputPower() : ArrayList<PowerGroup>
         + getAvailableTimSen(): ArrayList<TimingSense>
@@ -222,6 +229,7 @@ package elements{
         - ArrayList<Cell> cells
         - Stat defaultLeakage
         __
+        + Library()
         + getCells() : ArrayList<Cell>
         + void setCells(ArrayList<Cell>)
         + void calculateLeakage()
@@ -242,6 +250,7 @@ package elements{
         - Leakage[] leakages
         - float defaultLeakage
         __
+        + Cell()
         + getInPins() : InputPin[]
         + getOutPins() : OutputPin[]
         + getParent() : Library
@@ -259,6 +268,7 @@ package elements{
         # float capacitance
         # ArrayList<PowerGroup> availablePower
         __
+        + Pin()
         + getName() : String
         + void setName(String)
         + getParent() : Cell
@@ -267,6 +277,7 @@ package elements{
     class InputPin{
         - ArrayList<InputPower> inputPowers
         __
+        + InputPin()
         + void calculatePower()
         + getInputPowers(): ArrayList<InputPower>
         + setInputPowers(ArrayList<InputPower>)
@@ -279,6 +290,7 @@ package elements{
         - ArrayList<Timing> timings
         - String outPutFunction
         __
+        + OutputPin()
         + getTimings(): ArrayList<Timing>
         + getOutputPowers(): ArrayList<OutputPower>
         + void setTiming(ArrayList<Timing>)
@@ -293,7 +305,6 @@ package elements{
 
 
 package exceptions{
-    interface Exception
     class InvalidComparisonException
     class InvalidFileFormatException
     class ExceedingFileSizeException
@@ -313,6 +324,7 @@ package commands{
         - Command[] undoneActions
         - int undoNumber
         __
+        + ActionHistory()
         + void setUndoNumber(int)
         - void resetUndoneActions()
         + void addAction(Command)
@@ -650,13 +662,8 @@ PowerGroup -- OutputPower
 PowerGroup -- InputPower
 Library *-- Cell
 Cell *-- Pin
-Exception <|.. InvalidComparisonException 
-Exception <|.. InvalidFileFormatException
-Exception <|.. ExceedingFileSizeException
-Exception <|.. TooManyPanelsOpenedException
-Exception <|.. TooManySelectedException
-Exception <|.. InvalidNameException
-Exception <|.. InvalidArgumentException
+Project --> LibertyCompiler
+LibertyParser ..> Attribute
 !endsub
 
 /' project -[hidden]> compiler
@@ -668,4 +675,11 @@ InputPower -[hidden]-> PowerGroup
 Timing -[hidden]-> TimingType
 Timing -[hidden]-> TimingSense
 Timing -[hidden]-> TimingGroup
+elements -[hidden]> exceptions
+InvalidComparisonException -[hidden]-> InvalidFileFormatException
+InvalidFileFormatException -[hidden]-> ExceedingFileSizeException
+
+
+
+
 @enduml
