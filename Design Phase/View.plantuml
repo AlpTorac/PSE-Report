@@ -203,7 +203,7 @@ skinparam Note {
             Button keepLeft
             Button keepRight
             +MergeDialog()
-            +open(Element eLeft, Element eRight)
+            +open(Cell eLeft, Cell eRight)
         }
         MergeDialog --* MainWindow
         class SettingsDialog extends Window {
@@ -217,16 +217,18 @@ package Diagrams {
         +Collection<?> cloneData()
         +void refresh()
         +void update(DiagramData data)
-        +boolean addDiagramViewHelper(Enum uniqueIdentifier, DiagramViewHelper dvh)
-        +boolean removeDiagramViewHelper(Enum uniqueIdentifier, DiagramViewHelper dvh)
-        +boolean showDiagramViewHelper(Enum uniqueIdentifier)
-        +boolean hideDiagramViewHelper(Enum uniqueIdentifier)
+        +boolean addDiagramViewHelper(DiagramViewHelper dvh)
+        +boolean removeDiagramViewHelper(IndicatorIdentifier id)
+        +boolean showDiagramViewHelper(IndicatorIdentifier id)
+        +boolean hideDiagramViewHelper(IndicatorIdentifier id)
+        +DiagramComponent[] getNonValueDisplayDiagramComponentPrototypes()
+        +DiagramValueDisplayComponent[] getDiagramValueDisplayComponentPrototypes()
     }
     interface IDiagramOverlayer {
         +IDiagram getDiagram(int index)
         +void setDiagram(int index, IDiagram diagram)
         +boolean addDiagram(IDiagram diagram)
-        +boolean removeDiagram(IDiagram diagram)
+        +boolean removeDiagram(int index)
         +IDiagram overlay(int[] indices)
         +IDiagram overlay(IDiagram[] diagrams)
     }
@@ -234,8 +236,8 @@ package Diagrams {
         class DiagramOverlayer implements IDiagramOverlayer {
             -Collection<? extends IDiagram> diagrams
             -IDiagramOverlayStrategy overlayStrategy
-            +DiagramOverlayer()
-            #void setOverlayStrategy()
+            +DiagramOverlayer(IDiagram[] diagrams)
+            -void setOverlayStrategy()
         }
         interface IDiagramOverlayStrategy {
             +IDiagram overlay()
@@ -243,19 +245,19 @@ package Diagrams {
         class FunctionGraphOverlayStrategy implements IDiagramOverlayStrategy {
             -FunctionGraph[] functionGraphs
             +FunctionGraphOverlayStrategy(FunctionGraph[] functionGraphs)
-            +FunctionGraph overlay()
+            +IDiagram overlay()
         }
         class HistogramOverlayStrategy implements IDiagramOverlayStrategy {
             -Histogram histogram1
             -Histogram histogram2
             +HistogramOverlayStrategy(Histogram histogram1, Histogram histogram2)
-            +Histogram overlay()
+            +IDiagram overlay()
         }
         class BarChartOverlayStrategy implements IDiagramOverlayStrategy {
             -BarChart barChart1
             -BarChart barChart2
             +BarChartOverlayStrategy(BarChart barChart1, BarChart barChart2)
-            +BarChart overlay()
+            +IDiagram overlay()
         }
     }
     package Diagram.Components {
@@ -301,14 +303,13 @@ package Diagrams {
             #DiagramComponent(Color color)
             +{abstract} DiagramComponent clone()
             +void setColor(Color color)
-            +Number getColor()
-            +void show()
-            +void hide()
+            +Color getColor()
+            +{abstract} void show()
+            +{abstract} void hide()
         }
         abstract class DiagramValueDisplayComponent extends DiagramComponent implements Hoverable {
             -Number value
             #DiagramValueDisplayComponent(Color color, Number value)
-            +Number valueToCoordinate(int axisIndex)
             +void setValue(Number value)
             +Number getValue()
             +{abstract} void refreshValueRelevantAttributes()
@@ -340,10 +341,12 @@ package Diagrams {
             +int getSteps()
             +void showValues()
             +void hideValues()
-            #void paintComponent(Graphics g)
-            +void paintAxis()
-            +Number valueToCoordinate(Number value)
-            +Number CoordinateToValue(Number coordinate)
+            'not good for flexibility and redundant, paintAxis is enough
+            '#void paintComponent(Graphics g)
+            'void show is already being implemented
+            '+void paintAxis()
+            +PositionInFrame valueToCoordinate(Number value)
+            +Number CoordinateToValue(PositionInFrame coordinate)
             +void setLineByPos(Number minValXPos, Number minValYPos, Number maxValXPos, Number maxValYPos)
             +void setLineColor(Color color)
             +void setLineThickness(Number thickness)
@@ -382,10 +385,10 @@ package Diagrams {
             #DiagramLine(PositionInFrame start, PositionInFrame end, Color color, Number thickness)
             #Number calculateLength()
             +void setThickness(Number thickness)
-            +void setBottomLeftInFrame(Number x1, Number y1)
-            +void setTopRightInFrame(Number x2, Number y2)
-            +PositionInFrame getBottomLeftInFrame()
-            +PositionInFrame getTopRightInFrame()
+            +void setStartInFrame(Number x1, Number y1)
+            +void setEndInFrame(Number x2, Number y2)
+            +PositionInFrame getStartInFrame()
+            +PositionInFrame getEndInFrame()
             +Number getLength()
             +Number getThickness()
         }
@@ -401,7 +404,6 @@ package Diagrams {
             -PositionIn2DDiagram topRight
             -PositionIn2DDiagram bottomLeft
             -String caption
-            -Number[] sizesInAxes
             -Number borderThickness
             #DiagramValueLabel(PositionIn2DDiagram bottomLeft, PositionIn2DDiagram topRight, Color color, Number value, Number borderThickness)
             #void refreshCaption()
@@ -426,11 +428,12 @@ package Diagrams {
             -PositionIn2DDiagram bottomLeft
             -PositionIn2DDiagram topRight
             -Number borderThickness
+            -Number[] values
+            -Color[] valueColors
             #DiagramColorScale(PositionIn2DDiagram bottomLeft, PositionIn2DDiagram topRight, Color borderColor, Number[] values, Color[] valueColors, Number borderThickness)
             +Color valueToColor(Number value)
             +Number[] getValues()
             +Color[] getColors()
-            +final Object[] matchingsAsArray()
             +void setBottomLeftInFrame(Number x1, Number y1)
             +void setTopRightInFrame(Number x2, Number y2)
             +PositionInFrame getBottomLeftInFrame()
@@ -443,10 +446,6 @@ package Diagrams {
         class 2ColorScale extends DiagramColorScale {
             '-Color color = borderColor
             -WritableImage colorScale
-            -Color minValueColor
-            -Color maxValueColor
-            -Number minValue
-            -Number maxValue
             #2ColorScale(PositionIn2DDiagram bottomLeft, PositionIn2DDiagram topRight, Color borderColor, Number minVal, Number maxVal, Color minValColor, Color maxValColor, Number borderThickness)
             +Color getMinValueColor()
             +Color getMaxValueColor()
@@ -485,13 +484,13 @@ package Diagrams {
         class HoverLabel {
             -String caption
             -Theme theme
-            -Number xPos
-            -Number yPos
+            -PositionInFrame mousePosition
             -Number width
             -Number height
-            -HoverLabel hoverLabel
+            -Label label
+            -{static} HoverLabel hoverLabel
             -HoverLabel()
-            +HoverLabel getHoverLabel()
+            +{static} HoverLabel getHoverLabel()
             +void show()
             +void hide()
             +void setWidth(Number width)
@@ -500,9 +499,9 @@ package Diagrams {
             +Number getHeight()
         }
         class DiagramComponentFactory {
-            -DiagramComponentFactory instance = new DiagramComponentFactory
+            -{static} DiagramComponentFactory instance = new DiagramComponentFactory
             -DiagramComponentFactory()
-            +DiagramComponentFactory getDiagramComponentFactory()
+            +{static} DiagramComponentFactory getDiagramComponentFactory()
             +DiagramPoint createPoint(Number value, PositionIn2DDiagram position, Number size)
             +DiagramValueLabel createValueLabel(Number value, PositionIn2DDiagram bottomLeft, PositionIn2DDiagram topRight, Number borderThickness)
             +DiagramBar createBar(Number value, PositionIn2DDiagram bottomLeft, PositionIn2DDiagram topRight, Number borderThickness)
@@ -517,9 +516,10 @@ package Diagrams {
             -Collection<?> data;
             -DiagramDataFormatter ddf;
             +DiagramData(Collection<?> data)
-            +<T extends Collection<?>> T getData();
-            +void update()
+            +<T extends Collection<?>> T getData()
+            +void setData(Collection<?> data)
             +void setFormat(DiagramDataFormatter ddf)
+            +Object getFormattedData()
         }
         note right of DiagramData::getData
             Run ddf on data and return result.
@@ -527,62 +527,46 @@ package Diagrams {
         end note
         abstract class DiagramDataFormatter {
             +DiagramDataFormatter()
-            +<T extends Collection<?>> T format(T data)
+            +<T extends Collection<?>> Object format(T data)
         }
         class ArrayListDataFormatter extends DiagramDataFormatter {
             +ArrayListDataFormatter()
-            +<T extends Collection<?>> ArrayList<?> format(T data)
+            +<T extends Collection<?>> Object format(T data)
         }
         class ArrayDataFormatter extends DiagramDataFormatter {
             +ArrayDataFormatter()
-            +<E, T extends Collection<E>> E[] format(T data)
+            +<E, T extends Collection<E>> Object format(T data)
         }
     }
     package Diagram.Type {
-        interface DiagramComponentAccessPoint {
-            +DiagramComponent[] getNonValueDisplayDiagramComponentPrototypes()
-            +DiagramValueDisplayComponent[] getDiagramValueDisplayComponentPrototypes()
-        }
-        note top of DiagramComponentAccessPoint
-            Provide only deep copies
-        end note
-        abstract class Diagram implements IDiagram, DiagramComponentAccessPoint {
-            #DiagramData data
-            #DiagramAxis[] axes
-            #DiagramValueDisplayComponent[] valueDisplayComponents
-            #DiagramComponent[] nonValueDisplayComponents
+        abstract class Diagram implements IDiagram {
+            -DiagramData data
+            -DiagramAxis[] axes
+            -DiagramValueDisplayComponent[] valueDisplayComponents
+            -DiagramComponent[] nonValueDisplayComponents
             -EnumMap<IndicatorIdentifier, DiagramViewHelper> viewHelpers
-            +Diagram(DiagramData data)
-            #void assemble(DiagramAxis[] axes, DiagramValueDisplayComponent[] valueDisplayComponents, DiagramComponent[] nonValueDisplayComponents)
+            +Diagram(DiagramData data, DiagramAxis[] axes, DiagramValueDisplayComponent[] valueDisplayComponents, DiagramComponent[] nonValueDisplayComponents)
             +boolean addDiagramViewHelper(DiagramViewHelper dvh)
-            +boolean removeDiagramViewHelper(DiagramViewHelper dvh)
+            +boolean removeDiagramViewHelper(IndicatorIdentifier id)
             +boolean showDiagramViewHelper(IndicatorIdentifier id)
             +boolean hideDiagramViewHelper(IndicatorIdentifier id)
         }
         class Histogram extends Diagram {
-            +Histogram(DiagramData data)
+            +Histogram(DiagramData data, DiagramAxis[] axes, DiagramValueDisplayComponent[] valueDisplayComponents, DiagramComponent[] nonValueDisplayComponents)
         }
         class BarChart extends Diagram {
-            +BarChart(DiagramData data)
+            +BarChart(DiagramData data, DiagramAxis[] axes, DiagramValueDisplayComponent[] valueDisplayComponents, DiagramComponent[] nonValueDisplayComponents)
         }
         class HeatMap extends Diagram {
-            +HeatMap(DiagramData data)
+            +HeatMap(DiagramData data, DiagramAxis[] axes, DiagramValueDisplayComponent[] valueDisplayComponents, DiagramComponent[] nonValueDisplayComponents)
         }
         class FunctionGraph extends Diagram {
-            +FunctionGraph(DiagramData data)
+            +FunctionGraph(DiagramData data, DiagramAxis[] axes, DiagramValueDisplayComponent[] valueDisplayComponents, DiagramComponent[] nonValueDisplayComponents)
         }
         note as Diagram1
-            Diagram(DiagramData data) constructor call
-            accesses DiagramDirector, sets the
-            DiagramBuilder and the DiagramData attributes
-            in DiagramDirector and builds the diagram
-
-            Diagram(axes, valueDisplayComponents,
-            nonValueDisplayComponents) is used by the
-            builders after the components are built.
-            They are also used by the Overlayers to
-            combine multiple diagrams into one for
-            comparing.
+            Diagrams' DiagramComponents are built via DiagramBuilders.
+            Upon constructor call, the Diagram calls
+            update(data) to modify the DiagramComponents stored.
         end note
         Histogram -- Diagram1
         BarChart -- Diagram1
@@ -599,12 +583,12 @@ package Diagrams {
             Y_COORDINATE_INDICATOR
         }
         class DiagramViewHelperFactory {
-            -DiagramViewHelperFactory instance
+            -{static} DiagramViewHelperFactory instance
             -DiagramViewHelperFactory()
-            +DiagramViewHelperFactory getInstance()
+            +{static} DiagramViewHelperFactory getInstance()
             +HelperComponentDisplayer createValueColorDisplayer(IDiagram diagram, IndicatorIdentifier id)
             +HelperLineDisplayer createCoordinateGridDisplayer(IDiagram diagram, DiagramAxis axis, IndicatorIdentifier id)
-            +HelperLineDisplayer createValueLineDisplayer(IDiagram diagram, Number value, IndicatorIdentifier id)
+            +HelperLineDisplayer createValueLineDisplayer(IDiagram diagram, Number value, DiagramAxis axis, IndicatorIdentifier id)
         }
         abstract class DiagramViewHelper {
             -int layer
@@ -624,8 +608,8 @@ package Diagrams {
         }
         DiagramViewHelperFactory -- DiagramViewHelper : > <<creates>>
         abstract class HelperLineDisplayer extends DiagramViewHelper {
-            #HelperLineDisplayer(IDiagram diagram, IndicatorIdentifier id)
-            #void generateHelperComponents()
+            #HelperLineDisplayer(IDiagram diagram, int layer, IndicatorIdentifier id)
+            #{abstract} void generateHelperComponents()
         }
         note left of DiagramViewHelper::layer
             Indicates how much in the front the DiagramViewHelper is.
@@ -633,11 +617,11 @@ package Diagrams {
             For example with JLayeredPane
         end note
         class ValueLineDisplayer extends HelperLineDisplayer {
-            -DiagramAxis parallelAxis
+            -DiagramAxis axis
             -Color color
             -Number thickness
             -Number value
-            #ValueLineDisplayer(IDiagram diagram, DiagramAxis parallelAxis, Color color, Number thickness, Number value, IndicatorIdentifier id)
+            #ValueLineDisplayer(IDiagram diagram, DiagramAxis axis, Color color, Number thickness, Number value, IndicatorIdentifier id)
             -void createValueLine()
         }
         note bottom of ValueLineDisplayer
@@ -645,7 +629,7 @@ package Diagrams {
             in the checkbox part
         end note
         abstract class HelperComponentDisplayer extends DiagramViewHelper {
-            #HelperComponentDisplayer(IDiagram diagram, IndicatorIdentifier id)
+            #HelperComponentDisplayer(IDiagram diagram, int layer, IndicatorIdentifier id)
         }
         class ValueFixColorDisplayer extends HelperComponentDisplayer {
             -TreeMap<Number, Color> mapping
@@ -688,7 +672,7 @@ package Diagrams {
         end note
         DiagramViewHelper *--> ViewHelperComponent
         class CoordinateIndicatorLine extends DiagramLine {
-            #CoordinateIndicatorLine(DiagramAxis parallelAxis, Number value, Color color, Number thickness)
+            #CoordinateIndicatorLine(DiagramAxis axis, Color color, Number thickness)
         }
         class ValueLine extends DiagramLine {
             #ValueLine(DiagramAxis parallelAxis, Number value, Color color, Number thickness)
@@ -715,18 +699,18 @@ package Diagrams {
     class DiagramDirector {
         -DiagramBuilder builder
         -DiagramData data
-        -DiagramDirector instance = new DiagramDirector
+        -{static} DiagramDirector instance = new DiagramDirector
         -DiagramDirector()
-        +DiagramDirector getDiagramDirector()
+        +{static} DiagramDirector getDiagramDirector()
         +void changeBuilder(Builder b)
         +void setDiagramData(DiagramData data)
         +IDiagram build()
     }
     class SettingsProvider {
-        -SettingsProvider instance = new SettingsProvider
+        -{static} SettingsProvider instance = new SettingsProvider
         -Settings s
         -SettingsProvider()
-        +SettingsProvider getInstance()
+        +{static} SettingsProvider getInstance()
         +void changeSettings(Settings s)
         +Settings getSettings()
     }
@@ -782,32 +766,34 @@ package representation{
 
     class DataPanel {
         -Label label
-        -Text text
+        -String text
         +DataPanel()
+        +setText(String text)
         
-
     }
 
     class CellPanel{
         -Label label
-        -List<Button> buttons
-        -List<Checkbox> checkboxes
+        -Button[] buttons
+        -Checkbox[] checkboxes
+        -Element cell
+        -Element[] pins
+        -BufferedImage image
         -CellImageGenerator cellGenerator
-        +CellPanel(Cell cell)
-        +CellPanel(Pin pin)
-        
-
-    
-        
-
+        +CellPanel(Element element)
+        +switchToLibrary()
+        +switchToPin(Element element)
+        +switchToCell(Element element)
+     
     }
 
     class LibraryPanel{
         -List<Button> buttons
         -List<Cell> cells
+        -Library selectedLibrary
         +LibraryPanel(Element e)
-        
-        
+        +switchToCell(Cell cell)
+     
     }
 
     

@@ -36,211 +36,323 @@ skinparam Note {
 
 !startsub DIAGRAM
 together {
+    /'class Main{
+        +{static} main(String[] args): void
+    }'/
+
     class EventManager{
-        -Model model
         -MainWindow view
-        +EventManager(Model model, MainWindow view)
-        +initListeners()
+        -Model model
+        -Map<Event, EventListener> events
+        -List<IObserver> handlers
+        +EventManager(MainWindow view, Model model)
+        +void initListeners()
+        +getListeners(): Map<Event, EventListener>
+        +void subscribeHandlers()
+        +void removeListener(EventListener listener)
+        +void removeHandler(IObserver handler)
+        +void notifyHandlers(Model model, List<Filter> filters)
+        
     }
 
+    enum Event{
+    LOAD
+    OPEN
+    DELETE
+    REMOVE
+    SAVE
+    SAVEAS
+    SELECT
+    EDIT
+    RENAME
+    MERGE
+    COPY
+    MOVE
+    PASTE
+    REDO
+    UNDO
+    SCALE
+    COMPARE
+    INTERPOLATE
+    ADDFILTER
+    REMOVEFILTER
+    LOADPROJECT
+    SCSETTINGS
+    PRSETTINGS
+    LASETTINGS
+    ATTRDROPDOWN
+    GRAPHDROPDOWN
+    SUBATTRDROPDOWN
+    PIN
+    STATISTICS
+    }
     
-
+     
+    
     class DataUpdateHandler implements IObserver{
-        -Model model
-        -MainWindow view
+        -Outliner outliner
         -List<Element> elements
-        +UpdateHandler(Model model, MainWindow view)
-        +update()
+        +UpdateHandler(Outliner outliner)
+        +void update(Arraylist<Library> libraries)
 
     }
 
     class SettingsUpdateHandler implements IObserver{
-        +SettingsUpdateHandler(Model model, MainWindow view)
-        +update()
+        -Panel panel
+        +SettingsUpdateHandler(Panel panel)
+        +void update(Settings settings)
 
     }
-
 
     class FilterUpdateHandler implements IObserver{
-        +FilterUpdateHandler(Model model, Panel panel)
-        +update()
-    }
-    
-    class InterpolationHandler implements IObserver{
-        +InterpolationHandler(Model model, Panel panel)
-        +update()
+        -Panel panel
+        +FilterUpdateHandler(Panel panel)
+        +void update(List<Filter> filters)
     }
 
-        
+    class InterpolationHandler implements IObserver{
+        -Panel panel
+        +InterpolationHandler(Panel panel)
+        +void update(float value)
+    }
+
+    class NamingConflictHandler implements IObserver{
+        -MergeDialog mergeDialog
+        -NameConflictResolver resolver
+        +NamingConflictHandler(Cell leftCell, 
+        Cell rightCell, NameConflictResolver resolver)
+        +void actionPerformed(ActionEvent e)
+    }
+  
     
 }
 
 package listeners{
 
         class LoadLibraryListener implements ActionListener{
-            -Model model
-            +LoadLibraryListener(Model model)
-            +actionPerformed(ActionEvent e)
+            -Command command
+            -File file
+            -Panel panel
+            +LoadLibraryListener(Panel panel)
+            +void actionPerformed(ActionEvent e)
+            
         }
         
-        class OpenElementListener implements ActionListener{
-            -Model model
-            +OpenElementListener(Model model)
-            +actionPerformed(ActionEvent e)
+        class OpenElementListener implements ActionListener, TreeSelectionListener{
+            -Command command
+            -Element element
+            +OpenElementListener()
+            +void actionPerformed(ActionEvent e)
+            +void valueChanged(TreeSelectionEvent e)
         }
 
-        class DeleteCellListener implements ActionListener{
-            -Model model
-            +DeleteCellListener(Model model)
-            +actionPerformed(ActionEvent e)
+        class DeleteCellListener implements ActionListener, TreeSelectionListener{
+            -Command command
+            -Cell[] cell
+            +DeleteCellListener()
+            +void actionPerformed(ActionEvent e)
+            +void valueChanged(TreeSelectionEvent e)
         }
 
-        class RemoveCellListener implements ActionListener{
-            -Model model
-            +RemoveCellListener(Model model,)
-            +actionPerformed(ActionEvent e)
+        class RemoveListener implements ActionListener, TreeSelectionListener{
+            -Command command
+            -Element[] element
+            +RemoveListener()
+            +void actionPerformed(ActionEvent e)
+            +void valueChanged(TreeSelectionEvent e)
         }
 
-        class SelectListener implements ActionListener{
-            -Model model
-            -Panel panel
-            +SelectCellListener(Model model, Panel panel)
-            +actionPerformed(ActionEvent e)
+        class SelectListener implements TreeSelectionListener{
+            -Command command
+            -Element[] element
+            +SelectListener()
+            +void valueChanged(TreeSelectionEvent e)
         }
 
-        class RenameListener implements ActionListener{
-            -Model model
-            +RenameListener(Model model)
-            +actionPerformed(ActionEvent e)
+        class RenameListener implements ActionListener, TreeSelectionListener{
+            -Command command
+            -Element element
+            +RenameListener()
+            +void actionPerformed(ActionEvent e)
+            +void valueChanged(TreeSelectionEvent e)
         }
 
         class EditListener implements ActionListener, DocumentListener{
-            -Model model
-            +EditListener(Model model)
-            +actionPerformed(ActionEvent e)
+            -Command command
+            -String newText
+            -Element element
+            +EditListener()
+            +void actionPerformed(ActionEvent e)
+            +void changedUpdate(DocumentEvent e)
         }
 
         class SaveListener implements ActionListener{
             -Model model
             +SaveListener(Model model)
-            +actionPerformed(ActionEvent e)
+            +void actionPerformed(ActionEvent e)
         }
 
         class SaveAsListener implements ActionListener{
             -Model model
             +SaveAsListener(Model model)
-            +actionPerformed(ActionEvent e)
+            +void actionPerformed(ActionEvent e)
         }
 
-        class MergeListener implements ActionListener{
-            -Model model
-            +MergeListener(Model model)
-            +actionPerformed(ActionEvent e)
+        class MergeListener implements ActionListener, TreeSelectionListener{
+            -Command command
+            -Library[] libraries
+            +MergeListener()
+            +void actionPerformed(ActionEvent e)
+            +void valueChanged(TreeSelectionEvent e)
         }
 
         class ScaleListener implements ActionListener{
-            -Model model
-            +ScaleListener(Model model)
-            +actionPerformed(ActionEvent e)
+            -Command command
+            -Attribute attribute
+            -float float
+            +ScaleListener()
+            +void actionPerformed(ActionEvent e)
+            
         }
 
         class InterpolationListener implements ActionListener{
-            -Model model
-            +InterpolationListener(Model model)
-            +actionPerformed(ActionEvent e)
+            -Command command
+            +InterpolationListener()
+            +void actionPerformed(ActionEvent e)
         }
 
         class UndoListener implements ActionListener{
-            -Model model
-            +UndoListener(Model model)
-            +actionPerformed(ActionEvent e)
+            -Command command
+            +UndoListener()
+            +void actionPerformed(ActionEvent e)
         }
 
         class RedoListener implements ActionListener{
-            -Model model
-            +RedoListener(Model model)
-            +actionPerformed(ActionEvent e)
+            -Command command
+            +RedoListener()
+            +void actionPerformed(ActionEvent e)
         }
 
-        class StatisticsListener implements ItemListener{
-            -Model model
-            +StatisticsListener(Model model)
-            +itemStateChanged(ItemEvent e)
+        class CompareListener implements ActionListener, TreeSelectionListener{
+            -Command command
+            +CompareListener()
+            +void actionPerformed(ActionEvent e)
+            +void valueChanged(TreeSelectionEvent e)
         }
 
-        class SearchListener implements TextListener{
-            -Model model
-            +SearchListener(Model model)
-            +textValueChanged(TextEvent e)
-        }
-
-        class CompareListener implements ActionListener{
-            -Model model
-            +CompareListener(Model model)
-            +actionPerformed(ActionEvent e)
-        }
-
-        class MoveListener implements ActionListener{
-            -Model model
-            +MoveListener(Model model)
-            +actionPerformed(ActionEvent e)
+        class MoveListener implements ActionListener, TreeSelectionListener{
+            -Command command
+            -Element[] element
+            +MoveListener()
+            +void actionPerformed(ActionEvent e)
+            +getElements(): Element[]
         } 
 
-        class CopyListener implements ActionListener{
-            -Model model
-            +CopyListener(Model model)
-            +actionPerformed(ActionEvent e)
+        class CopyListener implements ActionListener, TreeSelectionListener{
+            -Command command
+            -Element[] element
+            +CopyListener()
+            +void actionPerformed(ActionEvent e)
+            +getElements(): Element[]
         }
 
-        class PasteListener implements ActionListener{
-            -Model model
-            +PasteListener(Model model)
-            +actionPerformed(ActionEvent e)
+        class PasteListener implements ActionListener, TreeSelectionListener{
+            -Command command
+            -EventListener moveListener
+            -EventListener copyListener
+            -Library targetLibrary
+            +PasteListener()
+            +void actionPerformed(ActionEvent e)
         }
 
         class AddFilterListener implements ActionListener{
-            -Model model
-            +AddFilterListener(Model model)
-            +actionPerformed(ActionEvent e)
+            -Command command
+            -Filter filter
+            +AddFilterListener()
+            +void actionPerformed(ActionEvent e)
         }
 
-        class AttributeDropdownListener implements ActionListener{
-            -Model model
-            +AttributeDropdownListener(Model model)
-            +actionPerformed(ActionEvent e)
+         class RemoveFilterListener implements ActionListener{
+            -Command command
+            -Filter filter
+            +RemoveFilterListener()
+            +void actionPerformed(ActionEvent e)
         }
 
-        class SubAttributeDropdownListener implements ActionListener{
-            -Model model
-            +SubAttributeDropdownListener(Model model)
-            +actionPerformed(ActionEvent e)
+        
+        class LoadProjectListener implements ActionListener{
+            -Command command 
+            -Project project
+            +LoadProjectListener()
+            +void actionPerformed(ActionEvent e)
         }
 
-        class GraphDropdownListener implements ActionListener{
-            -Model model
-            +GraphDropdownListener(Model model)
-            +actionPerformed(ActionEvent e)
+        class ExportProjectListener implements ActionListener{
+            -Command command 
+            -Model model 
+            +ExportProjectListener()
+            +void actionPerformed(ActionEvent e)
+
         }
 
-        class PinSelectListener implements ActionListener{
+        class StatisticsListener implements ItemListener{
+            +StatisticsListener()
+            +void itemStateChanged(ItemEvent e)
+        }
+        
+        class SettingsListener implements ActionListener{
             -Model model
-            -Panel panel
-            +PinSelectListener(Model model, Panel panel)
-            +actionPerformed(ActionEvent e)
+            +SettingsListener(Model model)
+            +void actionPerformed(ActionEvent e)
         }
 
         class ShortcutSettingsListener implements KeyListener{
-            -Model model
-            +ShortcutSettingsListener(Model model)
-            +actionPerformed(ActionEvent e)
+            -Shortcut shorcuts
+            +ShortcutSettingsListener(Shortcuts shortcuts)
+            +void actionPerformed(ActionEvent e)
         }
 
         class PreferencesSettingsListener implements ActionListener{
             -Model model
             +PreferencesSettingsListener(Model model)
-            +actionPerformed(ActionEvent e)
+            +void actionPerformed(ActionEvent e)
 
         }
+
+        class LanguageSettingsListener implements ActionListener{
+            -Model model
+            +LanguageSettingsListener(Model model)
+            +void actionPerformed(ActionEvent e)
+        }
+
+
+        class AttributeDropdownListener implements ActionListener{
+            +AttributeDropdownListener()
+            +void actionPerformed(ActionEvent e)
+        }
+
+        class SubAttributeDropdownListener implements ActionListener{
+            +SubAttributeDropdownListener()
+            +void actionPerformed(ActionEvent e)
+        }
+
+        class GraphDropdownListener implements ActionListener{
+            +GraphDropdownListener()
+            +void actionPerformed(ActionEvent e)
+        }
+
+        class PinSelectListener implements ActionListener{
+            +PinSelectListener()
+            +void actionPerformed(ActionEvent e)
+        }
+
+        
+        /'class TabListener implements ActionListener{
+            
+            +TabListener()
+            +void actionPerformed(ActionEvent e)
+        }
+        '/
 
 
 }

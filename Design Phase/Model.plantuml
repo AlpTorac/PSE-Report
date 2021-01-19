@@ -3,11 +3,6 @@ skinparam linetype ortho
 !startsub DIAGRAM
 
 /' package panelData{
-    enum Mode{
-        MAX
-        MIN
-        AVG
-    }
     enum ElementType {
         LIBRARY
         CELL
@@ -75,18 +70,63 @@ skinparam linetype ortho
         + getData()
     }
 }'/
-package element{
+
+package elements{
     class Stat {
         -float min 
         -float max
         -float avg
         -float median
+        __
+        + Stat(float,float,float,float)
+        + getMin() : float
+        + getMax() : float
+        + getAvg() : float
+        + getMed() : float
+        + void setMin(float)
+        + void setMax(float)
+        + void setAvg(float)
+        + void setMed(float)
+
     }
-    package attribute {
+    package attributes {
         abstract class Attribute{ 
+            # Stat stats
             __
+            + Attribute()
             # void calculate()
-            + void scale(int)
+            + void scale(float)
+            + getStats(): Stats
+        }
+        abstract class InAttribute extends Attribute{ 
+            # float[] index1
+            # float[] values
+            __
+            + InAttribute()
+            # void calculate()
+            + void scale(float)
+            + getIndex1() : float[]
+            + getValues() : float[]
+            + void setIndex1(float[])
+            + void setValues(float[])
+        }
+        abstract class OutAttribute extends Attribute{ 
+            # float[] index1 
+            # float[] index2
+            # float[][] values
+            # InputPin relatedPin
+            __
+            + OutAttribute()
+            # void calculate()
+            + void scale(float)
+            + getIndex1() : float[]
+            + getIndex2() : float[]
+            + getValues() : float[][]
+            + getRelatedPin() : InputPin
+            + void setIndex1(float[])
+            + void setIndex2(float[])
+            + void setValues(float[][])
+            + void setRelatedPin(InputPin)
         }
         enum TimingSense {
         POSITIVE
@@ -115,111 +155,151 @@ package element{
         FALLPOWER
         POWER
         }
-        class Timing implements Attribute {
+        class Timing extends OutAttribute {
             -TimingSense timsense
             -TimingType timtype
             -TimingGroup timgroup
-            -float[][] values
-            -InputPin relatedPin
-            -Stat stats
             __
-            + void calculate()
+            + Timing(TimingSense, TimingType,
+            TimingGroup, InputPin, float[][])
         }
-        class InputPower implements Attribute {
+        class InputPower extends InAttribute {
             -PowerGroup powgroup
-            -float[] values
-            -Stat stats
             __
-            + void calculate()
+            + InputPower(PowerGroup, float[])
         }
-        class OutputPower implements Attribute {
+        class OutputPower extends OutAttribute {
             -PowerGroup powgroup 
-            -float[][] values
-            -InputPin relatedPin
-            -Stat stats
             __
-            + void calculate()
+            + OutputPower(PowerGroup, float[][])
         }
-        class Leakage implements Attribute {
-            float[] values
-            -Stat stats
+        class Leakage extends Attribute {
+            - float[] values
             __
-            + void calculate()
+            + Leakage(float[])
+            + getValues() : float[]
+            + setValues(float[])
         }
     }
     abstract class Element{
-        - String name
+        # boolean filtered
+        # boolean searched
+        # String name
         __
+        + Element()
+        + getFiltered() : boolean
+        + void setFiltered(boolean)
+        + getSearched() : boolean
+        + void setSearched(boolean)
         + {abstract} void calculate()
         + getName() : String
-        + {static} compare(Element, Element) : int
+        + void setName(String)
+        + compareTo(Element) : int
     }
-    class Library{
-        - List<TimingSense> availableTimSen
-        - List<TimingGroup> availableTimGr
-        - List<TimingType> availableTimType
-        - List<PowerGroup> availableOutputPower
-        - List<PowerGroup> availableInputPower
+    abstract class HigherElement extends Element{
+        - ArrayList<TimingSense> availableTimSen
+        - ArrayList<TimingGroup> availableTimGr
+        - ArrayList<TimingType> availableTimType
+        - ArrayList<PowerGroup> availableOutputPower
+        - ArrayList<PowerGroup> availableInputPower
+        - MapMap<Sense, Map<Group, Map<Type, Stat>>> timingStat
+        - Map<Group, Stat> inPowerStat
+        - Map<Group, Stat> outPowerStat
+        - boolean hasShownElements
+        - Stat leakage
+        __
+        + HigherElement()
+        + getAvailableOutputPower() : ArrayList<PowerGroup>
+        + getAvailableInputPower() : ArrayList<PowerGroup>
+        + getAvailableTimSen(): ArrayList<TimingSense>
+        + getAvailableTimGr(): ArrayList<TimingGroup>
+        + getAvailableTimType(): ArrayList<TimingType>
+        + getTimingStat() : Map<Sense, Map<Group, Map<Type, Stat>>>
+        + getInpowerStat() : Map<Group, Stat>
+        + getOutPowerStat() : Map<Group, Stat>
+        + getHasShownElements() : boolean
+        + void setHasShownElements(boolean)
+        + void calculateHasShownElements()
+    }
+    class Library extends HigherElement{
         - float[] index1
         - float[] index2
         - String path
         - String[] fileData
-        - Cell[] cells
-        - float averageDefaultLeakage
-        - Map<Sense<Group<Type, Stat>>> timingStat
-        - Map<Group, Stat> inPowerStat
-        - Map<Group, Stat> outPowerStat
+        - ArrayList<Cell> cells
+        - Stat defaultLeakage
         __
+        + Library(float[], float[])
+        + getCells() : ArrayList<Cell>
+        + void setCells(ArrayList<Cell>)
         + void calculateLeakage()
         + void calculateInPow()
         + void calculateOutPow()
         + void calculateTiming()
+        + void calculateDefaultLeakage()
         + getPath() : String
         + void setPath(String)
+        + getIndex1() : float[]
+        + getIndex2() : float[]
+        + getDefaultLeakage(): Stat
     }
-    class Cell{
-        - List<TimingSense> availableTimSen
-        - List<TimingGroup> availableTimGr
-        - List<TimingType> availableTimType
-        - List<PowerGroup> availableOutputPower
-        - List<PowerGroup> availableInputPower
+    class Cell extends HigherElement{
         - Library parentLibrary
         - InputPin[] inPins
         - OutputPin[] outPins
         - Leakage[] leakages
-        - Map<Sense<Group<Type, Stat>>> timingStat
-        - Map<Group, Stat> inPowerStat
-        - Map<Group, Stat> outPowerStat
+        - float defaultLeakage
         __
+        + Cell()
+        + getInPins() : InputPin[]
+        + getOutPins() : OutputPin[]
+        + getParent() : Library
+        + getLeakage() : Leakage[]
+        + void setLeakage(Leakage[])
+        + getDefaultLeakage() : float
+        + void setDefaultLeakage(float)
         + void calculateLeakage()
         + void calculateInPow()
         + void calculateOutPow()
         + void calculateTiming()
-        + getName() : String
-        + void setName(String)
-        
+        + interpolate(float[], float[])
     }
-    abstract class Pin{
-        - Cell parentCell
-        - float capacitance
-        - List<PowerGroup> availablePower
+    abstract class Pin extends Element{
+        # Cell parentCell
+        # float capacitance
+        # ArrayList<PowerGroup> availablePower
         __
+        + Pin()
         + getName() : String
         + void setName(String)
-        
+        + getParent() : Cell
+        + getAvailablePower() : ArrayList<PowerGroup>
+        + interpolate(float[], float[])
     }
     class InputPin{
-        - InputPower[] inputPowers
+        - ArrayList<InputPower> inputPowers
         __
+        + InputPin()
         + void calculatePower()
+        + getInputPowers(): ArrayList<InputPower>
+        + setInputPowers(ArrayList<InputPower>)
     }
     class OutputPin{
-        - List<TimingSense> availableTimSen
-        - List<TimingGroup> availableTimGr
-        - List<TimingType> availableTimType
-        - OutputPower[] outputPowers
-        - Timing[] timings
+        - ArrayList<TimingSense> availableTimSen
+        - ArrayList<TimingGroup> availableTimGr
+        - ArrayList<TimingType> availableTimType
+        - ArrayList<OutputPower> outputPowers
+        - ArrayList<Timing> timings
+        - String outPutFunction
         __
+        + OutputPin()
+        + getTimings(): ArrayList<Timing>
+        + getOutputPowers(): ArrayList<OutputPower>
+        + void setTiming(ArrayList<Timing>)
+        + void setOutputPower(ArrayList<OutputPower>)
+        + getAvailableTimSen(): ArrayList<TimingSense>
+        + getAvailableTimGr(): ArrayList<TimingGroup>
+        + getAvailableTimType(): ArrayList<TimingType>
         + void calculatePower()
         + void calculateTiming()
     }
@@ -227,13 +307,12 @@ package element{
 
 
 package exceptions{
-    interface Exception
     class InvalidComparisonException
     class InvalidFileFormatException
     class ExceedingFileSizeException
     class TooManySelectedException
     class TooManyPanelsOpenedException
-    class SearchedStringNotFoundException
+    class InvalidArgumentException
     class InvalidNameException
 }
 package commands{
@@ -243,50 +322,54 @@ package commands{
         # void undo()
     }
     class ActionHistory{
-        Command[] actions
-        Command[] undoneActions
-        Command PreviousAction
+        - Command[] actions
+        - Command[] undoneActions
+        - int undoCount
         __
+        + ActionHistory()
+        + void setUndoCount(int)
         - void resetUndoneActions()
         + void addAction(Command)
-        + getLatestActions() : Command
+        + void removeLatestAction()
+        + void resetActions()
+        + getLatestAction() : Command
     }
     class CreateLibrary implements Command{
-        Library library
+        - Library createdLibrary
         __
         + CreateLibrary(String)
         + void execute()
         + void undo()
     }
-    class Scale implements Command{
-        Attribute attribute
-        float scale
+    class ScaleAction implements Command{
+        - Attribute attribute
+        - float scale
         __
-        + Scale(Attribute, float)
+        + ScaleAction(Attribute, float)
         + void execute()
         + void undo()
     }
     
     class RemoveFilterAction implements Command{
-        Filter[] filters
+        - Filter removedFilter
         __
-        + FilterAction(Filter[])
+        + RemoveFilterAction(Filter)
         + execute()
         + undo()
     }
     class AddFilterAction implements Command{
-        Filter[] filters
+        - Filter addedFilter
         __
-        + FilterAction(Filter[])
+        + AddFilterAction(Filter)
         + execute()
         + undo()
     }
-    class TextEdit implements Command{
-        String oldContent
-        String newContent
-        Element element
+    class TextEditAction implements Command{
+        - String oldContent
+        - String newContent
+        - Element element
         __
-        + TextEdit (String, Element)
+        + TextEditAction (String, String, Element)
         + void execute()
         + void undo()
     }
@@ -297,64 +380,96 @@ package commands{
         + coid undo()
     }
     class MergeAction implements Command{
-        Library[] mergedLibraries
-        Library productLibrary
+        - Library[] mergedLibraries
+        - Library productLibrary
         __
-        + MergeAction(Library[])
+        + MergeAction(String)
         + void execute()
         + void undo ()
+        # void continue(NameConflictResolver)
+        # void cancel()
     }
     class DeleteAction implements Command{
-        Cell deletedCell
+        - Cell deletedCell
         __
         + DeleteAction(Cell)
         + void execute()
         + void undo()
     }
     class RemoveAction implements Command{
-        Library removedLibrary
+        - Library removedLibrary
         __
         + RemoveAction(Library)
         + void execute()
         + void undo()
     }
+    class PasteAction implements Command{
+        - ArrayList<Cell> pastedCells
+        - ArrayList<Cell> deletedCells
+        - HashMap<Cell, String> renamedCellsOldName
+        - Library destinationLibrary
+        __
+        + PasteAction(Library)
+        + PasteAction(Library, ArrayList<Cell>)
+        + void execute()
+        + void undo()
+        # void continue(NameConflictResolver)
+        # void cancel()
+    }
     class MoveAction implements Command{
-        Map<Element, Library> initialPositions
-        Libary destinationLibrary
+        - HashMap<Cell, Library> initialPositions
+        - ArrayList<Cell> deletedCells
+        - HashMap<Cell, String> renamedCellsOldNames
+        - Library destinationLibrary
         __
         + MoveAction(Element[], Library)
         + void execute()
         + void undo()
+        # void continue(NameConflictResolver)
+        # void cancel()
     }
     class RenameAction implements Command{
-        String oldName
-        String newName
+        - String oldName
+        - String newName
         __
         + RenameAction(Element, String)
         + void execute()
         + void undo()
     }
     class SelectAction implements Command{
-        Element[] elements
+        - HashSet<Element> selectedElements
+        - HashSet<Element> deselectedElements
         __
-        SelectAction(Element)
+        + SelectAction(Element)
         + void execute()
         + void undo()
     }
-    class DeselectAction implements Command{
-        Element[] elements
-        __
-        SelectAction(Element)
-        + void execute()
-        + void undo()
-    }
-    
     class OpenFileAction implements Command {
+        - Library openedLibrary
         __
         + OpenFileAction()
         + void execute()
         + void undo()
     }
+    class NameConflictResolver{
+        - HashMap<Cell> renamedCells
+        - ArrayList<Cell> deletedCells
+        - ArrayList<Cell> cells
+        - Command action
+        - Cell[] currentConflict
+        __
+        + NameConflictResolver(ArrayList<Cell>)
+        + void keepLeft()
+        + void keepRight()
+        + void renameLeft(String)
+        + void renameRight(String)
+        - void continue()
+        + void cancel()
+    }
+
+    MoveAction --> NameConflictResolver
+    PasteAction --> NameConflictResolver
+    MergeAction --> NameConflictResolver
     OpenFileAction -- RemoveAction
     /'class SelectStatAction implements Command{
         __
@@ -376,63 +491,91 @@ package commands{
 }
 
 
-package parser{ 
-    class Parser {
+package parsers { 
+    class LibertyParser {
     - JsonParser parser
     - String json
     __
-    + void parseLibrary(String)
-    + void parseCell(String)
-    + void parsePin(String)
+    + LibertyParser()
+    + {static} void parseLibrary(String)
+    + {static} void parseCell(String)
+    + {static} void parsePin(String)
     }
 }
-package compiler {
+package compilers {
     interface Compiler{
-    + compile(Element): String
-    - compilePin(Pin): String
-    - compileCell(Cell): String
-    - compileLibrary(Library): String
-    + saveFile(String): void
+    __
+    + {Static} compile(Pin): String
+    + {Static} compile(Cell): String
+    + {Static} compile(Library): String
     }
     class CSVCompiler implements Compiler{
     __
-    + compile(Element): String
-    - compilePin(Pin): String
-    - compileCell(Cell): String
-    - compileLibrary(Library): String
-    + saveFile(String): void
+    + CSVCompiler()
+    + {Static} compile(Pin): String
+    + {Static} compile(Cell): String
+    + {Static} compile(Library): String
     }
     class LibertyCompiler implements Compiler{
-    + compile(Element): String
-    - compilePin(Pin): String
-    - compileCell(Cell): String
-    - compileLibrary(Library): String
-    + saveFile(String): void
+    + LibertyCompiler()
+    + {Static} compile(Pin): String
+    + {Static} compile(Cell): String
+    + {Static} compile(Library): String
     }
 }
 
 package project {
     class Model {
-    ArrayList<Element> shownElements
-    ArrayList<Element> greyedElements
-    ArrayList<Element> filteredElements
-    ArrayList<Element> searchedElements
-    ArrayList<Library> libraries
-    ArrayList<Element> selectedElements
-    ArrayList<Element> openedInTextElements
+        - {static} Model instance = new Model()
+        - Project currentProject
+        - Settings currentSettings
+        - Shortcuts currentShortcuts
+        __
+        - Model()
+        + {static} Model getInstance()
+        + Project getCurrentProject()
+        + void loadProject()
+        + void saveProject()
+        + Settings getCurrentSettings()
+        + void saveSettings()
+        + void resetSettings()
+        + Shortcuts getCurrentShortcuts()
+        + void saveShortcuts()
+        + void resetShorcuts()
+        + notify()
+    }
+    class Project {
+    - ArrayList<Library> libraries
+    - HashSet<Element> selectedElements
+    - HashSet<Element> copiedElements
+    - HashSet<Element> openedInTextElements
     __
+    + Project()
     + notify()
     + getLibraries() : ArrayList<Library>
-
+    + getSelectedElements(): HashSet<Element>
+    + getCopiedElements(): HashSet<Element>
+    + getOpenedInTextElements(): HashSet<Element>
+    + void setLibraries(ArrayList<Library> )
+    + void setSelectedElements(HashSet<Element>) 
+    + void setCopiedElements(HashSet<Element>) 
+    + void setOpenedInTextElements(HashSet<Element>)
+    + {static} void saveLibrary(Library)
+    + {static} void saveLibraryAs(Library)
+    + {static} void saveAsCSV(Element)
     }
-    class FileChooser{
-    + openFile(): File
-    + void saveFile()
-    }
-    class Interpolation{
+    class FileManager{
         __
-        + void interpolate(float , PolynomialSplineFunction)
-        + void bicubicInterpolate(float, float, BicubicInterpolatingFunction)
+        + openFile(): File
+        + openFile(String): File
+        + void saveFile(String, String[])
+        + void saveFile(String, String, String)
+    }
+    class Interpolator{
+        __
+        + Interpolator()
+        + {static} float[] interpolate(float[], float[], float[])
+        + {static} float[][] bicubicInterpolate(float[], float[], float[][], float[], float[])
     }
 enum LanguageEnum{
         ENGLISH
@@ -448,97 +591,113 @@ enum LanguageEnum{
         ANDSOON
     }
     class Settings{
-        - Language currentlanguage
-        - ColorTheme colors
-        - String FontType
-        - int FontSize
-        - int barNumber
-        - int UndoNumber
+        - Language currentLanguage
+        - ColorTheme colorTheme
+        - String fontType
+        - int fontSize
+        - int barCount
+        - int undoCount
         - boolean editorOpenedFirst
         __
-        + changeLanguage(LanguageEnum)
-        + changeLanguage(ColorThemeEnum)
+        + Settings()
+        + void setLanguage(LanguageEnum)
+        + void setColorTheme(ColorThemeEnum)
+        + void setFontType(String)
+        + void setFontSize(int)
+        + void setBarCount(int)
+        + void setUndoCount(int)
+        + void setEditorOpenedFirst(boolean)
+        + getLanguage() : LanguageEnum
+        + getColorTheme() : ColorThemeEnum
+        + getFontType() : String
+        + getFontSize() : int
+        + getBarCount() : int
+        + getUndoCount() : int
+        + getEditorOpenedFirst(): boolean
+        - void notify()
     }
+    LanguageEnum -- Settings
+    ColorThemeEnum -- Settings
     class ColorTheme{
-        int[] colors
+        - int[] colors
         __
-        getColors()
+        + ColorTheme()
+        + getColors(): int[]
     }
     class Language{
-        String appname
-        String[] Elements
-        String[] Menus
-        String[] Methods
-        String[] Attributes
+        - String[] liberty
+        - String[] menus
+        - String[] methods
+        - String[] attributes
+        - String[] errors
+        - String[] misc
         __
-        getBlablabal(): String
+        + getLiberty(): String
+        + getElements(): String[]
+        + getMenus(): String[]
+        + getMethods(): String[]
+        + getAttributes(): String[]
+        + getErrors(): String[]
+        + getMisc(): String[]
     }
     Settings *-- ColorTheme
     Settings *-- Language
     class Shortcuts{
-    - Map<Keys(??), COMMAND> defaultCommands
-    - Map<Keys(??), COMMAND> commands
+    - HashMap<char, Event> commands
     __
-    + void setKey(Key, COMMAND)
-    + void resetKeys()
-    + COMMAND getCommand(Key)
+    + void setKey(char, Event)
+    + void removeKey(char)
+    + ArrayList<char> getKeys()
+    + Event getAction(char)
     }
     enum Operation{
         LESS
         EQUAL
         BIGGER
     }
+    enum Mode{
+        MAX
+        MIN
+        AVG
+        MED
+    }
     class Filter{
-        Attribute attribute
-        Mode mode
-        float value
-        Operation operation
+        - {static} ArrayList<Filter> filters
+        - Attribute attribute
+        - Mode mode
+        - float value
+        - Operation operation
         __
-        + Element[] filter(Element[])
+        + Filter(Attribute, Mode, float,
+        Operation)
+        + {static} void filter()
+        + {static} void saveDefaultFilters()
+        + {static} void loadDefaultFilters()
     }
 }
-Model --> Interpolation
+Project --> Compiler
+Project --> CSVCompiler
 Model --> Settings
 Model --> Shortcuts
-Model --> FileChooser
-Model --> Parser
-MergeAction ..> Library :  <<creates>> 
-Parser ..> Library: <<creates>>
-Model --> MergeAction
-Model --> SelectAction
-Model --> DeselectAction
-Model --> AddFilterAction
-Model --> RemoveFilterAction
-Model --> Scale
-Model --> ElementSearchAction
-Model --> CreateLibrary
-Model --> UndoAction
-Model --> RenameAction
-Model --> DeleteAction
-Model --> TextEdit
-Model --> MoveAction
-Model --> RemoveAction
-Model --> LibertyCompiler
-Model --> CSVCompiler
-Model --> ActionHistory
-Model --> OpenFileAction
-TextEdit --> Parser
-Parser --> Library
-Parser --> Cell
-Parser --> Pin
+Model --> FileManager
+Filter --> FileManager
+MergeAction ..> Library
+Project --* Model
+TextEditAction --> LibertyParser
+LibertyParser ..> Library
+LibertyParser ..> Cell
+LibertyParser ..> Pin
 /'SelectDropdownAction --> Attribute
 SelectStatAction --> Attribute '/
-OpenFileAction --> FileChooser
-OpenFileAction --> Parser
+OpenFileAction --> FileManager
+OpenFileAction --> LibertyParser
 UndoAction --> ActionHistory
 Filter <-- AddFilterAction
 Filter <-- RemoveFilterAction
-Element <|-- Library
-Element <|-- Cell
-Element <|-- Pin
 Pin <|-- InputPin
 Pin <|-- OutputPin
 Operation -- Filter
+Mode -- Filter
 TimingSense -- Timing
 TimingType -- Timing
 TimingGroup -- Timing
@@ -546,40 +705,24 @@ PowerGroup -- OutputPower
 PowerGroup -- InputPower
 Library *-- Cell
 Cell *-- Pin
-Exception --> InvalidComparisonException 
-Exception --> InvalidFileFormatException
-Exception --> ExceedingFileSizeException
-Exception --> TooManyPanelsOpenedException
-Exception --> TooManySelectedException
-Exception --> InvalidNameException
-Exception --> SearchedStringNotFoundException
+Project --> LibertyCompiler
+LibertyParser ..> Attribute
 !endsub
 
-
-/' alignment1 '/
-/'
-Controller -[hidden]-> project
-commands -[hidden]> project
-project -[hidden]> exceptions
-parser -[hidden]> element
-commands -[hidden]-> compiler
-PowerGroup -[hidden]> Attribute
-commands -[hidden]> compiler
-'/
-
-/' alignment2 '/
-/'
-Controller -[hidden]> project
-project -[hidden]> compiler
+/' project -[hidden]> compiler
 compiler -[hidden]-> parser
 parser -[hidden]> element
-project-[hidden]> commands
-'/
+project-[hidden]> commands '/
+OutputPower -[hidden]> InputPower
+InputPower -[hidden]-> PowerGroup
+Timing -[hidden]-> TimingType
+Timing -[hidden]-> TimingSense
+Timing -[hidden]-> TimingGroup
+elements -[hidden]> exceptions
+InvalidComparisonException -[hidden]-> InvalidFileFormatException
+InvalidFileFormatException -[hidden]-> ExceedingFileSizeException
 
-/' alignment3 '/
 
-project -[hidden]> compiler
-compiler -[hidden]-> parser
-parser -[hidden]> element
-project-[hidden]> commands
+
+
 @enduml
