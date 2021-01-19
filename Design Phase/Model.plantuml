@@ -229,7 +229,7 @@ package elements{
         - ArrayList<Cell> cells
         - Stat defaultLeakage
         __
-        + Library()
+        + Library(float[], float[])
         + getCells() : ArrayList<Cell>
         + void setCells(ArrayList<Cell>)
         + void calculateLeakage()
@@ -380,7 +380,7 @@ package commands{
         - Library[] mergedLibraries
         - Library productLibrary
         __
-        + MergeAction(Library[], String)
+        + MergeAction(String)
         + void execute()
         + void undo ()
         # void continue(NameConflictResolver)
@@ -460,6 +460,7 @@ package commands{
         + void renameLeft(String)
         + void renameRight(String)
         - void continue()
+        + void cancel()
     }
 
     MoveAction --> NameConflictResolver
