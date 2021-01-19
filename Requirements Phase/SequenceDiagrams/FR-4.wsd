@@ -1,0 +1,27 @@
+@startuml FR-4
+skinparam responseMessageBelowArrow true
+    actor User
+    User -> "TreeNode t" ++ : double click
+    "TreeNode t" -> "OpenElementListener o" ++ : mouseClicked(MouseEvent e)
+    "OpenElementListener o" -> "SubWindow s" ** : SubWindow(element)
+    activate "SubWindow s"
+    "SubWindow s" -> "Visualizer v" **  : Visualizer(element)
+    activate "Visualizer v"
+    'TODO generate diagram/cell representation
+    "Visualizer v" -> Diagram ++
+    return
+    "Visualizer v" -> CellRepresentation ++
+    return
+    return
+    return
+    "OpenElementListener o" -> "SubWindowArea a" ++ : addSubWindow(s)
+    alt 1 SubWindow object in a
+    "SubWindowArea a" -> "SubWindow s" : resize(...) [set to half the width of a]
+    else 2 SubWindow objects in a
+    "SubWindowArea a" -> "SubWindow s" : resize(...) [set to a third the width of a]
+    else 3 SubWindow objects in a
+    "SubWindowArea a" -> "InfoBar i" : setText(InfoBarID::ERROR, "ERROR:Cannot open more than 3 sub-windows")
+    end
+    return
+    return
+@enduml
