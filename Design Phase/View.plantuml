@@ -685,7 +685,7 @@ package Diagrams {
         -{static} DiagramDirector instance = new DiagramDirector
         -DiagramDirector()
         +{static} DiagramDirector getDiagramDirector()
-        +void changeBuilder(Builder b)
+        -void setBuilder()
         +void setDiagramData(DiagramData data)
         +IDiagram build()
     }
