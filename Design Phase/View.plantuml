@@ -234,10 +234,9 @@ package Diagrams {
     }
     package Diagram.Overlayer {
         class DiagramOverlayer implements IDiagramOverlayer {
-            -Collection<? extends IDiagram> diagrams
+            -Collection<IDiagram> diagrams
             -IDiagramOverlayStrategy overlayStrategy
             +DiagramOverlayer(IDiagram[] diagrams)
-            -void setOverlayStrategy()
         }
         interface IDiagramOverlayStrategy {
             +IDiagram overlay()
