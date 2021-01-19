@@ -123,16 +123,21 @@ skinparam Note {
                     -Map<Component, ComponentResizer>
                     +setResizer(Component, Resizer)
                 }
+                Window ..|> JFrame
                 ResizeMode <-- Resizer
             }
     }
     
     'UI Composites
     package Composites {
+        interface ModelUser {
+            +update()
+        }
         enum InfoBarID {
             VERSION
             SELECTED
             LASTACTION
+            ERROR
         }
         class InfoBar extends Panel {
             -Map<InfoBarID,TextBox>
@@ -156,9 +161,11 @@ skinparam Note {
             +SubWindow(Element)
             +setElement(Element)
         }
+        SubWindow ..|> ModelUser
         abstract class ElementManipulator extends Panel {
             +setElement(Element)
         }
+        ElementManipulator ..|> ModelUser
         class TextEditor implements ElementManipulator {
             -TextPane
             +TextEditor(Element)
@@ -171,13 +178,19 @@ skinparam Note {
         }
         SubWindow *-- "1..[num subtypes]" ElementManipulator
         SubWindowArea *-- "0..3" SubWindow
+        class Comparer implements ElementManipulator {
+            +Comparer(Element e1, Element e2)
+        }
 
-        class Outliner extends Panel {
+
+        class Outliner extends Panel{
             -MenuBar
             -Tree
-            -DAO
-            +Outliner(DAO data)
+            -Model
+            +Outliner(Model data)
+            +setModel(Model data)
         }
+        Outliner ..|> ModelUser
 
         class MergeDialog extends Window {
             Label prompt
@@ -193,6 +206,10 @@ skinparam Note {
             +open(Element eLeft, Element eRight)
         }
         MergeDialog --* MainWindow
+        class SettingsDialog extends Window {
+
+        }
+        SettingsDialog --* MainWindow
     }
 'Diagrams
 package Diagrams {
@@ -741,6 +758,8 @@ package Diagrams {
     'Ui
         AutoResizing --> Resizer
         Visualizer -> IDiagram
+        DefaultComparer --> IDiagram
+
 
         MainWindow *-- "1"Outliner
         MainWindow *-- "1"SubWindowArea
