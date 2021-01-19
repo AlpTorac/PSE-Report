@@ -255,13 +255,14 @@ package elements{
         + getOutPins() : OutputPin[]
         + getParent() : Library
         + getLeakage() : Leakage[]
-        + setLeakage(Leakage[])
+        + void setLeakage(Leakage[])
         + getDefaultLeakage() : float
         + void setDefaultLeakage(float)
         + void calculateLeakage()
         + void calculateInPow()
         + void calculateOutPow()
         + void calculateTiming()
+        + interpolate(float[], float[])
     }
     abstract class Pin extends Element{
         # Cell parentCell
@@ -273,6 +274,7 @@ package elements{
         + void setName(String)
         + getParent() : Cell
         + getAvailablePower() : ArrayList<PowerGroup>
+        + interpolate(float[], float[])
     }
     class InputPin{
         - ArrayList<InputPower> inputPowers
@@ -328,6 +330,7 @@ package commands{
         + void setUndoCount(int)
         - void resetUndoneActions()
         + void addAction(Command)
+        + void removeLatestAction()
         + void resetActions()
         + getLatestAction() : Command
     }
@@ -407,6 +410,7 @@ package commands{
         - Library destinationLibrary
         __
         + PasteAction(Library)
+        + PasteAction(Library, ArrayList<Cell>)
         + void execute()
         + void undo()
         # void continue(NameConflictResolver)
