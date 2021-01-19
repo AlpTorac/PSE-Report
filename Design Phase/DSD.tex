@@ -748,14 +748,10 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         {}{}{
             The only instance of the class.
         }
-        \item \methoddesc{\public}{}{void}{changeBuilder}{\type{DiagramBuilder} builder}
+        \item \methoddesc{\private}{}{void}{setBuilder}{}
         {
-            Changes the active \refer{\lblroot:view.diagrams:DiagramDirector:builder}{builder} with the given one.
-        }{
-            \begin{itemize}
-                \item \paramdesc{builder}{The new \refer{\lblroot:view.diagrams.builder:DiagramBuilder}{DiagramBuilder}}
-            \end{itemize}
-        }{}
+            Changes the active \refer{\lblroot:view.diagrams:DiagramDirector:builder}{builder} to the appropriate one, according to \refer{\lblroot:view.diagrams:DiagramDirector:data}{data}.
+        }{}{}
         \item \methoddesc{\public}{}{void}{setDiagramData}{\type{DiagramData} data}
         {
             Sets the active \refer{\lblroot:view.diagrams:DiagramDirector:data}{data}.
@@ -3305,7 +3301,7 @@ Keeps track of the timing sense of the output pin.
     \item \atrdesc{\private}{}{\type{Stat}}{defaultLeakage}{}
 \end{itemize}}
 {\begin{itemize}
-        \item \constrdesc{\public}{Library}{}{}{}
+        \item \constrdesc{\public}{Library}{\type{float[]} index1, \type{float[]} index2}{}{}
     \end{itemize}}
 {\begin{itemize}
         \item \methoddesc{\public}{\abstr}{void}{calculate}{}{}
@@ -3366,6 +3362,8 @@ Keeps track of the timing sense of the output pin.
         {}{}
         \item \methoddesc{\public}{}{void}{calculateTiming}{}{}
         {}{}
+        \item \methoddesc{\public}{}{void}{interpolate}{\type{float[]} index1, \type{float[]} index2 }{}{}{}
+
 \end{itemize}}
 
 \absclassdesc{Pin}{}
@@ -3404,6 +3402,7 @@ Keeps track of the timing sense of the output pin.
         
         \item \methoddesc{\public}{}{\type{ArrayList<InputPower>}}{getInputPowers}{}{}{}{}
         \item \methoddesc{\public}{}{void}{setInputPowers}{\type{ArrayList<InputPower>} inputPowers}{}{}{}
+        \item \methoddesc{\public}{}{void}{interpolate}{\type{float[]} index1}{}{}{}
 \end{itemize}}
 
 
@@ -3445,6 +3444,8 @@ Keeps track of the timing sense of the output pin.
         \item \methoddesc{\public}{}{void}{calculatePower}{}{}{}{}
         
         \item \methoddesc{\public}{}{void}{calculateTiming}{}{}{}{}
+        
+        \item \methoddesc{\public}{}{void}{interpolate}{\type{float[]} index1, \type{float[]} index2 }{}{}{}
 \end{itemize}}
 
 
@@ -3615,17 +3616,17 @@ Keeps track of the timing sense of the output pin.
     }
 
 
-\classdesc{MergeAction}{Merges multiple libraries to a single library.}
+\classdesc{MergeAction}{Merges multiple selected libraries to a single library.}
     {\begin{itemize}
         \item \atrdesc{\private}{}{\type{Library[]}}{mergedLibraries}{}
         \item
         \atrdesc{\private}{}{\type{Library}}{productLibrary}{}
     \end{itemize}} 
 {   \begin{itemize}
-        \item \constrdesc{\public}{MergeAction}{\type{Library[]} libraries}{}
+        \item \constrdesc{\public}{MergeAction}{\type{String} name}{}
         {
             \begin{itemize}
-            \item \paramdesc{libraries}{Array of libraries that are going to be merged.}
+            \item \paramdesc{name}{Name of the resulting library}
             \end{itemize}
         }
     \end{itemize}
@@ -3635,18 +3636,65 @@ Keeps track of the timing sense of the output pin.
         {}{}{}
         \item \methoddesc{\public}{}{void}{undo}{}
         {}{}{}
+        \item \methoddesc{\proted}{}{void}{continue}{\type{NameConflictResolver} resolver}
+        {}{
+            \begin{itemize}
+            \item \paramdesc{resolver}{Object that handled the naming conflict resolution}
+            \end{itemize}
+        }{}
+        \item \methoddesc{\proted}{}{void}{cancel}{}
+        {}{}{}
+    \end{itemize}
+    }
+\classdesc{PasteAction}{Moves copied cells to a desired library.}
+    {\begin{itemize}
+        \item \atrdesc{\private}{}{\type{HashMap<\type{Cell}, \type{String}>}}{renamedCellsOldNames}{}
+        \item \atrdesc{\private}{}{\type{ArrayList<\type{Cell}>}}{pastedCells}{}
+        \item \atrdesc{\private}{}{\type{ArrayList<\type{Cell}>}}{deletedCells}{}
+        \item \atrdesc{\private}{}{Library}{destinationLibrary}{}
+    \end{itemize}} 
+{   \begin{itemize}
+        \item \constrdesc{\public}{PasteAction}{\type{Library} library}{}
+        {
+            \begin{itemize}
+            \item \paramdesc{library}{The library that the copied cells are going to be pasted to.}
+            \end{itemize}
+        }
+        \item \constrdesc{\public}{PasteAction}{\type{Library} library, \type{ArrayList<\type{Cell}>, cells}}{
+            This constructor is mainly here to be used by MoveAction instead of pasting copied cells.
+        }{
+            \begin{itemize}
+            \item \paramdesc{library}{The library that the copied cells are going to be pasted to.}
+            \item \paramdesc{cells}{The cells that are going to be moved to the library.}
+            \end{itemize}
+        }
+    \end{itemize}
+}
+    {\begin{itemize}
+        \item \methoddesc{\public}{}{void}{execute}{}
+        {}{}{}
+        \item \methoddesc{\public}{}{void}{undo}{}
+        {}{}{}
+        \item \methoddesc{\proted}{}{void}{continue}{\type{NameConflictResolver} resolver}
+        {}{
+            \begin{itemize}
+            \item \paramdesc{resolver}{Object that handled the naming conflict resolution}
+            \end{itemize}
+        }{}
+        \item \methoddesc{\proted}{}{void}{cancel}{}
+        {}{}{}
     \end{itemize}
     }
 
-
 \classdesc{MoveAction}{Moves selected cells to a desired library.}
     {\begin{itemize}
-        \item \atrdesc{\private}{}{\type{Map<\type{Cell}, \type{Library}>}}{initialPositions}{}
+        \item \atrdesc{\private}{}{\type{HashMap<\type{Cell}, \type{Library}>}}{initialPositions}{}\item \atrdesc{\private}{}{\type{HashMap<\type{Cell}, \type{String}>}}{renamedCellsOldNames}{}
+        \item \atrdesc{\private}{}{\type{ArrayList<\type{Cell}>}}{deletedCells}{}
         \item
         \atrdesc{\private}{}{Library}{destinationLibrary}{}
     \end{itemize}} 
 {   \begin{itemize}
-        \item \constrdesc{\public}{MoveAction}{\type{Cell[]} cells, \type{Library} library}{}
+        \item \constrdesc{\public}{MoveAction}{\type{ArrayList<\type{Cell}>} cells, \type{Library} library}{}
         {
             \begin{itemize}
             \item \paramdesc{cells}{Array of the selected cells that are going to be moved.}
@@ -3659,6 +3707,14 @@ Keeps track of the timing sense of the output pin.
         \item \methoddesc{\public}{}{void}{execute}{}
         {}{}{}
         \item \methoddesc{\public}{}{void}{undo}{}
+        {}{}{}
+        \item \methoddesc{\proted}{}{void}{continue}{\type{NameConflictResolver} resolver}
+        {}{
+            \begin{itemize}
+            \item \paramdesc{resolver}{Object that handled the naming conflict resolution}
+            \end{itemize}
+        }{}
+        \item \methoddesc{\proted}{}{void}{cancel}{}
         {}{}{}
     \end{itemize}
     }
@@ -3793,16 +3849,16 @@ Keeps track of the timing sense of the output pin.
     {\begin{itemize}
         \item \atrdesc{\private}{}{\type{Command[]}} {actions}{}
         \item \atrdesc{\private}{}{\type{Command[]}} {undoneActions}{}
-        \item \atrdesc{\private}{}{\type{int}} {undoNumber}{}
+        \item \atrdesc{\private}{}{\type{int}} {undoCount}{}
     \end{itemize}} 
 {   \begin{itemize}
         \item \constrdesc{\public}{ActionHistory}{}{}{}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{setUndoNumber}{\type{int} undoNumber}{}
+        \item \methoddesc{\public}{}{void}{setUndoCount}{\type{int} undoCount}{}
         {{\begin{itemize}
-        \item \paramdesc{undoNumber} {The number that decides how many undo operations can be done.}
+        \item \paramdesc{undoCount} {The number that decides how many undo operations can be made.}
         \end{itemize}}
         }{}
         \item \methoddesc{\private}{}{void}{resetUndoneActions}{}
@@ -3812,14 +3868,52 @@ Keeps track of the timing sense of the output pin.
         \item \paramdesc{action} {An action that is added to the undo history.}
         \end{itemize}}
         }{}
+        \item \methoddesc{\public}{}{void}{removeLatestAction}{}
+        {}{}{}
         \item \methoddesc{\public}{}{void}{resetActions}{}
         {}{}{}
-        \item \methoddesc{\public}{}{\type{Command}}{getLatestActions}{}
+        \item \methoddesc{\public}{}{\type{Command}}{getLatestAction}{}
         {}{}{{\begin{itemize}
         \item \paramdesc{Command} {Latest action will be returned.}
         \end{itemize}}}
     \end{itemize}
     }{}
+    
+\classdesc{NameConflictResolver}{Resolves naming conflicts while keeping track of the taken actions}
+    {\begin{itemize}
+        \item \atrdesc{\private}{}{\type{HashMap<\type{Cell}, \type{String}>}} {renamedCells}{}
+        \item \atrdesc{\private}{}{\type{ArrayList<\type{Cell}>}} {deletedCells}{}
+        \item \atrdesc{\private}{}{\type{ArrayList<\type{Cell}>}} {cells}{}
+        \item \atrdesc{\private}{}{\type{Command}} {action}{}
+        \item \atrdesc{\private}{}{\type{Cell[]}} {currentConflict}{}
+    \end{itemize}} 
+{   \begin{itemize}
+        \item \constrdesc{\public}{NameConflictResolver}{\type{ArrayList<\type{Cell}> cells}}{}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{void}{keepLeft}{}
+        {Keeps the left Cell and deletes the right one}{}{}
+        \item \methoddesc{\public}{}{void}{keepRight}{}
+        {Keeps the right Cell and deletes the left one}{}{}
+        \item \methoddesc{\public}{}{void}{renameLeft}{String name}
+        {Keeps both cells and renames the left one}{
+        \begin{itemize}
+            \item \paramdesc{name}{New name}
+        \end{itemize}
+        }{}
+        \item \methoddesc{\public}{}{void}{renameRight}{String name}
+        {Keeps both cells and renames the right one}{
+        \begin{itemize}
+            \item \paramdesc{name}{New name}
+        \end{itemize}
+        }{}
+        \item \methoddesc{\public}{}{void}{continue}{}
+        {Continues with the conflict resolution}{}{}
+        \item \methoddesc{\public}{}{void}{cancel}{}
+        {Cancels the conflict resolution}{}{}
+    \end{itemize}
+}{}
 }
 \packagedesc{model.parsers}{
 \classdesc{LibertyParser}{
@@ -3980,7 +4074,8 @@ Keeps track of the Elements loaded into the program and manages their Files
     \begin{itemize}
         \item \atrdesc{\private}{}{ArrayList<Library>}{libraries}{The array that keeps track of the libraries loaded into the program}
         \item \atrdesc{\private}{}{HashSet<Element>}{selectedElements}{The Set that keeps track of the selected elements}
-        \atrdesc{\private}{}{HashSet<Element>}{openedInTextElements}{The Set that keeps track of the elements opened in a text editor}
+        \item \atrdesc{\private}{}{HashSet<Element>}{copiedElements}{The Set that keeps track of the copied elements}
+        \item \atrdesc{\private}{}{HashSet<Element>}{openedInTextElements}{The Set that keeps track of the elements opened in a text editor}
     \end{itemize}
 }{
     \begin{itemize}
@@ -4342,6 +4437,8 @@ Keeps track of the mode used to calculate the attribute used on the filter
         \item \fielddesc{Event}{ADDFILTER}{}
         \item \fielddesc{Event}{REMOVEFILTER}{}
         \item \fielddesc{Event}{LOADPROJECT}{}
+        \item \fielddesc{Event}{EXPORTPROJECT}{}
+        \item \fielddesc{Event}{SETTINGS}{}
         \item \fielddesc{Event}{SCSETTINGS}{}
         \item \fielddesc{Event}{PRSETTINGS}{}
         \item \fielddesc{Event}{LASETTINGS}{}
@@ -4697,11 +4794,40 @@ Keeps track of the mode used to calculate the attribute used on the filter
 \classdesc{LoadProjectListener}{public class LoadProjectListener \decl{}{Listener for importing a project}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for importing a project.}
-        \item \atrdesc{\private}{}{Project}{project}{Loaded project file}
+        \item \atrdesc{\private}{}{Model}{model}{Model instance}
     \end{itemize}
 }{
     \begin{itemize}
         \item \constrdesc{\public}{LoadProjectListener}{}{}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
+        {}{}{}
+    \end{itemize}}{}
+    
+\classdesc{ExportProjectListener}{public class ExportProjectListener \decl{}{Listener for exporting a project as a CSV file.}}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Command}{command}{Command for exporting a project.}
+        \item \atrdesc{\private}{}{Model}{Model}{Model instance}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \constrdesc{\public}{ExportProjectListener}{}{}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
+        {}{}{}
+    \end{itemize}}{}
+    
+\classdesc{SettingsListener}{public class SettingsListener \decl{}{Listener for main settings window.}}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Settings}{settings}{Settings data in the model.}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \constrdesc{\public}{SettingsListener}{}{}{}
     \end{itemize}
 }{
     \begin{itemize}
@@ -4854,8 +4980,20 @@ Keeps track of the mode used to calculate the attribute used on the filter
     \begin{itemize}
         \item \constrdesc{\public}{InterpolationUpdateHandler}{\type{Panel} panel}{}{}
     \end{itemize}}{\begin{itemize}
-        \item \methoddesc{\public}{}{void}{update}{\type{Interpolation} interpolation}
+        \item \methoddesc{\public}{}{void}{update}{\type{float} value}
         {Updates the view with the changed data.}{}{}
+    \end{itemize}}{}
+\classdesc{NamingConflictHandler}{public class NamingConflictHandler \decl{}{}}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{MergeDialog}{mergeDialog}{Dialog for NamingConflict resolution}
+        \item \atrdesc{\private}{}{NameConflictResolver}{resolver}{Model object that handles Naming conflict resolution}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \constrdesc{\public}{NamingConflictHandler}{\type{Cell} left, \type{Cell} left, NameConflictResolver resolver}{}{}
+    \end{itemize}}{\begin{itemize}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
+        {}{}{}
     \end{itemize}}{}
 }
 \chapter{Class Diagrams}
@@ -4866,5 +5004,6 @@ Keeps track of the mode used to calculate the attribute used on the filter
 \pattern{Strategy}
 \pattern{Builder}
 \pattern{Singleton}
+\pattern{Observer}
 
 \end{document}
