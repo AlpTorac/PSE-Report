@@ -104,7 +104,6 @@ together {
 
     }
 
-
     class FilterUpdateHandler implements IObserver{
         -Panel panel
         +FilterUpdateHandler(Panel panel)
@@ -114,12 +113,16 @@ together {
     class InterpolationHandler implements IObserver{
         -Panel panel
         +InterpolationHandler(Panel panel)
-        +update(Interpolation interpolation)
+        +update(float value)
     }
 
-    
-
-        
+    class NamingConflictHandler implements IObserver{
+        -MergeDialog mergeDialog
+        -NameConflictResolver resolver
+        +NamingConflictHandler(Cell leftCell, Cell rightCell)
+        +actionPerformed(ActionEvent e)
+    }
+  
     
 }
 

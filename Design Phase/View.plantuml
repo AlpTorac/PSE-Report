@@ -190,7 +190,7 @@ skinparam Note {
             Button keepLeft
             Button keepRight
             +MergeDialog()
-            +open(Element eLeft, Element eRight)
+            +open(Cell eLeft, Cell eRight)
         }
         MergeDialog --* MainWindow
     }
