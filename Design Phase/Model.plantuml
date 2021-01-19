@@ -229,7 +229,7 @@ package elements{
         - ArrayList<Cell> cells
         - Stat defaultLeakage
         __
-        + Library()
+        + Library(float[], float[])
         + getCells() : ArrayList<Cell>
         + void setCells(ArrayList<Cell>)
         + void calculateLeakage()
@@ -255,13 +255,14 @@ package elements{
         + getOutPins() : OutputPin[]
         + getParent() : Library
         + getLeakage() : Leakage[]
-        + setLeakage(Leakage[])
+        + void setLeakage(Leakage[])
         + getDefaultLeakage() : float
         + void setDefaultLeakage(float)
         + void calculateLeakage()
         + void calculateInPow()
         + void calculateOutPow()
         + void calculateTiming()
+        + interpolate(float[], float[])
     }
     abstract class Pin extends Element{
         # Cell parentCell
@@ -273,6 +274,7 @@ package elements{
         + void setName(String)
         + getParent() : Cell
         + getAvailablePower() : ArrayList<PowerGroup>
+        + interpolate(float[], float[])
     }
     class InputPin{
         - ArrayList<InputPower> inputPowers
@@ -322,12 +324,13 @@ package commands{
     class ActionHistory{
         - Command[] actions
         - Command[] undoneActions
-        - int undoNumber
+        - int undoCount
         __
         + ActionHistory()
-        + void setUndoNumber(int)
+        + void setUndoCount(int)
         - void resetUndoneActions()
         + void addAction(Command)
+        + void removeLatestAction()
         + void resetActions()
         + getLatestAction() : Command
     }
@@ -380,9 +383,11 @@ package commands{
         - Library[] mergedLibraries
         - Library productLibrary
         __
-        + MergeAction(Library[])
+        + MergeAction(String)
         + void execute()
         + void undo ()
+        # void continue(NameConflictResolver)
+        # void cancel()
     }
     class DeleteAction implements Command{
         - Cell deletedCell
@@ -398,13 +403,30 @@ package commands{
         + void execute()
         + void undo()
     }
+    class PasteAction implements Command{
+        - ArrayList<Cell> pastedCells
+        - ArrayList<Cell> deletedCells
+        - HashMap<Cell, String> renamedCellsOldName
+        - Library destinationLibrary
+        __
+        + PasteAction(Library)
+        + PasteAction(Library, ArrayList<Cell>)
+        + void execute()
+        + void undo()
+        # void continue(NameConflictResolver)
+        # void cancel()
+    }
     class MoveAction implements Command{
-        - Map<Element, Library> initialPositions
+        - HashMap<Cell, Library> initialPositions
+        - ArrayList<Cell> deletedCells
+        - HashMap<Cell, String> renamedCellsOldNames
         - Library destinationLibrary
         __
         + MoveAction(Element[], Library)
         + void execute()
         + void undo()
+        # void continue(NameConflictResolver)
+        # void cancel()
     }
     class RenameAction implements Command{
         - String oldName
@@ -429,6 +451,25 @@ package commands{
         + void execute()
         + void undo()
     }
+    class NameConflictResolver{
+        - HashMap<Cell> renamedCells
+        - ArrayList<Cell> deletedCells
+        - ArrayList<Cell> cells
+        - Command action
+        - Cell[] currentConflict
+        __
+        + NameConflictResolver(ArrayList<Cell>)
+        + void keepLeft()
+        + void keepRight()
+        + void renameLeft(String)
+        + void renameRight(String)
+        - void continue()
+        + void cancel()
+    }
+
+    MoveAction --> NameConflictResolver
+    PasteAction --> NameConflictResolver
+    MergeAction --> NameConflictResolver
     OpenFileAction -- RemoveAction
     /'class SelectStatAction implements Command{
         __
@@ -506,16 +547,19 @@ package project {
     class Project {
     - ArrayList<Library> libraries
     - HashSet<Element> selectedElements
+    - HashSet<Element> copiedElements
     - HashSet<Element> openedInTextElements
     __
     + Project()
     + notify()
     + getLibraries() : ArrayList<Library>
     + getSelectedElements(): HashSet<Element>
+    + getCopiedElements(): HashSet<Element>
     + getOpenedInTextElements(): HashSet<Element>
-    + setLibraries() : ArrayList<Library> 
-    + setSelectedElements(): HashSet<Element>
-    + setOpenedInTextElements(): HashSet<Element>
+    + void setLibraries(ArrayList<Library> )
+    + void setSelectedElements(HashSet<Element>) 
+    + void setCopiedElements(HashSet<Element>) 
+    + void setOpenedInTextElements(HashSet<Element>)
     + {static} void saveLibrary(Library)
     + {static} void saveLibraryAs(Library)
     + {static} void saveAsCSV(Element)
@@ -637,13 +681,12 @@ Model --> Settings
 Model --> Shortcuts
 Model --> FileManager
 Filter --> FileManager
-MergeAction ..> Library 
-LibertyParser ..> Library
+MergeAction ..> Library
 Project --* Model
 TextEditAction --> LibertyParser
-LibertyParser --> Library
-LibertyParser --> Cell
-LibertyParser --> Pin
+LibertyParser ..> Library
+LibertyParser ..> Cell
+LibertyParser ..> Pin
 /'SelectDropdownAction --> Attribute
 SelectStatAction --> Attribute '/
 OpenFileAction --> FileManager

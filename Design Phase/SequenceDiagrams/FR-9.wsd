@@ -1,0 +1,16 @@
+@startuml FR9
+actor User
+User -> "SearchBar s" ++ : left click, type text
+"SearchBar s" -> "SearchListener l" ++ : textValueChanged(TextEvent e)
+"SearchListener l" -> Model ++ : setSearched(String searcchText)
+Model -> Model ++ : notify()
+Model -> "Outliner o" ++ : update()
+"Outliner o" -> Model ++ : getSearchedElements()
+return Element[] searchedElements
+"Outliner o" -> "Outliner o" ++ : highlight searched elements\nremove highlight when necessary
+return
+return
+return
+return
+return
+@enduml
