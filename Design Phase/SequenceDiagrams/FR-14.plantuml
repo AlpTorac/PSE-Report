@@ -1,0 +1,43 @@
+@startuml
+-> CopyListener ++ : actionPerformed(event)
+CopyListener -> Model ++: getInstance()
+return instance
+CopyListener -> "Model currentModel" ++ : getCurrentProject()
+return currentProject
+CopyListener -> "Project currentProject" ++ : setCopiedElements(elements)
+return
+return
+-> PasteListener: actionPerformed(event)
+activate PasteListener
+PasteListener -> "PasteAction action" ** : <<creates>> PasteAction(library)
+PasteListener -> "PasteAction action" ++ : execute()
+"PasteAction action" -> Model ++ : getInstance()
+return instance
+"PasteAction action" -> "Model currentModel" ++ : getCurrentProject()
+return currentProject
+"PasteAction action" -> "Project currentProject" ++ : getCopiedElements()
+return copiedElements
+"PasteAction action" -> "Library library" ++ : getCells()
+return libraryCells
+"PasteAction action" -> NameConflictResolver ** : <<creates>> NameConflictResolver(ArrayList<Cell> cells})
+note right: Resolves name conflicts
+"PasteAction action" -> NameConflictResolver ++: getCells()
+return resolvedCells
+"PasteAction action" -> NameConflictResolver ++: getDeletedCells()
+return deletedCells
+"PasteAction action" -> NameConflictResolver ++: getRenamedCells()
+return renamedCells
+note left: returns HashMap in case Undo is implemented
+destroy NameConflictResolver
+note over "Library library", "PasteAction action" #FFAAAA: Interpolates like in previous sequence diagram
+"PasteAction action" -> ActionHistory ++ : addAction(action/self)
+return
+"PasteAction action" -> "Project currentProject" ++ : getLibraries()
+return libraries
+"PasteAction action" -> "Project currentProject" ++ : notify()
+"Project currentProject" -> View ++: update()
+return
+return
+return
+return
+@enduml

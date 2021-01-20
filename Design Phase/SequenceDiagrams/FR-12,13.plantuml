@@ -1,0 +1,59 @@
+@startuml
+-> MergeListener ++ : actionPerformed(event)
+MergeListener -> "MergeAction action" ** : <<creates>> MergeAction(name, selectedElements)
+MergeListener -> "MergeAction action" ++ : execute()
+"MergeAction action" -> "NameConflictResolver resolver" ** : <<creates>> NameConflictResolver(ArrayList<Cell> cells})
+activate "NameConflictResolver resolver"
+loop for every cell
+"NameConflictResolver resolver" -> "Cell cell" ++ : clone()
+return clonedCell
+end
+loop while there is naming conflict within selectedCells
+"NameConflictResolver resolver" -> MergeDialog++: open(leftCell, rightCell)
+return conflictData
+"NameConflictResolver resolver" -> "ConflictData conflictData" ++ : getResolutionMethod()
+return ResolutionMethod
+alt resolutionMethod.equals(ResolutionMethod.KEEPLEFT)
+else resolutionMethod.equals(ResolutionMethod.KEEPRIGHT)
+else resolutionMethod.equals(ResolutionMethod.RENAMELEFT)
+"NameConflictResolver resolver" -> "Cell leftCell" ++ : setName(name)
+return
+else resolutionMethod.equals(ResolutionMethod.RENAMERIGHT)
+"NameConflictResolver resolver" -> "Cell rightCell" ++ : setName(ame)
+return
+else resolutionMethod.equals(ResolutionMethod.CANCEL)
+"NameConflictResolver resolver" -> "MergeAction action": cancel()
+note right: This would cancel the whole action
+end
+end
+deactivate "NameConflictResolver resolver"
+"MergeAction action" -> "NameConflictResolver resolver"++: getCells()
+return resolvedCells
+destroy "NameConflictResolver resolver"
+"MergeAction action" -> "Library firstLibrary" ++: getIndex1()
+return index1
+"MergeAction action" -> "Library firstLibrary" ++: getIndex2()
+return index2
+alt for every cell whose index1 or index2 doesn't match with the first library
+"MergeAction action" -> "Cell cell"++: interpolate(float[] index1, float[] index2)
+note right: Within the cell, new values are calculated for the new indexes
+return
+end
+"MergeAction action" -> productLibrary **: <<create>> Library(indexes1 ,indexes2, name, cells)
+"MergeAction action" -> ActionHistory++: addAction(self/action)
+return
+"MergeAction action" -> Model ++: getInstance()
+return instance
+"MergeAction action" -> "Model instance" ++ : getCurrentProject()
+return currentProject
+"MergeAction action" -> "Project CurrentProject"++: getLibraries()
+return libraries
+"MergeAction action" -> "Project CurrentProject"++: setLibraries(libraries)
+return
+"MergeAction action" -> "Project CurrentProject"++: notify()
+"Project CurrentProject" -> View++ :update()
+return
+return
+return
+return
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+-> SaveAsListener ++ : actionPerformed(event)
+SaveAsListener -> Model ++: getInstance()
+return instance
+SaveAsListener -> "Library library" ++ : saveLibraryAs()
+"Library library" -> LibertyCompiler ++ : compile(library/self)
+note over LibertyCompiler #FFAAAA: Uses compile(Cell) and Compile(Pin) to compile Library
+return compiledLibrary
+"Library library" -> FileManager++: saveFile(compiledLibrary, [".lib"], name)
+
+FileManager -> "File file" **: <<creates>> File(name)
+FileManager -> "FileWriter fwriter"**: <<creates>> FileWriter(file)
+FileManager -> "BufferedWriter bwriter"**: <<creates>> BufferedWriter(bwriter)
+FileManager -> "BufferedWriter bwriter"++: write()
+return
+FileManager -> "BufferedWriter bwriter"++: flush()
+return
+FileManager -> "BufferedWriter bwriter"++: close()
+return
+FileManager -> "FileChooser chooser"**: <<creates>>JFileChooser()
+FileManager -> "FileChooser chooser"++: getSelectedFile()
+return
+return
+return
+return
+@enduml

@@ -419,7 +419,6 @@ package commands{
         + coid undo()
     }
     class MergeAction implements Command{
-        - Library[] mergedLibraries
         - Library productLibrary
         __
         + MergeAction(String)
@@ -585,7 +584,6 @@ package project {
     }
     class Project {
     - ArrayList<Library> libraries
-    - HashSet<Element> selectedElements
     - HashSet<Element> copiedElements
     - HashSet<Element> openedInTextElements
     - ArrayList<Filter> filters
@@ -593,24 +591,22 @@ package project {
     + Project()
     + notify()
     + getLibraries() : ArrayList<Library>
-    + getSelectedElements(): HashSet<Element>
     + getCopiedElements(): HashSet<Element>
     + getOpenedInTextElements(): HashSet<Element>
     + getFilters(): ArrayList<Filter>
-    + void setLibraries(ArrayList<Library>)
-    + void setSelectedElements(HashSet<Element>) 
+    + void setLibraries(ArrayList<Library>) 
     + void setOpenedInTextElements(HashSet<Element>)
-    + void copySelected(Element) 
+    + void setCopiedElements(ArrayList<Element>)
     + void setFilters(ArrayList<Filter>)
     + void saveDefaultFilters()
     + void loadDefaultFilters()
     }
     class FileManager{
         __
-        + openFile(): File
-        + openFile(String): File
-        + void saveFile(String, String[])
-        + void saveFile(String, String, String)
+        + {static} openFile(): File
+        + {static} openFile(String): File
+        + {static} void saveFile(String, String[], String)
+        + {static} void saveFile(String, String, String)
     }
     class Interpolator{
         __
