@@ -197,16 +197,16 @@ package elements{
         + compareTo(Element) : int
     }
     abstract class HigherElement extends Element{
-        - ArrayList<TimingSense> availableTimSen
-        - ArrayList<TimingGroup> availableTimGr
-        - ArrayList<TimingType> availableTimType
-        - ArrayList<PowerGroup> availableOutputPower
-        - ArrayList<PowerGroup> availableInputPower
-        - MapMap<Sense, Map<Group, Map<Type, Stat>>> timingStat
-        - Map<Group, Stat> inPowerStat
-        - Map<Group, Stat> outPowerStat
-        - boolean hasShownElements
-        - Stat leakage
+        # ArrayList<TimingSense> availableTimSen
+        # ArrayList<TimingGroup> availableTimGr
+        # ArrayList<TimingType> availableTimType
+        # ArrayList<PowerGroup> availableOutputPower
+        # ArrayList<PowerGroup> availableInputPower
+        # Map<Sense, Map<Group, Map<Type, Stat>>> timingStat
+        # Map<Group, Stat> inPowerStat
+        # Map<Group, Stat> outPowerStat
+        # boolean hasShownElements
+        # Stat leakage
         __
         + HigherElement()
         + getAvailableOutputPower() : ArrayList<PowerGroup>
@@ -245,14 +245,14 @@ package elements{
     }
     class Cell extends HigherElement{
         - Library parentLibrary
-        - InputPin[] inPins
-        - OutputPin[] outPins
+        - ArrayList<InputPin> inPins
+        - ArrayList<OutputPin> outPins
         - Leakage[] leakages
         - float defaultLeakage
         __
         + Cell()
-        + getInPins() : InputPin[]
-        + getOutPins() : OutputPin[]
+        + getInPins() : ArrayList<InputPin>
+        + getOutPins() : ArrayList<OutputPin>
         + getParent() : Library
         + getLeakage() : Leakage[]
         + void setLeakage(Leakage[])
@@ -270,8 +270,6 @@ package elements{
         # ArrayList<PowerGroup> availablePower
         __
         + Pin()
-        + getName() : String
-        + void setName(String)
         + getParent() : Cell
         + getAvailablePower() : ArrayList<PowerGroup>
         + interpolate(float[], float[])
@@ -290,7 +288,7 @@ package elements{
         - ArrayList<TimingType> availableTimType
         - ArrayList<OutputPower> outputPowers
         - ArrayList<Timing> timings
-        - String outPutFunction
+        - String outputFunction
         __
         + OutputPin()
         + getTimings(): ArrayList<Timing>
@@ -466,7 +464,7 @@ package commands{
         __
         + ConflictData(ResolutionMethod, name)
         + getName() : String
-        + getResolutionMethod : ResolutionMethod
+        + getResolutionMethod() : ResolutionMethod
     }
     enum ResolutionMethod{
         KEEPLEFT
