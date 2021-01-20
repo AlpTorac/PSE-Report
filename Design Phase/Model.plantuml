@@ -244,7 +244,7 @@ package elements{
         - ArrayList<Cell> cells
         - Stat defaultLeakage
         __
-        + Library()
+        + Library(String, float[], float[], String, ArrayList<Cell>)
         + getCells() : ArrayList<Cell>
         + void setCells(ArrayList<Cell>)
         + void calculateLeakage()
@@ -274,7 +274,7 @@ package elements{
         - Leakage[] leakages
         - float defaultLeakage
         __
-        + Cell()
+        + Cell(String, float[], float[], Library, ArrayList<InputPin>, \n ArrayList<OutputPin>, Leakage[], float)
         + getIndex1() : float[]
         + void setIndex1(float[])
         + getIndex2() : float[]
@@ -311,7 +311,7 @@ package elements{
     class InputPin{
         - ArrayList<InputPower> inputPowers
         __
-        + InputPin()
+        + InputPin(String, Cell, ArrayList<InputPower>)
         + void calculatePower()
         + getInputPowers(): ArrayList<InputPower>
         + void setInputPowers(ArrayList<InputPower>)
@@ -323,9 +323,8 @@ package elements{
         - ArrayList<OutputPower> outputPowers
         - ArrayList<Timing> timings
         - String outPutFunction
-        + void saveAsCSV()
         __
-        + OutputPin()
+        + OutputPin(String, Cell, ArrayList<OutputPower>, ArrayList<Timing>)
         + getTimings(): ArrayList<Timing>
         + void setTimings(ArrayList<Timing>)
         + getOutputPowers(): ArrayList<OutputPower>
