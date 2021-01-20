@@ -101,10 +101,13 @@ package elements{
         abstract class InAttribute extends Attribute{ 
             # float[] index1
             # float[] values
+            # InputPin parentInPin
             __
             + InAttribute()
             # void calculate()
             + void scale(float)
+            + getParentInPin() : InputPin
+            + void setParentInPin(InputPin)
             + getIndex1() : float[]
             + getValues() : float[]
             + void setIndex1(float[])
@@ -114,11 +117,14 @@ package elements{
             # float[] index1 
             # float[] index2
             # float[][] values
+            # OutputPin parentOutPin
             # InputPin relatedPin
             __
             + OutAttribute()
             # void calculate()
             + void scale(float)
+            + getParentOutPin() : OutputPin
+            + void setParentOutPin(OutputPin)
             + getIndex1() : float[]
             + getIndex2() : float[]
             + getValues() : float[][]
@@ -175,8 +181,11 @@ package elements{
         }
         class Leakage extends Attribute {
             - float[] values
+            - Cell parentCell
             __
             + Leakage(float[])
+            + getParentCell() : Cell
+            + void setParentCell(Cell)
             + getValues() : float[]
             + setValues(float[])
         }
@@ -456,14 +465,6 @@ package commands{
         - String newName
         __
         + RenameAction(Element, String)
-        + void execute()
-        + void undo()
-    }
-    class SelectAction implements Command{
-        - HashSet<Element> selectedElements
-        - HashSet<Element> deselectedElements
-        __
-        + SelectAction(Element)
         + void execute()
         + void undo()
     }
