@@ -114,16 +114,7 @@ together {
         -Panel panel
         +InterpolationHandler(Panel panel)
         +void update(float value)
-    }
-
-    class NamingConflictHandler implements IObserver{
-        -MergeDialog mergeDialog
-        -NameConflictResolver resolver
-        +NamingConflictHandler(Cell leftCell, 
-        Cell rightCell, NameConflictResolver resolver)
-        +void actionPerformed(ActionEvent e)
-    }
-  
+    }  
     
 }
 

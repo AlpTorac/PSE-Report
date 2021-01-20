@@ -203,7 +203,7 @@ skinparam Note {
             Button keepLeft
             Button keepRight
             +MergeDialog()
-            +open(Cell eLeft, Cell eRight)
+            + ConflictData open(Cell eLeft, Cell eRight)
         }
         MergeDialog --* MainWindow
         class SettingsDialog extends Window {

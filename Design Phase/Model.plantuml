@@ -459,14 +459,23 @@ package commands{
         - Cell[] currentConflict
         __
         + NameConflictResolver(ArrayList<Cell>)
-        + void keepLeft()
-        + void keepRight()
-        + void renameLeft(String)
-        + void renameRight(String)
-        - void continue()
-        + void cancel()
     }
-
+    class ConflictData{
+        - String name
+        - ResolutionMethod resolutionMethod
+        __
+        + ConflictData(ResolutionMethod, name)
+        + getName() : String
+        + getResolutionMethod : ResolutionMethod
+    }
+    enum ResolutionMethod{
+        KEEPLEFT
+        KEEPRIGHT
+        RENAMELEFT
+        RENAMERIGHT
+        CANCEL
+    }
+    ConflictData -- ResolutionMethod
     MoveAction --> NameConflictResolver
     PasteAction --> NameConflictResolver
     MergeAction --> NameConflictResolver
@@ -556,10 +565,10 @@ package project {
     + getSelectedElements(): HashSet<Element>
     + getCopiedElements(): HashSet<Element>
     + getOpenedInTextElements(): HashSet<Element>
-    + void setLibraries(ArrayList<Library> )
+    + void setLibraries(ArrayList<Library>)
     + void setSelectedElements(HashSet<Element>) 
-    + void setCopiedElements(HashSet<Element>) 
     + void setOpenedInTextElements(HashSet<Element>)
+    + void copySelected(Element) 
     + {static} void saveLibrary(Library)
     + {static} void saveLibraryAs(Library)
     + {static} void saveAsCSV(Element)
