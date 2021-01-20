@@ -210,10 +210,15 @@ package elements{
         __
         + HigherElement()
         + getAvailableOutputPower() : ArrayList<PowerGroup>
+        + void setAvailableOutputPower(ArrayList<PowerGroup>)
         + getAvailableInputPower() : ArrayList<PowerGroup>
+        + void setAvailableInputPower(ArrayList<PowerGroup>)
         + getAvailableTimSen(): ArrayList<TimingSense>
+        + void setAvailableTimSen(ArrayList<TimingSense>)
         + getAvailableTimGr(): ArrayList<TimingGroup>
+        + void setAvailableTimGr(ArrayList<TimingGroup>)
         + getAvailableTimType(): ArrayList<TimingType>
+        + void setAvailableTimType(ArrayList<TimingType>)
         + getTimingStat() : Map<Sense, Map<Group, Map<Type, Stat>>>
         + getInpowerStat() : Map<Group, Stat>
         + getOutPowerStat() : Map<Group, Stat>
@@ -229,7 +234,7 @@ package elements{
         - ArrayList<Cell> cells
         - Stat defaultLeakage
         __
-        + Library(float[], float[])
+        + Library()
         + getCells() : ArrayList<Cell>
         + void setCells(ArrayList<Cell>)
         + void calculateLeakage()
@@ -239,11 +244,17 @@ package elements{
         + void calculateDefaultLeakage()
         + getPath() : String
         + void setPath(String)
+        + getFileData() : String[]
+        + setFileData(String[])
         + getIndex1() : float[]
+        + void setIndex1(float[])
         + getIndex2() : float[]
+        + void setIndex2(float[])
         + getDefaultLeakage(): Stat
     }
     class Cell extends HigherElement{
+        - float[] index1
+        - float[] index2
         - Library parentLibrary
         - ArrayList<InputPin> inPins
         - ArrayList<OutputPin> outPins
@@ -251,9 +262,16 @@ package elements{
         - float defaultLeakage
         __
         + Cell()
+        + getIndex1() : float[]
+        + void setIndex1(float[])
+        + getIndex2() : float[]
+        + void setIndex2(float[])
         + getInPins() : ArrayList<InputPin>
+        + void setInPins(ArrayList<InputPin>)
         + getOutPins() : ArrayList<OutputPin>
+        + void setOutPins(ArrayList<OutputPin>)
         + getParent() : Library
+        + void setParent(Library)
         + getLeakage() : Leakage[]
         + void setLeakage(Leakage[])
         + getDefaultLeakage() : float
@@ -271,7 +289,9 @@ package elements{
         __
         + Pin()
         + getParent() : Cell
+        + void setParent(Cell)
         + getAvailablePower() : ArrayList<PowerGroup>
+        + setAvailablePower() : ArrayList<PowerGroup>
         + interpolate(float[], float[])
     }
     class InputPin{
@@ -280,7 +300,7 @@ package elements{
         + InputPin()
         + void calculatePower()
         + getInputPowers(): ArrayList<InputPower>
-        + setInputPowers(ArrayList<InputPower>)
+        + void setInputPowers(ArrayList<InputPower>)
     }
     class OutputPin{
         - ArrayList<TimingSense> availableTimSen
@@ -292,12 +312,17 @@ package elements{
         __
         + OutputPin()
         + getTimings(): ArrayList<Timing>
+        + void setTimings(ArrayList<Timing>)
         + getOutputPowers(): ArrayList<OutputPower>
-        + void setTiming(ArrayList<Timing>)
-        + void setOutputPower(ArrayList<OutputPower>)
+        + void setOutputPowers(ArrayList<OutputPower>)
         + getAvailableTimSen(): ArrayList<TimingSense>
+        + setAvailableTimSen(ArrayList<TimingSense>)
         + getAvailableTimGr(): ArrayList<TimingGroup>
+        + setAvailableTimGr(ArrayList<TimingGroup>)
         + getAvailableTimType(): ArrayList<TimingType>
+        + setAvailableTimType(ArrayList<TimingType>)
+        + getOutputFunction(): String
+        + void setOutputFunction(String)
         + void calculatePower()
         + void calculateTiming()
     }
@@ -388,9 +413,9 @@ package commands{
         # void cancel()
     }
     class DeleteAction implements Command{
-        - Cell deletedCell
+        - ArrayList<Cell> deletedCells
         __
-        + DeleteAction(Cell)
+        + DeleteAction(ArrayList<Cell>)
         + void execute()
         + void undo()
     }
