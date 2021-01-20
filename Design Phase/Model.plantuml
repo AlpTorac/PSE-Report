@@ -127,6 +127,7 @@ package elements{
             + void setIndex2(float[])
             + void setValues(float[][])
             + void setRelatedPin(InputPin)
+            + Attribute createComparedAttribute(Attribute)
         }
         enum TimingSense {
         POSITIVE
@@ -242,6 +243,9 @@ package elements{
         + getIndex1() : float[]
         + getIndex2() : float[]
         + getDefaultLeakage(): Stat
+        + void saveLibrary()
+        + void saveLibraryAs()
+        + void saveAsCSV()
     }
     class Cell extends HigherElement{
         - Library parentLibrary
@@ -263,6 +267,7 @@ package elements{
         + void calculateOutPow()
         + void calculateTiming()
         + interpolate(float[], float[])
+        + void saveAsCSV()
     }
     abstract class Pin extends Element{
         # Cell parentCell
@@ -291,6 +296,7 @@ package elements{
         - ArrayList<OutputPower> outputPowers
         - ArrayList<Timing> timings
         - String outPutFunction
+        + void saveAsCSV()
         __
         + OutputPin()
         + getTimings(): ArrayList<Timing>
@@ -302,6 +308,7 @@ package elements{
         + getAvailableTimType(): ArrayList<TimingType>
         + void calculatePower()
         + void calculateTiming()
+        + void saveAsCSV()
     }
 }
 
@@ -502,8 +509,7 @@ package commands{
 
 package parsers { 
     class LibertyParser {
-    - JsonParser parser
-    - String json
+    - {static} final JsonParser PARSER
     __
     + LibertyParser()
     + {static} void parseLibrary(String)
@@ -558,6 +564,7 @@ package project {
     - HashSet<Element> selectedElements
     - HashSet<Element> copiedElements
     - HashSet<Element> openedInTextElements
+    - ArrayList<Filter> filters
     __
     + Project()
     + notify()
@@ -565,13 +572,14 @@ package project {
     + getSelectedElements(): HashSet<Element>
     + getCopiedElements(): HashSet<Element>
     + getOpenedInTextElements(): HashSet<Element>
+    + getFilters(): ArrayList<Filter>
     + void setLibraries(ArrayList<Library>)
     + void setSelectedElements(HashSet<Element>) 
     + void setOpenedInTextElements(HashSet<Element>)
     + void copySelected(Element) 
-    + {static} void saveLibrary(Library)
-    + {static} void saveLibraryAs(Library)
-    + {static} void saveAsCSV(Element)
+    + void setFilters(ArrayList<Filter>)
+    + void saveDefaultFilters()
+    + void loadDefaultFilters()
     }
     class FileManager{
         __
@@ -628,26 +636,44 @@ enum LanguageEnum{
     LanguageEnum -- Settings
     ColorThemeEnum -- Settings
     class ColorTheme{
-        - int[] colors
+        - HashMap<ColorEnum, colors>
         __
         + ColorTheme()
-        + getColors(): int[]
+        + getColor(ColorEnum): int[]
     }
+    enum ColorEnum{
+        System_BG
+        System_Shade
+        Hover_Highlight
+        Text_Default
+        Liberty_Window_BG
+        Section
+        SubSection
+        Input_Field_BG
+        Interactable_BG
+        Scroll_Bar_Handle
+        Text_Active
+        Text_Selected
+    }
+    ColorEnum -- ColorTheme
     class Language{
-        - String[] liberty
-        - String[] menus
-        - String[] methods
-        - String[] attributes
-        - String[] errors
-        - String[] misc
+        - HashMap<TextComponent, String>
         __
-        + getLiberty(): String
-        + getElements(): String[]
-        + getMenus(): String[]
-        + getMethods(): String[]
-        + getAttributes(): String[]
-        + getErrors(): String[]
-        + getMisc(): String[]
+        + getTextComponent(TextComponent)
+    }
+    enum TextComponent{
+        PROGRAM_DESCRIPTIO
+        LIBRARY
+        CELL
+        PIN
+        INDEX
+        FILE
+        EDIT
+        INFO
+        EDITOR
+        VIEWER
+        ...
+        ABOUT_TEXT
     }
     Settings *-- ColorTheme
     Settings *-- Language
@@ -671,17 +697,17 @@ enum LanguageEnum{
         MED
     }
     class Filter{
-        - {static} ArrayList<Filter> filters
         - Attribute attribute
         - Mode mode
         - float value
         - Operation operation
+        - boolean status
         __
-        + Filter(Attribute, Mode, float,
-        Operation)
-        + {static} void filter()
-        + {static} void saveDefaultFilters()
-        + {static} void loadDefaultFilters()
+        + Filter(Attribute, Mode, 
+        float, Operation)
+        + void filter()
+        + setStatus(boolean)
+        + getStatus(): boolean
     }
 }
 Project --> Compiler
