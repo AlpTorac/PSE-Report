@@ -101,10 +101,13 @@ package elements{
         abstract class InAttribute extends Attribute{ 
             # float[] index1
             # float[] values
+            # InputPin parentInPin
             __
             + InAttribute()
             # void calculate()
             + void scale(float)
+            + getParentInPin() : InputPin
+            + void setParentInPin(InputPin)
             + getIndex1() : float[]
             + getValues() : float[]
             + void setIndex1(float[])
@@ -114,11 +117,14 @@ package elements{
             # float[] index1 
             # float[] index2
             # float[][] values
+            # OutputPin parentOutPin
             # InputPin relatedPin
             __
             + OutAttribute()
             # void calculate()
             + void scale(float)
+            + getParentOutPin() : OutputPin
+            + void setParentOutPin(OutputPin)
             + getIndex1() : float[]
             + getIndex2() : float[]
             + getValues() : float[][]
@@ -176,8 +182,11 @@ package elements{
         }
         class Leakage extends Attribute {
             - float[] values
+            - Cell parentCell
             __
             + Leakage(float[])
+            + getParentCell() : Cell
+            + void setParentCell(Cell)
             + getValues() : float[]
             + setValues(float[])
         }
@@ -198,23 +207,28 @@ package elements{
         + compareTo(Element) : int
     }
     abstract class HigherElement extends Element{
-        - ArrayList<TimingSense> availableTimSen
-        - ArrayList<TimingGroup> availableTimGr
-        - ArrayList<TimingType> availableTimType
-        - ArrayList<PowerGroup> availableOutputPower
-        - ArrayList<PowerGroup> availableInputPower
-        - MapMap<Sense, Map<Group, Map<Type, Stat>>> timingStat
-        - Map<Group, Stat> inPowerStat
-        - Map<Group, Stat> outPowerStat
-        - boolean hasShownElements
-        - Stat leakage
+        # ArrayList<TimingSense> availableTimSen
+        # ArrayList<TimingGroup> availableTimGr
+        # ArrayList<TimingType> availableTimType
+        # ArrayList<PowerGroup> availableOutputPower
+        # ArrayList<PowerGroup> availableInputPower
+        # Map<Sense, Map<Group, Map<Type, Stat>>> timingStat
+        # Map<Group, Stat> inPowerStat
+        # Map<Group, Stat> outPowerStat
+        # boolean hasShownElements
+        # Stat leakage
         __
         + HigherElement()
         + getAvailableOutputPower() : ArrayList<PowerGroup>
+        + void setAvailableOutputPower(ArrayList<PowerGroup>)
         + getAvailableInputPower() : ArrayList<PowerGroup>
+        + void setAvailableInputPower(ArrayList<PowerGroup>)
         + getAvailableTimSen(): ArrayList<TimingSense>
+        + void setAvailableTimSen(ArrayList<TimingSense>)
         + getAvailableTimGr(): ArrayList<TimingGroup>
+        + void setAvailableTimGr(ArrayList<TimingGroup>)
         + getAvailableTimType(): ArrayList<TimingType>
+        + void setAvailableTimType(ArrayList<TimingType>)
         + getTimingStat() : Map<Sense, Map<Group, Map<Type, Stat>>>
         + getInpowerStat() : Map<Group, Stat>
         + getOutPowerStat() : Map<Group, Stat>
@@ -230,7 +244,7 @@ package elements{
         - ArrayList<Cell> cells
         - Stat defaultLeakage
         __
-        + Library(float[], float[])
+        + Library()
         + getCells() : ArrayList<Cell>
         + void setCells(ArrayList<Cell>)
         + void calculateLeakage()
@@ -240,24 +254,37 @@ package elements{
         + void calculateDefaultLeakage()
         + getPath() : String
         + void setPath(String)
+        + getFileData() : String[]
+        + setFileData(String[])
         + getIndex1() : float[]
+        + void setIndex1(float[])
         + getIndex2() : float[]
+        + void setIndex2(float[])
         + getDefaultLeakage(): Stat
         + void saveLibrary()
         + void saveLibraryAs()
         + void saveAsCSV()
     }
     class Cell extends HigherElement{
+        - float[] index1
+        - float[] index2
         - Library parentLibrary
-        - InputPin[] inPins
-        - OutputPin[] outPins
+        - ArrayList<InputPin> inPins
+        - ArrayList<OutputPin> outPins
         - Leakage[] leakages
         - float defaultLeakage
         __
         + Cell()
-        + getInPins() : InputPin[]
-        + getOutPins() : OutputPin[]
+        + getIndex1() : float[]
+        + void setIndex1(float[])
+        + getIndex2() : float[]
+        + void setIndex2(float[])
+        + getInPins() : ArrayList<InputPin>
+        + void setInPins(ArrayList<InputPin>)
+        + getOutPins() : ArrayList<OutputPin>
+        + void setOutPins(ArrayList<OutputPin>)
         + getParent() : Library
+        + void setParent(Library)
         + getLeakage() : Leakage[]
         + void setLeakage(Leakage[])
         + getDefaultLeakage() : float
@@ -275,10 +302,10 @@ package elements{
         # ArrayList<PowerGroup> availablePower
         __
         + Pin()
-        + getName() : String
-        + void setName(String)
         + getParent() : Cell
+        + void setParent(Cell)
         + getAvailablePower() : ArrayList<PowerGroup>
+        + setAvailablePower() : ArrayList<PowerGroup>
         + interpolate(float[], float[])
     }
     class InputPin{
@@ -287,7 +314,7 @@ package elements{
         + InputPin()
         + void calculatePower()
         + getInputPowers(): ArrayList<InputPower>
-        + setInputPowers(ArrayList<InputPower>)
+        + void setInputPowers(ArrayList<InputPower>)
     }
     class OutputPin{
         - ArrayList<TimingSense> availableTimSen
@@ -300,12 +327,17 @@ package elements{
         __
         + OutputPin()
         + getTimings(): ArrayList<Timing>
+        + void setTimings(ArrayList<Timing>)
         + getOutputPowers(): ArrayList<OutputPower>
-        + void setTiming(ArrayList<Timing>)
-        + void setOutputPower(ArrayList<OutputPower>)
+        + void setOutputPowers(ArrayList<OutputPower>)
         + getAvailableTimSen(): ArrayList<TimingSense>
+        + setAvailableTimSen(ArrayList<TimingSense>)
         + getAvailableTimGr(): ArrayList<TimingGroup>
+        + setAvailableTimGr(ArrayList<TimingGroup>)
         + getAvailableTimType(): ArrayList<TimingType>
+        + setAvailableTimType(ArrayList<TimingType>)
+        + getOutputFunction(): String
+        + void setOutputFunction(String)
         + void calculatePower()
         + void calculateTiming()
         + void saveAsCSV()
@@ -397,9 +429,9 @@ package commands{
         # void cancel()
     }
     class DeleteAction implements Command{
-        - Cell deletedCell
+        - ArrayList<Cell> deletedCells
         __
-        + DeleteAction(Cell)
+        + DeleteAction(ArrayList<Cell>)
         + void execute()
         + void undo()
     }
@@ -443,14 +475,6 @@ package commands{
         + void execute()
         + void undo()
     }
-    class SelectAction implements Command{
-        - HashSet<Element> selectedElements
-        - HashSet<Element> deselectedElements
-        __
-        + SelectAction(Element)
-        + void execute()
-        + void undo()
-    }
     class OpenFileAction implements Command {
         - Library openedLibrary
         __
@@ -473,7 +497,7 @@ package commands{
         __
         + ConflictData(ResolutionMethod, name)
         + getName() : String
-        + getResolutionMethod : ResolutionMethod
+        + getResolutionMethod() : ResolutionMethod
     }
     enum ResolutionMethod{
         KEEPLEFT
