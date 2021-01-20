@@ -1,0 +1,73 @@
+@startuml
+-> DeleteCellListener : actionPerformed(ActionEvent e)
+activate DeleteCellListener
+DeleteCellListener -> DeleteAction ** : <<creates>> ArrayList<Cell> cellToDelete
+activate DeleteAction
+
+DeleteCellListener -> DeleteAction : execute()
+participant "parentLibrary : Library" as parentLibrary
+participant "cells : ArrayList<Cell>" as cells
+loop while cellsToDelete.hasNext()
+DeleteAction -> Cell : getParent()
+activate Cell
+return parentLibrary library
+DeleteAction -> parentLibrary : getCells()
+activate parentLibrary
+return ArrayList<Cell> cells
+DeleteAction -> cells : remove(Cell)
+activate cells 
+return
+DeleteAction -> parentLibrary : getFileData()
+activate parentLibrary
+return String[]
+DeleteAction -> parentLibrary : setFileData()
+activate parentLibrary
+return 
+
+DeleteAction -> Model : getInstance()
+activate Model
+return Model
+DeleteAction -> Model : getCurrentProject()
+activate Model 
+return currentProject
+participant "currentProject : Project" as currentProject
+DeleteAction -> currentProject : getOpenedInTextElements()
+activate currentProject
+return HashSet<Element> openedInTextElements
+
+
+participant "openedInTextElements : HashSet<Element>" as openedInTextElements
+participant "copiedElements : HashSet<Element>" as copiedElements
+
+
+
+alt if the cell is opened in text editor
+DeleteAction -> openedInTextElements : remove(Cell)
+activate openedInTextElements 
+return 
+else if the cell is not opened in text editor 
+end 
+
+alt if the cell is one of the copied elements 
+DeleteAction -> copiedElements : remove(Cell)
+activate copiedElements 
+return 
+else if the cell is not one of the copied elements
+end 
+
+end
+
+DeleteAction -> Model: notify()
+activate Model
+
+Model -> View : update()
+activate View
+
+View -> Project : getLibraries()
+activate Project
+return ArrayList<Library>
+return
+return 
+return 
+
+@enduml

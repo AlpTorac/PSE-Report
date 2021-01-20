@@ -1,0 +1,44 @@
+@startuml
+
+
+-> EditListener : changedUpdate(DocumentEvent e)
+activate EditListener
+
+EditListener --> TextEditAction ** :  <<creates>> TextEditAction(String oldContent, String newContent, Element element)
+EditListener -> TextEditAction ++ : execute()
+
+
+
+TextEditAction -> LibertyParser ++: parseCell(String newContent)
+
+ref over LibertyParser : parse Cell
+
+return
+
+
+
+ 
+
+ 
+TextEditAction -> currentModel ++ : notify()
+currentModel -> Outliner ++ : update()
+return
+return
+return
+return
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@enduml

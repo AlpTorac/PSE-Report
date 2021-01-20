@@ -36,22 +36,15 @@ skinparam Note {
 
 !startsub DIAGRAM
 together {
-    /'class Main{
-        +{static} main(String[] args): void
-    }'/
-
+    
     class EventManager{
         -MainWindow view
         -Model model
         -Map<Event, EventListener> events
-        -List<IObserver> handlers
         +EventManager(MainWindow view, Model model)
-        +void initListeners()
         +getListeners(): Map<Event, EventListener>
-        +void subscribeHandlers()
+        +void subscribeListener(EventListener listener)
         +void removeListener(EventListener listener)
-        +void removeHandler(IObserver handler)
-        +void notifyHandlers(Model model, List<Filter> filters)
         
     }
 
@@ -62,8 +55,9 @@ together {
     REMOVE
     SAVE
     SAVEAS
-    SELECT
     EDIT
+    SEARCH
+    CREATE
     RENAME
     MERGE
     COPY
@@ -77,44 +71,21 @@ together {
     ADDFILTER
     REMOVEFILTER
     LOADPROJECT
+    SETTINGS
     SCSETTINGS
     PRSETTINGS
     LASETTINGS
+    
+    /'
     ATTRDROPDOWN
     GRAPHDROPDOWN
     SUBATTRDROPDOWN
     PIN
     STATISTICS
-    }
-    
-     
-    
-    class DataUpdateHandler implements IObserver{
-        -Outliner outliner
-        -List<Element> elements
-        +UpdateHandler(Outliner outliner)
-        +void update(Arraylist<Library> libraries)
-
+    '/
     }
 
-    class SettingsUpdateHandler implements IObserver{
-        -Panel panel
-        +SettingsUpdateHandler(Panel panel)
-        +void update(Settings settings)
 
-    }
-
-    class FilterUpdateHandler implements IObserver{
-        -Panel panel
-        +FilterUpdateHandler(Panel panel)
-        +void update(List<Filter> filters)
-    }
-
-    class InterpolationHandler implements IObserver{
-        -Panel panel
-        +InterpolationHandler(Panel panel)
-        +void update(float value)
-    }  
     
 }
 
@@ -122,9 +93,7 @@ package listeners{
 
         class LoadLibraryListener implements ActionListener{
             -Command command
-            -File file
-            -Panel panel
-            +LoadLibraryListener(Panel panel)
+            +LoadLibraryListener()
             +void actionPerformed(ActionEvent e)
             
         }
@@ -153,15 +122,9 @@ package listeners{
             +void valueChanged(TreeSelectionEvent e)
         }
 
-        class SelectListener implements TreeSelectionListener{
-            -Command command
-            -Element[] element
-            +SelectListener()
-            +void valueChanged(TreeSelectionEvent e)
-        }
-
         class RenameListener implements ActionListener, TreeSelectionListener{
             -Command command
+            -String newName
             -Element element
             +RenameListener()
             +void actionPerformed(ActionEvent e)
@@ -170,11 +133,25 @@ package listeners{
 
         class EditListener implements ActionListener, DocumentListener{
             -Command command
+            -String oldText
             -String newText
             -Element element
             +EditListener()
             +void actionPerformed(ActionEvent e)
             +void changedUpdate(DocumentEvent e)
+        }
+
+        class SearchListener implements TextListener{
+            -Model model
+            -Panel panel
+            +SearchListener(Model model)
+            +void textValueChanged(TextEvent e)
+        }
+
+        class CreateLibraryListener implements ActionListener{
+            -Model model
+            +CreateLibraryListener(Model model)
+            +void actionPerformed(ActionEvent e)
         }
 
         class SaveListener implements ActionListener{
@@ -208,6 +185,7 @@ package listeners{
 
         class InterpolationListener implements ActionListener{
             -Command command
+            -Model model
             +InterpolationListener()
             +void actionPerformed(ActionEvent e)
         }
@@ -226,34 +204,37 @@ package listeners{
 
         class CompareListener implements ActionListener, TreeSelectionListener{
             -Command command
+            -Element element1
+            -Element element2
             +CompareListener()
             +void actionPerformed(ActionEvent e)
             +void valueChanged(TreeSelectionEvent e)
         }
 
-        class MoveListener implements ActionListener, TreeSelectionListener{
-            -Command command
-            -Element[] element
-            +MoveListener()
-            +void actionPerformed(ActionEvent e)
-            +getElements(): Element[]
-        } 
+        together {
+            class MoveListener implements ActionListener, TreeSelectionListener{
+                -Command command
+                -Element[] element
+                +MoveListener()
+                +void actionPerformed(ActionEvent e)
+                +void valueChanged(TreeSelectionEvent e)
+            } 
 
-        class CopyListener implements ActionListener, TreeSelectionListener{
-            -Command command
-            -Element[] element
-            +CopyListener()
-            +void actionPerformed(ActionEvent e)
-            +getElements(): Element[]
-        }
+            class CopyListener implements ActionListener, TreeSelectionListener{
+                -Command command
+                -Element[] element
+                +CopyListener()
+                +void actionPerformed(ActionEvent e)
+                +void valueChanged(TreeSelectionEvent e)
+            }
 
-        class PasteListener implements ActionListener, TreeSelectionListener{
-            -Command command
-            -EventListener moveListener
-            -EventListener copyListener
-            -Library targetLibrary
-            +PasteListener()
-            +void actionPerformed(ActionEvent e)
+            class PasteListener implements ActionListener, TreeSelectionListener{
+                -Command command
+                -Library targetLibrary
+                +PasteListener()
+                +void actionPerformed(ActionEvent e)
+                +void valueChanged(TreeSelectionEvent e)
+            }
         }
 
         class AddFilterListener implements ActionListener{
@@ -273,24 +254,20 @@ package listeners{
         
         class LoadProjectListener implements ActionListener{
             -Command command 
+            -Model model
             -Project project
-            +LoadProjectListener()
+            +LoadProjectListener(Model model)
             +void actionPerformed(ActionEvent e)
         }
 
         class ExportProjectListener implements ActionListener{
             -Command command 
             -Model model 
-            +ExportProjectListener()
+            +ExportProjectListener(Model model)
             +void actionPerformed(ActionEvent e)
 
         }
 
-        class StatisticsListener implements ItemListener{
-            +StatisticsListener()
-            +void itemStateChanged(ItemEvent e)
-        }
-        
         class SettingsListener implements ActionListener{
             -Model model
             +SettingsListener(Model model)
@@ -299,7 +276,7 @@ package listeners{
 
         class ShortcutSettingsListener implements KeyListener{
             -Shortcut shorcuts
-            +ShortcutSettingsListener(Shortcuts shortcuts)
+            +ShortcutSettingsListener(Model model)
             +void actionPerformed(ActionEvent e)
         }
 
@@ -307,7 +284,6 @@ package listeners{
             -Model model
             +PreferencesSettingsListener(Model model)
             +void actionPerformed(ActionEvent e)
-
         }
 
         class LanguageSettingsListener implements ActionListener{
@@ -316,7 +292,7 @@ package listeners{
             +void actionPerformed(ActionEvent e)
         }
 
-
+        /'
         class AttributeDropdownListener implements ActionListener{
             +AttributeDropdownListener()
             +void actionPerformed(ActionEvent e)
@@ -337,14 +313,20 @@ package listeners{
             +void actionPerformed(ActionEvent e)
         }
 
-        
-        /'class TabListener implements ActionListener{
+         class StatisticsListener implements ItemListener{
+            +StatisticsListener()
+            +void itemStateChanged(ItemEvent e)
+        }
+
+        class TabListener implements ActionListener{
             
             +TabListener()
             +void actionPerformed(ActionEvent e)
         }
         '/
 
+    PasteListener -> MoveListener
+    PasteListener -> CopyListener
 
 }
 !endsub

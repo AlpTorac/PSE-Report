@@ -1,0 +1,26 @@
+@startuml DiagramStatistics
+participant "diagram : Diagram" as Diagram
+participant "instance : DiagramViewHelperFactory" as DiagramViewHelperFactory
+participant "viewHelper : DiagramViewHelper" as DiagramViewHelper
+
+alt id exists in diagram
+-> Diagram ++: showDiagramViewHelper(id)
+return true
+else id does not exist in diagram
+-> Diagram ++: showDiagramViewHelper(id)
+return false
+-> DiagramViewHelperFactory ++: createXDisplayer(relevant parameters)
+note right
+X in {ValueLine, ValueColor}
+end note
+DiagramViewHelperFactory -> DiagramViewHelper **: <<create>> DiagramViewHelper(relevant parameters, layer)
+note right
+layer parameter comes 
+from instance.
+end note
+DiagramViewHelper -> Diagram ++: addDiagramViewHelper(viewHelper)
+return true
+-> Diagram ++: showDiagramViewHelper(id)
+return true
+end
+@enduml

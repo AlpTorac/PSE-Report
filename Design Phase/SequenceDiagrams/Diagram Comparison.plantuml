@@ -1,0 +1,23 @@
+@startuml DiagramComparison
+participant "uiComponent : Button" as Button
+participant "overlayer : DiagramOverlayer" as DiagramOverlayer
+participant "diagram1 : Diagram" as Diagram1
+participant "diagram2 : Diagram" as Diagram2
+participant "instance : DiagramDirector" as DiagramDirector
+-> Button ++: actionPerformed(ActionEvent e)
+Button -> DiagramOverlayer **: DiagramOverlayer(new IDiagram[]\n{diagram1, diagram2})
+Button -> DiagramOverlayer ++: overlay(new int[] {1, 2})
+DiagramOverlayer -> Diagram1 ++: cloneData()
+return data1
+DiagramOverlayer -> Diagram2 ++: cloneData()
+return data2
+DiagramOverlayer -> DiagramDirector ++: setDiagramData(data1 and data2 combined)
+note right
+See the sequence
+diagram for
+diagram creation.
+end note
+return comparisonDiagram
+return comparisonDiagram
+return comparisonDiagram
+@enduml

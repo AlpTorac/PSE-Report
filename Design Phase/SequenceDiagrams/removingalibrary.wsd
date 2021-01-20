@@ -1,0 +1,40 @@
+@startuml
+-> RemoveListener : actionPerformed(ActionEvent e)
+activate RemoveListener
+RemoveListener -> RemoveAction ** : <<creates>> RemoveAction(ArrayList<Library>)
+
+RemoveListener -> RemoveAction : execute()
+activate RemoveAction
+
+RemoveAction -> Model : getInstance()
+activate Model
+return Model
+RemoveAction -> Model : getCurrentProject()
+activate Model
+return currentProject
+RemoveAction -> Project : getLibraries()
+activate Project
+return ArrayList<Library>
+
+participant "libraries : ArrayList<Library>" as libraries 
+participant "currentProject : Project" as currentProject
+
+loop while iterator.hasNext()
+RemoveAction -> libraries : remove(Library)
+activate libraries
+return 
+end
+
+RemoveAction -> Model: notify()
+activate Model
+
+Model -> View : update()
+activate View
+
+View -> currentProject : getLibraries()
+activate currentProject
+return ArrayList<Library> libraries
+return 
+return 
+return 
+@enduml

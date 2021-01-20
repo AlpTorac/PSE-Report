@@ -1,0 +1,42 @@
+@startuml
+-> ScaleListener : actionPerformed(ActionEvent e)
+activate ScaleListener
+ScaleListener -> ScaleAction ** : <<creates>> Attribute attribute, float value
+
+ScaleListener -> ScaleAction : execute()
+activate ScaleAction
+
+ScaleAction -> Model : getInstance()
+activate Model
+return Model
+alt attribute has 1 dimensional values
+ScaleAction -> Attribute : getValues()
+activate Attribute
+return float[] values
+ScaleAction -> Attribute : setValues(float[])
+activate Attribute
+return
+else attribute has 2 dimensional values
+ScaleAction -> Attribute : getValues()
+activate Attribute
+return float[][] values
+ScaleAction -> Attribute : setValues(float[][])
+activate Attribute
+return
+end
+
+ScaleAction -> Model: notify()
+activate Model
+
+Model -> View : update()
+activate View
+
+View -> Project : getLibraries(ArrayList<Library>)
+activate Project
+return ArrayList<Library> libraries
+return
+return 
+return
+
+
+@enduml

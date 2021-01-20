@@ -1,0 +1,34 @@
+@startuml DiagramCreation
+participant "instance : DiagramDirector" as DiagramDirector
+participant "instance : DiagramComponentFactory" as DiagramComponentFactory
+participant "builder : DiagramBuilder" as DiagramBuilder
+participant "diagram : Diagram" as Diagram
+-> DiagramDirector ++: setDiagramData(data)
+DiagramDirector -> DiagramDirector ++: build()
+DiagramDirector -> DiagramDirector ++: setBuilder()
+DiagramDirector -> DiagramBuilder **: <<create>> DiagramBuilder(data)
+deactivate DiagramDirector
+DiagramDirector -> DiagramBuilder ++: buildDiagram()
+DiagramBuilder -> DiagramBuilder ++: buildAxes(relevant data)
+loop 2 times
+DiagramBuilder -> DiagramComponentFactory ++: createAxis(relevant data)
+return DiagramAxis axis
+end
+deactivate DiagramBuilder
+DiagramBuilder -> DiagramBuilder ++: buildValueDisplayComponents(relevant data)
+loop n times
+DiagramBuilder -> DiagramComponentFactory ++: createValueDisplayComponent(relevant data)
+return DiagramValueDisplayComponent dvdc
+end
+deactivate DiagramBuilder
+DiagramBuilder -> DiagramBuilder ++: buildDiagramSpecificComponents(relevant data)
+loop m times
+DiagramBuilder -> DiagramComponentFactory ++: createDiagramSpecificComponent(relevant data)
+return DiagramComponent dc
+end
+deactivate DiagramBuilder
+DiagramBuilder -> Diagram **: <<create>> Diagram(data, axes, dvdcs, dcs)
+return diagram
+deactivate DiagramDirector
+return diagram
+@enduml
