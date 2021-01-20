@@ -1,0 +1,142 @@
+@startuml
+
+
+
+
+
+-> "LoadListener l" ++: actionPerformed(ActionEvent e)
+
+"LoadListener l" -> OpenFileAction **: <<creates>> OpenFileAction()
+"LoadListener l"-> OpenFileAction: execute()
+activate OpenFileAction
+
+OpenFileAction -> FileManager ++: openFile()
+
+return return File
+
+OpenFileAction -> LibertyParser ++: parseLibrary(String)
+LibertyParser --> Library ** : <<creates>> Library(String, float[], float[], String, ArrayList<Cell>)
+note over Library #FFAAAA: every subclass of\n Attribute is created
+
+LibertyParser -> LibertyParser ++: parseCell(String)
+loop for each cell
+LibertyParser --> Cell ** : <<creates>> Cell(String, float[], float[], Library, ArrayList<InputPins>, ArrayList<OutputPin>, Leakage[], float)
+
+LibertyParser -> LibertyParser ++: parsePin(String)
+loop for each pin
+LibertyParser --> InputPin ** : <<creates>> InputPin(String, Cell, ArrayList<InputPower>)
+end
+loop for each pin
+LibertyParser --> OutputPin ** : <<creates>> OutputPin(String, Cell, ArrayList<OutputPower>, ArrayList<Timing>)
+end
+
+end
+return
+return
+
+
+LibertyParser -> Model++: getInstance()
+return return model
+LibertyParser -> currentModel ++ : getCurrentProject()
+return return currentProject
+
+LibertyParser -> currentProject : setLibraries(libraries)
+currentProject --> LibertyParser : 
+
+LibertyParser -> currentModel ++ : notify()
+currentModel -> Outliner ++: update()
+
+return
+return
+return
+return
+return
+
+
+/'
+activate FileManager 
+
+
+    "LoadListener l" -> FileManager : getSelectedFile()
+
+    note right of FileManager : FileManager  filters \n\ unvalid files
+
+    
+    FileManager  --> "LoadListener l" : return file
+
+
+deactivate FileManager 
+
+
+"LoadListener l" -> OpenFileAction** : OpenLibraryAction(File file)
+
+deactivate "LoadListener l"
+
+activate OpenFileAction
+
+OpenFileAction -> OpenFileAction : execute()
+
+activate OpenFileAction
+
+OpenFileAction -> LibertyParser: LibertyParser()
+
+activate LibertyParser 
+
+LibertyParser -> LibertyParser: parseLibrary(String)
+
+activate LibertyParser
+
+LibertyParser -> Library : new Library(float[], float[])
+
+loop for each cell
+
+    LibertyParser -> LibertyParser : parseCell(String)
+    activate LibertyParser
+    LibertyParser -> Cell : new Cell()
+
+    loop for each pin
+
+        LibertyParser -> LibertyParser : parsePin(String)
+        activate LibertyParser
+        LibertyParser -> Pin : new Pin()
+        LibertyParser -->LibertyParser
+        deactivate LibertyParser
+
+    end
+
+    LibertyParser --> LibertyParser
+    deactivate LibertyParser
+
+end
+LibertyParser --> LibertyParser
+deactivate LibertyParser
+LibertyParser --> OpenFileAction
+deactivate LibertyParser
+
+
+
+OpenFileAction -> Model : getCurrentProject()
+activate Model 
+Model --> OpenFileAction : return project
+deactivate Model
+
+OpenFileAction -> Project : getLibraries()
+activate Project
+Project --> OpenFileAction : return libraries
+deactivate Project
+OpenFileAction -> Project : setLibraries(libraries)
+activate Project
+Project --> OpenFileAction 
+deactivate Project
+
+
+deactivate OpenFileAction
+deactivate OpenFileAction
+
+
+
+'/
+...
+
+
+@enduml
