@@ -1,6 +1,6 @@
 \documentclass[10pt,a4paper]{report}
 
-\usepackage[a4paper,margin=0.4in,left=1in, right=1in]{geometry}
+\usepackage[a4paper,margin=1in,left=1in, right=1in]{geometry}
 
 \usepackage[T1]{fontenc}
 \usepackage{titlesec, blindtext, color}
@@ -25,8 +25,7 @@
 \usepackage{etoolbox}
 \usepackage{url}
 
-\usepackage{tikz}
-\usepackage{aeguill}
+\usepackage{Includes/PSEMacros}
 
 \title{\includegraphics[scale=6.0]{App Icon}\\Design for Graphical Editor for Liberty Files}
 
@@ -494,8 +493,9 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 \newcommand{\patternentry}[2]{
     #1{#2}
 }
-\newcommand{\pattern}[1]{
+\newcommand{\pattern}[2]{
     \patternentry{\section}{#1}
+    {#2}
 }
 
 %Macro for defining classes
@@ -532,13 +532,43 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 \chapter{Packages}
     \includeimage{}{0.3}{PackageDiagram}{PackageDiagram}{PackageDiagram}
     \section{Model}
+    \includeimage{}{0.1}{Model}{Model}{Model}{}
+    \subsection{model.commands}
+    This package contains actions.
+    \subsection{model.elements}
+    This package contains elements of the parsed liberty file.
+    \subsubsection{model.elements.attributes}
+    This package contains different attributes of the elements.
+    \subsection{model.parsers}
+    This package contains the parsers, that are used to parse the file.
+    \subsection{model.compilers}
+    This package contains the compilers that compile the files.
+    \subsection{model.exceptions}
+    This package contains all of the exceptions.
+    \subsection{model.project}
+    This package provides classes for the management of the project.
     \section{View}
     \includeimage{}{0.035}{View}{View}{View}
+    \subsection{view.diagrams}
+    The package that encapsulates the interfaces and subpackages about the visual part of diagrams.
+    \subsubsection{view.diagrams.overlayer}
+    This package houses the classes that overlay same types of diagrams.
+    \subsubsection{view.diagrams.components}
+    The package, which contains all the components (and their creator) required to build the diagrams.
+    \subsubsection{view.diagrams.data}
+    This package holds the classes that are responsible for containing the information needed to build diagrams.
+    \subsubsection{view.diagrams.type}
+    The classes of this package represent the diagrams specified in the requirement phase report.
+    \subsubsection{view.diagrams.indicator}
+    The components that are not a part of a diagram but serve an indication purpose (such as displaying statistics or displaying coordinate grids) reside in this package.
+    \subsubsection{view.diagrams.builder}
+    The contents of this package are responsible for building the diagrams by utilizing view.diagrams.components package.
     \section{Controller}
 
 \chapter{Class Descriptions}
 
 %GUI
+\input{Design Phase/Includes/gui}
 %\packagedesc{view.gui}{
 %\classdesc{MainWindow}{a}{a}
 %    {
@@ -3325,6 +3355,12 @@ Keeps track of the timing sense of the output pin.
         \item \methoddesc{\public}{}{\type{float[]}}{getIndex1}{}{}{}{}
         \item \methoddesc{\public}{}{\type{float[]}}{getIndex2}{}{}{}{}
         \item \methoddesc{\public}{}{\type{Stat}}{getDefaultLeakage}{}{}{}{}
+        \item \methoddesc{\public}{\static}{void}{saveLibrary}{}
+        {Saves library as a Liberty File in the path specified in the Library object. If the library doesn't have a physical copy yet, it instead calls the saveLibraryAs method of the same class}{}{}
+        \item \methoddesc{\public}{\static}{void}{saveLibraryAs}{}
+        {Opens the OS File Manager in order to select where to save the Library as a Liberty File. Updates Path on Library object.}{}{}
+        \item \methoddesc{\public}{\static}{void}{saveAsCSV}{}
+        {Opens the OS File Manager in order to select where to save the Element as a CSV File. Updates Path on Library object.}{}{}
 \end{itemize}}
 
 
@@ -3364,6 +3400,8 @@ Keeps track of the timing sense of the output pin.
         \item \methoddesc{\public}{}{void}{calculateTiming}{}{}
         {}{}
         \item \methoddesc{\public}{}{void}{interpolate}{\type{float[]} index1, \type{float[]} index2 }{}{}{}
+        \item \methoddesc{\public}{\static}{void}{saveAsCSV}{}
+        {Opens the OS File Manager in order to select where to save the Element as a CSV File. Updates Path on Library object.}{}{}
 
 \end{itemize}}
 
@@ -3404,6 +3442,8 @@ Keeps track of the timing sense of the output pin.
         \item \methoddesc{\public}{}{\type{ArrayList<InputPower>}}{getInputPowers}{}{}{}{}
         \item \methoddesc{\public}{}{void}{setInputPowers}{\type{ArrayList<InputPower>} inputPowers}{}{}{}
         \item \methoddesc{\public}{}{void}{interpolate}{\type{float[]} index1}{}{}{}
+        \item \methoddesc{\public}{\static}{void}{saveAsCSV}{}
+        {Opens the OS File Manager in order to select where to save the Element as a CSV File. Updates Path on Library object.}{}{}
 \end{itemize}}
 
 
@@ -3447,6 +3487,8 @@ Keeps track of the timing sense of the output pin.
         \item \methoddesc{\public}{}{void}{calculateTiming}{}{}{}{}
         
         \item \methoddesc{\public}{}{void}{interpolate}{\type{float[]} index1, \type{float[]} index2 }{}{}{}
+        \item \methoddesc{\public}{\static}{void}{saveAsCSV}{}
+        {Opens the OS File Manager in order to select where to save the Element as a CSV File. Updates Path on Library object.}{}{}
 \end{itemize}}
 
 
@@ -3919,7 +3961,11 @@ Keeps track of the timing sense of the output pin.
 \packagedesc{model.parsers}{
 \classdesc{LibertyParser}{
 Provides functionality to parse pieces of Liberty File text format into their corresponding data objects.
-}{}{
+}{
+    \begin{itemize}
+        \item \atrdesc{\private}{\static \final}{\type{JsonParser}} {PARSER}{The JSON Parser}
+    \end{itemize}
+}{
     \begin{itemize}
         \item \constrdesc{\private}{LibertyParser}{}{}{}
     \end{itemize}
@@ -3947,35 +3993,6 @@ Provides functionality to parse pieces of Liberty File text format into their co
 }{}
 }
 \packagedesc{model.compiler}{
-\interfacedesc{Compiler}{
-    An interface that is implemented by all compilers.
-}{}{
-    \begin{itemize}
-        \item \implclsdec{CSVCompiler}
-        \item \implclsdec{LibertyCompiler}
-    \end{itemize}
-}{
-    \begin{itemize}
-        \item \methoddesc{\public}{\static}{String}{compile}{Library library}
-        {Compiles a library into a certain Format}{
-        \begin{itemize}
-            \item \paramdesc{library}{Library object to be compiled}
-        \end{itemize}
-        }{}
-        \item \methoddesc{\public}{\static}{String}{compile}{Cell cell}
-        {Compiles a cell into a certain Format}{
-        \begin{itemize}
-            \item \paramdesc{cell}{Cell object to be compiled}
-        \end{itemize}
-        }{}
-        \item \methoddesc{\public}{\static}{String}{compile}{Pin pin}
-        {Compiles a pin into a certain Format}{
-        \begin{itemize}
-            \item \paramdesc{pin}{Pin object to be compiled}
-        \end{itemize}
-        }{}
-    \end{itemize}
-}
 
 \classdesc{CSVCompiler}{
 Provides functionality to compile Element Data Objects into their corresponding CSV text format.
@@ -4052,15 +4069,21 @@ Keeps track of the objects of the entire model package by ensuring the singulari
 }{  
     \begin{itemize}
         \item \methoddesc{\public}{\static}{Model}{getInstance}{}
-        {Returns the sole instance of the Model}{}{}
+        {Returns the sole instance of the Model}{}{The sole instance of the Model}
+        \item \methoddesc{\public}{\static}{Project}{getCurrentProject}{}
+        {Returns the sole instance of the Project}{}{The sole instance of the Project}
         \item \methoddesc{\public}{}{void}{saveProject}{}
         {Opens the OS File Manager in order to select where to save the current Project Object in JSON format.}{}{}
         \item \methoddesc{\public}{}{void}{loadProject}{}
         {Opens the OS File Manager in order to select a File in JSON Format that replaces the current Project Object if the format fits.}{}{}
+        \item \methoddesc{\public}{\static}{Settings}{getCurrentSettings}{The sole instance of the Settings}
+        {Returns the sole instance of the Settings}{}{}
         \item \methoddesc{\public}{}{void}{saveSettings}{}
         {Saves the Settings Object in the Program files (so that it reloads on rerun).}{}{}
         \item \methoddesc{\public}{}{void}{resetSettings}{}
         {Loads the default Settings Object from the Program Files and calls saveSettings.}{}{}
+        \item \methoddesc{\public}{\static}{Shortcuts}{getCurrentShortcuts}{}
+        {Returns the sole instance of the Shortcuts}{}{The sole instance of the Shortcuts}
         \item \methoddesc{\public}{}{void}{saveShortcuts}{}
         {Saves the Shortcuts Object in the Program files (so that it reloads on rerun).}{}{}
         \item \methoddesc{\public}{}{void}{resetShortcuts}{}
@@ -4070,13 +4093,13 @@ Keeps track of the objects of the entire model package by ensuring the singulari
     \end{itemize}
 }
 \classdesc{Project}{
-Keeps track of the Elements loaded into the program and manages their Files
+Keeps track of the Elements loaded into the program
 }{
     \begin{itemize}
         \item \atrdesc{\private}{}{ArrayList<Library>}{libraries}{The array that keeps track of the libraries loaded into the program}
-        \item \atrdesc{\private}{}{HashSet<Element>}{selectedElements}{The Set that keeps track of the selected elements}
         \item \atrdesc{\private}{}{HashSet<Element>}{copiedElements}{The Set that keeps track of the copied elements}
         \item \atrdesc{\private}{}{HashSet<Element>}{openedInTextElements}{The Set that keeps track of the elements opened in a text editor}
+        \item \atrdesc{\private}{}{ArrayList<Filter>}{filters}{The array that keeps track of the filters active in the project}
     \end{itemize}
 }{
     \begin{itemize}
@@ -4084,24 +4107,20 @@ Keeps track of the Elements loaded into the program and manages their Files
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{\static}{void}{saveLibrary}{\type{Library} library}
-        {Saves library as a Liberty File in the path specified in the Library object. If the library doesn't have a physical copy yet, it instead calls the saveLibraryAs method of the same class}{
-        \begin{itemize}
-            \item \paramdesc{library}{Library to be saved}
-        \end{itemize}
-        }{}
-        \item \methoddesc{\public}{\static}{void}{saveLibraryAs}{\type{Library} library}
-        {Opens the OS File Manager in order to select where to save the Library as a Liberty File. Updates Path on Library object.}{
-        \begin{itemize}
-            \item \paramdesc{library}{Library to be saved}
-        \end{itemize}
-        }{}
-        \item \methoddesc{\public}{\static}{void}{saveAsCSV}{\type{Element} Element}
-        {Opens the OS File Manager in order to select where to save the Element as a CSV File. Updates Path on Library object.}{
-        \begin{itemize}
-            \item \paramdesc{library}{Element to be saved}
-        \end{itemize}
-        }{}
+        \item \methoddesc{\public}{}{\type{ArrayList<\type{Library}>}}{getLibraries}{}
+        {Returns the list of Libraries loaded into the project}{}{The list of Libraries loaded into the project}
+        \item \methoddesc{\public}{}{\type{ArrayList<\type{Filter}>}}{getFilters}{}
+        {Returns the list of Filters loaded into the project}{}{The list of Filters loaded into the project}
+        \item \methoddesc{\public}{}{\type{HashSett<\type{Library}>}}{getOpenedInTextElements}{}
+        {Returns the list of Elements opened in the Text Editor}{}{The list of Elements opened in the Text Editor}
+        \item \methoddesc{\public}{}{\type{HashSett<\type{Library}>}}{getCopiedElements}{}
+        {Returns the list of copied Elements}{}{The list of copied Elements}
+        \item \methoddesc{\public}{}{void}{notify}{}
+        {Notifies the view of made changes}{}{}
+        \item \methoddesc{\public}{\static}{void}{saveDefaultFilters}{}
+        {Saves the current array of Filters in the program files.}{}{}
+        \item \methoddesc{\public}{\static}{void}{loadDefaultFilters}{}
+        {Loads the saved array of Filters from program files into the current Filter class.}{}{}
     \end{itemize}
 }{}
 \classdesc{Interpolator}{
@@ -4221,12 +4240,8 @@ Keeps track of the filters, a filters specific data and provides filtering funct
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{\static}{void}{filter}{}
+        \item \methoddesc{\public}{}{void}{filter}{}
         {Filters all Elements by changing their Filtered attribute.}{}{}
-        \item \methoddesc{\public}{\static}{void}{saveDefaultFilters}{}
-        {Saves the current array of Filters in the program files.}{}{}
-        \item \methoddesc{\public}{\static}{void}{loadDefaultFilters}{}
-        {Loads the saved array of Filters from program files into the current Filter class.}{}{}
     \end{itemize}
 }{}
 \classdesc{Settings}{
@@ -4445,7 +4460,6 @@ Keeps track of the mode used to calculate the attribute used on the filter
 }{}
 
 
-
 \classdesc{LoadLibraryListener}{public class LoadLibraryListener implements ActionListener \decl{}{Listener for loading a liberty file into the application.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for loading a liberty file}
@@ -4529,22 +4543,6 @@ Keeps track of the mode used to calculate the attribute used on the filter
             \end{itemize}}{}
     \end{itemize}
 }{}
-\classdesc{SelectListener}{public class SelectListener implements TreeSelectionListener \decl{}{Listens to the selected elements in the outliner.}}{
-    \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{Command for selecting elements in the outliner.}
-        \item \atrdesc{\private}{}{Element[]}{element}{Selected elements}
-    \end{itemize}
-}{
-    \begin{itemize}
-        \item \constrdesc{\public}{SelectListener}{\type{Outliner} outliner}{}{}
-    \end{itemize}
-}{
-    \begin{itemize}
-        \item \methoddesc{\public}{}{void}{valueChanged}{\type{TreeSelectionEvent} e}
-        {}{\begin{itemize}
-            \item \paramdesc{e}{Performed action event on the component.}
-            \end{itemize}}{}
-    \end{itemize}}{}
 \classdesc{EditListener}{public class EditListener \decl{}{Observes the changes in the text editor.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for editing a liberty file in the text editor}
@@ -4760,7 +4758,6 @@ Keeps track of the mode used to calculate the attribute used on the filter
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Move action.}
         \item \atrdesc{\private}{}{Element[]}{element}{Selected cells.}
-       
     \end{itemize}
 }{
     \begin{itemize}
@@ -4769,12 +4766,9 @@ Keeps track of the mode used to calculate the attribute used on the filter
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}\begin{itemize}
+        {}{\begin{itemize}
             \item \paramdesc{e}{Performed action event on the component.}
-            \end{itemize}{}{}
-         \item
-        \methoddesc{\public}{}{\type{Element[]}}{getElements}{Returns the elements that will be moved}
-        {}{}{}
+            \end{itemize}}{}
          \item
         \methoddesc{\public}{}{void}{valueChanged}{\type{TreeSelectionEvent} e}
         {}{\begin{itemize}
@@ -4785,7 +4779,6 @@ Keeps track of the mode used to calculate the attribute used on the filter
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Copy action}
         \item \atrdesc{\private}{}{Element[]}{element}{Elements selected for copying.}
-        
     \end{itemize}
 }{
     \begin{itemize}
@@ -4798,9 +4791,6 @@ Keeps track of the mode used to calculate the attribute used on the filter
             \item \paramdesc{e}{Performed action event on the component.}
             \end{itemize}}{}
          \item
-        \methoddesc{\public}{}{Element[]}{getElements}{}
-        {Returns the elements that will be copied}{}{}
-         \item
         \methoddesc{\public}{}{void}{valueChanged}{\type{TreeSelectionEvent} e}
         {}{\begin{itemize}
             \item \paramdesc{e}{Performed selection event on the component.}
@@ -4809,10 +4799,7 @@ Keeps track of the mode used to calculate the attribute used on the filter
 \classdesc{PasteListener}{public class PasteListener implements ActionListener, TreeSelectionEvent \decl{}{Listener for copying selected cells to another library.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Copy action}
-        \item \atrdesc{\private}{}{EventListener}{moveListener}{Listener for move action.}
-        \item \atrdesc{\private}{}{EventListener}{copyListener}{Listener for copy action.}
-        \item \atrdesc{\private}{}{Library}{targetLibrary}{Target library for copy and move actions}
-        
+        \item \atrdesc{\private}{}{Library}{targetLibrary}{Target library for copy and move actions} 
     \end{itemize}
 }{
     \begin{itemize}
@@ -4830,6 +4817,7 @@ Keeps track of the mode used to calculate the attribute used on the filter
             \item \paramdesc{e}{Performed selection event on the component.}
             \end{itemize}}{}
     \end{itemize}}{}
+
 \classdesc{AddFilterListener}{public class AddFilterListener implements ActionListener \decl{}{Listener for add filter button.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Filter adding action.}
@@ -4962,19 +4950,116 @@ Keeps track of the mode used to calculate the attribute used on the filter
 }
 
 \chapter{Class Diagrams}
-\chapter{Architecture}
+\section{Model}
+\includeimage{}{0.1}{Model}{Model}{Model}
+\section{View}
+\includeimage{}{0.035}{View}{View}{View}
+\section{Controller}
+\includeimage{}{0.062}{Controllerv}{Controller}{Controller}
+\chapter{Architecture}{
+The Model-View-Controller architecture is used in the application to separate the internal data regarding liberty files
+from how they will be presented to the user. This allows an organized implementation for the GUI.\newline
+
+The view component presents the user a visualization of the liberty file data
+such the hierarchical structure of the library and the by using diagrams, bar charts, heat maps, cell representations and a hierarchy view.
+It also contains the UI logic, which the user interacts with.\newline 
+
+Controller is responsible for observing the changes made in the view and responding to these changes by sending 
+the user input to the corresponding components of the model. \newline
+
+Model stores and manages the liberty file data. Once model takes the user inputs from the controller, it makes the necessary changes
+in the liberty data and updates the view accordingly.\newline}
 
 \chapter{Design Patterns}
-\pattern{Strategy}
-\pattern{Builder}
-\pattern{Singleton}
-\pattern{Observer}
+\pattern{Strategy}{
+    The strategy pattern is used by the given below, along with their roles:
+    \leavevmode \\ \leavevmode \\
+    \textbf{Abstract strategy:} Provides an interface for the available strategies. \leavevmode \\
+    \textbf{Concrete strategy:} Contains the concrete implementation of the strategy it represents. \leavevmode \\
+    \begin{itemize}
+        \item In \refer{\lblroot:view.diagrams.overlayer}{view.diagrams.overlayer} package:
+        \begin{itemize}
+            \item \refer{\lblroot:view.diagrams.overlayer:IDiagramOverlayStrategy}{IDiagramOverlayStrategy} as abstract strategy.
+            \item \refer{\lblroot:view.diagrams.overlayer:FunctionGraphOverlayStrategy}{FunctionGraphOverlayStrategy}, \refer{\lblroot:view.diagrams.overlayer:HistogramOverlayStrategy}{HistogramOverlayStrategy}, \refer{\lblroot:view.diagrams.overlayer:BarChartOverlayStrategy}{BarChartOverlayStrategy} as concrete strategies.
+        \end{itemize}
+        \item In \refer{\lblroot:view.diagrams.data}{view.diagrams.data} package:
+        \begin{itemize}
+            \item \refer{\lblroot:view.diagrams.data:DiagramDataFormatter}{DiagramDataFormatter} as abstract strategy.
+            \item \refer{\lblroot:view.diagrams.data:ArrayListDataFormatter}{ArrayListDataFormatter} and \refer{\lblroot:view.diagrams.data:ArrayDataFormatter}{ArrayDataFormatter} as concrete strategies.
+        \end{itemize}
+    \end{itemize}
+}
+\pattern{Builder}{
+    The builder pattern is used by the given below, along with their roles:
+    \leavevmode \\ \leavevmode \\
+    \textbf{Director:} The manager of builders. \leavevmode \\
+    \textbf{Abstract builder:} Provides an interface for the available builders. \leavevmode \\
+    \textbf{Builder:} Contains the concrete implementation for construction steps. \leavevmode \\
+    \textbf{Product:} The products of the builders. \leavevmode \\
+    \begin{itemize}
+        \item \refer{\lblroot:view.diagrams:DiagramDirector}{DiagramDirector} as director.
+        \item \refer{\lblroot:view.diagrams.builder:DiagramBuilder}{DiagramBuilder} as abstract builder.
+        \item \refer{\lblroot:view.diagrams.builder:BarChartBuilder}{BarChartBuilder}, \refer{\lblroot:view.diagrams.builder:HistogramBuilder}{HistogramBuilder}, \refer{\lblroot:view.diagrams.builder:FunctionGraphBuilder}{FunctionGraphBuilder}, \refer{\lblroot:view.diagrams.builder:HeatMapBuilder}{HeatMapBuilder} as builders.
+        \item \refer{\lblroot:view.diagrams.type:Histogram}{Histogram}, \refer{\lblroot:view.diagrams.type:BarChart}{BarChart}, \refer{\lblroot:view.diagrams.type:HeatMap}{HeatMap}, \refer{\lblroot:view.diagrams.type:FunctionGraph}{FunctionGraph} as products.
+    \end{itemize}
+}
+\pattern{Singleton}{
+    The singleton pattern is used by the given below:
+    \leavevmode \\
+    \begin{itemize}
+        \item \refer{\lblroot:view.diagrams:SettingsProvider}{SettingsProvider}
+        \item \refer{\lblroot:view.diagrams:DiagramDirector}{DiagramDirector}
+        \item \refer{\lblroot:view.diagrams.components:DiagramComponentFactory}{DiagramComponentFactory}
+        \item \refer{\lblroot:view.diagrams.indicator:DiagramViewHelperFactory}{DiagramViewHelperFactory}
+        \item \refer{\lblroot:view.diagrams.components:HoverLabel}{HoverLabel}
+    \end{itemize}
+}
+\pattern{Facade}{
+    The facade pattern is used by the given below:
+    \leavevmode \\
+    \begin{itemize}
+        \item \refer{\lblroot:view.diagrams:DiagramDirector}{DiagramDirector}
+        \item \refer{\lblroot:view.diagrams.components:DiagramComponentFactory}{DiagramComponentFactory}
+        \item \refer{\lblroot:view.diagrams.indicator:DiagramViewHelperFactory}{DiagramViewHelperFactory}
+    \end{itemize}
+}
+\pattern{Observer}{The listeners in the \refer{\lblroot:controller.listeners}{Controller} package are all implementing several subclasses of \type{EventListener} from java.util package. These listeners are observing the events on the components they were added to while passing the input to the Model package and it's corresponding components.}
 \pattern{Command}
 {The Command design pattern is used in the model package.\newline
 All the action classes in the commands package use the Command interface to easily undo or redo executed actions.}
+\pattern{Composite}{
+    The Swing library makes use of the Composite Pattern in order to enable a hierarchical structure of components. The composite/component packages make use of this pattern and extend the classes with additional functionality.
+}
 
 \chapter{Sequence Diagrams}
-
+\section{Mandatory Functional Requirements}
+\subsection{FR-1 and FR-2}
+\includeimage{}{0.23}{FR1-2}{Sequence Diagram showing interactions for FR-1 and FR-2}{FR-1 and FR-2}
+\subsection{FR-4}
+\includeimage{}{0.32}{FR-4}{Sequence Diagram showing interactions for FR-4}{FR-4}
+\subsection{FR-5, FR-6 and FR-7}
+\includeimage{}{0.32}{DiagramCreation}{Sequence Diagram that shows how \refer{\lblroot:view.diagrams:IDiagram}{IDiagrams} are created}{Diagram Creation}
+\subsection{FR-8}
+\includeimage{}{0.32}{DiagramComparison}{Sequence Diagram that shows how \refer{\lblroot:view.diagrams:IDiagram}{IDiagrams} are overlaid for comparison.}{Diagram Comparison}
+\subsection{FR-9}
+\includeimage{}{0.42}{FR-9}{Sequence Diagram showing interactions for FR-9}{FR-9}
+\subsection{FR-10}
+\includeimage{}{0.35}{FR10}{Sequence Diagram showing interactions for FR-10}{FR-10}
+\subsection{FR-12 and FR-13}
+\includeimage{}{0.20}{FR-12,13}{Sequence diagram showing interactions for FR-12 and FR-13}{Merging Libraries and Resolving Merge Conflicts}
+\subsection{FR-14}
+\includeimage{}{0.27}{FR-14}{Sequence diagram showing interactions for FR-14}{Copying Cells into another Library}
+\subsection{FR-15}
+\includeimage{}{0.30}{removingalibrary}{Sequence diagram showing interactions for FR-15}{Removing Libraries}
+\subsection{FR-16}
+\includeimage{}{0.25}{deletingcell}{Sequence diagram showing interactions for FR-16}{Deleting Cells}
+\subsection{FR-17}
+\includeimage{}{0.35}{scalingvalues}{Sequence diagram showing interactions for FR-17}{Scaling Values}
+\subsection{FR-19}
+\includeimage{}{0.30}{DiagramStatistics}{Sequence Diagram that shows how statistics are shown on top of \refer{\lblroot:view.diagrams:IDiagram}{IDiagrams}.}{Diagram Statistics}
+\subsection{FR-21}
+\includeimage{}{0.35}{FR-21}{Sequence diagram showing interactions for FR-21}{Saving a Library as a new File}
+\section{Optional Functional Requirements}
 
 
 \chapter{Requirements Changes}
@@ -4986,7 +5071,7 @@ A change has been made in the mandatory requirement "FR-5: Displaying a Library"
 
 This change would mean that there would only be bar charts (a bar for each cell) in the library level display instead of the mentioned "histogram" and "heatmap" in FR-5. This of course also changes the way libraries are compared (in FR-8) - the comparison of libraries would only feature bar charts. }
 \pattern{Optional Requirements}
-{The following optional requirements are either covered completely, or fit into existing classes and structures. The remaining optional requirements are not covered in the design phase, but the current design allows for easy extendability.
+{The following optional requirements are either covered completely, or fit into existing classes and structures. 
 \begin{itemize}
     \item {FRO-1: Moving cells to another library}
     \item {FRO-2: Renaming elements}
@@ -5003,6 +5088,7 @@ This change would mean that there would only be bar charts (a bar for each cell)
     \item {FRO-24: Setting filters for a search} 
     \item {FRO-25: Setting default filters} 
 \end{itemize}}
+The remaining optional requirements are not covered in the design phase, but the current design allows for easy extendability.
 
 \chapter{Project Schedule}
 \end{document}
