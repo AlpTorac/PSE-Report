@@ -107,7 +107,7 @@ package elements{
             # void calculate()
             + void scale(float)
             + getParentInPin() : InputPin
-            + setParentInPin(InputPin)
+            + void setParentInPin(InputPin)
             + getIndex1() : float[]
             + getValues() : float[]
             + void setIndex1(float[])
@@ -124,7 +124,7 @@ package elements{
             # void calculate()
             + void scale(float)
             + getParentOutPin() : OutputPin
-            + setParentOutPin(OutputPin)
+            + void setParentOutPin(OutputPin)
             + getIndex1() : float[]
             + getIndex2() : float[]
             + getValues() : float[][]
@@ -185,7 +185,7 @@ package elements{
             __
             + Leakage(float[])
             + getParentCell() : Cell
-            + setParentCell(Cell)
+            + void setParentCell(Cell)
             + getValues() : float[]
             + setValues(float[])
         }
@@ -465,14 +465,6 @@ package commands{
         - String newName
         __
         + RenameAction(Element, String)
-        + void execute()
-        + void undo()
-    }
-    class SelectAction implements Command{
-        - HashSet<Element> selectedElements
-        - HashSet<Element> deselectedElements
-        __
-        + SelectAction(Element)
         + void execute()
         + void undo()
     }
