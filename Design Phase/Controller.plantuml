@@ -217,7 +217,7 @@ package listeners{
                 -Element[] element
                 +MoveListener()
                 +void actionPerformed(ActionEvent e)
-                +getElements(): Element[]
+                +void valueChanged(TreeSelectionEvent e)
             } 
 
             class CopyListener implements ActionListener, TreeSelectionListener{
@@ -225,16 +225,15 @@ package listeners{
                 -Element[] element
                 +CopyListener()
                 +void actionPerformed(ActionEvent e)
-                +getElements(): Element[]
+                +void valueChanged(TreeSelectionEvent e)
             }
 
             class PasteListener implements ActionListener, TreeSelectionListener{
                 -Command command
-                -EventListener moveListener
-                -EventListener copyListener
                 -Library targetLibrary
                 +PasteListener()
                 +void actionPerformed(ActionEvent e)
+                +void valueChanged(TreeSelectionEvent e)
             }
         }
 
