@@ -1,26 +1,30 @@
 @startuml DiagramStatistics
+participant "statisticCheckbox : CheckBox" as CheckBox
 participant "diagram : Diagram" as Diagram
 participant "instance : DiagramViewHelperFactory" as DiagramViewHelperFactory
 participant "viewHelper : DiagramViewHelper" as DiagramViewHelper
-
+participant "existingViewHelper : DiagramViewHelper" as existingViewHelper
+-> CheckBox : actionPerformed(ActionEvent e)
 alt id exists in diagram
--> Diagram ++: showDiagramViewHelper(id)
+CheckBox -> Diagram ++: showDiagramViewHelper(id)
+Diagram -> existingViewHelper ++: show()
+return
 return true
 else id does not exist in diagram
--> Diagram ++: showDiagramViewHelper(id)
+CheckBox -> Diagram ++: showDiagramViewHelper(id)
 return false
--> DiagramViewHelperFactory ++: createXDisplayer(relevant parameters)
+CheckBox -> DiagramViewHelperFactory ++: createXDisplayer(relevant parameters)
 note right
 X in {ValueLine, ValueColor}
 end note
-DiagramViewHelperFactory -> DiagramViewHelper **: <<create>> DiagramViewHelper(relevant parameters, layer)
-note right
-layer parameter comes 
-from instance.
-end note
-DiagramViewHelper -> Diagram ++: addDiagramViewHelper(viewHelper)
+DiagramViewHelperFactory -> DiagramViewHelper **: <<create>> DiagramViewHelper(relevant parameters)
+return viewHelper
+CheckBox -> Diagram ++: addDiagramViewHelper(viewHelper)
 return true
--> Diagram ++: showDiagramViewHelper(id)
+CheckBox -> Diagram ++: showDiagramViewHelper(id)
+Diagram -> DiagramViewHelper ++: show()
+return
 return true
 end
+<-- CheckBox
 @enduml
