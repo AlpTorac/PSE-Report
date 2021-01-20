@@ -1,0 +1,147 @@
+%Components
+\begin{package}{Components}
+    \struct{+}{i}{AutoResizing}[
+        \func{+}[void]{setResizer}[Component | ComponentResizer]{Associates a resizer with a component, making it resize it.}
+    ]{
+        Interface for components that are to be resized automatically.
+    }
+
+    \struct{+}{e}{ResizeMode}?
+        ABSOLUTE\_TOP\_LEFT=component stays fixed in relation to the top/left of the parent component;
+        ABSOLUTE\_BOTTOM\_RIGHT=component stays fixed in relation to the bottom/right of the parent component;
+        RELATIVE=component keeps a relative distance to the parent componennt's edges.
+    ?{
+        Enum values represent resizing behaviour.
+    }
+
+    \struct{+}{c}{Resizer}<
+        \func{+}{Resizer}[ResizeMode:t | ResizeMode:r | ResizeMode:b | ResizeMode:l]{Creates new resizer with specified attributes.}
+    >[
+        \func{+}[void]{resize}[Component | int:width | int:height | int:newWidth | int:newHeight]{Resizes specified component to fit specified dimensions of parent component.}
+    ]{
+        Classes that automatically resize use this class to define behaviour when resizing.
+    }
+
+    \struct{+}{c}{Window:JFrame}?
+        Map(Component, ComponentResizer)
+    ?{
+        Works like JFrame, but with automatic resizing.
+    }
+
+    \struct{+}{c}{Panel:JPanel}?
+        Map(Component, ComponentResizer)
+    ?{
+        Works like JPanel, but with automatic resizing.
+    }
+
+    \struct{+}{c}{InputBox:JTextField}{Adapted version of the parent Swing component.}
+    \struct{+}{c}{TextPane:JTextPane}{Adapted version of the parent Swing component.}
+    \struct{+}{c}{DropdownSelector:JComboBox}{Adapted version of the parent Swing component.}
+    \struct{+}{c}{Tree:JTree}{Adapted version of the parent Swing component.}
+    \struct{+}{c}{MenuBar:JMenuBar}{Adapted version of the parent Swing component.}
+    \struct{+}{c}{Checkbox:JCheckBox}{Adapted version of the parent Swing component.}
+    \struct{+}{c}{Button:JButton}{Adapted version of the parent Swing component.}
+    \struct{+}{c}{Label:JLabel}{Adapted version of the parent Swing component.}
+    \struct{+}{c}{ScrollPane:JScrollPane}{Adapted version of the parent Swing component.}
+\end{package}
+
+\newpage
+%Composites
+\begin{package}{Composites}
+    \struct{+}{c}{MainWindow:Window}?
+        MenuBar:mainMenu=Menu bar with options that affect the entire project/
+    ?<
+        \func{+}{MainWindow}{Creates the main window and instantiates child components.}
+    >[
+        \func{+}<static>[void]{main}[String[]:args]{The program entry point.}
+    ]{
+        Class representing the main window. It manages all of the GUI elements a user can interact with.
+    }
+
+    \struct{+}{e}{InfoBarID}?
+            InfoBarID:VERSION=Identifies version text label;
+            InfoBarID:SELECTED=Identifies selection text label;
+            InfoBarID:LASTACTION=Identifies last action text label;
+            InfoBarID:ERROR=Identifies error text label
+        ?{
+            Identifies a data section of an InfoBar.
+        }
+
+    \struct{+}{c}{InfoBar:Pane;}?
+        Map(InfoBarID, TextBox)
+        ?{
+            Panel with a collection of Info about the application status to display to the user.
+        }
+
+    \struct{+}{c}{Outliner:Panel}?
+            MenuBar:menu;
+            Tree;
+            Model
+        ?<
+            \func{+}{Outliner}[Model:data]{Creates outliner and associates it with a Model.}
+        >{
+            Interactive panel that shows a tree view of elements to the user.
+        }
+
+    \struct{+}{c}{SubWindowArea:Panel}?
+        Map(SubWindow\&, SubWindow):subWindows=Aggregation of all SubWindows currently present in the panel.
+    ?[
+        \func{+}[void]{addSubWindow}[SubWindow:sub=SubWindow to add]{Adds a SubWindow to the panel.};
+        \func{+}[void]{removeSubWindow}[SubWindow:sub=SubWindow to add]{Removes a SubWindow from the panel.}
+    ]{
+        Panel where SubWindows are opened/displayed.
+    }
+
+    \struct{+}{c}{SubWindow:Panel}?
+        MenuBar:menu
+        ElementManipulator[]:manipulators
+    ?<
+        \func{+}{SubWindow}[Element]{Creates new SubWindow and associates Element with it.}
+    >[
+        \func{+}{setElement}[Element]{Associates Element with the SubWindow.}
+    ]{
+        Panel that displays an element for the user to interact with depending on the set ElementManipulator.
+    }
+
+    \struct{+}{i}{ModelUser}[
+        \func{+}[void]{update}{Called whenever the Model is updated.}
+    ]{
+        Components that use data of the Model package implement this to be able to get notified when the Model changes.
+    }
+
+    \struct{+}{a}{ElementManipulator:Panel}[
+        \func{+}{setElement}[Element]{Associates Element with the manipulator.}
+    ]{
+        Implementing classes display elements and let the User interact with them depending on their implementation.
+    }
+
+    \struct{+}{c}{TextEditor:ElementManipulator}?
+        TextPane
+    ?<
+        \func{+}{TextEditor}[Element]{Creates new TextEditor and asscoiates Element with it.}
+    >{
+        Text editor with which the User can directly edit the associated Element.
+    }
+
+    \struct{+}{c}{Visualizer:ElementManipulator}?
+        TextArea:info ;
+        MenuBar:diagramOptions ;
+        MenuBar:statisticsoptions
+    ?<
+        \func{+}{Visualizer}[Element]{Associates Element with the Visualizer.}
+    >{
+        Visualizer to visualize the associated Element.
+    }
+
+    \struct{+}{c}{Comparer:ElementManipulator}<
+        \func{+}{Comparer}[Element:e1 | Element:e2]{Creates new Comparer to compare specified elements.}
+    >{
+        Panel to show a comparison between two elements in.
+    }
+
+    \struct{+}{c}{MergeDialog:Window}{
+        Dialog popup that is shown whenever merge conflicts arise. It lets the user resolve said conflicts in multiple ways.
+    }
+   
+    \struct{+}{c}{SettingsDialog:Window}{DIalog popup that is used to provide the user a way to change settings that affect the entire application.}
+\end{package}

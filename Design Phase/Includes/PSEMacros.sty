@@ -1,0 +1,211 @@
+\ProvidesPackage{PSEMacros}[Macros for function definition]
+%used packages
+\usepackage[skins,breakable]{tcolorbox}
+\usepackage{xparse}
+\usepackage{enumitem}
+\usepackage{etextools}
+\usepackage{tocloft}
+\usepackage{etoc}
+
+%colors
+\definecolor{pse:type}{HTML}{b92adb}
+\definecolor{pse:visibility}{HTML}{4461d4}
+\definecolor{pse:modifier}{HTML}{f0a50e}
+\definecolor{pse:subclass}{HTML}{08a623}
+
+
+
+%FUNCTIONS
+    %utility
+        %for processing parameter lists, ignores first element
+        \newif\iffirstparam
+        \firstparamtrue
+        \NewDocumentCommand{\whennotfirstparam}{m}
+        {%
+            \iffirstparam%
+                \firstparamfalse%
+            \else%
+                #1%
+            \fi%
+        }
+    %processes type-variable pair as its inputs
+    \NewDocumentCommand{\PSEtypevar}{m m}
+    {%
+        \textcolor{pse:type}{#1} #2%
+    }
+
+    %process (type-variable)-description pair
+    % +- defines if description is kept and item is made
+    \NewDocumentCommand{\PSEtypevardesc}{m >{\SplitList{:}}m m}
+    {%
+        \if#1+%
+        \item[\PSEtypevar#2] #3%
+        \else%
+        \whennotfirstparam{, }\PSEtypevar#2%
+        \fi%
+    }
+
+    %processes parameter and removes descrptions
+    \NewDocumentCommand{\PSEparam}{>{\SplitList{=}}m}
+    {%
+        \PSEtypevardesc{-}#1{}%
+    }
+    %processes parameter and makes it a description item
+    \NewDocumentCommand{\PSEparamdesc}{>{\SplitList{=}}m}
+    {%
+        \PSEtypevardesc{+}#1{}%
+    }
+
+    %process returntype-description pair
+    % +- defines if description is kept and item is made
+    \NewDocumentCommand{\PSEreturntypedesc}{m m m}
+    {%
+        \if#1+%
+        \textcolor{pse:type}{#2} #3%
+        \else%
+        #2%
+        \fi%
+    }
+
+    %processes return and removes description
+    \NewDocumentCommand{\PSEreturn}{>{\SplitList{=}}m}
+    {%
+        \PSEreturntypedesc{-}#1{}%
+    }
+
+    %processes return with description
+    \NewDocumentCommand{\PSEreturndesc}{>{\SplitList{=}}m}
+    {%
+        \PSEreturntypedesc{+}#1{}%
+    }
+
+    %function declaration
+    %{+/-/~ visibility}
+    %<modifiers>
+    %[return type = return description]
+    %{name}
+    %[argType:argName = argdescription| ...]
+    %{funtion description}
+    \NewDocumentCommand{\func}{m d<> o m >{\SplitList{|}}o m}
+    {%
+        \textbf{%
+            \textcolor{pse:visibility}{\if#1+ public\fi \if#1- private\fi \if#1~ protected\fi} %
+            \IfValueT{#2}{\textcolor{pse:modifier}{#2 }}%
+            \IfValueT{#3}{\textcolor{pse:type}{\PSEreturn{#3}} }%
+            #4(%
+                \IfValueT{#5}{%
+                    \ProcessList{#5}{\PSEparam}%
+                    \firstparamtrue%
+                }%
+            )%
+        }%
+        \textbf{\\\\Description}%
+        \\#6\\%
+        \IfValueT{#5}{%
+            \textbf{\\Parameters}%
+            \begin{description}[noitemsep,topsep=0pt]%
+                \ProcessList{#5}{\PSEparamdesc}%
+                \firstparamtrue%
+            \end{description}%
+        }
+        \IfValueT{#3}{%
+            \textbf{\\Returns\\} %
+            \PSEreturndesc{#3}%
+        }
+    }
+%STRUCTURES
+    %utility
+        %for processing method lists, ignores first element
+        \newif\iffirstmethod
+        \firstmethodtrue
+        \NewDocumentCommand{\whennotfirstmethod}{m}
+        {%
+            \iffirstmethod%
+                \firstmethodfalse%
+            \else%
+                #1%
+            \fi%
+        }
+
+    %processes class methods
+    \NewDocumentCommand{\PSEClassMethod}{m}{%
+        \whennotfirstmethod{\tcbline}%
+        #1%
+    }
+    %process attribute
+    \NewDocumentCommand{\PSEClassAttribute}{m}{%
+        \PSEparamdesc{#1}%
+        \firstparamtrue%
+    }
+    %process name
+    \NewDocumentCommand{\PSEClassName}{m m}{%
+        #1 \textcolor{pse:subclass}{#2}%
+    }
+
+    %add braces to argument for safety
+    \NewDocumentCommand{\AddBraces}{m}{
+        \def\ProcessedArgument{#1}%
+    }
+
+    %structure declaration for classes/abstract classes/interfaces/enums
+    %{+/-/~} visibility
+    %<modifier>
+    %{c/a/i/e} type of structure
+    %{name}
+    %[attribType : attribName = attribDescription;...]
+    %<constructor;...>
+    %!method;...!
+    %Class Description
+    \NewDocumentCommand{\struct}{m d<> m >{\SplitList{:}}m >{\SplitList{;}}d?? >{\SplitList{;}}d<> >{\SplitList{;}}o m}{
+        %\begin{tcolorbox}[boxsep=2pt,left=0pt,right=0pt,top=2pt,bottom=0pt,colbacktitle=white!90!black,coltitle=black,title=   
+            \subsection{\textbf{%
+                \textcolor{pse:visibility}{\if#1+ public\fi \if#1- private\fi \if#1~ protected\fi} %
+                \IfValueT{#2}{\textcolor{pse:modifier}{#2 }}%
+                \textcolor{pse:type}{\if#3c class\fi \if#3a abstract class\fi \if#3i interface\fi \if#3e enum\fi} %
+                \PSEClassName#4%
+            }}%
+        %]
+        \begin{tcolorbox}[breakable,enhanced,title=Description]%
+            #8%
+        \end{tcolorbox}%
+        \IfValueT{#5}{%
+            \begin{tcolorbox}[breakable,enhanced,title=Attributes]%
+                \begin{description}[noitemsep,topsep=0pt]%
+                    \ProcessList{#5}{\PSEClassAttribute}%
+                    \firstmethodtrue%
+                \end{description}%
+            \end{tcolorbox}%
+        }%
+        \IfValueT{#6}{%
+            \begin{tcolorbox}[breakable,enhanced,title=Constructors]%
+                \ProcessList{#6}{\PSEClassMethod}%
+                \firstmethodtrue%
+            \end{tcolorbox}%
+        }%
+        \IfValueT{#7}{%
+            %might need to set breakable=unlimited if methods are cut off
+            \begin{tcolorbox}[breakable,enhanced,title=Methods]%
+                \ProcessList{#7}{\PSEClassMethod}%
+                \firstmethodtrue%
+            \end{tcolorbox}%
+        }%
+        %\end{tcolorbox}
+    }
+
+%PACKAGES
+\NewDocumentEnvironment{package}{m}
+{
+    %start
+    \section{#1}
+    %TOC
+    \renewcommand{\contentsname}{\small\textit{Package contents}
+    \hfill
+    \small\textit{Page}}    
+    \setlength{\cftbeforetoctitleskip}{0em}
+    \setlength{\cftaftertoctitleskip}{0em}
+    \setlength{\cftsubsecindent}{1em}
+    \localtableofcontents
+}
+{
+    %end
+}
