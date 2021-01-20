@@ -1,5 +1,7 @@
 \documentclass[10pt,a4paper]{report}
 
+\usepackage[a4paper,margin=0.4in,left=1in, right=1in]{geometry}
+
 \usepackage[T1]{fontenc}
 \usepackage{titlesec, blindtext, color}
 \newcommand{\hsp}{\hspace{10pt}}
@@ -22,6 +24,9 @@
 
 \usepackage{etoolbox}
 \usepackage{url}
+
+\usepackage{tikz}
+\usepackage{aeguill}
 
 \title{\includegraphics[scale=6.0]{App Icon}\\Design for Graphical Editor for Liberty Files}
 
@@ -525,81 +530,84 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 \tableofcontents
 
 \chapter{Packages}
+    \includeimage{}{0.3}{PackageDiagram}{PackageDiagram}{PackageDiagram}
     \section{Model}
     \section{View}
+    \includeimage{}{0.035}{View}{View}{View}
     \section{Controller}
 
 \chapter{Class Descriptions}
+
 %GUI
-\packagedesc{view.gui}{
-\classdesc{MainWindow}{a}{a}
-    {
-        \constrdesc{\public}{MainWindow}{a}{a}{a}
-    }
-    {a}
-\classdesc{SubWindowArea}{a}{a}
-    {
-        \constrdesc{\public}{SubWindowArea}{a}{a}{a}
-    }
-    {a}
-\classdesc{Outliner}{a}{a}
-    {
-        \constrdesc{\public}{Outliner}{a}{a}{a}
-    }
-    {a}
-\classdesc{InfoBar}{a}{a}
-    {
-        \constrdesc{\public}{InfoBar}{a}{a}{a}
-    }
-    {a}
-\enumdesc{InfoBarID}{a}{
-    \begin{itemize}
-        \item \fielddesc{InfoBarID}{VERSION}{a}
-        \item \fielddesc{InfoBarID}{SELECTED}{a}
-        \item \fielddesc{InfoBarID}{LASTACTION}{a}
-    \end{itemize}
-}{a}
-\classdesc{SubWindow}{a}{a}
-    {
-        \constrdesc{\public}{SubWindow}{a}{a}{a}
-    }
-    {a}
-\absclassdesc{ElementManipulator}{a}{a}
-    {
-        \begin{itemize}
-            \item \subclsdec{TextEditor}
-            \item \subclsdec{Visualizer}
-        \end{itemize}
-    }
-    {a}
-    {a}
-\classdesc{MergeDialog}{a}{a}
-    {a}
-    {a}
-}
-%Components
-\packagedesc{view.components}{
-\interfacedesc{AutoResizing}{a}
-    {a}
-    {a}
-    {a}
-\classdesc{Resizer}{a}{a}
-    {a}
-    {a}
-\enumdesc{ResizeMode}{a}{
-    \begin{itemize}
-        \item \fielddesc{ResizeMode}{ABSOLUTE-TOP-LEFT}{a}
-        \item \fielddesc{ResizeMode}{ABSOLUTE-BOTTOM-RIGHT}{a}
-        \item \fielddesc{ResizeMode}{RELATIVE}{a}
-    \end{itemize}
-}{a}
-\classdesc{Window}{a}{a}
-    {a}
-    {a}
-\classdesc{Panel}{a}{a}
-    {a}
-    {a}
-}
+%\packagedesc{view.gui}{
+%\classdesc{MainWindow}{a}{a}
+%    {
+%        \constrdesc{\public}{MainWindow}{a}{a}{a}
+%    }
+%    {a}
+%\classdesc{SubWindowArea}{a}{a}
+%    {
+%        \constrdesc{\public}{SubWindowArea}{a}{a}{a}
+%    }
+%    {a}
+%\classdesc{Outliner}{a}{a}
+%    {
+%        \constrdesc{\public}{Outliner}{a}{a}{a}
+%    }
+%    {a}
+%\classdesc{InfoBar}{a}{a}
+%    {
+%        \constrdesc{\public}{InfoBar}{a}{a}{a}
+%    }
+%    {a}
+%\enumdesc{InfoBarID}{a}{
+%    \begin{itemize}
+%        \item \fielddesc{InfoBarID}{VERSION}{a}
+%        \item \fielddesc{InfoBarID}{SELECTED}{a}
+%        \item \fielddesc{InfoBarID}{LASTACTION}{a}
+%    \end{itemize}
+%}{a}
+%\classdesc{SubWindow}{a}{a}
+%    {
+%        \constrdesc{\public}{SubWindow}{a}{a}{a}
+%    }
+%    {a}
+%\absclassdesc{ElementManipulator}{a}{a}
+%    {
+%        \begin{itemize}
+%            \item \subclsdec{TextEditor}
+%            \item \subclsdec{Visualizer}
+%        \end{itemize}
+%    }
+%    {a}
+%    {a}
+%\classdesc{MergeDialog}{a}{a}
+%    {a}
+%    {a}
+%}
+%%Components
+%\packagedesc{view.components}{
+%\interfacedesc{AutoResizing}{a}
+%    {a}
+%    {a}
+%    {a}
+%\classdesc{Resizer}{a}{a}
+%    {a}
+%    {a}
+%\enumdesc{ResizeMode}{a}{
+%    \begin{itemize}
+%        \item \fielddesc{ResizeMode}{ABSOLUTE-TOP-LEFT}{a}
+%        \item \fielddesc{ResizeMode}{ABSOLUTE-BOTTOM-RIGHT}{a}
+%        \item \fielddesc{ResizeMode}{RELATIVE}{a}
+%    \end{itemize}
+%}{a}
+%\classdesc{Window}{a}{a}
+%    {a}
+%    {a}
+%\classdesc{Panel}{a}{a}
+%    {a}
+%    {a}
+%}
 %Diagrams
 \packagedesc{view.diagrams}{
 \interfacedesc{IDiagram}{
@@ -826,7 +834,7 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     \decl{\public \class DiagramOverlayer}{Stores \refer{\lblroot:view.diagrams:IDiagram}{IDiagrams}} and overlays the specified ones. The stored \refer{\lblroot:view.diagrams:IDiagram}{IDiagrams} must be of the same type.
 }{
     \begin{itemize}
-        \item \atrdesc{\private}{\type{Collection}<\generic{?} \extends \type{IDiagram}>}{}{diagrams}{The stored \refer{\lblroot:view.diagrams:IDiagram}{IDiagrams}}
+        \item \atrdesc{\private}{\typewgeneric{Collection}{IDiagram}}{}{diagrams}{The stored \refer{\lblroot:view.diagrams:IDiagram}{IDiagrams}}
         \item \atrdesc{\private}{}{IDiagramOverlayStrategy}{overlayStrategy}{The active \refer{\lblroot:view.diagrams.overlayer:IDiagramOverlayStrategy}{IDiagramOverlayStrategy}}
     \end{itemize}
 }{
@@ -839,14 +847,7 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
             \end{itemize}
         }
     \end{itemize}
-}{
-    \begin{itemize}
-        \item \methoddesc{\private}{}{void}{setOverlayStrategy}{}
-        {
-            Sets \refer{\lblroot:view.diagrams.overlayer:DiagramOverlayer:overlayStrategy}{overlayStrategy} based on the type of \refer{\lblroot:view.diagrams:IDiagram}{IDiagrams} stored in \refer{\lblroot:view.diagrams.overlayer:DiagramOverlayer:diagrams}{diagrams}.
-        }{}{}
-    \end{itemize}
-}
+}{}
 
 \classdesc{FunctionGraphOverlayStrategy}{
     \decl{\public \class FunctionGraphOverlayStrategy}{The implementation of \refer{\lblroot:view.diagrams.overlayer:IDiagramOverlayStrategy}{IDiagramOverlayStrategy} for \refer{\lblroot:view.diagrams.type:FunctionGraph}{FunctionGraphs}.
@@ -4388,10 +4389,9 @@ Keeps track of the mode used to calculate the attribute used on the filter
 \packagedesc{controller.listeners}{
 \classdesc{EventManager}{\public \class EventManager \decl{}{Holds lists of all listeners and manages their subscription.}}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{MainWindow}{view}{Application GUI}
+        \item \atrdesc{\private}{}{MainWindow}{view}{View component}
         \item \atrdesc{\private}{}{Model}{model}{Main model data}
         \item \atrdesc{\private}{}{Map<Event, EventListener>}{listeners}{Map of all view listeners for subscription and initialization.}
-        \item \atrdesc{\private}{}{List<IObserver>}{handlers}{List of all model listeners}
         
     \end{itemize}
     }{
@@ -4400,16 +4400,13 @@ Keeps track of the mode used to calculate the attribute used on the filter
     \end{itemize}
 }{ 
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{initListeners}{}{Initializes the listeners.}{}{}
-        \item \methoddesc{\public}{}{Map<Event, EventListener>}{getListeners}{}{Gets the view listeners}{}{}
-        \item \methoddesc{\public}{}{void}{subscribeHandlers}{}{Registers the update handlers}{}{}
-        \item \methoddesc{\public}{}{void}{removeHandler}{\type{IObserver} handler}{Unsubscribes a handler}{\begin{itemize}
-            \item \paramdesc{handler}{Handler which will be removed.}
+        \item \methoddesc{\public}{}{Map<Event, EventListener>}{getListeners}{}{Returns a list of the listeners}{}{}
+        \item \methoddesc{\public}{}{void}{subscribeListener}{\type{EventListener} listener}{Registers a listener}{\begin{itemize}
+            \item \paramdesc{listener}{Listener which will be registered.}
         \end{itemize}}{}
-        \item \methoddesc{\public}{}{void}{notifyHandlers}{\type{Model} model}{Notifies the handlers of the changes in the model.}{
-        \begin{itemize}
-            \item \paramdesc{model}{Current model class}
-            \end{itemize}}{}
+        \item \methoddesc{\public}{}{void}{removeListener}{\type{EventListener} listener}{Removes the given listener}{\begin{itemize}
+            \item \paramdesc{listener}{Listener which will be removed.}
+        \end{itemize}}{}
     \end{itemize}}{}
 
 \enumdesc{Event}
@@ -4423,6 +4420,8 @@ Keeps track of the mode used to calculate the attribute used on the filter
         \item \fielddesc{Event}{SAVE}{}
         \item \fielddesc{Event}{SAVEAS}{}
         \item \fielddesc{Event}{SELECT}{}
+        \item \fielddesc{Event}{CREATE}{}
+        \item \fielddesc{Event}{SEARCH}{}
         \item \fielddesc{Event}{EDIT}{}
         \item \fielddesc{Event}{RENAME}{}
         \item \fielddesc{Event}{MERGE}{}
@@ -4442,21 +4441,14 @@ Keeps track of the mode used to calculate the attribute used on the filter
         \item \fielddesc{Event}{SCSETTINGS}{}
         \item \fielddesc{Event}{PRSETTINGS}{}
         \item \fielddesc{Event}{LASETTINGS}{}
-        \item \fielddesc{Event}{ATTRDROPDOWN}{}
-        \item \fielddesc{Event}{GRAPHDROPDOWN}{}
-        \item \fielddesc{Event}{SUBATTRDROPDOWN}{}
-        \item \fielddesc{Event}{PIN}{}
-        \item \fielddesc{Event}{STATISTICS}{}
     \end{itemize}
 }{}
 
 
 
-\classdesc{LoadLibraryListener}{public class LoadLibraryListener \decl{}{Listener for loading a liberty file into the application.}}{
+\classdesc{LoadLibraryListener}{public class LoadLibraryListener implements ActionListener \decl{}{Listener for loading a liberty file into the application.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for loading a liberty file}
-        \item \atrdesc{\private}{}{File}{file}{To be loaded file}
-        \item \atrdesc{\private}{}{Panel}{panel}{Panel where the listened class is placed.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -4470,11 +4462,11 @@ Keeps track of the mode used to calculate the attribute used on the filter
             \end{itemize}}{}
     \end{itemize}
 }{}
-\classdesc{OpenElementListener}{public class OpenElementListener \decl{}{Listener for opening an element in the working area of the application.}
+\classdesc{OpenElementListener}{public class OpenElementListener implements ActionListener, TreeSelectionListener \decl{}{Listener for opening an element in the working area of the application.}
 }{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for opening a liberty file in working area}
-        \item \atrdesc{\private}{}{Element}{element}{Opened element}
+        \item \atrdesc{\private}{}{Element}{element}{Element which will be opened in the working area.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -4483,13 +4475,17 @@ Keeps track of the mode used to calculate the attribute used on the filter
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}}{}
         \item
         \methoddesc{\public}{}{void}{valueChanged}{\type{TreeSelectionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed selection event on the component.}
+            \end{itemize}}{}
     \end{itemize}
     }{}
-\classdesc{DeleteCellListener}{public class DeleteCellListener \decl{}{Listener for deleting a cell permanently from a library.}}{
+\classdesc{DeleteCellListener}{public class DeleteCellListener implements ActionListener, TreeSelectionListener \decl{}{Listener for deleting a cell permanently from a library.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for deleting a cell.}
         \item \atrdesc{\private}{}{Cell[]}{cells}{Cells to be deleted.}
@@ -4501,13 +4497,17 @@ Keeps track of the mode used to calculate the attribute used on the filter
 }{  
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}}{}
          \item
         \methoddesc{\public}{}{void}{valueChanged}{\type{TreeSelectionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed selection event on the component.}
+            \end{itemize}}{}
     \end{itemize}
 }{}
-\classdesc{RemoveListener}{public class RemoveListener \decl{}{Listener for removing an element from the project.}}{
+\classdesc{RemoveListener}{public class RemoveListener implements ActionListener, TreeSelectionListener \decl{}{Listener for removing an element from the project.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for removing a library}
         \item \atrdesc{\private}{}{Element[]}{elements}{Libraries to be removed.}
@@ -4519,13 +4519,17 @@ Keeps track of the mode used to calculate the attribute used on the filter
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}}{}
          \item
         \methoddesc{\public}{}{void}{valueChanged}{\type{TreeSelectionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}}{}
     \end{itemize}
 }{}
-\classdesc{SelectListener}{public class SelectListener \decl{}{Listens to the selected elements in the outliner.}}{
+\classdesc{SelectListener}{public class SelectListener implements TreeSelectionListener \decl{}{Listens to the selected elements in the outliner.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for selecting elements in the outliner.}
         \item \atrdesc{\private}{}{Element[]}{element}{Selected elements}
@@ -4537,13 +4541,16 @@ Keeps track of the mode used to calculate the attribute used on the filter
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{valueChanged}{\type{TreeSelectionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}}{}
     \end{itemize}}{}
 \classdesc{EditListener}{public class EditListener \decl{}{Observes the changes in the text editor.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for editing a liberty file in the text editor}
-        \item \atrdesc{\private}{}{Element}{element}{Edited liberty file}
-        \item \atrdesc{\private}{}{String}{newText}{Edited text in liberty file.}
+        \item \atrdesc{\private}{}{Element}{element}{Edited liberty element}
+        \item \atrdesc{\private}{}{String}{newText}{Changed text}
+        \item \atrdesc{\private}{}{String}{oldText}{Old content of the text.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -4552,14 +4559,19 @@ Keeps track of the mode used to calculate the attribute used on the filter
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{} 
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}}{} 
         \item
         \methoddesc{\public}{}{void}{changesUpdated}{\type{DocumentEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed document event on the component.}
+            \end{itemize}}{}
     \end{itemize}}{}
-\classdesc{RenameListener}{\public \class RenameListener \decl{}{Listener for renaming a liberty file in the outliner.}}{
+\classdesc{RenameListener}{\public \class RenameListener implements ActionListener, TreeSelectionListener \decl{}{Listener for renaming a liberty file in the outliner.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for renaming an element.}
+        \item \atrdesc{\private}{}{String}{newName}{New name of the element.}
         \item \atrdesc{\private}{}{Element}{element}{To be renamed element.}
     \end{itemize}
 }{
@@ -4569,12 +4581,47 @@ Keeps track of the mode used to calculate the attribute used on the filter
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}}{}
          \item
         \methoddesc{\public}{}{void}{valueChanged}{\type{TreeSelectionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed selection event on the component.}
+            \end{itemize}}{}
     \end{itemize}}{}
-\classdesc{SaveListener}{public class SaveListener \decl{}{Listener for save button.}Listener for saving changes made in the liberty file}{
+\classdesc{SearchListener}{public class SearchListener implements TextListener \decl{}{Listener for search bar.}}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Model}{model}{Model holding the project data.}
+        \item \atrdesc{\private}{}{Panel}{panel}{Panel which contains the search bar}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \constrdesc{\public}{SearchListener}{\type{Model} model}{}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{void}{textValueChanged}{\type{TextEvent} e}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed text event on the component.}
+            \end{itemize}}{}
+    \end{itemize}}{}
+\classdesc{CreateLibraryListener}{public class CreateLibraryListener implements ActionListener \decl{}{Listener for creating a new library.}}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Model}{model}{Model holding the project data.}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \constrdesc{\public}{CreateLibraryListener}{\type{Model} model}{}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}}{}
+    \end{itemize}}{}
+\classdesc{SaveListener}{public class SaveListener implements ActionListener \decl{}{Listener for save button.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Model}{model}{Model holding the project data.}
     \end{itemize}
@@ -4585,9 +4632,11 @@ Keeps track of the mode used to calculate the attribute used on the filter
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}}{}
     \end{itemize}}{}
-\classdesc{SaveAsListener}{public class SaveAsListener \decl{}{Listener for saving changes made in the liberty file as a new file.}}{
+\classdesc{SaveAsListener}{public class SaveAsListener implements ActionListener \decl{}{Listener for saving changes made in the liberty file as a new file.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Model}{model}{Model holding the project data.}
     \end{itemize}
@@ -4598,9 +4647,11 @@ Keeps track of the mode used to calculate the attribute used on the filter
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}}{}
     \end{itemize}}{}
-\classdesc{MergeListener}{public class MergeListener \decl{}{Listener for merging multiple libraries.}}{
+\classdesc{MergeListener}{public class MergeListener implements ActionListener, TreeSelectionListener \decl{}{Listener for merging multiple libraries.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for merging action}
         \item \atrdesc{\private}{}{Library[]}{libraries}{Libraries selected for merge action.}
@@ -4612,16 +4663,20 @@ Keeps track of the mode used to calculate the attribute used on the filter
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}}{}
          \item
         \methoddesc{\public}{}{void}{valueChanged}{\type{TreeSelectionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed selection event on the component.}
+            \end{itemize}}{}
     \end{itemize}}{}
-\classdesc{ScaleListener}{public class ScaleListener \decl{}{Listener for scaling.}}{
+\classdesc{ScaleListener}{public class ScaleListener implements ActionListener \decl{}{Listener for scaling.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for scaling action}
-        \item \atrdesc{\private}{}{Attribute}{attribute}{abcd}
-        \item \atrdesc{\private}{}{float}{float}{abcd}
+        \item \atrdesc{\private}{}{Attribute}{attribute}{Attribute to scale.}
+        \item \atrdesc{\private}{}{float}{value}{Scaling value}
     \end{itemize}
 }{
     \begin{itemize}
@@ -4630,9 +4685,11 @@ Keeps track of the mode used to calculate the attribute used on the filter
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}}{}
     \end{itemize}}{}
-\classdesc{InterpolationListener}{public class InterpolationListener \decl{}{Listener for interpolation action.}}{
+\classdesc{InterpolationListener}{public class InterpolationListener implements ActionListener \decl{}{Listener for interpolation action.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for interpolation action.}
     \end{itemize}
@@ -4643,9 +4700,11 @@ Keeps track of the mode used to calculate the attribute used on the filter
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}}{}
     \end{itemize}}{}
-\classdesc{UndoListener}{public class UndoListener \decl{}{Listener for the undo button.}}{
+\classdesc{UndoListener}{public class UndoListener implements ActionListener\decl{}{Listener for the undo button.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for the undo action.}
     \end{itemize}
@@ -4656,9 +4715,11 @@ Keeps track of the mode used to calculate the attribute used on the filter
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}}{}
     \end{itemize}}{}
-\classdesc{RedoListener}{public class RedoListener \decl{}{Listener for the redo button.}}{
+\classdesc{RedoListener}{public class RedoListener implements ActionListener \decl{}{Listener for the redo button.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for the redo action.}
     \end{itemize}
@@ -4669,24 +4730,15 @@ Keeps track of the mode used to calculate the attribute used on the filter
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}}{}
     \end{itemize}}{}
-\classdesc{StatisticsListener}{public class StatisticsListener \decl{}{Listener for the statistics checkboxes.}}{
-    \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
-    \end{itemize}
-}{
-    \begin{itemize}
-        \item \constrdesc{\public}{StatisticsListener}{}{}{}
-    \end{itemize}
-}{
-    \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
-    \end{itemize}}{}
-\classdesc{CompareListener}{public class CompareListener \decl{}{Listener for the compare action.}}{
+\classdesc{CompareListener}{public class CompareListener implements ActionListener, TreeSelectionListener \decl{}{Listener for the compare action.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for comparing.}
+        \item \atrdesc{\private}{}{Element}{element1}{First element to compare}
+        \item \atrdesc{\private}{}{Element}{element2}{Second element to compare}
     \end{itemize}
 }{
     \begin{itemize}
@@ -4695,12 +4747,16 @@ Keeps track of the mode used to calculate the attribute used on the filter
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}}{}
          \item
         \methoddesc{\public}{}{void}{valueChanged}{\type{TreeSelectionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed selection event on the component.}
+            \end{itemize}}{}
     \end{itemize}}{}
-\classdesc{MoveListener}{public class MoveListener \decl{}{Listener for moving selected cells to another library.}}{
+\classdesc{MoveListener}{public class MoveListener implements ActionListener, TreeSelectionListener \decl{}{Listener for moving selected cells to another library.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Move action.}
         \item \atrdesc{\private}{}{Element[]}{element}{Selected cells.}
@@ -4713,15 +4769,19 @@ Keeps track of the mode used to calculate the attribute used on the filter
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
+        {}\begin{itemize}
+            \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}{}{}
          \item
-        \methoddesc{\public}{}{\type{Element[]}}{getElements}{}
+        \methoddesc{\public}{}{\type{Element[]}}{getElements}{Returns the elements that will be moved}
         {}{}{}
          \item
         \methoddesc{\public}{}{void}{valueChanged}{\type{TreeSelectionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed selection event on the component.}
+            \end{itemize}}{}
     \end{itemize}}{}
-\classdesc{CopyListener}{public class CopyListener \decl{}{Listener for copying selected cells to another library.}}{
+\classdesc{CopyListener}{public class CopyListener implements ActionListener, TreeSelectionListener \decl{}{Listener for copying selected cells to another library.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Copy action}
         \item \atrdesc{\private}{}{Element[]}{element}{Elements selected for copying.}
@@ -4734,15 +4794,19 @@ Keeps track of the mode used to calculate the attribute used on the filter
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}}{}
          \item
         \methoddesc{\public}{}{Element[]}{getElements}{}
-        {}{}{}
+        {Returns the elements that will be copied}{}{}
          \item
         \methoddesc{\public}{}{void}{valueChanged}{\type{TreeSelectionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed selection event on the component.}
+            \end{itemize}}{}
     \end{itemize}}{}
-\classdesc{PasteListener}{public class PasteListener \decl{}{Listener for copying selected cells to another library.}}{
+\classdesc{PasteListener}{public class PasteListener implements ActionListener, TreeSelectionEvent \decl{}{Listener for copying selected cells to another library.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Copy action}
         \item \atrdesc{\private}{}{EventListener}{moveListener}{Listener for move action.}
@@ -4757,12 +4821,16 @@ Keeps track of the mode used to calculate the attribute used on the filter
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}}{}
          \item
         \methoddesc{\public}{}{void}{valueChanged}{\type{TreeSelectionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed selection event on the component.}
+            \end{itemize}}{}
     \end{itemize}}{}
-\classdesc{AddFilterListener}{public class AddFilterListener \decl{}{Listener for add filter button.}}{
+\classdesc{AddFilterListener}{public class AddFilterListener implements ActionListener \decl{}{Listener for add filter button.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Filter adding action.}
         \item \atrdesc{\private}{}{Filter}{filter}{Filter to be added.}
@@ -4774,9 +4842,11 @@ Keeps track of the mode used to calculate the attribute used on the filter
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}}{}
     \end{itemize}}{}
-\classdesc{RemoveFilterListener}{public class RemoveFilterListener \decl{}{Listener for remove filter button.}}{
+\classdesc{RemoveFilterListener}{public class RemoveFilterListener implements ActionListener \decl{}{Listener for remove filter button.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Filter removing action.}
         \item \atrdesc{\private}{}{Filter}{filter}{Filter to be removed.}
@@ -4788,222 +4858,151 @@ Keeps track of the mode used to calculate the attribute used on the filter
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}}{}
     \end{itemize}}{}
 
-\classdesc{LoadProjectListener}{public class LoadProjectListener \decl{}{Listener for importing a project}}{
+\classdesc{LoadProjectListener}{public class LoadProjectListener implements ActionListener \decl{}{Listener for importing a project}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for importing a project.}
         \item \atrdesc{\private}{}{Model}{model}{Model instance}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \constrdesc{\public}{LoadProjectListener}{}{}{}
+        \item \constrdesc{\public}{LoadProjectListener}{Model model}{}{}
     \end{itemize}
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}}{}
     \end{itemize}}{}
     
-\classdesc{ExportProjectListener}{public class ExportProjectListener \decl{}{Listener for exporting a project as a CSV file.}}{
+\classdesc{ExportProjectListener}{public class ExportProjectListener implements ActionListener \decl{}{Listener for exporting a project as a CSV file.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for exporting a project.}
         \item \atrdesc{\private}{}{Model}{Model}{Model instance}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \constrdesc{\public}{ExportProjectListener}{}{}{}
+        \item \constrdesc{\public}{ExportProjectListener}{Model model}{}{}
     \end{itemize}
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}}{}
     \end{itemize}}{}
     
-\classdesc{SettingsListener}{public class SettingsListener \decl{}{Listener for main settings window.}}{
+\classdesc{SettingsListener}{public class SettingsListener implements ActionListener \decl{}{Listener for main settings window.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Settings}{settings}{Settings data in the model.}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \constrdesc{\public}{SettingsListener}{}{}{}
+        \item \constrdesc{\public}{SettingsListener}{Model model}{}{}
     \end{itemize}
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}}{}
     \end{itemize}}{}
 
-\classdesc{ShortcutSettingsListener}{public class ShortcutSettingsListener \decl{}{Listener for changing shortcuts component.}}{
+\classdesc{ShortcutSettingsListener}{public class ShortcutSettingsListener implements ActionListener \decl{}{Listener for changing shortcuts component.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Shortcuts}{shortcuts}{Shortcut data in the model.}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \constrdesc{\public}{ShortcutSettingsListener}{}{}{}
+        \item \constrdesc{\public}{ShortcutSettingsListener}{Model model}{}{}
     \end{itemize}
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}}{}
     \end{itemize}}{}
-\classdesc{PreferencesSettingsListener}{public class PreferencesSettingsListener \decl{}{Listener for application settings}}{
+\classdesc{PreferencesSettingsListener}{public class PreferencesSettingsListener implements ActionListener \decl{}{Listener for application settings}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Model}{model}{Preferences data in the model.}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \constrdesc{\public}{PreferencesSettingsListener}{}{}{}
+        \item \constrdesc{\public}{PreferencesSettingsListener}{Model model}{}{}
     \end{itemize}
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}}{}
     \end{itemize}}{}
-\classdesc{LanguageSettingsListener}{public class LanguageSettingsListener \decl{}{Listener for language dropdown component.}}{
+\classdesc{LanguageSettingsListener}{public class LanguageSettingsListener implements ActionListener \decl{}{Listener for language dropdown component.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Model}{Model}{Model holding the language data.}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \constrdesc{\public}{LanguageSettingsListener}{}{}{}
+        \item \constrdesc{\public}{LanguageSettingsListener}{Model model}{}{}
     \end{itemize}
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}}{}
     \end{itemize}}{}
     
-\classdesc{AttributeDropdownListener}{public class AttributeDropdownListener \decl{}{Listener for the attribute dropdown menu in the visualizer}}{
-    \begin{itemize}
-        \item \atrdesc{\private}{}{Element[]}{element}{}
-    \end{itemize}
-}{
-    \begin{itemize}
-        \item \constrdesc{\public}{AttributeDropdownListener}{}{}{}
-    \end{itemize}
-}{
-    \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
-    \end{itemize}}{}
-\classdesc{SubAttributeDropdownListener}{public class SubAttributeDropdownListener \decl{}{}}{
-    \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
-        \item \atrdesc{\private}{}{Element[]}{element}{}
-    \end{itemize}
-}{
-    \begin{itemize}
-        \item \constrdesc{\public}{SubAttributeDropdownListener}{}{}{}
-    \end{itemize}
-}{
-    \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
-    \end{itemize}}{}
-\classdesc{GraphDropdownListener}{public class GraphDropdownListener \decl{}{}}{
-    \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
-        \item \atrdesc{\private}{}{Element[]}{element}{}
-    \end{itemize}
-}{
-    \begin{itemize}
-        \item \constrdesc{\public}{GraphDropdownListener}{}{}{}
-    \end{itemize}
-}{
-    \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
-    \end{itemize}}{}
-\classdesc{PinSelectListener}{public class PinSelectListener \decl{}{}}{
-    \begin{itemize}
-        \item \atrdesc{\private}{}{Command}{command}{}
-        \item \atrdesc{\private}{}{Element[]}{element}{}
-    \end{itemize}
-}{
-    \begin{itemize}
-        \item \constrdesc{\public}{PinSelectListener}{}{}{}
-    \end{itemize}
-}{
-    \begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
-    \end{itemize}}{}
+}
 
-}
-\packagedesc{controller.updatehandlers}{
-\classdesc{DataUpdateHandler}{public class DataUpdateHandler \decl{}{}}{
-    \begin{itemize}
-        \item \atrdesc{\private}{}{Outliner}{outliner}{Application GUI}
-        \item \atrdesc{\private}{}{List<Element>}{elements}{Libraries from the model.}
-    \end{itemize}
-}{
-    \begin{itemize}
-        \item \constrdesc{\public}{DataUpdateHandler}{\type{Outliner} outliner}{}{}
-    \end{itemize}
-}{
-    \begin{itemize}
-        \item \methoddesc{\public}{}{void}{update}{\type{List<Library>} libraries}
-        {Updates the view with the changed data.}{}{}
-    \end{itemize}
-}{}
-\classdesc{SettingsUpdateHandler}{public class SettingsUpdateHandler \decl{}{}}{
-    \begin{itemize}
-        \item \atrdesc{\private}{}{Panel}{panel}{Settings window of the GUI}
-    \end{itemize}
-}{
-    \begin{itemize}
-        \item \constrdesc{\public}{SettingsUpdateHandler}{\type{Panel} panel}{}{}
-    \end{itemize}
-}{
-    \begin{itemize}
-        \item \methoddesc{\public}{}{void}{update}{\type{Settings} settings}
-        {Updates the view with the changed settings data.}{}{}
-    \end{itemize}}{}
-\classdesc{FilterUpdateHandler}{public class FilterUpdateHandler \decl{}{}}{
-    \begin{itemize}
-        \item \atrdesc{\private}{}{Panel}{panel}{Filter window of the UI}
-    \end{itemize}
-}{
-    \begin{itemize}
-        \item \constrdesc{\public}{FilterUpdateHandler}{\type{Panel} panel}{}{}
-    \end{itemize}}{\begin{itemize}
-        \item \methoddesc{\public}{}{void}{update}{\type{List<Filter>} filters}
-        {Updates the view with the changed filters.}{}{}
-    \end{itemize}}{}
-\classdesc{InterpolationUpdateHandler}{public class InterpolationUpdateHandler \decl{}{}}{
-    \begin{itemize}
-        \item \atrdesc{\private}{}{Panel}{panel}{Panel for interpolation}
-    \end{itemize}
-}{
-    \begin{itemize}
-        \item \constrdesc{\public}{InterpolationUpdateHandler}{\type{Panel} panel}{}{}
-    \end{itemize}}{\begin{itemize}
-        \item \methoddesc{\public}{}{void}{update}{\type{float} value}
-        {Updates the view with the changed data.}{}{}
-    \end{itemize}}{}
-\classdesc{NamingConflictHandler}{public class NamingConflictHandler \decl{}{}}{
-    \begin{itemize}
-        \item \atrdesc{\private}{}{MergeDialog}{mergeDialog}{Dialog for NamingConflict resolution}
-        \item \atrdesc{\private}{}{NameConflictResolver}{resolver}{Model object that handles Naming conflict resolution}
-    \end{itemize}
-}{
-    \begin{itemize}
-        \item \constrdesc{\public}{NamingConflictHandler}{\type{Cell} left, \type{Cell} left, NameConflictResolver resolver}{}{}
-    \end{itemize}}{\begin{itemize}
-        \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{}{}
-    \end{itemize}}{}
-}
 \chapter{Class Diagrams}
-
-\chapter{Sequence Diagrams}
+\chapter{Architecture}
 
 \chapter{Design Patterns}
 \pattern{Strategy}
 \pattern{Builder}
 \pattern{Singleton}
 \pattern{Observer}
+\pattern{Command}
+{The Command design pattern is used in the model package.\newline
+All the action classes in the commands package use the Command interface to easily undo or redo executed actions.}
 
+\chapter{Sequence Diagrams}
+
+
+
+\chapter{Requirements Changes}
+\pattern{Mandatory Requirements}
+{All mandatory functional requirements are covered by the design with class diagrams and sequence diagrams. \newline
+
+
+A change has been made in the mandatory requirement "FR-5: Displaying a Library". As in the requirement phase decided, library level display would show statistics of the library for every index. However, it was decided during the design phase, that it would be more plausible, if the statistics were shown for each cell instead of for each index in the library level display. This would offer the user a better overview of the statistics. \newline
+
+This change would mean that there would only be bar charts (a bar for each cell) in the library level display instead of the mentioned "histogram" and "heatmap" in FR-5. This of course also changes the way libraries are compared (in FR-8) - the comparison of libraries would only feature bar charts. }
+\pattern{Optional Requirements}
+{The following optional requirements are either covered completely, or fit into existing classes and structures. The remaining optional requirements are not covered in the design phase, but the current design allows for easy extendability.
+\begin{itemize}
+    \item {FRO-1: Moving cells to another library}
+    \item {FRO-2: Renaming elements}
+    \item {FRO-3: Creating Liberty files from scratch}
+    \item {FRO-5: Exporting data as CSV}
+    \item {FRO-6: Resizing visualizer}
+    \item {FRO-11: Saving the state of the project} 
+    \item {FRO-12: Loading a project}
+    \item {FRO-16: Interpolating}
+    \item {FRO-17: Changing GUI appearance} 
+    \item {FRO-18: Changing the preferences}
+    \item {FRO-20: Shortcuts} 
+    \item {FRO-21: Undo/Redo} 
+    \item {FRO-24: Setting filters for a search} 
+    \item {FRO-25: Setting default filters} 
+\end{itemize}}
+
+\chapter{Project Schedule}
 \end{document}
