@@ -292,6 +292,8 @@ package Diagrams {
             +default void refreshHoverLabelPosition()
             +default void showHoverLabel()
             +default void hideHoverLabel()
+            +default void addHoverListener(JComponent component)
+            +void addHoverListeners(JComponent[] components)
         }
         note right of Hoverable::hoverAction
             show label as default
@@ -496,6 +498,10 @@ package Diagrams {
             +void setHeight(Number height)
             +Number getWidth()
             +Number getHeight()
+            +void setXPos(Number xPos)
+            +Number getXPos()
+            +void setYPos(Number yPos)
+            +Number getYPos()
         }
         class DiagramComponentFactory {
             -{static} DiagramComponentFactory instance = new DiagramComponentFactory
