@@ -27,7 +27,7 @@
 
 \usepackage{Includes/PSEMacros}
 
-\title{\includegraphics[scale=6.0]{App Icon}\\Design for Graphical Editor for Liberty Files}
+\title{\includegraphics[scale=6.0]{App Icon}\\Design Specification for Graphical Editor for Liberty Files}
 
 \author{Alp Toraç Genç, Kerem Kara, Xhulio Pernoca, Manuel Schenk, Ege Uzhan \leavevmode \\---------------------------------------------------------------------------------------\\
 Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
@@ -532,12 +532,12 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 \chapter{Packages}
     \includeimage{}{0.3}{PackageDiagram}{PackageDiagram}{PackageDiagram}
     \section{Model}
-    \includeimage{}{0.1}{Model}{Model}{Model}{}
+    \includeimage{}{0.1}{Model}{Model}{ModelFirst}{}
     \subsection{model.commands}
-    This package contains actions.
+    This package contains commands.
     \subsection{model.elements}
     This package contains elements of the parsed liberty file.
-    \subsubsection{model.elements.attributes}
+    \subsection{model.elements.attributes}
     This package contains different attributes of the elements.
     \subsection{model.parsers}
     This package contains the parsers, that are used to parse the file.
@@ -549,21 +549,30 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     This package provides classes for the management of the project.
     \section{View}
     \includeimage{}{0.035}{View}{View}{View}
+    %gui
+    \subsection{view.components}
+    This package contains all GUI components that are adapted from Java's Swing library. They are used in other packages that are part of the View package to define their appearance and user interaction.
+    \subsection{view.composites}
+    This package contains GUI composites, which are larger parts of the GUI made of components from the Components package and, in some cases, components from Java's Swing library.
+    %diagrams
     \subsection{view.diagrams}
     The package that encapsulates the interfaces and subpackages about the visual part of diagrams.
-    \subsubsection{view.diagrams.overlayer}
+    \subsection{view.diagrams.overlayer}
     This package houses the classes that overlay same types of diagrams.
-    \subsubsection{view.diagrams.components}
+    \subsection{view.diagrams.components}
     The package, which contains all the components (and their creator) required to build the diagrams.
-    \subsubsection{view.diagrams.data}
+    \subsection{view.diagrams.data}
     This package holds the classes that are responsible for containing the information needed to build diagrams.
-    \subsubsection{view.diagrams.type}
+    \subsection{view.diagrams.type}
     The classes of this package represent the diagrams specified in the requirement phase report.
-    \subsubsection{view.diagrams.indicator}
+    \subsection{view.diagrams.indicator}
     The components that are not a part of a diagram but serve an indication purpose (such as displaying statistics or displaying coordinate grids) reside in this package.
-    \subsubsection{view.diagrams.builder}
+    \subsection{view.diagrams.builder}
     The contents of this package are responsible for building the diagrams by utilizing view.diagrams.components package.
     \section{Controller}
+    \includeimage{}{0.062}{Controllerv}{Controller}{ControllerFirst}
+    \subsection{controller.listeners}
+    This package contains all the listeners which are observing the view components.
 
 \chapter{Class Descriptions}
 
@@ -594,7 +603,7 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 %    \begin{itemize}
 %        \item \fielddesc{InfoBarID}{VERSION}{a}
 %        \item \fielddesc{InfoBarID}{SELECTED}{a}
-%        \item \fielddesc{InfoBarID}{LASTACTION}{a}
+%        \item \fielddesc{InfoBarID}{LASTCOMMAND}{a}
 %    \end{itemize}
 %}{a}
 %\classdesc{SubWindow}{a}{a}
@@ -658,12 +667,12 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         {
             Re-draws the diagram.
         }{}{}
-        \item \methoddesc{\public}{}{void}{update}{\type{DiagramData} data}
+        \item \methoddesc{\public}{}{void}{update}{\typewgeneric{Collection}{?} data}
         {
-            Replaces the \refer{\lblroot:view.diagrams.type:Diagram:data}{data} by the given.
+            Replaces the \refer{\lblroot:view.diagrams.data:DiagramData:data}{data} of \refer{\lblroot:view.diagrams.data:DiagramData}{DiagramData} in \refer{\lblroot:view.diagrams.type:Diagram:data}{data} by the given and effectively updating the data of a \refer{\lblroot:view.diagrams:IDiagram}{IDiagram}.
         }{
             \begin{itemize}
-                \item \paramdesc{data}{The data to replace the current \refer{\lblroot:view.diagrams.type:Diagram:data}{data}.}
+                \item \paramdesc{data}{The data to replace the current \refer{\lblroot:view.diagrams.data:DiagramData:data}{data} of \refer{\lblroot:view.diagrams.data:DiagramData}{DiagramData} in \refer{\lblroot:view.diagrams.type:Diagram:data}{data}.}
             \end{itemize}
         }{}
         \item \methoddesc{\public}{}{boolean}{addDiagramViewHelper}{\type{DiagramViewHelper} dvh}
@@ -790,7 +799,15 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         {
             Changes the active \refer{\lblroot:view.diagrams:DiagramDirector:builder}{builder} to the appropriate one, according to \refer{\lblroot:view.diagrams:DiagramDirector:data}{data}.
         }{}{}
-        \item \methoddesc{\public}{}{void}{setDiagramData}{\type{DiagramData} data}
+        \item \methoddesc{\public}{}{void}{receiveDiagramData}{\typewgeneric{Collection}{?} data}
+        {
+            Receives the data needed to make an \refer{\lblroot:view.diagrams:IDiagram}{IDiagram} from outside the package.
+        }{
+            \begin{itemize}
+                \item \paramdesc{data}{The given \refer{\lblroot:view.diagrams.data:DiagramData:data}{data} attribute of \refer{\lblroot:view.diagrams.data:DiagramData}{DiagramData}, which will be used to build the \refer{\lblroot:view.diagrams:IDiagram}{IDiagram}.}
+            \end{itemize}
+        }{}
+        \item \methoddesc{\private}{}{void}{setDiagramData}{\type{DiagramData} data}
         {
             Sets the active \refer{\lblroot:view.diagrams:DiagramDirector:data}{data}.
         }{
@@ -2891,7 +2908,6 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     \end{itemize}
 }{}
 }
-
 \packagedesc{view.representation}{
 \interfacedesc{ICellImageGenerator}{\interface ICellImageGenerator \decl{}{Interface for the image generator}}{
 }{CellImageGenerator}{
@@ -2929,10 +2945,11 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     \begin{itemize}
         \item \atrdesc{\private}{}{Label}{label}{Label for the data text.}
         \item \atrdesc{\private}{}{String}{text}{Certain information about the opened liberty file.}
+        \item \atrdesc{\private}{}{Element}{element}{Liberty element which has been opened in the working area.}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \constrdesc{\public}{DataPanel}{}{}{}
+        \item \constrdesc{\public}{DataPanel}{element}{}{}
     \end{itemize}}{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{setText}{\type{String} text}
@@ -3529,36 +3546,35 @@ Keeps track of the timing sense of the output pin.
     {}
     {
     \begin{itemize}
-        \item \implclsdec{OpenFileAction}
-        \item \implclsdec{RemoveAction}
-        \item \implclsdec{AddFilterAction}
-        \item \implclsdec{RemoveFilterAction}
-        \item \implclsdec{DeleteAction}
-        \item \implclsdec{MergeAction}
-        \item \implclsdec{MoveAction}
-        \item \implclsdec{RenameAction}
-        \item \implclsdec{SelectAction}
-        \item \implclsdec{CreateLibraryAction}
-        \item \implclsdec{ScaleAction}
-        \item \implclsdec{UndoAction}
-        \item \implclsdec{TextEditAction}
+        \item \implclsdec{OpenFileCommand}
+        \item \implclsdec{RemoveCommand}
+        \item \implclsdec{AddFilterCommand}
+        \item \implclsdec{RemoveFilterCommand}
+        \item \implclsdec{DeleteCommand}
+        \item \implclsdec{MergeCommand}
+        \item \implclsdec{MoveCommand}
+        \item \implclsdec{RenameCommand}
+        \item \implclsdec{SelectCommand}
+        \item \implclsdec{CreateLibraryCommand}
+        \item \implclsdec{ScaleCommand}
+        \item \implclsdec{UndoCommand}
+        \item \implclsdec{TextEditCommand}
     \end{itemize}
-    }
-    {
+    }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{execute}{}
+        \item \methoddesc{\public}{}{void}{execute}{Execute the command}
         {}{}{}{}
-        \item \methoddesc{\public}{}{void}{undo}{}
+        \item \methoddesc{\public}{}{void}{undo}{Undo the command}
         {}{}{}
     \end{itemize}
     }
-\classdesc{OpenFileAction}{Opens a file.} {   \begin{itemize}
-        \item \atrdesc{\private}{}{\type{Library}}{openedLibrary}{}
+\classdesc{OpenFileCommand}{Opens a file.} {   \begin{itemize}
+        \item \atrdesc{\private}{}{\type{Library}}{openedLibrary}{The opened library}
     \end{itemize}
 }
 {
     {\begin{itemize}
-        \item \constrdesc{\public}{OpenFileAction}{}{}{}
+        \item \constrdesc{\public}{OpenFileCommand}{}{}{}
     \end{itemize}
     }}
     
@@ -3570,12 +3586,12 @@ Keeps track of the timing sense of the output pin.
     \end{itemize}
     }
 
-\classdesc{RemoveAction}{Removes a library from the view.}
+\classdesc{RemoveCommand}{Removes a library from the view.}
     {\begin{itemize}
         \item \atrdesc{\private}{}{\type{Library}}{removedLibrary}{}
     \end{itemize}} 
 {   \begin{itemize}
-        \item \constrdesc{\public}{RemoveAction}{\type{Library} library}{}
+        \item \constrdesc{\public}{RemoveCommand}{\type{Library} library}{}
         {
             \begin{itemize}
             \item \paramdesc{library}{The library that is going to be removed from the view.}
@@ -3592,12 +3608,12 @@ Keeps track of the timing sense of the output pin.
     }
     
     
-\classdesc{AddFilterAction}{Adds a filter.}
+\classdesc{AddFilterCommand}{Adds a filter.}
     {\begin{itemize}
         \item \atrdesc{\private}{}{\type{Filter}}{addedFilter}{}
     \end{itemize}} 
 {   \begin{itemize}
-        \item \constrdesc{\public}{AddFilterAction}{\type{Filter} filter}{}
+        \item \constrdesc{\public}{AddFilterCommand}{\type{Filter} filter}{}
         {
             \begin{itemize}
             \item \paramdesc{filter}{The filter that is going to be added.}
@@ -3615,12 +3631,12 @@ Keeps track of the timing sense of the output pin.
 
 
 
-\classdesc{RemoveFilterAction}{Removes a filter.}
+\classdesc{RemoveFilterCommand}{Removes a filter.}
     {\begin{itemize}
         \item \atrdesc{\private}{}{\type{Filter}}{removedFilter}{}
     \end{itemize}} 
 {   \begin{itemize}
-        \item \constrdesc{\public}{RemoveFilterAction}{\type{Filter} filter}{}
+        \item \constrdesc{\public}{RemoveFilterCommand}{\type{Filter} filter}{}
         {
             \begin{itemize}
             \item \paramdesc{filter}{The filter that is going to be removed.}
@@ -3637,12 +3653,12 @@ Keeps track of the timing sense of the output pin.
     }
 
 
-\classdesc{DeleteAction}{Deletes a cell from a library.}
+\classdesc{DeleteCommand}{Deletes a cell from a library.} % Make this for multiple cells perhaps? Quite easy to do
     {\begin{itemize}
-        \item \atrdesc{\private}{}{\type{Cell}}{deletedCell}{}
+        \item \atrdesc{\private}{}{\type{Cell}}{deletedCell}{The deleted Cell}
     \end{itemize}} 
 {   \begin{itemize}
-        \item \constrdesc{\public}{DeleteAction}{\type{Cell} cell}{}
+        \item \constrdesc{\public}{DeleteCommand}{\type{Cell} cell}{}
         {
             \begin{itemize}
             \item \paramdesc{cell}{The cell that is going to be deleted.}
@@ -3659,58 +3675,51 @@ Keeps track of the timing sense of the output pin.
     }
 
 
-\classdesc{MergeAction}{Merges multiple selected libraries to a single library.}
+\classdesc{MergeCommand}{Merges multiple selected libraries to a single library.}
     {\begin{itemize}
-        \item \atrdesc{\private}{}{\type{Library[]}}{mergedLibraries}{}
+        \item \atrdesc{\private}{}{\type{ArrayList<\type{Library}>}}{mergedLibraries}{The merged libraries} %Keep it, don't need for undo, but need for execution
         \item
-        \atrdesc{\private}{}{\type{Library}}{productLibrary}{}
+        \atrdesc{\private}{}{\type{Library}}{productLibrary}{The resulting library}
     \end{itemize}} 
 {   \begin{itemize}
-        \item \constrdesc{\public}{MergeAction}{\type{String} name}{}
+        \item \constrdesc{\public}{MergeCommand}{\type{String} name, \type{ArrayList<\type{Library}>} libraries}{}
         {
             \begin{itemize}
             \item \paramdesc{name}{Name of the resulting library}
+            \item \paramdesc{library}{The libraries to be merged}
             \end{itemize}
         }
     \end{itemize}
-}
-    {\begin{itemize}
+}{
+    \begin{itemize}
         \item \methoddesc{\public}{}{void}{execute}{}
         {}{}{}
         \item \methoddesc{\public}{}{void}{undo}{}
         {}{}{}
-        \item \methoddesc{\proted}{}{void}{continue}{\type{NameConflictResolver} resolver}
-        {}{
-            \begin{itemize}
-            \item \paramdesc{resolver}{Object that handled the naming conflict resolution}
-            \end{itemize}
-        }{}
-        \item \methoddesc{\proted}{}{void}{cancel}{}
-        {}{}{}
     \end{itemize}
-    }
-\classdesc{PasteAction}{Moves copied cells to a desired library.}
+}
+\classdesc{PasteCommand}{Moves copied cells to a desired library.}
     {\begin{itemize}
-        \item \atrdesc{\private}{}{\type{HashMap<\type{Cell}, \type{String}>}}{renamedCellsOldNames}{}
-        \item \atrdesc{\private}{}{\type{ArrayList<\type{Cell}>}}{pastedCells}{}
-        \item \atrdesc{\private}{}{\type{ArrayList<\type{Cell}>}}{deletedCells}{}
-        \item \atrdesc{\private}{}{Library}{destinationLibrary}{}
+        \item \atrdesc{\private}{}{\type{HashMap<\type{Cell}, \type{String}>}}{renamedCellsOldNames}{The old names of all renamed cells}
+        \item \atrdesc{\private}{}{\type{ArrayList<\type{Cell}>}}{pastedCells}{The pasted cells}
+        \item \atrdesc{\private}{}{\type{ArrayList<\type{Cell}>}}{deletedCells}{The deleted Cells}
+        \item \atrdesc{\private}{}{Library}{destinationLibrary}{The library where the copied Cells are pasted}
     \end{itemize}} 
 {   \begin{itemize}
-        \item \constrdesc{\public}{PasteAction}{\type{Library} library}{}
+        \item \constrdesc{\public}{PasteCommand}{\type{Library} library}{}
         {
             \begin{itemize}
             \item \paramdesc{library}{The library that the copied cells are going to be pasted to.}
             \end{itemize}
         }
-        \item \constrdesc{\public}{PasteAction}{\type{Library} library, \type{ArrayList<\type{Cell}>, cells}}{
-            This constructor is mainly here to be used by MoveAction instead of pasting copied cells.
+        \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:PasteCommand2}{\constrdesc{\public}{PasteCommand}{\type{Library} library, \type{ArrayList<\type{Cell}>, cells}}{
+            This constructor is mainly here to be used by MoveCommand instead of pasting copied cells.
         }{
             \begin{itemize}
-            \item \paramdesc{library}{The library that the copied cells are going to be pasted to.}
-            \item \paramdesc{cells}{The cells that are going to be moved to the library.}
+            \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:PasteCommand2:library}{\paramdesc{library}{The library that the copied cells are going to be pasted to.}}
+            \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:PasteCommand2:cells}{\paramdesc{cells}{The cells that are going to be moved to the library.}}
             \end{itemize}
-        }
+        }}
     \end{itemize}
 }
     {\begin{itemize}
@@ -3718,26 +3727,19 @@ Keeps track of the timing sense of the output pin.
         {}{}{}
         \item \methoddesc{\public}{}{void}{undo}{}
         {}{}{}
-        \item \methoddesc{\proted}{}{void}{continue}{\type{NameConflictResolver} resolver}
-        {}{
-            \begin{itemize}
-            \item \paramdesc{resolver}{Object that handled the naming conflict resolution}
-            \end{itemize}
-        }{}
-        \item \methoddesc{\proted}{}{void}{cancel}{}
-        {}{}{}
     \end{itemize}
-    }
+}
 
-\classdesc{MoveAction}{Moves selected cells to a desired library.}
+\classdesc{MoveCommand}{Moves selected cells to a desired library.}
     {\begin{itemize}
-        \item \atrdesc{\private}{}{\type{HashMap<\type{Cell}, \type{Library}>}}{initialPositions}{}\item \atrdesc{\private}{}{\type{HashMap<\type{Cell}, \type{String}>}}{renamedCellsOldNames}{}
-        \item \atrdesc{\private}{}{\type{ArrayList<\type{Cell}>}}{deletedCells}{}
+        \item \atrdesc{\private}{}{\type{HashMap<\type{Cell}, \type{Library}>}}{initialPositions}{The initial positions of all the Cells}
+        \item \atrdesc{\private}{}{\type{HashMap<\type{Cell}, \type{String}>}}{renamedCellsOldNames}{The old names of all renamed cells}
+        \item \atrdesc{\private}{}{\type{ArrayList<\type{Cell}>}}{deletedCells}{The deleted Cells}
         \item
         \atrdesc{\private}{}{Library}{destinationLibrary}{}
     \end{itemize}} 
 {   \begin{itemize}
-        \item \constrdesc{\public}{MoveAction}{\type{ArrayList<\type{Cell}>} cells, \type{Library} library}{}
+        \item \constrdesc{\public}{MoveCommand}{\type{ArrayList<\type{Cell}>} cells, \type{Library} library}{}
         {
             \begin{itemize}
             \item \paramdesc{cells}{Array of the selected cells that are going to be moved.}
@@ -3751,26 +3753,18 @@ Keeps track of the timing sense of the output pin.
         {}{}{}
         \item \methoddesc{\public}{}{void}{undo}{}
         {}{}{}
-        \item \methoddesc{\proted}{}{void}{continue}{\type{NameConflictResolver} resolver}
-        {}{
-            \begin{itemize}
-            \item \paramdesc{resolver}{Object that handled the naming conflict resolution}
-            \end{itemize}
-        }{}
-        \item \methoddesc{\proted}{}{void}{cancel}{}
-        {}{}{}
     \end{itemize}
     }
 
-\classdesc{RenameAction}{Changes the name of an element.}
+\classdesc{RenameCommand}{Changes the name of an element.}
     {\begin{itemize}
-        \item \atrdesc{\private}{}{\type{Element}} {renamedElement}{}
-        \item \atrdesc{\private}{}{\type{String}} {oldName}{}
+        \item \atrdesc{\private}{}{\type{Element}} {renamedElement}{The renamed element}
+        \item \atrdesc{\private}{}{\type{String}} {oldName}{The old name of the element}
         \item
-        \atrdesc{\private}{}{\type{String}}{newName}{}
+        \atrdesc{\private}{}{\type{String}}{newName}{The new name of the element}
     \end{itemize}} 
 {   \begin{itemize}
-        \item \constrdesc{\public}{RenameAction}{\type{Element} element, \type{String} name}{}
+        \item \constrdesc{\public}{RenameCommand}{\type{Element} element, \type{String} name}{}
         {
             \begin{itemize}
             \item \paramdesc{element}{Element that is going to be renamed.}
@@ -3785,37 +3779,36 @@ Keeps track of the timing sense of the output pin.
         \item \methoddesc{\public}{}{void}{undo}{}
         {}{}{}
     \end{itemize}
-    }
-
-
-\classdesc{SelectAction}{Selects an element.}
-    {\begin{itemize}
-        \item \atrdesc{\private}{}{\type{HashSet<Element>}} {selectedElements}{}
-        \item \atrdesc{\private}{}{\type{HashSet<Element>}} {deselectedElements}{}
-    \end{itemize}} 
-{   \begin{itemize}
-        \item \constrdesc{\public}{SelectAction}{\type{Element} element}{}
-        {
-            \begin{itemize}
-            \item \paramdesc{element}{Element that is going to be selected.}
-            \end{itemize}
-        }
-    \end{itemize}
 }
+    
+%%%% Deprecated SelectCommand
+%\classdesc{SelectCommand}{Selects an element.}
+%    {\begin{itemize}
+%        \item \atrdesc{\private}{}{\type{HashSet<Element>}} {selectedElements}{}
+%        \item \atrdesc{\private}{}{\type{HashSet<Element>}} {deselectedElements}{}
+%    \end{itemize}} 
+%{   \begin{itemize}
+%       \item \constrdesc{\public}{SelectCommand}{\type{Element} element}{}
+%        {
+%            \begin{itemize}
+%            \item \paramdesc{element}{Element that is going to be selected.}
+%            \end{itemize}
+%        }
+%    \end{itemize}
+%}
+%    {\begin{itemize}
+%        \item \methoddesc{\public}{}{void}{execute}{}
+%        {}{}{}
+%        \item \methoddesc{\public}{}{void}{undo}{}
+%        {}{}{}
+%    \end{itemize}
+%%    }
+\classdesc{CreateLibraryCommand}{Creates a library.} %What does this even do? I forgot
     {\begin{itemize}
-        \item \methoddesc{\public}{}{void}{execute}{}
-        {}{}{}
-        \item \methoddesc{\public}{}{void}{undo}{}
-        {}{}{}
-    \end{itemize}
-    }
-
-\classdesc{CreateLibraryAction}{Creates a library.}
-    {\begin{itemize}
-        \item \atrdesc{\private}{}{\type{Library}} {createdLibrary}{}
+        \item \atrdesc{\private}{}{\type{Library}} {createdLibrary}{The new created library}
     \end{itemize}} 
 {   \begin{itemize}
-        \item \constrdesc{\public}{CreateLibraryAction}{\type{String} name}{}
+        \item \constrdesc{\public}{CreateLibraryCommand}{\type{String} name}{}
         {
             \begin{itemize}
             \item \paramdesc{name}{Name of the created library.}
@@ -3830,13 +3823,13 @@ Keeps track of the timing sense of the output pin.
         {}{}{}
     \end{itemize}
     }{}
-\classdesc{ScaleAction}{Scales the values of an attribute by a given float.}
+\classdesc{ScaleCommand}{Scales the values of an attribute by a given float.}
     {\begin{itemize}
         \item \atrdesc{\private}{}{\type{Attribute}} {attribute}{}
         \item \atrdesc{\private}{}{\type{float}} {scale}{}
     \end{itemize}} 
 {   \begin{itemize}
-        \item \constrdesc{\public}{ScaleAction}{\type{Attribute} attribute, \type{float} scale}{}
+        \item \constrdesc{\public}{ScaleCommand}{\type{Attribute} attribute, \type{float} scale}{}
         {
             \begin{itemize}
             \item \paramdesc{attribute}{Attribute that is going to be scaled.}
@@ -3852,26 +3845,26 @@ Keeps track of the timing sense of the output pin.
         {}{}{}
     \end{itemize}
     }{}
-\classdesc{UndoAction}{Undoes an action.}{}
+\classdesc{UndoCommand}{Undoes a Command.}{}
 {\begin{itemize}
-        \item \constrdesc{\public}{UndoAction}{}{}{}
+        \item \constrdesc{\public}{UndoCommand}{}{}{}
     \end{itemize}
 }
     {\begin{itemize}
         \item \methoddesc{\public}{}{void}{execute}{}
         {}{}{}
-        \item \methoddesc{\public}{}{void}{undo}{}
+        \item \methoddesc{\public}{}{void}{undo}{Redoes a command}
         {}{}{}
     \end{itemize}
     }{}
-\classdesc{TextEditAction}{Makes changes on the text.}
+\classdesc{TextEditCommand}{Makes changes on the text editor reflect on an element.}
     {\begin{itemize}
         \item \atrdesc{\private}{}{\type{String}} {oldContent}{}
         \item \atrdesc{\private}{}{\type{String}} {newContent}{}
         \item \atrdesc{\private}{}{\type{Element}} {element}{}
     \end{itemize}} 
 {   \begin{itemize}
-        \item \constrdesc{\public}{TextEditAction}{\type{String} oldContent, \type{String} newContent, \type{Element} element}{}
+        \item \constrdesc{\public}{TextEditCommand}{\type{String} oldContent, \type{String} newContent, \type{Element} element}{}
         {
             \begin{itemize}
             \item \paramdesc{oldContent}{Old content of the changed text.}
@@ -3888,14 +3881,14 @@ Keeps track of the timing sense of the output pin.
         {}{}{}
     \end{itemize}
     }{}
-\classdesc{ActionHistory}{Keeps the history of the executed Commands and manages it.}
+\classdesc{CommandHistory}{Keeps the history of the executed Commands and manages it.}
     {\begin{itemize}
-        \item \atrdesc{\private}{}{\type{Command[]}} {actions}{}
-        \item \atrdesc{\private}{}{\type{Command[]}} {undoneActions}{}
-        \item \atrdesc{\private}{}{\type{int}} {undoCount}{}
+        \item \atrdesc{\private}{}{\type{Command[]}} {commands}{The list of commands stored in the history}
+        \item \atrdesc{\private}{}{\type{Command[]}} {undoneCommands}{The list of commands that have been undone and can later be reexecuted/redone}
+        \item \atrdesc{\private}{}{\type{int}} {undoCount}{The number that decides how many undo operations can be made.}
     \end{itemize}} 
 {   \begin{itemize}
-        \item \constrdesc{\public}{ActionHistory}{}{}{}
+        \item \constrdesc{\public}{CommandHistory}{}{}{}
     \end{itemize}
 }{
     \begin{itemize}
@@ -3904,60 +3897,83 @@ Keeps track of the timing sense of the output pin.
         \item \paramdesc{undoCount} {The number that decides how many undo operations can be made.}
         \end{itemize}}
         }{}
-        \item \methoddesc{\private}{}{void}{resetUndoneActions}{}
+        \item \methoddesc{\private}{}{void}{resetUndoneCommands}{Resets the undone commands. Usually because a whole new action has been done.}
         {}{}{}
-        \item \methoddesc{\public}{}{void}{AddAction}{\type{Command} action}
-        {}{{\begin{itemize}
-        \item \paramdesc{action} {An action that is added to the undo history.}
+        \item \methoddesc{\public}{}{void}{AddCommand}{\type{Command} command}
+        {Adds a new command to the history}{{\begin{itemize}
+        \item \paramdesc{command} {A command that is added to the undo history.}
         \end{itemize}}
         }{}
-        \item \methoddesc{\public}{}{void}{removeLatestAction}{}
-        {}{}{}
-        \item \methoddesc{\public}{}{void}{resetActions}{}
-        {}{}{}
-        \item \methoddesc{\public}{}{\type{Command}}{getLatestAction}{}
-        {}{}{{\begin{itemize}
-        \item \paramdesc{Command} {Latest action will be returned.}
-        \end{itemize}}}
+        \item \methoddesc{\public}{}{void}{removeLatestCommand}{}
+        {Removes the latest command from the history}{}{}
+        \item \methoddesc{\public}{}{void}{resetCommands}{}
+        {Empties the command history}{}{}
+        \item \methoddesc{\public}{}{\type{Command}}{getLatestCommand}{}
+        {Returns the latest Command}{
+        \begin{itemize}
+        \item \paramdesc{Command} {Latest command will be returned.}
+        \end{itemize}
+        }{The latest Command}
     \end{itemize}
     }{}
     
-\classdesc{NameConflictResolver}{Resolves naming conflicts while keeping track of the taken actions}
+\classdesc{NameConflictResolver}{Resolves naming conflicts while keeping track of the taken commandss}
     {\begin{itemize}
-        \item \atrdesc{\private}{}{\type{HashMap<\type{Cell}, \type{String}>}} {renamedCells}{}
-        \item \atrdesc{\private}{}{\type{ArrayList<\type{Cell}>}} {deletedCells}{}
-        \item \atrdesc{\private}{}{\type{ArrayList<\type{Cell}>}} {cells}{}
-        \item \atrdesc{\private}{}{\type{Command}} {action}{}
-        \item \atrdesc{\private}{}{\type{Cell[]}} {currentConflict}{}
+        \item \atrdesc{\private}{}{\type{HashMap<\type{Cell}, \type{String}>}} {renamedCells}{The map of cells renamed during the conflict resolution}
+        \item \atrdesc{\private}{}{\type{ArrayList<\type{Cell}>}} {deletedCells}{The list of cells deleted during conflict resolution}
+        \item \atrdesc{\private}{}{\type{ArrayList<\type{Cell}>}} {cells}{The list of cells whose names have to be resolved}
     \end{itemize}} 
 {   \begin{itemize}
-        \item \constrdesc{\public}{NameConflictResolver}{\type{ArrayList<\type{Cell}> cells}}{}{}
+        \item \constrdesc{\public}{NameConflictResolver}{\type{ArrayList<\type{Cell}> cells}}{
+        \begin{itemize}
+            \item \paramdesc{cells}{The list of cells whose names have to be resolved}
+        \end{itemize}
+        }{The constructor carries the functionality to resolve all the name conflicts}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{keepLeft}{}
-        {Keeps the left Cell and deletes the right one}{}{}
-        \item \methoddesc{\public}{}{void}{keepRight}{}
-        {Keeps the right Cell and deletes the left one}{}{}
-        \item \methoddesc{\public}{}{void}{renameLeft}{String name}
-        {Keeps both cells and renames the left one}{
+        \item \methoddesc{\public}{}{void}{getRenamedCells}{}
+        {Gets the map containing the old names of renamedCells}{}{The map of renamed cells and their old names}
+        \item \methoddesc{\public}{}{void}{getDeletedCells}{}
+        {Gets the list containing deleted Cells from Conflict Resolution}{}{The list of deleted Cells}
+        \item \methoddesc{\public}{}{void}{getCells}{}
+        {Gets the resolved Cells}{}{The resolved Cells}
+    \end{itemize}
+}{}
+\classdesc{ConflictData}{Saves a data of the conflict resolution on two conflicting cells} 
+    {\begin{itemize}
+        \item \atrdesc{\private}{}{\type{String}} {name}{The new Name if applicable (null if not)}
+        \item \atrdesc{\private}{}{\type{ResolutionMethod}} {resolutionMethod}{The method chosen to resolve the conflict}
+    \end{itemize}} 
+{   \begin{itemize}
+        \item \constrdesc{\public}{ConflictData}{\type{ResolutionMethod} resolutionMethod, \type{String} name}{
         \begin{itemize}
             \item \paramdesc{name}{New name}
+            \item \paramdesc{resolutionMethod}{The method that resolves the conflict}
         \end{itemize}
         }{}
-        \item \methoddesc{\public}{}{void}{renameRight}{String name}
-        {Keeps both cells and renames the right one}{
-        \begin{itemize}
-            \item \paramdesc{name}{New name}
-        \end{itemize}
-        }{}
-        \item \methoddesc{\public}{}{void}{continue}{}
-        {Continues with the conflict resolution}{}{}
-        \item \methoddesc{\public}{}{void}{cancel}{}
-        {Cancels the conflict resolution}{}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{void}{getName}{}
+        {Gets the new name}{}{The new name involved in conflict resolving}
+        \item \methoddesc{\public}{}{void}{getResolutionMethod}{}
+        {Gets the method chosen to resolve the conflict}{}{The method chosen to resolve the conflict}
+    \end{itemize}
+}{}
+\enumdesc{ResolutionMethod}{
+The enum that keeps track of the methods to resolve a name conflict
+}{
+    \begin{itemize}
+        \item \fielddesc{ResolutionMethod}{KEEPLEFT}{Keeps only the left cell and deletes the right one}
+        \item \fielddesc{ResolutionMethod}{KEEPRIGHT}{Keeps only the right cell and deletes the left one}
+        \item \fielddesc{ResolutionMethod}{RENAMELEFT}{Renames the left cell}
+        \item \fielddesc{ResolutionMethod}{RENAMERIGHT}{Renames the right cell}
+        \item \fielddesc{ResolutionMethod}{CANCEL}{Cancels the conflict resolution and therefore cancels the command}
     \end{itemize}
 }{}
 }
+
 \packagedesc{model.parsers}{
 \classdesc{LibertyParser}{
 Provides functionality to parse pieces of Liberty File text format into their corresponding data objects.
@@ -4002,24 +4018,24 @@ Provides functionality to compile Element Data Objects into their corresponding 
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{\static}{String}{compile}{Library library}
+        \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:compileLibrary}{\methoddesc{\public}{\static}{String}{compile}{Library library}
         {Compiles a library into CSV Format}{
         \begin{itemize}
-            \item \paramdesc{library}{Library object to be compiled}
+            \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:compileLibrary:library}{\paramdesc{library}{Library object to be compiled}}
         \end{itemize}
-        }{}
-        \item \methoddesc{\public}{\static}{String}{compile}{Cell cell}
+        }{}}
+        \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:compileCell}{ \methoddesc{\public}{\static}{String}{compile}{Cell cell}
         {Compiles a cell into CSV Format}{
         \begin{itemize}
-            \item \paramdesc{cell}{Cell object to be compiled}
+            \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:compileCell:cell}{ \paramdesc{cell}{Cell object to be compiled}}
         \end{itemize}
-        }{}
-        \item \methoddesc{\public}{\static}{String}{compile}{Pin pin}
+        }{}}
+        \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:compilePin}{ \methoddesc{\public}{\static}{String}{compile}{Pin pin}
         {Compiles a pin into CSV Format}{
         \begin{itemize}
-            \item \paramdesc{pin}{Pin object to be compiled}
+            \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:compilePin:pin}{ \paramdesc{pin}{Pin object to be compiled}}
         \end{itemize}
-        }{}
+        }{}}
     \end{itemize}
 }{}
 \classdesc{LibertyCompiler}{
@@ -4030,24 +4046,24 @@ Provides functionality to compile Element Data Objects into their corresponding 
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{\static}{String}{compile}{Library library}
+        \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:compileLibrary}{\methoddesc{\public}{\static}{String}{compile}{Library library}
         {Compiles a library into Liberty Format}{
         \begin{itemize}
-            \item \paramdesc{library}{Library object to be compiled}
+            \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:compileLibrary:library}{\paramdesc{library}{Library object to be compiled}}
         \end{itemize}
-        }{}
-        \item \methoddesc{\public}{\static}{String}{compile}{Cell cell}
+        }{}}
+        \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:compileCell}{ \methoddesc{\public}{\static}{String}{compile}{Cell cell}
         {Compiles a cell into Liberty Format}{
         \begin{itemize}
-            \item \paramdesc{cell}{Cell object to be compiled}
+            \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:compileCell:cell}{\paramdesc{cell}{Cell object to be compiled}}
         \end{itemize}
-        }{}
-        \item \methoddesc{\public}{\static}{String}{compile}{Pin pin}
+        }{}}
+        \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:compilePin}{\methoddesc{\public}{\static}{String}{compile}{Pin pin}
         {Compiles a pin into Liberty Format}{
         \begin{itemize}
-            \item \paramdesc{pin}{Pin object to be compiled}
+            \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:compilePin:pin}{\paramdesc{pin}{Pin object to be compiled}}
         \end{itemize}
-        }{}
+        }{}}
     \end{itemize}
 }{}
 }
@@ -4111,10 +4127,34 @@ Keeps track of the Elements loaded into the program
         {Returns the list of Libraries loaded into the project}{}{The list of Libraries loaded into the project}
         \item \methoddesc{\public}{}{\type{ArrayList<\type{Filter}>}}{getFilters}{}
         {Returns the list of Filters loaded into the project}{}{The list of Filters loaded into the project}
-        \item \methoddesc{\public}{}{\type{HashSett<\type{Library}>}}{getOpenedInTextElements}{}
-        {Returns the list of Elements opened in the Text Editor}{}{The list of Elements opened in the Text Editor}
-        \item \methoddesc{\public}{}{\type{HashSett<\type{Library}>}}{getCopiedElements}{}
+        \item \methoddesc{\public}{}{\type{HashSett<\type{Element}>}}{getOpenedInTextElements}{}
+        {Returns the set of Elements opened in the Text Editor}{}{The list of Elements opened in the Text Editor}
+        \item \methoddesc{\public}{}{\type{HashSett<\type{Element}>}}{getCopiedElements}{}
         {Returns the list of copied Elements}{}{The list of copied Elements}
+         \item \methoddesc{\public}{}{}{setLibraries}{\type{ArrayList<\type{Library}> libraries}}
+        {Sets the list of Libraries loaded into the project}{
+        \begin{itemize}
+            \item \paramdesc{pin}{The list of libraries}
+        \end{itemize}
+        }{}
+        \item \methoddesc{\public}{}{}{setFilters}{\type{ArrayList<\type{Filter}> filters}}
+        {Sets the list of Filters loaded into the project}{
+        \begin{itemize}
+            \item \paramdesc{filters}{The list of filters}
+        \end{itemize}
+        }{}
+        \item \methoddesc{\public}{}{}{setOpenedInTextElements}{\type{HashSett<\type{Element}>} elements}
+        {Sets the set of Elements opened in the Text Editor}{
+        \begin{itemize}
+            \item \paramdesc{elements}{The set of elements}
+        \end{itemize}
+        }{}
+        \item \methoddesc{\public}{}{}{setCopiedElements}{\type{HashSett<\type{Element}>} elements}
+        {Sets the set of copied Elements}{
+        \begin{itemize}
+            \item \paramdesc{elements}{The set of Elements}
+        \end{itemize}
+        }{}
         \item \methoddesc{\public}{}{void}{notify}{}
         {Notifies the view of made changes}{}{}
         \item \methoddesc{\public}{\static}{void}{saveDefaultFilters}{}
@@ -4139,7 +4179,7 @@ Provides interpolation functionality.
             \item \paramdesc{values}{Original values}
             \item \paramdesc{newIndexes}{New required indexes}
         \end{itemize}
-        }{}
+        }{Array of new values}
         \item \methoddesc{\public}{\static}{\type{float[]}}{bicubicInterpolate}{\type{float[]} indexes1, {float[]} indexes2 \type{float[]} values, \type{float[]} newIndexes1, \type{float[]} newIndexes1}
         {Interpolates a set of 3D coordinates (index1, index2 and value) and gives a set of values for a given set of indexes. \newline
         Imports org.apache.commons.math3.analysis.interpolation}{
@@ -4150,14 +4190,14 @@ Provides interpolation functionality.
             \item \paramdesc{newIndexes1}{New required indexes1}
             \item \paramdesc{newIndexes2}{New requires indexes2}
         \end{itemize}
-        }{}
+        }{Array of new values}
     \end{itemize}
 }{}
 
 \classdesc{Shortcuts}{
 Maps the characters from pressed Key events with their corresponding Actions with the Event enum.}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{HashMap<char, Event>}{commands}{The map of characters and their corresponding actions}
+        \item \atrdesc{\private}{}{HashMap<char, Event>}{actions}{The map of characters and their corresponding actions}
     \end{itemize}
 }{
     \begin{itemize}
@@ -4179,13 +4219,13 @@ Maps the characters from pressed Key events with their corresponding Actions wit
         \end{itemize}
         }{}
         \item \methoddesc{\public}{}{ArrayList<char>}{getKeys}{}
-        {Returns all the set char keys}{}{}
+        {Returns all the set char keys}{}{All Mapped char keys}
         \item \methoddesc{\public}{}{Event}{getAction}{\type{char} key}
         {Returns the action corresponding to a keystroke char}{
         \begin{itemize}
                 \item \paramdesc{key}{The pressed key.}
         \end{itemize}
-        }{}
+        }{The event linked to the key}
     \end{itemize}
 }{}
 \classdesc{FileManager}{
@@ -4197,35 +4237,41 @@ Provides functionality to save and load Files.
 }{
     \begin{itemize}
         \item \methoddesc{\public}{\static}{\type{File}}{openFile}{}
-        {Opens the OS File Manager in order to select which file will be opened}{}{}
-        \item \methoddesc{\public}{\static}{\type{File}}{openFile}{\type{String} path}
-        {Opens the file in the specified path}{}{}
-        \item \methoddesc{\public}{\static}{void}{saveFile}{\type{String} content, \type{String[]} extensions}
+        {Opens the OS File Manager in order to select which file will be opened}{}{The opened File}
+        \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:openFileInPath}{ \methoddesc{\public}{\static}{\type{File}}{openFile}{\type{String} path}
+        {Opens the file in the specified path}{
+        \begin{itemize}
+                \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:openFileInPath:path}{\paramdesc{path}{The path where the file is located.}}
+        \end{itemize}
+        }{The opened File}}
+        \item \methoddesc{\public}{\static}{void}{saveFile}{\type{String} content, \type{String[]} extensions, \type{String} fileName}
         {Opens the OS File Manager in order to select where the file will be saved}{
         \begin{itemize}
                 \item \paramdesc{content}{The content of the file.}
                 \item \paramdesc{extensions}{The extensions the file can be saved as.}
+                \item \paramdesc{fileName}{The current name of the File.}
         \end{itemize}
         }{}
-        \item \methoddesc{\public}{\static}{void}{saveFile}{\type{String} content, \type{String} extension, \type{String} path}
+        \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:saveFileInPath}{ \methoddesc{\public}{\static}{void}{saveFile}{\type{String} content, \type{String} extension, \type{String} path, \type{String} fileName}
         {Saves the file in the specified path}{
         \begin{itemize}
-                \item \paramdesc{content}{The content of the file.}
-                \item \paramdesc{extension}{The extension the file will be saved as.}
-                \item \paramdesc{path}{The path where the file will be saved.}
+                \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:saveFileInPath:content}{\item \paramdesc{content}{The content of the file.}}
+                \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:saveFileInPath:extension}{\item \paramdesc{extension}{The extension the file will be saved as.}}
+                \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:saveFileInPath:path}{\item \paramdesc{path}{The path where the file will be saved.}}
+                \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:saveFileInPath:fileName}{\item \paramdesc{fileName}{The name of the File.}}
         \end{itemize}
-        }{}
+        }{}}
     \end{itemize}
 }{}
 \classdesc{Filter}{
 Keeps track of the filters, a filters specific data and provides filtering functionality.
 }{
     \begin{itemize}
-        \item \atrdesc{\private}{\static}{ArrayList<Filter>}{filters}{The array list of all currently active filters}
         \item \atrdesc{\private}{}{Attribute}{attribute}{The attribute that is being filtered.}
-        \atrdesc{\private}{}{Mode}{mode}{The way the filtered attribute is calculated.}
-        \atrdesc{\private}{}{float}{value}{The value that the attribute is being compared to.}
-        \atrdesc{\private}{}{Operation}{operation}{The operation that is being executed in the filter.}
+        \item \atrdesc{\private}{}{Mode}{mode}{The way the filtered attribute is calculated.}
+        \item \atrdesc{\private}{}{float}{value}{The value that the attribute is being compared to.}
+        \item \atrdesc{\private}{}{Operation}{operation}{The operation that is being executed in the filter.}
+        \item \atrdesc{\private}{}{Status}{status}{If true, the filter is Active and will filter.\newline Else the filter is inactive and won't filter.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -4235,6 +4281,7 @@ Keeps track of the filters, a filters specific data and provides filtering funct
             \item \paramdesc{mode}{}
             \item \paramdesc{value}{}
             \item \paramdesc{operation}{}
+            \item \paramdesc{status}{}
         \end{itemize}
         }
     \end{itemize}
@@ -4242,6 +4289,14 @@ Keeps track of the filters, a filters specific data and provides filtering funct
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{filter}{}
         {Filters all Elements by changing their Filtered attribute.}{}{}
+    \end{itemize}
+    \begin{itemize}
+        \item \methoddesc{\public}{}{void}{setStatus}{\type{boolean} status}
+        {Set the status of the Filter.}{}{}
+    \end{itemize}
+    \begin{itemize}
+        \item \methoddesc{\public}{}{\type{boolean}}{getStatus}{}
+        {Gets the status of the Filter.}{}{The status of the Filter}
     \end{itemize}
 }{}
 \classdesc{Settings}{
@@ -4253,8 +4308,9 @@ Keeps track off the settings
         \atrdesc{\private}{}{String}{fontType}{The set Font type}
         \atrdesc{\private}{}{int}{fontSize}{Ther set Font Size}
         \atrdesc{\private}{}{int}{barCount}{The number of bars set to be displayed in a bar chart}
-        \atrdesc{\private}{}{int}{undoCount}{The set number of undoable Actions saved in the ActionHistory}
-        \atrdesc{\private}{}{boolean}{editorOpenedFirst}{If true, the Text Editor opens first upon opening an Element in the works space.}
+        \atrdesc{\private}{}{int}{undoCount}{The set number of undoable Commands saved in the CommandHistory}
+        \atrdesc{\private}{}{boolean}{editorOpenedFirst}{If true, the Text Editor opens first upon opening an Element in the works space.\newline
+        Else, the Element View opens first }
     \end{itemize}
 }{
     \begin{itemize}
@@ -4304,19 +4360,19 @@ Keeps track off the settings
             \item \paramdesc{editorOpenedFirst}{}
         \end{itemize}
         }{}
-        \item \methoddesc{\public}{}{LanguageEnum}{getLanguage}{}
+        \item \methoddesc{\public}{}{\type{LanguageEnum}}{getLanguage}{}
         {}{}{}
-        \item \methoddesc{\public}{}{colorTheme}{getColorTheme}{}
+        \item \methoddesc{\public}{}{\type{colorTheme}}{getColorTheme}{}
         {}{}{}
-        \item \methoddesc{\public}{}{String}{getFontType}{}
+        \item \methoddesc{\public}{}{\type{String}}{getFontType}{}
         {}{}{}
-        \item \methoddesc{\public}{}{int}{getFontSize}{}
+        \item \methoddesc{\public}{}{\type{int}}{getFontSize}{}
         {}{}{}
-        \item \methoddesc{\public}{}{int}{getBarCount}{}
+        \item \methoddesc{\public}{}{\type{int}}{getBarCount}{}
         {}{}{}
-        \item \methoddesc{\public}{}{int}{getUndoCount}{}
+        \item \methoddesc{\public}{}{\type{int}}{getUndoCount}{}
         {}{}{}
-        \item \methoddesc{\public}{}{boolean}{getEditorOpenedFirst}{}
+        \item \methoddesc{\public}{}{\type{boolean}}{getEditorOpenedFirst}{}
         {}{}{}
         \item \methoddesc{\private}{}{void}{notify}{}
         {}{}{}
@@ -4327,7 +4383,7 @@ Keeps track off the settings
 Stores the colors included in the color theme.
 }{
     \begin{itemize}
-        \item \atrdesc{\private}{}{int[]}{colors}{The colors corresponding to the theme}
+        \item \atrdesc{\private}{}{\type{HashMap<\type{ColorEnum}, \type{int}>}}{colors}{The map of colors corresponding to the theme}
     \end{itemize}
 }{
     \begin{itemize}
@@ -4335,51 +4391,81 @@ Stores the colors included in the color theme.
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{int[]}{getColors}{}
-        {}{}{}
+        \item \methoddesc{\public}{}{\type{int}}{getColor}{\type{ColorEnum} color}
+        {Returns the integer that corresponds to a color in the theme}
+        {\begin{itemize}
+            \item \paramdesc{color}{The color in the theme}
+        \end{itemize}}
+        {}
     \end{itemize}
 }
 \classdesc{Language}{
 Stores the snippets of text that correspond to a specific language
 }{
     \begin{itemize}
-        \item \atrdesc{\private}{}{String[]}{librety}{The element, attributes, modes names in the specified language}
-        \atrdesc{\private}{}{String[]}{menus}{The interface menu names in the specified language}
-        \atrdesc{\private}{}{String[]}{methods}{The method names in the specified language}
-        \atrdesc{\private}{}{String[]}{attributes}{The attribute names in the specified language}
-        \atrdesc{\private}{}{String[]}{errors}{The error texts in the specified language}
-        \atrdesc{\private}{}{String[]}{misc}{any other text element in the specified language}
+        \item \atrdesc{\private}{}{\type{HashMap<\type{TextComponent}, \type{String}>}}{textMap}{The map of texts that correspond to a language}
     \end{itemize}
 }{
     \begin{itemize}
         \item \constrdesc{\public}{Language}{}{}{}
     \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{\type{int}}{getTextComponent}{\type{TextComponent} textComponent}
+        {Returns the string that corresponds to a text component in the GUI}
+        {\begin{itemize}
+            \item \paramdesc{textComponent}{The TextComponent}
+        \end{itemize}}
+        {The string value}
+    \end{itemize}
+}
+\enumdesc{ColorEnum}{
+The enum that keeps track of the colors corresponding to a \refer{\lblroot:model.project:ColorTheme}{theme}
+}{
+    \begin{itemize}
+        \item \fielddesc{ColorEnum}{SYSTEM-BG}{The main background color}
+        \item \fielddesc{ColorEnum}{TEXT-DEFAULT}{The default text color}
+        \item \fielddesc{ColorEnum}{SCROLL-BAR_Handle}{The color of the scroll bar handle}
+        \item \fielddesc{ColorEnum}{TEXT-SELECTED}{The color of the text of a selected Element in the tree view}
+        \item \fielddesc{ColorEnum}{AND-SO-ON}{And other color types}
+    \end{itemize}
+}{}
+\enumdesc{TextComponent}{
+The enum that keeps track of the text parts of the GUI so that the language can be changed
+}{
+    \begin{itemize}
+        \item \fielddesc{TextComponent}{PROGRAM-NAME}{The long name of the program}
+        \item \fielddesc{TextComponent}{LIBRARY}{"Library"}
+        \item \fielddesc{TextComponent}{INFO}{"Info"}
+        \item \fielddesc{TextComponent}{TEXT-EDITOR}{"Text Editor"}
+        \item \fielddesc{TextComponent}{AND-SO-ON}{And values for every text appearing in a program that can be translated}
+    \end{itemize}
 }{}
 \enumdesc{Mode}{
-Keeps track of the mode used to calculate the attribute used on the filter
+Keeps track of the mode used to calculate the \refer{\lblroot:model.project:Filter:attribute}{attribute} used on the \refer{\lblroot:model.project:Filter}{filter}
 }{
     \begin{itemize}
         \item \fielddesc{Mode}{MAX}{Maximum: Takes the maximum value for the attribute}
         \item \fielddesc{Mode}{MIN}{Minimum: Takes the minimal value for the attribute}
-        \item \fielddesc{Mode}{MIN}{Average: Takes the average value for the attribute}
-        \item \fielddesc{Mode}{Med}{Median: Takes the median value for the attribute}
+        \item \fielddesc{Mode}{AVG}{Average: Takes the average value for the attribute}
+        \item \fielddesc{Mode}{MED}{Median: Takes the median value for the attribute}
     \end{itemize}
 }{}
-\enumdesc{Operation}{Keeps track of the type of operation done by the Filter}{
+\enumdesc{Operation}{Keeps track of the type of operation done by the \refer{\lblroot:model.project:Filter}{Filter}}{
     \begin{itemize}
         \item \fielddesc{Operation}{LESS}{Checks if attribute is less than value}
         \item \fielddesc{Operation}{EQUAL}{Checks if attribute is equal than value}
         \item \fielddesc{Operation}{BIGGER}{Checks if attribute is bigger than value}
     \end{itemize}
 }{}
-\enumdesc{ColorThemeEnum}{Keeps track of the Color themes}{
+\enumdesc{ColorThemeEnum}{Keeps track of the \refer{\lblroot:model.project:ColorTheme:colors}{Color themes}}{
     \begin{itemize}
         \item \fielddesc{ColorThemeEnum}{THEME1}{Theme name 1}
         \item \fielddesc{ColorThemeEnum}{THEME2}{Theme name 2}
         \item \fielddesc{ColorThemeEnum}{AND-SO-ON}{And further theme names}
     \end{itemize}
 }{}
-\enumdesc{LanguageEnum}{Keeps track of the languages available for the program}{
+\enumdesc{LanguageEnum}{Keeps track of the \refer{\lblroot:model.project:Language}{languages} available for the program}{
     \begin{itemize}
         \item \fielddesc{LanguageEnum}{ENGLISH}{The default English language}
         \item \fielddesc{LanguageEnum}{DEUTSCH}{German}
@@ -4402,7 +4488,7 @@ Keeps track of the mode used to calculate the attribute used on the filter
 
 
 \packagedesc{controller.listeners}{
-\classdesc{EventManager}{\public \class EventManager \decl{}{Holds lists of all listeners and manages their subscription.}}{
+\classdesc{EventManager}{\decl{\public \class EventManager}{Holds lists of all listeners and manages their subscription.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{MainWindow}{view}{View component}
         \item \atrdesc{\private}{}{Model}{model}{Main model data}
@@ -4473,6 +4559,22 @@ Keeps track of the mode used to calculate the attribute used on the filter
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{\begin{itemize}
             \item \paramdesc{e}{Performed action event on the component.}
+            \end{itemize}}{}
+    \end{itemize}
+}{}
+\classdesc{SelectListener}{public class LoadLibraryListener implements TreeSelectionListener \decl{}{Observes the selected elements on the outliner.}}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{Element[]}{element}{Selected elements}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \constrdesc{\public}{SelectListener}{}{}{}
+    \end{itemize}
+}{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{void}{valueChanged}{\type{TreeSelectionEvent} e}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed selection event on the component.}
             \end{itemize}}{}
     \end{itemize}
 }{}
@@ -4951,11 +5053,13 @@ Keeps track of the mode used to calculate the attribute used on the filter
 
 \chapter{Class Diagrams}
 \section{Model}
-\includeimage{}{0.1}{Model}{Model}{Model}
+\includeimage{}{0.1}{Model}{Model}{ModelSecond}
 \section{View}
-\includeimage{}{0.035}{View}{View}{View}
+%\includeimage{}{0.035}{View}{View}{View}
+\includeimage{}{0.15}{View_Cell_Comp}{Components,Composites and Cell Representation packages}{View_Cell_Comp}
+\includeimage{}{0.04}{View_Diagrams}{Diagrams package}{View_Diagrams}
 \section{Controller}
-\includeimage{}{0.062}{Controllerv}{Controller}{Controller}
+\includeimage{}{0.062}{Controllerv}{Controller}{ControllerSecond}
 \chapter{Architecture}{
 The Model-View-Controller architecture is used in the application to separate the internal data regarding liberty files
 from how they will be presented to the user. This allows an organized implementation for the GUI.\newline
@@ -5026,7 +5130,7 @@ in the liberty data and updates the view accordingly.\newline}
 \pattern{Observer}{The listeners in the \refer{\lblroot:controller.listeners}{Controller} package are all implementing several subclasses of \type{EventListener} from java.util package. These listeners are observing the events on the components they were added to while passing the input to the Model package and it's corresponding components.}
 \pattern{Command}
 {The Command design pattern is used in the model package.\newline
-All the action classes in the commands package use the Command interface to easily undo or redo executed actions.}
+All the command classes in the commands package use the Command interface to easily undo or redo executed commands.}
 \pattern{Composite}{
     The Swing library makes use of the Composite Pattern in order to enable a hierarchical structure of components. The composite/component packages make use of this pattern and extend the classes with additional functionality.
 }
@@ -5036,17 +5140,17 @@ All the action classes in the commands package use the Command interface to easi
 \subsection{FR-1 and FR-2}
 \includeimage{}{0.23}{FR1-2}{Sequence Diagram showing interactions for FR-1 and FR-2}{FR-1 and FR-2}
 \subsection{FR-4}
-\includeimage{}{0.32}{FR-4}{Sequence Diagram showing interactions for FR-4}{FR-4}
-\subsection{FR-5, FR-6 and FR-7}
+\includeimage{}{0.25}{FR-4}{Sequence Diagram showing interactions for FR-4}{FR-4}
+\subsection{Diagram Creation}
 \includeimage{}{0.32}{DiagramCreation}{Sequence Diagram that shows how \refer{\lblroot:view.diagrams:IDiagram}{IDiagrams} are created}{Diagram Creation}
-\subsection{FR-8}
+\subsection{Diagram Comparison}
 \includeimage{}{0.32}{DiagramComparison}{Sequence Diagram that shows how \refer{\lblroot:view.diagrams:IDiagram}{IDiagrams} are overlaid for comparison.}{Diagram Comparison}
 \subsection{FR-9}
 \includeimage{}{0.42}{FR-9}{Sequence Diagram showing interactions for FR-9}{FR-9}
 \subsection{FR-10}
 \includeimage{}{0.35}{FR10}{Sequence Diagram showing interactions for FR-10}{FR-10}
-\subsection{FR-12 and FR-13}
-\includeimage{}{0.20}{FR-12,13}{Sequence diagram showing interactions for FR-12 and FR-13}{Merging Libraries and Resolving Merge Conflicts}
+\subsection{Merging Libraries and Resolving Merge Conflicts}
+\includeimage{}{0.20}{FR-12,13}{Sequence diagram showing interactions for FR-12 and FR-13}{FR-12 and FR-13}
 \subsection{FR-14}
 \includeimage{}{0.27}{FR-14}{Sequence diagram showing interactions for FR-14}{Copying Cells into another Library}
 \subsection{FR-15}
@@ -5055,7 +5159,7 @@ All the action classes in the commands package use the Command interface to easi
 \includeimage{}{0.25}{deletingcell}{Sequence diagram showing interactions for FR-16}{Deleting Cells}
 \subsection{FR-17}
 \includeimage{}{0.35}{scalingvalues}{Sequence diagram showing interactions for FR-17}{Scaling Values}
-\subsection{FR-19}
+\subsection{Diagram Statistics}
 \includeimage{}{0.30}{DiagramStatistics}{Sequence Diagram that shows how statistics are shown on top of \refer{\lblroot:view.diagrams:IDiagram}{IDiagrams}.}{Diagram Statistics}
 \subsection{FR-21}
 \includeimage{}{0.35}{FR-21}{Sequence diagram showing interactions for FR-21}{Saving a Library as a new File}
@@ -5091,4 +5195,6 @@ This change would mean that there would only be bar charts (a bar for each cell)
 The remaining optional requirements are not covered in the design phase, but the current design allows for easy extendability.
 
 \chapter{Project Schedule}
+\includeimage{}{0.37}{ganttchart}{Gantt chart showing Project Schedule for the Implmentation Phase}{Gantt Chart}
+
 \end{document}
