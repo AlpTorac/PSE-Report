@@ -3018,7 +3018,9 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 
 
 \packagedesc{model.elements.attributes}{
-\absclassdesc{Attribute}{Attribute class}
+\absclassdesc{Attribute}{
+Stores the data of an attribute
+}
 {\begin{itemize}
     \item \atrdesc{\proted}{}{\type{Stat}}{stats}{}
 \end{itemize}
@@ -3044,7 +3046,9 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 \end{itemize}
 }
 
-\absclassdesc{InAttribute}{}
+\absclassdesc{InAttribute}{
+Stores the data of an attribut of the \refer{\lblroot:model.elements:InputPin}{input pin}
+}
 {\begin{itemize}
     \item \atrdesc{\proted}{}{\type{float[]}}{index1}{}
     \item \atrdesc{\proted}{}{\type{float[]}}{values}{}
@@ -3077,7 +3081,9 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 \end{itemize}}
 
 
-\absclassdesc{OutAttribute}{}
+\absclassdesc{OutAttribute}{
+Stores the data of an attribute of the \refer{\lblroot:model.elements:OutputPin}{output pin}
+}
 {\begin{itemize}
     \item \atrdesc{\proted}{}{\type{float[]}}{index1}{}
     \item \atrdesc{\proted}{}{\type{float[]}}{index2}{}
@@ -3125,7 +3131,10 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 \end{itemize}}
 
 
-\classdesc{Leakage}{}
+\classdesc{Leakage}
+{
+Stores the leakage data of the \refer{\lblroot:model.elements:Cell}{cell}
+}
 {\begin{itemize}
     \item \atrdesc{\private}{}{\type{float[]}}{values}{}
 \end{itemize}}
@@ -3137,40 +3146,53 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 {}
 
 
-\classdesc{InputPower}{}
-{\begin{itemize}
-    \item \atrdesc{\private}{}{\type{PowerGroup}}{powgroup}{}
-\end{itemize}}
-{{\begin{itemize}
+\classdesc{InputPower}
+{
+Stores the power data of the \refer{\lblroot:model.elements:InputPin}{input pin}
+}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{\type{PowerGroup}}{powgroup}{}
+    \end{itemize}}
+{
+    \begin{itemize}
         \item \constrdesc{\public}{InputPower}{{\type{PowerGroup} powgroup, \type{float[]} values}}
         {{\begin{itemize}
         \item \paramdesc{powgroup} {The power group of the values.}
         \item \paramdesc{values} {The array of power values of an input pin.}
         \end{itemize}}}{}
-    \end{itemize}}}{}
+    \end{itemize}
+}{}
     
     
-\classdesc{OutputPower}{}
-{\begin{itemize}
-    \item \atrdesc{\private}{}{\type{PowerGroup}}{powgroup}{}
-\end{itemize}}
-{\begin{itemize}
+\classdesc{OutputPower}
+{
+Stores the power data of the \refer{\lblroot:model.elements:OutputPin}{output pin}
+}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{\type{PowerGroup}}{powgroup}{}
+    \end{itemize}
+}{
+    \begin{itemize}
         \item \constrdesc{\public}{OutputPower}{{\type{PowerGroup} powgroup, \type{float[][]} values}}
         {{\begin{itemize}
         \item \paramdesc{powgroup} {The power group of the values.}
         \item \paramdesc{values} {The 2 dimensional array of power values of an output pin.}
         \end{itemize}}}{}
-    \end{itemize}}
-{}
+    \end{itemize}
+}{}
 
 
-\classdesc{Timing}{}
-{\begin{itemize}
-    \item \atrdesc{\private}{}{\type{TimingSense}}{timsense}{}
-    \item \atrdesc{\private}{}{\type{TimingType}}{timtype}{}
-    \item \atrdesc{\private}{}{\type{TimingGroup}}{timgroup}{}
-\end{itemize}}
-{\begin{itemize}
+\classdesc{Timing}
+{
+Stores the timing data of the \refer{\lblroot:model.elements:Pin}{pin}.
+}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{\type{TimingSense}}{timsense}{}
+        \item \atrdesc{\private}{}{\type{TimingType}}{timtype}{}
+        \item \atrdesc{\private}{}{\type{TimingGroup}}{timgroup}{}
+    \end{itemize}
+}{
+    \begin{itemize}
         \item \constrdesc{\public}{Timing}{{\type{TimingSense} timsense, \type{TimingType} timtype, \type{TimingGroup} timgroup, \type{InputPin} relatedPin, \type{float[][]} values}}
         {{\begin{itemize}
         \item \paramdesc{timsense} {The timing sense of the values.}
@@ -3184,7 +3206,7 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 
 \enumdesc{PowerGroup}
 {
-Keeps track of the power group of the input or output pin.
+Keeps track of the power group of the \refer{\lblroot:model.elements:Pin}{pin}.
 }{
     \begin{itemize}
         \item \fielddesc{PowerGroup}{RISEPOWER}{RisePower: RisePower of the input or output pin.}
@@ -3197,7 +3219,7 @@ Keeps track of the power group of the input or output pin.
 
 \enumdesc{TimingGroup}
 {
-Keeps track of the timing group of the output pin.
+Keeps track of the timing group of the \refer{\lblroot:model.elements:OutputPin}{output pin}.
 }{
     \begin{itemize}
         \item \fielddesc{TimingGroup}{CELLRISE}{}
@@ -3212,7 +3234,7 @@ Keeps track of the timing group of the output pin.
 
 \enumdesc{TimingType}
 {
-Keeps track of the timing type of the output pin.
+Keeps track of the timing type of the\refer{\lblroot:model.elements:OutputPin}{output pin}.
 }{
     \begin{itemize}
         \item \fielddesc{TimingType}{COMBINATIONAL}{}
@@ -3228,7 +3250,7 @@ Keeps track of the timing type of the output pin.
 }{}
 \enumdesc{TimingSense}
 {
-Keeps track of the timing sense of the output pin.
+Keeps track of the timing sense of the \refer{\lblroot:model.elements:OutputPin}{output pin}.
 }{
     \begin{itemize}
         \item \fielddesc{TimingSense}{POSITIVE}{}
@@ -3244,9 +3266,9 @@ Keeps track of the timing sense of the output pin.
 
 \absclassdesc{Element}{}
 {\begin{itemize}
-    \item \atrdesc{\proted}{}{\type{boolean}}{filtered}{}
-    \item \atrdesc{\proted}{}{\type{boolean}}{searched}{}
-    \item \atrdesc{\proted}{}{\type{String}}{name}{}
+    \item \atrdesc{\proted}{}{\type{boolean}}{filtered}{If true, the element has passed all filter checks}
+    \item \atrdesc{\proted}{}{\type{boolean}}{searched}{If true, the element has passed the search check}
+    \item \atrdesc{\proted}{}{\type{String}}{name}{The name of the element}
 \end{itemize}}
 {\begin{itemize}
     \item \implclsdec{HigherElement}
@@ -3541,9 +3563,10 @@ Keeps track of the timing sense of the output pin.
 \packagedesc{model.commands}{
 \interfacedesc{Command}
     {
+\decl{\public \interface Command}{
     An interface that is implemented by all commands.
     }
-    {}
+    }{}
     {
     \begin{itemize}
         \item \implclsdec{OpenFileCommand}
@@ -3568,8 +3591,13 @@ Keeps track of the timing sense of the output pin.
         {}{}{}
     \end{itemize}
     }
-\classdesc{OpenFileCommand}{Opens a file.} {   \begin{itemize}
-        \item \atrdesc{\private}{}{\type{Library}}{openedLibrary}{The opened library}
+\classdesc{OpenFileCommand}{
+\decl{\public \class OpenFileCommand}{
+Opens a file.
+}
+}{
+    \begin{itemize}
+        \item \atrdesc{\private}{}{\type{Library}}{openedLibrary}{The parsed library}
     \end{itemize}
 }
 {
@@ -3586,15 +3614,19 @@ Keeps track of the timing sense of the output pin.
     \end{itemize}
     }
 
-\classdesc{RemoveCommand}{Removes a library from the view.}
-    {\begin{itemize}
+\classdesc{RemoveCommand}{
+\decl{\public \class RemoveCommand}{
+Removes a \refer{\lblroot:model.elements:Library}{library} from the \refer{\lblroot:model.project:Project}{project}.
+}
+}{
+    \begin{itemize}
         \item \atrdesc{\private}{}{\type{Library}}{removedLibrary}{}
     \end{itemize}} 
 {   \begin{itemize}
         \item \constrdesc{\public}{RemoveCommand}{\type{Library} library}{}
         {
             \begin{itemize}
-            \item \paramdesc{library}{The library that is going to be removed from the view.}
+            \item \paramdesc{library}{The library that is going to be removed from the project.}
             \end{itemize}
         }
     \end{itemize}
@@ -3608,8 +3640,12 @@ Keeps track of the timing sense of the output pin.
     }
     
     
-\classdesc{AddFilterCommand}{Adds a filter.}
-    {\begin{itemize}
+\classdesc{AddFilterCommand}{
+\decl{\public \class AddFilterCommand}{
+Adds a \refer{\lblroot:model.project:Filter}{filter}.
+}
+}{
+    \begin{itemize}
         \item \atrdesc{\private}{}{\type{Filter}}{addedFilter}{}
     \end{itemize}} 
 {   \begin{itemize}
@@ -3631,11 +3667,16 @@ Keeps track of the timing sense of the output pin.
 
 
 
-\classdesc{RemoveFilterCommand}{Removes a filter.}
-    {\begin{itemize}
+\classdesc{RemoveFilterCommand}{
+\decl{\public \class RemoveFilterCommand}{
+Removes a \refer{\lblroot:model.project:Filter}{filter}.
+}
+}{
+    \begin{itemize}
         \item \atrdesc{\private}{}{\type{Filter}}{removedFilter}{}
-    \end{itemize}} 
-{   \begin{itemize}
+    \end{itemize}
+} {
+    \begin{itemize}
         \item \constrdesc{\public}{RemoveFilterCommand}{\type{Filter} filter}{}
         {
             \begin{itemize}
@@ -3653,8 +3694,16 @@ Keeps track of the timing sense of the output pin.
     }
 
 
-\classdesc{DeleteCommand}{Deletes a cell from a library.} % Make this for multiple cells perhaps? Quite easy to do
-    {\begin{itemize}
+\classdesc{DeleteCommand}{
+\decl{\public \class DeleteCommand}{
+Deletes a \refer{\lblroot:model.elements:Cell}{cell} from a \refer{\lblroot:model.elements:Library}{library}.
+}
+}{ 
+
+% Make this for multiple cells perhaps? Quite easy to do
+
+
+    \begin{itemize}
         \item \atrdesc{\private}{}{\type{Cell}}{deletedCell}{The deleted Cell}
     \end{itemize}} 
 {   \begin{itemize}
@@ -3675,8 +3724,12 @@ Keeps track of the timing sense of the output pin.
     }
 
 
-\classdesc{MergeCommand}{Merges multiple selected libraries to a single library.}
-    {\begin{itemize}
+\classdesc{MergeCommand}{
+\decl{\public \class MergeCommand}{
+Merges multiple selected \refer{\lblroot:model.elements:Library}{libraries} to a single \refer{\lblroot:model.elements:Library}{library}.
+}
+}{
+    \begin{itemize}
         \item \atrdesc{\private}{}{\type{ArrayList<\type{Library}>}}{mergedLibraries}{The merged libraries} %Keep it, don't need for undo, but need for execution
         \item
         \atrdesc{\private}{}{\type{Library}}{productLibrary}{The resulting library}
@@ -3698,8 +3751,12 @@ Keeps track of the timing sense of the output pin.
         {}{}{}
     \end{itemize}
 }
-\classdesc{PasteCommand}{Moves copied cells to a desired library.}
-    {\begin{itemize}
+\classdesc{PasteCommand}{
+\decl{\public \class PasteCommand}{
+Moves copied \refer{\lblroot:model.elements:Cell}{cells} to a desired \refer{\lblroot:model.elements:Library}{library}.
+}
+}{
+    \begin{itemize}
         \item \atrdesc{\private}{}{\type{HashMap<\type{Cell}, \type{String}>}}{renamedCellsOldNames}{The old names of all renamed cells}
         \item \atrdesc{\private}{}{\type{ArrayList<\type{Cell}>}}{pastedCells}{The pasted cells}
         \item \atrdesc{\private}{}{\type{ArrayList<\type{Cell}>}}{deletedCells}{The deleted Cells}
@@ -3730,8 +3787,12 @@ Keeps track of the timing sense of the output pin.
     \end{itemize}
 }
 
-\classdesc{MoveCommand}{Moves selected cells to a desired library.}
-    {\begin{itemize}
+\classdesc{MoveCommand}{
+\decl{\public \class MoveCommand}{
+Moves selected \refer{\lblroot:model.elements:Cell}{cells} to a desired \refer{\lblroot:model.elements:Library}{library}.
+}
+}{
+    \begin{itemize}
         \item \atrdesc{\private}{}{\type{HashMap<\type{Cell}, \type{Library}>}}{initialPositions}{The initial positions of all the Cells}
         \item \atrdesc{\private}{}{\type{HashMap<\type{Cell}, \type{String}>}}{renamedCellsOldNames}{The old names of all renamed cells}
         \item \atrdesc{\private}{}{\type{ArrayList<\type{Cell}>}}{deletedCells}{The deleted Cells}
@@ -3756,8 +3817,12 @@ Keeps track of the timing sense of the output pin.
     \end{itemize}
     }
 
-\classdesc{RenameCommand}{Changes the name of an element.}
-    {\begin{itemize}
+\classdesc{RenameCommand}{
+\decl{\public \class RenameCommand}{
+Changes the name of an \refer{\lblroot:model.elements:Element}{element}.
+}
+}{
+    \begin{itemize}
         \item \atrdesc{\private}{}{\type{Element}} {renamedElement}{The renamed element}
         \item \atrdesc{\private}{}{\type{String}} {oldName}{The old name of the element}
         \item
@@ -3803,8 +3868,13 @@ Keeps track of the timing sense of the output pin.
 %        {}{}{}
 %    \end{itemize}
 %%    }
-\classdesc{CreateLibraryCommand}{Creates a library.} %What does this even do? I forgot
-    {\begin{itemize}
+\classdesc{CreateLibraryCommand}{
+\decl{\public \class CreateLibraryCommand}{
+Creates a \refer{\lblroot:model.elements:Library}{library}.
+}}{                                                                                                                                                                                  %What does this even do? I forgot      
+
+
+    \begin{itemize}
         \item \atrdesc{\private}{}{\type{Library}} {createdLibrary}{The new created library}
     \end{itemize}} 
 {   \begin{itemize}
@@ -3823,8 +3893,12 @@ Keeps track of the timing sense of the output pin.
         {}{}{}
     \end{itemize}
     }{}
-\classdesc{ScaleCommand}{Scales the values of an attribute by a given float.}
-    {\begin{itemize}
+\classdesc{ScaleCommand}{
+\decl{\public \class ScaleCommand}{
+Scales the values of an \refer{\lblroot:model.elements.attributes:Attribute}{attribute} by a given float.
+}
+}{
+    \begin{itemize}
         \item \atrdesc{\private}{}{\type{Attribute}} {attribute}{}
         \item \atrdesc{\private}{}{\type{float}} {scale}{}
     \end{itemize}} 
@@ -3845,8 +3919,12 @@ Keeps track of the timing sense of the output pin.
         {}{}{}
     \end{itemize}
     }{}
-\classdesc{UndoCommand}{Undoes a Command.}{}
-{\begin{itemize}
+\classdesc{UndoCommand}{
+\decl{\public \class UndoCommand}{
+Undoes a \refer{\lblroot:model.commands:Command}{Command}.
+}
+}{}{
+    \begin{itemize}
         \item \constrdesc{\public}{UndoCommand}{}{}{}
     \end{itemize}
 }
@@ -3857,8 +3935,12 @@ Keeps track of the timing sense of the output pin.
         {}{}{}
     \end{itemize}
     }{}
-\classdesc{TextEditCommand}{Makes changes on the text editor reflect on an element.}
-    {\begin{itemize}
+\classdesc{TextEditCommand}{
+\decl{\public \class TextEditCommand}{
+Makes changes on the text editor reflect on an \refer{\lblroot:model.elements:Element}{element}.
+}
+}{
+    \begin{itemize}
         \item \atrdesc{\private}{}{\type{String}} {oldContent}{}
         \item \atrdesc{\private}{}{\type{String}} {newContent}{}
         \item \atrdesc{\private}{}{\type{Element}} {element}{}
@@ -3881,8 +3963,12 @@ Keeps track of the timing sense of the output pin.
         {}{}{}
     \end{itemize}
     }{}
-\classdesc{CommandHistory}{Keeps the history of the executed Commands and manages it.}
-    {\begin{itemize}
+\classdesc{CommandHistory}{
+\decl{\public \class CommandHistory}{
+Keeps the history of the executed \refer{\lblroot:model.commands:Command}{Commands} and manages it.
+}
+}{
+    \begin{itemize}
         \item \atrdesc{\private}{}{\type{Command[]}} {commands}{The list of commands stored in the history}
         \item \atrdesc{\private}{}{\type{Command[]}} {undoneCommands}{The list of commands that have been undone and can later be reexecuted/redone}
         \item \atrdesc{\private}{}{\type{int}} {undoCount}{The number that decides how many undo operations can be made.}
@@ -3897,7 +3983,7 @@ Keeps track of the timing sense of the output pin.
         \item \paramdesc{undoCount} {The number that decides how many undo operations can be made.}
         \end{itemize}}
         }{}
-        \item \methoddesc{\private}{}{void}{resetUndoneCommands}{Resets the undone commands. Usually because a whole new action has been done.}
+        \item \methoddesc{\private}{}{void}{resetUndoneCommands}{Resets the undone commands. Usually because a whole other action has been executed.}
         {}{}{}
         \item \methoddesc{\public}{}{void}{AddCommand}{\type{Command} command}
         {Adds a new command to the history}{{\begin{itemize}
@@ -3917,8 +4003,12 @@ Keeps track of the timing sense of the output pin.
     \end{itemize}
     }{}
     
-\classdesc{NameConflictResolver}{Resolves naming conflicts while keeping track of the taken commandss}
-    {\begin{itemize}
+\classdesc{NameConflictResolver}{
+\decl{\public \class NameConflictResolver}{
+Resolves naming conflicts while keeping track of the taken actions
+}
+}{
+    \begin{itemize}
         \item \atrdesc{\private}{}{\type{HashMap<\type{Cell}, \type{String}>}} {renamedCells}{The map of cells renamed during the conflict resolution}
         \item \atrdesc{\private}{}{\type{ArrayList<\type{Cell}>}} {deletedCells}{The list of cells deleted during conflict resolution}
         \item \atrdesc{\private}{}{\type{ArrayList<\type{Cell}>}} {cells}{The list of cells whose names have to be resolved}
@@ -3940,8 +4030,12 @@ Keeps track of the timing sense of the output pin.
         {Gets the resolved Cells}{}{The resolved Cells}
     \end{itemize}
 }{}
-\classdesc{ConflictData}{Saves a data of the conflict resolution on two conflicting cells} 
-    {\begin{itemize}
+\classdesc{ConflictData}{
+\decl{\public \class ConflictData}{
+Saves a data of the conflict resolution on two conflicting cells
+}
+}{
+    \begin{itemize}
         \item \atrdesc{\private}{}{\type{String}} {name}{The new Name if applicable (null if not)}
         \item \atrdesc{\private}{}{\type{ResolutionMethod}} {resolutionMethod}{The method chosen to resolve the conflict}
     \end{itemize}} 
@@ -3962,21 +4056,26 @@ Keeps track of the timing sense of the output pin.
     \end{itemize}
 }{}
 \enumdesc{ResolutionMethod}{
+\decl{\public \enum ResolutionMethod}{
 The enum that keeps track of the methods to resolve a name conflict
+}
 }{
     \begin{itemize}
         \item \fielddesc{ResolutionMethod}{KEEPLEFT}{Keeps only the left cell and deletes the right one}
         \item \fielddesc{ResolutionMethod}{KEEPRIGHT}{Keeps only the right cell and deletes the left one}
         \item \fielddesc{ResolutionMethod}{RENAMELEFT}{Renames the left cell}
         \item \fielddesc{ResolutionMethod}{RENAMERIGHT}{Renames the right cell}
-        \item \fielddesc{ResolutionMethod}{CANCEL}{Cancels the conflict resolution and therefore cancels the command}
+        \item \fielddesc{ResolutionMethod}{CANCEL}{Cancels the \refer{\lblroot:model.commands:NameConflictResolver}{conflict resolution} and therefore cancels the command}
     \end{itemize}
 }{}
 }
 
 \packagedesc{model.parsers}{
+
 \classdesc{LibertyParser}{
+\decl{\public \class LibertyParser}{
 Provides functionality to parse pieces of Liberty File text format into their corresponding data objects.
+}
 }{
     \begin{itemize}
         \item \atrdesc{\private}{\static \final}{\type{JsonParser}} {PARSER}{The JSON Parser}
@@ -3988,19 +4087,19 @@ Provides functionality to parse pieces of Liberty File text format into their co
 }{
     \begin{itemize}
         \item \methoddesc{\public}{\static}{Library}{parseLibrary}{String content}
-        {Parses the content in Liberty format into a library object}{
+        {Parses the content in Liberty format into a \refer{\lblroot:model.elements:Library}{Library} object}{
         \begin{itemize}
             \item \paramdesc{content}{String Content to be parsed}
         \end{itemize}
         }{}
         \item \methoddesc{\public}{\static}{Cell}{parseCell}{String content}
-        {Parses the content in Liberty format into a Cell object}{
+        {Parses the content in Liberty format into a \refer{\lblroot:model.elements:Cell}{Cell} object}{
         \begin{itemize}
             \item \paramdesc{content}{String Content to be parsed}
         \end{itemize}
         }{}
         \item \methoddesc{\public}{\static}{Pin}{parsePin}{String content}
-        {Parses the content in Liberty format into a Pin object}{
+        {Parses the content in Liberty format into a \refer{\lblroot:model.elements:Pin}{Pin} object}{
         \begin{itemize}
             \item \paramdesc{content}{String Content to be parsed}
         \end{itemize}
@@ -4011,7 +4110,9 @@ Provides functionality to parse pieces of Liberty File text format into their co
 \packagedesc{model.compiler}{
 
 \classdesc{CSVCompiler}{
-Provides functionality to compile Element Data Objects into their corresponding CSV text format.
+\decl{\public \class CSVCompiler}{
+Provides functionality to compile \refer{\lblroot:model.elements:Element}{Element} Data Objects into their corresponding CSV text format.
+}
 }{}{
     \begin{itemize}
         \item \constrdesc{\private}{CSVCompiler}{}{}{}
@@ -4019,19 +4120,19 @@ Provides functionality to compile Element Data Objects into their corresponding 
 }{
     \begin{itemize}
         \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:compileLibrary}{\methoddesc{\public}{\static}{String}{compile}{Library library}
-        {Compiles a library into CSV Format}{
+        {Compiles a \refer{\lblroot:model.elements:Library}{Library} into CSV Format}{
         \begin{itemize}
             \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:compileLibrary:library}{\paramdesc{library}{Library object to be compiled}}
         \end{itemize}
         }{}}
         \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:compileCell}{ \methoddesc{\public}{\static}{String}{compile}{Cell cell}
-        {Compiles a cell into CSV Format}{
+        {Compiles a \refer{\lblroot:model.elements:Cell}{Cell} into CSV Format}{
         \begin{itemize}
             \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:compileCell:cell}{ \paramdesc{cell}{Cell object to be compiled}}
         \end{itemize}
         }{}}
         \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:compilePin}{ \methoddesc{\public}{\static}{String}{compile}{Pin pin}
-        {Compiles a pin into CSV Format}{
+        {Compiles a \refer{\lblroot:model.elements:Pin}{Pin} into CSV Format}{
         \begin{itemize}
             \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:compilePin:pin}{ \paramdesc{pin}{Pin object to be compiled}}
         \end{itemize}
@@ -4039,7 +4140,9 @@ Provides functionality to compile Element Data Objects into their corresponding 
     \end{itemize}
 }{}
 \classdesc{LibertyCompiler}{
-Provides functionality to compile Element Data Objects into their corresponding Liberty File text format.
+\decl{\public \class LibertyCompiler}{
+Provides functionality to compile \refer{\lblroot:model.elements:Element}{Element} Data Objects into their corresponding Liberty File text format.
+}
 }{}{
     \begin{itemize}
         \item \constrdesc{\private}{LibertyCompiler}{}{}{}
@@ -4047,19 +4150,19 @@ Provides functionality to compile Element Data Objects into their corresponding 
 }{
     \begin{itemize}
         \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:compileLibrary}{\methoddesc{\public}{\static}{String}{compile}{Library library}
-        {Compiles a library into Liberty Format}{
+        {Compiles a \refer{\lblroot:model.elements:Library}{Library} into Liberty Format}{
         \begin{itemize}
             \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:compileLibrary:library}{\paramdesc{library}{Library object to be compiled}}
         \end{itemize}
         }{}}
         \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:compileCell}{ \methoddesc{\public}{\static}{String}{compile}{Cell cell}
-        {Compiles a cell into Liberty Format}{
+        {Compiles a \refer{\lblroot:model.elements:Cell}{Cell} into Liberty Format}{
         \begin{itemize}
             \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:compileCell:cell}{\paramdesc{cell}{Cell object to be compiled}}
         \end{itemize}
         }{}}
         \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:compilePin}{\methoddesc{\public}{\static}{String}{compile}{Pin pin}
-        {Compiles a pin into Liberty Format}{
+        {Compiles a \refer{\lblroot:model.elements:Pin}{Pin} into Liberty Format}{
         \begin{itemize}
             \item \overridecasclabelname{\lblroot\lblpackage\lblpackageelement:compilePin:pin}{\paramdesc{pin}{Pin object to be compiled}}
         \end{itemize}
@@ -4070,13 +4173,15 @@ Provides functionality to compile Element Data Objects into their corresponding 
 
 \packagedesc{model.project}{
 \classdesc{Model}{
-Keeps track of the objects of the entire model package by ensuring the singularity of Project, Settings and Shortcuts classes as well as managing their Files.
+\decl{\public \class Model}{
+Keeps track of the objects of the entire model package by ensuring the singularity of \refer{\lblroot:model.project:Project}{Project}, \refer{\lblroot:model.project:Settings}{Settings} and \refer{\lblroot:model.project:Shortcuts}{Shortcuts} classes as well as managing their Files.
+}
 }{
     \begin{itemize}
         \item \atrdesc{\private}{\static}{Model}{instance}{The single instance of the Model class}
         \item \atrdesc{\private}{}{Project}{currentProject}{The active Project class}
-        \atrdesc{\private}{}{Settings}{currentSettings}{The active Settings class}
-        \atrdesc{\private}{}{Project}{currentShortcuts}{The active Shortcuts class}
+        \item \atrdesc{\private}{}{Settings}{currentSettings}{The active Settings class}
+        \item \atrdesc{\private}{}{Project}{currentShortcuts}{The active Shortcuts class}
     \end{itemize}
 }{
     \begin{itemize}
@@ -4109,13 +4214,15 @@ Keeps track of the objects of the entire model package by ensuring the singulari
     \end{itemize}
 }
 \classdesc{Project}{
-Keeps track of the Elements loaded into the program
+\decl{\public \class Project}{
+Keeps track of the \refer{\lblroot:model.elements:Element}{Elements} loaded into the program
+}
 }{
     \begin{itemize}
-        \item \atrdesc{\private}{}{ArrayList<Library>}{libraries}{The array that keeps track of the libraries loaded into the program}
-        \item \atrdesc{\private}{}{HashSet<Element>}{copiedElements}{The Set that keeps track of the copied elements}
-        \item \atrdesc{\private}{}{HashSet<Element>}{openedInTextElements}{The Set that keeps track of the elements opened in a text editor}
-        \item \atrdesc{\private}{}{ArrayList<Filter>}{filters}{The array that keeps track of the filters active in the project}
+        \item \atrdesc{\private}{}{ArrayList<Library>}{libraries}{The array that keeps track of the \refer{\lblroot:model.elements:Library}{libraries} loaded into the program}
+        \item \atrdesc{\private}{}{HashSet<Element>}{copiedElements}{The Set that keeps track of the copied \refer{\lblroot:model.elements:Element}{elements}}
+        \item \atrdesc{\private}{}{HashSet<Element>}{openedInTextElements}{The Set that keeps track of the \refer{\lblroot:model.elements:Element}{elements} opened in a text editor}
+        \item \atrdesc{\private}{}{ArrayList<Filter>}{filters}{The array that keeps track of the \refer{\lblroot:model.project:Filter}{filters} active in the project}
     \end{itemize}
 }{
     \begin{itemize}
@@ -4164,7 +4271,9 @@ Keeps track of the Elements loaded into the program
     \end{itemize}
 }{}
 \classdesc{Interpolator}{
+\decl{\public \class Interpolator}{
 Provides interpolation functionality.
+}
 }{}{
     \begin{itemize}
         \item \constrdesc{\public}{Intepolator}{}{}{}
@@ -4195,7 +4304,9 @@ Provides interpolation functionality.
 }{}
 
 \classdesc{Shortcuts}{
-Maps the characters from pressed Key events with their corresponding Actions with the Event enum.}{
+\decl{\public \class Shortcuts}{
+Maps the characters from pressed Key events with their corresponding Actions with the \refer{\lblroot:controller.listeners:Event}{Event} enum.}
+}{
     \begin{itemize}
         \item \atrdesc{\private}{}{HashMap<char, Event>}{actions}{The map of characters and their corresponding actions}
     \end{itemize}
@@ -4229,7 +4340,9 @@ Maps the characters from pressed Key events with their corresponding Actions wit
     \end{itemize}
 }{}
 \classdesc{FileManager}{
+\decl{\public \class FileManager}{
 Provides functionality to save and load Files.
+}
 }{}{
     \begin{itemize}
         \item \constrdesc{\public}{FileManager}{}{}{}
@@ -4264,7 +4377,9 @@ Provides functionality to save and load Files.
     \end{itemize}
 }{}
 \classdesc{Filter}{
-Keeps track of the filters, a filters specific data and provides filtering functionality.
+\decl{\public \class Filter}{
+Keeps track of the filters specific data and provides filtering functionality.
+}
 }{
     \begin{itemize}
         \item \atrdesc{\private}{}{Attribute}{attribute}{The attribute that is being filtered.}
@@ -4292,7 +4407,7 @@ Keeps track of the filters, a filters specific data and provides filtering funct
     \end{itemize}
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{setStatus}{\type{boolean} status}
-        {Set the status of the Filter.}{}{}
+        {Sets the status of the Filter.}{}{}
     \end{itemize}
     \begin{itemize}
         \item \methoddesc{\public}{}{\type{boolean}}{getStatus}{}
@@ -4300,16 +4415,18 @@ Keeps track of the filters, a filters specific data and provides filtering funct
     \end{itemize}
 }{}
 \classdesc{Settings}{
+\decl{\public \class Settings}{
 Keeps track off the settings
+}
 }{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Language}{currentLanguage}{The currently active Language}
-        \item \atrdesc{\private}{}{ColorTheme}{colors}{The currently active ColorTheme}
-        \atrdesc{\private}{}{String}{fontType}{The set Font type}
-        \atrdesc{\private}{}{int}{fontSize}{Ther set Font Size}
-        \atrdesc{\private}{}{int}{barCount}{The number of bars set to be displayed in a bar chart}
-        \atrdesc{\private}{}{int}{undoCount}{The set number of undoable Commands saved in the CommandHistory}
-        \atrdesc{\private}{}{boolean}{editorOpenedFirst}{If true, the Text Editor opens first upon opening an Element in the works space.\newline
+        \item \atrdesc{\private}{}{Language}{currentLanguage}{The currently active \refer{\lblroot:model.project:Language}{Language}}
+        \item \atrdesc{\private}{}{ColorTheme}{colors}{The currently active \refer{\lblroot:model.project:ColorTheme}{ColorTheme}}
+        \item \atrdesc{\private}{}{String}{fontType}{The set Font type}
+        \item \atrdesc{\private}{}{int}{fontSize}{Ther set Font Size}
+        \item \atrdesc{\private}{}{int}{barCount}{The number of bars set to be displayed in a bar chart}
+        \item \atrdesc{\private}{}{int}{undoCount}{The \refer{\lblroot:model.commands:CommandHistory:undoCount}{undoCount} saved in the \refer{\lblroot:model.commands:CommandHistory}{CommandHistory}}
+        \item \atrdesc{\private}{}{boolean}{editorOpenedFirst}{If true, the Text Editor opens first upon opening an \refer{\lblroot:model.elements:Element}{Element} in the workspace.\newline
         Else, the Element View opens first }
     \end{itemize}
 }{
@@ -4380,7 +4497,9 @@ Keeps track off the settings
 }{}
 
 \classdesc{ColorTheme}{
+\decl{\public \class ColorTheme}{
 Stores the colors included in the color theme.
+}
 }{
     \begin{itemize}
         \item \atrdesc{\private}{}{\type{HashMap<\type{ColorEnum}, \type{int}>}}{colors}{The map of colors corresponding to the theme}
@@ -4400,7 +4519,9 @@ Stores the colors included in the color theme.
     \end{itemize}
 }
 \classdesc{Language}{
+\decl{\public \class Language}{
 Stores the snippets of text that correspond to a specific language
+}
 }{
     \begin{itemize}
         \item \atrdesc{\private}{}{\type{HashMap<\type{TextComponent}, \type{String}>}}{textMap}{The map of texts that correspond to a language}
@@ -4420,7 +4541,9 @@ Stores the snippets of text that correspond to a specific language
     \end{itemize}
 }
 \enumdesc{ColorEnum}{
-The enum that keeps track of the colors corresponding to a \refer{\lblroot:model.project:ColorTheme}{theme}
+\decl{\public \enum ColorEnum}{
+The enum that keeps track of the colors corresponding to a \refer{\lblroot:model.project:ColorTheme}{color theme}
+}
 }{
     \begin{itemize}
         \item \fielddesc{ColorEnum}{SYSTEM-BG}{The main background color}
@@ -4431,7 +4554,9 @@ The enum that keeps track of the colors corresponding to a \refer{\lblroot:model
     \end{itemize}
 }{}
 \enumdesc{TextComponent}{
+\decl{\public \enum TextComponent}{
 The enum that keeps track of the text parts of the GUI so that the language can be changed
+}
 }{
     \begin{itemize}
         \item \fielddesc{TextComponent}{PROGRAM-NAME}{The long name of the program}
@@ -4442,7 +4567,9 @@ The enum that keeps track of the text parts of the GUI so that the language can 
     \end{itemize}
 }{}
 \enumdesc{Mode}{
+\decl{\public \enum Mode}{
 Keeps track of the mode used to calculate the \refer{\lblroot:model.project:Filter:attribute}{attribute} used on the \refer{\lblroot:model.project:Filter}{filter}
+}
 }{
     \begin{itemize}
         \item \fielddesc{Mode}{MAX}{Maximum: Takes the maximum value for the attribute}
@@ -4451,21 +4578,33 @@ Keeps track of the mode used to calculate the \refer{\lblroot:model.project:Filt
         \item \fielddesc{Mode}{MED}{Median: Takes the median value for the attribute}
     \end{itemize}
 }{}
-\enumdesc{Operation}{Keeps track of the type of operation done by the \refer{\lblroot:model.project:Filter}{Filter}}{
+\enumdesc{Operation}{
+\decl{\public \enum Operation}{
+Keeps track of the type of operation done by the \refer{\lblroot:model.project:Filter}{Filter}
+}
+}{
     \begin{itemize}
         \item \fielddesc{Operation}{LESS}{Checks if attribute is less than value}
         \item \fielddesc{Operation}{EQUAL}{Checks if attribute is equal than value}
         \item \fielddesc{Operation}{BIGGER}{Checks if attribute is bigger than value}
     \end{itemize}
 }{}
-\enumdesc{ColorThemeEnum}{Keeps track of the \refer{\lblroot:model.project:ColorTheme:colors}{Color themes}}{
+\enumdesc{ColorThemeEnum}{
+\decl{\public \enum ColorThemeEnum}{
+Keeps track of the \refer{\lblroot:model.project:ColorTheme:colors}{Color themes} available to the program
+}
+}{
     \begin{itemize}
         \item \fielddesc{ColorThemeEnum}{THEME1}{Theme name 1}
         \item \fielddesc{ColorThemeEnum}{THEME2}{Theme name 2}
         \item \fielddesc{ColorThemeEnum}{AND-SO-ON}{And further theme names}
     \end{itemize}
 }{}
-\enumdesc{LanguageEnum}{Keeps track of the \refer{\lblroot:model.project:Language}{languages} available for the program}{
+\enumdesc{LanguageEnum}{
+\decl{\public \enum LanguageEnum}{
+Keeps track of the \refer{\lblroot:model.project:Language}{languages} available to the program
+}
+}{
     \begin{itemize}
         \item \fielddesc{LanguageEnum}{ENGLISH}{The default English language}
         \item \fielddesc{LanguageEnum}{DEUTSCH}{German}
@@ -4564,7 +4703,7 @@ Keeps track of the mode used to calculate the \refer{\lblroot:model.project:Filt
 }{}
 \classdesc{SelectListener}{public class LoadLibraryListener implements TreeSelectionListener \decl{}{Observes the selected elements on the outliner.}}{
     \begin{itemize}
-        \item \atrdesc{\private}{}{Element[]}{element}{Selected elements}
+        \item \atrdesc{\private}{}{ArrayList<Element>}{elements}{List of selected elements}
     \end{itemize}
 }{
     \begin{itemize}
@@ -4576,12 +4715,15 @@ Keeps track of the mode used to calculate the \refer{\lblroot:model.project:Filt
         {}{\begin{itemize}
             \item \paramdesc{e}{Performed selection event on the component.}
             \end{itemize}}{}
+        \item \methoddesc{\public}{}{\type{ArrayList<Element>}}{getSelectedElements}{}
+        {Returns the list of selected elements in the outliner.}{}{}
     \end{itemize}
 }{}
-\classdesc{OpenElementListener}{public class OpenElementListener implements ActionListener, TreeSelectionListener \decl{}{Listener for opening an element in the working area of the application.}
+\classdesc{OpenElementListener}{public class OpenElementListener implements ActionListener \decl{}{Listener for opening an element in the working area of the application.}
 }{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for opening a liberty file in working area}
+        \item \atrdesc{\private}{}{SelectListener}{listener}{Listener which is observing the selection events on the outliner.}
         \item \atrdesc{\private}{}{Element}{element}{Element which will be opened in the working area.}
     \end{itemize}
 }{
@@ -4594,17 +4736,14 @@ Keeps track of the mode used to calculate the \refer{\lblroot:model.project:Filt
         {}{\begin{itemize}
             \item \paramdesc{e}{Performed action event on the component.}
             \end{itemize}}{}
-        \item
-        \methoddesc{\public}{}{void}{valueChanged}{\type{TreeSelectionEvent} e}
-        {}{\begin{itemize}
-            \item \paramdesc{e}{Performed selection event on the component.}
-            \end{itemize}}{}
     \end{itemize}
     }{}
-\classdesc{DeleteCellListener}{public class DeleteCellListener implements ActionListener, TreeSelectionListener \decl{}{Listener for deleting a cell permanently from a library.}}{
+\classdesc{DeleteCellListener}{public class DeleteCellListener implements ActionListener \decl{}{Listener for deleting a cell permanently from a library.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for deleting a cell.}
+        \item \atrdesc{\private}{}{SelectListener}{listener}{Listener which is observing the selection events on the outliner.}
         \item \atrdesc{\private}{}{Cell[]}{cells}{Cells to be deleted.}
+        
     \end{itemize}
 }{
     \begin{itemize}
@@ -4616,16 +4755,12 @@ Keeps track of the mode used to calculate the \refer{\lblroot:model.project:Filt
         {}{\begin{itemize}
             \item \paramdesc{e}{Performed action event on the component.}
             \end{itemize}}{}
-         \item
-        \methoddesc{\public}{}{void}{valueChanged}{\type{TreeSelectionEvent} e}
-        {}{\begin{itemize}
-            \item \paramdesc{e}{Performed selection event on the component.}
-            \end{itemize}}{}
     \end{itemize}
 }{}
-\classdesc{RemoveListener}{public class RemoveListener implements ActionListener, TreeSelectionListener \decl{}{Listener for removing an element from the project.}}{
+\classdesc{RemoveListener}{public class RemoveListener implements ActionListener \decl{}{Listener for removing an element from the project.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for removing a library}
+        \item \atrdesc{\private}{}{SelectListener}{listener}{Listener which is observing the selection events on the outliner.}
         \item \atrdesc{\private}{}{Element[]}{elements}{Libraries to be removed.}
     \end{itemize}
 }{
@@ -4635,11 +4770,6 @@ Keeps track of the mode used to calculate the \refer{\lblroot:model.project:Filt
 }{
     \begin{itemize}
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
-        {}{\begin{itemize}
-            \item \paramdesc{e}{Performed action event on the component.}
-            \end{itemize}}{}
-         \item
-        \methoddesc{\public}{}{void}{valueChanged}{\type{TreeSelectionEvent} e}
         {}{\begin{itemize}
             \item \paramdesc{e}{Performed action event on the component.}
             \end{itemize}}{}
@@ -4668,9 +4798,10 @@ Keeps track of the mode used to calculate the \refer{\lblroot:model.project:Filt
             \item \paramdesc{e}{Performed document event on the component.}
             \end{itemize}}{}
     \end{itemize}}{}
-\classdesc{RenameListener}{\public \class RenameListener implements ActionListener, TreeSelectionListener \decl{}{Listener for renaming a liberty file in the outliner.}}{
+\classdesc{RenameListener}{\public \class RenameListener implements ActionListener \decl{}{Listener for renaming a liberty file in the outliner.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for renaming an element.}
+        \item \atrdesc{\private}{}{SelectListener}{listener}{Listener which is observing the selection events on the outliner.}
         \item \atrdesc{\private}{}{String}{newName}{New name of the element.}
         \item \atrdesc{\private}{}{Element}{element}{To be renamed element.}
     \end{itemize}
@@ -4684,11 +4815,7 @@ Keeps track of the mode used to calculate the \refer{\lblroot:model.project:Filt
         {}{\begin{itemize}
             \item \paramdesc{e}{Performed action event on the component.}
             \end{itemize}}{}
-         \item
-        \methoddesc{\public}{}{void}{valueChanged}{\type{TreeSelectionEvent} e}
-        {}{\begin{itemize}
-            \item \paramdesc{e}{Performed selection event on the component.}
-            \end{itemize}}{}
+        
     \end{itemize}}{}
 \classdesc{SearchListener}{public class SearchListener implements TextListener \decl{}{Listener for search bar.}}{
     \begin{itemize}
@@ -4751,9 +4878,10 @@ Keeps track of the mode used to calculate the \refer{\lblroot:model.project:Filt
             \item \paramdesc{e}{Performed action event on the component.}
             \end{itemize}}{}
     \end{itemize}}{}
-\classdesc{MergeListener}{public class MergeListener implements ActionListener, TreeSelectionListener \decl{}{Listener for merging multiple libraries.}}{
+\classdesc{MergeListener}{public class MergeListener implements ActionListener \decl{}{Listener for merging multiple libraries.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for merging action}
+        \item \atrdesc{\private}{}{SelectListener}{listener}{Listener which is observing the selection events on the outliner.}
         \item \atrdesc{\private}{}{Library[]}{libraries}{Libraries selected for merge action.}
     \end{itemize}
 }{
@@ -4765,11 +4893,6 @@ Keeps track of the mode used to calculate the \refer{\lblroot:model.project:Filt
         \item \methoddesc{\public}{}{void}{actionPerformed}{\type{ActionEvent} e}
         {}{\begin{itemize}
             \item \paramdesc{e}{Performed action event on the component.}
-            \end{itemize}}{}
-         \item
-        \methoddesc{\public}{}{void}{valueChanged}{\type{TreeSelectionEvent} e}
-        {}{\begin{itemize}
-            \item \paramdesc{e}{Performed selection event on the component.}
             \end{itemize}}{}
     \end{itemize}}{}
 \classdesc{ScaleListener}{public class ScaleListener implements ActionListener \decl{}{Listener for scaling.}}{
@@ -4834,9 +4957,10 @@ Keeps track of the mode used to calculate the \refer{\lblroot:model.project:Filt
             \item \paramdesc{e}{Performed action event on the component.}
             \end{itemize}}{}
     \end{itemize}}{}
-\classdesc{CompareListener}{public class CompareListener implements ActionListener, TreeSelectionListener \decl{}{Listener for the compare action.}}{
+\classdesc{CompareListener}{public class CompareListener implements ActionListener \decl{}{Listener for the compare action.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for comparing.}
+        \item \atrdesc{\private}{}{SelectListener}{listener}{Listener which is observing the selection events on the outliner.}
         \item \atrdesc{\private}{}{Element}{element1}{First element to compare}
         \item \atrdesc{\private}{}{Element}{element2}{Second element to compare}
     \end{itemize}
@@ -4850,15 +4974,11 @@ Keeps track of the mode used to calculate the \refer{\lblroot:model.project:Filt
         {}{\begin{itemize}
             \item \paramdesc{e}{Performed action event on the component.}
             \end{itemize}}{}
-         \item
-        \methoddesc{\public}{}{void}{valueChanged}{\type{TreeSelectionEvent} e}
-        {}{\begin{itemize}
-            \item \paramdesc{e}{Performed selection event on the component.}
-            \end{itemize}}{}
     \end{itemize}}{}
-\classdesc{MoveListener}{public class MoveListener implements ActionListener, TreeSelectionListener \decl{}{Listener for moving selected cells to another library.}}{
+\classdesc{MoveListener}{public class MoveListener implements ActionListener \decl{}{Listener for moving selected cells to another library.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Move action.}
+        \item \atrdesc{\private}{}{SelectListener}{listener}{Listener which is observing the selection events on the outliner.}
         \item \atrdesc{\private}{}{Element[]}{element}{Selected cells.}
     \end{itemize}
 }{
@@ -4871,15 +4991,11 @@ Keeps track of the mode used to calculate the \refer{\lblroot:model.project:Filt
         {}{\begin{itemize}
             \item \paramdesc{e}{Performed action event on the component.}
             \end{itemize}}{}
-         \item
-        \methoddesc{\public}{}{void}{valueChanged}{\type{TreeSelectionEvent} e}
-        {}{\begin{itemize}
-            \item \paramdesc{e}{Performed selection event on the component.}
-            \end{itemize}}{}
     \end{itemize}}{}
-\classdesc{CopyListener}{public class CopyListener implements ActionListener, TreeSelectionListener \decl{}{Listener for copying selected cells to another library.}}{
+\classdesc{CopyListener}{public class CopyListener implements ActionListener \decl{}{Listener for copying selected cells to another library.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Copy action}
+        \item \atrdesc{\private}{}{SelectListener}{listener}{Listener which is observing the selection events on the outliner.}
         \item \atrdesc{\private}{}{Element[]}{element}{Elements selected for copying.}
     \end{itemize}
 }{
@@ -4892,15 +5008,12 @@ Keeps track of the mode used to calculate the \refer{\lblroot:model.project:Filt
         {}{\begin{itemize}
             \item \paramdesc{e}{Performed action event on the component.}
             \end{itemize}}{}
-         \item
-        \methoddesc{\public}{}{void}{valueChanged}{\type{TreeSelectionEvent} e}
-        {}{\begin{itemize}
-            \item \paramdesc{e}{Performed selection event on the component.}
-            \end{itemize}}{}
+        
     \end{itemize}}{}
 \classdesc{PasteListener}{public class PasteListener implements ActionListener, TreeSelectionEvent \decl{}{Listener for copying selected cells to another library.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Copy action}
+        \item \atrdesc{\private}{}{SelectListener}{listener}{Listener which is observing the selection events on the outliner.}
         \item \atrdesc{\private}{}{Library}{targetLibrary}{Target library for copy and move actions} 
     \end{itemize}
 }{
