@@ -766,7 +766,7 @@ package representation{
     class DataPanel {
         -Label label
         -String text
-        +DataPanel()
+        +DataPanel(String text)
         +setText(String text)
         
     }
