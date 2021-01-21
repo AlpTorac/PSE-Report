@@ -1,6 +1,36 @@
-@startuml Hallo
+@startuml Model
 skinparam linetype ortho
 !startsub DIAGRAM
+skinparam {
+    Linetype ortho
+    BackgroundColor #bababa
+    Shadowing false
+    Nodesep 60
+    Ranksep 50
+}
+skinparam Arrow {
+    Color #2e2e2e
+    Thickness 1.5
+}
+skinparam CircledCharacter {
+    Radius 8
+    FontSize 10
+}
+skinparam class {
+    BackgroundColor #d1d1d1
+    BorderColor #2e2e2e
+    BorderThickness 1.5
+    HeaderBackgroundColor #a6a6a6
+}
+skinparam package {
+    BackgroundColor #bcbfd6
+    BorderThickness 1.8
+}
+skinparam Note {
+    BackgroundColor #297547
+    BorderColor #171a17
+    FontColor #e8e8e8
+}
 
 /' package panelData{
     enum ElementType {
@@ -359,18 +389,18 @@ package commands{
         # void execute()
         # void undo()
     }
-    class ActionHistory{
-        - Command[] actions
-        - Command[] undoneActions
+    class CommandHistory{
+        - Command[] commands
+        - Command[] undoneCommands
         - int undoCount
         __
-        + ActionHistory()
+        + CommandHistory()
         + void setUndoCount(int)
-        - void resetUndoneActions()
-        + void addAction(Command)
-        + void removeLatestAction()
-        + void resetActions()
-        + getLatestAction() : Command
+        - void resetUndoneCommands()
+        + void addCommand(Command)
+        + void removeLatestCommand()
+        + void resetCommands()
+        + getLatestCommand() : Command
     }
     class CreateLibrary implements Command{
         - Library createdLibrary
@@ -379,113 +409,106 @@ package commands{
         + void execute()
         + void undo()
     }
-    class ScaleAction implements Command{
+    class ScaleCommand implements Command{
         - Attribute attribute
         - float scale
         __
-        + ScaleAction(Attribute, float)
+        + ScaleCommand(Attribute, float)
         + void execute()
         + void undo()
     }
     
-    class RemoveFilterAction implements Command{
+    class RemoveFilterCommand implements Command{
         - Filter removedFilter
         __
-        + RemoveFilterAction(Filter)
+        + RemoveFilterCommand(Filter)
         + execute()
         + undo()
     }
-    class AddFilterAction implements Command{
+    class AddFilterCommand implements Command{
         - Filter addedFilter
         __
-        + AddFilterAction(Filter)
+        + AddFilterCommand(Filter)
         + execute()
         + undo()
     }
-    class TextEditAction implements Command{
+    class TextEditCommand implements Command{
         - String oldContent
         - String newContent
         - Element element
         __
-        + TextEditAction (String, String, Element)
+        + TextEditCommand (String, String, Element)
         + void execute()
         + void undo()
     }
-    class UndoAction implements Command{
+    class UndoCommand implements Command{
         __
-        + UndoAction()
+        + UndoCommand()
         + void execute()
         + coid undo()
     }
-    class MergeAction implements Command{
+    class MergeCommand implements Command{
+        - ArrayList<Library> mergedLibraries
         - Library productLibrary
         __
-        + MergeAction(String)
+        + MergeCommand(String)
         + void execute()
         + void undo ()
-        # void continue(NameConflictResolver)
-        # void cancel()
     }
-    class DeleteAction implements Command{
+    class DeleteCommand implements Command{
         - ArrayList<Cell> deletedCells
         __
-        + DeleteAction(ArrayList<Cell>)
+        + DeleteCommand(ArrayList<Cell>)
         + void execute()
         + void undo()
     }
-    class RemoveAction implements Command{
+    class RemoveCommand implements Command{
         - Library removedLibrary
         __
-        + RemoveAction(Library)
+        + RemoveCommand(Library)
         + void execute()
         + void undo()
     }
-    class PasteAction implements Command{
+    class PasteCommand implements Command{
         - ArrayList<Cell> pastedCells
         - ArrayList<Cell> deletedCells
         - HashMap<Cell, String> renamedCellsOldName
         - Library destinationLibrary
         __
-        + PasteAction(Library)
-        + PasteAction(Library, ArrayList<Cell>)
+        + PasteCommand(Library)
+        + PasteCommand(Library, ArrayList<Cell>)
         + void execute()
         + void undo()
-        # void continue(NameConflictResolver)
-        # void cancel()
     }
-    class MoveAction implements Command{
+    class MoveCommand implements Command{
         - HashMap<Cell, Library> initialPositions
         - ArrayList<Cell> deletedCells
         - HashMap<Cell, String> renamedCellsOldNames
         - Library destinationLibrary
         __
-        + MoveAction(Element[], Library)
+        + MoveCommand(ArrayList<Element>, Library)
         + void execute()
         + void undo()
-        # void continue(NameConflictResolver)
-        # void cancel()
     }
-    class RenameAction implements Command{
+    class RenameCommand implements Command{
         - String oldName
         - String newName
         __
-        + RenameAction(Element, String)
+        + RenameCommand(Element, String)
         + void execute()
         + void undo()
     }
-    class OpenFileAction implements Command {
+    class OpenFileCommand implements Command {
         - Library openedLibrary
         __
-        + OpenFileAction()
+        + OpenFileCommand()
         + void execute()
         + void undo()
     }
     class NameConflictResolver{
-        - HashMap<Cell> renamedCells
+        - HashMap<Cell, String> renamedCells
         - ArrayList<Cell> deletedCells
         - ArrayList<Cell> cells
-        - Command action
-        - Cell[] currentConflict
         __
         + NameConflictResolver(ArrayList<Cell>)
     }
@@ -505,23 +528,23 @@ package commands{
         CANCEL
     }
     ConflictData -- ResolutionMethod
-    MoveAction --> NameConflictResolver
-    PasteAction --> NameConflictResolver
-    MergeAction --> NameConflictResolver
-    OpenFileAction -- RemoveAction
-    /'class SelectStatAction implements Command{
+    MoveCommand --> NameConflictResolver
+    PasteCommand --> NameConflictResolver
+    MergeCommand --> NameConflictResolver
+    OpenFileCommand -- RemoveCommand
+    /'class SelectStatCommand implements Command{
         __
-        + SelectStatAction(String)
+        + SelectStatCommand(String)
         + void execute()
         + void undo()
     }
-    class SelectDropdownAction implements Command {
-        + SelectDropdownAction(String)
+    class SelectDropdownCommand implements Command {
+        + SelectDropdownCommand(String)
         + void execute()
         + void undo()
     }
-    class SelectCompareAction implements Command {
-        + SelectCompareAction(Element)
+    class SelectCompareCommand implements Command {
+        + SelectCompareCommand(Element)
         + void execute()
         + void undo()
     }
@@ -540,27 +563,20 @@ package parsers {
     }
 }
 package compilers {
-    interface Compiler{
-    __
-    + {Static} compile(Pin): String
-    + {Static} compile(Cell): String
-    + {Static} compile(Library): String
-    }
-    class CSVCompiler implements Compiler{
+    class CSVCompiler{
     __
     + CSVCompiler()
     + {Static} compile(Pin): String
     + {Static} compile(Cell): String
     + {Static} compile(Library): String
     }
-    class LibertyCompiler implements Compiler{
+    class LibertyCompiler{
     + LibertyCompiler()
     + {Static} compile(Pin): String
     + {Static} compile(Cell): String
     + {Static} compile(Library): String
     }
 }
-
 package project {
     class Model {
         - {static} Model instance = new Model()
@@ -595,7 +611,7 @@ package project {
     + getFilters(): ArrayList<Filter>
     + void setLibraries(ArrayList<Library>) 
     + void setOpenedInTextElements(HashSet<Element>)
-    + void setCopiedElements(ArrayList<Element>)
+    + void setCopiedElements(HashSet<Element>)
     + void setFilters(ArrayList<Filter>)
     + void saveDefaultFilters()
     + void loadDefaultFilters()
@@ -605,7 +621,7 @@ package project {
         + {static} openFile(): File
         + {static} openFile(String): File
         + {static} void saveFile(String, String[], String)
-        + {static} void saveFile(String, String, String)
+        + {static} void saveFile(String, String, String, String)
     }
     class Interpolator{
         __
@@ -655,7 +671,7 @@ enum LanguageEnum{
     LanguageEnum -- Settings
     ColorThemeEnum -- Settings
     class ColorTheme{
-        - HashMap<ColorEnum, colors>
+        - HashMap<ColorEnum, int> colors
         __
         + ColorTheme()
         + getColor(ColorEnum): int[]
@@ -676,12 +692,12 @@ enum LanguageEnum{
     }
     ColorEnum -- ColorTheme
     class Language{
-        - HashMap<TextComponent, String>
+        - HashMap<TextComponent, String> map
         __
-        + getTextComponent(TextComponent)
+        + getTextComponent(TextComponent): String
     }
     enum TextComponent{
-        PROGRAM_DESCRIPTIO
+        PROGRAM_DESCRIPTION
         LIBRARY
         CELL
         PIN
@@ -697,7 +713,7 @@ enum LanguageEnum{
     Settings *-- ColorTheme
     Settings *-- Language
     class Shortcuts{
-    - HashMap<char, Event> commands
+    - HashMap<char, Event> actions
     __
     + void setKey(char, Event)
     + void removeKey(char)
@@ -735,19 +751,19 @@ Model --> Settings
 Model --> Shortcuts
 Model --> FileManager
 Filter --> FileManager
-MergeAction ..> Library
+MergeCommand ..> Library
 Project --* Model
-TextEditAction --> LibertyParser
+TextEditCommand --> LibertyParser
 LibertyParser ..> Library
 LibertyParser ..> Cell
 LibertyParser ..> Pin
-/'SelectDropdownAction --> Attribute
-SelectStatAction --> Attribute '/
-OpenFileAction --> FileManager
-OpenFileAction --> LibertyParser
-UndoAction --> ActionHistory
-Filter <-- AddFilterAction
-Filter <-- RemoveFilterAction
+/'SelectDropdownCommand --> Attribute
+SelectStatCommand --> Attribute '/
+OpenFileCommand --> FileManager
+OpenFileCommand --> LibertyParser
+UndoCommand --> CommandHistory
+Filter <-- AddFilterCommand
+Filter <-- RemoveFilterCommand
 Pin <|-- InputPin
 Pin <|-- OutputPin
 Operation -- Filter

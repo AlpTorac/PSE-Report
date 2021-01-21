@@ -769,9 +769,10 @@ package Diagrams {
 package representation{
 
     class DataPanel {
+        -Element element
         -Label label
         -String text
-        +DataPanel(String text)
+        +DataPanel(Element element)
         +setText(String text)
         
     }
