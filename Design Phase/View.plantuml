@@ -216,7 +216,7 @@ package Diagrams {
     interface IDiagram {
         +Collection<?> cloneData()
         +void refresh()
-        +void update(DiagramData data)
+        +void update(Collection<?> data)
         +boolean addDiagramViewHelper(DiagramViewHelper dvh)
         +boolean removeDiagramViewHelper(IndicatorIdentifier id)
         +boolean showDiagramViewHelper(IndicatorIdentifier id)
@@ -702,7 +702,8 @@ package Diagrams {
         -DiagramDirector()
         +{static} DiagramDirector getDiagramDirector()
         -void setBuilder()
-        +void setDiagramData(DiagramData data)
+        +void receiveDiagramData(Collection<?> data)
+        -void setDiagramData(DiagramData data)
         +IDiagram build()
     }
     class SettingsProvider {
@@ -741,8 +742,6 @@ package Diagrams {
     'Ui
         AutoResizing --> Resizer
         Visualizer -> IDiagram
-        DefaultComparer --> IDiagram
-
 
         MainWindow *-- "1"Outliner
         MainWindow *-- "1"SubWindowArea
@@ -766,7 +765,7 @@ package representation{
     class DataPanel {
         -Label label
         -String text
-        +DataPanel()
+        +DataPanel(String text)
         +setText(String text)
         
     }
