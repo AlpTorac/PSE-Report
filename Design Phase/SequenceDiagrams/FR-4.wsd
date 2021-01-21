@@ -7,9 +7,11 @@ skinparam responseMessageBelowArrow true
     activate "SubWindow s"
     "SubWindow s" -> "Visualizer v" **  : Visualizer(element)
     activate "Visualizer v"
-    'TODO generate diagram/cell representation
-    "Visualizer v" -> Diagram ++
-    return
+    "Visualizer v" -> "DiagramDirector instance" ++: receiveDiagramData(data)
+    note over "DiagramDirector instance", "Visualizer v"#FFAAAA
+    See Diagram Creation
+    end note
+    return diagram
     
     "Visualizer v" -> "DataPanel d" ** : DataPanel(element)
     alt element is library
