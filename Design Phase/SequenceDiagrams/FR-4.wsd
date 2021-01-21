@@ -10,10 +10,23 @@ skinparam responseMessageBelowArrow true
     'TODO generate diagram/cell representation
     "Visualizer v" -> Diagram ++
     return
-    "Visualizer v" -> CellRepresentation ++
+    
+    "Visualizer v" -> "DataPanel d" ** : DataPanel(element)
+    alt element is library
+    "Visualizer v" -> "LibraryPanel l" ** : LibraryPanel(element)
+    else element is cell/pin
+    "Visualizer v" -> "CellPanel c" ** : CellPanel(element)
+    activate "CellPanel c"
+    "CellPanel c" -> "CellImageGenerator g" ** : CellImageGenerator()
+    "CellPanel c" -> "CellImageGenerator g" ++ : buildCell(inputPins, outputPins)
+    return BufferedImage
+    destroy "CellImageGenerator g"
+    return
+    end
     return
     return
     return
+
     "OpenElementListener o" -> "SubWindowArea a" ++ : addSubWindow(s)
     alt 1 SubWindow object in a
     "SubWindowArea a" -> "SubWindow s" : resize(...) [set to half the width of a]
