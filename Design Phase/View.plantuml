@@ -186,7 +186,7 @@ skinparam Note {
             -Model
             +Outliner(Model data)
             +setModel(Model data)
-            +getSelectedElements: ArrayList<Element>
+            +getSelectedElements(): ArrayList<Element>
         }
         Outliner ..|> ModelUser
 
