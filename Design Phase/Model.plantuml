@@ -277,6 +277,7 @@ package elements{
         + Library(String, float[], float[], String, ArrayList<Cell>)
         + getCells() : ArrayList<Cell>
         + void setCells(ArrayList<Cell>)
+        + void calculate()
         + void calculateLeakage()
         + void calculateInPow()
         + void calculateOutPow()
@@ -319,6 +320,7 @@ package elements{
         + void setLeakage(Leakage[])
         + getDefaultLeakage() : float
         + void setDefaultLeakage(float)
+        + void calculate()
         + void calculateLeakage()
         + void calculateInPow()
         + void calculateOutPow()
@@ -342,6 +344,7 @@ package elements{
         - ArrayList<InputPower> inputPowers
         __
         + InputPin(String, Cell, ArrayList<InputPower>)
+        + void calculate()
         + void calculatePower()
         + getInputPowers(): ArrayList<InputPower>
         + void setInputPowers(ArrayList<InputPower>)
@@ -352,7 +355,7 @@ package elements{
         - ArrayList<TimingType> availableTimType
         - ArrayList<OutputPower> outputPowers
         - ArrayList<Timing> timings
-        - String outPutFunction
+        - String outputFunction
         __
         + OutputPin(String, Cell, ArrayList<OutputPower>, ArrayList<Timing>)
         + getTimings(): ArrayList<Timing>
@@ -367,6 +370,7 @@ package elements{
         + setAvailableTimType(ArrayList<TimingType>)
         + getOutputFunction(): String
         + void setOutputFunction(String)
+        + void calculate()
         + void calculatePower()
         + void calculateTiming()
         + void saveAsCSV()
@@ -402,10 +406,10 @@ package commands{
         + void resetCommands()
         + getLatestCommand() : Command
     }
-    class CreateLibrary implements Command{
+    class CreateLibraryCommand implements Command{
         - Library createdLibrary
         __
-        + CreateLibrary(String)
+        + CreateLibrary(String, String)
         + void execute()
         + void undo()
     }
@@ -745,7 +749,6 @@ enum LanguageEnum{
         + getStatus(): boolean
     }
 }
-Project --> Compiler
 Project --> CSVCompiler
 Model --> Settings
 Model --> Shortcuts
