@@ -791,6 +791,7 @@ Library *-- Cell
 Cell *-- Pin
 Project --> LibertyCompiler
 LibertyParser ..> Attribute
+Project *-- Updatable
 !endsub
 
 /' project -[hidden]> compiler

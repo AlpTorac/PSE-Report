@@ -35,8 +35,10 @@ return
 "PasteAction action" -> "Project currentProject" ++ : getLibraries()
 return libraries
 "PasteAction action" -> "Project currentProject" ++ : notify()
-"Project currentProject" -> View ++: update()
+loop for each updatable component 
+"Project currentProject" -> Updatable ++ : update()
 return
+end 
 return
 return
 return
