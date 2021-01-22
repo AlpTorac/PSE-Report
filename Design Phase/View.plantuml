@@ -484,7 +484,7 @@ package Diagrams {
         hovered over'/
         class HoverLabel {
             -String caption
-            -Theme theme
+            -Color color
             -PositionInFrame mousePosition
             -Number width
             -Number height
@@ -502,6 +502,10 @@ package Diagrams {
             +Number getXPos()
             +void setYPos(Number yPos)
             +Number getYPos()
+            +void setCaption(String caption)
+            +void setColor(Color color)
+            +String getCaption()
+            +Color getColor()
         }
         class DiagramComponentFactory {
             -{static} DiagramComponentFactory instance = new DiagramComponentFactory

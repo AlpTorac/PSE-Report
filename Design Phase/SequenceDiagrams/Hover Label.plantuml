@@ -1,0 +1,41 @@
+@startuml HoverLabelDiagram
+actor user as user
+participant "dvdc.part : JComponent" as DVDCP
+participant "listener : MouseAdapter" as EL
+participant "dvdc : DiagramValueDisplayComponent" as DVDC
+participant "hoverLabel : HoverLabel" as HL
+note over DVDCP
+dvdc.part represents an
+attribute in dvdc, which
+extends JComponent
+(transitively or direct)
+end note
+user -> DVDCP: Hovers on dvdc.part \n with mouse pointer
+DVDCP -> EL ++: MouseEntered(MouseEvent me)
+EL -> DVDC ++: showHoverLabel()
+DVDC -> HL ++: setCaption(dvdc.value)
+return
+DVDC -> HL ++: show()
+return
+return
+return
+user <-- DVDCP
+user -> DVDCP: Moves the mouse pointer \n inside dvdc.part
+DVDCP -> EL ++: MouseMoved(MouseEvent me)
+EL -> DVDC ++: refreshHoverLabelPosition()
+DVDC -> HL ++: setXPos(me.getX())
+return
+DVDC -> HL ++: setYPos(me.getY())
+return
+return
+return
+user <-- DVDCP
+user -> DVDCP: Moves the mouse pointer \n out of dvdc.part
+DVDCP -> EL ++: MouseExited(MouseEvent me)
+EL -> DVDC ++: hideHoverLabel()
+DVDC -> HL ++: hide()
+return
+return
+return
+user <-- DVDCP
+@enduml
