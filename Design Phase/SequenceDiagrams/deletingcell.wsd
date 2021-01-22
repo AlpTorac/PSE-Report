@@ -66,8 +66,7 @@ DeleteAction -> currentProject: notify()
 activate currentProject
 
 loop for each updatable component 
-currentProject -> Updatable : update()
-activate Updatable
+currentProject -> Updatable ++ : update()
 return 
 end
 

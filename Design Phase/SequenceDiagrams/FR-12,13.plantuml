@@ -14,7 +14,9 @@ return conflictData
 "NameConflictResolver resolver" -> "ConflictData conflictData" ++ : getResolutionMethod()
 return ResolutionMethod
 alt resolutionMethod.equals(ResolutionMethod.KEEPLEFT)
+note over "Cell rightCell", "Cell cell": This would delete rightCell
 else resolutionMethod.equals(ResolutionMethod.KEEPRIGHT)
+note over "Cell rightCell", "Cell cell": This would delete leftCell
 else resolutionMethod.equals(ResolutionMethod.RENAMELEFT)
 "NameConflictResolver resolver" -> "Cell leftCell" ++ : setName(name)
 return
@@ -22,8 +24,7 @@ else resolutionMethod.equals(ResolutionMethod.RENAMERIGHT)
 "NameConflictResolver resolver" -> "Cell rightCell" ++ : setName(ame)
 return
 else resolutionMethod.equals(ResolutionMethod.CANCEL)
-"NameConflictResolver resolver" -> "MergeAction action": cancel()
-note right: This would cancel the whole action
+note over "Cell rightCell", "Cell cell": This would cancel the whole action
 end
 end
 deactivate "NameConflictResolver resolver"
@@ -46,13 +47,15 @@ return
 return instance
 "MergeAction action" -> "Model instance" ++ : getCurrentProject()
 return currentProject
-"MergeAction action" -> "Project CurrentProject"++: getLibraries()
+"MergeAction action" -> "Project currentProject"++: getLibraries()
 return libraries
-"MergeAction action" -> "Project CurrentProject"++: setLibraries(libraries)
+"MergeAction action" -> "Project currentProject"++: setLibraries(libraries)
 return
-"MergeAction action" -> "Project CurrentProject"++: notify()
-"Project CurrentProject" -> View++ :update()
+"MergeAction action" -> "Project currentProject"++: notify()
+loop for each updatable component 
+"Project currentProject" -> Updatable ++ : update()
 return
+end
 return
 return
 return
