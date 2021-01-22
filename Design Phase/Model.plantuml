@@ -471,9 +471,9 @@ package commands{
         + void undo()
     }
     class RemoveCommand implements Command{
-        - Library removedLibrary
+        - ArrayList<Library> removedLibraries
         __
-        + RemoveCommand(Library)
+        + RemoveCommand(ArrayList<Library>)
         + void execute()
         + void undo()
     }
@@ -605,11 +605,16 @@ package project {
         + void resetShorcuts()
         + notify()
     }
+    interface Updatable {
+        __
+        + void update()
+    }
     class Project {
     - ArrayList<Library> libraries
     - HashSet<Element> copiedElements
     - HashSet<Element> openedInTextElements
     - ArrayList<Filter> filters
+    - ArrayList<Updatable> updatable
     __
     + Project()
     + notify()
@@ -621,6 +626,8 @@ package project {
     + void setOpenedInTextElements(HashSet<Element>)
     + void setCopiedElements(HashSet<Element>)
     + void setFilters(ArrayList<Filter>)
+    + void removeUpdatable(Updatable updatable)
+    + void addUpdatable(Updatable updatable)
     + void saveDefaultFilters()
     + void loadDefaultFilters()
     }
