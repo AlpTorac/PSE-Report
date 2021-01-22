@@ -60,4 +60,8 @@ DataUpdateHandler --> Outliner
 
 IObserver -> Model: > observes
 
+ElementManipulator --|> Updatable
+SubWindow --|> Updatable
+Outliner --|> Updatable
+
 @enduml
