@@ -39,7 +39,6 @@ skinparam Note {
 package view {
     interface KeyListener implements EventListener
     interface ActionListener implements EventListener
-    interface TreeSelectionListener implements EventListener
     interface DocumentListener implements EventListener
     interface TextListener implements EventListener
     interface MouseListener implements EventListener
@@ -70,7 +69,6 @@ together {
     SAVEAS
     EDIT
     SEARCH
-    SELECT
     CREATE
     RENAME
     MERGE
@@ -114,44 +112,37 @@ package listeners{
             
         }
         
-        class OpenElementListener implements ActionListener, MouseListener, TreeSelectionListener{
+        class OpenElementListener implements ActionListener, MouseListener{
             -Command command
-            -Element element
+            -Panel panel
             +OpenElementListener()
             +void actionPerformed(ActionEvent e)
             +void mouseClicked(MouseEvent e)
-            +void valueChanged(TreeSelectionEvent e)
         }
 
-        class DeleteCellListener implements ActionListener, TreeSelectionListener{
+        class DeleteCellListener implements ActionListener{
             -Command command
-            -ArrayList<Cell> cells
+            -Panel panel
             +DeleteCellListener()
             +void actionPerformed(ActionEvent e)
-            +void valueChanged(TreeSelectionEvent e)
         }
 
-        class RemoveListener implements ActionListener, TreeSelectionListener{
+        class RemoveListener implements ActionListener{
             -Command command
-            -ArrayList<Library> libraries
+            -Panel panel
             +RemoveListener()
             +void actionPerformed(ActionEvent e)
-            +void valueChanged(TreeSelectionEvent e)
+            
         }
 
-        class RenameListener implements ActionListener, TreeSelectionListener{
+        class RenameListener implements ActionListener{
             -Command command
-            -Element element
+            -Panel panel
             +RenameListener()
             +void actionPerformed(ActionEvent e)
             +void valueChanged(TreeSelectionEvent e)
         } 
 
-        class SelectListener implements TreeSelectionListener{
-            +SelectListener()
-            +void valueChanged(TreeSelectionEvent e)
-        }
-        
 
         class EditListener implements ActionListener, DocumentListener{
             -Command command
@@ -180,12 +171,12 @@ package listeners{
             +void actionPerformed(ActionEvent e)
         }
 
-        class MergeListener implements ActionListener, TreeSelectionListener{
+        class MergeListener implements ActionListener{
             -Command command
-            -ArrayList<Library> libraries
+            -Panel panel
             +MergeListener()
             +void actionPerformed(ActionEvent e)
-            +void valueChanged(TreeSelectionEvent e)
+            
         }
 
         class ScaleListener implements ActionListener{
@@ -213,38 +204,36 @@ package listeners{
             +void actionPerformed(ActionEvent e)
         }
 
-        class CompareListener implements ActionListener, TreeSelectionListener{
+        class CompareListener implements ActionListener{
             -Command command
-            -ArrayList<Element> elements
+            -Panel panel
             +CompareListener()
             +void actionPerformed(ActionEvent e)
-            +void valueChanged(TreeSelectionEvent e)
+            
         }
 
         together {
-            class MoveListener implements ActionListener, TreeSelectionListener{
+            class MoveListener implements ActionListener{
                 -Command command
-                -ArrayList<Cell> cells
+                -Panel panel
                 +MoveListener()
                 +void actionPerformed(ActionEvent e) 
-                +void valueChanged(TreeSelectionEvent e)
+            
                
             } 
 
-            class CopyListener implements ActionListener, TreeSelectionListener{
+            class CopyListener implements ActionListener{
                 -Command command
-                -ArrayList<Cell> cells
+                -Panel panel
                 +CopyListener()
                 +void actionPerformed(ActionEvent e)
-                +void valueChanged(TreeSelectionEvent e)
             }
 
-            class PasteListener implements ActionListener, TreeSelectionListener{ 
+            class PasteListener implements ActionListener{ 
                 -Command command
-                -Library targetLibrary
+                -Panel panel
                 +PasteListener()
                 +void actionPerformed(ActionEvent e)
-                +void valueChanged(TreeSelectionEvent e)
                 
             }
            
