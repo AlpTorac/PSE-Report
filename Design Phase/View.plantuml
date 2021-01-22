@@ -130,9 +130,6 @@ skinparam Note {
     
     'UI Composites
     package Composites {
-        interface ModelUser {
-            +update()
-        }
         enum InfoBarID {
             VERSION
             SELECTED
