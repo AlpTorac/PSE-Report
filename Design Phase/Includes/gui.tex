@@ -73,75 +73,89 @@
             Panel with a collection of Info about the application status to display to the user.
         }
 
-    \struct{+}{c}{Outliner:Panel}?
+    \struct{+}{c}{Outliner:Panel, Updatable}?
             MenuBar:menu;
-            Tree;
-            Model
+            Tree=Tree view of liberty filess;
+            Model=Reference to model to get data from.
         ?<
-            \func{+}{Outliner}[Model:data]{Creates outliner and associates it with a Model.}
-        >{
+            \func{+}{Outliner}[Model:data=Model to get data from.]{Creates outliner and associates it with a Model.}
+        >[
+            \func{+}[void]{setData}[Model:data]{Associates different Model with the Outliner.}
+        ]{
             Interactive panel that shows a tree view of elements to the user.
         }
 
     \struct{+}{c}{SubWindowArea:Panel}?
         Map(SubWindow\&, SubWindow):subWindows=Aggregation of all SubWindows currently present in the panel.
     ?[
-        \func{+}[void]{addSubWindow}[SubWindow:sub=SubWindow to add]{Adds a SubWindow to the panel.};
-        \func{+}[void]{removeSubWindow}[SubWindow:sub=SubWindow to add]{Removes a SubWindow from the panel.}
+        \func{+}[void]{addSubWindow}[SubWindow:sub=SubWindow to add.]{Adds a SubWindow to the panel.};
+        \func{+}[void]{removeSubWindow}[SubWindow:sub=SubWindow to add.]{Removes a SubWindow from the panel.}
     ]{
         Panel where SubWindows are opened/displayed.
     }
 
-    \struct{+}{c}{SubWindow:Panel}?
+    \struct{+}{c}{SubWindow:Panel, Updatable}?
         MenuBar:menu
         ElementManipulator[]:manipulators
     ?<
-        \func{+}{SubWindow}[Element]{Creates new SubWindow and associates Element with it.}
+        \func{+}{SubWindow}[Element=Element to associate with.]{Creates new SubWindow and associates Element with it.}
     >[
-        \func{+}{setElement}[Element]{Associates Element with the SubWindow.}
+        \func{+}{setElement}[Element=Element to associate with.]{Associates Element with the SubWindow.}
     ]{
         Panel that displays an element for the user to interact with depending on the set ElementManipulator.
     }
 
-    \struct{+}{i}{ModelUser}[
-        \func{+}[void]{update}{Called whenever the Model is updated.}
-    ]{
-        Components that use data of the Model package implement this to be able to get notified when the Model changes.
-    }
+    %\struct{+}{i}{ModelUser}[
+    %    \func{+}[void]{update}{Called whenever the Model is updated.}
+    %]{
+    %    Components that use data of the Model package implement this to be able to get %notified when the Model changes.
+    %}
 
-    \struct{+}{a}{ElementManipulator:Panel}[
-        \func{+}{setElement}[Element]{Associates Element with the manipulator.}
+    \struct{+}{a}{ElementManipulator:Panel, Updatable}[
+        \func{+}{setElement}[Element=Element to associate with.]{Associates Element with the manipulator.}
     ]{
         Implementing classes display elements and let the User interact with them depending on their implementation.
     }
 
     \struct{+}{c}{TextEditor:ElementManipulator}?
-        TextPane
+        TextPane=Editor text pane.
     ?<
-        \func{+}{TextEditor}[Element]{Creates new TextEditor and asscoiates Element with it.}
+        \func{+}{TextEditor}[Element=Element to associate with.]{Creates new TextEditor and asscoiates Element with it.}
     >{
         Text editor with which the User can directly edit the associated Element.
     }
 
     \struct{+}{c}{Visualizer:ElementManipulator}?
-        TextArea:info ;
-        MenuBar:diagramOptions ;
-        MenuBar:statisticsoptions
+        TextArea:info=Area to display info in.;
+        MenuBar:diagramOptions=Options to change diagram display;
+        MenuBar:statisticsoptions=Options for showing statistics.
     ?<
-        \func{+}{Visualizer}[Element]{Associates Element with the Visualizer.}
+        \func{+}{Visualizer}[Element=Element to associate with.]{Associates Element with the Visualizer.}
     >{
         Visualizer to visualize the associated Element.
     }
 
     \struct{+}{c}{Comparer:ElementManipulator}<
-        \func{+}{Comparer}[Element:e1 | Element:e2]{Creates new Comparer to compare specified elements.}
+        \func{+}{Comparer}[Element:e1=First elemnt to compare. | Element:e2=Second element to compare.]{Creates new Comparer to compare specified elements.}
     >{
         Panel to show a comparison between two elements in.
     }
 
-    \struct{+}{c}{MergeDialog:Window}{
+    \struct{+}{c}{MergeDialog:Window}?
+         Label:prompt;
+        Label:left;
+        Label:right;
+        InputBox:left;
+        InputBox:right;
+        Button:renameLeft;
+        Button:renameRight;
+        Button:keepLeft;
+        Button:keepRight;
+    ?[
+        \func{+}[ConflictData]{open}[Cell:eLeft | Cell:eRight]{Opens the dialog with the specified elements}
+    ]{
         Dialog popup that is shown whenever merge conflicts arise. It lets the user resolve said conflicts in multiple ways.
     }
-   
-    \struct{+}{c}{SettingsDialog:Window}{DIalog popup that is used to provide the user a way to change settings that affect the entire application.}
+    
+    \struct{+}{c}{SettingsDialog:Window}{Dialog popup that is used to provide the user a way to change settings that affect the entire application.}
 \end{package}
