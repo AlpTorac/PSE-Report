@@ -292,9 +292,9 @@ package elements{
         + getIndex2() : float[]
         + void setIndex2(float[])
         + getDefaultLeakage(): Stat
-        + void saveLibrary()
-        + void saveLibraryAs()
-        + void saveAsCSV()
+        + {static} void saveLibrary()
+        + {static} void saveLibraryAs()
+        + {static} void saveAsCSV()
     }
     class Cell extends HigherElement{
         - float[] index1
@@ -326,7 +326,7 @@ package elements{
         + void calculateOutPow()
         + void calculateTiming()
         + interpolate(float[], float[])
-        + void saveAsCSV()
+        + {static} void saveAsCSV()
     }
     abstract class Pin extends Element{
         # Cell parentCell
@@ -336,9 +336,10 @@ package elements{
         + Pin()
         + getParent() : Cell
         + void setParent(Cell)
+        + getCapacitance() : float
+        + setCapacitance(float) 
         + getAvailablePower() : ArrayList<PowerGroup>
         + setAvailablePower() : ArrayList<PowerGroup>
-        + interpolate(float[], float[])
     }
     class InputPin{
         - ArrayList<InputPower> inputPowers
@@ -348,6 +349,8 @@ package elements{
         + void calculatePower()
         + getInputPowers(): ArrayList<InputPower>
         + void setInputPowers(ArrayList<InputPower>)
+        + interpolate(float[])
+        + {static} void saveAsCSV()
     }
     class OutputPin{
         - ArrayList<TimingSense> availableTimSen
@@ -373,7 +376,8 @@ package elements{
         + void calculate()
         + void calculatePower()
         + void calculateTiming()
-        + void saveAsCSV()
+        + interpolate(float[], float[])
+        + {static} void saveAsCSV()
     }
 }
 
@@ -455,7 +459,7 @@ package commands{
         - ArrayList<Library> mergedLibraries
         - Library productLibrary
         __
-        + MergeCommand(String)
+        + MergeCommand(String, ArrayList<Library>)
         + void execute()
         + void undo ()
     }
