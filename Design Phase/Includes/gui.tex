@@ -1,7 +1,7 @@
 %Components
 \begin{package}{Components}
     \struct{+}{i}{AutoResizing}[
-        \func{+}[void]{setResizer}[Component | ComponentResizer]{Associates a resizer with a component, making it resize it.}
+        \func{+}[void]{setResizer}[Component=Component to set the resizer on. | ComponentResizer=Resizer to use for the component.]{Associates a resizer with a component, making it resize it.}
     ]{
         Interface for components that are to be resized automatically.
     }
@@ -15,9 +15,9 @@
     }
 
     \struct{+}{c}{Resizer}<
-        \func{+}{Resizer}[ResizeMode:t | ResizeMode:r | ResizeMode:b | ResizeMode:l]{Creates new resizer with specified attributes.}
+        \func{+}{Resizer}[ResizeMode:t=Top edge alignment. | ResizeMode:r=Right edge alignment. | ResizeMode:b=Bottom edge alignment. | ResizeMode:l=Left edge alignment.]{Creates new resizer with specified attributes.}
     >[
-        \func{+}[void]{resize}[Component | int:width | int:height | int:newWidth | int:newHeight]{Resizes specified component to fit specified dimensions of parent component.}
+        \func{+}[void]{resize}[Component=Component to resize. | int:width=From width. | int:height=From height. | int:newWidth=To width. | int:newHeight=To height.]{Resizes specified component to fit specified dimensions of parent component.}
     ]{
         Classes that automatically resize use this class to define behaviour when resizing.
     }
@@ -68,7 +68,7 @@
         }
 
     \struct{+}{c}{InfoBar:Panel}?
-        Map(InfoBarID, TextBox)
+        Map(InfoBarID, TextBox)=Map to identify parts of the info bar.
         ?{
             Panel with a collection of Info about the application status to display to the user.
         }
