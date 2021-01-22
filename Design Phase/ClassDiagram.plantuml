@@ -52,14 +52,6 @@ EventManager --> Model
 
 Hoverable --> Diagram: > observes
 
-DataUpdateHandler --> DataPanel
-DataUpdateHandler --> CellPanel
-DataUpdateHandler --> LibraryPanel
-DataUpdateHandler --> Diagram
-DataUpdateHandler --> Outliner
-
-IObserver -> Model: > observes
-
 ElementManipulator ..|> Updatable
 SubWindow ..|> Updatable
 Outliner ..|> Updatable
