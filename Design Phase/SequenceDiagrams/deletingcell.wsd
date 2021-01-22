@@ -26,7 +26,7 @@ return
 
 DeleteAction -> Model : getInstance()
 activate Model
-return Model
+return instance 
 DeleteAction -> Model : getCurrentProject()
 activate Model 
 return currentProject
@@ -34,6 +34,7 @@ participant "currentProject : Project" as currentProject
 DeleteAction -> currentProject : getOpenedInTextElements()
 activate currentProject
 return HashSet<Element> openedInTextElements
+
 
 
 participant "openedInTextElements : HashSet<Element>" as openedInTextElements
@@ -48,6 +49,10 @@ return
 else if the cell is not opened in text editor 
 end 
 
+DeleteAction -> currentProject : getCopiedElements()
+activate currentProject
+return HashSet<Element> copiedElements
+
 alt if the cell is one of the copied elements 
 DeleteAction -> copiedElements : remove(Cell)
 activate copiedElements 
@@ -57,15 +62,15 @@ end
 
 end
 
-DeleteAction -> Model: notify()
-activate Model
+DeleteAction -> currentProject: notify()
+activate currentProject
 
-Model -> View : update()
-activate View
+loop for each updatable component 
+currentProject -> Updatable : update()
+activate Updatable
+return 
+end
 
-View -> Project : getLibraries()
-activate Project
-return ArrayList<Library>
 return
 return 
 return 
