@@ -186,6 +186,7 @@ skinparam Note {
             -Model
             +Outliner(Model data)
             +setModel(Model data)
+            +getSelectedElements: ArrayList<Element>
         }
         Outliner ..|> ModelUser
 
@@ -826,7 +827,6 @@ package representation{
     CellPanel --> Button
     CellPanel --> Checkbox
     LibraryPanel --> ScrollPane
-    CellImageGenerator --> images
 }
 !endsub
 @enduml
