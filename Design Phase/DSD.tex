@@ -532,7 +532,6 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 \chapter{Packages}
     \includeimage{}{0.3}{PackageDiagram}{PackageDiagram}{PackageDiagram}
     \section{Model}
-    \includeimage{}{0.1}{Model}{Model}{ModelFirst}{}
     \subsection{model.commands}
     This package contains commands.
     \subsection{model.elements}
@@ -548,7 +547,6 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     \subsection{model.project}
     This package provides classes for the management of the project.
     \section{View}
-    \includeimage{}{0.035}{View}{View}{View}
     %gui
     \subsection{view.components}
     This package contains all GUI components that are adapted from Java's Swing library. They are used in other packages that are part of the View package to define their appearance and user interaction.
@@ -573,7 +571,6 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     \subsection{view.diagrams.builder}
     The contents of this package are responsible for building the diagrams by utilizing view.diagrams.components package.
     \section{Controller}
-    \includeimage{}{0.062}{Controllerv}{Controller}{ControllerFirst}
     \subsection{controller.listeners}
     This package contains all the listeners which are observing the view components.The listeners in this package are implementing the subinterfaces of the interface EventListener (such as ActionListener, TreeSelectionListener, DocumentListener and TextListener) in package "java.util". "java.awt.event" package is also used for the events occurring on the corresponding UI components.
 
@@ -987,6 +984,22 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         {
             Hides the \refer{\lblroot:view.diagrams.components:HoverLabel}{HoverLabel}.
         }{}{}
+        \item \methoddesc{\public}{\deflt}{void}{addHoverListener}{\type{Component} component}
+        {
+            Adds a listener to the given component, which listens for any hovering action a user does with the mouse pointer inside the component.
+        }{
+            \begin{itemize}
+                \item \paramdesc{component}{A given component.}
+            \end{itemize}
+        }{}
+        \item \methoddesc{\public}{}{void}{addHoverListeners}{\type{Component[]} components}
+        {
+            Adds a listener to the given component, which listens for any hovering action a user does with the mouse pointer inside the component.
+        }{
+            \begin{itemize}
+                \item \paramdesc{components}{A given array of components.}
+            \end{itemize}
+        }{}
     \end{itemize}
 }
 
@@ -2092,8 +2105,8 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 }{
     \begin{itemize}
         \item \atrdesc{\private}{}{String}{caption}{The text the label will display.}
-        \item \atrdesc{\private}{}{Theme}{theme}{The theme the label will have.}
-        \item \atrdesc{\private}{}{PositionInFrame}{mousePointer}{The position of the mouse pointer.}
+        \item \atrdesc{\private}{}{Color}{color}{The color the label will have.}
+        \item \atrdesc{\private}{}{PositionInFrame}{position}{The position of the mouse pointer.}
         \item \atrdesc{\private}{}{Number}{width}{The width of the label.}
         \item \atrdesc{\private}{}{Number}{height}{The height of the label.}
         \item \atrdesc{\private}{}{Label}{label}{The label specified by the attributes.}
@@ -2140,6 +2153,54 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
         \item \methoddesc{\public}{}{Number}{getHeight}{}
         {}{}{
             \refer{\lblroot:view.diagrams.components:HoverLabel:height}{height}.
+        }
+        \item \methoddesc{\public}{}{void}{setXPos}{\type{Number} xPos}
+        {
+            Sets the x-Coordinate of \refer{\lblroot:view.diagrams.components:HoverLabel:position}{position}.
+        }{
+            \begin{itemize}
+                \item \paramdesc{xPos}{The new x-Coordinate of \refer{\lblroot:view.diagrams.components:HoverLabel:position}{position}.}
+            \end{itemize}
+        }{}
+        \item \methoddesc{\public}{}{void}{setYPos}{\type{Number} yPos}
+        {
+            Sets the y-Coordinate of \refer{\lblroot:view.diagrams.components:HoverLabel:position}{position}.
+        }{
+            \begin{itemize}
+                \item \paramdesc{yPos}{The new y-Coordinate of \refer{\lblroot:view.diagrams.components:HoverLabel:position}{position}.}
+            \end{itemize}
+        }{}
+        \item \methoddesc{\public}{}{void}{setCaption}{\type{String} caption}
+        {
+            Sets the y-Coordinate of \refer{\lblroot:view.diagrams.components:HoverLabel:caption}{caption}.
+        }{
+            \begin{itemize}
+                \item \paramdesc{caption}{The new \refer{\lblroot:view.diagrams.components:HoverLabel:caption}{caption}.}
+            \end{itemize}
+        }{}
+        \item \methoddesc{\public}{}{void}{setColor}{\type{Color} color}
+        {
+            Sets the \refer{\lblroot:view.diagrams.components:HoverLabel:color}{color}.
+        }{
+            \begin{itemize}
+                \item \paramdesc{color}{The new  \refer{\lblroot:view.diagrams.components:HoverLabel:color}{color}.}
+            \end{itemize}
+        }{}
+        \item \methoddesc{\public}{}{void}{getXPos}{}
+        {}{}{
+            x-Coordinate of \refer{\lblroot:view.diagrams.components:HoverLabel:position}{position}.
+        }
+        \item \methoddesc{\public}{}{void}{getYPos}{}
+        {}{}{
+            y-Coordinate of \refer{\lblroot:view.diagrams.components:HoverLabel:position}{position}.
+        }
+        \item \methoddesc{\public}{}{void}{getCaption}{}
+        {}{}{
+            \refer{\lblroot:view.diagrams.components:HoverLabel:caption}{caption}.
+        }
+        \item \methoddesc{\public}{}{void}{getColor}{}
+        {}{}{
+            \refer{\lblroot:view.diagrams.components:HoverLabel:color}{color}.
         }
     \end{itemize}
 }
@@ -3051,13 +3112,13 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     \end{itemize}}
 {
 \begin{itemize}
-        \item \methoddesc{\public}{}{void}{calculate}{}{Calculates the stats of the attributes.}
+        \item \methoddesc{\proted}{}{void}{calculate}{}{Calculates the stats of the attributes.}
         {}{}
-        \item \methoddesc{\private}{}{void}{scale}{\type{float} value}{Scales the values of the attribute.}
+        \item \methoddesc{\public}{}{void}{scale}{\type{float} value}{Scales the values of the attribute.}
         {{\begin{itemize}
         \item \paramdesc{value} {The scaling value.}
         \end{itemize}}}{}{}
-        \item \methoddesc{\public}{}{\type{Stats}}{getStats}{}{}{}{\refer{\lblroot:model.elements.attributes:Attribute:stats}{stats}}
+        \item \methoddesc{\public}{}{\type{Stats}}{getStats}{}{}{}{\refer{\lblroot:model.elements.attributes:Attribute:stats}{stats}.}
 \end{itemize}
 }
 
@@ -3065,34 +3126,34 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 {\decl{\public \abstr \class InAttribute}{Stores the data of an attribute of the \refer{\lblroot:model.elements:InputPin}{input pin}.
 }}}
 {\begin{itemize}
-    \item \atrdesc{\proted}{}{\type{float[]}}{index1}{}
-    \item \atrdesc{\proted}{}{\type{float[]}}{values}{}
+    \item \atrdesc{\proted}{}{\type{float[]}}{index1}{Index array of the input pin attributes.}
+    \item \atrdesc{\proted}{}{\type{float[]}}{values}{Values of the input pin attributes.}
+     \item \atrdesc{\proted}{}{\type{InputPin}}{parentInPin}{Parent input pin of the attribute.}
 \end{itemize}}
 {\begin{itemize}
     \item \implclsdec{InputPower}
 \end{itemize}}
-{a}
 {\begin{itemize}
-        \item \methoddesc{\public}{}{void}{calculate}{}{}
+        \item \constrdesc{\public}{InAttribute}{}{}{}
+    \end{itemize}}
+{\begin{itemize}
+        \item \methoddesc{\proted}{}{void}{calculate}{}{Calculates stats for the input pin attribute.}
         {}{}
-        \item \methoddesc{\public}{}{void}{scale}{\type{float} value}
+        \item \methoddesc{\public}{}{void}{scale}{\type{float} value}{}
         {{\begin{itemize}
         \item \paramdesc{value} {The scaling value.}
-        \end{itemize}}}{}{}
-        \item \methoddesc{\public}{}{\type{float[]}}{getIndex1}{}{}{}{
+        \end{itemize}}}{}
+        \item \methoddesc{\public}{}{\type{float[]}}{getIndex1}{}{}{}{\refer{\lblroot:model.elements.attributes:InAttribute:index1}{index1}.}
         
-        1-dimensional index will be returned.}
-        \item \methoddesc{\public}{}{\type{float[]}}{getValues}{}{}{}{
+        \item \methoddesc{\public}{}{void}{setIndex1}{\type{float[]} index}{Sets \refer{\lblroot:model.elements.attributes:InAttribute:index1}{index1}.}{}{}
         
-        The array of values will be returned.}
-        \item \methoddesc{\public}{}{void}{setIndex1}{\type{float[]} index}
-        {{\begin{itemize}
-        \item \paramdesc{index} {The 1-dimensional index of the input pin attributes.}
-        \end{itemize}}}{}{}
-        \item \methoddesc{\public}{}{void}{setValues}{\type{float[]} values}
-        {{\begin{itemize}
-        \item \paramdesc{values} {The array of input pin attribute values.}
-        \end{itemize}}}{}{}
+        \item \methoddesc{\public}{}{\type{InputPin}}{getParentInPin}{}{}{}{\refer{\lblroot:model.elements.attributes:InAttribute:parentInPin}{parentInPin}.}
+        
+        \item \methoddesc{\public}{}{void}{setParentInPin}{\type{InputPin} parentInPin}{Sets \refer{\lblroot:model.elements.attributes:InAttribute:parentInPin}{parentInPin}.}{}{}
+        
+        \item \methoddesc{\public}{}{\type{float[]}}{getValues}{}{}{}{\refer{\lblroot:model.elements.attributes:InAttribute:values}{values}.}
+        
+        \item \methoddesc{\public}{}{void}{setValues}{\type{float[]} values}{Sets \refer{\lblroot:model.elements.attributes:InAttribute:values}{values}.}{}{}
 \end{itemize}}
 
 
@@ -3100,65 +3161,76 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
 {\decl{\public \abstr \class OutAttribute}{Stores the data of an attribute of the \refer{\lblroot:model.elements:OutputPin}{output pin}.}}
 }
 {\begin{itemize}
-    \item \atrdesc{\proted}{}{\type{float[]}}{index1}{}
-    \item \atrdesc{\proted}{}{\type{float[]}}{index2}{}
-    \item \atrdesc{\proted}{}{\type{float[][]}}{values}{}
-    \item \atrdesc{\proted}{}{\type{InputPin}}{relatedPin}{}
+    \item \atrdesc{\proted}{}{\type{float[]}}{index1}{First index array of the output pin attributes.}
+    \item \atrdesc{\proted}{}{\type{float[]}}{index2}{Second index array of the output pin attributes.}
+    \item \atrdesc{\proted}{}{\type{float[][]}}{values}{Values of the output pin attributes.}
+    \item \atrdesc{\proted}{}{\type{InputPin}}{relatedPin}{The related input pin of the output pin attribute.}
+    \item \atrdesc{\proted}{}{\type{OutputPin}}{parentOutPin}{Parent output pin of the attribute.}
 \end{itemize}}
 {\begin{itemize}
     \item \implclsdec{OutputPower}
     \item \implclsdec{Timing}
 \end{itemize}}
-{a}
 {\begin{itemize}
-        \item \methoddesc{\public}{}{void}{calculate}{}{}
+        \item \constrdesc{\public}{OutAttribute}{}{}{}
+    \end{itemize}}
+{\begin{itemize}
+        \item \methoddesc{\proted}{}{void}{calculate}{}{Calculates stats of the output attribute.}
         {}{}
-        \item \methoddesc{\public}{}{void}{scale}{\type{float} value}
+        \item \methoddesc{\public}{}{void}{scale}{\type{float} value}{}
         {{\begin{itemize}
         \item \paramdesc{value} {The scaling value.}
-        \end{itemize}}}{}{}
-        \item \methoddesc{\public}{}{\type{float[]}}{getIndex1}{}{}{}{
+        \end{itemize}}}{}
+        \item \methoddesc{\public}{}{\type{float[]}}{getIndex1}{}{}{}{\refer{\lblroot:model.elements.attributes:OutAttribute:index1}{index1}.}
+        \item \methoddesc{\public}{}{\type{float[]}}{getIndex2}{}{}{}{\refer{\lblroot:model.elements.attributes:OutAttribute:index2}{index2}.}
         
-        1-dimensional first index array will be returned.}
-        \item \methoddesc{\public}{}{\type{float[]}}{getIndex2}{}{}{}{
+        \item \methoddesc{\public}{}{\type{float[][]}}{getValues}{}{}{}{\refer{\lblroot:model.elements.attributes:OutAttribute:values}{values}.}
         
-        1-dimensional second index array will be returned.}
-        \item \methoddesc{\public}{}{\type{float[][]}}{getValues}{}{}{}{
+        \item \methoddesc{\public}{}{\type{OutputPin}}{getParentOutPin}{}{}{}{\refer{\lblroot:model.elements.attributes:OutAttribute:parentOutPin}{parentOutPin}.}
         
-        The array of values will be returned.}
+        \item \methoddesc{\public}{}{void}{setParentOutPin}{\type{OutputPin} parentOutPin}{Sets \refer{\lblroot:model.elements.attributes:OutAttribute:parentOutPin}{parentOutPin}.}{}{}
+        
         \item \methoddesc{\public}{}{void}{setIndex1}{\type{float[]} index}
-        {{\begin{itemize}
-        \item \paramdesc{index} {The 1-dimensional first index array of the output pin attributes.}
-        \end{itemize}}}{}{}
+        {Sets \refer{\lblroot:model.elements.attributes:OutAttribute:index1}{index1}.}{}{}
         \item \methoddesc{\public}{}{void}{setIndex2}{\type{float[]} index}
-        {{\begin{itemize}
-        \item \paramdesc{index} {The 1-dimensional second index array of the output pin attributes.}
-        \end{itemize}}}{}{}
+        {Sets \refer{\lblroot:model.elements.attributes:OutAttribute:index2}{index2}.}{}{}
         \item \methoddesc{\public}{}{void}{setValues}{\type{float[][]} values}
-        {{\begin{itemize}
-        \item \paramdesc{values} {The array of input pin attribute values.}
-        \end{itemize}}}{}{}
+        {Sets \refer{\lblroot:model.elements.attributes:OutAttribute:values}{values}.}{}{}
         \item
         \methoddesc{\public}{}{void}{setRelatedPin}{\type{InputPin} inpin}
+        {{Sets \refer{\lblroot:model.elements.attributes:OutAttribute:relatedPin}{relatedPin}.}}{}{}
+        
+        \item
+        \methoddesc{\public}{}{\type{Attribute}}{createComparedAttribute}{\type{Attribute} attribute}
+        {{Creates a new Attribute that displays the difference between this attribute instance and another.}}
         {{\begin{itemize}
-        \item \paramdesc{inpin} {The input pin that the output pin is going to be related to.}
-        \end{itemize}}}{}{}
+        \item \paramdesc{attribute} {The attribute to compare to.}
+        \end{itemize}}}{}
 \end{itemize}}
-
 
 \classdesc{Leakage}{
 {\decl{\public \class Leakage}{Stores the leakage data of the \refer{\lblroot:model.elements:Cell}{cell}.}}
 }
 
 {\begin{itemize}
-    \item \atrdesc{\private}{}{\type{float[]}}{values}{}
+    \item \atrdesc{\private}{}{\type{float[]}}{values}{Leakage values.}
+    \item \atrdesc{\private}{}{\type{Cell}}{parentCell}{Parent cell of the leakage attribute.}
 \end{itemize}}
 {\begin{itemize}
-        \item \constrdesc{\public}{Leakage}{\type{float[]} values}{{\begin{itemize}
+        \item \constrdesc{\public}{Leakage}{\type{float[]} values}{}{{\begin{itemize}
         \item \paramdesc{values} {The values of leakages of a cell.}
-        \end{itemize}}}{}
+        \end{itemize}}}
     \end{itemize}}
-{}
+{\begin{itemize}
+        
+        \item \methoddesc{\public}{}{\type{InputPin}}{getParentCell}{}{}{}{\refer{\lblroot:model.elements.attributes:Leakage:parentCell}{parentCell}.}
+        
+        \item \methoddesc{\public}{}{void}{setParentCell}{\type{Cell} parentCell}{Sets \refer{\lblroot:model.elements.attributes:Leakage:parentCell}{parentCell}.}{}{}
+        
+        \item \methoddesc{\public}{}{\type{float[]}}{getValues}{}{}{}{\refer{\lblroot:model.elements.attributes:Leakage:values}{values}.}
+        
+        \item \methoddesc{\public}{}{void}{setValues}{\type{float[]} values}{Sets \refer{\lblroot:model.elements.attributes:Leakage:values}{values}.}{}{}
+\end{itemize}}
 
 
 \classdesc{InputPower}{
@@ -3171,11 +3243,11 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     \end{itemize}}
 {
     \begin{itemize}
-        \item \constrdesc{\public}{InputPower}{{\type{PowerGroup} powgroup, \type{float[]} values}}
+        \item \constrdesc{\public}{InputPower}{{\type{PowerGroup} powgroup, \type{float[]} values}}{}
         {{\begin{itemize}
         \item \paramdesc{powgroup} {The power group of the values.}
         \item \paramdesc{values} {The array of power values of an input pin.}
-        \end{itemize}}}{}
+        \end{itemize}}}
     \end{itemize}
 }{}
     
@@ -3190,11 +3262,11 @@ Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
     \end{itemize}
 }{
     \begin{itemize}
-        \item \constrdesc{\public}{OutputPower}{{\type{PowerGroup} powgroup, \type{float[][]} values}}
+        \item \constrdesc{\public}{OutputPower}{{\type{PowerGroup} powgroup, \type{float[][]} values}}{}
         {{\begin{itemize}
         \item \paramdesc{powgroup} {The power group of the values.}
         \item \paramdesc{values} {The 2 dimensional array of power values of an output pin.}
-        \end{itemize}}}{}
+        \end{itemize}}}
     \end{itemize}
 }{}
 
@@ -3717,17 +3789,17 @@ Opens a file.
 
 \classdesc{RemoveCommand}{
 \decl{\public \class RemoveCommand}{
-Removes a \refer{\lblroot:model.elements:Library}{library} from the \refer{\lblroot:model.project:Project}{project}.
+Removes \refer{\lblroot:model.elements:Library}{libraries} from the \refer{\lblroot:model.project:Project}{project}.
 }
 }{
     \begin{itemize}
-        \item \atrdesc{\private}{}{\type{Library}}{removedLibrary}{The library, that is removed from the project.}
+        \item \atrdesc{\private}{}{\type{ArrayList<Library>}}{removedLibraries}{The libraries, that are removed from the project.}
     \end{itemize}} 
 {   \begin{itemize}
-        \item \constrdesc{\public}{RemoveCommand}{\type{Library} library}{}
+        \item \constrdesc{\public}{RemoveCommand}{\type{ArrayList<Library>} libraries}{}
         {
             \begin{itemize}
-            \item \paramdesc{library}{The library that is going to be removed from the project.}
+            \item \paramdesc{libraries}{The libraries that are going to be removed from the project.}
             \end{itemize}
         }
     \end{itemize}
@@ -4126,11 +4198,11 @@ Resolves naming conflicts while keeping track of the taken actions.
     \end{itemize}
 }{
     \begin{itemize}
-        \item \methoddesc{\public}{}{void}{getRenamedCells}{}
+        \item \methoddesc{\public}{}{\type{HashMap<\type{Cell}, \type{String}>}}{getRenamedCells}{}
         {Gets the map containing the old names of renamedCells.}{}{The map of renamed cells and their old names.}
-        \item \methoddesc{\public}{}{void}{getDeletedCells}{}
+        \item \methoddesc{\public}{}{\type{ArrayList<\type{Cell}>}}{getDeletedCells}{}
         {Gets the list containing deleted Cells from Conflict Resolution.}{}{The list of deleted Cells.}
-        \item \methoddesc{\public}{}{void}{getCells}{}
+        \item \methoddesc{\public}{}{\type{ArrayList<\type{Cell}>}}{getCells}{}
         {Gets the resolved Cells.}{}{The resolved Cells.}
     \end{itemize}
 }
@@ -4328,6 +4400,7 @@ Keeps track of the \refer{\lblroot:model.elements:Element}{Elements} loaded into
         \item \atrdesc{\private}{}{HashSet<Element>}{copiedElements}{The Set that keeps track of the copied \refer{\lblroot:model.elements:Element}{elements}}
         \item \atrdesc{\private}{}{HashSet<Element>}{openedInTextElements}{The Set that keeps track of the \refer{\lblroot:model.elements:Element}{elements} opened in a text editor}
         \item \atrdesc{\private}{}{ArrayList<Filter>}{filters}{The array that keeps track of the \refer{\lblroot:model.project:Filter}{filters} active in the project}
+        \item \atrdesc{\private}{}{HashSet<Updatable>}{updatables}{The array that keeps track of the components in the view that implement\refer{\lblroot:model.project:Updatable}{Updatable}}
     \end{itemize}
 }{
     \begin{itemize}
@@ -4367,12 +4440,42 @@ Keeps track of the \refer{\lblroot:model.elements:Element}{Elements} loaded into
             \item \paramdesc{elements}{The set of Elements}
         \end{itemize}
         }{}
+        \item \methoddesc{\public}{}{}{addUpdatable}{t<\type{Updatable}> updatable}
+        {Adds an updatable component to the updatable Set}{
+        \begin{itemize}
+            \item \paramdesc{updatable}{The updatable Component}
+        \end{itemize}
+        }{}
+        \item \methoddesc{\public}{}{}{removeUpdatable}{t<\type{Updatable}> updatable}
+        {Removes an updatable component to from updatable Set}{
+        \begin{itemize}
+            \item \paramdesc{updatable}{The updatable Component}
+        \end{itemize}
+        }{}
         \item \methoddesc{\public}{}{void}{notify}{}
         {Notifies the view of made changes}{}{}
         \item \methoddesc{\public}{\static}{void}{saveDefaultFilters}{}
         {Saves the current array of Filters in the program files.}{}{}
         \item \methoddesc{\public}{\static}{void}{loadDefaultFilters}{}
         {Loads the saved array of Filters from program files into the current Filter class.}{}{}
+    \end{itemize}
+}
+\interfacedesc{Updatable}
+    {
+\decl{\public \interface Updatable}{
+    An interface that is implemented by all updatable Components.
+    }
+    }{}
+    {
+    \begin{itemize}
+        \item \implclsdec{Outliner}
+        \item \implclsdec{SubWindow}
+        \item \implclsdec{ElementManipulator}
+    \end{itemize}
+    }{
+    \begin{itemize}
+        \item \methoddesc{\public}{}{void}{update}{}{The component updates itself.}
+        {}{}{}
     \end{itemize}
 }
 \classdesc{Interpolator}{
@@ -4491,7 +4594,8 @@ Keeps track of the filters specific data and provides filtering functionality.
         \item \atrdesc{\private}{}{Mode}{mode}{The way the filtered attribute is calculated.}
         \item \atrdesc{\private}{}{float}{value}{The value that the attribute is being compared to.}
         \item \atrdesc{\private}{}{Operation}{operation}{The operation that is being executed in the filter.}
-        \item \atrdesc{\private}{}{Status}{status}{If true, the filter is Active and will filter.\newline Else the filter is inactive and won't filter.}
+        \item \atrdesc{\private}{}{Status}{status}{\newline
+        If true, the filter is Active and will filter.\newline Else the filter is inactive and won't filter.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -4531,7 +4635,7 @@ Keeps track off the settings
         \item \atrdesc{\private}{}{int}{fontSize}{Ther set Font Size}
         \item \atrdesc{\private}{}{int}{barCount}{The number of bars set to be displayed in a bar chart}
         \item \atrdesc{\private}{}{int}{undoCount}{The \refer{\lblroot:model.commands:CommandHistory:undoCount}{undoCount} saved in the \refer{\lblroot:model.commands:CommandHistory}{CommandHistory}}
-        \item \atrdesc{\private}{}{boolean}{editorOpenedFirst}{If true, the Text Editor opens first upon opening an \refer{\lblroot:model.elements:Element}{Element} in the workspace.\newline
+        \item \atrdesc{\private}{}{boolean}{editorOpenedFirst}{\newline If true, the Text Editor opens first upon opening an \refer{\lblroot:model.elements:Element}{Element} in the workspace.\newline
         Else, the Element View opens first }
     \end{itemize}
 }{
@@ -4764,7 +4868,6 @@ Keeps track of the \refer{\lblroot:model.project:Language}{languages} available 
         \item \fielddesc{Event}{REMOVE}{Listener for remove action.}
         \item \fielddesc{Event}{SAVE}{Listener for saving.}
         \item \fielddesc{Event}{SAVEAS}{Listener for saving the data as a new file.}
-        \item \fielddesc{Event}{SELECT}{Listener for selecting elements in the outliner.}
         \item \fielddesc{Event}{CREATE}{Listener for creating a new library.}
         \item \fielddesc{Event}{SEARCH}{Listener for searching elements in the outliner.}
         \item \fielddesc{Event}{EDIT}{Listener for the text editor.}
@@ -4781,7 +4884,8 @@ Keeps track of the \refer{\lblroot:model.project:Language}{languages} available 
         \item \fielddesc{Event}{ADDFILTER}{Listener for adding a filter.}
         \item \fielddesc{Event}{REMOVEFILTER}{Listener for removing a filter.}
         \item \fielddesc{Event}{LOADPROJECT}{Listener for loading an existing project}
-        \item \fielddesc{Event}{EXPORTPROJECT}{Listener for exporting a project in CSV format.}
+        \item \fielddesc{Event}{EXPORTCSV}{Listener for exporting a project in CSV format.}
+        \item \fielddesc{Event}{SAVEPROJECT}{Listener for saving a project.}
         \item \fielddesc{Event}{SETTINGS}{Listener for the settings tab.}
         \item \fielddesc{Event}{SCSETTINGS}{Listener for the shortcut settings.}
         \item \fielddesc{Event}{PRSETTINGS}{Listener for the preferences.}
@@ -4806,28 +4910,12 @@ Keeps track of the \refer{\lblroot:model.project:Language}{languages} available 
             \end{itemize}}{}
     \end{itemize}
 }{}
-\classdesc{SelectListener}{\public \class LoadLibraryListener implements \type{TreeSelectionListener} \decl{}{Observes the selected elements on the outliner.}}{
-    \begin{itemize}
-        \item \atrdesc{\private}{}{ArrayList<EventListener>}{listeners}{List of listeners which are given the selected elements.}
-        \item \atrdesc{\private}{}{ArrayList<Element>}{elements}{List of selected elements}
-    \end{itemize}
-}{
-    \begin{itemize}
-        \item \constrdesc{\public}{SelectListener}{}{}{}
-    \end{itemize}
-}{
-    \begin{itemize}
-        \item \methoddesc{\public}{}{void}{valueChanged}{\type{TreeSelectionEvent} e}
-        {}{\begin{itemize}
-            \item \paramdesc{e}{Performed selection event on the component.}
-            \end{itemize}}{}
-    \end{itemize}
-}{}
+
 \classdesc{OpenElementListener}{\public \class OpenElementListener implements \type{ActionListener} \decl{}{Listener for opening an element in the working area of the application.}
 }{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for opening a liberty file in working area}
-        \item \atrdesc{\private}{}{Element}{element}{Element which will be opened in the working area.}
+        \item \atrdesc{\private}{}{Panel}{panel}{Panel which the listener is attached to.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -4839,17 +4927,17 @@ Keeps track of the \refer{\lblroot:model.project:Language}{languages} available 
         {}{\begin{itemize}
             \item \paramdesc{e}{Performed action event on the component.}
             \end{itemize}}{}
-        \item \methoddesc{\public}{}{void}{setElement}{\type{Element} element}
-        {Sets the selected element from the outliner.}{\begin{itemize}
-            \item \paramdesc{element}{Selected element.}
+        \item \methoddesc{\public}{}{void}{mouseClicked}{\type{MouseEvent} e}
+        {}{\begin{itemize}
+            \item \paramdesc{e}{Performed mouse click event on the component.}
             \end{itemize}}{}
+        
     \end{itemize}
     }{}
 \classdesc{DeleteCellListener}{\public \class DeleteCellListener implements \type{ActionListener} \decl{}{Listener for deleting a cell permanently from a library.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for deleting a cell.}
-        \item \atrdesc{\private}{}{ArrayList<Cell>}{deletedCells}{List of cells which will be deleted.}
-        
+         \item \atrdesc{\private}{}{Panel}{panel}{Panel which the listener is attached to.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -4861,16 +4949,14 @@ Keeps track of the \refer{\lblroot:model.project:Language}{languages} available 
         {}{\begin{itemize}
             \item \paramdesc{e}{Performed action event on the component.}
             \end{itemize}}{}
-         \item \methoddesc{\public}{}{void}{setCells}{\type{ArrayList<Cell>} cells}
-        {Sets the selected cells from the outliner.}{\begin{itemize}
-            \item \paramdesc{cells}{Selected cells.}
-            \end{itemize}}{}
+
+       
     \end{itemize}
 }{}
 \classdesc{RemoveListener}{\public \class RemoveListener implements \type{ActionListener} \decl{}{Listener for removing an element from the project.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for removing a library}
-        \item \atrdesc{\private}{}{Library}{removedLibrary}{Library which will be removed.}
+        \item \atrdesc{\private}{}{Panel}{panel}{Panel which the listener is attached to.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -4882,18 +4968,13 @@ Keeps track of the \refer{\lblroot:model.project:Language}{languages} available 
         {}{\begin{itemize}
             \item \paramdesc{e}{Performed action event on the component.}
             \end{itemize}}{}
-        \item \methoddesc{\public}{}{void}{setLibrary}{\type{Library} library}
-        {Sets the selected library from the outliner.}{\begin{itemize}
-            \item \paramdesc{library}{Selected library.}
-            \end{itemize}}{}
+        
+        
     \end{itemize}
 }{}
 \classdesc{EditListener}{\public \class EditListener implements ActionListener, DocumentListener \decl{}{Observes the changes in the text editor.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for editing a liberty file in the text editor}
-        \item \atrdesc{\private}{}{Element}{element}{Edited liberty element}
-        \item \atrdesc{\private}{}{String}{newText}{Changed text}
-        \item \atrdesc{\private}{}{String}{oldText}{Old content of the text.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -4906,7 +4987,7 @@ Keeps track of the \refer{\lblroot:model.project:Language}{languages} available 
             \item \paramdesc{e}{Performed action event on the component.}
             \end{itemize}}{} 
         \item
-        \methoddesc{\public}{}{void}{changesUpdated}{\type{DocumentEvent} e}
+        \methoddesc{\public}{}{void}{changedUpdate}{\type{DocumentEvent} e}
         {}{\begin{itemize}
             \item \paramdesc{e}{Performed document event on the component.}
             \end{itemize}}{}
@@ -4914,8 +4995,7 @@ Keeps track of the \refer{\lblroot:model.project:Language}{languages} available 
 \classdesc{RenameListener}{\public \class RenameListener implements \type{ActionListener} \decl{}{Listener for renaming a liberty file in the outliner.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for renaming an element.}
-        \item \atrdesc{\private}{}{String}{newName}{New name of the element.}
-        \item \atrdesc{\private}{}{Element}{element}{To be renamed element.}
+         \item \atrdesc{\private}{}{Panel}{panel}{Panel which the listener is attached to.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -4927,16 +5007,11 @@ Keeps track of the \refer{\lblroot:model.project:Language}{languages} available 
         {}{\begin{itemize}
             \item \paramdesc{e}{Performed action event on the component.}
             \end{itemize}}{}
-         \item \methoddesc{\public}{}{void}{setElement}{\type{Element} element}
-        {Sets the selected element from the outliner.}{\begin{itemize}
-            \item \paramdesc{element}{Selected element.}
-            \end{itemize}}{}
         
     \end{itemize}}{}
-\classdesc{SearchListener}{\public \class SearchListener implements TextListener \decl{}{Listener for the search bar.}}{
-    \begin{itemize}
-        \item \atrdesc{\private}{}{Panel}{panel}{Panel which contains the search bar}
-    \end{itemize}
+\classdesc{SearchListener}{\public \class SearchListener implements TextListener \decl{}{Listener for the search bar.}}{\begin{itemize}
+    \item \atrdesc{\private}{}{Panel}{panel}{Panel that the listener is attached to.}
+\end{itemize}
 }{
     \begin{itemize}
         \item \constrdesc{\public}{SearchListener}{}{}{}
@@ -4984,7 +5059,7 @@ Keeps track of the \refer{\lblroot:model.project:Language}{languages} available 
 \classdesc{MergeListener}{\public \class MergeListener implements ActionListener \decl{}{Listener for merging multiple libraries.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for merging action}
-        \item \atrdesc{\private}{}{ArrayList<Library>}{libraries}{List of the libraries selected for merge action.}
+        \item \atrdesc{\private}{}{Panel}{panel}{Panel which the listener is attached to.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -4996,16 +5071,11 @@ Keeps track of the \refer{\lblroot:model.project:Language}{languages} available 
         {}{\begin{itemize}
             \item \paramdesc{e}{Performed action event on the component.}
             \end{itemize}}{}
-         \item \methoddesc{\public}{}{void}{setLibraries}{\type{ArrayList<Library>} libraries}
-        {Sets the selected libraries from the outliner.}{\begin{itemize}
-            \item \paramdesc{libraries}{Selected libraries.}
-            \end{itemize}}{}
+        
     \end{itemize}}{}
 \classdesc{ScaleListener}{\public \class ScaleListener implements ActionListener \decl{}{Listener for scaling.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for scaling action}
-        \item \atrdesc{\private}{}{Attribute}{attribute}{Attribute to scale.}
-        \item \atrdesc{\private}{}{float}{value}{Scaling value}
     \end{itemize}
 }{
     \begin{itemize}
@@ -5066,8 +5136,7 @@ Keeps track of the \refer{\lblroot:model.project:Language}{languages} available 
 \classdesc{CompareListener}{\public \class CompareListener implements ActionListener \decl{}{Listener for the compare action.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for comparing two elements.}
-        \item \atrdesc{\private}{}{Element}{element1}{First element to compare}
-        \item \atrdesc{\private}{}{Element}{element2}{Second element to compare}
+         \item \atrdesc{\private}{}{Panel}{panel}{Panel which the listener is attached to.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -5079,15 +5148,12 @@ Keeps track of the \refer{\lblroot:model.project:Language}{languages} available 
         {}{\begin{itemize}
             \item \paramdesc{e}{Performed action event on the component.}
             \end{itemize}}{}
-         \item \methoddesc{\public}{}{void}{setElements}{\type{ArrayList<Element>} elements}
-        {Sets the selected elements from the outliner.}{\begin{itemize}
-            \item \paramdesc{elements}{Selected elements.}
-            \end{itemize}}{}
+            
     \end{itemize}}{}
 \classdesc{MoveListener}{\public \class MoveListener implements ActionListener \decl{}{Listener for moving selected cells to another library.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for moving an element into another library.}
-        \item \atrdesc{\private}{}{ArrayList<Cell>}{cells}{List of the selected cells.}
+          \item \atrdesc{\private}{}{Panel}{panel}{Panel which the listener is attached to.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -5099,15 +5165,14 @@ Keeps track of the \refer{\lblroot:model.project:Language}{languages} available 
         {}{\begin{itemize}
             \item \paramdesc{e}{Performed action event on the component.}
             \end{itemize}}{}
-         \item \methoddesc{\public}{}{void}{setCells}{\type{ArrayList<Cell>} cells}
-        {Sets the selected cells from the outliner.}{\begin{itemize}
-            \item \paramdesc{cells}{Selected cells.}
-            \end{itemize}}{}
+            
+            
     \end{itemize}}{}
 \classdesc{CopyListener}{\public \class CopyListener implements ActionListener \decl{}{Listener for copying cells into another library.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for the copying action.}
-        \item \atrdesc{\private}{}{ArrayList<Cell>}{cells}{Cells selected for copying.}
+         \item \atrdesc{\private}{}{Panel}{panel}{Panel which the listener is attached to.}
+        
     \end{itemize}
 }{
     \begin{itemize}
@@ -5119,18 +5184,13 @@ Keeps track of the \refer{\lblroot:model.project:Language}{languages} available 
         {}{\begin{itemize}
             \item \paramdesc{e}{Performed action event on the component.}
             \end{itemize}}{}
-        
-         \item \methoddesc{\public}{}{void}{setCells}{\type{ArrayList<Cell>} cells}
-        {Sets the selected cells from the outliner.}{\begin{itemize}
-            \item \paramdesc{cells}{Selected cells.}
-            \end{itemize}}{}
-        
+          
     \end{itemize}}{}
 \classdesc{PasteListener}{\public \class PasteListener implements ActionListener \decl{}{Listener for pasting selected cells for copying to another library.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for the paste action.}
-        \item \atrdesc{\private}{}{boolean}{copyTag}{To decide if copy or move action has been performed before.}
-        \item \atrdesc{\private}{}{Library}{targetLibrary}{Target library for copy and move actions} 
+         \item \atrdesc{\private}{}{Panel}{panel}{Panel which the listener is attached to.}
+       
     \end{itemize}
 }{
     \begin{itemize}
@@ -5142,20 +5202,14 @@ Keeps track of the \refer{\lblroot:model.project:Language}{languages} available 
         {}{\begin{itemize}
             \item \paramdesc{e}{Performed action event on the component.}
             \end{itemize}}{}
-         \item \methoddesc{\public}{}{void}{setLibrary}{\type{Library} library}
-        {Sets the selected element from the outliner as the target library.}{\begin{itemize}
-        \item \paramdesc{library}{Selected target library.}
-            \end{itemize}}{}
-         \item \methoddesc{\public}{}{boolean}{getCopyTag}{}
-        {Returns the copy tag}{}{}
-         \item \methoddesc{\public}{}{}{setCopyTag}{\type{boolean}}
-        {Sets the copy tag}{}{}
+            
+        
     \end{itemize}}{}
 
 \classdesc{AddFilterListener}{\public \class AddFilterListener implements ActionListener \decl{}{Listener for add filter button.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Add filter command.}
-        \item \atrdesc{\private}{}{Filter}{filter}{Filter to be added.}
+         \item \atrdesc{\private}{}{Panel}{panel}{Panel that the listener is attached to.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -5171,7 +5225,7 @@ Keeps track of the \refer{\lblroot:model.project:Language}{languages} available 
 \classdesc{RemoveFilterListener}{\public \class RemoveFilterListener implements ActionListener \decl{}{Listener for remove filter button.}}{
     \begin{itemize}
         \item \atrdesc{\private}{}{Command}{command}{Command for removing a filter.}
-        \item \atrdesc{\private}{}{Filter}{filter}{Filter to be removed.}
+         \item \atrdesc{\private}{}{Panel}{panel}{Panel that the listener is attached to.}
     \end{itemize}
 }{
     \begin{itemize}
@@ -5186,9 +5240,6 @@ Keeps track of the \refer{\lblroot:model.project:Language}{languages} available 
     \end{itemize}}{}
 
 \classdesc{LoadProjectListener}{\public \class LoadProjectListener implements ActionListener \decl{}{Listener for importing a project}}{
-    \begin{itemize}
-        \item \atrdesc{\private}{}{Project}{project}{Project which will be loaded to the application.}
-    \end{itemize}
 }{
     \begin{itemize}
         \item \constrdesc{\public}{LoadProjectListener}{}{}{}
@@ -5263,6 +5314,7 @@ Keeps track of the \refer{\lblroot:model.project:Language}{languages} available 
 }
 
 \chapter{Class Diagrams}
+\includeimage{}{0.025}{ClassDiagram}{Complete class diagram}{ClassDiagram}
 \section{Model}
 \includeimage{}{0.1}{Model}{Model}{ModelSecond}
 \section{View}
@@ -5286,6 +5338,13 @@ Model stores and manages the liberty file data. Once model takes the user inputs
 in the liberty data and updates the view accordingly.\newline}
 
 \chapter{Design Patterns}
+\pattern{Adapter}{
+    The adapter pattern is used by the given below:
+    \leavevmode \\ \leavevmode \\
+    \begin{itemize}
+        \item \refer{\lblroot:view.diagrams.data:DiagramData}{DiagramData} as adapter for the data needed for making an \refer{\lblroot:view.diagrams:IDiagram}{IDiagram}.
+    \end{itemize}
+}
 \pattern{Strategy}{
     The strategy pattern is used by the given below, along with their roles:
     \leavevmode \\ \leavevmode \\
@@ -5350,40 +5409,41 @@ All the command classes in the commands package use the Command interface to eas
 \section{Mandatory Functional Requirements}
 \subsection{Loading Liberty Files and Displaying their Tree View}
 \includeimage{}{0.23}{FR1-2}{Sequence Diagram showing interactions for Loading Liberty Files and Displaying their Tree View}{FR-1 and FR-2}
-\subsection{Selecting elements in the outliner.}
 \subsection{Opening an element in the working areas}
-\includeimage{}{0.25}{FR-4}{Sequence Diagram showing interactions for Opening an element in the working areas}{FR-4}
-\subsection{Diagram Creation}
-\includeimage{}{0.32}{DiagramCreation}{Sequence Diagram that shows how \refer{\lblroot:view.diagrams:IDiagram}{IDiagrams} are created}{Diagram Creation}
-\subsection{Diagram Comparison}
-\includeimage{}{0.32}{DiagramComparison}{Sequence Diagram that shows how \refer{\lblroot:view.diagrams:IDiagram}{IDiagrams} are overlaid for comparison.}{Diagram Comparison}
+\includeimage{}{0.24}{FR-4}{Sequence Diagram showing interactions for Opening an element in the working areas}{FR-4}
+\subsection{Creating Diagram}
+\includeimage{}{0.32}{DiagramCreation}{Sequence Diagram that shows how \refer{\lblroot:view.diagrams:IDiagram}{IDiagrams} are created}{Creating Diagram}
+\subsection{Comparing Diagrams}
+\includeimage{}{0.32}{DiagramComparison}{Sequence Diagram that shows how \refer{\lblroot:view.diagrams:IDiagram}{IDiagrams} are overlaid for comparison.}{Comparing Diagrams}
 \subsection{Searching for an element by name}
 \includeimage{}{0.42}{FR-9}{Sequence Diagram showing interactions for Searching for an element by name}{FR-9}
 \subsection{Changing attributes through text editor}
 \includeimage{}{0.35}{FR10}{Sequence Diagram showing interactions for Changing attributes through text editor}{FR-10}
 \subsection{Merging Libraries and Resolving Merge Conflicts}
-\includeimage{}{0.20}{FR-12,13}{Sequence diagram showing interactions for Merging Libraries and Resolving Merge Conflicts}{FR-12 and FR-13}
+\includeimage{}{0.19}{FR-12,13}{Sequence diagram showing interactions for Merging Libraries and Resolving Merge Conflicts}{FR-12 and FR-13}
 \subsection{Copying Cells into another Library}
 \includeimage{}{0.27}{FR-14}{Sequence diagram showing interactions for Copying Cells into another Library}{Copying Cells into another Library}
-\subsection{FR-15}
-\includeimage{}{0.30}{removingalibrary}{Sequence diagram showing interactions for FR-15}{Removing Libraries}
-\subsection{FR-16}
-\includeimage{}{0.25}{deletingcell}{Sequence diagram showing interactions for FR-16}{Deleting Cells}
-\subsection{FR-17}
-\includeimage{}{0.35}{scalingvalues}{Sequence diagram showing interactions for FR-17}{Scaling Values}
-\subsection{Diagram Statistics}
-\includeimage{}{0.30}{DiagramStatistics}{Sequence Diagram that shows how statistics are shown on top of \refer{\lblroot:view.diagrams:IDiagram}{IDiagrams}.}{Diagram Statistics}
-\subsection{FR-21}
-\includeimage{}{0.35}{FR-21}{Sequence diagram showing interactions for FR-21}{Saving a Library as a new File}
-\section{Optional Functional Requirements}
-
+\subsection{Removing Libraries}
+\includeimage{}{0.30}{removinglibraries}{Sequence diagram showing interactions for Removing Libraries}{Removing Libraries}
+\subsection{Deleting Cells}
+\includeimage{}{0.24}{deletingcell}{Sequence diagram showing interactions for Deleting Cells}{Deleting Cells}
+\subsection{Scaling graph values}
+\includeimage{}{0.35}{scalingvalues}{Sequence diagram showing interactions for Scaling graph values}{Scaling Values}
+\subsection{Displaying Diagram Statistics}
+\includeimage{}{0.30}{DiagramStatistics}{Sequence Diagram that shows how statistics are shown on top of \refer{\lblroot:view.diagrams:IDiagram}{IDiagrams}.}{Displaying Diagram Statistics}
+\subsection{Displaying Hover Label}
+\includeimage{}{0.35}{HoverLabelDiagram}{Sequence Diagram that shows how the \refer{\lblroot:view.diagrams.components:HoverLabel}{Displaying HoverLabel} works.}{Hover Label}
+\subsection{Saving a Library as a new File} %NICE
+\includeimage{}{0.35}{FR-21}{Sequence diagram showing interactions for Saving a Library as a new File}{Saving a Library as a new File}
+\subsection{Selecting an element}
+\includeimage{}{0.5}{Select}{Sequence diagram showing interactions for Selecting an element}{Selecting an element}
 
 \chapter{Requirements Changes}
 \pattern{Mandatory Requirements}
 {All mandatory functional requirements are covered by the design with class diagrams and sequence diagrams. \newline
 
 
-A change has been made in the mandatory requirement "FR-5: Displaying a Library". As in the requirement phase decided, library level display would show statistics of the library for every index. However, it was decided during the design phase, that it would be more plausible, if the statistics were shown for each cell instead of for each index in the library level display. This would offer the user a better overview of the statistics. \newline
+A change has been made in the mandatory requirement "FR-5: Displaying a Library". As in the requirement phase decided, library level display would show statistics of the library for every index. However, it was decided during the design phase, that it would be more opportune, if the statistics were shown for each cell instead of for each index in the library level display. This would offer the user a better overview of the statistics. \newline
 
 This change would mean that there would only be bar charts (a bar for each cell) in the library level display instead of the mentioned "histogram" and "heatmap" in FR-5. This of course also changes the way libraries are compared (in FR-8) - the comparison of libraries would only feature bar charts. }
 \pattern{Optional Requirements}
@@ -5394,15 +5454,18 @@ This change would mean that there would only be bar charts (a bar for each cell)
     \item {FRO-3: Creating Liberty files from scratch}
     \item {FRO-5: Exporting data as CSV}
     \item {FRO-6: Resizing visualizer}
-    \item {FRO-11: Saving the state of the project} 
+    \item {FRO-11: Saving the state of the project}
     \item {FRO-12: Loading a project}
+    \item {FRO-14: Changing how the attributes of child elements are summarized}
+    \item {FRO-15: Modifying the type of the graph}
     \item {FRO-16: Interpolating}
-    \item {FRO-17: Changing GUI appearance} 
+    \item {FRO-17: Changing GUI appearance}
     \item {FRO-18: Changing the preferences}
-    \item {FRO-20: Shortcuts} 
-    \item {FRO-21: Undo/Redo} 
-    \item {FRO-24: Setting filters for a search} 
-    \item {FRO-25: Setting default filters} 
+    \item {FRO-19: Changing the language}
+    \item {FRO-20: Shortcuts}
+    \item {FRO-21: Undo/Redo}
+    \item {FRO-24: Setting filters for a search}
+    \item {FRO-25: Setting default filters}
 \end{itemize}}
 The remaining optional requirements are not covered in the design phase, but the current design allows for easy extendability.
 
