@@ -1,0 +1,46 @@
+\documentclass[10pt,a4paper]{report}
+
+\usepackage[a4paper,margin=1in,left=1in, right=1in]{geometry}
+
+\usepackage[T1]{fontenc}
+\usepackage{titlesec, blindtext, color}
+\newcommand{\hsp}{\hspace{10pt}}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{enumitem}
+
+\usepackage{caption}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{xcolor}
+
+\usepackage{tocloft}
+\usepackage{etoc}
+\usepackage[at]{easylist}
+
+\usepackage{etoolbox}
+\usepackage{url}
+
+\title{\includegraphics[scale=6.0]{App Icon}\\Implementation Report for Graphical Editor for Liberty Files}
+
+\author{Alp Toraç Genç, Kerem Kara, Xhulio Pernoca, Manuel Schenk, Ege Uzhan \leavevmode \\---------------------------------------------------------------------------------------\\
+Submitted to: Om Prakash, Georgios Zervakis, Faeze Faghih}
+\date{\today}
+
+% Format for the chapters/sections/subsections
+\titleformat{\chapter}[hang]{\Huge\bfseries}{\thechapter\hsp{}}{0pt}{\Huge\bfseries}
+\titlespacing{\chapter}{0cm}{0cm}{0.5cm} % distance from {right}{left}{next line} for chapter
+\titlespacing{\subsection}{0cm}{0cm}{0.5cm} % distance from {right}{left}{next line} for subsection
+
+\graphicspath{\imagepath}
+
+\begin{document}
+\maketitle
+\label{sec:title}
+\tableofcontents
+
+\end{document}
