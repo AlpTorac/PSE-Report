@@ -3,6 +3,7 @@
   <groupId>PSE.GELF</groupId>
   <artifactId>GELF</artifactId>
   <version>0.0.1</version>
+  <packaging>jar<packaging>
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
@@ -38,6 +39,20 @@
   </dependencies>
   <build>
     <plugins>
+      <plugin>
+      <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+        <archive>
+          <manifest>
+            <addClasspath>true</addClasspath>
+            <mainClass>TO_BE_ADDED</mainClass>
+          </manifest>
+        </archive>
+        <descriptorRefs>
+          <descriptorRef>jar-with-dependencies</descriptorRef>
+        </descriptorRefs>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
