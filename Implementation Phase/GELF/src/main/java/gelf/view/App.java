@@ -1,4 +1,4 @@
-package PSE.GELF;
+package main.java.gelf.view;
 
 /**
  * Hello world!

@@ -1,4 +1,4 @@
-package PSE.GELF;
+package test.java.gelf.view;
 
 import org.junit.jupiter.api.Test;
 
