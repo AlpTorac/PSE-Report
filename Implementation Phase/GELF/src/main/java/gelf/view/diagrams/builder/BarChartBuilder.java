@@ -1,5 +1,5 @@
 package gelf.view.diagrams.builder;
 
-public class BarChartBuilder {
+public class BarChartBuilder extends DiagramBuilder {
 
 }

@@ -1,5 +1,7 @@
 package gelf.view.diagrams.overlayer;
 
-public class DiagramOverlayer {
+import gelf.view.diagrams.IDiagramOverlayer;
+
+public class DiagramOverlayer implements IDiagramOverlayer {
 
 }

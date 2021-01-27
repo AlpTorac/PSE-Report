@@ -1,5 +1,5 @@
 package gelf.view.diagrams.components;
 
-public abstract class DiagramBar {
+public abstract class DiagramBar extends DiagramValueDisplayComponent {
 
 }

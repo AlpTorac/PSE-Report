@@ -1,5 +1,5 @@
 package gelf.view.diagrams.indicator;
 
-public class ValueScaleColorDisplayer {
+public class ValueScaleColorDisplayer extends HelperComponentDisplayer {
 
 }

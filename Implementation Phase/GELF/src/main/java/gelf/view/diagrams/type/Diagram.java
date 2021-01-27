@@ -1,5 +1,7 @@
 package gelf.view.diagrams.type;
 
-public abstract class Diagram {
+import gelf.view.diagrams.IDiagram;
+
+public abstract class Diagram implements IDiagram {
 
 }

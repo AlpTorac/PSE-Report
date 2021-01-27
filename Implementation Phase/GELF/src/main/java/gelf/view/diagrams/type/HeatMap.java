@@ -1,5 +1,5 @@
 package gelf.view.diagrams.type;
 
-public class HeatMap {
+public class HeatMap extends Diagram {
 
 }

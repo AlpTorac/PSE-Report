@@ -1,5 +1,5 @@
 package gelf.view.diagrams.components;
 
-public class DescriptionLabel {
+public class DescriptionLabel extends DiagramLabel {
 
 }

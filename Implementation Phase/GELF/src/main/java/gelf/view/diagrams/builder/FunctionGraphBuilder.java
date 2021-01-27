@@ -1,5 +1,5 @@
 package gelf.view.diagrams.builder;
 
-public class FunctionGraphBuilder {
+public class FunctionGraphBuilder extends DiagramBuilder {
 
 }

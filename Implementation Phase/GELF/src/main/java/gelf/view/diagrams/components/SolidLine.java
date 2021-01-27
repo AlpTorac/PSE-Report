@@ -1,5 +1,5 @@
 package gelf.view.diagrams.components;
 
-public class SolidLine {
+public class SolidLine extends DiagramLine {
 
 }

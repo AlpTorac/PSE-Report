@@ -1,5 +1,5 @@
 package gelf.view.diagrams.data;
 
-public class ArrayDataFormatter {
+public class ArrayDataFormatter extends DiagramDataFormatter {
 
 }

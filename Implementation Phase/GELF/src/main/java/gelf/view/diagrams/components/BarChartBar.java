@@ -1,5 +1,5 @@
 package gelf.view.diagrams.components;
 
-public class BarChartBar {
+public class BarChartBar extends DiagramBar {
 
 }

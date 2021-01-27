@@ -1,5 +1,5 @@
 package gelf.view.diagrams.overlayer;
 
-public class FunctionGraphOverlayStrategy {
+public class FunctionGraphOverlayStrategy implements IDiagramOverlayStrategy {
 
 }

@@ -1,5 +1,5 @@
 package gelf.view.diagrams.builder;
 
-public class HeatMapBuilder {
+public class HeatMapBuilder extends DiagramBuilder {
 
 }

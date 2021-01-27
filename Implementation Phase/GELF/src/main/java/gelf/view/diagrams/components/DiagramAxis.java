@@ -1,5 +1,5 @@
 package gelf.view.diagrams.components;
 
-public abstract class DiagramAxis {
+public abstract class DiagramAxis extends DiagramComponent {
 
 }

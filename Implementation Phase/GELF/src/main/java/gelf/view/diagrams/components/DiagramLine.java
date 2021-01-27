@@ -1,5 +1,5 @@
 package gelf.view.diagrams.components;
 
-public abstract class DiagramLine {
+public abstract class DiagramLine extends DiagramComponent {
 
 }

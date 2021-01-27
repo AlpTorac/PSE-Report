@@ -1,5 +1,5 @@
 package gelf.view.diagrams.components;
 
-public class HistogramBar {
+public class HistogramBar extends DiagramBar {
 
 }

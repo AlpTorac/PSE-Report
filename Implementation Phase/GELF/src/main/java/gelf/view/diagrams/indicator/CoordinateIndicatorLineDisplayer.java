@@ -1,5 +1,7 @@
 package gelf.view.diagrams.indicator;
 
-public class CoordinateIndicatorLineDisplayer {
+import gelf.view.diagrams.components.DiagramLine;
+
+public class CoordinateIndicatorLineDisplayer extends HelperLineDisplayer {
 
 }

@@ -1,5 +1,5 @@
 package gelf.view.diagrams.overlayer;
 
-public class HistogramOverlayStrategy {
+public class HistogramOverlayStrategy implements IDiagramOverlayStrategy {
 
 }

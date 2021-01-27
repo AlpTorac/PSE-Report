@@ -1,5 +1,5 @@
 package gelf.view.diagrams.components;
 
-public class BiColorScale {
+public class BiColorScale extends DiagramColorScale {
 
 }

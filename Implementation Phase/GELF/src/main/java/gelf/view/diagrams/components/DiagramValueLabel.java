@@ -1,5 +1,5 @@
 package gelf.view.diagrams.components;
 
-public abstract class DiagramValueLabel {
+public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 
 }
