@@ -26,17 +26,23 @@ skinparam responseMessageBelowArrow true
     return
     end
     return
-    return
-    return
 
+    return
     "OpenElementListener o" -> "SubWindowArea a" ++ : addSubWindow(s)
-    alt 1 SubWindow object in a
-    "SubWindowArea a" -> "SubWindow s" : resize(...) [set to half the width of a]
+    alt 0 SubWindow object in a
+    "SubWindowArea a" -> "SubWindow s" ++ : resize(...) [set to full width of a]
+    return
+    else 1 SubWindow object in a
+    "SubWindowArea a" -> "SubWindow s" ++ : resize(...) [set to half the width of a]
+    return
     else 2 SubWindow objects in a
-    "SubWindowArea a" -> "SubWindow s" : resize(...) [set to a third the width of a]
+    "SubWindowArea a" -> "SubWindow s" ++ : resize(...) [set to a third the width of a]
+    return
     else 3 SubWindow objects in a
-    "SubWindowArea a" -> "InfoBar i" : setText(InfoBarID::ERROR, "ERROR:Cannot open more than 3 sub-windows")
+    "SubWindowArea a" -> "InfoBar i" ++ : setText(InfoBarID::ERROR, "ERROR:Cannot open more than 3 sub-windows")
+    return
     end
+    return
     return
     return
 @enduml
