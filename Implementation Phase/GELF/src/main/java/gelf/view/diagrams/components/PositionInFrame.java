@@ -1,27 +1,27 @@
 package gelf.view.diagrams.components;
 
 public class PositionInFrame {
-	private Number xPos;
-	private Number yPos;
-	
-	public PositionInFrame(Number xPos, Number yPos) {
+	private double xPos;
+	private double yPos;
+
+	public PositionInFrame(double xPos, double yPos) {
 		this.xPos = xPos;
 		this.yPos = yPos;
 	}
 
-	public Number getXPos() {
+	public double getXPos() {
 		return xPos;
 	}
 
-	public void setXPos(Number xPos) {
+	public void setXPos(double xPos) {
 		this.xPos = xPos;
 	}
 
-	public Number getYPos() {
+	public double getYPos() {
 		return yPos;
 	}
 
-	public void setYPos(Number yPos) {
+	public void setYPos(double yPos) {
 		this.yPos = yPos;
 	}
 }

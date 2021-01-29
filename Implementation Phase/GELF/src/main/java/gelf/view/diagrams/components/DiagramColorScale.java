@@ -1,54 +1,84 @@
 package gelf.view.diagrams.components;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 
 public abstract class DiagramColorScale extends DiagramComponent {
-	private PositionInFrame bottomLeft;
-	private PositionInFrame topRight;
-	private Number borderThickness;
-	private Number[] values;
+	private PositionInFrame topLeft;
+	private PositionInFrame bottomRight;
+	private double borderThickness;
+	private double[] values;
 	private Color[] valueColors;
-	
-	protected DiagramColorScale(PositionInFrame bottomLeft, PositionInFrame topRight, Color borderColor, Number[] values, Color[] valueColors, Number borderThickness) {
+
+	protected DiagramColorScale(PositionInFrame topLeft, PositionInFrame bottomRight, Color borderColor,
+			double[] values, Color[] valueColors, double borderThickness) {
 		super(borderColor);
-		
-		this.bottomLeft = bottomLeft;
-		this.topRight = topRight;
+
+		this.topLeft = topLeft;
+		this.bottomRight = bottomRight;
 		this.borderThickness = borderThickness;
 		this.values = values;
 		this.valueColors = valueColors;
 	}
-	public Color valueToColor(Number value) {
-		return null;
+
+	public abstract Color valueToColor(double value);
+
+	public PositionInFrame getTopLeftInFrame() {
+		return this.topLeft;
 	}
-	public PositionInFrame getBottomLeftInFrame() {
-		return bottomLeft;
-	}
-	public void setBottomLeftInFrame(Number x1, Number y1) {
+
+	public void setTopLeftInFrame(double x1, double y1) {
+		this.topLeft.setXPos(x1);
+		this.topLeft.setYPos(y1);
 		
+		this.setComponentBounds();
 	}
-	public PositionInFrame getTopRightInFrame() {
-		return topRight;
+
+	public PositionInFrame getBottomRightInFrame() {
+		return this.bottomRight;
 	}
-	public void setTopRightInFrame(Number x2, Number y2) {
+
+	public void setBottomRightInFrame(double x2, double y2) {
+		this.bottomRight.setXPos(x2);
+		this.bottomRight.setYPos(y2);
 		
+		this.setComponentBounds();
 	}
-	public Number getBorderThickness() {
-		return borderThickness;
+
+	public double getBorderThickness() {
+		return this.borderThickness;
 	}
-	public void setBorderThickness(Number borderThickness) {
+
+	public void setBorderThickness(double borderThickness) {
 		this.borderThickness = borderThickness;
 	}
-	public Number[] getValues() {
-		return values;
+
+	public double[] getValues() {
+		return this.values;
 	}
-	public void setValues(Number[] values) {
+
+	public void setValues(double[] values) {
 		this.values = values;
 	}
+
 	public Color[] getValueColors() {
-		return valueColors;
+		return this.valueColors;
 	}
+
 	public void setValueColors(Color[] valueColors) {
 		this.valueColors = valueColors;
+	}
+	
+	@Override
+	protected void setComponentBounds() {
+		Rectangle bounds = new Rectangle();
+		PositionInFrame frameTopLeft = this.topLeft;
+		PositionInFrame frameBottomRight = this.bottomRight;
+		
+		bounds.setFrameFromDiagonal(frameTopLeft.getXPos(),
+				frameTopLeft.getYPos(), frameBottomRight.getXPos(),
+				frameBottomRight.getYPos());
+		
+		this.visualElement.setBounds(bounds);
 	}
 }

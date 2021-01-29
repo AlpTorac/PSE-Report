@@ -2,7 +2,7 @@ package gelf.view.diagrams.components;
 
 public class SolidAxis extends DiagramAxis {
 
-	protected SolidAxis(DiagramLine axisLine, Number min, Number max, int steps) {
+	protected SolidAxis(DiagramLine axisLine, double min, double max, int steps) {
 		super(axisLine, min, max, steps);
 		// TODO Auto-generated constructor stub
 	}
@@ -16,7 +16,7 @@ public class SolidAxis extends DiagramAxis {
 	@Override
 	protected void initVisualElement() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

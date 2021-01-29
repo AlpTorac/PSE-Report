@@ -1,44 +1,72 @@
 package gelf.view.diagrams.components;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 
 public abstract class DiagramLabel extends DiagramComponent {
 	private String caption;
-	private PositionInFrame bottomLeft;
-	private PositionInFrame topRight;
-	private Number borderThickness;
-	
-	protected DiagramLabel(PositionInFrame bottomLeft, PositionInFrame topRight, Color color, String caption, Number borderThickness) {
+	private PositionInFrame topLeft;
+	private PositionInFrame bottomRight;
+	private double borderThickness;
+
+	protected DiagramLabel(PositionInFrame topLeft, PositionInFrame bottomRight, Color color, String caption,
+			double borderThickness) {
 		super(color);
-		
+
 		this.caption = caption;
-		this.bottomLeft = bottomLeft;
-		this.topRight = topRight;
+		this.topLeft = topLeft;
+		this.bottomRight = bottomRight;
 		this.borderThickness = borderThickness;
 	}
-	
+
 	public String getCaption() {
-		return caption;
+		return this.caption;
 	}
+
 	public void setCaption(String caption) {
 		this.caption = caption;
 	}
-	public PositionInFrame getBottomLeftInDiagram() {
-		return bottomLeft;
+
+	public PositionInFrame getTopLeftInDiagram() {
+		return this.topLeft;
 	}
-	public void setBottomLeftInDiagram(Number x1, Number y1) {
+
+	public void setTopLeftInDiagram(double x1, double y1) {
+		this.topLeft.setXPos(x1);
+		this.topLeft.setYPos(y1);
 		
+		this.setComponentBounds();
 	}
-	public PositionInFrame getTopRightInDiagram() {
-		return topRight;
+
+	public PositionInFrame getBottomRightInDiagram() {
+		return this.bottomRight;
 	}
-	public void setTopRightInDiagram(Number x2, Number y2) {
+
+	public void setBottomRightInDiagram(double x2, double y2) {
+		this.bottomRight.setXPos(x2);
+		this.bottomRight.setYPos(y2);
 		
+		this.setComponentBounds();
 	}
-	public Number getBorderThickness() {
-		return borderThickness;
+
+	public double getBorderThickness() {
+		return this.borderThickness;
 	}
-	public void setBorderThickness(Number borderThickness) {
+
+	public void setBorderThickness(double borderThickness) {
 		this.borderThickness = borderThickness;
+	}
+	
+	@Override
+	protected void setComponentBounds() {
+		Rectangle bounds = new Rectangle();
+		PositionInFrame frameTopLeft = this.topLeft;
+		PositionInFrame frameBottomRight = this.bottomRight;
+		
+		bounds.setFrameFromDiagonal(frameTopLeft.getXPos(),
+				frameTopLeft.getYPos(), frameBottomRight.getXPos(),
+				frameBottomRight.getYPos());
+		
+		this.visualElement.setBounds(bounds);
 	}
 }
