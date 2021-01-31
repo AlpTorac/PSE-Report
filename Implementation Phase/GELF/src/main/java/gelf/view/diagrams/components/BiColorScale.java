@@ -11,13 +11,16 @@ public class BiColorScale extends DiagramColorScale {
 
 	protected BiColorScale(PositionInFrame topLeft, PositionInFrame bottomRight, Color borderColor, float minVal,
 			float maxVal, Color minValColor, Color maxValColor, float borderThickness) {
-		super(topLeft, bottomRight, borderColor, new float[] { minVal, maxVal },
-				new Color[] { minValColor, maxValColor }, borderThickness);
+		super(topLeft, bottomRight, borderColor, new float[] {minVal, maxVal},
+				new Color[] {minValColor, maxValColor}, borderThickness);
 
-		this.minValueColor = minValColor;
-		this.maxValueColor = maxValColor;
-		this.minValue = minVal;
-		this.maxValue = maxVal;
+		float[] values = super.getValues();
+		Color[] colors = super.getValueColors();
+		
+		this.minValueColor = colors[0];
+		this.maxValueColor = colors[1];
+		this.minValue = values[0];
+		this.maxValue = values[1];
 	}
 
 	public Color getMinValueColor() {
@@ -65,6 +68,6 @@ public class BiColorScale extends DiagramColorScale {
 
 	@Override
 	public Color valueToColor(float value) {
-		return null;
+		return super.getMixedColor(value, 0, 1);
 	}
 }
