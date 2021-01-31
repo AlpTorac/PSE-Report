@@ -99,11 +99,34 @@ public abstract class HigherElement extends Element {
 	public void setLeakage(Stat leakage) {
 		this.leakage = leakage;
 	}
+	
+	@Override
 	public String getName() {
 		return super.getName();
 	}
 	
+	@Override
 	public void setName(String name) {
 		super.setName(name);
+	}
+	
+	@Override
+	public boolean getFiltered() {
+		return super.getFiltered();
+	}
+	
+	@Override
+	public void setFiltered(boolean filtered) {
+		super.setFiltered(filtered);
+	}
+	
+	@Override
+	public boolean getSearched() {
+		return super.getSearched();
+	}
+	
+	@Override
+	public void setSearched(boolean searched) {
+		super.setSearched(searched);
 	}
 }

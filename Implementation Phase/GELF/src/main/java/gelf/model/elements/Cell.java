@@ -26,12 +26,6 @@ public class Cell extends HigherElement {
     	this.defaultLeakage = leakage;
     }
     
-	@Override
-	public void calculate() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public float[] getIndex1() {
 		return index1;
 	}
@@ -87,4 +81,27 @@ public class Cell extends HigherElement {
 	public void setDefaultLeakage(float defaultLeakage) {
 		this.defaultLeakage = defaultLeakage;
 	}
+	
+	@Override
+	public void calculate() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public void calculateInPow() {
+		
+	}
+	
+	public void calculateOutPow() {
+		
+	}
+	
+	public void calculateTiming() {
+		
+	}
+	
+	public void calculateLeakage() {
+		
+	}
+
 }

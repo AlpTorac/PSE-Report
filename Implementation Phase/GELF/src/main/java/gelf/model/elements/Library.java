@@ -70,6 +70,36 @@ public class Library extends HigherElement {
 	@Override
 	public void calculate() {
 		// TODO Auto-generated method stub
+	}
+	public void calculateLeakage() {
+		for (int i = 0; i < cells.size(); i++) {
+			
+		}
+	}
+	
+	public void calculateInPow() {
 		
 	}
+	
+	public void calculateOutPow() {
+		
+	}
+	
+	public void calculateTiming() {
+		
+	}
+	
+	public void calculateDefaultLeakage() {
+		
+	}
+	
+	public static void saveLibrary() {
+		
+	}
+	
+	public static void saveLibraryAs() {
+		
+	}
+	
+	
 }
