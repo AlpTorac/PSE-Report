@@ -12,36 +12,36 @@ public class DiagramComponentFactory {
 	public static DiagramComponentFactory getDiagramComponentFactory() {
 		return DiagramComponentFactory.instance;
 	}
-
-	public DiagramPoint createPoint(float value, PositionIn2DDiagram position, float size) {
-		return null;
+	
+	public SolidLine createSolidLine(PositionInFrame start, PositionInFrame end, Color color, float thickness) {
+		return new SolidLine(start, end, color, thickness);
 	}
-
-	public DiagramValueLabel createValueLabel(float value, PositionIn2DDiagram topLeft,
-			PositionIn2DDiagram bottomRight, float borderThickness) {
-		return null;
+	public BiColorScale createBiColorScale(PositionInFrame topLeft, PositionInFrame bottomRight, Color borderColor,
+			float minVal, float maxVal, Color minValColor, Color maxValColor, float borderThickness) {
+		return new BiColorScale(topLeft, bottomRight, borderColor, minVal, maxVal, minValColor, maxValColor, borderThickness);
 	}
-
-	public DiagramBar createBar(float value, PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight,
+	public ValueDisplayPoint createValueDisplayPoint(Color color, float value, float size, PositionIn2DDiagram position) {
+		return new ValueDisplayPoint(color, value, size, position);
+	}
+	public HistogramBar createHistogramBar(Color color, float value, PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight,
 			float borderThickness) {
-		return null;
+		return new HistogramBar(color, value, topLeft, bottomRight, borderThickness);
 	}
-
-	public DiagramLabel createLabel(PositionInFrame topLeft, PositionInFrame bottomRight, Color color, String caption,
+	public BarChartBar createBarChartBar(Color color, float value, PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight,
 			float borderThickness) {
-		return null;
+		return new BarChartBar(color, value, topLeft, bottomRight, borderThickness);
 	}
-
-	public DiagramAxis createAxis(DiagramLine axisLine, float min, float max, int steps) {
-		return null;
+	public SolidAxis createSolidAxis(PositionInFrame start, PositionInFrame end, float min, float max, int steps, Color color, float thickness) {
+		DiagramLine l = new SolidLine(start, end, color, thickness);
+		return new SolidAxis(l, min, max, steps);
 	}
-
-	public DiagramColorScale createColorScale(PositionInFrame topLeft, PositionInFrame bottomRight, Color borderColor,
-			float[] values, Color[] valueColors, float borderThickness) {
-		return null;
+	public HeatMapLabel createHeatMapLabel(PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight, Color color, float value,
+			float borderThickness) {
+		return new HeatMapLabel(topLeft, bottomRight, color, value, borderThickness);
 	}
-
-	public DiagramLine createLine(PositionInFrame start, PositionInFrame end, Color color, float thickness) {
-		return null;
+	public DescriptionLabel createDescriptionLabel(PositionInFrame topLeft, PositionInFrame bottomRight, Color color, String caption,
+			float borderThickness) {
+		return new DescriptionLabel(topLeft, bottomRight, color, caption, borderThickness);
 	}
+	
 }
