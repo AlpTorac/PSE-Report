@@ -6,29 +6,29 @@ import java.awt.Rectangle;
 public abstract class DiagramBar extends DiagramValueDisplayComponent {
 	private PositionIn2DDiagram topLeft;
 	private PositionIn2DDiagram bottomRight;
-	private double borderThickness;
+	private float borderThickness;
 
-	protected DiagramBar(Color color, double value, PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight,
-			double borderThickness) {
+	protected DiagramBar(Color color, float value, PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight,
+			float borderThickness) {
 		super(color, value);
 	}
 
-	public double getHeight() {
+	public float getHeight() {
 		return 0;
 	}
 
-	public double getWidth() {
+	public float getWidth() {
 		return 0;
 	}
 
-	public void setTopLeftInDiagram(double x1, double y1) {
+	public void setTopLeftInDiagram(float x1, float y1) {
 		this.topLeft.setXCoordinate(x1);
 		this.topLeft.setYCoordinate(y1);
 		
 		this.setComponentBounds();
 	}
 
-	public void setBottomRightInDiagram(double x2, double y2) {
+	public void setBottomRightInDiagram(float x2, float y2) {
 		this.bottomRight.setXCoordinate(x2);
 		this.bottomRight.setYCoordinate(y2);
 		

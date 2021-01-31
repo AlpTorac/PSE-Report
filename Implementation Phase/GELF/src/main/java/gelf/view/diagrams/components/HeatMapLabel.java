@@ -4,8 +4,8 @@ import java.awt.Color;
 
 public class HeatMapLabel extends DiagramValueLabel {
 
-	protected HeatMapLabel(PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight, Color color, double value,
-			double borderThickness) {
+	protected HeatMapLabel(PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight, Color color, float value,
+			float borderThickness) {
 		super(topLeft, bottomRight, color, value, borderThickness);
 		// TODO Auto-generated constructor stub
 	}

@@ -13,35 +13,35 @@ public class DiagramComponentFactory {
 		return DiagramComponentFactory.instance;
 	}
 
-	public DiagramPoint createPoint(double value, PositionIn2DDiagram position, double size) {
+	public DiagramPoint createPoint(float value, PositionIn2DDiagram position, float size) {
 		return null;
 	}
 
-	public DiagramValueLabel createValueLabel(double value, PositionIn2DDiagram topLeft,
-			PositionIn2DDiagram bottomRight, double borderThickness) {
+	public DiagramValueLabel createValueLabel(float value, PositionIn2DDiagram topLeft,
+			PositionIn2DDiagram bottomRight, float borderThickness) {
 		return null;
 	}
 
-	public DiagramBar createBar(double value, PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight,
-			double borderThickness) {
+	public DiagramBar createBar(float value, PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight,
+			float borderThickness) {
 		return null;
 	}
 
 	public DiagramLabel createLabel(PositionInFrame topLeft, PositionInFrame bottomRight, Color color, String caption,
-			double borderThickness) {
+			float borderThickness) {
 		return null;
 	}
 
-	public DiagramAxis createAxis(DiagramLine axisLine, double min, double max, int steps) {
+	public DiagramAxis createAxis(DiagramLine axisLine, float min, float max, int steps) {
 		return null;
 	}
 
 	public DiagramColorScale createColorScale(PositionInFrame topLeft, PositionInFrame bottomRight, Color borderColor,
-			double[] values, Color[] valueColors, double borderThickness) {
+			float[] values, Color[] valueColors, float borderThickness) {
 		return null;
 	}
 
-	public DiagramLine createLine(PositionInFrame start, PositionInFrame end, Color color, double thickness) {
+	public DiagramLine createLine(PositionInFrame start, PositionInFrame end, Color color, float thickness) {
 		return null;
 	}
 }

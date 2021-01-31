@@ -6,12 +6,12 @@ import java.awt.Rectangle;
 public abstract class DiagramColorScale extends DiagramComponent {
 	private PositionInFrame topLeft;
 	private PositionInFrame bottomRight;
-	private double borderThickness;
-	private double[] values;
+	private float borderThickness;
+	private float[] values;
 	private Color[] valueColors;
 
 	protected DiagramColorScale(PositionInFrame topLeft, PositionInFrame bottomRight, Color borderColor,
-			double[] values, Color[] valueColors, double borderThickness) {
+			float[] values, Color[] valueColors, float borderThickness) {
 		super(borderColor);
 
 		this.topLeft = topLeft;
@@ -21,13 +21,13 @@ public abstract class DiagramColorScale extends DiagramComponent {
 		this.valueColors = valueColors;
 	}
 
-	public abstract Color valueToColor(double value);
+	public abstract Color valueToColor(float value);
 
 	public PositionInFrame getTopLeftInFrame() {
 		return this.topLeft;
 	}
 
-	public void setTopLeftInFrame(double x1, double y1) {
+	public void setTopLeftInFrame(float x1, float y1) {
 		this.topLeft.setXPos(x1);
 		this.topLeft.setYPos(y1);
 		
@@ -38,26 +38,26 @@ public abstract class DiagramColorScale extends DiagramComponent {
 		return this.bottomRight;
 	}
 
-	public void setBottomRightInFrame(double x2, double y2) {
+	public void setBottomRightInFrame(float x2, float y2) {
 		this.bottomRight.setXPos(x2);
 		this.bottomRight.setYPos(y2);
 		
 		this.setComponentBounds();
 	}
 
-	public double getBorderThickness() {
+	public float getBorderThickness() {
 		return this.borderThickness;
 	}
 
-	public void setBorderThickness(double borderThickness) {
+	public void setBorderThickness(float borderThickness) {
 		this.borderThickness = borderThickness;
 	}
 
-	public double[] getValues() {
+	public float[] getValues() {
 		return this.values;
 	}
 
-	public void setValues(double[] values) {
+	public void setValues(float[] values) {
 		this.values = values;
 	}
 

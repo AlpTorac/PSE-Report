@@ -7,10 +7,10 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 	private PositionIn2DDiagram bottomRight;
 	private PositionIn2DDiagram topLeft;
 	private String caption;
-	private double borderThickness;
+	private float borderThickness;
 
-	protected DiagramValueLabel(PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight, Color color, double value,
-			double borderThickness) {
+	protected DiagramValueLabel(PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight, Color color, float value,
+			float borderThickness) {
 		super(color, value);
 
 		this.bottomRight = bottomRight;
@@ -22,7 +22,7 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 		return this.bottomRight;
 	}
 
-	public void setBottomRightInDiagram(double x2, double y2) {
+	public void setBottomRightInDiagram(float x2, float y2) {
 		this.bottomRight.setXCoordinate(x2);
 		this.bottomRight.setYCoordinate(y2);
 		
@@ -33,7 +33,7 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 		return this.topLeft;
 	}
 
-	public void setTopLeftInDiagram(double x1, double y1) {
+	public void setTopLeftInDiagram(float x1, float y1) {
 		this.topLeft.setXCoordinate(x1);
 		this.topLeft.setYCoordinate(y1);
 		
@@ -54,11 +54,11 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 		this.refreshCaption();
 	}
 
-	public double getBorderThickness() {
+	public float getBorderThickness() {
 		return borderThickness;
 	}
 
-	public void setBorderThickness(double borderThickness) {
+	public void setBorderThickness(float borderThickness) {
 		this.borderThickness = borderThickness;
 	}
 	

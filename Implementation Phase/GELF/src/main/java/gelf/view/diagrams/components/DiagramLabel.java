@@ -7,10 +7,10 @@ public abstract class DiagramLabel extends DiagramComponent {
 	private String caption;
 	private PositionInFrame topLeft;
 	private PositionInFrame bottomRight;
-	private double borderThickness;
+	private float borderThickness;
 
 	protected DiagramLabel(PositionInFrame topLeft, PositionInFrame bottomRight, Color color, String caption,
-			double borderThickness) {
+			float borderThickness) {
 		super(color);
 
 		this.caption = caption;
@@ -31,7 +31,7 @@ public abstract class DiagramLabel extends DiagramComponent {
 		return this.topLeft;
 	}
 
-	public void setTopLeftInDiagram(double x1, double y1) {
+	public void setTopLeftInDiagram(float x1, float y1) {
 		this.topLeft.setXPos(x1);
 		this.topLeft.setYPos(y1);
 		
@@ -42,18 +42,18 @@ public abstract class DiagramLabel extends DiagramComponent {
 		return this.bottomRight;
 	}
 
-	public void setBottomRightInDiagram(double x2, double y2) {
+	public void setBottomRightInDiagram(float x2, float y2) {
 		this.bottomRight.setXPos(x2);
 		this.bottomRight.setYPos(y2);
 		
 		this.setComponentBounds();
 	}
 
-	public double getBorderThickness() {
+	public float getBorderThickness() {
 		return this.borderThickness;
 	}
 
-	public void setBorderThickness(double borderThickness) {
+	public void setBorderThickness(float borderThickness) {
 		this.borderThickness = borderThickness;
 	}
 	

@@ -11,7 +11,7 @@ public interface Hoverable {
 
 	}
 
-	public default void refreshHoverLabelPosition(double x, double y) {
+	public default void repositionHoverLabel(double x, double y) {
 		HoverLabel l = HoverLabel.getHoverLabel();
 		l.setXPos(x);
 		l.setYPos(y);
@@ -36,7 +36,7 @@ public interface Hoverable {
 			public void mouseMoved(MouseEvent me) {
 				hoverAction();
 				Point p = me.getPoint();
-				refreshHoverLabelPosition(p.getX(), p.getY());
+				repositionHoverLabel(p.getX(), p.getY());
 			}
 
 			@Override

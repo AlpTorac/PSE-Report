@@ -6,12 +6,12 @@ import java.awt.color.ColorSpace;
 public class BiColorScale extends DiagramColorScale {
 	private Color minValueColor;
 	private Color maxValueColor;
-	private double minValue;
-	private double maxValue;
+	private float minValue;
+	private float maxValue;
 
-	protected BiColorScale(PositionInFrame topLeft, PositionInFrame bottomRight, Color borderColor, double minVal,
-			double maxVal, Color minValColor, Color maxValColor, double borderThickness) {
-		super(topLeft, bottomRight, borderColor, new double[] { minVal, maxVal },
+	protected BiColorScale(PositionInFrame topLeft, PositionInFrame bottomRight, Color borderColor, float minVal,
+			float maxVal, Color minValColor, Color maxValColor, float borderThickness) {
+		super(topLeft, bottomRight, borderColor, new float[] { minVal, maxVal },
 				new Color[] { minValColor, maxValColor }, borderThickness);
 
 		this.minValueColor = minValColor;
@@ -36,19 +36,19 @@ public class BiColorScale extends DiagramColorScale {
 		this.maxValueColor = maxValueColor;
 	}
 
-	public double getMinValue() {
+	public float getMinValue() {
 		return minValue;
 	}
 
-	public void setMinValue(double minValue) {
+	public void setMinValue(float minValue) {
 		this.minValue = minValue;
 	}
 
-	public double getMaxValue() {
+	public float getMaxValue() {
 		return maxValue;
 	}
 
-	public void setMaxValue(double maxValue) {
+	public void setMaxValue(float maxValue) {
 		this.maxValue = maxValue;
 	}
 
@@ -64,7 +64,7 @@ public class BiColorScale extends DiagramColorScale {
 	}
 
 	@Override
-	public Color valueToColor(double value) {
+	public Color valueToColor(float value) {
 		return null;
 	}
 }

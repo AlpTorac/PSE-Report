@@ -6,9 +6,9 @@ import java.awt.Rectangle;
 public abstract class DiagramLine extends DiagramComponent {
 	private PositionInFrame start;
 	private PositionInFrame end;
-	private double thickness;
+	private float thickness;
 
-	protected DiagramLine(PositionInFrame start, PositionInFrame end, Color color, double thickness) {
+	protected DiagramLine(PositionInFrame start, PositionInFrame end, Color color, float thickness) {
 		super(color);
 
 		this.start = start;
@@ -20,7 +20,7 @@ public abstract class DiagramLine extends DiagramComponent {
 		return this.start;
 	}
 
-	public void setStartInFrame(double x1, double y1) {
+	public void setStartInFrame(float x1, float y1) {
 		this.start.setXPos(x1);
 		this.start.setYPos(y1);
 		
@@ -31,18 +31,18 @@ public abstract class DiagramLine extends DiagramComponent {
 		return this.end;
 	}
 
-	public void setEndInFrame(double x2, double y2) {
+	public void setEndInFrame(float x2, float y2) {
 		this.end.setXPos(x2);
 		this.end.setYPos(y2);
 		
 		this.setComponentBounds();
 	}
 
-	public double getThickness() {
+	public float getThickness() {
 		return this.thickness;
 	}
 
-	public void setThickness(double thickness) {
+	public void setThickness(float thickness) {
 		this.thickness = thickness;
 	}
 	

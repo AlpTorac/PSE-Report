@@ -11,9 +11,9 @@ public abstract class DiagramPoint extends DiagramValueDisplayComponent {
 	/**
 	 * The radius of the point.
 	 */
-	private double size;
+	private float size;
 
-	protected DiagramPoint(PositionIn2DDiagram position, Color color, double value, double size) {
+	protected DiagramPoint(PositionIn2DDiagram position, Color color, float value, float size) {
 		super(color, value);
 
 		this.position = position;
@@ -24,18 +24,18 @@ public abstract class DiagramPoint extends DiagramValueDisplayComponent {
 		return this.position;
 	}
 
-	public void setPositionInDiagram(double x, double y) {
+	public void setPositionInDiagram(float x, float y) {
 		this.position.setXCoordinate(x);
 		this.position.setYCoordinate(y);
 		
 		this.setComponentBounds();
 	}
 
-	public double getSize() {
+	public float getSize() {
 		return this.size;
 	}
 
-	public void setSize(double size) {
+	public void setSize(float size) {
 		this.size = size;
 	}
 	
@@ -44,7 +44,7 @@ public abstract class DiagramPoint extends DiagramValueDisplayComponent {
 		Rectangle bounds = new Rectangle();
 		PositionInFrame framePosition = this.position.toPositionInFrame();
 		
-		double sizeInFrame = this.size;
+		float sizeInFrame = this.size;
 		
 		PositionInFrame diagonalStart = new PositionInFrame(framePosition.getXPos() - sizeInFrame,
 				framePosition.getYPos() - sizeInFrame);

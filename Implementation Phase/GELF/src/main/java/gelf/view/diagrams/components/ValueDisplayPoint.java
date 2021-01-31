@@ -3,7 +3,7 @@ package gelf.view.diagrams.components;
 import java.awt.Color;
 
 public class ValueDisplayPoint extends DiagramPoint {
-	protected ValueDisplayPoint(Color color, double value, double size, PositionIn2DDiagram position) {
+	protected ValueDisplayPoint(Color color, float value, float size, PositionIn2DDiagram position) {
 		super(position, color, value, size);
 	}
 

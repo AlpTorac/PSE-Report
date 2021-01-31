@@ -3,13 +3,13 @@ package gelf.view.diagrams.components;
 import java.awt.Color;
 
 public abstract class DiagramAxis extends DiagramComponent {
-	private double min;
-	private double max;
+	private float min;
+	private float max;
 	private int steps;
 	private boolean showValues;
 	private DiagramLine axisLine;
 
-	protected DiagramAxis(DiagramLine axisLine, double min, double max, int steps) {
+	protected DiagramAxis(DiagramLine axisLine, float min, float max, int steps) {
 		super(axisLine.getColor());
 
 		this.min = min;
@@ -18,19 +18,19 @@ public abstract class DiagramAxis extends DiagramComponent {
 		this.axisLine = axisLine;
 	}
 
-	public double getMin() {
+	public float getMin() {
 		return this.min;
 	}
 
-	public void setMin(double min) {
+	public void setMin(float min) {
 		this.min = min;
 	}
 
-	public double getMax() {
+	public float getMax() {
 		return this.max;
 	}
 
-	public void setMax(double max) {
+	public void setMax(float max) {
 		this.max = max;
 	}
 
@@ -51,7 +51,7 @@ public abstract class DiagramAxis extends DiagramComponent {
 	}
 	
 	//The minVal is on start of line, maxVal is on end of line
-	public PositionInFrame valueToCoordinate(double value) {
+	public PositionInFrame valueToCoordinate(float value) {
 		PositionInFrame lineStart = this.axisLine.getStartInFrame();
 		double hLength = this.axisLine.calculateHorizontalLength();
 		double vLength = this.axisLine.calculateVerticalLength();
@@ -89,7 +89,7 @@ public abstract class DiagramAxis extends DiagramComponent {
 		return (scalarProduct / denominator);
 	}
 
-	public void setLineByPos(double minValXPos, double minValYPos, double maxValXPos, double maxValYPos) {
+	public void setLineByPos(float minValXPos, float minValYPos, float maxValXPos, float maxValYPos) {
 		this.axisLine.setStartInFrame(minValXPos, minValYPos);
 		this.axisLine.setEndInFrame(maxValXPos, maxValYPos);
 	}
@@ -99,7 +99,7 @@ public abstract class DiagramAxis extends DiagramComponent {
 		this.setColor(color);
 	}
 
-	public void setLineThickness(double thickness) {
+	public void setLineThickness(float thickness) {
 		this.axisLine.setThickness(thickness);
 	}
 
