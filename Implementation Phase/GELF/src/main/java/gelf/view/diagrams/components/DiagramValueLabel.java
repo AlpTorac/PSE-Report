@@ -7,10 +7,10 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 	private PositionIn2DDiagram bottomRight;
 	private PositionIn2DDiagram topLeft;
 	private String caption;
-	private float borderThickness;
+	private int borderThickness;
 
 	protected DiagramValueLabel(PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight, Color color, float value,
-			float borderThickness) {
+			int borderThickness) {
 		super(color, value);
 
 		this.bottomRight = bottomRight;
@@ -26,7 +26,7 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 		this.bottomRight.setXCoordinate(x2);
 		this.bottomRight.setYCoordinate(y2);
 		
-		this.setComponentBounds();
+		this.setComponentBounds(this.getFrameBounds());
 	}
 
 	public PositionIn2DDiagram getTopLeftInDiagram() {
@@ -37,7 +37,7 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 		this.topLeft.setXCoordinate(x1);
 		this.topLeft.setYCoordinate(y1);
 		
-		this.setComponentBounds();
+		this.setComponentBounds(this.getFrameBounds());
 	}
 
 	protected void refreshCaption() {
@@ -58,12 +58,12 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 		return borderThickness;
 	}
 
-	public void setBorderThickness(float borderThickness) {
+	public void setBorderThickness(int borderThickness) {
 		this.borderThickness = borderThickness;
 	}
 	
 	@Override
-	protected void setComponentBounds() {
+	protected Rectangle getFrameBounds() {
 		Rectangle bounds = new Rectangle();
 		PositionInFrame frameTopLeft = this.topLeft.toPositionInFrame();
 		PositionInFrame frameBottomRight = this.bottomRight.toPositionInFrame();
@@ -72,6 +72,6 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 				frameTopLeft.getYPos(), frameBottomRight.getXPos(),
 				frameBottomRight.getYPos());
 		
-		this.visualElement.setBounds(bounds);
+		return bounds;
 	}
 }

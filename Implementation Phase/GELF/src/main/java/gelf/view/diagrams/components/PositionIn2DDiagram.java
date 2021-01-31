@@ -7,6 +7,10 @@ public class PositionIn2DDiagram extends PositionInDiagram {
 	public PositionIn2DDiagram(DiagramAxis xAxis, double xCoordinate, DiagramAxis yAxis, double yCoordinate) {
 		super(new DiagramAxis[] { xAxis, yAxis }, new double[] { xCoordinate, yCoordinate });
 	}
+	
+	public PositionIn2DDiagram(PositionIn2DDiagram referencePoint, double[] vector) {
+		super(referencePoint, vector);
+	}
 
 	public void setXCoordinate(double xCoordinate) {
 		this.setAxisCoordinate(0, xCoordinate);

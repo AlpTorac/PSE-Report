@@ -1,7 +1,6 @@
 package gelf.view.diagrams.components;
 
 import java.awt.Color;
-import java.awt.color.ColorSpace;
 
 public class BiColorScale extends DiagramColorScale {
 	private Color minValueColor;
@@ -10,7 +9,7 @@ public class BiColorScale extends DiagramColorScale {
 	private float maxValue;
 
 	protected BiColorScale(PositionInFrame topLeft, PositionInFrame bottomRight, Color borderColor, float minVal,
-			float maxVal, Color minValColor, Color maxValColor, float borderThickness) {
+			float maxVal, Color minValColor, Color maxValColor, int borderThickness) {
 		super(topLeft, bottomRight, borderColor, new float[] {minVal, maxVal},
 				new Color[] {minValColor, maxValColor}, borderThickness);
 
@@ -56,18 +55,13 @@ public class BiColorScale extends DiagramColorScale {
 	}
 
 	@Override
-	public DiagramComponent clone() {
-		return null;
-	}
-
-	@Override
-	protected void initVisualElement() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public Color valueToColor(float value) {
 		return super.getMixedColor(value, 0, 1);
+	}
+	
+	@Override
+	public DiagramComponent clone() {
+		return new BiColorScale(this.getTopLeftInFrame(), this.getBottomRightInFrame(), this.getColor(), this.getMinValue(),
+				this.getMaxValue(), this.getMinValueColor(), this.getMaxValueColor(), this.getBorderThickness());
 	}
 }

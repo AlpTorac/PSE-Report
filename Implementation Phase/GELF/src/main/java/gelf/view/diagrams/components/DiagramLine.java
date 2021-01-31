@@ -24,7 +24,7 @@ public abstract class DiagramLine extends DiagramComponent {
 		this.start.setXPos(x1);
 		this.start.setYPos(y1);
 		
-		this.setComponentBounds();
+		this.setComponentBounds(this.getFrameBounds());
 	}
 
 	public PositionInFrame getEndInFrame() {
@@ -35,7 +35,7 @@ public abstract class DiagramLine extends DiagramComponent {
 		this.end.setXPos(x2);
 		this.end.setYPos(y2);
 		
-		this.setComponentBounds();
+		this.setComponentBounds(this.getFrameBounds());
 	}
 
 	public float getThickness() {
@@ -62,15 +62,14 @@ public abstract class DiagramLine extends DiagramComponent {
 	}
 	
 	@Override
-	protected void setComponentBounds() {
+	protected Rectangle getFrameBounds() {
 		Rectangle bounds = new Rectangle();
-		PositionInFrame frameStart = this.start;
-		PositionInFrame frameEnd = this.end;
 		
-		bounds.setFrameFromDiagonal(frameStart.getXPos(),
-				frameStart.getYPos(), frameEnd.getXPos(),
-				frameEnd.getYPos());
+		PositionInFrame topLeftInFrame = this.start;
+		PositionInFrame bottomRightInFrame = this.end;
 		
-		this.visualElement.setBounds(bounds);
+		bounds.setFrameFromDiagonal(topLeftInFrame.getXPos(), topLeftInFrame.getYPos(), bottomRightInFrame.getXPos(), bottomRightInFrame.getYPos());
+		
+		return bounds;
 	}
 }

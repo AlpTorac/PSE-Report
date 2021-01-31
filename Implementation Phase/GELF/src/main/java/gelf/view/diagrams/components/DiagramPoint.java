@@ -3,6 +3,8 @@ package gelf.view.diagrams.components;
 import java.awt.Color;
 import java.awt.Rectangle;
 
+import javax.swing.JLabel;
+
 public abstract class DiagramPoint extends DiagramValueDisplayComponent {
 	/**
 	 * The middle of the point.
@@ -28,7 +30,7 @@ public abstract class DiagramPoint extends DiagramValueDisplayComponent {
 		this.position.setXCoordinate(x);
 		this.position.setYCoordinate(y);
 		
-		this.setComponentBounds();
+		this.setComponentBounds(this.getFrameBounds());
 	}
 
 	public float getSize() {
@@ -40,7 +42,7 @@ public abstract class DiagramPoint extends DiagramValueDisplayComponent {
 	}
 	
 	@Override
-	protected void setComponentBounds() {
+	protected Rectangle getFrameBounds() {
 		Rectangle bounds = new Rectangle();
 		PositionInFrame framePosition = this.position.toPositionInFrame();
 		
@@ -55,6 +57,27 @@ public abstract class DiagramPoint extends DiagramValueDisplayComponent {
 				diagonalStart.getYPos(), diagonalEnd.getXPos(),
 				diagonalEnd.getYPos());
 		
-		this.visualElement.setBounds(bounds);
+		return bounds;
+	}
+	
+	@Override
+	protected void initVisualElement() {
+		this.visualElement = new PointVisual(this);
+		this.setComponentBounds(this.getFrameBounds());
+	}
+	
+	protected class PointVisual extends JLabel {
+
+		private DiagramPoint point;
+		
+		/**
+		 * Generated serial version ID.
+		 */
+		private static final long serialVersionUID = 1231288861330935790L;
+		
+		protected PointVisual(DiagramPoint point) {
+			this.point = point;
+			this.setOpaque(true);
+		}
 	}
 }

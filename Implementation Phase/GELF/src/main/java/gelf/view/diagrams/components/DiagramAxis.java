@@ -1,6 +1,7 @@
 package gelf.view.diagrams.components;
 
 import java.awt.Color;
+import java.awt.Rectangle;
 
 public abstract class DiagramAxis extends DiagramComponent {
 	private float min;
@@ -108,7 +109,12 @@ public abstract class DiagramAxis extends DiagramComponent {
 	}
 	
 	@Override
-	protected void setComponentBounds() {
-		this.axisLine.setComponentBounds();
+	protected Rectangle getFrameBounds() {
+		return this.axisLine.getFrameBounds();
+	}
+	
+	@Override
+	protected void setComponentBounds(Rectangle bounds) {
+		this.axisLine.setComponentBounds(bounds);
 	}
 }

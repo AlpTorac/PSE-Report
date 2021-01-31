@@ -1,16 +1,20 @@
 package gelf.view.diagrams.components;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Rectangle;
+
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 
 public abstract class DiagramLabel extends DiagramComponent {
 	private String caption;
 	private PositionInFrame topLeft;
 	private PositionInFrame bottomRight;
-	private float borderThickness;
+	private int borderThickness;
 
 	protected DiagramLabel(PositionInFrame topLeft, PositionInFrame bottomRight, Color color, String caption,
-			float borderThickness) {
+			int borderThickness) {
 		super(color);
 
 		this.caption = caption;
@@ -35,7 +39,7 @@ public abstract class DiagramLabel extends DiagramComponent {
 		this.topLeft.setXPos(x1);
 		this.topLeft.setYPos(y1);
 		
-		this.setComponentBounds();
+		this.setComponentBounds(this.getFrameBounds());
 	}
 
 	public PositionInFrame getBottomRightInDiagram() {
@@ -46,27 +50,52 @@ public abstract class DiagramLabel extends DiagramComponent {
 		this.bottomRight.setXPos(x2);
 		this.bottomRight.setYPos(y2);
 		
-		this.setComponentBounds();
+		this.setComponentBounds(this.getFrameBounds());
 	}
 
-	public float getBorderThickness() {
+	public int getBorderThickness() {
 		return this.borderThickness;
 	}
 
-	public void setBorderThickness(float borderThickness) {
+	public void setBorderThickness(int borderThickness) {
 		this.borderThickness = borderThickness;
+		((LabelVisual) this.visualElement).setBorder(BorderFactory.createLineBorder(Color.BLACK, this.borderThickness));
 	}
 	
 	@Override
-	protected void setComponentBounds() {
+	protected Rectangle getFrameBounds() {
 		Rectangle bounds = new Rectangle();
-		PositionInFrame frameTopLeft = this.topLeft;
-		PositionInFrame frameBottomRight = this.bottomRight;
 		
-		bounds.setFrameFromDiagonal(frameTopLeft.getXPos(),
-				frameTopLeft.getYPos(), frameBottomRight.getXPos(),
-				frameBottomRight.getYPos());
+		PositionInFrame topLeftInFrame = this.topLeft;
+		PositionInFrame bottomRightInFrame = this.bottomRight;
 		
-		this.visualElement.setBounds(bounds);
+		bounds.setFrameFromDiagonal(topLeftInFrame.getXPos(), topLeftInFrame.getYPos(), bottomRightInFrame.getXPos(), bottomRightInFrame.getYPos());
+		
+		return bounds;
+	}
+	
+	@Override
+	protected void initVisualElement() {
+		this.visualElement = new LabelVisual(this);
+	}
+	
+	protected class LabelVisual extends JLabel {
+		/**
+		 * Generated serial version ID.
+		 */
+		private static final long serialVersionUID = -784432558268794661L;
+		private DiagramLabel label;
+		
+		protected LabelVisual(DiagramLabel label) {
+			this.label = label;
+			this.setBorder(BorderFactory.createLineBorder(Color.BLACK, this.label.getBorderThickness()));
+			this.setBounds(this.label.getFrameBounds());
+		}
+		
+		@Override
+		protected void paintComponent(Graphics g) {
+			char[] caption = this.label.getCaption().toCharArray();
+			g.drawChars(caption, 0, caption.length, 0, 0);
+		}
 	}
 }

@@ -2,15 +2,14 @@ package gelf.view.diagrams.components;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Rectangle;
 
 public abstract class DiagramComponent {
 	protected Component visualElement;
-	private Color color;
 
 	protected DiagramComponent(Color color) {
-		this.color = color;
-		
 		this.initVisualElement();
+		this.setColor(color);
 	}
 
 	@Override
@@ -18,19 +17,18 @@ public abstract class DiagramComponent {
 
 	protected abstract void initVisualElement();
 
-	protected abstract void setComponentBounds();
+	protected void setComponentBounds(Rectangle bounds) {
+		this.visualElement.setBounds(bounds);
+	}
+	
+	protected abstract Rectangle getFrameBounds();
 	
 	public void setColor(Color color) {
-		this.color = color;
-		this.setComponentColor();
-	}
-
-	private void setComponentColor() {
 		this.visualElement.setBackground(color);
 	}
 
 	public Color getColor() {
-		return this.color;
+		return this.visualElement.getBackground();
 	}
 
 	public void show() {

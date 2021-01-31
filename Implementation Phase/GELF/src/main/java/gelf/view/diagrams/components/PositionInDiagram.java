@@ -2,11 +2,19 @@ package gelf.view.diagrams.components;
 
 public abstract class PositionInDiagram {
 	private DiagramAxis[] axes;
-	private double[] positionsInAxes;
+	private double[] coordinatesInAxes;
 
 	public PositionInDiagram(DiagramAxis[] axes, double[] coordinatesInAxes) {
 		this.axes = axes;
-		this.positionsInAxes = coordinatesInAxes;
+		this.coordinatesInAxes = coordinatesInAxes;
+	}
+	
+	public PositionInDiagram(PositionInDiagram referencePoint, double[] vector) {
+		this.axes = referencePoint.axes;
+		
+		for (int i = 0; i < this.coordinatesInAxes.length; i++) {
+			this.coordinatesInAxes[i] = referencePoint.getAxisPos(i) + vector[i];
+		}
 	}
 
 	public double axisCoordinateToFrameCoordinate(int index) {
@@ -19,17 +27,21 @@ public abstract class PositionInDiagram {
 	}
 
 	protected void setAxisCoordinate(int index, double position) {
-		this.positionsInAxes[index] = position;
+		this.coordinatesInAxes[index] = position;
 	}
 
 	protected void setAxisCoordinates(double[] coordinates) {
-		this.positionsInAxes = coordinates;
+		this.coordinatesInAxes = coordinates;
 	}
 
 	protected double getAxisPos(int index) {
-		return this.positionsInAxes[index];
+		return this.coordinatesInAxes[index];
 	}
 
+	protected DiagramAxis[] getAxes() {
+		return this.axes;
+	}
+	
 	/**
 	 * Converts each axis coordinate to 2D coordinates (x, y) using the
 	 * transformation matrix inside the subclass.

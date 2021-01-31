@@ -1,17 +1,21 @@
 package gelf.view.diagrams.components;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Rectangle;
+
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
 
 public abstract class DiagramColorScale extends DiagramComponent {
 	private PositionInFrame topLeft;
 	private PositionInFrame bottomRight;
-	private float borderThickness;
+	private int borderThickness;
 	private float[] values;
 	private Color[] valueColors;
 
 	protected DiagramColorScale(PositionInFrame topLeft, PositionInFrame bottomRight, Color borderColor,
-			float[] values, Color[] valueColors, float borderThickness) {
+			float[] values, Color[] valueColors, int borderThickness) {
 		super(borderColor);
 
 		this.topLeft = topLeft;
@@ -30,6 +34,18 @@ public abstract class DiagramColorScale extends DiagramComponent {
 		}
 		
 		return index - 1;
+	}
+	
+	@Override
+	protected Rectangle getFrameBounds() {
+		Rectangle bounds = new Rectangle();
+		
+		PositionInFrame topLeftInFrame = this.topLeft;
+		PositionInFrame bottomRightInFrame = this.bottomRight;
+		
+		bounds.setFrameFromDiagonal(topLeftInFrame.getXPos(), topLeftInFrame.getYPos(), bottomRightInFrame.getXPos(), bottomRightInFrame.getYPos());
+		
+		return bounds;
 	}
 	
 	protected Color getMixedColor(float value, int rangeMinIndex, int rangeMaxIndex) {
@@ -73,7 +89,7 @@ public abstract class DiagramColorScale extends DiagramComponent {
 		this.topLeft.setXPos(x1);
 		this.topLeft.setYPos(y1);
 		
-		this.setComponentBounds();
+		this.setComponentBounds(this.getFrameBounds());
 	}
 
 	public PositionInFrame getBottomRightInFrame() {
@@ -84,15 +100,16 @@ public abstract class DiagramColorScale extends DiagramComponent {
 		this.bottomRight.setXPos(x2);
 		this.bottomRight.setYPos(y2);
 		
-		this.setComponentBounds();
+		this.setComponentBounds(this.getFrameBounds());
 	}
 
-	public float getBorderThickness() {
+	public int getBorderThickness() {
 		return this.borderThickness;
 	}
 
-	public void setBorderThickness(float borderThickness) {
+	public void setBorderThickness(int borderThickness) {
 		this.borderThickness = borderThickness;
+		((ScalePanel) this.visualElement).setBorder(BorderFactory.createLineBorder(this.getColor(), this.borderThickness));
 	}
 	
 	public float[] getValues() {
@@ -112,15 +129,44 @@ public abstract class DiagramColorScale extends DiagramComponent {
 	}
 	
 	@Override
-	protected void setComponentBounds() {
-		Rectangle bounds = new Rectangle();
-		PositionInFrame frameTopLeft = this.topLeft;
-		PositionInFrame frameBottomRight = this.bottomRight;
-		
-		bounds.setFrameFromDiagonal(frameTopLeft.getXPos(),
-				frameTopLeft.getYPos(), frameBottomRight.getXPos(),
-				frameBottomRight.getYPos());
-		
+	protected void setComponentBounds(Rectangle bounds) {		
 		this.visualElement.setBounds(bounds);
+	}
+	
+	@Override
+	protected void initVisualElement() {
+		this.visualElement = new ScalePanel(this);
+	}
+	
+	protected class ScalePanel extends JPanel {
+
+		/**
+		 * Generated serial version ID.
+		 */
+		private static final long serialVersionUID = 769932577992152528L;
+		private final DiagramColorScale colorScale;
+		
+		protected ScalePanel(DiagramColorScale colorScale) {
+			this.colorScale = colorScale;
+			this.setBorder(BorderFactory.createLineBorder(this.colorScale.getColor(), this.colorScale.getBorderThickness()));
+			this.setBounds(this.colorScale.getFrameBounds());
+		}
+		
+		@Override
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			
+			float maxVal = this.colorScale.getValues()[this.colorScale.getValues().length - 1];
+			float minVal = this.colorScale.getValues()[0];
+			
+			float valueIntervalLength = maxVal - minVal;
+			
+			for (int x = 0; x < this.getBounds().width - 2; x++) {
+				float currentValue = minVal + valueIntervalLength * (((float) x) / ((float) (this.getBounds().width - 2)));
+				
+				g.setColor(this.colorScale.valueToColor(currentValue));
+				g.fillRect(x, 0, 1, this.getBounds().height - 1);
+			}
+		}
 	}
 }

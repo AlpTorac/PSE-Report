@@ -17,18 +17,18 @@ public class DiagramComponentFactory {
 		return new SolidLine(start, end, color, thickness);
 	}
 	public BiColorScale createBiColorScale(PositionInFrame topLeft, PositionInFrame bottomRight, Color borderColor,
-			float minVal, float maxVal, Color minValColor, Color maxValColor, float borderThickness) {
+			float minVal, float maxVal, Color minValColor, Color maxValColor, int borderThickness) {
 		return new BiColorScale(topLeft, bottomRight, borderColor, minVal, maxVal, minValColor, maxValColor, borderThickness);
 	}
 	public ValueDisplayPoint createValueDisplayPoint(Color color, float value, float size, PositionIn2DDiagram position) {
 		return new ValueDisplayPoint(color, value, size, position);
 	}
 	public HistogramBar createHistogramBar(Color color, float value, PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight,
-			float borderThickness) {
+			int borderThickness) {
 		return new HistogramBar(color, value, topLeft, bottomRight, borderThickness);
 	}
 	public BarChartBar createBarChartBar(Color color, float value, PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight,
-			float borderThickness) {
+			int borderThickness) {
 		return new BarChartBar(color, value, topLeft, bottomRight, borderThickness);
 	}
 	public SolidAxis createSolidAxis(PositionInFrame start, PositionInFrame end, float min, float max, int steps, Color color, float thickness) {
@@ -36,11 +36,11 @@ public class DiagramComponentFactory {
 		return new SolidAxis(l, min, max, steps);
 	}
 	public HeatMapLabel createHeatMapLabel(PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight, Color color, float value,
-			float borderThickness) {
+			int borderThickness) {
 		return new HeatMapLabel(topLeft, bottomRight, color, value, borderThickness);
 	}
 	public DescriptionLabel createDescriptionLabel(PositionInFrame topLeft, PositionInFrame bottomRight, Color color, String caption,
-			float borderThickness) {
+			int borderThickness) {
 		return new DescriptionLabel(topLeft, bottomRight, color, caption, borderThickness);
 	}
 	
