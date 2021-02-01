@@ -129,4 +129,9 @@ public abstract class HigherElement extends Element {
 	public void setSearched(boolean searched) {
 		super.setSearched(searched);
 	}
+	
+	@Override
+	public int compareTo(Element element) {
+		return super.compareTo(element);
+	}
 }

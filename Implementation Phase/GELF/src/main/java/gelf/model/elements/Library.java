@@ -69,8 +69,13 @@ public class Library extends HigherElement {
 
 	@Override
 	public void calculate() {
-		// TODO Auto-generated method stub
+		calculateLeakage();
+		calculateInPow();
+		calculateOutPow();
+		calculateTiming();
+		calculateDefaultLeakage();
 	}
+	
 	public void calculateLeakage() {
 		for (int i = 0; i < cells.size(); i++) {
 			

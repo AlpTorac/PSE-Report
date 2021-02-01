@@ -20,7 +20,7 @@ public abstract class InAttribute extends Attribute {
 	}
 	
 	@Override
-	protected void calculate() {
+	public void calculate() {
 		float min = 0;
 		float max = 0;
 		float sum = 0;
