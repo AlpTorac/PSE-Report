@@ -5,7 +5,7 @@ import javax.swing.JTextPane;
 /**
  * TextPane
  */
-public class TextPane extends JTextPane{
+public class TextPane extends JTextPane {
 
     
 }
