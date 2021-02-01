@@ -8,7 +8,7 @@ import gelf.view.diagrams.components.PositionInFrame;
 
 public class CoordinateIndicatorLine extends DiagramLine {
 
-	protected CoordinateIndicatorLine(PositionInFrame start, PositionInFrame end, Color color, float thickness) {
+	protected CoordinateIndicatorLine(PositionInFrame start, PositionInFrame end, Color color, int thickness) {
 		super(start, end, color, thickness);
 		// TODO Auto-generated constructor stub
 	}
@@ -18,11 +18,4 @@ public class CoordinateIndicatorLine extends DiagramLine {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	protected void initVisualElement() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

@@ -29,6 +29,7 @@ public abstract class DiagramLabel extends DiagramComponent {
 
 	public void setCaption(String caption) {
 		this.caption = caption;
+		this.visualElement.repaint();
 	}
 
 	public PositionInFrame getTopLeftInDiagram() {
@@ -59,7 +60,7 @@ public abstract class DiagramLabel extends DiagramComponent {
 
 	public void setBorderThickness(int borderThickness) {
 		this.borderThickness = borderThickness;
-		((LabelVisual) this.visualElement).setBorder(BorderFactory.createLineBorder(Color.BLACK, this.borderThickness));
+		this.visualElement.repaint();
 	}
 	
 	@Override

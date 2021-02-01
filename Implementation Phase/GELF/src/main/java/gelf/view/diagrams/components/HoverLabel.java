@@ -113,7 +113,7 @@ public class HoverLabel {
 			this.setBackground(this.label.getColor());
 			this.label.setComponentBounds();
 			
-			Border b = BorderFactory.createLineBorder(Color.BLACK, 10);
+			Border b = BorderFactory.createLineBorder(Color.BLACK, 5);
 			this.setBorder(b);
 		}
 	}

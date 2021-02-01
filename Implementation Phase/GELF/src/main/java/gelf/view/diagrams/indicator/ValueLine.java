@@ -8,7 +8,7 @@ import gelf.view.diagrams.components.PositionInFrame;
 
 public class ValueLine extends DiagramLine {
 
-	protected ValueLine(PositionInFrame start, PositionInFrame end, Color color, float thickness) {
+	protected ValueLine(PositionInFrame start, PositionInFrame end, Color color, int thickness) {
 		super(start, end, color, thickness);
 		// TODO Auto-generated constructor stub
 	}
@@ -18,11 +18,4 @@ public class ValueLine extends DiagramLine {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	protected void initVisualElement() {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

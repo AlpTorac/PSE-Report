@@ -22,10 +22,4 @@ public class HeatMapLabel extends DiagramValueLabel {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	protected void initVisualElement() {
-		// TODO Auto-generated method stub
-
-	}
 }

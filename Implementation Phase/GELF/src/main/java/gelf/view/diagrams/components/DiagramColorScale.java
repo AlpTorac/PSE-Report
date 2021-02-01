@@ -109,7 +109,7 @@ public abstract class DiagramColorScale extends DiagramComponent {
 
 	public void setBorderThickness(int borderThickness) {
 		this.borderThickness = borderThickness;
-		((ScalePanel) this.visualElement).setBorder(BorderFactory.createLineBorder(this.getColor(), this.borderThickness));
+		this.visualElement.repaint();
 	}
 	
 	public float[] getValues() {

@@ -14,10 +14,4 @@ public class SolidAxis extends DiagramAxis {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	protected void initVisualElement() {
-		// TODO Auto-generated method stub
-
-	}
 }

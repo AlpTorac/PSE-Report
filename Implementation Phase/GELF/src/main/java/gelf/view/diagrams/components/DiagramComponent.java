@@ -9,7 +9,6 @@ public abstract class DiagramComponent {
 
 	protected DiagramComponent(Color color) {
 		this.initVisualElement();
-		this.setColor(color);
 	}
 
 	@Override
@@ -25,6 +24,7 @@ public abstract class DiagramComponent {
 	
 	public void setColor(Color color) {
 		this.visualElement.setBackground(color);
+		this.visualElement.repaint();
 	}
 
 	public Color getColor() {

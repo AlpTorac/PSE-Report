@@ -63,6 +63,7 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 
 	public void setBorderThickness(int borderThickness) {
 		this.borderThickness = borderThickness;
+		this.visualElement.repaint();
 	}
 	
 	@Override

@@ -79,7 +79,7 @@ public abstract class DiagramBar extends DiagramValueDisplayComponent {
 
 	public void setBorderThickness(int borderThickness) {
 		this.borderThickness = borderThickness;
-		((Bar) this.visualElement).setBorder(BorderFactory.createLineBorder(this.getColor(), borderThickness));
+		this.visualElement.repaint();
 	}
 	
 	protected class Bar extends JLabel {

@@ -1,7 +1,11 @@
 package gelf.view.diagrams.components;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
 
 import javax.swing.JLabel;
 
@@ -39,6 +43,7 @@ public abstract class DiagramPoint extends DiagramValueDisplayComponent {
 
 	public void setSize(float size) {
 		this.size = size;
+		this.visualElement.repaint();
 	}
 	
 	@Override
@@ -77,6 +82,20 @@ public abstract class DiagramPoint extends DiagramValueDisplayComponent {
 		
 		protected PointVisual(DiagramPoint point) {
 			this.point = point;
+			this.setBounds(this.point.getFrameBounds());
+		}
+		
+		@Override
+		protected void paintComponent(Graphics g) {
+			Graphics2D graphs = (Graphics2D) g;
+			
+			Rectangle bounds = this.getBounds();
+			double diameter = this.point.getSize() * 2d;
+			
+			Shape point = new Ellipse2D.Double(bounds.getCenterX(), bounds.getCenterY(), diameter, diameter);
+			
+			graphs.setColor(this.point.getColor());
+			graphs.draw(point);
 		}
 	}
 }

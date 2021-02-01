@@ -4,15 +4,18 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.geom.Line2D;
+import java.awt.geom.Line2D.Double;
 
 import javax.swing.JLabel;
 
 public abstract class DiagramLine extends DiagramComponent {
 	private PositionInFrame start;
 	private PositionInFrame end;
-	private float thickness;
+	private int thickness;
 
-	protected DiagramLine(PositionInFrame start, PositionInFrame end, Color color, float thickness) {
+	protected DiagramLine(PositionInFrame start, PositionInFrame end, Color color, int thickness) {
 		super(color);
 
 		this.start = start;
@@ -42,11 +45,11 @@ public abstract class DiagramLine extends DiagramComponent {
 		this.setComponentBounds(this.getFrameBounds());
 	}
 
-	public float getThickness() {
+	public int getThickness() {
 		return this.thickness;
 	}
 
-	public void setThickness(float thickness) {
+	public void setThickness(int thickness) {
 		this.thickness = thickness;
 		this.setComponentBounds(this.getFrameBounds());
 	}
@@ -111,8 +114,12 @@ public abstract class DiagramLine extends DiagramComponent {
 			Rectangle bounds = this.getBounds();
 			
 			graphs.setColor(this.line.getColor());
-			graphs.drawLine(0, 0, bounds.width, bounds.height);
+			
+			Shape line = new Line2D.Double(0, 0, bounds.getMaxX(), 0);
+			graphs.draw(line);
+			
 			graphs.rotate(this.line.getAngleRadian());
+			
 			super.paintComponent(graphs);
 		}
 	}

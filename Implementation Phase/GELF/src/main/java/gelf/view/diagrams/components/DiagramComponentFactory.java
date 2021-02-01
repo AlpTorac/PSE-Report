@@ -13,7 +13,7 @@ public class DiagramComponentFactory {
 		return DiagramComponentFactory.instance;
 	}
 	
-	public SolidLine createSolidLine(PositionInFrame start, PositionInFrame end, Color color, float thickness) {
+	public SolidLine createSolidLine(PositionInFrame start, PositionInFrame end, Color color, int thickness) {
 		return new SolidLine(start, end, color, thickness);
 	}
 	public BiColorScale createBiColorScale(PositionInFrame topLeft, PositionInFrame bottomRight, Color borderColor,
@@ -31,7 +31,7 @@ public class DiagramComponentFactory {
 			int borderThickness) {
 		return new BarChartBar(color, value, topLeft, bottomRight, borderThickness);
 	}
-	public SolidAxis createSolidAxis(PositionInFrame start, PositionInFrame end, float min, float max, int steps, Color color, float thickness) {
+	public SolidAxis createSolidAxis(PositionInFrame start, PositionInFrame end, float min, float max, int steps, Color color, int thickness) {
 		DiagramLine l = new SolidLine(start, end, color, thickness);
 		return new SolidAxis(l, min, max, steps);
 	}
