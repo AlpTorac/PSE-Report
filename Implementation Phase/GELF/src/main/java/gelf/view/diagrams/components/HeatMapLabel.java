@@ -1,20 +1,20 @@
 package gelf.view.diagrams.components;
 
-import java.awt.Color;
-
 public class HeatMapLabel extends DiagramValueLabel {
 
-	protected HeatMapLabel(PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight, Color color, float value,
+	private DiagramColorScale colorScale;
+	
+	protected HeatMapLabel(PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight, DiagramColorScale colorScale, float value,
 			int borderThickness) {
-		super(topLeft, bottomRight, color, value, borderThickness);
-		// TODO Auto-generated constructor stub
+		super(topLeft, bottomRight, colorScale.valueToColor(value), value, borderThickness);
+		
+		this.colorScale = colorScale;
 	}
 
 
 	@Override
 	public void refreshValueRelevantAttributes() {
-		// TODO Auto-generated method stub
-
+		this.setColor(this.colorScale.valueToColor(this.getValue()));
 	}
 
 	@Override

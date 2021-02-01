@@ -12,7 +12,6 @@ public class BarChartBar extends DiagramBar {
 
 	@Override
 	public DiagramComponent clone() {
-		// TODO Auto-generated method stub
-		return null;
+		return new BarChartBar(this.getColor(), this.getValue(), this.getTopLeftInDiagram(), this.getBottomRightInDiagram(), this.getBorderThickness());
 	}
 }

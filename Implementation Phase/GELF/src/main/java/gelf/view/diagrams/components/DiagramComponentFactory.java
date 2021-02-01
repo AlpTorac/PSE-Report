@@ -35,9 +35,9 @@ public class DiagramComponentFactory {
 		DiagramLine l = new SolidLine(start, end, color, thickness);
 		return new SolidAxis(l, min, max, steps);
 	}
-	public HeatMapLabel createHeatMapLabel(PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight, Color color, float value,
+	public HeatMapLabel createHeatMapLabel(PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight, DiagramColorScale colorScale, float value,
 			int borderThickness) {
-		return new HeatMapLabel(topLeft, bottomRight, color, value, borderThickness);
+		return new HeatMapLabel(topLeft, bottomRight, colorScale, value, borderThickness);
 	}
 	public DescriptionLabel createDescriptionLabel(PositionInFrame topLeft, PositionInFrame bottomRight, Color color, String caption,
 			int borderThickness) {
