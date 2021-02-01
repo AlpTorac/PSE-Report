@@ -29,8 +29,12 @@ public abstract class DiagramPoint extends DiagramValueDisplayComponent {
 	public PositionIn2DDiagram getPositionInDiagram() {
 		return this.position;
 	}
-
-	public void setPositionInDiagram(float x, float y) {
+	
+	public void setXPositionInDiagram(double x) {
+		this.setPositionInDiagram(x, this.getValue());
+	}
+	
+	private void setPositionInDiagram(double x, double y) {
 		this.position.setXCoordinate(x);
 		this.position.setYCoordinate(y);
 		
@@ -44,6 +48,11 @@ public abstract class DiagramPoint extends DiagramValueDisplayComponent {
 	public void setSize(float size) {
 		this.size = size;
 		this.visualElement.repaint();
+	}
+	
+	@Override
+	protected void refreshValueRelevantAttributes() {
+		this.setPositionInDiagram(this.getPositionInDiagram().getXCoordinate(), this.getValue());
 	}
 	
 	@Override

@@ -22,5 +22,5 @@ public abstract class DiagramValueDisplayComponent extends DiagramComponent impl
 		return this.value;
 	}
 
-	public abstract void refreshValueRelevantAttributes();
+	protected abstract void refreshValueRelevantAttributes();
 }

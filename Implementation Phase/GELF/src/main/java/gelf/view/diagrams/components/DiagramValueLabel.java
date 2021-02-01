@@ -44,26 +44,31 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 	}
 
 	protected void refreshCaption() {
-		((ValueLabelVisual) this.visualElement).setText(getCaption());
+		this.visualElement.repaint();
 	}
 
 	public String getCaption() {
-		return caption;
+		return this.caption;
 	}
 
-	public void setCaption(String caption) {
+	private void setCaption(String caption) {
 		this.caption = caption;
 		
 		this.refreshCaption();
 	}
 
 	public int getBorderThickness() {
-		return borderThickness;
+		return this.borderThickness;
 	}
 
 	public void setBorderThickness(int borderThickness) {
 		this.borderThickness = borderThickness;
 		this.visualElement.repaint();
+	}
+	
+	@Override
+	public void refreshValueRelevantAttributes() {
+		this.setCaption(String.valueOf(this.getValue()));
 	}
 	
 	@Override
