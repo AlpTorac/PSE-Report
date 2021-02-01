@@ -1,4 +1,4 @@
-package main.java.gelf.view;
+package gelf.view;
 
 /**
  * Hello world!
