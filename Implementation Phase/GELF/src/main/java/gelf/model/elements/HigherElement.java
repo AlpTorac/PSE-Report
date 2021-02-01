@@ -5,6 +5,7 @@ import java.util.Map;
 
 import main.java.gelf.model.elements.attributes.PowerGroup;
 import main.java.gelf.model.elements.attributes.TimingGroup;
+import main.java.gelf.model.elements.attributes.TimingKey;
 import main.java.gelf.model.elements.attributes.TimingSense;
 import main.java.gelf.model.elements.attributes.TimingType;
 
@@ -14,7 +15,8 @@ public abstract class HigherElement extends Element {
     protected ArrayList<TimingType> availableTimType;
     protected ArrayList<PowerGroup> availableOutputPower;
     protected ArrayList<PowerGroup> availableInputPower;
-    protected Map<TimingSense, Map<TimingGroup, Map<TimingType, Stat>>> timingStat;
+    // protected Map<TimingSense, Map<TimingGroup, Map<TimingType, Stat>>> timingStat;
+    protected Map<TimingKey, Stat> timingStat;
     protected Map<PowerGroup, Stat> inPowerStat;
     protected Map<PowerGroup, Stat> outPowerStat;
     protected boolean hasShownElements;
@@ -59,7 +61,7 @@ public abstract class HigherElement extends Element {
 	public void setAvailableInputPower(ArrayList<PowerGroup> availableInputPower) {
 		this.availableInputPower = availableInputPower;
 	}
-
+/**
 	public Map<TimingSense, Map<TimingGroup, Map<TimingType, Stat>>> getTimingStat() {
 		return timingStat;
 	}
@@ -67,7 +69,15 @@ public abstract class HigherElement extends Element {
 	public void setTimingStat(Map<TimingSense, Map<TimingGroup, Map<TimingType, Stat>>> timingStat) {
 		this.timingStat = timingStat;
 	}
+**/
+	public Map<TimingKey, Stat> getTimingStat() {
+		return timingStat;
+	}
 
+	public void setTimingStat(Map<TimingKey, Stat> timingStat) {
+		this.timingStat = timingStat;
+	}
+	
 	public Map<PowerGroup, Stat> getInPowerStat() {
 		return inPowerStat;
 	}
