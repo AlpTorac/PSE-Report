@@ -24,6 +24,7 @@ public abstract class DiagramPoint extends DiagramValueDisplayComponent {
 
 		this.position = position;
 		this.size = size;
+		this.initHoverableVisualElement();
 	}
 
 	public PositionIn2DDiagram getPositionInDiagram() {

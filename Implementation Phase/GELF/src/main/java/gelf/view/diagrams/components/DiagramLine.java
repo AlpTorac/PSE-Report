@@ -20,6 +20,7 @@ public abstract class DiagramLine extends DiagramComponent {
 		this.start = start;
 		this.end = end;
 		this.thickness = thickness;
+		this.initVisualElement();
 	}
 
 	public PositionInFrame getStartInFrame() {

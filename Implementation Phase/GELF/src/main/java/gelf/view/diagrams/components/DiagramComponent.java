@@ -6,9 +6,10 @@ import java.awt.Rectangle;
 
 public abstract class DiagramComponent {
 	protected Component visualElement;
+	private Color color;
 
 	protected DiagramComponent(Color color) {
-		this.initVisualElement();
+		this.color = color;
 	}
 
 	@Override
@@ -23,12 +24,13 @@ public abstract class DiagramComponent {
 	protected abstract Rectangle getFrameBounds();
 	
 	public void setColor(Color color) {
+		this.color = color;
 		this.visualElement.setBackground(color);
 		this.visualElement.repaint();
 	}
 
 	public Color getColor() {
-		return this.visualElement.getBackground();
+		return this.color;
 	}
 
 	public void show() {

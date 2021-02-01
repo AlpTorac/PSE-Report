@@ -20,6 +20,7 @@ public abstract class DiagramLabel extends DiagramComponent {
 		this.topLeft = topLeft;
 		this.bottomRight = bottomRight;
 		this.borderThickness = borderThickness;
+		this.initVisualElement();
 	}
 
 	public String getCaption() {

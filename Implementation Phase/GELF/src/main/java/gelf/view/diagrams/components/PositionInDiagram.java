@@ -11,6 +11,7 @@ public abstract class PositionInDiagram {
 	
 	public PositionInDiagram(PositionInDiagram referencePoint, double[] vector) {
 		this.axes = referencePoint.axes;
+		this.coordinatesInAxes = new double[referencePoint.coordinatesInAxes.length];
 		
 		for (int i = 0; i < this.coordinatesInAxes.length; i++) {
 			this.coordinatesInAxes[i] = referencePoint.getAxisPos(i) + vector[i];
@@ -23,7 +24,9 @@ public abstract class PositionInDiagram {
 
 	public PositionInFrame toPositionInFrame() {
 		double[] coordinates = to2D();
-		return new PositionInFrame(coordinates[0], coordinates[1]);
+		PositionInFrame xPosInFrame = axes[0].valueToCoordinate((float) coordinates[0]);
+		PositionInFrame yPosInFrame = axes[1].valueToCoordinate((float) coordinates[1]);
+		return new PositionInFrame(xPosInFrame.getXPos(), yPosInFrame.getYPos());
 	}
 
 	protected void setAxisCoordinate(int index, double position) {

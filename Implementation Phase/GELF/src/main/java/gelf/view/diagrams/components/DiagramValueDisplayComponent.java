@@ -9,12 +9,15 @@ public abstract class DiagramValueDisplayComponent extends DiagramComponent impl
 		super(color);
 
 		this.value = value;
-		this.addHoverListener(this.visualElement);
 	}
 
+	protected void initHoverableVisualElement() {
+		this.initVisualElement();
+		this.addHoverListener(this.visualElement);
+	}
+	
 	public void setValue(float value) {
 		this.value = value;
-		
 		this.refreshValueRelevantAttributes();
 	}
 

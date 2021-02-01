@@ -23,6 +23,7 @@ public abstract class DiagramColorScale extends DiagramComponent {
 		this.borderThickness = borderThickness;
 		this.values = values;
 		this.valueColors = valueColors;
+		this.initVisualElement();
 	}
 
 	private int getRangeMinIndex(float value) {

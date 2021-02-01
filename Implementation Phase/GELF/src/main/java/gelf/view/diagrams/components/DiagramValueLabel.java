@@ -19,6 +19,7 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 		this.bottomRight = bottomRight;
 		this.topLeft = topLeft;
 		this.borderThickness = borderThickness;
+		this.initHoverableVisualElement();
 	}
 
 	public PositionIn2DDiagram getBottomRightInDiagram() {

@@ -19,6 +19,12 @@ public class HoverLabel {
 
 	private HoverLabel() {
 		this.component = new HoverLabelVisual();
+		this.width = 100;
+		this.height = 50;
+		this.position = new PositionInFrame(0, 0);
+		this.color = Color.WHITE;
+		this.caption = "";
+		this.setComponentBounds();
 	}
 
 	private void setComponentBounds() {
@@ -107,7 +113,7 @@ public class HoverLabel {
 		 * Generated serial version ID.
 		 */
 		private static final long serialVersionUID = 6228060598904141126L;
-		HoverLabel label = HoverLabel.getHoverLabel();
+		private HoverLabel label = HoverLabel.getHoverLabel();
 		
 		private HoverLabelVisual() {
 			this.setBackground(this.label.getColor());

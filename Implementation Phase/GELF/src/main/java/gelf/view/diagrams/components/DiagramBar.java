@@ -19,6 +19,8 @@ public abstract class DiagramBar extends DiagramValueDisplayComponent {
 		this.topLeft = topLeft;
 		this.bottomRight = bottomRight;
 		this.borderThickness = borderThickness;
+		this.initHoverableVisualElement();
+		this.setValue(value);
 	}
 
 	public double getHeight() {

@@ -54,10 +54,8 @@ public class PositionIn2DDiagram extends PositionInDiagram {
 
 		double[][] tMatrix = TO_2D_MATRIX;
 
-		for (int i = 0; i < tMatrix.length; i++) {
-			coordinate += tMatrix[i][0] * this.getXCoordinate();
-			coordinate += tMatrix[i][1] * this.getYCoordinate();
-		}
+		coordinate += tMatrix[index][0] * this.getXCoordinate();
+		coordinate += tMatrix[index][1] * this.getYCoordinate();
 
 		return coordinate;
 	}

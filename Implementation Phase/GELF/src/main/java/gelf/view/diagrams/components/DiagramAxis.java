@@ -23,6 +23,7 @@ public abstract class DiagramAxis extends DiagramComponent {
 		this.max = max;
 		this.steps = steps;
 		this.axisLine = axisLine;
+		this.initVisualElement();
 	}
 
 	public float getMin() {
@@ -62,17 +63,16 @@ public abstract class DiagramAxis extends DiagramComponent {
 	//The minVal is on start of line, maxVal is on end of line
 	public PositionInFrame valueToCoordinate(float value) {
 		PositionInFrame lineStart = this.axisLine.getStartInFrame();
-		double hLength = this.axisLine.calculateHorizontalLength();
-		double vLength = this.axisLine.calculateVerticalLength();
+		PositionInFrame lineEnd = this.axisLine.getEndInFrame();
 		
-		// The distance of the given coordinate from minVal's point
-		double factor = (value / this.max);
+		//Weight of lineEnd
+		double factor = ((value - this.min) / (this.max - this.min));
 		
-		double frameXPos = hLength * factor;
-		double frameYPos = vLength * factor;
+		//Weighted summation of lineStart and lineEnd coordinates
+		double frameXPos = lineStart.getXPos() * (1 - factor) + lineEnd.getXPos() * factor;
+		double frameYPos = lineStart.getYPos() * (1 - factor) + lineEnd.getYPos() * factor;
 		
-		return new PositionInFrame(lineStart.getXPos() + frameXPos,
-				lineStart.getYPos() + frameYPos);
+		return new PositionInFrame(frameXPos, frameYPos);
 	}
 	/*
 	 * Use Fourier formula to calculate:
