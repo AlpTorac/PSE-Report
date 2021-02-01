@@ -1,4 +1,4 @@
-package main.java.gelf.model.elements;
+package gelf.model.elements;
 
 public abstract class Element {
 	protected boolean filtered;

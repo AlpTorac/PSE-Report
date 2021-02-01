@@ -1,13 +1,13 @@
-package main.java.gelf.model.elements;
+package gelf.model.elements;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-import main.java.gelf.model.elements.attributes.PowerGroup;
-import main.java.gelf.model.elements.attributes.TimingGroup;
-import main.java.gelf.model.elements.attributes.TimingKey;
-import main.java.gelf.model.elements.attributes.TimingSense;
-import main.java.gelf.model.elements.attributes.TimingType;
+import gelf.model.elements.attributes.PowerGroup;
+import gelf.model.elements.attributes.TimingGroup;
+import gelf.model.elements.attributes.TimingKey;
+import gelf.model.elements.attributes.TimingSense;
+import gelf.model.elements.attributes.TimingType;
 
 public abstract class HigherElement extends Element {
 	protected ArrayList<TimingSense> availableTimSen;

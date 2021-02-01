@@ -1,10 +1,10 @@
-package main.java.gelf.model.elements;
+package gelf.model.elements;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
-import main.java.gelf.model.elements.attributes.PowerGroup;
+import gelf.model.elements.attributes.PowerGroup;
 
 public class Library extends HigherElement {
 	private float[] index1;

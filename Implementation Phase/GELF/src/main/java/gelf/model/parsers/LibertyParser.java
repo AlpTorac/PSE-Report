@@ -1,15 +1,15 @@
 package gelf.model.parsers;
 
 import java.util.ArrayList;
+import gelf.model.elements.*;
 
 /**
  * Parses the Liberty Files to their corresponding data objects
  */
 public class LibertyParser {
-    private static JsonParser parser = new JsonParser();
-    private static final String NAMEFORMAT = "([A-Za-z]|\_|\-|[0-9])*";
+    private static final String NAMEFORMAT = "([A-Za-z]|_|-|[0-9])*";
     private static final String VALUEFORMAT = "\"([0-9]+";
-    private static final String ARRAYFORMAT = "\"(" + VALUEFORMAT +",)*(\\)?" + VALUEFORMAT "\"";
+    private static final String ARRAYFORMAT = "\"(" + VALUEFORMAT +",)*(\\)?" + VALUEFORMAT + "\"";
     private static final String DOUBLEARRAYFORMAT = "(" + ARRAYFORMAT + ")*,\\" + ARRAYFORMAT;
     private static final String INATTRIBUTESFORMAT = "";
     private static final String OUTATTRIBUTESFORMAT = "";
@@ -41,7 +41,7 @@ public class LibertyParser {
         float[] index2 = childCells.get(0).getIndex2();
         for (int i = 1; i < childCells.size(); i++) {
             Cell currentCell = childCells.get(i); 
-            if (!currentCell.getIndex1.equals(index1) || !currentCell.getIndex1.equals(index2)) {
+            if (!currentCell.getIndex1().equals(index1) || !currentCell.getIndex1().equals(index2)) {
                 currentCell.interpolate(index1, index2);
             }
         }
@@ -52,14 +52,14 @@ public class LibertyParser {
 
     public static Cell parseCell(String cellString) {
         String[] pinStrings = cellString.split("pin(");
-        ArrayList<Cell> childCells = new ArrayList<Cell>();
+        ArrayList<Pin> childPins = new ArrayList<Pin>();
         for (int i = 1; i < pinStrings.length; i++) {
             childPins.add(parsePin("pin(" + pinStrings[i]));
         }
         if (childPins.isEmpty()) {
             return InvalidFileFormatException;
         }
-        String[] pinData = cellStrings[0].split("{");
+        String[] pinData = pinStrings[0].split("{");
         String name = pinData[0].substring(5, pinData[0].length() - 1);
     }
 
