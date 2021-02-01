@@ -1,6 +1,10 @@
 package main.java.gelf.model.elements;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
+
+import main.java.gelf.model.elements.attributes.PowerGroup;
 
 public class Library extends HigherElement {
 	private float[] index1;
@@ -77,17 +81,106 @@ public class Library extends HigherElement {
 	}
 	
 	public void calculateLeakage() {
-		for (int i = 0; i < cells.size(); i++) {
-			
+		float min = 0;
+		float max = 0;
+		float avg = 0;
+		float med = 0;
+		
+		// traverse the cells to calculate leakage stats of the library
+		Iterator<Cell> cellsIt = cells.iterator();
+		while(cellsIt.hasNext()) {
+			min = Math.min(min, cellsIt.next().leakage.getMin());
+			max = Math.max(max, cellsIt.next().leakage.getMax());
+			avg += cellsIt.next().leakage.getAvg();
 		}
+		avg = avg / (float)cells.size();
+		
+		if (leakage != null) {
+			leakage.setAvg(avg);
+			leakage.setMax(max);
+			leakage.setMin(min);
+			leakage.setMed(med);
+		}
+		else {
+			leakage = new Stat(min, max, avg, med);
+		}	
 	}
 	
 	public void calculateInPow() {
 		
+		Iterator<PowerGroup> avPowGrIt = availableInputPower.iterator();
+		
+		Iterator<Cell> cellsIt = cells.iterator();
+		
+		
+		
+		while(avPowGrIt.hasNext()) {
+			
+			// ArrayList toCalc to put Stats of the same PowerGroup in the same place
+			ArrayList<Stat> toCalc = new ArrayList<Stat>();
+			Iterator<Stat> toCalcIt = toCalc.iterator();
+			
+			while(cellsIt.hasNext()) {
+				for (Map.Entry<PowerGroup, Stat> entry : cellsIt.next().
+						inPowerStat.entrySet())  
+		            if(entry.getKey() == avPowGrIt.next()) {
+		            	toCalc.add(entry.getValue());
+		            }
+			}
+			float min = 0;
+			float max = 0;
+			float avg = 0;
+			float med = 0;
+			
+			// calculate the stats for the desired Power Group
+			while(toCalcIt.hasNext()) {
+				min = Math.min(min, toCalcIt.next().getMin());
+				max = Math.max(max, toCalcIt.next().getMax());
+				avg += toCalcIt.next().getAvg();
+			}
+			avg = avg / (float) toCalc.size();
+			
+			Stat stat = new Stat(min, max, avg, med);
+			inPowerStat.put(avPowGrIt.next(), stat);	
+		}
 	}
 	
 	public void calculateOutPow() {
+		Iterator<PowerGroup> avPowGrIt = availableOutputPower.iterator();
 		
+		Iterator<Cell> cellsIt = cells.iterator();
+		
+		
+		
+		while(avPowGrIt.hasNext()) {
+			
+			// ArrayList toCalc to put Stats of the same PowerGroup in the same place
+			ArrayList<Stat> toCalc = new ArrayList<Stat>();
+			Iterator<Stat> toCalcIt = toCalc.iterator();
+			
+			while(cellsIt.hasNext()) {
+				for (Map.Entry<PowerGroup, Stat> entry : cellsIt.next().
+						outPowerStat.entrySet())  
+		            if(entry.getKey() == avPowGrIt.next()) {
+		            	toCalc.add(entry.getValue());
+		            }
+			}
+			float min = 0;
+			float max = 0;
+			float avg = 0;
+			float med = 0;
+			
+			// calculate the stats for the desired Power Group
+			while(toCalcIt.hasNext()) {
+				min = Math.min(min, toCalcIt.next().getMin());
+				max = Math.max(max, toCalcIt.next().getMax());
+				avg += toCalcIt.next().getAvg();
+			}
+			avg = avg / (float) toCalc.size();
+			
+			Stat stat = new Stat(min, max, avg, med);
+			outPowerStat.put(avPowGrIt.next(), stat);	
+		}
 	}
 	
 	public void calculateTiming() {
