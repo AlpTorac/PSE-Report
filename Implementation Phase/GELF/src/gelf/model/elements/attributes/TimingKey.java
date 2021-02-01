@@ -1,4 +1,4 @@
-package main.java.gelf.model.elements.attributes;
+package gelf.model.elements.attributes;
 
 public class TimingKey {
 	// this class is to use one key for the timingStat map instead of nesting maps

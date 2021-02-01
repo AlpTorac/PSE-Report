@@ -1,8 +1,8 @@
-package main.java.gelf.model.elements;
+package gelf.model.elements;
 
 import java.util.ArrayList;
 
-import main.java.gelf.model.elements.attributes.PowerGroup;
+import gelf.model.elements.attributes.PowerGroup;
 
 public abstract class Pin extends Element {
 	 protected Cell parentCell;

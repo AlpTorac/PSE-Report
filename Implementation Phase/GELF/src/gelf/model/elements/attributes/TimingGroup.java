@@ -1,4 +1,4 @@
-package main.java.gelf.model.elements.attributes;
+package gelf.model.elements.attributes;
 
 public enum TimingGroup {
 	CELLRISE,

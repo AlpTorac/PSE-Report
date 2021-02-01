@@ -1,9 +1,9 @@
-package main.java.gelf.model.elements;
+package gelf.model.elements;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import main.java.gelf.model.elements.attributes.InputPower;
+import gelf.model.elements.attributes.InputPower;
 
 public class InputPin extends Pin {
 	private ArrayList<InputPower> inputPowers;

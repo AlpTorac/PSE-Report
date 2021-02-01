@@ -1,9 +1,9 @@
-package main.java.gelf.model.elements.attributes;
+package gelf.model.elements.attributes;
 
 import java.util.Arrays;
 
-import main.java.gelf.model.elements.InputPin;
-import main.java.gelf.model.elements.Stat;
+import gelf.model.elements.InputPin;
+import gelf.model.elements.Stat;
 
 public abstract class InAttribute extends Attribute {
 	protected float[] index1;

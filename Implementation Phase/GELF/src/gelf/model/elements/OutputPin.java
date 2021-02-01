@@ -1,13 +1,13 @@
-package main.java.gelf.model.elements;
+package gelf.model.elements;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import main.java.gelf.model.elements.attributes.OutputPower;
-import main.java.gelf.model.elements.attributes.Timing;
-import main.java.gelf.model.elements.attributes.TimingGroup;
-import main.java.gelf.model.elements.attributes.TimingSense;
-import main.java.gelf.model.elements.attributes.TimingType;
+import gelf.model.elements.attributes.OutputPower;
+import gelf.model.elements.attributes.Timing;
+import gelf.model.elements.attributes.TimingGroup;
+import gelf.model.elements.attributes.TimingSense;
+import gelf.model.elements.attributes.TimingType;
 
 public class OutputPin extends Pin {
 	private ArrayList<TimingSense> availableTimSen;

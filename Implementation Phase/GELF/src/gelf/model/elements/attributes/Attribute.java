@@ -1,6 +1,6 @@
-package main.java.gelf.model.elements.attributes;
+package gelf.model.elements.attributes;
 
-import main.java.gelf.model.elements.Stat;
+import gelf.model.elements.Stat;
 
 public abstract class Attribute {
 	protected Stat stats;
