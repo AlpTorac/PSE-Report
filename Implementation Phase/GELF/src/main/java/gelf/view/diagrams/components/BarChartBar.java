@@ -7,11 +7,11 @@ public class BarChartBar extends DiagramBar {
 	protected BarChartBar(Color color, float value, PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight,
 			int borderThickness) {
 		super(color, value, topLeft, bottomRight, borderThickness);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
-	public DiagramComponent clone() {
-		return new BarChartBar(this.getColor(), this.getValue(), this.getTopLeftInDiagram(), this.getBottomRightInDiagram(), this.getBorderThickness());
+	public BarChartBar clone() {
+		Color newColor = new Color(this.getColor().getRGB());
+		return new BarChartBar(newColor, this.getValue(), this.getTopLeftInDiagram().clone(), this.getBottomRightInDiagram().clone(), this.getBorderThickness());
 	}
 }

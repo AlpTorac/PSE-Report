@@ -8,7 +8,7 @@ public class ValueDisplayPoint extends DiagramPoint {
 	}
 
 	@Override
-	public DiagramComponent clone() {
+	public ValueDisplayPoint clone() {
 		return null;
 	}
 

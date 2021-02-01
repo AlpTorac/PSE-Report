@@ -8,6 +8,11 @@ public class PositionInFrame {
 		this.xPos = xPos;
 		this.yPos = yPos;
 	}
+	
+	public PositionInFrame(PositionInFrame referencePosition, double xPosDifference, double yPosDifference) {
+		this.xPos = referencePosition.getXPos() + xPosDifference;
+		this.yPos = referencePosition.getYPos() + yPosDifference;
+	}
 
 	public double getXPos() {
 		return xPos;
@@ -23,5 +28,10 @@ public class PositionInFrame {
 
 	public void setYPos(double yPos) {
 		this.yPos = yPos;
+	}
+	
+	@Override
+	public PositionInFrame clone() {
+		return new PositionInFrame(this.getXPos(), this.getYPos());
 	}
 }

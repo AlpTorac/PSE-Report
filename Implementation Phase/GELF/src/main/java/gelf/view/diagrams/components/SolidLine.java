@@ -8,8 +8,9 @@ public class SolidLine extends DiagramLine {
 	}
 
 	@Override
-	public DiagramComponent clone() {
-		return null;
+	public SolidLine clone() {
+		Color newColor = new Color(this.getColor().getRGB());
+		return new SolidLine(this.getStartInFrame().clone(), this.getEndInFrame().clone(), newColor, this.getThickness());
 	}
 
 	@Override

@@ -60,8 +60,12 @@ public class BiColorScale extends DiagramColorScale {
 	}
 	
 	@Override
-	public DiagramComponent clone() {
-		return new BiColorScale(this.getTopLeftInFrame(), this.getBottomRightInFrame(), this.getColor(), this.getMinValue(),
-				this.getMaxValue(), this.getMinValueColor(), this.getMaxValueColor(), this.getBorderThickness());
+	public BiColorScale clone() {
+		Color newColor = new Color(this.getColor().getRGB());
+		Color minValColor = new Color(this.getMinValueColor().getRGB());
+		Color maxValColor = new Color(this.getMaxValueColor().getRGB());
+		
+		return new BiColorScale(this.getTopLeftInFrame().clone(), this.getBottomRightInFrame().clone(), newColor, this.getMinValue(),
+				this.getMaxValue(), minValColor, maxValColor, this.getBorderThickness());
 	}
 }

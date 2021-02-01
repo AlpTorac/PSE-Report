@@ -9,8 +9,8 @@ public class HistogramBar extends DiagramBar {
 	}
 
 	@Override
-	public DiagramComponent clone() {
-		// TODO Auto-generated method stub
-		return null;
+	public HistogramBar clone() {
+		Color newColor = new Color(this.getColor().getRGB());
+		return new HistogramBar(newColor, this.getValue(), this.getTopLeftInDiagram().clone(), this.getBottomRightInDiagram().clone(), this.getBorderThickness());
 	}
 }

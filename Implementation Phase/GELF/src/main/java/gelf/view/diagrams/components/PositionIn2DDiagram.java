@@ -61,4 +61,9 @@ public class PositionIn2DDiagram extends PositionInDiagram {
 
 		return coordinate;
 	}
+
+	@Override
+	public PositionIn2DDiagram clone() {
+		return new PositionIn2DDiagram(this.getAxes()[0], this.getXCoordinate(), this.getAxes()[1], this.getYCoordinate());
+	}
 }

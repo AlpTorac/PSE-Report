@@ -32,7 +32,7 @@ public class DiagramComponentFactory {
 		return new BarChartBar(color, value, topLeft, bottomRight, borderThickness);
 	}
 	public SolidAxis createSolidAxis(PositionInFrame start, PositionInFrame end, float min, float max, int steps, Color color, int thickness) {
-		DiagramLine l = new SolidLine(start, end, color, thickness);
+		SolidLine l = new SolidLine(start, end, color, thickness);
 		return new SolidAxis(l, min, max, steps);
 	}
 	public HeatMapLabel createHeatMapLabel(PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight, DiagramColorScale colorScale, float value,

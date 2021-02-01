@@ -14,7 +14,7 @@ public abstract class DiagramAxis extends DiagramComponent {
 	private float max;
 	private int steps;
 	private boolean showValues;
-	private DiagramLine axisLine;
+	protected DiagramLine axisLine;
 
 	protected DiagramAxis(DiagramLine axisLine, float min, float max, int steps) {
 		super(axisLine.getColor());

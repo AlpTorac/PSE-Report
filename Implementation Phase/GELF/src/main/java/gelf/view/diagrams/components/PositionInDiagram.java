@@ -59,4 +59,7 @@ public abstract class PositionInDiagram {
 	 * @return The converted coordinates
 	 */
 	protected abstract double to2DCoordinate(int index);
+	
+	@Override
+	public abstract PositionInDiagram clone();
 }

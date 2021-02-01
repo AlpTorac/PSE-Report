@@ -18,8 +18,7 @@ public class HeatMapLabel extends DiagramValueLabel {
 	}
 
 	@Override
-	public DiagramComponent clone() {
-		// TODO Auto-generated method stub
-		return null;
+	public HeatMapLabel clone() {
+		return new HeatMapLabel(this.getTopLeftInDiagram().clone(), this.getBottomRightInDiagram().clone(), this.colorScale, this.getValue(), this.getBorderThickness());
 	}
 }
