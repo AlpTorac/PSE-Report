@@ -15,10 +15,4 @@ public class DescriptionLabel extends DiagramLabel {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	protected void initVisualElement() {
-		// TODO Auto-generated method stub
-
-	}
 }

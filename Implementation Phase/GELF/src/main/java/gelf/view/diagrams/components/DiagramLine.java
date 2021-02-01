@@ -1,7 +1,11 @@
 package gelf.view.diagrams.components;
 
 import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
+
+import javax.swing.JLabel;
 
 public abstract class DiagramLine extends DiagramComponent {
 	private PositionInFrame start;
@@ -44,6 +48,7 @@ public abstract class DiagramLine extends DiagramComponent {
 
 	public void setThickness(float thickness) {
 		this.thickness = thickness;
+		this.setComponentBounds(this.getFrameBounds());
 	}
 	
 	protected double calculateHorizontalLength() {
@@ -65,11 +70,50 @@ public abstract class DiagramLine extends DiagramComponent {
 	protected Rectangle getFrameBounds() {
 		Rectangle bounds = new Rectangle();
 		
-		PositionInFrame topLeftInFrame = this.start;
-		PositionInFrame bottomRightInFrame = this.end;
+		PositionInFrame startPos = this.start;
 		
-		bounds.setFrameFromDiagonal(topLeftInFrame.getXPos(), topLeftInFrame.getYPos(), bottomRightInFrame.getXPos(), bottomRightInFrame.getYPos());
+		bounds.setRect(startPos.getXPos(), startPos.getYPos(), this.calculateLength(), this.thickness);
 		
 		return bounds;
+	}
+	
+	protected double getAngleRadian() {
+		PositionInFrame startPos = this.start;
+		PositionInFrame endPos = this.end;
+		
+		double xDifference = endPos.getXPos() - startPos.getXPos();
+		double yDifference = endPos.getYPos() - startPos.getYPos();
+		
+		return Math.atan2(yDifference, xDifference);
+	}
+	
+	@Override
+	protected void initVisualElement() {
+		this.visualElement = new LineVisual(this);
+	}
+	
+	protected class LineVisual extends JLabel {
+		/**
+		 * Generated serial version ID.
+		 */
+		private static final long serialVersionUID = -2051091734012179305L;
+		DiagramLine line;
+		
+		protected LineVisual(DiagramLine line) {
+			this.line = line;
+			this.line.setComponentBounds(this.line.getFrameBounds());
+		}
+		
+		@Override
+		protected void paintComponent(Graphics g) {
+			Graphics2D graphs = (Graphics2D) g;
+			
+			Rectangle bounds = this.getBounds();
+			
+			graphs.setColor(this.line.getColor());
+			graphs.drawLine(0, 0, bounds.width, bounds.height);
+			graphs.rotate(this.line.getAngleRadian());
+			super.paintComponent(graphs);
+		}
 	}
 }

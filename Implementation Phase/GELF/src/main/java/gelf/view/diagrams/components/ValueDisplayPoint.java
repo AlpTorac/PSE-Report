@@ -17,10 +17,4 @@ public class ValueDisplayPoint extends DiagramPoint {
 		// TODO Auto-generated method stub
 
 	}
-
-	@Override
-	protected void initVisualElement() {
-		// TODO Auto-generated method stub
-
-	}
 }

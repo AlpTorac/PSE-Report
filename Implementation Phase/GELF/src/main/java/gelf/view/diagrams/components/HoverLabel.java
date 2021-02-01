@@ -2,9 +2,11 @@ package gelf.view.diagrams.components;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.Rectangle;
+
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.border.Border;
 
 public class HoverLabel {
 	private String caption;
@@ -16,28 +18,22 @@ public class HoverLabel {
 	private static HoverLabel hoverLabel = new HoverLabel();
 
 	private HoverLabel() {
-
+		this.component = new HoverLabelVisual();
 	}
 
-	private void setComponentSize() {
-		Dimension size = new Dimension();
-		size.setSize(width, height);
-		this.component.setSize(size);
-	}
-
-	private void setComponentLocation() {
-		Point p = new Point();
-		p.setLocation(position.getXPos(), position.getYPos());
-		this.component.setLocation(null);
+	private void setComponentBounds() {
+		Rectangle bounds = new Rectangle();
+		bounds.setRect(this.getXPos(), this.getYPos(), this.getWidth(), this.getHeight());
+		
+		this.component.setBounds(bounds);
 	}
 
 	private void setComponentColor() {
-		this.component.setBackground(color);
+		this.component.setBackground(this.color);
 	}
 
-	private void setComponentCaption(float x, float y) {
-		Graphics2D g = (Graphics2D) this.component.getGraphics();
-		g.drawString(this.caption, x, y);
+	private void setComponentCaption() {
+		((HoverLabelVisual) this.component).setText(getCaption());
 	}
 
 	public String getCaption() {
@@ -46,7 +42,7 @@ public class HoverLabel {
 
 	public void setCaption(String caption) {
 		this.caption = caption;
-		this.setComponentCaption(0, 0);
+		this.setComponentCaption();
 	}
 
 	public Color getColor() {
@@ -64,7 +60,7 @@ public class HoverLabel {
 
 	public void setXPos(double xPos) {
 		this.position.setXPos(xPos);
-		this.setComponentLocation();
+		this.setComponentBounds();
 	}
 
 	public double getYPos() {
@@ -73,7 +69,7 @@ public class HoverLabel {
 
 	public void setYPos(double yPos) {
 		this.position.setYPos(yPos);
-		this.setComponentLocation();
+		this.setComponentBounds();
 	}
 
 	public double getWidth() {
@@ -82,7 +78,7 @@ public class HoverLabel {
 
 	public void setWidth(double width) {
 		this.width = width;
-		this.setComponentSize();
+		this.setComponentBounds();
 	}
 
 	public double getHeight() {
@@ -91,7 +87,7 @@ public class HoverLabel {
 
 	public void setHeight(double height) {
 		this.height = height;
-		this.setComponentSize();
+		this.setComponentBounds();
 	}
 
 	public void show() {
@@ -104,5 +100,21 @@ public class HoverLabel {
 
 	public static HoverLabel getHoverLabel() {
 		return hoverLabel;
+	}
+	
+	private class HoverLabelVisual extends JLabel {
+		/**
+		 * Generated serial version ID.
+		 */
+		private static final long serialVersionUID = 6228060598904141126L;
+		HoverLabel label = HoverLabel.getHoverLabel();
+		
+		private HoverLabelVisual() {
+			this.setBackground(this.label.getColor());
+			this.label.setComponentBounds();
+			
+			Border b = BorderFactory.createLineBorder(Color.BLACK, 10);
+			this.setBorder(b);
+		}
 	}
 }

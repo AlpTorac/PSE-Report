@@ -3,6 +3,9 @@ package gelf.view.diagrams.components;
 import java.awt.Color;
 import java.awt.Rectangle;
 
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+
 public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 	private PositionIn2DDiagram bottomRight;
 	private PositionIn2DDiagram topLeft;
@@ -41,7 +44,7 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 	}
 
 	protected void refreshCaption() {
-
+		((ValueLabelVisual) this.visualElement).setText(getCaption());
 	}
 
 	public String getCaption() {
@@ -54,7 +57,7 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 		this.refreshCaption();
 	}
 
-	public float getBorderThickness() {
+	public int getBorderThickness() {
 		return borderThickness;
 	}
 
@@ -73,5 +76,25 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 				frameBottomRight.getYPos());
 		
 		return bounds;
+	}
+	
+	@Override
+	protected void initVisualElement() {
+		this.visualElement = new ValueLabelVisual(this);
+	}
+	
+	protected class ValueLabelVisual extends JLabel {
+		/**
+		 * Generated serial version ID.
+		 */
+		private static final long serialVersionUID = -784432558268794661L;
+		private DiagramValueLabel label;
+		
+		protected ValueLabelVisual(DiagramValueLabel label) {
+			this.label = label;
+			this.setBorder(BorderFactory.createLineBorder(Color.BLACK, this.label.getBorderThickness()));
+			this.setBounds(this.label.getFrameBounds());
+			this.setText(this.label.getCaption());
+		}
 	}
 }

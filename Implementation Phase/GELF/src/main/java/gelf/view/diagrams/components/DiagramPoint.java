@@ -77,7 +77,6 @@ public abstract class DiagramPoint extends DiagramValueDisplayComponent {
 		
 		protected PointVisual(DiagramPoint point) {
 			this.point = point;
-			this.setOpaque(true);
 		}
 	}
 }

@@ -90,12 +90,7 @@ public abstract class DiagramLabel extends DiagramComponent {
 			this.label = label;
 			this.setBorder(BorderFactory.createLineBorder(Color.BLACK, this.label.getBorderThickness()));
 			this.setBounds(this.label.getFrameBounds());
-		}
-		
-		@Override
-		protected void paintComponent(Graphics g) {
-			char[] caption = this.label.getCaption().toCharArray();
-			g.drawChars(caption, 0, caption.length, 0, 0);
+			this.setText(this.label.getCaption());
 		}
 	}
 }
