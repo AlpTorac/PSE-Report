@@ -1,6 +1,7 @@
 package gelf.model.commands;
 
 import gelf.model.elements.Cell;
+
 import java.util.ArrayList;
 
 public class DeleteCommand implements Command{
