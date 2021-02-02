@@ -6,6 +6,7 @@ import javax.swing.JButton;
  * Button
  */
 public class Button extends JButton {
-
-    
+    public Button() {
+        super();
+    }
 }

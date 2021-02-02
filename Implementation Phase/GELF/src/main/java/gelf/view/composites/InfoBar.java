@@ -1,38 +1,68 @@
 package gelf.view.composites;
 
+import java.util.HashMap;
 import java.util.Map;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
+import javax.swing.GroupLayout.Alignment;
+import java.awt.*;
 
 import gelf.view.components.Label;
 import gelf.view.components.Panel;
+import gelf.view.components.ResizeMode;
+import gelf.view.components.Resizer;
 
 /**
  * InfoBar
  */
 public class InfoBar extends Panel {
-    private Map<InfoBarID, Label> labels;
-    private Map<InfoBarID, String> labelPrefix;
+    private Map<InfoBarID, Label> labels = new HashMap<>();
+    private Map<InfoBarID, String> labelPrefix = new HashMap<>();
 
     //Create new InfoBar with corresponding labels
-    InfoBar() {
-        for(InfoBarID id : InfoBarID.values()) {
-            Label label = new Label();
-            label.setVisible(true);
-            this.add(label);
-            labels.put(id, label);
-        }
+    public InfoBar(int width, int height) {
+        super(width, height);
+        //set layout
+        this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+        this.revalidate();
+        
+        //label type names
         labelPrefix.put(InfoBarID.VERSION, "Version");
-        labelPrefix.put(InfoBarID.VERSION, "Error");
-        labelPrefix.put(InfoBarID.VERSION, "Selected");
-        labelPrefix.put(InfoBarID.VERSION, "Last Action");
+        labelPrefix.put(InfoBarID.ERROR, "Error");
+        labelPrefix.put(InfoBarID.SELECTED, "Selected");
+        labelPrefix.put(InfoBarID.LASTACTION, "Last Action");
+
+        //add the labels
+        this.add(Box.createHorizontalGlue());
+        for(InfoBarID id : InfoBarID.values()) {
+            Label label = new Label("");
+            label.setOpaque(true);
+            label.setVisible(true);
+            label.setAlignmentY(Label.CENTER_ALIGNMENT);
+            label.setMinimumSize(new Dimension(50, this.getHeight()));
+            label.setPreferredSize(new Dimension(100, this.getHeight()));
+            labels.put(id, label);
+            this.setText(id, "");
+
+            this.add(label);
+            this.add(Box.createHorizontalGlue());
+        }
+        this.revalidate();
+        this.repaint();
     }
     //Set text of specified label withing the InfoBar
     public void setText(InfoBarID id, String text) {
         //generate final label text
-        String finalText = "";
+        String finalText = labelPrefix.get(id) + ": ";
         if(!text.equals("")){
-            finalText = labelPrefix.get(id) + ": " + text;
+            finalText += text + "   ";
+        } else {
+            finalText += "none  ";
         }
         //set label text
         labels.get(id).setText(finalText);
+        this.repaint();
     }
 }

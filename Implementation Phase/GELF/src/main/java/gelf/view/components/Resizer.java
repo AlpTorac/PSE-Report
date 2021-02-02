@@ -20,11 +20,13 @@ public class Resizer {
 
     //resize c to fit the new dimensions of the parent component specified by width, height, newWidth, newHeight
     public void resize(Component c, int width, int height, int newWidth, int newHeight){
+        //convert x,y,wid,hei to l,r,t,b
         int cTop = c.getY();
         int cLeft = c.getX();
-        int cBottom = cTop + c.getWidth();
-        int cRight = cLeft + c.getHeight();
+        int cBottom = cTop + c.getHeight();
+        int cRight = cLeft + c.getWidth();
 
+        //calculate new l,r,t,b
         switch(top){
             case ABSOLUTE_TOP_LEFT:
             break;
@@ -61,7 +63,7 @@ public class Resizer {
             default:
             break;
         }
-
-        c.setBounds(cLeft, cRight, cRight - cLeft, cBottom - cTop);
+        //convert back to x,y,wid,hei and set it on the component
+        c.setBounds(cLeft, cTop, cRight - cLeft, cBottom - cTop);
     }
 }
