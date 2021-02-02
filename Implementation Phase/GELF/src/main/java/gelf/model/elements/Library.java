@@ -5,6 +5,10 @@ import java.util.Iterator;
 import java.util.Map;
 
 import gelf.model.elements.attributes.PowerGroup;
+import gelf.model.elements.attributes.TimingGroup;
+import gelf.model.elements.attributes.TimingKey;
+import gelf.model.elements.attributes.TimingSense;
+import gelf.model.elements.attributes.TimingType;
 
 public class Library extends HigherElement {
 	private float[] index1;
@@ -115,7 +119,7 @@ public class Library extends HigherElement {
 		
 		
 		while(avPowGrIt.hasNext()) {
-			
+			PowerGroup curPowGr = avPowGrIt.next();
 			// ArrayList toCalc to put Stats of the same PowerGroup in the same place
 			ArrayList<Stat> toCalc = new ArrayList<Stat>();
 			Iterator<Stat> toCalcIt = toCalc.iterator();
@@ -123,7 +127,7 @@ public class Library extends HigherElement {
 			while(cellsIt.hasNext()) {
 				for (Map.Entry<PowerGroup, Stat> entry : cellsIt.next().
 						inPowerStat.entrySet())  
-		            if(entry.getKey() == avPowGrIt.next()) {
+		            if(entry.getKey() == curPowGr) {
 		            	toCalc.add(entry.getValue());
 		            }
 			}
@@ -134,14 +138,15 @@ public class Library extends HigherElement {
 			
 			// calculate the stats for the desired Power Group
 			while(toCalcIt.hasNext()) {
-				min = Math.min(min, toCalcIt.next().getMin());
-				max = Math.max(max, toCalcIt.next().getMax());
-				avg += toCalcIt.next().getAvg();
+				Stat curStat = toCalcIt.next();
+				min = Math.min(min, curStat.getMin());
+				max = Math.max(max, curStat.getMax());
+				avg += curStat.getAvg();
 			}
 			avg = avg / (float) toCalc.size();
 			
 			Stat stat = new Stat(min, max, avg, med);
-			inPowerStat.put(avPowGrIt.next(), stat);	
+			inPowerStat.put(curPowGr, stat);	
 		}
 	}
 	
@@ -153,7 +158,7 @@ public class Library extends HigherElement {
 		
 		
 		while(avPowGrIt.hasNext()) {
-			
+			PowerGroup curPowGr = avPowGrIt.next();
 			// ArrayList toCalc to put Stats of the same PowerGroup in the same place
 			ArrayList<Stat> toCalc = new ArrayList<Stat>();
 			Iterator<Stat> toCalcIt = toCalc.iterator();
@@ -161,7 +166,7 @@ public class Library extends HigherElement {
 			while(cellsIt.hasNext()) {
 				for (Map.Entry<PowerGroup, Stat> entry : cellsIt.next().
 						outPowerStat.entrySet())  
-		            if(entry.getKey() == avPowGrIt.next()) {
+		            if(entry.getKey() == curPowGr) {
 		            	toCalc.add(entry.getValue());
 		            }
 			}
@@ -172,23 +177,94 @@ public class Library extends HigherElement {
 			
 			// calculate the stats for the desired Power Group
 			while(toCalcIt.hasNext()) {
-				min = Math.min(min, toCalcIt.next().getMin());
-				max = Math.max(max, toCalcIt.next().getMax());
-				avg += toCalcIt.next().getAvg();
+				Stat curStat = toCalcIt.next();
+				min = Math.min(min, curStat.getMin());
+				max = Math.max(max, curStat.getMax());
+				avg += curStat.getAvg();
 			}
 			avg = avg / (float) toCalc.size();
 			
 			Stat stat = new Stat(min, max, avg, med);
-			outPowerStat.put(avPowGrIt.next(), stat);	
+			outPowerStat.put(curPowGr, stat);	
 		}
 	}
 	
 	public void calculateTiming() {
+		Iterator<TimingSense> avTimSenIt = availableTimSen.iterator();
+		Iterator<TimingGroup> avTimGrIt = availableTimGr.iterator();
+		Iterator<TimingType> avTimTypeIt = availableTimType.iterator();
 		
+		Iterator<Cell> cellsIt = cells.iterator();
+		
+		
+		
+		while(avTimSenIt.hasNext()) {
+			TimingSense curTimSen = avTimSenIt.next();
+			while(avTimGrIt.hasNext()) {
+				TimingGroup curTimGr = avTimGrIt.next();
+				while(avTimTypeIt.hasNext()) {
+					TimingType curTimType = avTimTypeIt.next();
+					
+					// ArrayList toCalc to put Stats of the same Timing in the same place
+					ArrayList<Stat> toCalc = new ArrayList<Stat>();
+					Iterator<Stat> toCalcIt = toCalc.iterator();
+					
+					while(cellsIt.hasNext()) {
+						for (Map.Entry<TimingKey, Stat> entry : cellsIt.next().
+								timingStat.entrySet())  
+				            if(entry.getKey().getTimSense() == curTimSen &&
+				            entry.getKey().getTimGroup() == curTimGr &&
+				            entry.getKey().getTimType() == curTimType) {
+				            	toCalc.add(entry.getValue());
+				            }
+					}
+					
+					float min = 0;
+					float max = 0;
+					float avg = 0;
+					float med = 0;
+					
+					// calculate the stats for the desired Timing
+					while(toCalcIt.hasNext()) {
+						Stat curStat = toCalcIt.next();
+						min = Math.min(min, curStat.getMin());
+						max = Math.max(max, curStat.getMax());
+						avg += curStat.getAvg();
+					}
+					avg = avg / (float) toCalc.size();
+					
+					Stat stat = new Stat(min, max, avg, med);
+					TimingKey key = new TimingKey(curTimSen, curTimGr, curTimType);
+					this.timingStat.put(key, stat);
+				}
+			}	
+		}
 	}
 	
 	public void calculateDefaultLeakage() {
+		Iterator<Cell> cellsIt = cells.iterator();
 		
+		ArrayList<Float> toCalc = new ArrayList<Float>();
+		Iterator<Float> toCalcIt = toCalc.iterator();
+		
+		while(cellsIt.hasNext()) {
+			toCalc.add(cellsIt.next().getDefaultLeakage());
+		}
+		float min = 0;
+		float max = 0;
+		float avg = 0;
+		float med = 0;
+		
+		// calculate the stats for the desired Timing
+		while(toCalcIt.hasNext()) {
+			float curLeak = toCalcIt.next();
+			min = Math.min(min, curLeak);
+			max = Math.max(max, curLeak);
+			avg += curLeak;
+		}
+		avg = avg / (float) toCalc.size();
+		
+		defaultLeakage = new Stat(min, max, avg, med);
 	}
 	
 	public static void saveLibrary() {
