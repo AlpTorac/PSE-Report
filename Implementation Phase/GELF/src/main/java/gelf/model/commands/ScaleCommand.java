@@ -1,6 +1,7 @@
 package gelf.model.commands;
 
 import gelf.model.elements.attributes.Attribute;
+import gelf.model.project.Model;
 
 public class ScaleCommand implements Command {
     Attribute attribute;
@@ -13,7 +14,7 @@ public class ScaleCommand implements Command {
 
     public void execute() {
         attribute.scale(scale);
-        Model.getInstance.getCommandHistory.addCommand(this);
+        Model.getInstance().getCurrentCommandHistory().addCommand(this);
     }
 
     public void undo() {

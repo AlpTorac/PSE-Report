@@ -1,6 +1,7 @@
 package gelf.model.commands;
 
 import gelf.model.parsers.LibertyParser;
+import gelf.model.project.Model;
 import gelf.model.elements.*;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class TextEditCommand implements Command {
 
     public void execute() {
         replaceElement(oldElement, newElement);
-        Model.getInstance().getCommandHistory().addCommand(this);
+        Model.getInstance().getCurrentCommandHistory().addCommand(this);
     }
 
     /**
@@ -42,10 +43,10 @@ public class TextEditCommand implements Command {
         Model currentModel = Model.getInstance();
         if (newElement instanceof Library) {
             Library newLibrary = (Library) newElement;
-            ArrayList<Library> libraries = currentModel.getProject().getLibraries();
+            ArrayList<Library> libraries = currentModel.getCurrentProject().getLibraries();
             libraries.remove(oldElement);
             libraries.add(newLibrary);
-            currentModel.getProject().setLibraries(libraries);
+            currentModel.getCurrentProject().setLibraries(libraries);
         } else if (newElement instanceof Cell) {
             Cell newCell = (Cell) newElement;
             ArrayList<Cell> cells = newCell.getParentLibrary().getCells();

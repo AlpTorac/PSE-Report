@@ -1,6 +1,7 @@
 package gelf.model.commands;
 
 import gelf.model.parsers.LibertyParser;
+import gelf.model.project.Model;
 import gelf.model.elements.Library;
 
 public class CreateLibraryCommand implements Command {
@@ -13,8 +14,8 @@ public class CreateLibraryCommand implements Command {
 
     public void execute() {
         Model currentModel = Model.getInstance();
-        currentModel.getProject().getLibraries().add(createdLibrary);
-        currentModel.getCommandHistory().addCommand(this);
+        currentModel.getCurrentProject().getLibraries().add(createdLibrary);
+        currentModel.getCurrentCommandHistory().addCommand(this);
     }
 
     public void undo() {

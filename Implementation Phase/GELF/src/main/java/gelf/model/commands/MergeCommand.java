@@ -4,6 +4,7 @@ import gelf.model.parsers.LibertyParser;
 import gelf.model.elements.Library;
 import gelf.model.elements.Cell;
 import gelf.model.commands.NameConflictResolver;
+import gelf.model.project.Model;
 
 import java.util.ArrayList;
 
@@ -39,8 +40,8 @@ public class MergeCommand implements Command {
         }
         productLibrary = new Library(name, index1, index2, null, cells);
         Model currentModel = Model.getInstance();
-        currentModel.getProject().getLibraries().add(productLibrary);
-        currentModel.getCommandHistory().addCommand(this);
+        currentModel.getCurrentProject().getLibraries().add(productLibrary);
+        currentModel.getCurrentCommandHistory().addCommand(this);
     }
 
     public void undo() {
