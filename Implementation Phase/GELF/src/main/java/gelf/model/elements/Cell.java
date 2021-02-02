@@ -110,22 +110,22 @@ public class Cell extends HigherElement {
 		
 		// traverse all available PowerGroups
 		while(avPowGrIt.hasNext()) {
-			
+			PowerGroup curPowGr = avPowGrIt.next();
 			// ArrayList toCalc to put InputPowers of the same PowerGroup in the same place
 			ArrayList<InputPower> toCalc = new ArrayList<InputPower>();
 			Iterator<InputPower> toCalcIt = toCalc.iterator();
 			
 			// traverse Input Pins
 			while(inPinIt.hasNext()) {
-				
+				InputPin curInPin = inPinIt.next();
 				// traverse Input Powers of Input Pins
-				inPowIt = inPinIt.next().getInputPowers().iterator();
+				inPowIt = curInPin.getInputPowers().iterator();
 				
 				while(inPowIt.hasNext()) {
-					
+					InputPower curInPow = inPowIt.next();
 					// put in the list if the Input Power has the desired Power Group
-					if(avPowGrIt.next() == inPowIt.next().getPowGroup()) {
-						toCalc.add(inPowIt.next());
+					if(curPowGr == curInPow.getPowGroup()) {
+						toCalc.add(curInPow);
 					}
 				}
 			}
@@ -136,14 +136,15 @@ public class Cell extends HigherElement {
 			
 			// calculate the stats for the desired Power Group
 			while(toCalcIt.hasNext()) {
-				min = Math.min(min, toCalcIt.next().getStats().getMin());
-				max = Math.max(max, toCalcIt.next().getStats().getMax());
-				avg += toCalcIt.next().getStats().getAvg();
+				InputPower curInPowCal = toCalcIt.next();
+				min = Math.min(min, curInPowCal.getStats().getMin());
+				max = Math.max(max, curInPowCal.getStats().getMax());
+				avg += curInPowCal.getStats().getAvg();
 			}
 			avg = avg / (float) toCalc.size();
 			
 			Stat stat = new Stat(min, max, avg, med);
-			inPowerStat.put(avPowGrIt.next(), stat);
+			inPowerStat.put(curPowGr, stat);
 		}
 	}
 	
@@ -156,22 +157,22 @@ public class Cell extends HigherElement {
 		
 		// traverse all available PowerGroups
 		while(avPowGrIt.hasNext()) {
-			
+			PowerGroup curPowGr = avPowGrIt.next();
 			// ArrayList toCalc to put OutputPowers of the same PowerGroup in the same place
 			ArrayList<OutputPower> toCalc = new ArrayList<OutputPower>();
 			Iterator<OutputPower> toCalcIt = toCalc.iterator();
 			
 			// traverse Output Pins
 			while(outPinIt.hasNext()) {
-				
+				OutputPin curOutPin = outPinIt.next();
 				// traverse Output Powers of Input Pins
-				outPowIt = outPinIt.next().getOutputPowers().iterator();
+				outPowIt = curOutPin.getOutputPowers().iterator();
 				
 				while(outPowIt.hasNext()) {
-					
+					OutputPower curOutPow = outPowIt.next();
 					// put in the list if the Output Power has the desired Power Group
-					if(avPowGrIt.next() == outPowIt.next().getPowGroup()) {
-						toCalc.add(outPowIt.next());
+					if(curPowGr == curOutPow.getPowGroup()) {
+						toCalc.add(curOutPow);
 					}
 				}
 			}
@@ -182,14 +183,15 @@ public class Cell extends HigherElement {
 			
 			// calculate the stats for the desired Power Group
 			while(toCalcIt.hasNext()) {
-				min = Math.min(min, toCalcIt.next().getStats().getMin());
-				max = Math.max(max, toCalcIt.next().getStats().getMax());
-				avg += toCalcIt.next().getStats().getAvg();
+				OutputPower curOutPowCal = toCalcIt.next();
+				min = Math.min(min, curOutPowCal.getStats().getMin());
+				max = Math.max(max, curOutPowCal.getStats().getMax());
+				avg += curOutPowCal.getStats().getAvg();
 			}
 			avg = avg / (float) toCalc.size();
 			
 			Stat stat = new Stat(min, max, avg, med);
-			outPowerStat.put(avPowGrIt.next(), stat);
+			outPowerStat.put(curPowGr, stat);
 		}
 	}
 	
@@ -204,27 +206,29 @@ public class Cell extends HigherElement {
 		
 		// traverse all available Timing Senses, Timing Groups, Timing Types
 		while(avTimSenIt.hasNext()) {
+			TimingSense curTimSen = avTimSenIt.next();
 			while(avTimGrIt.hasNext()) {
+				TimingGroup curTimGr = avTimGrIt.next();
 				while(avTimTypeIt.hasNext()) {
-					
+					TimingType curTimType = avTimTypeIt.next();
 					// ArrayList toCalc to put Timings of the same sense, group, types
 					ArrayList<Timing> toCalc = new ArrayList<Timing>();
 					Iterator<Timing> toCalcIt = toCalc.iterator();
 					
 					// traverse Output Pins
 					while(outPinIt.hasNext()) {
-						
+						OutputPin curOutPin = outPinIt.next();
 						// traverse timings of Output Pins
-						outTimIt = outPinIt.next().getTimings().iterator();
+						outTimIt = curOutPin.getTimings().iterator();
 						
 						while(outTimIt.hasNext()) {
-							
+							Timing curTim = outTimIt.next();
 							// put in the list if the Input Power has the desired Power Group
-							if(avTimSenIt.next() == outTimIt.next().getTimSense() &&
-							   avTimGrIt.next() == outTimIt.next().getTimGroup() &&
-							   avTimTypeIt.next() == outTimIt.next().getTimType()) {
+							if(curTimSen == curTim.getTimSense() &&
+							   curTimGr == curTim.getTimGroup() &&
+							   curTimType == curTim.getTimType()) {
 								
-								toCalc.add(outTimIt.next());
+								toCalc.add(curTim);
 							}
 						}
 					}
@@ -235,9 +239,10 @@ public class Cell extends HigherElement {
 					
 					// calculate the stats for the desired Power Group
 					while(toCalcIt.hasNext()) {
-						min = Math.min(min, toCalcIt.next().getStats().getMin());
-						max = Math.max(max, toCalcIt.next().getStats().getMax());
-						avg += toCalcIt.next().getStats().getAvg();
+						Timing curTimCal = toCalcIt.next();
+						min = Math.min(min, curTimCal.getStats().getMin());
+						max = Math.max(max, curTimCal.getStats().getMax());
+						avg += curTimCal.getStats().getAvg();
 					}
 					avg = avg / (float) toCalc.size();
 					
@@ -249,8 +254,8 @@ public class Cell extends HigherElement {
 					 **/
 					
 					// create a new key
-					TimingKey key = new TimingKey(avTimSenIt.next(), avTimGrIt.next(), 
-							avTimTypeIt.next());
+					TimingKey key = new TimingKey(curTimSen, curTimGr, 
+							curTimType);
 					
 					// put the stat of the timing in the map
 					timingStat.put(key, stat);
