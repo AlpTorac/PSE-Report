@@ -1,6 +1,7 @@
 package gelf.view.diagrams.components;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -14,8 +15,8 @@ public abstract class DiagramLine extends DiagramComponent {
 	private PositionInFrame end;
 	private int thickness;
 
-	protected DiagramLine(PositionInFrame start, PositionInFrame end, Color color, int thickness) {
-		super(color);
+	protected DiagramLine(PositionInFrame start, PositionInFrame end, Color color, int thickness, Container containingElement) {
+		super(color, containingElement);
 
 		this.start = start;
 		this.end = end;

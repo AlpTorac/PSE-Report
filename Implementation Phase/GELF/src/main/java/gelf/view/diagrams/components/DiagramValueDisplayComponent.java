@@ -1,19 +1,22 @@
 package gelf.view.diagrams.components;
 
 import java.awt.Color;
+import java.awt.Container;
 
 public abstract class DiagramValueDisplayComponent extends DiagramComponent implements Hoverable {
 	private float value;
 
-	protected DiagramValueDisplayComponent(Color color, float value) {
-		super(color);
+	protected DiagramValueDisplayComponent(Color color, float value, Container containingElement) {
+		super(color, containingElement);
 
 		this.value = value;
 	}
 
 	protected void initHoverableVisualElement() {
 		this.initVisualElement();
-		this.addHoverListener(this.visualElement);
+		this.setColor(this.getColor());
+		this.attachToContainer(this.containingElement);
+		this.addHoverListener(this.visualElement, this.containingElement);
 	}
 	
 	public void setValue(float value) {

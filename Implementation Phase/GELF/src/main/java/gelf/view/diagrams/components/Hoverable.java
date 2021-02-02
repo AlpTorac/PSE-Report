@@ -1,6 +1,8 @@
 package gelf.view.diagrams.components;
 
 import java.awt.Component;
+import java.awt.Container;
+import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -25,32 +27,35 @@ public interface Hoverable {
 		HoverLabel.getHoverLabel().hide();
 	}
 
-	public default void addHoverListener(Component component) {
-		MouseListener listener = new MouseAdapter() {
+	public default void addHoverListener(Component component, Container container) {
+		MouseAdapter listener = new MouseAdapter() {
 			@Override
-			public void mouseEntered(MouseEvent me) {
+			public void mouseEntered(MouseEvent e) {
+				HoverLabel.getHoverLabel().attachToContainer(container);
 				showHoverLabel();
 			}
 
 			@Override
-			public void mouseMoved(MouseEvent me) {
+			public void mouseMoved(MouseEvent e) {
 				hoverAction();
-				Point p = me.getPoint();
-				repositionHoverLabel(p.getX(), p.getY());
+				Point cursorOnComponent = container.getMousePosition();
+				repositionHoverLabel(cursorOnComponent.getX(), cursorOnComponent.getY());
 			}
 
 			@Override
-			public void mouseExited(MouseEvent me) {
+			public void mouseExited(MouseEvent e) {
 				hideHoverLabel();
+				HoverLabel.getHoverLabel().removeFromContainer();
 			}
 		};
 
 		component.addMouseListener(listener);
+		component.addMouseMotionListener(listener);
 	}
 
-	public default void addHoverListeners(Component[] components) {
+	public default void addHoverListeners(Container containerOfComponents, Component[] components) {
 		for (Component c : components) {
-			this.addHoverListener(c);
+			this.addHoverListener(c, containerOfComponents);
 		}
 	}
 }

@@ -2,28 +2,30 @@ package gelf.view.diagrams.components;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Rectangle;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.border.Border;
 
-public class HoverLabel {
+public class HoverLabel implements HasAttachablePart {
 	private String caption;
 	private Color color;
 	private PositionInFrame position;
 	private double width;
 	private double height;
+	private Container containingElement;
 	private Component component;
-	private static HoverLabel hoverLabel = new HoverLabel();
+	private static HoverLabel hoverLabel;
 
 	private HoverLabel() {
-		this.component = new HoverLabelVisual();
 		this.width = 100;
 		this.height = 50;
 		this.position = new PositionInFrame(0, 0);
 		this.color = Color.WHITE;
 		this.caption = "";
+		this.component = new HoverLabelVisual(this);
 		this.setComponentBounds();
 	}
 
@@ -104,7 +106,24 @@ public class HoverLabel {
 		this.component.setVisible(false);
 	}
 
+	public void attachToContainer(Container container) {
+		this.removeFromContainer();
+		this.containingElement = container;
+		this.containingElement.add(component);
+	}
+	
+	public void removeFromContainer() {
+		if (this.containingElement != null) {
+			this.containingElement.remove(component);
+			this.setXPos(0);
+			this.setYPos(0);
+		}
+	}
+	
 	public static HoverLabel getHoverLabel() {
+		if (hoverLabel == null) {
+			hoverLabel = new HoverLabel();
+		}
 		return hoverLabel;
 	}
 	
@@ -113,11 +132,11 @@ public class HoverLabel {
 		 * Generated serial version ID.
 		 */
 		private static final long serialVersionUID = 6228060598904141126L;
-		private HoverLabel label = HoverLabel.getHoverLabel();
+		private HoverLabel label;
 		
-		private HoverLabelVisual() {
+		private HoverLabelVisual(HoverLabel label) {
+			this.label = label;
 			this.setBackground(this.label.getColor());
-			this.label.setComponentBounds();
 			
 			Border b = BorderFactory.createLineBorder(Color.BLACK, 5);
 			this.setBorder(b);

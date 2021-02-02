@@ -1,6 +1,7 @@
 package gelf.view.diagrams.components;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -19,8 +20,8 @@ public abstract class DiagramPoint extends DiagramValueDisplayComponent {
 	 */
 	private float size;
 
-	protected DiagramPoint(PositionIn2DDiagram position, Color color, float value, float size) {
-		super(color, value);
+	protected DiagramPoint(PositionIn2DDiagram position, Color color, float value, float size, Container containingElement) {
+		super(color, value, containingElement);
 
 		this.position = position;
 		this.size = size;

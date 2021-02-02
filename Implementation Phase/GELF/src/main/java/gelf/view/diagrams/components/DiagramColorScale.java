@@ -1,6 +1,7 @@
 package gelf.view.diagrams.components;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
@@ -15,8 +16,8 @@ public abstract class DiagramColorScale extends DiagramComponent {
 	private Color[] valueColors;
 
 	protected DiagramColorScale(PositionInFrame topLeft, PositionInFrame bottomRight, Color borderColor,
-			float[] values, Color[] valueColors, int borderThickness) {
-		super(borderColor);
+			float[] values, Color[] valueColors, int borderThickness, Container containingElement) {
+		super(borderColor, containingElement);
 
 		this.topLeft = topLeft;
 		this.bottomRight = bottomRight;

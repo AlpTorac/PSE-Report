@@ -1,12 +1,14 @@
 package gelf.view.diagrams.components;
 
+import java.awt.Container;
+
 public class HeatMapLabel extends DiagramValueLabel {
 
 	private DiagramColorScale colorScale;
 	
 	protected HeatMapLabel(PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight, DiagramColorScale colorScale, float value,
-			int borderThickness) {
-		super(topLeft, bottomRight, colorScale.valueToColor(value), value, borderThickness);
+			int borderThickness, Container containingElement) {
+		super(topLeft, bottomRight, colorScale.valueToColor(value), value, borderThickness, containingElement);
 		
 		this.colorScale = colorScale;
 	}
@@ -19,6 +21,11 @@ public class HeatMapLabel extends DiagramValueLabel {
 
 	@Override
 	public HeatMapLabel clone() {
-		return new HeatMapLabel(this.getTopLeftInDiagram().clone(), this.getBottomRightInDiagram().clone(), this.colorScale, this.getValue(), this.getBorderThickness());
+		return new HeatMapLabel(this.getTopLeftInDiagram().clone(),
+				this.getBottomRightInDiagram().clone(),
+				this.colorScale,
+				this.getValue(),
+				this.getBorderThickness(),
+				this.containingElement);
 	}
 }

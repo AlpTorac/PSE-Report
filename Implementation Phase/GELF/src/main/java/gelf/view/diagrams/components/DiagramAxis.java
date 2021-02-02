@@ -1,6 +1,7 @@
 package gelf.view.diagrams.components;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -16,8 +17,8 @@ public abstract class DiagramAxis extends DiagramComponent {
 	private boolean showValues;
 	protected DiagramLine axisLine;
 
-	protected DiagramAxis(DiagramLine axisLine, float min, float max, int steps) {
-		super(axisLine.getColor());
+	protected DiagramAxis(DiagramLine axisLine, float min, float max, int steps, Container containingElement) {
+		super(axisLine.getColor(), containingElement);
 
 		this.min = min;
 		this.max = max;

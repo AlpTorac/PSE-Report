@@ -2,14 +2,17 @@ package gelf.view.diagrams.components;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Rectangle;
 
-public abstract class DiagramComponent {
+public abstract class DiagramComponent implements HasAttachablePart {
+	protected Container containingElement;
 	protected Component visualElement;
 	private Color color;
 
-	protected DiagramComponent(Color color) {
+	protected DiagramComponent(Color color, Container containingElement) {
 		this.color = color;
+		this.containingElement = containingElement;
 	}
 
 	@Override
@@ -26,7 +29,6 @@ public abstract class DiagramComponent {
 	public void setColor(Color color) {
 		this.color = color;
 		this.visualElement.setBackground(color);
-		this.visualElement.repaint();
 	}
 
 	public Color getColor() {
@@ -39,5 +41,20 @@ public abstract class DiagramComponent {
 
 	public void hide() {
 		this.visualElement.setVisible(false);
+	}
+	
+	@Override
+	public void attachToContainer(Container container) {
+		this.removeFromContainer();
+		this.containingElement = container;
+		this.containingElement.add(this.visualElement);
+		this.setComponentBounds(this.getFrameBounds());
+	}
+	
+	@Override
+	public void removeFromContainer() {
+		if (this.containingElement != null) {
+			this.containingElement.remove(this.visualElement);
+		}
 	}
 }

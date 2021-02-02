@@ -1,6 +1,7 @@
 package gelf.view.diagrams.components;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Rectangle;
 
 import javax.swing.BorderFactory;
@@ -13,8 +14,8 @@ public abstract class DiagramLabel extends DiagramComponent {
 	private int borderThickness;
 
 	protected DiagramLabel(PositionInFrame topLeft, PositionInFrame bottomRight, Color color, String caption,
-			int borderThickness) {
-		super(color);
+			int borderThickness, Container containingElement) {
+		super(color, containingElement);
 
 		this.caption = caption;
 		this.topLeft = topLeft;

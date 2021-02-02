@@ -1,6 +1,7 @@
 package gelf.view.diagrams.components;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Rectangle;
 
 import javax.swing.BorderFactory;
@@ -13,8 +14,8 @@ public abstract class DiagramBar extends DiagramValueDisplayComponent {
 	private int borderThickness;
 
 	protected DiagramBar(Color color, float value, PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight,
-			int borderThickness) {
-		super(color, value);
+			int borderThickness, Container containingElement) {
+		super(color, value, containingElement);
 		
 		this.topLeft = topLeft;
 		this.bottomRight = bottomRight;
