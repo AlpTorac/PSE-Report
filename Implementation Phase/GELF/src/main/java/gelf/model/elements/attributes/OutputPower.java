@@ -1,5 +1,7 @@
 package gelf.model.elements.attributes;
 
+import java.util.Arrays;
+
 public class OutputPower extends OutAttribute{
 	private PowerGroup powGroup;
 	
@@ -16,19 +18,19 @@ public class OutputPower extends OutAttribute{
 		this.powGroup = powGroup;
 	}
 	
-	@Override
-	public OutAttribute createComparedAttribute(OutAttribute attribute) {
-		float[][] compValues = new float[index1.length][index2.length];
-		if (this.index1.length == attribute.index1.length &&
-			this.index2.length == attribute.index2.length) {
-			for (int i = 0; i < index1.length; i++) {
-				for (int j = 0; j < index2.length; j++) {
-					compValues[i][j] = this.values[i][j] - attribute.values[i][j];
-				}
-			}
+	public OutputPower createComparedAttribute(OutputPower attribute) {
+		if (Arrays.equals(this.index1, attribute.index1) && 
+				Arrays.equals(this.index2, attribute.index2 )) {
+			return attribute;
 		}
-		OutAttribute compOutPow = new OutputPower(powGroup, compValues);
-		return compOutPow;
+		Interpolator interpolator = new Interpolator();
+		
+		float[][] newValues = interpolator.bicubicInterpolate(attribute.index1, attribute.index2, 
+				attribute.values, this.index1, this.index2);
+		OutputPower newAttr = new OutputPower(attribute.getPowGroup(), newValues);
+		newAttr.setIndex1(this.index1);
+		newAttr.setIndex2(this.index2);
+		return newAttr;
 	}
 }
 
