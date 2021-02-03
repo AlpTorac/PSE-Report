@@ -1,8 +1,8 @@
 package gelf.model.elements.attributes;
 
 public enum TimingGroup {
-	CELLRISE,
-    CELLFALL,
-    FALLTRANSITION,
-    RISETRANSITION;
+	CELL_RISE,
+    CELL_FALL,
+    FALL_TRANSITION,
+    RISE_TRANSITION;
 }
