@@ -1,8 +1,15 @@
 package gelf.model.elements;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
+
+import javax.swing.JFileChooser;
 
 import gelf.model.elements.attributes.PowerGroup;
 import gelf.model.elements.attributes.TimingGroup;
@@ -17,6 +24,8 @@ public class Library extends HigherElement {
     private String[] fileData;
     private ArrayList<Cell> cells;
     private Stat defaultLeakage;
+    private File libraryFile;
+    
     
     public Library(String name, float[] index1, float[] index2, 
     		String path, ArrayList<Cell> cells) {
@@ -266,13 +275,44 @@ public class Library extends HigherElement {
 		
 		defaultLeakage = new Stat(min, max, avg, med);
 	}
+
+	public File getLibraryFile() {
+		return libraryFile;
+	}
+
+	public void setLibraryFile(File libraryFile) {
+		this.libraryFile = libraryFile;
+	}
 	
-	public static void saveLibrary() {
+	public void saveLibrary() {
 		
 	}
 	
-	public static void saveLibraryAs() {
-		
+	public void saveLibraryAs() throws IOException {
+		 JFileChooser chooser = new JFileChooser(); 
+		 chooser.setCurrentDirectory(new java.io.File("."));
+		 chooser.setDialogTitle("Select a directory to save the library");
+		 chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		 chooser.setAcceptAllFileFilterUsed(false);
+
+		 if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+			 /* 
+			 System.out.println("getCurrentDirectory(): " + chooser.getCurrentDirectory());
+		     System.out.println("getSelectedFile() : " + chooser.getSelectedFile());
+		     */
+			 String dirName = chooser.getCurrentDirectory().getPath();
+			 File dir = new File (dirName);
+			 // not sure what to do after this
+			 File actualFile = new File (dir, libraryFile.getPath());
+			 Writer output = null;
+		     output = new BufferedWriter(new FileWriter(actualFile));
+		     output.close();
+		 } 
+		 else {
+		      System.out.println("No Selection ");
+		 }
+		 
+
 	}
 	
 	
