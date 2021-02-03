@@ -7,12 +7,21 @@ import gelf.model.elements.attributes.InputPower;
 
 public class InputPin extends Pin {
 	private ArrayList<InputPower> inputPowers;
+	private float capacitance;
 	
     public InputPin(String name, Cell parentCell, ArrayList<InputPower> inputPowers) {
     	super.setName(name);
     	super.setParent(parentCell);
     	this.inputPowers = inputPowers;
     	calculate();
+    }
+    
+    public float getCapacitance() {
+   	    return capacitance;
+    }
+    
+    public void setCapacitance(float capacitance) {
+   	    this.capacitance = capacitance;
     }
     
     public void calculate() {
