@@ -1,14 +1,19 @@
 package gelf.view.diagrams.components;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
+import java.awt.geom.Line2D.Double;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.border.Border;
 
 public abstract class DiagramLine extends DiagramComponent {
 	private PositionInFrame start;
@@ -74,9 +79,12 @@ public abstract class DiagramLine extends DiagramComponent {
 	protected Rectangle getFrameBounds() {
 		Rectangle bounds = new Rectangle();
 		
-		PositionInFrame startPos = this.start;
+		double topLeftX = Math.min(this.start.getXPos(), this.end.getXPos());
+		double topLeftY = Math.min(this.start.getYPos(), this.end.getYPos());
+		double bottomRightX = Math.max(this.start.getXPos(), this.end.getXPos());
+		double bottomRightY = Math.max(this.start.getYPos(), this.end.getYPos());
 		
-		bounds.setRect(startPos.getXPos(), startPos.getYPos(), this.calculateLength(), this.thickness);
+		bounds.setRect(topLeftX, topLeftY, bottomRightX - topLeftX + this.getThickness(), bottomRightY - topLeftY + this.getThickness());
 		
 		return bounds;
 	}
@@ -88,12 +96,15 @@ public abstract class DiagramLine extends DiagramComponent {
 		double xDifference = endPos.getXPos() - startPos.getXPos();
 		double yDifference = endPos.getYPos() - startPos.getYPos();
 		
-		return Math.atan2(yDifference, xDifference);
+		double angle = Math.atan2(yDifference, xDifference);
+		
+		return angle;
 	}
 	
 	@Override
 	protected void initVisualElement() {
 		this.visualElement = new LineVisual(this);
+		this.attachToContainer(this.containingElement);
 	}
 	
 	protected class LineVisual extends JLabel {
@@ -101,27 +112,36 @@ public abstract class DiagramLine extends DiagramComponent {
 		 * Generated serial version ID.
 		 */
 		private static final long serialVersionUID = -2051091734012179305L;
-		DiagramLine line;
+		private DiagramLine line;
 		
 		protected LineVisual(DiagramLine line) {
 			this.line = line;
-			this.line.setComponentBounds(this.line.getFrameBounds());
+			this.setBounds(this.line.getFrameBounds());
+			this.setOpaque(false);
+			
+//			Border border = BorderFactory.createLineBorder(Color.BLACK, this.line.getThickness());
+//			
+//			this.setBorder(border);
 		}
 		
 		@Override
 		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
 			Graphics2D graphs = (Graphics2D) g;
 			
 			Rectangle bounds = this.getBounds();
 			
 			graphs.setColor(this.line.getColor());
+			graphs.setStroke(new BasicStroke(this.line.getThickness()));
 			
-			Shape line = new Line2D.Double(0, 0, bounds.getMaxX(), 0);
+			double x1 = this.line.getStartInFrame().getXPos() - bounds.getMinX();
+			double y1 = this.line.getStartInFrame().getYPos() - bounds.getMinY();;
+			double x2 = this.line.getEndInFrame().getXPos() - bounds.getMinX();;
+			double y2 = this.line.getEndInFrame().getYPos() - bounds.getMinY();;
+			
+			Line2D line = new Line2D.Double(x1, y1, x2, y2);
+			
 			graphs.draw(line);
-			
-			graphs.rotate(this.line.getAngleRadian());
-			
-			super.paintComponent(graphs);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 package gelf.view.diagrams.components;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Graphics;
@@ -134,6 +135,7 @@ public abstract class DiagramAxis extends DiagramComponent {
 	@Override
 	protected void initVisualElement() {
 		this.visualElement = new AxisVisual(this);
+		this.attachToContainer(this.containingElement);
 	}
 	
 	protected class AxisVisual extends JLabel {
@@ -146,6 +148,7 @@ public abstract class DiagramAxis extends DiagramComponent {
 		protected AxisVisual(DiagramAxis axis) {
 			this.axis = axis;
 			this.setBounds(this.axis.getFrameBounds());
+			this.setOpaque(true);
 		}
 		
 		@Override
@@ -155,6 +158,7 @@ public abstract class DiagramAxis extends DiagramComponent {
 			Rectangle bounds = this.getBounds();
 			
 			graphs.setColor(this.axis.getColor());
+			graphs.setStroke(new BasicStroke(1f));
 			
 			double x1 = 0;
 			double y1 = bounds.height / 4d;
@@ -181,7 +185,6 @@ public abstract class DiagramAxis extends DiagramComponent {
 			}
 			
 			graphs.rotate(this.axis.axisLine.getAngleRadian());
-			super.paintComponent(graphs);
 		}
 	}
 }

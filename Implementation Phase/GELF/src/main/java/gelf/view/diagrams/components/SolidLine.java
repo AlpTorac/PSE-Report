@@ -13,10 +13,4 @@ public class SolidLine extends DiagramLine {
 		Color newColor = new Color(this.getColor().getRGB());
 		return new SolidLine(this.getStartInFrame().clone(), this.getEndInFrame().clone(), newColor, this.getThickness(), this.containingElement);
 	}
-
-	@Override
-	protected void initVisualElement() {
-		// TODO Auto-generated method stub
-
-	}
 }

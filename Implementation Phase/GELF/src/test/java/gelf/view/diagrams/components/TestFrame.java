@@ -17,11 +17,8 @@ class TestFrame extends JFrame {
 	TestFrame() {
 		super();
 		this.setBounds(0, 0, 1000, 1000);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setVisible(true);
-		this.setLayout(null);
-		this.setBackground(Color.BLACK);
-		
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.getContentPane().setLayout(null);
 //		this.addMouseListener(new MouseAdapter() {
 //			@Override
 //			public void mouseEntered(MouseEvent me) {
