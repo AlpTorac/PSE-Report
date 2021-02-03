@@ -23,28 +23,33 @@ import javax.swing.ScrollPaneConstants;
  * Displays all child cells of the selected library.
  */
 public class LibraryPanel extends Panel implements MouseListener, Resizable{
-    private HashMap<Label, Cell> buttons;
-    private JPanel listPanel;
+   
+	private HashMap<Label, Cell> buttons;
+    private Panel listPanel;
     private Library selectedLibrary;
 	private ArrayList<Cell> cells;
-	private SubWindowArea subwindowArea;
+	private SubWindow subwindow;
     private JScrollPane scrollPane;
     private DataPanel dataPanel;
+    
+   
     /*
      * Constructor
      * @param library To be opened library.
      */
-    public LibraryPanel(Library library, DataPanel dataPanel) {
+    public LibraryPanel(Library library, Subwindow subwindow, DataPanel dataPanel) {
+    	this.subwindow = subwindow;
     	this.dataPanel = dataPanel;
+    	dataPanel.setElement(library);
     	selectedLibrary = library;
         cells = selectedLibrary.getCells();
        
-        listPanel = new JPanel();
+        listPanel = new Panel();
         scrollPane = new JScrollPane(listPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
         		ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         this.add(scrollPane);
         scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
-         listPanel.setPreferredSize(new Dimension(200, cells.size() * 30));
+        listPanel.setPreferredSize(new Dimension(200, cells.size() * 30));
          
         for (int i = 0; i < cells.size(); i++) {
         	Label label = new JLabel();
@@ -58,20 +63,12 @@ public class LibraryPanel extends Panel implements MouseListener, Resizable{
 
     }
     
-    /*
-     * Switches the visualizer to the cell view for a selected cell.
-     * @param cell Selected cell element.
-     */
-    public void switchToCell(Cell cell) {
-    	subwindowArea.add(new Subwindow(cell));
-    	//todo
-    }
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		//to be opened cell
-		buttons.get(e.getComponent());
-		//todo
+		subwindow.setElement(buttons.get(e.getSource()));
+		this.setVisible(false);
+		dataPanel.setElement(buttons.get(e.getSource()));
 		
 	}
 

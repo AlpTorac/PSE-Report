@@ -36,20 +36,17 @@ public class CellImageGenerator implements ICellImageGenerator {
 	 */
 	public BufferedImage buildCell(int inputPins, int outputPins) {
 		if (inputPins < 6 && outputPins < 4) {
-			BufferedImage newImage = new BufferedImage(cellImage.getWidth() + 2 * pinImage.getWidth()
-				, cellImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
+			BufferedImage newImage = new BufferedImage(cellImage.getWidth() + 2 * pinImage.getWidth(),
+				cellImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2 = newImage.createGraphics();
 			g2.drawImage(cellImage, pinImage.getWidth(), 0, null);
-			
 			for (int i = 0; i < inputPins; i++) {
 				g2.drawImage(pinImage, 0, (i + 1) * cellImage.getHeight() / (inputPins + 1), null);
 			}
-			
 			for (int i = 0; i < outputPins; i++) {
 				g2.drawImage(pinImage, pinImage.getWidth() + cellImage.getWidth(),
 						(i + 1) * cellImage.getHeight() / (outputPins + 1), null);
 			}
-			
 			return newImage;
 		}
 		else {
@@ -58,32 +55,28 @@ public class CellImageGenerator implements ICellImageGenerator {
 					 maxPins * cellImage.getHeight() / 6 ,
 					BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2 = newImage.createGraphics();
-			
 			for (int i = 1; i <= inputPins; i++) {
 				if (inputPins < maxPins) {
 					g2.drawImage(pinImage, 0, ((maxPins/2 - inputPins/2) + i - 1)
 							* cellImage.getHeight() / 6, null);
 				}
 				else {
-					g2.drawImage(pinImage, 0, ( i - 1)
-						* cellImage.getHeight() / 6, null);
+					g2.drawImage(pinImage, 0, ( i - 1) * cellImage.getHeight() / 6, null);
 				}
-				
 			}
-			
 			for (int i = 1; i <= outputPins; i++) {
 				if (outputPins < maxPins) {
 					g2.drawImage(pinImage, pinImage.getWidth() * 2, ((maxPins/2 - outputPins/2) + i - 1)
 							* cellImage.getHeight() / (6), null);
 				}
 				else {
-					g2.drawImage(pinImage, pinImage.getWidth() * 2, (i - 1)
-						* cellImage.getHeight() / (6), null);
+					g2.drawImage(pinImage, pinImage.getWidth() * 2, (i - 1) * cellImage.getHeight() / (6), null);
 				}
 				
 			}
 				return newImage;
 		}
+		
 	}
 
 }

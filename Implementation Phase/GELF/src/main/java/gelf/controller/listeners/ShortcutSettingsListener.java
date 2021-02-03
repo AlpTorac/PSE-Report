@@ -5,8 +5,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+/*
+ * Listener for the shorcut settings in the settings window.
+ */
 public class ShortcutSettingsListener implements ActionListener, KeyListener {
 
+	private Panel panel;
+	
+	public ShortcutSettingsListener() {
+		this.panel = panel;
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
