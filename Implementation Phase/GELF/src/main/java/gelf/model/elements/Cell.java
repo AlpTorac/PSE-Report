@@ -92,6 +92,56 @@ public class Cell extends HigherElement {
 		this.defaultLeakage = defaultLeakage;
 	}
 	
+	public void interpolate(float[] index1, float[] index2) {
+		Interpolator interpolator = new Interpolator();
+		Iterator<InputPin> inPinIt = inPins.iterator();
+		Iterator<OutputPin> outPinIt = outPins.iterator();
+		
+		/* Calculating new input powers of input pins */
+		while(inPinIt.hasNext()) {
+			InputPin curInPin = inPinIt.next();
+			ArrayList<InputPower> inPows = curInPin.getInputPowers();
+			Iterator<InputPower> inPowIt = inPows.iterator();
+			while(inPowIt.hasNext()) {
+				InputPower curInPow = inPowIt.next();
+				float[] newValues = interpolator.interpolate(curInPow.getIndex1(),
+						curInPow.getValues(), index1);
+				curInPow.setIndex1(index1);
+				curInPow.setValues(newValues);
+			}
+		}
+		
+		/* Calculating new output powers of output pins */
+		while(outPinIt.hasNext()) {
+			OutputPin curOutPin = outPinIt.next();
+			ArrayList<OutputPower> outPows = curOutPin.getOutputPowers();
+			Iterator<OutputPower> outPowIt = outPows.iterator();
+			while(outPowIt.hasNext()) {
+				OutputPower curOutPow = outPowIt.next();
+				float[][] newValues = interpolator.interpolate(curOutPow.getIndex1(), 
+						curOutPow.getIndex2(), curOutPow.getValues(), index1, index2);
+				curOutPow.setIndex1(index1);
+				curOutPow.setIndex2(index2);
+				curOutPow.setValues(newValues);
+			}
+		}
+		
+		/* Calculating new timings of output pins */
+		while(outPinIt.hasNext()) {
+			OutputPin curOutPin = outPinIt.next();
+			ArrayList<Timing> timings = curOutPin.getTimings();
+			Iterator<Timing> timingIt = timings.iterator();
+			while(timingIt.hasNext()) {
+				Timing curTiming = timingIt.next();
+				float[][] newValues = interpolator.interpolate(curTiming.getIndex1(), 
+						curTiming.getIndex2(), curTiming.getValues(), index1, index2);
+				curTiming.setIndex1(index1);
+				curTiming.setIndex2(index2);
+				curTiming.setValues(newValues);
+			}
+		}
+	}
+	
 	@Override
 	public void calculate() {
 		calculateInPow();
