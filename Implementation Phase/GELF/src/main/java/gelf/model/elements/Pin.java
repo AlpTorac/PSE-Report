@@ -6,31 +6,24 @@ import gelf.model.elements.attributes.PowerGroup;
 
 public abstract class Pin extends Element {
 	 protected Cell parentCell;
-     protected float capacitance;
      protected ArrayList<PowerGroup> availablePower;
      
-     public Pin() {
-    	 
+     public Pin() {	 
      }
      public Cell getParent() {
     	 return parentCell;
      }
      
      public void setParent(Cell parentCell) {
-    	 
+    	 this.parentCell = parentCell;
      }
-     public float getCapacitance() {
-    	 return capacitance;
-     }
-     public void setCapacitance(float capacitance) {
-    	 
-     }
+     
      public ArrayList<PowerGroup> getAvailablePower() {
     	 return availablePower;
      }
      
      public void setAvailablePower(ArrayList<PowerGroup> availablePower) {
-    	 
+    	 this.availablePower = availablePower;
      }
      
      @Override

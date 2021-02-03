@@ -135,7 +135,6 @@ public abstract class OutAttribute extends Attribute {
     	this.relatedPin = relatedPin;
     }
     
-    public abstract OutAttribute createComparedAttribute(OutAttribute attribute);
     
     @Override
 	public Stat getStats() {

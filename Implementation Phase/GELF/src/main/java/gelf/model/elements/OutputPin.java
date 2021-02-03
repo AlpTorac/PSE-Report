@@ -15,6 +15,8 @@ public class OutputPin extends Pin {
     private ArrayList<TimingType> availableTimType;
     private ArrayList<OutputPower> outputPowers;
     private ArrayList<Timing> timings;
+    private float minCapacitance;
+    private float maxCapacitance;
     private String outputFunction;
     
     public OutputPin(String name, Cell parentCell, ArrayList<OutputPower> outputPowers, 
@@ -94,4 +96,20 @@ public class OutputPin extends Pin {
     		i.next().calculate();
     	} 
     }
+
+	public float getMinCapacitance() {
+		return minCapacitance;
+	}
+
+	public void setMinCapacitance(float minCapacitance) {
+		this.minCapacitance = minCapacitance;
+	}
+
+	public float getMaxCapacitance() {
+		return maxCapacitance;
+	}
+
+	public void setMaxCapacitance(float maxCapacitance) {
+		this.maxCapacitance = maxCapacitance;
+	}
 }
