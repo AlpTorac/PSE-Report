@@ -2,6 +2,7 @@ package gelf.view.diagrams.components;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.Rectangle;
 
 import javax.swing.BorderFactory;
@@ -79,6 +80,7 @@ public abstract class DiagramLabel extends DiagramComponent {
 	@Override
 	protected void initVisualElement() {
 		this.visualElement = new LabelVisual(this);
+		this.attachToContainer(this.containingElement);
 	}
 	
 	protected class LabelVisual extends JLabel {
@@ -90,9 +92,14 @@ public abstract class DiagramLabel extends DiagramComponent {
 		
 		protected LabelVisual(DiagramLabel label) {
 			this.label = label;
+			this.setBackground(this.label.getColor());
 			this.setBorder(BorderFactory.createLineBorder(Color.BLACK, this.label.getBorderThickness()));
 			this.setBounds(this.label.getFrameBounds());
+			this.setHorizontalAlignment(CENTER);
+			this.setVerticalAlignment(CENTER);
+			this.setForeground(Color.BLACK);
 			this.setText(this.label.getCaption());
+			this.setOpaque(true);
 		}
 	}
 }

@@ -103,6 +103,7 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 			this.setBorder(BorderFactory.createLineBorder(Color.BLACK, this.label.getBorderThickness()));
 			this.setBounds(this.label.getFrameBounds());
 			this.setText(this.label.getCaption());
+			this.setOpaque(true);
 		}
 	}
 }
