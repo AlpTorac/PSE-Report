@@ -8,10 +8,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
-import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.Rectangle2D.Double;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -62,6 +59,16 @@ public abstract class DiagramAxis extends DiagramComponent {
 
 	public void showValues() {
 		this.showValues = true;
+		this.visualElement.repaint();
+	}
+	
+	public void showValuesUnderAxis() {
+		this.showValuesUnderAxis = true;
+		this.visualElement.repaint();
+	}
+	
+	public void showValuesAboveAxis() {
+		this.showValuesUnderAxis = false;
 		this.visualElement.repaint();
 	}
 
@@ -176,13 +183,15 @@ public abstract class DiagramAxis extends DiagramComponent {
 			this.axis = axis;
 //			this.setBounds(new Rectangle(0,0,1000,1000));
 			this.setBounds(this.axis.getFrameBounds());
-			Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
 			
-			this.setBorder(border);
+//			Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
+//			
+//			this.setBorder(border);
 		}
 		
 		@Override
 		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
 			Graphics2D graphs = (Graphics2D) g;
 			
 			Rectangle bounds = this.getBounds();
@@ -233,7 +242,7 @@ public abstract class DiagramAxis extends DiagramComponent {
 			if (this.axis.showValuesUnderAxis) {
 				stringY = (float) (indicatorLineY2 + fontSize);
 			} else {
-				stringY = (float) (indicatorLineY1 - fontSize);
+				stringY = (float) (indicatorLineY1 - fontSize / 2d);
 			}
 			
 			return stringY;
