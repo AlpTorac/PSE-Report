@@ -186,13 +186,13 @@ public abstract class DiagramAxis extends DiagramComponent {
 			
 			double rotationAngleInRadian = this.axis.axisLine.getAngleRadian();
 			
-			float xValueSpace = (float) (this.axis.fontSize * Math.sin(rotationAngleInRadian));
-			float yValueSpace = (float) (this.axis.fontSize * Math.cos(rotationAngleInRadian));
+			float xValueSpace = (float) (this.axis.fontSize * Math.cos(rotationAngleInRadian));
+			float yValueSpace = (float) (this.axis.fontSize * Math.sin(rotationAngleInRadian));
 			
-			double x1 = this.axis.axisLine.getStartInFrame().getXPos() - bounds.getMinX();
-			double y1 = this.axis.axisLine.getStartInFrame().getYPos() - bounds.getMinY();
-			double x2 = x1 + this.axis.fontSize * Math.sin(rotationAngleInRadian);
-			double y2 = y1 + this.axis.fontSize * Math.cos(rotationAngleInRadian);
+			double x1 = Math.abs(Math.cos(rotationAngleInRadian) * bounds.getCenterX());
+			double y1 = Math.abs(Math.sin(rotationAngleInRadian) * bounds.getCenterY());
+			double x2 = x1 + xValueSpace;
+			double y2 = y1 + yValueSpace;
 			
 			//graphs.rotate(rotationAngleInRadian, x1, y1);
 			
@@ -208,7 +208,7 @@ public abstract class DiagramAxis extends DiagramComponent {
 				if (this.axis.showValues) {
 					graphs.drawString(String.valueOf(currentValue), (float) x2 + xValueSpace, (float) y2 + yValueSpace);
 					currentValue = currentValue + stepLengthInAxis;
-//					System.out.println(x2 + xValueSpace + ", " + y2 + yValueSpace);
+					System.out.println(x2 + xValueSpace + ", " + y2 + yValueSpace);
 				}
 				x1 = x1 + xStepLengthInFrame;
 				y1 = y1 + yStepLengthInFrame;
