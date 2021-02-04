@@ -119,7 +119,7 @@ public abstract class DiagramLine extends DiagramComponent {
 			this.setBounds(this.line.getFrameBounds());
 			this.setOpaque(false);
 			
-//			Border border = BorderFactory.createLineBorder(Color.BLACK, this.line.getThickness());
+//			Border border = BorderFactory.createLineBorder(Color.RED, this.line.getThickness());
 //			
 //			this.setBorder(border);
 		}
@@ -135,9 +135,9 @@ public abstract class DiagramLine extends DiagramComponent {
 			graphs.setStroke(new BasicStroke(this.line.getThickness()));
 			
 			double x1 = this.line.getStartInFrame().getXPos() - bounds.getMinX();
-			double y1 = this.line.getStartInFrame().getYPos() - bounds.getMinY();;
-			double x2 = this.line.getEndInFrame().getXPos() - bounds.getMinX();;
-			double y2 = this.line.getEndInFrame().getYPos() - bounds.getMinY();;
+			double y1 = this.line.getStartInFrame().getYPos() - bounds.getMinY();
+			double x2 = this.line.getEndInFrame().getXPos() - bounds.getMinX();
+			double y2 = this.line.getEndInFrame().getYPos() - bounds.getMinY();
 			
 			Line2D line = new Line2D.Double(x1, y1, x2, y2);
 			

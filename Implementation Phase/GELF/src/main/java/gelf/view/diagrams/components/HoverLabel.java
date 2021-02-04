@@ -138,8 +138,10 @@ public class HoverLabel implements HasAttachablePart {
 			this.label = label;
 			this.setBackground(this.label.getColor());
 			
-			Border b = BorderFactory.createLineBorder(Color.BLACK, 5);
+			Border b = BorderFactory.createLineBorder(Color.BLACK, 1);
 			this.setBorder(b);
+			
+			this.setOpaque(true);
 		}
 	}
 }

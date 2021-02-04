@@ -3,15 +3,19 @@ package gelf.view.diagrams.components;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Line2D;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
+import javax.swing.border.Border;
 
 public abstract class DiagramAxis extends DiagramComponent {
+	private int fontSize = 10;
 	private float min;
 	private float max;
 	private int steps;
@@ -113,6 +117,10 @@ public abstract class DiagramAxis extends DiagramComponent {
 		this.axisLine.setThickness(thickness);
 		this.visualElement.repaint();
 	}
+	
+	public int getLineThickness() {
+		return this.axisLine.getThickness();
+	}
 
 	public double getLineLength() {
 		return this.axisLine.calculateLength();
@@ -122,7 +130,19 @@ public abstract class DiagramAxis extends DiagramComponent {
 	protected Rectangle getFrameBounds() {
 		Rectangle bounds = this.axisLine.getFrameBounds();
 		
-		bounds.setBounds(bounds.x, bounds.y, bounds.width, bounds.height * 4);
+		double lineAngleRadian = this.axisLine.getAngleRadian();
+		
+		double absValOfDifference = this.fontSize * 10;
+		
+		double horizontalDifference = absValOfDifference * Math.sin(lineAngleRadian);
+		double verticalDifference = absValOfDifference * Math.cos(lineAngleRadian);
+		
+		double topLeftX = Math.min(bounds.getX(), bounds.getX() + horizontalDifference);
+		double topLeftY = Math.min(bounds.getY(), bounds.getY() + verticalDifference);
+		double width = Math.max(bounds.getWidth(), bounds.getWidth() + horizontalDifference);
+		double height = Math.max(bounds.getHeight(), bounds.getHeight() + verticalDifference);
+		
+		bounds.setRect(topLeftX, topLeftY, width, height);
 		
 		return bounds;
 	}
@@ -148,7 +168,10 @@ public abstract class DiagramAxis extends DiagramComponent {
 		protected AxisVisual(DiagramAxis axis) {
 			this.axis = axis;
 			this.setBounds(this.axis.getFrameBounds());
-			this.setOpaque(true);
+			
+//			Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
+//			
+//			this.setBorder(border);
 		}
 		
 		@Override
@@ -158,33 +181,41 @@ public abstract class DiagramAxis extends DiagramComponent {
 			Rectangle bounds = this.getBounds();
 			
 			graphs.setColor(this.axis.getColor());
-			graphs.setStroke(new BasicStroke(1f));
+			graphs.setStroke(new BasicStroke(this.axis.getLineThickness()));
+			graphs.setFont(new Font("TimesRoman", Font.PLAIN, this.axis.fontSize));
 			
-			double x1 = 0;
-			double y1 = bounds.height / 4d;
-			double y2 = 3d * bounds.height / 4d;
-			double stepLengthInFrame = bounds.getWidth() / ((double) this.axis.getSteps());
+			double rotationAngleInRadian = this.axis.axisLine.getAngleRadian();
+			
+			float xValueSpace = (float) (this.axis.fontSize * Math.sin(rotationAngleInRadian));
+			float yValueSpace = (float) (this.axis.fontSize * Math.cos(rotationAngleInRadian));
+			
+			double x1 = this.axis.axisLine.getStartInFrame().getXPos() - bounds.getMinX();
+			double y1 = this.axis.axisLine.getStartInFrame().getYPos() - bounds.getMinY();
+			double x2 = x1 + this.axis.fontSize * Math.sin(rotationAngleInRadian);
+			double y2 = y1 + this.axis.fontSize * Math.cos(rotationAngleInRadian);
+			
+			//graphs.rotate(rotationAngleInRadian, x1, y1);
+			
+			double xStepLengthInFrame = Math.cos(rotationAngleInRadian) * bounds.getWidth() / ((double) this.axis.getSteps());
+			double yStepLengthInFrame = Math.sin(rotationAngleInRadian) * bounds.getHeight() / ((double) this.axis.getSteps());
 			
 			float stepLengthInAxis = (this.axis.getMax() - this.axis.getMin()) / ((float) this.axis.getSteps());
 			float currentValue = this.axis.getMin();
 			
-			if (this.axis.showValues) {
-				for (int i = 0; i < this.axis.getSteps(); i++) {
-					Shape line = new Line2D.Double(x1, y1, x1, y2);
-					graphs.draw(line);
-					graphs.drawString(String.valueOf(currentValue), (float) x1, (float) y2);
-					currentValue =+ stepLengthInAxis;
-					x1 =+ stepLengthInFrame;
+			for (int i = 0; i < this.axis.getSteps(); i++) {
+				Shape line = new Line2D.Double(x1, y1, x2, y2);
+				graphs.draw(line);
+				if (this.axis.showValues) {
+					graphs.drawString(String.valueOf(currentValue), (float) x2 + xValueSpace, (float) y2 + yValueSpace);
+					currentValue = currentValue + stepLengthInAxis;
+//					System.out.println(x2 + xValueSpace + ", " + y2 + yValueSpace);
 				}
-			} else {
-				for (int i = 0; i < this.axis.getSteps(); i++) {
-					Shape line = new Line2D.Double(x1, y1, x1, y2);
-					graphs.draw(line);
-					x1 =+ stepLengthInFrame;
-				}
+				x1 = x1 + xStepLengthInFrame;
+				y1 = y1 + yStepLengthInFrame;
+				x2 = x2 + xStepLengthInFrame;
+				y2 = y2 + yStepLengthInFrame;
 			}
-			
-			graphs.rotate(this.axis.axisLine.getAngleRadian());
+
 		}
 	}
 }

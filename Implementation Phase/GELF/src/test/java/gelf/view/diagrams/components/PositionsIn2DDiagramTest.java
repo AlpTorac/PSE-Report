@@ -7,7 +7,7 @@ import java.awt.Color;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-class PositionsIn2DDiagramTest {
+class PositionsIn2DDiagramTest implements TestCase {
 
 	PositionInFrame origin = new PositionInFrame(400, 400);
 	PositionInFrame xAxisEnd = new PositionInFrame(500, 400);
