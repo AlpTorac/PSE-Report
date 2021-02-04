@@ -37,6 +37,7 @@ class DiagramAxisTest implements TestCase {
 //		System.out.println("xAxis calculation - start");
 		
 		PositionInFrame start = new PositionInFrame(500, 500);
+		
 		PositionInFrame endX = new PositionInFrame(900, 500);
 		DiagramAxis xAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, endX, 0, 20, 10, Color.black, 3, frame.getContentPane());
 		xAxis.showValues();

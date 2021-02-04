@@ -140,8 +140,8 @@ public abstract class DiagramAxis extends DiagramComponent {
 		double absValOfDifference = this.fontSize * 4;
 		
 		// Subtract these from the coordinates to get this.axisLine from the edge to center
-		double centeringX = Math.sin(lineAngleRadian) * absValOfDifference / 2d;
-		double centeringY = Math.cos(lineAngleRadian) * absValOfDifference / 2d;
+		double centeringX = absValOfDifference / 2d;
+		double centeringY = absValOfDifference / 2d;
 		
 		double topLeftX = bounds.getX() - centeringX - this.fontSize;
 		double topLeftY = bounds.getY() - centeringY - this.fontSize;
@@ -174,8 +174,8 @@ public abstract class DiagramAxis extends DiagramComponent {
 		
 		protected AxisVisual(DiagramAxis axis) {
 			this.axis = axis;
-			this.setBounds(new Rectangle(0,0,1000,1000));
-//			this.setBounds(this.axis.getFrameBounds());
+//			this.setBounds(new Rectangle(0,0,1000,1000));
+			this.setBounds(this.axis.getFrameBounds());
 			Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
 			
 			this.setBorder(border);
