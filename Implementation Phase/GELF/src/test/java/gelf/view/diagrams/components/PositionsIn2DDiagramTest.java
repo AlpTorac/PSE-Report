@@ -3,18 +3,22 @@ package gelf.view.diagrams.components;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.Color;
+import java.awt.Container;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class PositionsIn2DDiagramTest implements TestCase {
 
-	PositionInFrame origin = new PositionInFrame(400, 400);
-	PositionInFrame xAxisEnd = new PositionInFrame(500, 400);
-	PositionInFrame yAxisEnd = new PositionInFrame(400, 300);
+	private TestFrame frame = new TestFrame();
+	private Container container = frame.getContentPane();
 	
-	DiagramAxis xAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(origin, xAxisEnd, 0, 20, 10, Color.BLACK, 10, null);
-	DiagramAxis yAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(origin, yAxisEnd, 0, 20, 10, Color.BLACK, 10, null);
+	private PositionInFrame origin = new PositionInFrame(400, 400);
+	private PositionInFrame xAxisEnd = new PositionInFrame(500, 400);
+	private PositionInFrame yAxisEnd = new PositionInFrame(400, 300);
+	
+	private DiagramAxis xAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(origin, xAxisEnd, 0, 20, 10, Color.BLACK, 10, container);
+	private DiagramAxis yAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(origin, yAxisEnd, 0, 20, 10, Color.BLACK, 10, container);
 	
 	@Test
 	void initialisationTest() {

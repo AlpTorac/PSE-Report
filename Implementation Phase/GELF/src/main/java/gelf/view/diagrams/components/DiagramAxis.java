@@ -208,7 +208,7 @@ public abstract class DiagramAxis extends DiagramComponent {
 				if (this.axis.showValues) {
 					graphs.drawString(String.valueOf(currentValue), (float) x2 + xValueSpace, (float) y2 + yValueSpace);
 					currentValue = currentValue + stepLengthInAxis;
-					System.out.println(x2 + xValueSpace + ", " + y2 + yValueSpace);
+//					System.out.println(x2 + xValueSpace + ", " + y2 + yValueSpace);
 				}
 				x1 = x1 + xStepLengthInFrame;
 				y1 = y1 + yStepLengthInFrame;

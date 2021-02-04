@@ -16,7 +16,6 @@ class DiagramColorScaleTest implements TestCase {
 		PositionInFrame bottomRight = new PositionInFrame(700, 600);
 		
 		DiagramColorScale cs = DiagramComponentFactory.getDiagramComponentFactory().createBiColorScale(topLeft, bottomRight, Color.BLACK, 0, 100, Color.RED, Color.BLUE, 1, frame.getContentPane());
-		show(frame);
+//		show(frame);
 	}
-
 }

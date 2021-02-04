@@ -121,6 +121,7 @@ public abstract class DiagramColorScale extends DiagramComponent {
 
 	public void setValues(float[] values) {
 		this.values = values;
+		this.visualElement.repaint();
 	}
 
 	public Color[] getValueColors() {

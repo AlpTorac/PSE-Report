@@ -14,10 +14,4 @@ public class ValueDisplayPoint extends DiagramPoint {
 		return new ValueDisplayPoint(newColor, this.getValue(), this.getSize(),
 				this.getPositionInDiagram().clone(), this.containingElement);
 	}
-
-	@Override
-	public void refreshValueRelevantAttributes() {
-		// TODO Auto-generated method stub
-
-	}
 }

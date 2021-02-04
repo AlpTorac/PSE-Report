@@ -1,5 +1,6 @@
 package gelf.view.diagrams.components;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Graphics;
@@ -62,10 +63,10 @@ public abstract class DiagramPoint extends DiagramValueDisplayComponent {
 		Rectangle bounds = new Rectangle();
 		PositionInFrame framePosition = this.position.toPositionInFrame();
 		
-		float sizeInFrame = this.size;
+		float sizeInFrame = this.size / 2f;
 		
-		PositionInFrame diagonalStart = new PositionInFrame(framePosition.getXPos() - sizeInFrame,
-				framePosition.getYPos() - sizeInFrame);
+		PositionInFrame diagonalStart = new PositionInFrame(framePosition.getXPos(),
+				framePosition.getYPos());
 		PositionInFrame diagonalEnd = new PositionInFrame(framePosition.getXPos() + sizeInFrame,
 				framePosition.getYPos() + sizeInFrame);
 		
@@ -94,19 +95,20 @@ public abstract class DiagramPoint extends DiagramValueDisplayComponent {
 		protected PointVisual(DiagramPoint point) {
 			this.point = point;
 			this.setBounds(this.point.getFrameBounds());
+			this.setOpaque(false);
 		}
 		
 		@Override
 		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
 			Graphics2D graphs = (Graphics2D) g;
 			
-			Rectangle bounds = this.getBounds();
-			double diameter = this.point.getSize() * 2d;
+			double radius = this.point.getSize() * 0.5d;
 			
-			Shape point = new Ellipse2D.Double(bounds.getCenterX(), bounds.getCenterY(), diameter, diameter);
-			
+			Shape point = new Ellipse2D.Double(0, 0, radius, radius);
 			graphs.setColor(this.point.getColor());
 			graphs.draw(point);
+			graphs.fill(point);
 		}
 	}
 }

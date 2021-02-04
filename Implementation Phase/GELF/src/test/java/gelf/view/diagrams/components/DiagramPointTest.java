@@ -1,10 +1,12 @@
 package gelf.view.diagrams.components;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import java.awt.Color;
 
 import org.junit.jupiter.api.Test;
 
-class BarChartBarTest implements TestCase {
+class DiagramPointTest implements TestCase {
 
 	@Test
 	void initialisationTest() {
@@ -18,11 +20,10 @@ class BarChartBarTest implements TestCase {
 		yAxis.showValues();
 		DiagramAxis xAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, endX, 0, 20, 10, Color.black, 1, frame.getContentPane());
 		xAxis.showValues();
-		PositionIn2DDiagram topLeft = new PositionIn2DDiagram(xAxis, 5, yAxis, 10);
-		PositionIn2DDiagram bottomRight = new PositionIn2DDiagram(xAxis, 7, yAxis, 0);
 		
-		BarChartBar bar = new BarChartBar(new Color(255, 0, 0, 100), 10, topLeft, bottomRight, 1, frame.getContentPane());
+		PositionIn2DDiagram topLeft = new PositionIn2DDiagram(xAxis, 10, yAxis, 10);
 		
+		DiagramPoint p = DiagramComponentFactory.getDiagramComponentFactory().createValueDisplayPoint(new Color(255,0,0,100), 10f, 5, topLeft, frame.getContentPane());
 //		show(frame);
 	}
 
