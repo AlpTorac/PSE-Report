@@ -27,7 +27,7 @@ class DiagramAxisTest implements TestCase {
 		PositionInFrame endX = new PositionInFrame(400, 200);
 		DiagramAxis yAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, endX, 0, 20, 10, Color.black, 1, frame.getContentPane());
 		yAxis.showValues();
-		show(frame);
+//		show(frame);
 	}
 
 }

@@ -3,6 +3,7 @@ package gelf.view.diagrams.components;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import javax.swing.BorderFactory;
@@ -56,8 +57,8 @@ public abstract class DiagramColorScale extends DiagramComponent {
 		Color minValueColor = this.valueColors[rangeMinIndex];
 		Color maxValueColor = this.valueColors[rangeMaxIndex];
 		
-		double minValColorWeight = (value - minValue) / (maxValue - minValue);
-		double maxValColorWeight = 1 - minValColorWeight;
+		double maxValColorWeight = (value - minValue) / (maxValue - minValue);
+		double minValColorWeight = 1 - maxValColorWeight;
 		
 		float[] hsbMinValColor = new float[3];
 		Color.RGBtoHSB(minValueColor.getRed(), minValueColor.getGreen(), minValueColor.getBlue(), hsbMinValColor);
@@ -138,6 +139,7 @@ public abstract class DiagramColorScale extends DiagramComponent {
 	@Override
 	protected void initVisualElement() {
 		this.visualElement = new ScalePanel(this);
+		this.attachToContainer(containingElement);
 	}
 	
 	protected class ScalePanel extends JPanel {
@@ -152,11 +154,13 @@ public abstract class DiagramColorScale extends DiagramComponent {
 			this.colorScale = colorScale;
 			this.setBorder(BorderFactory.createLineBorder(this.colorScale.getColor(), this.colorScale.getBorderThickness()));
 			this.setBounds(this.colorScale.getFrameBounds());
+			this.setOpaque(true);
 		}
 		
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
+			Graphics2D graphs = (Graphics2D) g;
 			
 			float maxVal = this.colorScale.getValues()[this.colorScale.getValues().length - 1];
 			float minVal = this.colorScale.getValues()[0];
@@ -166,8 +170,9 @@ public abstract class DiagramColorScale extends DiagramComponent {
 			for (int x = 0; x < this.getBounds().width - 2; x++) {
 				float currentValue = minVal + valueIntervalLength * (((float) x) / ((float) (this.getBounds().width - 2)));
 				
-				g.setColor(this.colorScale.valueToColor(currentValue));
-				g.fillRect(x, 0, 1, this.getBounds().height - 1);
+				graphs.setColor(this.colorScale.valueToColor(currentValue));
+				graphs.draw(this.getBounds());
+				graphs.fillRect(x, 0, 1, this.getBounds().height - 1);
 			}
 		}
 	}

@@ -23,11 +23,11 @@ class BarChartBarTest implements TestCase {
 		
 		BarChartBar bar = new BarChartBar(new Color(255, 0, 0, 100), 10, topLeft, bottomRight, 1, frame.getContentPane());
 		
-		show(frame);
-		
-		while (true) {
-			
-		}
+//		show(frame);
+//		
+//		while (true) {
+//			
+//		}
 	}
 
 }
