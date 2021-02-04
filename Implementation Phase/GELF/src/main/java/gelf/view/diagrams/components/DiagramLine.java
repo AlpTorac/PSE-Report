@@ -65,7 +65,7 @@ public abstract class DiagramLine extends DiagramComponent {
 	}
 	
 	protected double calculateVerticalLength() {
-		return Math.abs(this.end.getYPos() - this.end.getYPos());
+		return Math.abs(this.end.getYPos() - this.start.getYPos());
 	}
 	
 	protected double calculateLength() {

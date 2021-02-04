@@ -15,6 +15,7 @@ class DiagramLineTest implements TestCase {
 		PositionInFrame start = new PositionInFrame(100, 100);
 		PositionInFrame end = new PositionInFrame(400, 400);
 		DiagramLine line = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(start, end, Color.BLACK, 2, frame.getContentPane());
+//		show(frame);
 	}
 	
 	@Test
@@ -27,6 +28,7 @@ class DiagramLineTest implements TestCase {
 		PositionInFrame end2 = new PositionInFrame(400, 100);
 		DiagramLine line2 = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(start2, end2, Color.BLACK, 2, frame.getContentPane());
 		DiagramLine line1 = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(start1, end1, Color.BLACK, 2, frame.getContentPane());
+//		show(frame);
 	}
 	
 	@Test

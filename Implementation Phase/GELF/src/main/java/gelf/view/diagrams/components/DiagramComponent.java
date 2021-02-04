@@ -22,6 +22,7 @@ public abstract class DiagramComponent implements HasAttachablePart {
 
 	protected void setComponentBounds(Rectangle bounds) {
 		this.visualElement.setBounds(bounds);
+		this.visualElement.repaint();
 	}
 	
 	protected abstract Rectangle getFrameBounds();

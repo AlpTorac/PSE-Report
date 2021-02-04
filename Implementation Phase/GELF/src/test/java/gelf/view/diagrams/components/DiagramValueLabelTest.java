@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 class DiagramValueLabelTest implements TestCase {
 
 	@Test
-	void test() {
+	void initialisationTest() {
 		TestFrame frame = new TestFrame();
 		
 		PositionInFrame start = new PositionInFrame(400, 400);

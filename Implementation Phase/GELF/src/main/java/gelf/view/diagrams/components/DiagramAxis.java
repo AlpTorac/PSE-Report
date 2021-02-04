@@ -8,7 +8,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.Rectangle2D.Double;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -20,6 +23,7 @@ public abstract class DiagramAxis extends DiagramComponent {
 	private float max;
 	private int steps;
 	private boolean showValues;
+	private boolean showValuesUnderAxis = true;
 	protected DiagramLine axisLine;
 
 	protected DiagramAxis(DiagramLine axisLine, float min, float max, int steps, Container containingElement) {
@@ -132,15 +136,17 @@ public abstract class DiagramAxis extends DiagramComponent {
 		
 		double lineAngleRadian = this.axisLine.getAngleRadian();
 		
-		double absValOfDifference = this.fontSize * 10;
+		// By how much the axis' visual part will be larger than that of this.axisLine
+		double absValOfDifference = this.fontSize * 4;
 		
-		double horizontalDifference = absValOfDifference * Math.sin(lineAngleRadian);
-		double verticalDifference = absValOfDifference * Math.cos(lineAngleRadian);
+		// Subtract these from the coordinates to get this.axisLine from the edge to center
+		double centeringX = Math.sin(lineAngleRadian) * absValOfDifference / 2d;
+		double centeringY = Math.cos(lineAngleRadian) * absValOfDifference / 2d;
 		
-		double topLeftX = Math.min(bounds.getX(), bounds.getX() + horizontalDifference);
-		double topLeftY = Math.min(bounds.getY(), bounds.getY() + verticalDifference);
-		double width = Math.max(bounds.getWidth(), bounds.getWidth() + horizontalDifference);
-		double height = Math.max(bounds.getHeight(), bounds.getHeight() + verticalDifference);
+		double topLeftX = bounds.getX() - centeringX - this.fontSize;
+		double topLeftY = bounds.getY() - centeringY - this.fontSize;
+		double width = bounds.getWidth() + absValOfDifference * Math.abs(Math.sin(lineAngleRadian)) + this.fontSize;
+		double height = bounds.getHeight() + absValOfDifference * Math.abs(Math.cos(lineAngleRadian)) + this.fontSize;
 		
 		bounds.setRect(topLeftX, topLeftY, width, height);
 		
@@ -149,7 +155,8 @@ public abstract class DiagramAxis extends DiagramComponent {
 	
 	@Override
 	protected void setComponentBounds(Rectangle bounds) {
-		this.axisLine.setComponentBounds(bounds);
+//		this.axisLine.setComponentBounds(bounds);
+//		this.visualElement.repaint();
 	}
 	
 	@Override
@@ -167,11 +174,11 @@ public abstract class DiagramAxis extends DiagramComponent {
 		
 		protected AxisVisual(DiagramAxis axis) {
 			this.axis = axis;
-			this.setBounds(this.axis.getFrameBounds());
+			this.setBounds(new Rectangle(0,0,1000,1000));
+//			this.setBounds(this.axis.getFrameBounds());
+			Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
 			
-//			Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
-//			
-//			this.setBorder(border);
+			this.setBorder(border);
 		}
 		
 		@Override
@@ -180,42 +187,57 @@ public abstract class DiagramAxis extends DiagramComponent {
 			
 			Rectangle bounds = this.getBounds();
 			
+			int fontSize = this.axis.fontSize;
+			
 			graphs.setColor(this.axis.getColor());
 			graphs.setStroke(new BasicStroke(this.axis.getLineThickness()));
-			graphs.setFont(new Font("TimesRoman", Font.PLAIN, this.axis.fontSize));
+			graphs.setFont(new Font("TimesRoman", Font.PLAIN, fontSize));
 			
 			double rotationAngleInRadian = this.axis.axisLine.getAngleRadian();
 			
-			float xValueSpace = (float) (this.axis.fontSize * Math.cos(rotationAngleInRadian));
-			float yValueSpace = (float) (this.axis.fontSize * Math.sin(rotationAngleInRadian));
+			double indicatorLineLength = fontSize;
 			
-			double x1 = Math.abs(Math.cos(rotationAngleInRadian) * bounds.getCenterX());
-			double y1 = Math.abs(Math.sin(rotationAngleInRadian) * bounds.getCenterY());
-			double x2 = x1 + xValueSpace;
-			double y2 = y1 + yValueSpace;
+			double axisLineStartX = this.axis.axisLine.getStartInFrame().getXPos() - bounds.getMinX();
+			double axisLineStartY = this.axis.axisLine.getStartInFrame().getYPos() - bounds.getMinY();
 			
-			//graphs.rotate(rotationAngleInRadian, x1, y1);
+			double x1 = axisLineStartX;
+			double y1 = axisLineStartY - indicatorLineLength;
+			double y2 = axisLineStartY + indicatorLineLength;
 			
-			double xStepLengthInFrame = Math.cos(rotationAngleInRadian) * bounds.getWidth() / ((double) this.axis.getSteps());
-			double yStepLengthInFrame = Math.sin(rotationAngleInRadian) * bounds.getHeight() / ((double) this.axis.getSteps());
+			graphs.rotate(rotationAngleInRadian, axisLineStartX, axisLineStartY);
+			
+			double xStepLengthInFrame = this.axis.axisLine.calculateLength() / ((double) this.axis.getSteps());
 			
 			float stepLengthInAxis = (this.axis.getMax() - this.axis.getMin()) / ((float) this.axis.getSteps());
-			float currentValue = this.axis.getMin();
+			float currentValue = this.axis.getMin() + stepLengthInAxis;
 			
-			for (int i = 0; i < this.axis.getSteps(); i++) {
-				Shape line = new Line2D.Double(x1, y1, x2, y2);
+			float stringY = this.getStringYPos(y1, y2, fontSize);
+			
+			x1 = x1 + xStepLengthInFrame;
+			
+			for (int i = 1; i < this.axis.getSteps(); i++) {
+				Shape line = new Line2D.Double(x1, y1, x1, y2);
 				graphs.draw(line);
 				if (this.axis.showValues) {
-					graphs.drawString(String.valueOf(currentValue), (float) x2 + xValueSpace, (float) y2 + yValueSpace);
+					graphs.drawString(String.valueOf(currentValue), (float) x1 - fontSize, stringY);
 					currentValue = currentValue + stepLengthInAxis;
 //					System.out.println(x2 + xValueSpace + ", " + y2 + yValueSpace);
 				}
 				x1 = x1 + xStepLengthInFrame;
-				y1 = y1 + yStepLengthInFrame;
-				x2 = x2 + xStepLengthInFrame;
-				y2 = y2 + yStepLengthInFrame;
 			}
-
 		}
+		
+		private float getStringYPos(double indicatorLineY1, double indicatorLineY2, int fontSize) {
+			float stringY;
+			
+			if (this.axis.showValuesUnderAxis) {
+				stringY = (float) (indicatorLineY2 + fontSize);
+			} else {
+				stringY = (float) (indicatorLineY1 - fontSize);
+			}
+			
+			return stringY;
+		}
+		
 	}
 }
