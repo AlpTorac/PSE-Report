@@ -1,7 +1,10 @@
 package gelf.view.components;
 
 import javax.swing.JPanel;
+import javax.swing.plaf.ColorUIResource;
+
 import java.awt.*;
+import java.awt.color.*;
 import java.awt.event.ComponentEvent;
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -21,7 +24,7 @@ public class Panel extends JPanel implements AutoResizing {
         this.setSize(width, height);
         this.width = width;
         this.height = height;
-        this.setBackground(Color.blue);
+        this.setBackground(new Color(0.3f, 0.3f, 0.3f));
     }
 
     //from AutoResizing

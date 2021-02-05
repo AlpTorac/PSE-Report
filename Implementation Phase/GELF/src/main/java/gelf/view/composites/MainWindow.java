@@ -37,19 +37,20 @@ public class MainWindow extends Window {
         infoBar.setVisible(true);
         infoBar.setText(InfoBarID.VERSION, version);
         infoBar.setText(InfoBarID.SELECTED, "none");
-        infoBar.setBackground(Color.red);
         this.add(infoBar);
         Resizer infoBarResizer = new Resizer(ResizeMode.ABSOLUTE_BOTTOM_RIGHT, ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_BOTTOM_RIGHT, ResizeMode.ABSOLUTE_BOTTOM_RIGHT);
         this.setResizer(infoBar, infoBarResizer);
 
-        // //MainMenu setup
-        // mainMenu = new MenuBar();
-        // Resizer mainMenuResizer = new Resizer(ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_BOTTOM_RIGHT);
-        // mainMenu.setBounds(0, 0, width, 60);
-        // mainMenu.setVisible(true);
+        //MainMenu setup
+        mainMenu = new MenuBar();
+        Resizer mainMenuResizer = new Resizer(ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_BOTTOM_RIGHT);
+        mainMenu.setBounds(0, 0, width, 30);
+        mainMenu.setBackground(new Color(.3f,.3f,.3f));
+        mainMenu.add(new JMenu("Menu1"));
+        mainMenu.setVisible(true);
 
-        // this.add(mainMenu);
-        // this.setResizer(mainMenu, mainMenuResizer);
+        this.add(mainMenu);
+        this.setResizer(mainMenu, mainMenuResizer);
         
         //Outliner setup
         //outliner = new Outliner();

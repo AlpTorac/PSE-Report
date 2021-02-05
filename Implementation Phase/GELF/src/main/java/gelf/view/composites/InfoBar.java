@@ -20,6 +20,9 @@ import gelf.view.components.Resizer;
 public class InfoBar extends Panel {
     private Map<InfoBarID, Label> labels = new HashMap<>();
     private Map<InfoBarID, String> labelPrefix = new HashMap<>();
+    //colors
+    private Color textColor = new Color(0.9f, 0.9f, 0.9f);
+    private Color backgroundColor = new Color(0.3f, 0.3f, 0.3f);
 
     //Create new InfoBar with corresponding labels
     public InfoBar(int width, int height) {
@@ -27,7 +30,9 @@ public class InfoBar extends Panel {
         //set layout
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
         this.revalidate();
-        
+        //set the style
+        this.setBackground(backgroundColor);
+
         //label type names
         labelPrefix.put(InfoBarID.VERSION, "Version");
         labelPrefix.put(InfoBarID.ERROR, "Error");
@@ -35,23 +40,25 @@ public class InfoBar extends Panel {
         labelPrefix.put(InfoBarID.LASTACTION, "Last Action");
 
         //add the labels
-        this.add(Box.createHorizontalGlue());
         for(InfoBarID id : InfoBarID.values()) {
+            //generate label
             Label label = new Label("");
-            label.setOpaque(true);
+            label.setForeground(textColor);
             label.setVisible(true);
             label.setAlignmentY(Label.CENTER_ALIGNMENT);
             label.setMinimumSize(new Dimension(50, this.getHeight()));
-            label.setPreferredSize(new Dimension(100, this.getHeight()));
             labels.put(id, label);
             this.setText(id, "");
-
+            //add label and spacing
+            this.add(Box.createRigidArea(new Dimension(5, 0)));
             this.add(label);
-            this.add(Box.createHorizontalGlue());
         }
+        //add spacing to end, update
+        this.add(Box.createHorizontalGlue());
         this.revalidate();
         this.repaint();
     }
+    
     //Set text of specified label withing the InfoBar
     public void setText(InfoBarID id, String text) {
         //generate final label text
