@@ -94,6 +94,8 @@ public abstract class DiagramLabel extends DiagramComponent {
 		protected LabelVisual(DiagramLabel label) {
 			this.label = label;
 			this.setBounds(this.label.getFrameBounds());
+			this.setBackground(this.label.getColor());
+			this.setBorder(BorderFactory.createLineBorder(Color.BLACK, this.label.getBorderThickness()));
 			this.setOpaque(true);
 		}
 		

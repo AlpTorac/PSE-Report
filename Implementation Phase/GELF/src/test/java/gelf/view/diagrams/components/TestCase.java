@@ -2,6 +2,8 @@ package gelf.view.diagrams.components;
 
 public interface TestCase {
 	
+	public static final long SHOW_DURATION = 50;
+	
 	public static final double TOLERANCE = 1E-5;
 	
 	public default void show(TestFrame frame, long ms) {

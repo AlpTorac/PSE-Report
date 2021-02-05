@@ -6,7 +6,6 @@ public class SolidAxis extends DiagramAxis {
 
 	protected SolidAxis(SolidLine axisLine, float min, float max, int steps, Container containingElement) {
 		super(axisLine, min, max, steps, containingElement);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override

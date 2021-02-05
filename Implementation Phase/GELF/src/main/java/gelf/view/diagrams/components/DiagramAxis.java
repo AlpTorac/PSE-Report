@@ -118,6 +118,7 @@ public abstract class DiagramAxis extends DiagramComponent {
 	public void setLineByPos(float minValXPos, float minValYPos, float maxValXPos, float maxValYPos) {
 		this.axisLine.setStartInFrame(minValXPos, minValYPos);
 		this.axisLine.setEndInFrame(maxValXPos, maxValYPos);
+		this.visualElement.repaint();
 	}
 
 	public void setLineColor(Color color) {
@@ -135,6 +136,14 @@ public abstract class DiagramAxis extends DiagramComponent {
 
 	public double getLineLength() {
 		return this.axisLine.calculateLength();
+	}
+	
+	public PositionInFrame getLineStart() {
+		return this.axisLine.getStartInFrame();
+	}
+	
+	public PositionInFrame getLineEnd() {
+		return this.axisLine.getEndInFrame();
 	}
 	
 	@Override
@@ -170,6 +179,18 @@ public abstract class DiagramAxis extends DiagramComponent {
 	protected void initVisualElement() {
 		this.visualElement = new AxisVisual(this);
 		this.attachToContainer(this.containingElement);
+	}
+	
+	@Override
+	public void show() {
+		super.show();
+		this.showValues();
+	}
+	
+	@Override
+	public void hide() {
+		super.hide();
+		this.hideValues();
 	}
 	
 	protected class AxisVisual extends JLabel {

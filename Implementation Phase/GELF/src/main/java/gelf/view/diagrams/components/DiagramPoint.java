@@ -50,6 +50,7 @@ public abstract class DiagramPoint extends DiagramValueDisplayComponent {
 
 	public void setSize(float size) {
 		this.size = size;
+		this.setComponentBounds(this.getFrameBounds());
 		this.visualElement.repaint();
 	}
 	

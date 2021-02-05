@@ -32,7 +32,7 @@ public abstract class DiagramColorScale extends DiagramComponent {
 		
 		int index = 0;
 		
-		while (this.values[index] < value) {
+		while (index < this.values.length && this.values[index] <= value) {
 			index++;
 		}
 		
@@ -88,7 +88,7 @@ public abstract class DiagramColorScale extends DiagramComponent {
 		return this.topLeft;
 	}
 
-	public void setTopLeftInFrame(float x1, float y1) {
+	public void setTopLeftInFrame(double x1, double y1) {
 		this.topLeft.setXPos(x1);
 		this.topLeft.setYPos(y1);
 		
@@ -99,7 +99,7 @@ public abstract class DiagramColorScale extends DiagramComponent {
 		return this.bottomRight;
 	}
 
-	public void setBottomRightInFrame(float x2, float y2) {
+	public void setBottomRightInFrame(double x2, double y2) {
 		this.bottomRight.setXPos(x2);
 		this.bottomRight.setYPos(y2);
 		
@@ -118,18 +118,34 @@ public abstract class DiagramColorScale extends DiagramComponent {
 	public float[] getValues() {
 		return this.values;
 	}
+	
+	public float getValue(int index) {
+		return this.values[index];
+	}
 
 	public void setValues(float[] values) {
 		this.values = values;
 		this.visualElement.repaint();
 	}
+	
+	public void setValue(int index, float value) {
+		this.values[index] = value;
+	}
 
 	public Color[] getValueColors() {
 		return this.valueColors;
 	}
+	
+	public Color getValueColor(int index) {
+		return this.valueColors[index];
+	}
 
 	public void setValueColors(Color[] valueColors) {
 		this.valueColors = valueColors;
+	}
+	
+	public void setValueColor(int index, Color color) {
+		this.valueColors[index] = color;
 	}
 	
 	@Override

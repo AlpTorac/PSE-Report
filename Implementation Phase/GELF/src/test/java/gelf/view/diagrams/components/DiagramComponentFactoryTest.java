@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.awt.Color;
 import java.awt.Container;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -30,36 +32,61 @@ class DiagramComponentFactoryTest implements TestCase {
 	private static PositionIn2DDiagram startPosInAxis = new PositionIn2DDiagram(xAxis, 2, yAxis, 7);
 	private static PositionIn2DDiagram endPosInAxis = new PositionIn2DDiagram(xAxis, 4, yAxis, 0);
 	
-	private static DiagramColorScale cs = f.createBiColorScale(posFrameStart, posFrameEnd, c, 0, 20, minValColor, maxValColor, 1, container);;
+	private static DiagramColorScale cs = f.createBiColorScale(posFrameStart, posFrameEnd, c, 0, 20, minValColor, maxValColor, 1, container);
+	
+	private static DiagramComponent[] diagramComponents = new DiagramComponent[8];
+	
+	@BeforeAll
+	static void addPreMadesToDiagramComponents() {
+		diagramComponents[0] = xAxis;
+		diagramComponents[1] = cs;
+	}
 	
 	@Test
 	void createBarChartBarTest() {
-		f.createBarChartBar(c, 2, startPosInAxis, endPosInAxis, 1, container);
+		diagramComponents[2] = f.createBarChartBar(c, 2, startPosInAxis, endPosInAxis, 1, container);
 	}
 	
 	@Test
 	void createDescriptionLabelTest() {
-		f.createDescriptionLabel(posFrameStart, posFrameEnd, c, "Testing DescriptionLabel", 1, container);
+		diagramComponents[3] = f.createDescriptionLabel(posFrameStart, posFrameEnd, c, "Testing DescriptionLabel", 1, container);
 	}
 	
 	@Test
 	void createHeatMapLabelTest() {
-		f.createHeatMapLabel(startPosInAxis, endPosInAxis, cs, 10, 1, container);
+		diagramComponents[4] = f.createHeatMapLabel(startPosInAxis, endPosInAxis, cs, 10, 1, container);
 	}
 	
 	@Test
 	void createHistogramBarTest() {
-		f.createHistogramBar(c, 2, startPosInAxis, endPosInAxis, 1, container);
+		diagramComponents[5] = f.createHistogramBar(c, 2, startPosInAxis, endPosInAxis, 1, container);
 	}
 	
 	@Test
 	void createSolidLineTest() {
-		f.createSolidLine(posFrameStart, posFrameEnd, c, 1, container);
+		diagramComponents[6] = f.createSolidLine(posFrameStart, posFrameEnd, c, 1, container);
 	}
 	
 	@Test
 	void createValueDisplayPointTest() {
-		f.createValueDisplayPoint(c, 2, 1, startPosInAxis, container);
+		diagramComponents[7] = f.createValueDisplayPoint(c, 2, 1, startPosInAxis, container);
 	}
 
+	@AfterAll
+	static void cloneTest() {
+		DiagramComponent[] clones = new DiagramComponent[diagramComponents.length];
+		
+		for (int i = 0; i < diagramComponents.length; i++) {
+			clones[i] = diagramComponents[i].clone();
+		}
+		
+		for (int index = 0; index < clones.length; index++) {
+			DiagramComponent clone = clones[index];
+			DiagramComponent actual = diagramComponents[index];
+			
+			Assertions.assertNotEquals(clone, actual);
+			Assertions.assertNotEquals(clone.visualElement, actual.visualElement);
+		}
+	}
+	
 }

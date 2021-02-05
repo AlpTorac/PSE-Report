@@ -33,7 +33,7 @@ class DiagramValueLabelTest implements TestCase {
 	void initialisationTest() {
 		yAxis.showValues();
 		xAxis.showValues();
-		show(frame, 500);
+		show(frame, TestCase.SHOW_DURATION);
 	}
 	
 	@Test
@@ -64,12 +64,12 @@ class DiagramValueLabelTest implements TestCase {
 		Assertions.assertTrue(compareFloatingPoint(bottomR.toPositionInFrame().getXPos(), label.visualElement.getBounds().getMaxX()));
 		Assertions.assertTrue(compareFloatingPoint(bottomR.toPositionInFrame().getYPos(), label.visualElement.getBounds().getMaxY()));
 		
-//		show(frame, label, 500);
+//		show(frame, label, TestCase.SHOW_DURATION);
 		
 		label.setTopLeftInDiagram(oldTopLeftX, oldTopLeftY);
 		label.setBottomRightInDiagram(oldBottomRightX, oldBottomRightY);
 		
-//		show(frame, label, 500);
+//		show(frame, label, TestCase.SHOW_DURATION);
 	}
 
 	@Test
@@ -81,11 +81,11 @@ class DiagramValueLabelTest implements TestCase {
 		
 		Assertions.assertEquals(newValue, label.getValue());
 		
-		show(frame, label, 500);
+		show(frame, label, TestCase.SHOW_DURATION);
 		
 		label.setValue(oldValue);
 		
-		show(frame, label, 500);
+		show(frame, label, TestCase.SHOW_DURATION);
 	}
 	
 	@Test
@@ -95,7 +95,7 @@ class DiagramValueLabelTest implements TestCase {
 		
 		label.setBorderThickness(newThickness);
 		
-//		show(frame, label, 500);
+//		show(frame, label, TestCase.SHOW_DURATION);
 		
 		label.setBorderThickness(oldThickness);
 	}

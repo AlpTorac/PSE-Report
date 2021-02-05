@@ -4,61 +4,53 @@ import java.awt.Color;
 import java.awt.Container;
 
 public class BiColorScale extends DiagramColorScale {
-	private Color minValueColor;
-	private Color maxValueColor;
-	private float minValue;
-	private float maxValue;
 
 	protected BiColorScale(PositionInFrame topLeft, PositionInFrame bottomRight, Color borderColor, float minVal,
 			float maxVal, Color minValColor, Color maxValColor, int borderThickness, Container containingElement) {
 		super(topLeft, bottomRight, borderColor, new float[] {minVal, maxVal},
 				new Color[] {minValColor, maxValColor}, borderThickness, containingElement);
-
-		float[] values = super.getValues();
-		Color[] colors = super.getValueColors();
-		
-		this.minValueColor = colors[0];
-		this.maxValueColor = colors[1];
-		this.minValue = values[0];
-		this.maxValue = values[1];
 	}
 
 	public Color getMinValueColor() {
-		return minValueColor;
+		return super.getValueColor(0);
 	}
 
 	public void setMinValueColor(Color minValueColor) {
-		this.minValueColor = minValueColor;
+		super.setValueColor(0, minValueColor);
+		this.visualElement.repaint();
 	}
 
 	public Color getMaxValueColor() {
-		return maxValueColor;
+		return super.getValueColor(1);
 	}
 
 	public void setMaxValueColor(Color maxValueColor) {
-		this.maxValueColor = maxValueColor;
+		super.setValueColor(1, maxValueColor);
+		this.visualElement.repaint();
 	}
 
 	public float getMinValue() {
-		return minValue;
+		return super.getValue(0);
 	}
 
 	public void setMinValue(float minValue) {
-		this.minValue = minValue;
+		super.setValue(0, minValue);
+		this.visualElement.repaint();
 	}
 
 	public float getMaxValue() {
-		return maxValue;
+		return super.getValue(1);
 	}
 
 	public void setMaxValue(float maxValue) {
-		this.maxValue = maxValue;
+		super.setValue(1, maxValue);
+		this.visualElement.repaint();
 	}
 
-	@Override
-	public Color valueToColor(float value) {
-		return super.getMixedColor(value, 0, 1);
-	}
+//	@Override
+//	public Color valueToColor(float value) {
+//		return super.getMixedColor(value, 0, 1);
+//	}
 	
 	@Override
 	public BiColorScale clone() {

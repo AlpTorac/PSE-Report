@@ -28,7 +28,7 @@ class DiagramLabelTest implements TestCase{
 
 	@Test
 	void showAndHideTest() {
-		show(frame, label, 500);
+		show(frame, label, TestCase.SHOW_DURATION);
 	}
 	
 	@Test
@@ -38,7 +38,7 @@ class DiagramLabelTest implements TestCase{
 		label.setCaption(newCaption);
 		Assertions.assertEquals(label.getCaption(), newCaption);
 		
-		show(frame, label, 500);
+		show(frame, label, TestCase.SHOW_DURATION);
 		
 		Assertions.assertEquals(((JLabel) label.visualElement).getText(), newCaption);
 	}
@@ -63,12 +63,12 @@ class DiagramLabelTest implements TestCase{
 		Assertions.assertEquals(label.visualElement.getBounds().getMaxX(), endX);
 		Assertions.assertEquals(label.visualElement.getBounds().getMaxY(), endY);
 		
-		show(frame, label, 500);
+		show(frame, label, TestCase.SHOW_DURATION);
 		
 		label.setTopLeftInDiagram(400, 400);
 		label.setBottomRightInDiagram(600, 500);
 		
-		show(frame, label, 500);
+		show(frame, label, TestCase.SHOW_DURATION);
 	}
 	
 	@Test
