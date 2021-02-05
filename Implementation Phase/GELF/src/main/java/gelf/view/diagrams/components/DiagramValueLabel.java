@@ -2,6 +2,9 @@ package gelf.view.diagrams.components;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import javax.swing.BorderFactory;
@@ -20,6 +23,8 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 		this.bottomRight = bottomRight;
 		this.topLeft = topLeft;
 		this.borderThickness = borderThickness;
+		this.caption = String.valueOf(value);
+		
 		this.initHoverableVisualElement();
 	}
 
@@ -27,7 +32,7 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 		return this.bottomRight;
 	}
 
-	public void setBottomRightInDiagram(float x2, float y2) {
+	public void setBottomRightInDiagram(double x2, double y2) {
 		this.bottomRight.setXCoordinate(x2);
 		this.bottomRight.setYCoordinate(y2);
 		
@@ -38,7 +43,7 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 		return this.topLeft;
 	}
 
-	public void setTopLeftInDiagram(float x1, float y1) {
+	public void setTopLeftInDiagram(double x1, double y1) {
 		this.topLeft.setXCoordinate(x1);
 		this.topLeft.setYCoordinate(y1);
 		
@@ -46,6 +51,7 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 	}
 
 	protected void refreshCaption() {
+//		((ValueLabelVisual) this.visualElement).setText(this.caption);
 		this.visualElement.repaint();
 	}
 
@@ -100,10 +106,19 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 		
 		protected ValueLabelVisual(DiagramValueLabel label) {
 			this.label = label;
-			this.setBorder(BorderFactory.createLineBorder(Color.BLACK, this.label.getBorderThickness()));
 			this.setBounds(this.label.getFrameBounds());
-			this.setText(this.label.getCaption());
 			this.setOpaque(true);
+		}
+		
+		@Override
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			this.setBounds(this.label.getFrameBounds());
+			this.setBorder(BorderFactory.createLineBorder(Color.BLACK, this.label.getBorderThickness()));
+			this.setHorizontalAlignment(CENTER);
+			this.setVerticalAlignment(CENTER);
+			this.setForeground(Color.BLACK);
+			this.setText(this.label.getCaption());
 		}
 	}
 }

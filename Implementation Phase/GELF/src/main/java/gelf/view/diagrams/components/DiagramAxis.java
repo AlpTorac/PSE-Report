@@ -183,7 +183,6 @@ public abstract class DiagramAxis extends DiagramComponent {
 			this.axis = axis;
 //			this.setBounds(new Rectangle(0,0,1000,1000));
 			this.setBounds(this.axis.getFrameBounds());
-			
 //			Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
 //			
 //			this.setBorder(border);
@@ -193,7 +192,7 @@ public abstract class DiagramAxis extends DiagramComponent {
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Graphics2D graphs = (Graphics2D) g;
-			
+			this.setBounds(this.axis.getFrameBounds());
 			Rectangle bounds = this.getBounds();
 			
 			int fontSize = this.axis.fontSize;

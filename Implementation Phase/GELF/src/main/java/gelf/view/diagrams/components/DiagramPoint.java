@@ -101,6 +101,7 @@ public abstract class DiagramPoint extends DiagramValueDisplayComponent {
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
+			this.setBounds(this.point.getFrameBounds());
 			Graphics2D graphs = (Graphics2D) g;
 			
 			double radius = this.point.getSize() * 0.5d;

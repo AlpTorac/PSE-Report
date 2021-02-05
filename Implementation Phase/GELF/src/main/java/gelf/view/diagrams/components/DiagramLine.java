@@ -57,7 +57,6 @@ public abstract class DiagramLine extends DiagramComponent {
 
 	public void setThickness(int thickness) {
 		this.thickness = thickness;
-		this.setComponentBounds(this.getFrameBounds());
 	}
 	
 	protected double calculateHorizontalLength() {
@@ -127,6 +126,7 @@ public abstract class DiagramLine extends DiagramComponent {
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
+			this.setBounds(this.line.getFrameBounds());
 			Graphics2D graphs = (Graphics2D) g;
 			
 			Rectangle bounds = this.getBounds();

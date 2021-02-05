@@ -18,10 +18,6 @@ public abstract class PositionInDiagram {
 		}
 	}
 
-	public double axisCoordinateToFrameCoordinate(int index) {
-		return to2DCoordinate(index);
-	}
-
 	public PositionInFrame toPositionInFrame() {
 		double[] coordinates = to2D();
 		PositionInFrame xPosInFrame = axes[0].valueToCoordinate((float) coordinates[0]);

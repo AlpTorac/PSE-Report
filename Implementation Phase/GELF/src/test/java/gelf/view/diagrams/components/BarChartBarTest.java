@@ -21,9 +21,9 @@ class BarChartBarTest implements TestCase {
 		PositionIn2DDiagram topLeft = new PositionIn2DDiagram(xAxis, 5, yAxis, 10);
 		PositionIn2DDiagram bottomRight = new PositionIn2DDiagram(xAxis, 7, yAxis, 0);
 		
-		BarChartBar bar = new BarChartBar(new Color(255, 0, 0, 100), 10, topLeft, bottomRight, 1, frame.getContentPane());
+		BarChartBar bar = DiagramComponentFactory.getDiagramComponentFactory().createBarChartBar(new Color(255, 0, 0, 100), 10, topLeft, bottomRight, 1, frame.getContentPane());
 		
-//		show(frame);
+		show(frame, bar, 500);
 	}
 
 }

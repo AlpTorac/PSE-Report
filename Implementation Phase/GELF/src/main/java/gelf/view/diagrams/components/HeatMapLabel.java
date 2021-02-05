@@ -16,6 +16,7 @@ public class HeatMapLabel extends DiagramValueLabel {
 
 	@Override
 	public void refreshValueRelevantAttributes() {
+		super.refreshValueRelevantAttributes();
 		this.setColor(this.colorScale.valueToColor(this.getValue()));
 	}
 

@@ -16,6 +16,15 @@ class PositionInFrameTest implements TestCase {
 	}
 	
 	@Test
+	void initialisationTestWithReference() {
+		PositionInFrame pos = new PositionInFrame(21, 453);
+		PositionInFrame pos2 = new PositionInFrame(pos, 4, 7);
+		
+		Assertions.assertEquals(pos2.getXPos(), 25);
+		Assertions.assertEquals(pos2.getYPos(), 460);
+	}
+	
+	@Test
 	void settingXTest() {
 		PositionInFrame pos = new PositionInFrame(10, 20);
 		

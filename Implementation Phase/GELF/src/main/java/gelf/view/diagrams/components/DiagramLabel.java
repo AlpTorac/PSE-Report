@@ -3,6 +3,7 @@ package gelf.view.diagrams.components;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import javax.swing.BorderFactory;
@@ -38,7 +39,7 @@ public abstract class DiagramLabel extends DiagramComponent {
 		return this.topLeft;
 	}
 
-	public void setTopLeftInDiagram(float x1, float y1) {
+	public void setTopLeftInDiagram(double x1, double y1) {
 		this.topLeft.setXPos(x1);
 		this.topLeft.setYPos(y1);
 		
@@ -49,7 +50,7 @@ public abstract class DiagramLabel extends DiagramComponent {
 		return this.bottomRight;
 	}
 
-	public void setBottomRightInDiagram(float x2, float y2) {
+	public void setBottomRightInDiagram(double x2, double y2) {
 		this.bottomRight.setXPos(x2);
 		this.bottomRight.setYPos(y2);
 		
@@ -92,14 +93,20 @@ public abstract class DiagramLabel extends DiagramComponent {
 		
 		protected LabelVisual(DiagramLabel label) {
 			this.label = label;
+			this.setBounds(this.label.getFrameBounds());
+			this.setOpaque(true);
+		}
+		
+		@Override
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			this.setBounds(this.label.getFrameBounds());
 			this.setBackground(this.label.getColor());
 			this.setBorder(BorderFactory.createLineBorder(Color.BLACK, this.label.getBorderThickness()));
-			this.setBounds(this.label.getFrameBounds());
 			this.setHorizontalAlignment(CENTER);
 			this.setVerticalAlignment(CENTER);
 			this.setForeground(Color.BLACK);
 			this.setText(this.label.getCaption());
-			this.setOpaque(true);
 		}
 	}
 }

@@ -24,7 +24,7 @@ class DiagramPointTest implements TestCase {
 		PositionIn2DDiagram topLeft = new PositionIn2DDiagram(xAxis, 10, yAxis, 10);
 		
 		DiagramPoint p = DiagramComponentFactory.getDiagramComponentFactory().createValueDisplayPoint(new Color(255,0,0,100), 10f, 5, topLeft, frame.getContentPane());
-//		show(frame);
+		show(frame, p, 500);
 	}
 
 }
