@@ -21,11 +21,11 @@ public abstract class InAttribute extends Attribute {
 	
 	@Override
 	public void calculate() {
-		float min = 0;
-		float max = 0;
+		float min = values[0];
+		float max = values[0];
 		float sum = 0;
 		float avg = 0;
-		float med = 0;
+		float med = values[0];
 		
 		// calculates minimum of the values
 		for (int i = 0; i < values.length; i++) {
