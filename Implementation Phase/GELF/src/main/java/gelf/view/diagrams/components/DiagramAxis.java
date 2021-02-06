@@ -91,29 +91,6 @@ public abstract class DiagramAxis extends DiagramComponent {
 		
 		return new PositionInFrame(frameXPos, frameYPos);
 	}
-	/*
-	 * Use Fourier formula to calculate:
-	 * 
-	 * 1) (maxValPos - minValPos) * (coordinate)
-	 * 2) coordinate * coordinate // so length * length
-	 * 3) 1) / 2)
-	 */
-	public double coordinateToValue(PositionInFrame coordinate) {
-		double scalarProduct = coordinate.getXPos() *
-				(this.axisLine.getEndInFrame().getXPos() -
-						this.axisLine.getStartInFrame().getXPos());
-		
-		scalarProduct += coordinate.getYPos() * 
-				(this.axisLine.getEndInFrame().getYPos() -
-						this.axisLine.getStartInFrame().getYPos());
-		
-		double hLength = this.axisLine.calculateHorizontalLength();
-		double vLength = this.axisLine.calculateVerticalLength();
-		
-		double denominator = hLength * hLength + vLength * vLength;
-		
-		return (scalarProduct / denominator);
-	}
 
 	public void setLineByPos(float minValXPos, float minValYPos, float maxValXPos, float maxValYPos) {
 		this.axisLine.setStartInFrame(minValXPos, minValYPos);

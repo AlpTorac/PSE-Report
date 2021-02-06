@@ -228,4 +228,5 @@ class DiagramAxisTest implements TestCase {
 		xAxis.setMax(maxVal);
 		xAxis.setSteps(steps);
 	}
+
 }

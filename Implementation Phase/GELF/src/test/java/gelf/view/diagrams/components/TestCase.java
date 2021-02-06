@@ -2,7 +2,7 @@ package gelf.view.diagrams.components;
 
 public interface TestCase {
 	
-	public static final long SHOW_DURATION = 50;
+	public static final long SHOW_DURATION = 0;
 	
 	public static final double TOLERANCE = 1E-5;
 	
@@ -26,6 +26,7 @@ public interface TestCase {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		frame.dispose();
 	}
 	
 	public default boolean compareFloatingPoint(double val1, double val2) {

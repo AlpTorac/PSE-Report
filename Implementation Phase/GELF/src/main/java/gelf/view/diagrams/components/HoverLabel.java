@@ -3,6 +3,8 @@ package gelf.view.diagrams.components;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import javax.swing.BorderFactory;
@@ -37,11 +39,11 @@ public class HoverLabel implements HasAttachablePart {
 	}
 
 	private void setComponentColor() {
-		this.component.setBackground(this.color);
+		this.component.repaint();
 	}
 
 	private void setComponentCaption() {
-		((HoverLabelVisual) this.component).setText(getCaption());
+		this.component.repaint();
 	}
 
 	public String getCaption() {
@@ -109,12 +111,17 @@ public class HoverLabel implements HasAttachablePart {
 	public void attachToContainer(Container container) {
 		this.removeFromContainer();
 		this.containingElement = container;
-		this.containingElement.add(component);
+		this.containingElement.add(this.component);
+		this.containingElement.repaint();
+		this.show();
 	}
 	
 	public void removeFromContainer() {
 		if (this.containingElement != null) {
-			this.containingElement.remove(component);
+			this.containingElement.remove(this.component);
+			this.containingElement.repaint();
+			this.containingElement = null;
+			this.hide();
 			this.setXPos(0);
 			this.setYPos(0);
 		}
@@ -141,7 +148,21 @@ public class HoverLabel implements HasAttachablePart {
 			Border b = BorderFactory.createLineBorder(Color.BLACK, 1);
 			this.setBorder(b);
 			
+			this.setHorizontalAlignment(CENTER);
+			this.setVerticalAlignment(CENTER);
+			this.setText(this.label.getCaption());
+			
 			this.setOpaque(true);
+		}
+		
+		@Override
+		protected void paintComponent(Graphics g) {
+			this.setBackground(this.label.getColor());
+			super.paintComponent(g);
+			Graphics2D graphs = (Graphics2D) g;
+			Border b = BorderFactory.createLineBorder(Color.BLACK, 1);
+			this.setBorder(b);
+			this.setText(this.label.getCaption());
 		}
 	}
 }
