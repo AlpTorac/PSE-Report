@@ -19,8 +19,8 @@ public abstract class OutAttribute extends Attribute {
 	
 	@Override
 	public void calculate() {
-		float min = 0;
-		float max = 0;
+		float min = values[0][0];
+		float max = values[0][0];
 		float sum = 0;
 		float avg = 0;
 		float med = 0;
@@ -70,8 +70,8 @@ public abstract class OutAttribute extends Attribute {
 			med = tempArray[tempArray.length / 2];
 		}
 		else {
-			float medSum = tempArray[tempArray.length / 2] + 
-					tempArray[tempArray.length / 2 + 1];
+			float medSum = tempArray[tempArray.length / 2 - 1] + 
+					tempArray[tempArray.length / 2];
 			med = medSum / (float)2;
 		}
 		

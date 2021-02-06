@@ -38,8 +38,8 @@ public class Leakage extends Attribute {
 	
 	@Override
 	public void calculate() {
-		float min = 0;
-		float max = 0;
+		float min = values[0];
+		float max = values[0];
 		float sum = 0;
 		float avg = 0;
 		float med = 0;
@@ -74,7 +74,7 @@ public class Leakage extends Attribute {
 			med = temp[temp.length / 2];
 		}
 		else {
-			float medSum = temp[temp.length / 2] + temp[temp.length / 2 + 1];
+			float medSum = temp[temp.length / 2 - 1] + temp[temp.length / 2];
 			med = medSum / (float)2;
 		}
 		
