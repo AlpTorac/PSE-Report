@@ -32,7 +32,7 @@ class InputPowerTest {
 		Stat stats = inPow.getStats();
 		float expectedSum = 0.000302f + 0.0003592f + 0.0003661f + 0.0003644f + 
 				  0.000366f + 0.0003663f + 0.0003662f;
-		float expectedAvg = expectedSum / (float) 7;
+		float expectedAvg = expectedSum / 7;
 		Stat expectedStat = new Stat(0.000302f, 0.0003663f, expectedAvg, 0.000366f);
 		Assertions.assertEquals(expectedStat.getMin(), stats.getMin());
 		Assertions.assertEquals(expectedStat.getMax(), stats.getMax());

@@ -57,7 +57,7 @@ public abstract class InAttribute extends Attribute {
 			med = temp[temp.length / 2];
 		}
 		else {
-			float medSum = temp[temp.length / 2] + temp[temp.length / 2 + 1];
+			float medSum = temp[temp.length / 2 - 1] + temp[temp.length / 2];
 			med = medSum / (float)2;
 		}
 		
