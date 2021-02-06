@@ -2,7 +2,7 @@ package gelf.view.diagrams.components;
 
 public interface TestCase {
 	
-	public static final long SHOW_DURATION = 0;
+	public static final long SHOW_DURATION = 1000;
 	
 	public static final double TOLERANCE = 1E-5;
 	
