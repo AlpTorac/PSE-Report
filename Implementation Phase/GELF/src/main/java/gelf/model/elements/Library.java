@@ -285,10 +285,11 @@ public class Library extends HigherElement {
 	}
 	
 	public void saveLibrary() {
-		
+		FileManager.saveFile(super.getName(), fileData, path);
 	}
 	
-	public void saveLibraryAs() throws IOException {
+	public void saveLibraryAs() {
+	    /*
 		 JFileChooser chooser = new JFileChooser(); 
 		 chooser.setCurrentDirectory(new java.io.File("."));
 		 chooser.setDialogTitle("Select a directory to save the library");
@@ -296,10 +297,8 @@ public class Library extends HigherElement {
 		 chooser.setAcceptAllFileFilterUsed(false);
 
 		 if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-			 /* 
 			 System.out.println("getCurrentDirectory(): " + chooser.getCurrentDirectory());
 		     System.out.println("getSelectedFile() : " + chooser.getSelectedFile());
-		     */
 			 String dirName = chooser.getCurrentDirectory().getPath();
 			 File dir = new File (dirName);
 			 // not sure what to do after this
@@ -311,8 +310,8 @@ public class Library extends HigherElement {
 		 else {
 		      System.out.println("No Selection ");
 		 }
-		 
-
+		 */
+		FileManager.saveFile(super.getName(), fileData, path);
 	}
 	
 	
