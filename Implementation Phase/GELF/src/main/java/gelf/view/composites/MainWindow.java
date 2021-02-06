@@ -8,6 +8,8 @@ import javax.swing.*;
 
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * MainWindow
@@ -19,10 +21,10 @@ public class MainWindow extends Window {
     SubWindowArea subWindowArea;
     String version = "0.0.0";
     Color cBackground = new Color(0.1f, 0.1f, 0.1f);
-    Image icon = Toolkit.getDefaultToolkit().getImage("/Images/AppIcon.png"); 
-    
+    Image icon = Toolkit.getDefaultToolkit().getImage("/Images/AppIcon.png");
+
     public MainWindow(String name, int width, int height) {
-        //MainWindow setup
+        // MainWindow setup
         super(name, width, height);
         this.setSize(width, height);
         this.getContentPane().setBackground(cBackground);
@@ -35,24 +37,28 @@ public class MainWindow extends Window {
         // p.setVisible(true);
 
         // this.add(p);
-        // Resizer panelResizer = new Resizer(ResizeMode.ABSOLUTE_BOTTOM_RIGHT, ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_BOTTOM_RIGHT, ResizeMode.ABSOLUTE_BOTTOM_RIGHT);
+        // Resizer panelResizer = new Resizer(ResizeMode.ABSOLUTE_BOTTOM_RIGHT,
+        // ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_BOTTOM_RIGHT,
+        // ResizeMode.ABSOLUTE_BOTTOM_RIGHT);
         // this.setResizer(p, panelResizer);
 
-        //InfoBar setup
+        // InfoBar setup
         infoBar = new InfoBar(width, 30);
         infoBar.setLocation(0, this.getContentPane().getHeight() - infoBar.getHeight());
         infoBar.setVisible(true);
         infoBar.setText(InfoBarID.VERSION, version);
         infoBar.setText(InfoBarID.SELECTED, "none");
         this.add(infoBar);
-        Resizer infoBarResizer = new Resizer(ResizeMode.ABSOLUTE_BOTTOM_RIGHT, ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_BOTTOM_RIGHT, ResizeMode.ABSOLUTE_BOTTOM_RIGHT);
+        Resizer infoBarResizer = new Resizer(ResizeMode.ABSOLUTE_BOTTOM_RIGHT, ResizeMode.ABSOLUTE_TOP_LEFT,
+                ResizeMode.ABSOLUTE_BOTTOM_RIGHT, ResizeMode.ABSOLUTE_BOTTOM_RIGHT);
         this.setResizer(infoBar, infoBarResizer);
 
-        //MainMenu setup
+        // MainMenu setup
         mainMenu = new MenuBar();
-        Resizer mainMenuResizer = new Resizer(ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_BOTTOM_RIGHT);
+        Resizer mainMenuResizer = new Resizer(ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_TOP_LEFT,
+                ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_BOTTOM_RIGHT);
         mainMenu.setBounds(0, 0, width, 30);
-        mainMenu.setBackground(new Color(.3f,.3f,.3f));
+        mainMenu.setBackground(new Color(.3f, .3f, .3f));
         mainMenu.setVisible(true);
 
         MenuItem item1 = new MenuItem("Item 1");
@@ -82,12 +88,27 @@ public class MainWindow extends Window {
 
         this.add(mainMenu);
         this.setResizer(mainMenu, mainMenuResizer);
+
         
         //Outliner setup
         //outliner = new Outliner();
-
+        
         //SubWindowArea setup
-        //subWindowArea = new SubWindowArea();
+        Resizer subWindowAreaResizer = new Resizer(ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_BOTTOM_RIGHT, ResizeMode.ABSOLUTE_BOTTOM_RIGHT);
+        SubWindowArea subWindowArea = new SubWindowArea(this.getContentPane().getWidth()-200, this.getContentPane().getHeight()-mainMenu.getHeight()-infoBar.getHeight());
+        subWindowArea.setLocation(200, mainMenu.getHeight());
+        subWindowArea.setVisible(true);
+        this.add(subWindowArea);
+        this.setResizer(subWindowArea, subWindowAreaResizer);
+
+        //testing adding SubWindows
+        SubWindow sub1 = new SubWindow(100, 100);
+        sub1.setVisible(true);
+        subWindowArea.addSubWindow(sub1);
+        SubWindow sub2 = new SubWindow(100, 100);
+        sub2.setBackground(new Color(.2f, .4f, .2f));
+        sub2.setVisible(true);
+        subWindowArea.addSubWindow(sub2);
 
         this.revalidate();
         this.repaint();
