@@ -1,5 +1,7 @@
 package gelf.view.diagrams.data;
 
-public abstract class DiagramDataFormatter {
+import java.util.Collection;
 
+public abstract class DiagramDataFormatter {
+	public abstract <T extends Collection<?>> Object format(T data);
 }
