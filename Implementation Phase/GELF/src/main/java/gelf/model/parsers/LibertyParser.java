@@ -1,7 +1,9 @@
 package gelf.model.parsers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 import gelf.model.elements.*;
 import gelf.model.elements.attributes.Attribute;
@@ -77,18 +79,24 @@ public class LibertyParser {
 
     public static Cell parseCell(String cellString) throws InvalidFileFormatException {
         String[] pinStrings = cellString.split("(?=(pin\\())");
-        ArrayList<Pin> childPins = new ArrayList<Pin>();
+        ArrayList<InputPin> childInPins = new ArrayList<InputPin>();
+        ArrayList<OutputPin> childOutPins = new ArrayList<OutputPin>();
         for (int i = 1; i < pinStrings.length; i++) {
-            childPins.add(parsePin("pin(" + pinStrings[i]));
+            Pin childPin = parsePin(pinStrings[i], childInPins);
+            if (childPin instanceof InputPin) {
+                childInPins.add((InputPin) childPin);
+            } else {
+                childOutPins.add((OutputPin) childPin);
+            }
         }
-        if (childPins.isEmpty()) {
+        if (childInPins.isEmpty() && childOutPins.isEmpty()) {
             return InvalidFileFormatException;
         }
         String[] pinData = pinStrings[0].split("{");
         String name = pinData[0].substring(5, pinData[0].length() - 1);
-
-
-
+        ArrayList<Pin> childPins = new ArrayList<Pin>();
+        childPins.addAll(childInPins);
+        childPins.addAll(childOutPins);
         for (Pin pin : childPins) {
             pin.setParent(parsedCell);
         }
@@ -187,7 +195,7 @@ public class LibertyParser {
                     }
                 } else {
                     for (int j = 1; j < powerAttributes.length; j++) {
-                        attributes.add(parseInPower(powerAttributes[j], indexes));
+                        attributes.add(parseInPower(powerAttributes[j]));
                     }
                 }
 
@@ -290,5 +298,89 @@ public class LibertyParser {
                 }
             return new InputPin(name, null, powers);
         }
+    }
+
+    private static OutputPower parseOutPower(String content) {
+        PowerGroup powGroup;
+        for (PowerGroup powGroupEnum : PowerGroup.values()) {
+            if (content.startsWith(powGroupEnum.name())) {
+                powGroup = powGroupEnum;
+            }   
+        } 
+        if (powGroup == null) {
+            throw InvalidFileFormatException;
+        }
+        float[][] values = parseDoubleArray(content, "values");
+        float[] index1 = parseArray(content, "index_1");
+        float[] index2 = parseArray(content, "index_2");
+        OutputPower attribute = new OutputPower(powGroup, values);
+        attribute.setIndex1(index1);
+        attribute.setIndex2(index2);
+        return attribute;
+    }
+
+    private static InputPower parseInPower(String content) {
+        PowerGroup powGroup;
+        for (PowerGroup powGroupEnum : PowerGroup.values()) {
+            if (content.startsWith(powGroupEnum.name())) {
+                powGroup = powGroupEnum;
+            }   
+        }
+        if (powGroup == null) {
+            throw InvalidFileFormatException;
+        }
+        float[] values = parseArray(content, "values");
+        float[] index1 = parseArray(content, "index_1");
+        InputPower attribute = new InputPower(powGroup, values);
+        attribute.setIndex1(index1);
+        return attribute;
+    }
+
+    private static Timing parseOutTiming(String content, TimingSense timSense, TimingType timType) {
+        TimingGroup timGroup;
+        for (TimingGroup timingEnum : TimingGroup.values()) {
+            if (content.startsWith(timingEnum.name())) {
+                timGroup = timingEnum;
+            }
+        }
+        if (timGroup == null) {
+            throw InvalidFileFormatException;
+        }
+        float[][] values = parseDoubleArray(content, "values");
+        float[] index1 = parseArray(content, "index_1");
+        float[] index2 = parseArray(content, "index_2");
+        Timing attribute = new Timing(timSense, timType, timGroup, values);
+        attribute.setIndex1(index1);
+        attribute.setIndex2(index2);
+        return attribute;
+    }
+
+    private static float[] parseArray(String content, String arrayName){
+        int firstIndex = content.lastIndexOf(arrayName);
+        int lastIndex = content.indexOf(";", firstIndex);
+        String arrayString = content.substring(firstIndex, lastIndex - 1);
+        return stringToArray(arrayString);
+    }
+
+    private static float[][] parseDoubleArray(String content, String arrayName){
+        int firstIndex = content.lastIndexOf(arrayName);
+        int lastIndex = content.indexOf(";", firstIndex);
+        String arrayStrings = content.substring(firstIndex, lastIndex - 1);
+        String[] separatedArrayStrings = arrayStrings.split("\\");
+        float[][] result = new float[separatedArrayStrings.length][]; 
+        for (int i = 0; i < separatedArrayStrings.length; i++) {
+            result[i] = stringToArray(separatedArrayStrings[i]);
+        }
+        return result;
+    }
+
+    private static float[] stringToArray(String content) {
+        content.replaceAll("(\"|\\)", "");
+        String[] stringArray = content.split(",");
+        float[] floatArray = new float[stringArray.length];
+        for (int i = 0; i < stringArray.length; i++) {
+            floatArray[i] = Float.parseFloat(stringArray[i]);
+        }
+        return floatArray;
     }
 }
