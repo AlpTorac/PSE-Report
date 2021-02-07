@@ -11,6 +11,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import gelf.view.diagrams.TestCase;
+import gelf.view.diagrams.TestFrame;
+
 class DiagramLabelTest implements TestCase{
 
 	private static TestFrame frame = new TestFrame();

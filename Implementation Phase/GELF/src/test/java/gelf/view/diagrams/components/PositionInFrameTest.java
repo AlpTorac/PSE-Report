@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import gelf.view.diagrams.TestCase;
+
 class PositionInFrameTest implements TestCase {
 
 	@Test

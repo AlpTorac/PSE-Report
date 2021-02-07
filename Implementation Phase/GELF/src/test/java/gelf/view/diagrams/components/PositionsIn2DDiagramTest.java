@@ -8,6 +8,9 @@ import java.awt.Container;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import gelf.view.diagrams.TestCase;
+import gelf.view.diagrams.TestFrame;
+
 class PositionsIn2DDiagramTest implements TestCase {
 
 	private TestFrame frame = new TestFrame();

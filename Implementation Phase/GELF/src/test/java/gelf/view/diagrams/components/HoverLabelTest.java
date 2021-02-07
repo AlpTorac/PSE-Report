@@ -8,6 +8,9 @@ import java.awt.Container;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import gelf.view.diagrams.TestCase;
+import gelf.view.diagrams.TestFrame;
+
 class HoverLabelTest implements TestCase {
 	private static HoverLabel label = HoverLabel.getHoverLabel();
 	private static TestFrame frame = new TestFrame();

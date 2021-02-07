@@ -7,6 +7,9 @@ import java.awt.Color;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import gelf.view.diagrams.TestCase;
+import gelf.view.diagrams.TestFrame;
+
 class DiagramPointTest implements TestCase {
 
 	private static TestFrame frame = new TestFrame();
