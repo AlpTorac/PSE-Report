@@ -1,4 +1,6 @@
-package gelf.view.diagrams.components;
+package gelf.view.diagrams;
+
+import gelf.view.diagrams.components.DiagramComponent;
 
 public interface TestCase {
 	

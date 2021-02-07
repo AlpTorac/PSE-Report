@@ -1,4 +1,4 @@
-package gelf.view.diagrams.components;
+package gelf.view.diagrams;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -7,14 +7,14 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 
-class TestFrame extends JFrame {
+public class TestFrame extends JFrame {
 
 	/**
 	 * Generated version serial ID.
 	 */
 	private static final long serialVersionUID = -9194415774691250413L;
 	
-	TestFrame() {
+	public TestFrame() {
 		super();
 		this.setBounds(0, 0, 1000, 1000);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
