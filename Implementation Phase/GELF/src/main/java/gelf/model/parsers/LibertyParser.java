@@ -382,7 +382,7 @@ public class LibertyParser {
         OutputPower attribute = new OutputPower(powGroup, values);
         attribute.setIndex1(index1);
         attribute.setIndex2(index2);
-        if (values.length == 0 | ) {
+        if (values.length == 0) {
             throw new InvalidFileFormatException("Values are empty");
         }
         if (values.length != index1.length && values[0].length != index2.length) {
@@ -405,10 +405,10 @@ public class LibertyParser {
         float[] index1 = parseArray(content, "index_1");
         InputPower attribute = new InputPower(powGroup, values);
         attribute.setIndex1(index1);
-        if (values.length == 0 | ) {
+        if (values.length == 0) {
             throw new InvalidFileFormatException("Values are empty");
         }
-        if (values.length != index1.length && values[0].length != index2.length) {
+        if (values.length != index1.length) {
             throw new InvalidFileFormatException("Values mismatch");
         }
         return attribute;
@@ -431,7 +431,7 @@ public class LibertyParser {
         Timing attribute = new Timing(timSense, timType, timGroup, values);
         attribute.setIndex1(index1);
         attribute.setIndex2(index2);
-        if (values.length == 0 | ) {
+        if (values.length == 0) {
             throw new InvalidFileFormatException("Values are empty");
         }
         if (values.length != index1.length && values[0].length != index2.length) {
