@@ -1,4 +1,4 @@
-package gelf.model;
+package gelf.model.elements.attributes;
 
 
 import org.junit.jupiter.api.Assertions;
