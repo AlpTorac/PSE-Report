@@ -1,27 +1,50 @@
 package gelf.view.composites;
 
-import gelf.view.components.*;
-
 import java.awt.Color;
-
-import javax.swing.*;
-
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import gelf.view.components.Menu;
+import gelf.view.components.MenuBar;
+import gelf.view.components.MenuItem;
+import gelf.view.components.ResizeMode;
+import gelf.view.components.Resizer;
+import gelf.view.components.Window;
+
 /**
  * MainWindow
  */
 public class MainWindow extends Window {
+    // GUI subparts
     MenuBar mainMenu;
+    Menu menuFile;
+    MenuItem itemNew;
+    MenuItem itemOpen;
+    MenuItem itemSave;
+    MenuItem itemSaveAll;
+    MenuItem itemSaveAs;
+    MenuItem itemClose;
+    Menu menuEdit;
+    MenuItem itemUndo;
+    MenuItem itemRedo;
+    MenuItem itemMergeSelected;
+    MenuItem itemMerge;
+    MenuItem itemSettings;
+    Menu menuInfo;
+    MenuItem itemManual;
+    MenuItem itemGithub;
+    MenuItem itemVersion;
+
     InfoBar infoBar;
     Outliner outliner;
     SubWindowArea subWindowArea;
-    String version = "0.0.0";
+    // colors/graphics
     Color cBackground = new Color(0.1f, 0.1f, 0.1f);
     Image icon = Toolkit.getDefaultToolkit().getImage("/Images/AppIcon.png");
+    // other
+    String version = "0.0.0";
 
     public MainWindow(String name, int width, int height) {
         // MainWindow setup
@@ -30,17 +53,6 @@ public class MainWindow extends Window {
         this.getContentPane().setBackground(cBackground);
         this.setIconImage(icon);
         this.setVisible(true);
-
-        // //test panel
-        // Panel p = new Panel(50, 50);
-        // p.setBounds(0, height - 50, width, 50);
-        // p.setVisible(true);
-
-        // this.add(p);
-        // Resizer panelResizer = new Resizer(ResizeMode.ABSOLUTE_BOTTOM_RIGHT,
-        // ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_BOTTOM_RIGHT,
-        // ResizeMode.ABSOLUTE_BOTTOM_RIGHT);
-        // this.setResizer(p, panelResizer);
 
         // InfoBar setup
         infoBar = new InfoBar(width, 30);
@@ -54,54 +66,22 @@ public class MainWindow extends Window {
         this.setResizer(infoBar, infoBarResizer);
 
         // MainMenu setup
-        mainMenu = new MenuBar();
-        Resizer mainMenuResizer = new Resizer(ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_TOP_LEFT,
-                ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_BOTTOM_RIGHT);
-        mainMenu.setBounds(0, 0, width, 30);
-        mainMenu.setBackground(new Color(.3f, .3f, .3f));
-        mainMenu.setVisible(true);
+        setupMainMenu(this.getContentPane().getWidth(), 30);
 
-        MenuItem item1 = new MenuItem("Item 1");
-        item1.setVisible(true);
-        MenuItem item2 = new MenuItem("Item 2");
-        item2.setVisible(true);
-        MenuItem item3 = new MenuItem("Item 3");
-        item3.setVisible(true);
+        // Outliner setup
+        // outliner = new Outliner();
 
-        Menu menu1 = new Menu("Menu 1");
-        menu1.add(item1);
-        menu1.add(item3);
-        menu1.setVisible(true);
-        menu1.revalidate();
-        Menu menu2 = new Menu("Menu 2");
-        menu2.add(item2);
-        menu2.setVisible(true);
-        menu2.revalidate();
-        Menu menu3 = new Menu("Menu 3");
-        menu3.setVisible(true);
-
-        mainMenu.add(menu1);
-        mainMenu.add(menu2);
-        mainMenu.add(menu3);
-        mainMenu.revalidate();
-        mainMenu.repaint();
-
-        this.add(mainMenu);
-        this.setResizer(mainMenu, mainMenuResizer);
-
-        
-        //Outliner setup
-        //outliner = new Outliner();
-        
-        //SubWindowArea setup
-        Resizer subWindowAreaResizer = new Resizer(ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_BOTTOM_RIGHT, ResizeMode.ABSOLUTE_BOTTOM_RIGHT);
-        SubWindowArea subWindowArea = new SubWindowArea(this.getContentPane().getWidth()-200, this.getContentPane().getHeight()-mainMenu.getHeight()-infoBar.getHeight());
+        // SubWindowArea setup
+        Resizer subWindowAreaResizer = new Resizer(ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_TOP_LEFT,
+                ResizeMode.ABSOLUTE_BOTTOM_RIGHT, ResizeMode.ABSOLUTE_BOTTOM_RIGHT);
+        SubWindowArea subWindowArea = new SubWindowArea(this.getContentPane().getWidth() - 200,
+                this.getContentPane().getHeight() - mainMenu.getHeight() - infoBar.getHeight());
         subWindowArea.setLocation(200, mainMenu.getHeight());
         subWindowArea.setVisible(true);
         this.add(subWindowArea);
         this.setResizer(subWindowArea, subWindowAreaResizer);
 
-        //testing adding SubWindows
+        // testing adding SubWindows
         SubWindow sub1 = new SubWindow(100, 100);
         sub1.setVisible(true);
         subWindowArea.addSubWindow(sub1);
@@ -112,6 +92,87 @@ public class MainWindow extends Window {
 
         this.revalidate();
         this.repaint();
+    }
+
+    private void setupMainMenu(int width, int height) {
+        // make menu bar
+        mainMenu = new MenuBar();
+        mainMenu.setBounds(0, 0, width, height);
+        mainMenu.setBackground(new Color(.3f, .3f, .3f));
+        mainMenu.setVisible(true);
+        // set resize bahaviour
+        Resizer mainMenuResizer = new Resizer(ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_TOP_LEFT,
+                ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_BOTTOM_RIGHT);
+        this.setResizer(mainMenu, mainMenuResizer);
+
+        // initialize menu items 
+        //stub for items with no implemented action
+        ActionListener noAction = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//does nothing
+			}
+        };
+
+        //file menu items
+        this.itemNew = initMenuItem("New", noAction);
+        this.itemOpen = initMenuItem("Open", noAction);
+        this.itemSave = initMenuItem("Save", noAction);
+        this.itemSaveAll = initMenuItem("Save All", noAction);
+        this.itemSaveAs = initMenuItem("Save As", noAction);
+        this.itemClose = initMenuItem("Close", noAction);
+        
+        //edit menu items
+        this.itemUndo = initMenuItem("Undo", noAction);
+        this.itemRedo = initMenuItem("Redo", noAction);
+        this.itemMergeSelected = initMenuItem("Merge Selected", noAction);
+        this.itemMerge = initMenuItem("Merge", noAction);
+        this.itemSettings = initMenuItem("Settings", noAction);
+        
+        //info menu items
+        this.itemManual = initMenuItem("Manual", noAction);
+        this.itemGithub = initMenuItem("Github", noAction);
+        this.itemVersion = initMenuItem("Version", noAction);
+
+        //initialize menus
+        //file menu
+        this.menuFile = new Menu("File");
+        this.menuFile.add(this.itemNew);
+        this.menuFile.add(this.itemOpen);
+        this.menuFile.add(this.itemSave);
+        this.menuFile.add(this.itemSaveAll);
+        this.menuFile.add(this.itemSaveAs);
+        this.menuFile.add(this.itemClose);
+        this.menuFile.setVisible(true);
+        this.mainMenu.add(menuFile);
+        //edit menu
+        this.menuEdit = new Menu("Edit");
+        this.menuEdit.add(this.itemUndo);
+        this.menuEdit.add(this.itemRedo);
+        this.menuEdit.add(this.itemMergeSelected);
+        this.menuEdit.add(this.itemMerge);
+        this.menuEdit.add(this.itemSettings);
+        this.menuEdit.setVisible(true);
+        this.mainMenu.add(menuEdit);
+        //info menu
+        this.menuInfo = new Menu("Info");
+        this.menuInfo.add(this.itemManual);
+        this.menuInfo.add(this.itemGithub);
+        this.menuInfo.add(this.itemVersion);
+        this.menuInfo.setVisible(true);
+        this.mainMenu.add(menuInfo);
+        
+        //make swing update and add to window
+        mainMenu.revalidate();
+        mainMenu.repaint();
+        this.add(mainMenu);
+    }
+
+    private MenuItem initMenuItem(String name, ActionListener action) {
+        MenuItem menuItem = new MenuItem(name);
+        menuItem.addActionListener(action);
+        menuItem.setVisible(true);
+        return menuItem;
     }
 
 
