@@ -1,5 +1,6 @@
 package gelf.view.diagrams.builder;
 
+import java.awt.Container;
 import java.util.Collection;
 
 import gelf.view.diagrams.IDiagram;
@@ -10,8 +11,9 @@ import gelf.view.diagrams.data.DiagramData;
 
 public abstract class DiagramBuilder {
 	protected DiagramData data;
+	protected Container container;
 	
-	public DiagramBuilder() {
+	public DiagramBuilder(Container container) {
 
 	}
 	
@@ -19,9 +21,10 @@ public abstract class DiagramBuilder {
 		this.data = data;
 	}
 	
-	protected abstract DiagramAxis buildAxes();
+	protected abstract DiagramAxis[] buildAxes();
 	
-	protected abstract DiagramValueDisplayComponent[] buildValueDisplayComponents();
+	protected abstract DiagramValueDisplayComponent[] buildValueDisplayComponents(DiagramAxis[] axes,
+			DiagramComponent[] diagramSpecificComponent);
 	
 	protected abstract DiagramComponent[] buildDiagramSpecificComponent();
 	

@@ -14,6 +14,15 @@ public class DiagramComponentFactory {
 		return DiagramComponentFactory.instance;
 	}
 	
+	public PositionInFrame makePositionInFrame(double x, double y) {
+		return new PositionInFrame(x, y);
+	}
+	
+	public PositionIn2DDiagram makePositionInDiagram(DiagramAxis xAxis, double xCoordinate,
+			DiagramAxis yAxis, double yCoordinate) {
+		return new PositionIn2DDiagram(xAxis, xCoordinate, yAxis, yCoordinate);
+	}
+	
 	public SolidLine createSolidLine(PositionInFrame start, PositionInFrame end, Color color, int thickness, Container containingElement) {
 		return new SolidLine(start, end, color, thickness, containingElement);
 	}

@@ -4,11 +4,11 @@ public class PositionIn2DDiagram extends PositionInDiagram {
 
 	private static final double[][] TO_2D_MATRIX = { { 1, 0 }, { 0, 1 } };
 
-	public PositionIn2DDiagram(DiagramAxis xAxis, double xCoordinate, DiagramAxis yAxis, double yCoordinate) {
+	protected PositionIn2DDiagram(DiagramAxis xAxis, double xCoordinate, DiagramAxis yAxis, double yCoordinate) {
 		super(new DiagramAxis[] { xAxis, yAxis }, new double[] { xCoordinate, yCoordinate });
 	}
 	
-	public PositionIn2DDiagram(PositionIn2DDiagram referencePoint, double[] vector) {
+	protected PositionIn2DDiagram(PositionIn2DDiagram referencePoint, double[] vector) {
 		super(referencePoint, vector);
 	}
 

@@ -4,12 +4,12 @@ public abstract class PositionInDiagram {
 	private DiagramAxis[] axes;
 	private double[] coordinatesInAxes;
 
-	public PositionInDiagram(DiagramAxis[] axes, double[] coordinatesInAxes) {
+	protected PositionInDiagram(DiagramAxis[] axes, double[] coordinatesInAxes) {
 		this.axes = axes;
 		this.coordinatesInAxes = coordinatesInAxes;
 	}
 	
-	public PositionInDiagram(PositionInDiagram referencePoint, double[] vector) {
+	protected PositionInDiagram(PositionInDiagram referencePoint, double[] vector) {
 		this.axes = referencePoint.axes;
 		this.coordinatesInAxes = new double[referencePoint.coordinatesInAxes.length];
 		

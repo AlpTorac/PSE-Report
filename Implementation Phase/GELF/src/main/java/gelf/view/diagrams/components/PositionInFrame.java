@@ -4,12 +4,12 @@ public class PositionInFrame {
 	private double xPos;
 	private double yPos;
 
-	public PositionInFrame(double xPos, double yPos) {
+	protected PositionInFrame(double xPos, double yPos) {
 		this.xPos = xPos;
 		this.yPos = yPos;
 	}
 	
-	public PositionInFrame(PositionInFrame referencePosition, double xPosDifference, double yPosDifference) {
+	protected PositionInFrame(PositionInFrame referencePosition, double xPosDifference, double yPosDifference) {
 		this.xPos = referencePosition.getXPos() + xPosDifference;
 		this.yPos = referencePosition.getYPos() + yPosDifference;
 	}
