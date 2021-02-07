@@ -1,28 +1,28 @@
 package gelf.view.diagrams.data;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class DiagramData {
 	private Collection<?> data;
-	private DiagramDataFormatter ddf;
+	private DiagramDataExtractionStrategy extractor;
 	
-	public DiagramData(Collection<?> data) {
+	public DiagramData(Collection<?> data, int numberOfIndices) {
 		this.data = data;
+		this.setExtractor(numberOfIndices);
 	}
 	
-	public Collection<?> getData() {
-		return this.data;
+	private void setExtractor(int numberOfIndices) {
+		if (this.data.iterator().next() instanceof float[]) {
+			this.extractor = new ValueIndexExtractor(numberOfIndices);
+		}
 	}
 	
-	public void setData(Collection<?> data) {
-		this.data = data;
+	public ArrayList<float[]> extractValues() {
+		return this.extractor.extractValues(this.data);
 	}
 	
-	public Object getFormattedData() {
-		return ddf.format(data);
-	}
-	
-	public void setFormat(DiagramDataFormatter ddf) {
-		this.ddf = ddf;
+	public ArrayList<float[]> extractIndices() {
+		return this.extractor.extractIndices(this.data);
 	}
 }
