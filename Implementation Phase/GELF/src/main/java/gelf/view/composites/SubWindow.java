@@ -9,5 +9,4 @@ public class SubWindow extends Panel {
     public SubWindow(int width, int height) {
         super(width, height);
     }
-    
 }

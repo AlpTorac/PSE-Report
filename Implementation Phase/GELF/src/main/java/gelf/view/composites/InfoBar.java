@@ -64,9 +64,9 @@ public class InfoBar extends Panel {
         //generate final label text
         String finalText = labelPrefix.get(id) + ": ";
         if(!text.equals("")){
-            finalText += text + "   ";
+            finalText += text;
         } else {
-            finalText += "none  ";
+            finalText += "none";
         }
         //set label text
         labels.get(id).setText(finalText);
