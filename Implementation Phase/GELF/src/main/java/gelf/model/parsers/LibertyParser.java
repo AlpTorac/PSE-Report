@@ -69,7 +69,6 @@ public class LibertyParser {
             if (!currentCell.getIndex1().equals(index1) || !currentCell.getIndex1().equals(index2)) {
                 currentCell.interpolate(index1, index2);
             }
-            
         }
         for (Cell cell : childCells) {
         	cell.setParentLibrary(productLibrary);

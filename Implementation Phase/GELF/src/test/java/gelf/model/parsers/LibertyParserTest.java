@@ -26,7 +26,7 @@ class LibertyParserTest {
 			"                 \"0.0009569, 0.0009777, 0.0009895, 0.0009899\",\\\r\n" + 
 			"                 \"0.0009458, 0.0009591, 0.0009767, 0.0009837\");\r\n" + 
 			"        }".replaceAll("\\s+", "");
-	String inPowerExample = "risepower(pwr_tin_7) { \r\n" + 
+	String inPowerExample = "rise_power(pwr_tin_7) { \r\n" + 
 			"          index_1(\"0.0004, 0.009027, 0.03931\");\r\n" + 
 			"          values(\"-1.642e-05, -4.167e-05, \\\r\n" + 
 			"                  -5.856e-05\");\r\n" + 
@@ -87,7 +87,7 @@ class LibertyParserTest {
 	@Test 
 	void parseInPowerTest() throws InvalidFileFormatException {
 		InputPower inPower = LibertyParser.parseInPower(inPowerExample);
-		assertEquals(inPower.getPowGroup(),PowerGroup.RISEPOWER);
+		assertEquals(inPower.getPowGroup(),PowerGroup.RISE_POWER);
 		assertArrayEquals(inPower.getIndex1(), exampleIndex1);
 		assertArrayEquals(inPower.getValues(), new float[] {-1.642e-05f, -4.167e-05f, -5.856e-05f});
 	}
