@@ -13,6 +13,7 @@ import gelf.model.elements.Pin;
 import gelf.model.elements.attributes.Attribute;
 import gelf.model.elements.attributes.InAttribute;
 import gelf.model.elements.attributes.InputPower;
+import gelf.model.elements.attributes.Leakage;
 import gelf.model.elements.attributes.OutAttribute;
 import gelf.model.elements.attributes.OutputPower;
 import gelf.model.elements.attributes.PowerGroup;
@@ -43,7 +44,7 @@ public class LibertyParser {
     public static Library parseLibrary(String libraryString) throws InvalidFileFormatException {
         libraryString.replaceAll("\\s+", "");
         String noCommentsString = "";
-        String[] commentsSplit = libraryString.split("(/*)|(*/)");
+        String[] commentsSplit = libraryString.split("(\\/\\*)|(\\*\\/)");
         for (int i = 0; i < commentsSplit.length; i += 2) {
             noCommentsString += commentsSplit[i];
         }
@@ -60,19 +61,63 @@ public class LibertyParser {
         }
         float[] index1 = childCells.get(0).getIndex1();
         float[] index2 = childCells.get(0).getIndex2();
+        String[] libData = cellStrings[0].split("\\{");
+        String name = libData[0].substring(7, libData[0].length() - 1);
+        Library productLibrary = new Library(name, index1, index2, null, childCells);
         for (int i = 1; i < childCells.size(); i++) {
             Cell currentCell = childCells.get(i); 
             if (!currentCell.getIndex1().equals(index1) || !currentCell.getIndex1().equals(index2)) {
                 currentCell.interpolate(index1, index2);
             }
+            
         }
-        String[] libData = cellStrings[0].split("{");
-        String name = libData[0].substring(7, libData[0].length() - 1);
-        Library library = new Library(name, index1, index2, null, childCells);
+        for (Cell cell : childCells) {
+        	cell.setParentLibrary(productLibrary);
+        }
+        return productLibrary;
     }
 
     public static Cell parseCell(String cellString) throws InvalidFileFormatException {
         String[] pinStrings = cellString.split("(?=(pin\\())");
+        String[] cellLeakages = pinStrings[0].split("(?=(leakage_power\\())");
+        float[] leakagesValues = new float[cellLeakages.length - 1];
+        for (int i = 1; i < cellLeakages.length; i++) {
+        	String leakageInfo = cellLeakages[i];
+        	int valueIndex = leakageInfo.indexOf("value");
+        	int firstQuotation = leakageInfo.indexOf("\"", valueIndex);
+        	int lastQuotation = leakageInfo.indexOf("\"", firstQuotation + 1);
+        	String leakageString = leakageInfo.substring(firstQuotation + 1, lastQuotation);
+        	leakagesValues[i] = Float.parseFloat(leakageString);
+        }
+        String dataAfterLeakageInfo = cellLeakages[cellLeakages.length - 1].split("\\{", 2)[1];
+        cellLeakages[0] += dataAfterLeakageInfo;
+        String[] cellData = cellLeakages[0].split("\\{");
+        String name = cellData[0].substring(cellData[0].indexOf("(") + 1, cellData[0].indexOf(")"));
+        String[] cellParameters = cellData[1].split(";");
+        float defaultLeakage = 0f;
+        boolean hasDefaultLeakage = false;
+        ArrayList<String> unsupportedData = new ArrayList<String>();
+        for (int i = 0; i < cellParameters.length - 1; i++) {
+        	String[] paramParts = cellParameters[i].split(":");
+        	switch (paramParts[0]) {
+        	case "cell_leakage_power":
+        		hasDefaultLeakage = true;
+        		defaultLeakage = Float.parseFloat(paramParts[0]);
+        		break;
+        	default:
+        		unsupportedData.add(cellParameters[i]);
+        	}
+        }
+        /* Checks if the number of leakage entries is not a power of 2 */
+        if ((leakagesValues.length & (leakagesValues.length - 1)) != 0) {
+        	throw new InvalidFileFormatException("Invalid number of leakage entries "
+        			+ "in cell \"" + name + "\"");
+        }
+        if (!hasDefaultLeakage) {
+        	throw new InvalidFileFormatException("No default leakages specified in cell "
+        			+ "\"" + name + "\"");
+        }
+        Leakage leakages = new Leakage(leakagesValues);
         ArrayList<InputPin> childInPins = new ArrayList<InputPin>();
         ArrayList<OutputPin> childOutPins = new ArrayList<OutputPin>();
         for (int i = 1; i < pinStrings.length; i++) {
@@ -83,37 +128,39 @@ public class LibertyParser {
                 childOutPins.add((OutputPin) childPin);
             }
         }
-        String[] pinData = pinStrings[0].split("{");
-        String name = pinData[0].substring(5, pinData[0].length() - 1);
         ArrayList<Pin> childPins = new ArrayList<Pin>();
         childPins.addAll(childInPins);
         childPins.addAll(childOutPins);
         if (childPins.isEmpty()) {
             throw new InvalidFileFormatException("Cell \"" + name + "\" has no child pins");
         }
-
-
-
-
-        for (Pin pin : childPins) {
-            /** pin.setParent(parsedCell); */
+        float[][] indexes = findCellIndex(childOutPins);
+        if (indexes == null) {
+        	throw new InvalidFileFormatException("Cell \"" + name + "\" has no valid indexes");
         }
-        return null;
+        float[] index1 = indexes[0];
+        float[] index2 = indexes[1];
+        Cell productCell = new Cell(name, index1, index2, null, childInPins, 
+        		childOutPins, leakages, defaultLeakage);
+        for (Pin pin : childPins) {
+            pin.setParent(productCell);
+        }
+        return productCell;
     }
 
     public static Pin parsePin(String pinString,
                          ArrayList<InputPin> relatedPins) throws InvalidFileFormatException {
         if (powerGroupSeparator.equals("")) {
             for (PowerGroup powGroup : PowerGroup.values()) {
-                powerGroupSeparator += "|" + powGroup.name();
+                powerGroupSeparator += "|" + powGroup.name() + "\\(";
             }
-            powerGroupSeparator.substring(1);
+            powerGroupSeparator = powerGroupSeparator.substring(1);
         }
         if (timingGroupSeparator.equals("")) {
             for (TimingGroup timGroup : TimingGroup.values()) {
-                timingGroupSeparator += "|" + timGroup.name();
+                timingGroupSeparator += "|" + timGroup.name() + "\\(";
             }
-
+            powerGroupSeparator = powerGroupSeparator.substring(1);
         }
 		String[] attributeStrings = pinString.split("(?=(timing\\()|internal_power\\()");
         String[] pinData = attributeStrings[0].split("\\{|\\}");
@@ -366,10 +413,10 @@ public class LibertyParser {
         }
     }
 
-    private static OutputPower parseOutPower(String content) throws InvalidFileFormatException {
+    public static OutputPower parseOutPower(String content) throws InvalidFileFormatException {
         PowerGroup powGroup = null;
         for (PowerGroup powGroupEnum : PowerGroup.values()) {
-            if (content.startsWith(powGroupEnum.name())) {
+            if (content.startsWith(powGroupEnum.name().toLowerCase())) {
                 powGroup = powGroupEnum;
             }   
         }
@@ -391,10 +438,10 @@ public class LibertyParser {
         return attribute;
     }
 
-    private static InputPower parseInPower(String content) throws InvalidFileFormatException {
+    public static InputPower parseInPower(String content) throws InvalidFileFormatException {
         PowerGroup powGroup = null;
         for (PowerGroup powGroupEnum : PowerGroup.values()) {
-            if (content.startsWith(powGroupEnum.name())) {
+            if (content.startsWith(powGroupEnum.name().toLowerCase())) {
                 powGroup = powGroupEnum;
             }   
         }
@@ -414,11 +461,11 @@ public class LibertyParser {
         return attribute;
     }
 
-    private static Timing parseOutTiming(String content, TimingSense timSense, TimingType timType)
+    public static Timing parseOutTiming(String content, TimingSense timSense, TimingType timType)
             throws InvalidFileFormatException {
         TimingGroup timGroup = null;
         for (TimingGroup timingEnum : TimingGroup.values()) {
-            if (content.startsWith(timingEnum.name())) {
+            if (content.startsWith(timingEnum.name().toLowerCase())) {
                 timGroup = timingEnum;
             }
         }
@@ -440,32 +487,49 @@ public class LibertyParser {
         return attribute;
     }
 
-    private static float[] parseArray(String content, String arrayName){
-        int firstIndex = content.lastIndexOf(arrayName);
+    public static float[] parseArray(String content, String arrayName){
+        int firstIndex = content.indexOf(arrayName) + arrayName.length();
         int lastIndex = content.indexOf(";", firstIndex);
-        String arrayString = content.substring(firstIndex, lastIndex - 1);
+        String arrayString = content.substring(firstIndex + 1, lastIndex - 1);
         return stringToArray(arrayString);
     }
 
-    private static float[][] parseDoubleArray(String content, String arrayName){
-        int firstIndex = content.lastIndexOf(arrayName);
+    public static float[][] parseDoubleArray(String content, String arrayName){
+        int firstIndex = content.indexOf(arrayName) + arrayName.length();
         int lastIndex = content.indexOf(";", firstIndex);
-        String arrayStrings = content.substring(firstIndex, lastIndex - 1);
-        String[] separatedArrayStrings = arrayStrings.split("\\");
+        String arrayStrings = content.substring(firstIndex + 1, lastIndex - 1);
+        String[] separatedArrayStrings = arrayStrings.split("(\",\\\\|\",)");
         float[][] result = new float[separatedArrayStrings.length][]; 
         for (int i = 0; i < separatedArrayStrings.length; i++) {
-            result[i] = stringToArray(separatedArrayStrings[i]);
+            result[i] = stringToArray(separatedArrayStrings[i] + "\"");
         }
         return result;
     }
 
-    private static float[] stringToArray(String content) {
-        content.replaceAll("(\"|\\)", "");
+    public static float[] stringToArray(String content) {
+        content = content.replaceAll("(\"|\\\\)", "");
         String[] stringArray = content.split(",");
         float[] floatArray = new float[stringArray.length];
         for (int i = 0; i < stringArray.length; i++) {
             floatArray[i] = Float.parseFloat(stringArray[i]);
         }
         return floatArray;
+    }
+    
+    private static float[][] findCellIndex(ArrayList<OutputPin> outPins) {
+    	float[][] indexes = null;
+        for (OutputPin outPin : outPins) {
+        	ArrayList<OutAttribute> attributes = new ArrayList<OutAttribute>();
+        	attributes.addAll(outPin.getOutputPowers());
+        	attributes.addAll(outPin.getTimings());
+        	for (OutAttribute attribute : attributes) {
+        		float[] index1 = attribute.getIndex1();
+        		float[] index2 = attribute.getIndex2();
+        		indexes = new float[2][];
+        		indexes[0] = index1;
+        		indexes[1] = index2;
+        	}
+        }
+        return indexes;
     }
 }
