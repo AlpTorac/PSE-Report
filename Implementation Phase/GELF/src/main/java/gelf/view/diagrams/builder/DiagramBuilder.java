@@ -4,12 +4,17 @@ import java.awt.Container;
 import java.util.Collection;
 
 import gelf.view.diagrams.IDiagram;
+import gelf.view.diagrams.SettingsProvider;
 import gelf.view.diagrams.components.DiagramAxis;
 import gelf.view.diagrams.components.DiagramComponent;
+import gelf.view.diagrams.components.DiagramComponentFactory;
 import gelf.view.diagrams.components.DiagramValueDisplayComponent;
 import gelf.view.diagrams.data.DiagramData;
 
 public abstract class DiagramBuilder {
+	public static final SettingsProvider settingsProvider = SettingsProvider.getInstance();
+	public static final DiagramComponentFactory factory = DiagramComponentFactory.getDiagramComponentFactory();
+	
 	protected DiagramData data;
 	protected Container container;
 	

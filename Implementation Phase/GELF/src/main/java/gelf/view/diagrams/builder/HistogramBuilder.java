@@ -25,10 +25,11 @@ public class HistogramBuilder extends DiagramBuilder {
 		int containerWidth = this.container.getWidth();
 		int containerHeight = this.container.getHeight();
 		
-		int spaceForAxisValues = 10;
+		int xSpaceForAxisValues = settingsProvider.getxSpaceForAxisValues();
+		int ySpaceForAxisValues = settingsProvider.getySpaceForAxisValues();
 		
-		int xAxisYpos = containerHeight - spaceForAxisValues;
-		int yAxisXpos = spaceForAxisValues;
+		int xAxisYpos = containerHeight - ySpaceForAxisValues;
+		int yAxisXpos = xSpaceForAxisValues;
 		
 		PositionInFrame axisOrigin = factory.makePositionInFrame(yAxisXpos, xAxisYpos);
 		PositionInFrame endX = factory.makePositionInFrame(containerWidth, xAxisYpos);
@@ -44,14 +45,15 @@ public class HistogramBuilder extends DiagramBuilder {
 		float minIndex = indices[0];
 		float maxIndex = indices[numberOfBars - 1];
 		
-		int stepsInXAxis = 10;
-		int stepsInYAxis = 10;
+		int stepsInXAxis = settingsProvider.getStepsInXAxis();
+		int stepsInYAxis = settingsProvider.getStepsInYAxis();
 		
-		Color axisLine = Color.BLACK;
-		int thickness = 1;
+		Color axisLine = settingsProvider.getAxisColor();
+		int thickness = settingsProvider.getAxisThickness();
+		float additionalMaxIndex = maxIndex + settingsProvider.getHistogramIndexEndIndexSpace();
 		
 		DiagramAxis xAxis = DiagramComponentFactory.getDiagramComponentFactory()
-				.createSolidAxis(axisOrigin, endX, minIndex, maxIndex + 10, stepsInXAxis, axisLine, thickness, this.container);
+				.createSolidAxis(axisOrigin, endX, minIndex, additionalMaxIndex, stepsInXAxis, axisLine, thickness, this.container);
 		
 		DiagramAxis yAxis = DiagramComponentFactory.getDiagramComponentFactory()
 				.createSolidAxis(axisOrigin, endY, minVal, maxVal, stepsInYAxis, axisLine, thickness, this.container);
@@ -70,8 +72,8 @@ public class HistogramBuilder extends DiagramBuilder {
 		
 		DiagramValueDisplayComponent[] dvdc = new DiagramValueDisplayComponent[dvdcCount];
 		
-		Color barColor = Color.RED;
-		int thickness = 1;
+		Color barColor = settingsProvider.getBarColor();
+		int thickness = settingsProvider.getBarBorderThickness();
 		
 		for (int i = 0; i < indices.length - 1; i++) {
 			PositionIn2DDiagram topLeft = factory.makePositionInDiagram(axes[0], indices[i], axes[1], values[i]);
@@ -80,8 +82,10 @@ public class HistogramBuilder extends DiagramBuilder {
 			dvdc[i] = factory.createHistogramBar(barColor, values[i], topLeft, bottomRight, thickness, this.container);
 		}
 		
+		float additionalMaxIndex = indices[indices.length - 1] + settingsProvider.getHistogramIndexEndIndexSpace();
+		
 		PositionIn2DDiagram topLeft = factory.makePositionInDiagram(axes[0], indices[indices.length - 1], axes[1], values[indices.length - 1]);
-		PositionIn2DDiagram bottomRight = factory.makePositionInDiagram(axes[0], indices[indices.length - 1] + 10, axes[1], 0);
+		PositionIn2DDiagram bottomRight = factory.makePositionInDiagram(axes[0], additionalMaxIndex, axes[1], 0);
 		
 		dvdc[indices.length - 1] = factory.createHistogramBar(barColor, values[indices.length - 1], topLeft, bottomRight, thickness, this.container);
 		

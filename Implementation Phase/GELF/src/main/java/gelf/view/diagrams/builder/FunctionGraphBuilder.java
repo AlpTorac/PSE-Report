@@ -20,15 +20,14 @@ public class FunctionGraphBuilder extends DiagramBuilder {
 
 	@Override
 	protected DiagramAxis[] buildAxes() {
-		DiagramComponentFactory factory = DiagramComponentFactory.getDiagramComponentFactory();
-		
 		int containerWidth = this.container.getWidth();
 		int containerHeight = this.container.getHeight();
 		
-		int spaceForAxisValues = 10;
+		int xSpaceForAxisValues = settingsProvider.getxSpaceForAxisValues();
+		int ySpaceForAxisValues = settingsProvider.getySpaceForAxisValues();
 		
-		int xAxisYpos = containerHeight - spaceForAxisValues;
-		int yAxisXpos = spaceForAxisValues;
+		int xAxisYpos = containerHeight - ySpaceForAxisValues;
+		int yAxisXpos = xSpaceForAxisValues;
 		
 		PositionInFrame axisOrigin = factory.makePositionInFrame(yAxisXpos, xAxisYpos);
 		PositionInFrame endX = factory.makePositionInFrame(containerWidth, xAxisYpos);
@@ -44,16 +43,16 @@ public class FunctionGraphBuilder extends DiagramBuilder {
 		float minIndex = indices[0];
 		float maxIndex = indices[sizeOfIndices - 1];
 		
-		int stepsInXAxis = 10;
-		int stepsInYAxis = 10;
+		int stepsInXAxis = settingsProvider.getStepsInXAxis();
+		int stepsInYAxis = settingsProvider.getStepsInYAxis();
 		
-		Color axisLine = Color.BLACK;
-		int thickness = 1;
+		Color axisLine = settingsProvider.getAxisColor();
+		int thickness = settingsProvider.getAxisThickness();
 		
-		DiagramAxis xAxis = DiagramComponentFactory.getDiagramComponentFactory()
+		DiagramAxis xAxis = factory
 				.createSolidAxis(axisOrigin, endX, minIndex, maxIndex, stepsInXAxis, axisLine, thickness, this.container);
 		
-		DiagramAxis yAxis = DiagramComponentFactory.getDiagramComponentFactory()
+		DiagramAxis yAxis = factory
 				.createSolidAxis(axisOrigin, endY, minVal, maxVal, stepsInYAxis, axisLine, thickness, this.container);
 		
 		return new DiagramAxis[] {xAxis, yAxis};
@@ -62,21 +61,19 @@ public class FunctionGraphBuilder extends DiagramBuilder {
 	@Override
 	protected DiagramValueDisplayComponent[] buildValueDisplayComponents(DiagramAxis[] axes,
 			DiagramComponent[] diagramSpecificComponent) {
-		DiagramComponentFactory factory = DiagramComponentFactory.getDiagramComponentFactory();
-		
 		float[] indices = this.data.extractIndices().get(0);
 		float[] values = this.data.extractValues().get(0);
 		int dvdcCount = values.length;
 		
 		DiagramValueDisplayComponent[] dvdc = new DiagramValueDisplayComponent[dvdcCount];
 		
-		Color barColor = Color.RED;
-		float size = 5;
+		Color pointColor = settingsProvider.getFunctionGraphPointColor();
+		float size = settingsProvider.getFunctionGraphPointSize();
 		
 		for (int i = 0; i < dvdc.length; i++) {
 			PositionIn2DDiagram position = factory.makePositionInDiagram(axes[0], indices[i], axes[1], values[i]);
 			
-			dvdc[i] = factory.createValueDisplayPoint(barColor, values[i], size, position, this.container);
+			dvdc[i] = factory.createValueDisplayPoint(pointColor, values[i], size, position, this.container);
 		}
 		
 		return dvdc;
@@ -84,7 +81,6 @@ public class FunctionGraphBuilder extends DiagramBuilder {
 
 	@Override
 	protected DiagramComponent[] buildDiagramSpecificComponent() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

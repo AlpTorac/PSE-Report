@@ -26,10 +26,11 @@ public class HeatMapBuilder extends DiagramBuilder {
 		int containerWidth = this.container.getWidth();
 		int containerHeight = this.container.getHeight();
 		
-		int spaceForAxisValues = 10;
+		int xSpaceForAxisValues = settingsProvider.getxSpaceForAxisValues();
+		int ySpaceForAxisValues = settingsProvider.getySpaceForAxisValues() + settingsProvider.getHeatMapColorScaleVerticalSpace();
 		
-		int xAxisYpos = containerHeight - spaceForAxisValues;
-		int yAxisXpos = spaceForAxisValues;
+		int xAxisYpos = containerHeight - ySpaceForAxisValues;
+		int yAxisXpos = xSpaceForAxisValues;
 		
 		PositionInFrame axisOrigin = factory.makePositionInFrame(yAxisXpos, xAxisYpos);
 		PositionInFrame endX = factory.makePositionInFrame(containerWidth, xAxisYpos);
@@ -46,16 +47,16 @@ public class HeatMapBuilder extends DiagramBuilder {
 		float minIndex2 = indices[1][0];
 		float maxIndex2 = indices[1][sizeOfIndices];
 		
-		int stepsInXAxis = 10;
-		int stepsInYAxis = 10;
+		int stepsInXAxis = settingsProvider.getStepsInXAxis();
+		int stepsInYAxis = settingsProvider.getStepsInYAxis();
 		
-		Color axisLine = Color.BLACK;
-		int thickness = 1;
+		Color axisLine = settingsProvider.getAxisColor();
+		int thickness = settingsProvider.getAxisThickness();
 		
-		DiagramAxis xAxis = DiagramComponentFactory.getDiagramComponentFactory()
+		DiagramAxis xAxis = factory
 				.createSolidAxis(axisOrigin, endX, minIndex1, maxIndex1, stepsInXAxis, axisLine, thickness, this.container);
 		
-		DiagramAxis yAxis = DiagramComponentFactory.getDiagramComponentFactory()
+		DiagramAxis yAxis = factory
 				.createSolidAxis(axisOrigin, endY, minIndex2, maxIndex2, stepsInYAxis, axisLine, thickness, this.container);
 		
 		return new DiagramAxis[] {xAxis, yAxis};
@@ -64,11 +65,8 @@ public class HeatMapBuilder extends DiagramBuilder {
 	@Override
 	protected DiagramValueDisplayComponent[] buildValueDisplayComponents(DiagramAxis[] axes,
 			DiagramComponent[] diagramSpecificComponent) {
-		DiagramComponentFactory factory = DiagramComponentFactory.getDiagramComponentFactory();
-		
 		float[][] indices = null;
 		this.data.extractIndices().toArray(indices);
-		
 		
 		float[][] values = null;
 		this.data.extractValues().toArray(values);
@@ -93,7 +91,7 @@ public class HeatMapBuilder extends DiagramBuilder {
 		
 		DiagramValueDisplayComponent[] dvdc = new DiagramValueDisplayComponent[dvdcCount];
 		
-		int thickness = 1;
+		int thickness = settingsProvider.getHeatMapLabelBorderThickness();
 		
 		for (int i = 0; i < indexCount; i++) {
 			for (int j = 0; j < indexCount; j++) {
@@ -112,13 +110,36 @@ public class HeatMapBuilder extends DiagramBuilder {
 
 	@Override
 	protected DiagramComponent[] buildDiagramSpecificComponent() {
-		// TODO Auto-generated method stub
-		return null;
+		PositionInFrame topLeft = factory.makePositionInFrame(0, this.container.getHeight() - settingsProvider.getHeatMapColorScaleVerticalSpace());
+		PositionInFrame bottomRight = factory.makePositionInFrame(this.container.getWidth(), this.container.getHeight());
+		Color borderColor = settingsProvider.getHeatMapColorScaleBorderColor();
+		int borderThickness = settingsProvider.getHeatMapColorScaleBorderThickness();
+		Color[] colors = settingsProvider.getHeatMapColorScaleColors();
+		
+		float[][] values = null;
+		this.data.extractValues().toArray(values);
+		
+		float minVal = Float.MAX_VALUE;
+		float maxVal = Float.MIN_VALUE;
+		
+		for (int i = 0; i < values.length; i++) {
+			float currentMinCandidate = values[i][0];
+			if (minVal > currentMinCandidate) {
+				minVal = currentMinCandidate;
+			}
+			float currentMaxCandidate = values[i][values[0].length - 1];
+			if (maxVal < currentMaxCandidate) {
+				maxVal = currentMaxCandidate;
+			}
+		}
+		
+		DiagramColorScale colorScale = factory.createBiColorScale(topLeft, bottomRight, borderColor, minVal, maxVal, colors[0], colors[1], borderThickness, this.container);
+		return new DiagramColorScale[] {colorScale};
 	}
 
 	@Override
 	public IDiagram buildDiagram() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 

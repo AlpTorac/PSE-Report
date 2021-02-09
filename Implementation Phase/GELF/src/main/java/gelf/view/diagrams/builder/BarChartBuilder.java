@@ -21,15 +21,14 @@ public class BarChartBuilder extends DiagramBuilder {
 	
 	@Override
 	protected DiagramAxis[] buildAxes() {
-		DiagramComponentFactory factory = DiagramComponentFactory.getDiagramComponentFactory();
-		
 		int containerWidth = this.container.getWidth();
 		int containerHeight = this.container.getHeight();
 		
-		int spaceForAxisValues = 10;
+		int xSpaceForAxisValues = settingsProvider.getxSpaceForAxisValues();
+		int ySpaceForAxisValues = settingsProvider.getySpaceForAxisValues();
 		
-		int xAxisYpos = containerHeight - spaceForAxisValues;
-		int yAxisXpos = spaceForAxisValues;
+		int xAxisYpos = containerHeight - ySpaceForAxisValues;
+		int yAxisXpos = xSpaceForAxisValues;
 		
 		PositionInFrame axisOrigin = factory.makePositionInFrame(yAxisXpos, xAxisYpos);
 		PositionInFrame endX = factory.makePositionInFrame(containerWidth, xAxisYpos);
@@ -42,13 +41,13 @@ public class BarChartBuilder extends DiagramBuilder {
 		
 		float maxVal = values[stepsInYAxis - 1];
 		
-		Color axisLine = Color.BLACK;
-		int thickness = 1;
+		Color axisLine = settingsProvider.getAxisColor();
+		int thickness = settingsProvider.getAxisThickness();
 		
-		DiagramAxis xAxis = DiagramComponentFactory.getDiagramComponentFactory()
+		DiagramAxis xAxis = factory
 				.createSolidAxis(axisOrigin, endX, 0, numberOfBars, numberOfBars + 1, axisLine, thickness, this.container);
 		
-		DiagramAxis yAxis = DiagramComponentFactory.getDiagramComponentFactory()
+		DiagramAxis yAxis = factory
 				.createSolidAxis(axisOrigin, endY, 0, maxVal, stepsInYAxis, axisLine, thickness, this.container);
 		
 		return new DiagramAxis[] {xAxis, yAxis};
@@ -57,15 +56,13 @@ public class BarChartBuilder extends DiagramBuilder {
 	@Override
 	protected DiagramValueDisplayComponent[] buildValueDisplayComponents(DiagramAxis[] axes,
 			DiagramComponent[] diagramSpecificComponent) {
-		DiagramComponentFactory factory = DiagramComponentFactory.getDiagramComponentFactory();
-		
 		float[] values = this.data.extractValues().get(0);
 		int dvdcCount = values.length;
 		
 		DiagramValueDisplayComponent[] dvdc = new DiagramValueDisplayComponent[dvdcCount];
 		
-		Color barColor = Color.RED;
-		int thickness = 1;
+		Color barColor = settingsProvider.getBarColor();
+		int thickness = settingsProvider.getBarBorderThickness();
 		
 		for (int i = 0; i < dvdc.length; i++) {
 			PositionIn2DDiagram topLeft = factory.makePositionInDiagram(axes[0], i, axes[1], values[i]);
