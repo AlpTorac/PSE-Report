@@ -1,13 +1,13 @@
-package main.java.gelf.model.elements.attributes;
+package gelf.model.elements.attributes;
 
 public enum TimingType {
 	COMBINATIONAL,
-    COMBRISE,
-    COMBFALL,
-    TSDISABLE,
-    TSENABLE,
-    TSDISABLERISE,
-    TSDISABLEFALL,
-    TSENABLERISE,
-    TSENABLEFALL;
+    COMBINATIONAL_RISE,
+    COMBINATIONAL_FALL,
+    THREE_STATE_DISABLE,
+    THREE_STATE_ENABLE,
+    THREE_STATE_DISABLE_RISE,
+    THREE_STATE_DISABLE_FALL,
+    THREE_STATE_ENABLE_RISE,
+    THREE_STATE_ENABLE_FALL;
 }

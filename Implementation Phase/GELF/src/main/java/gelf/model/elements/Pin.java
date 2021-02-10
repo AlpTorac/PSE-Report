@@ -1,5 +1,60 @@
-package main.java.gelf.model.elements;
+package gelf.model.elements;
 
-public abstract class Pin {
+import java.util.ArrayList;
 
+import gelf.model.elements.attributes.PowerGroup;
+
+public abstract class Pin extends Element {
+	 protected Cell parentCell;
+     protected ArrayList<PowerGroup> availablePower;
+     
+     public Pin() {	 
+     }
+     public Cell getParent() {
+    	 return parentCell;
+     }
+     
+     public void setParent(Cell parentCell) {
+    	 this.parentCell = parentCell;
+     }
+     
+     public ArrayList<PowerGroup> getAvailablePower() {
+    	 return availablePower;
+     }
+     
+     public void setAvailablePower(ArrayList<PowerGroup> availablePower) {
+    	 this.availablePower = availablePower;
+     }
+     
+     @Override
+ 	public String getName() {
+ 		return super.getName();
+ 	}
+ 	
+ 	@Override
+ 	public void setName(String name) {
+ 		super.setName(name);
+ 	}
+ 	
+ 	@Override
+ 	public boolean getFiltered() {
+ 		return super.getFiltered();
+ 	}
+ 	
+ 	@Override
+ 	public void setFiltered(boolean filtered) {
+ 		super.setFiltered(filtered);
+ 	}
+ 	
+ 	@Override
+ 	public boolean getSearched() {
+ 		return super.getSearched();
+ 	}
+ 	
+ 	@Override
+ 	public void setSearched(boolean searched) {
+ 		super.setSearched(searched);
+ 	}
+     
 }
+

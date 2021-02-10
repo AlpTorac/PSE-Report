@@ -1,7 +1,7 @@
-package main.java.gelf.model.elements.attributes;
+package gelf.model.elements.attributes;
 
 public enum PowerGroup {
-	RISEPOWER, 
-	FALLPOWER, 
+	RISE_POWER, 
+	FALL_POWER, 
 	POWER;
 }

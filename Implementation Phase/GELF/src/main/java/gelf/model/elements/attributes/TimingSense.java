@@ -1,7 +1,7 @@
-package main.java.gelf.model.elements.attributes;
+package gelf.model.elements.attributes;
 
 public enum TimingSense {
-	POSITIVE,
-    NEGATIVE,
-    NON;
+	POSITIVE_UNATE,
+    NEGATIVE_UNATE,
+    NON_UNATE;
 }
