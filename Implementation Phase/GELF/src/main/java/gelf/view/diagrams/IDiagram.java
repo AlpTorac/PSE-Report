@@ -11,9 +11,7 @@ public interface IDiagram {
 	public Collection<?> cloneData();
 	
 	public void refresh();
-	
-	public void update(Collection<?> data);
-	
+		
 	public boolean addDiagramViewHelper(DiagramViewHelper dvh);
 	
 	public boolean removeDiagramViewHelper(IndicatorIdentifier id);

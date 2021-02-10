@@ -29,4 +29,7 @@ public abstract class DiagramValueDisplayComponent extends DiagramComponent impl
 	}
 
 	protected abstract void refreshValueRelevantAttributes();
+	
+	@Override
+	public abstract DiagramValueDisplayComponent clone();
 }

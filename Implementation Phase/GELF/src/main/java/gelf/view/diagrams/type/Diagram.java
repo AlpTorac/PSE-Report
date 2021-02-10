@@ -1,7 +1,7 @@
 package gelf.view.diagrams.type;
 
 import java.awt.Container;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.EnumMap;
 
 import gelf.view.diagrams.IDiagram;
@@ -25,18 +25,55 @@ public abstract class Diagram implements IDiagram {
 			DiagramValueDisplayComponent[] valueDisplayComponents,
 			DiagramComponent[] nonValueDisplayComponents,
 			Container containingElement) {
+		this.data = data;
+		this.axes = axes;
+		this.valueDisplayComponents = valueDisplayComponents;
+		this.nonValueDisplayComponents = nonValueDisplayComponents;
+		this.containingElement = containingElement;
 	}
 	
-	public Collection<?> cloneData() {
-		return null;
+	public ArrayList<float[]> cloneData() {
+		ArrayList<float[]> dataClone = new ArrayList<float[]>();
+		
+		ArrayList<float[]> indices = this.data.extractIndices();
+		ArrayList<float[]> values = this.data.extractValues();
+		
+		for (float[] indexArr : indices) {
+			dataClone.add(indexArr);
+		}
+		for (float[] valueArr : values) {
+			dataClone.add(valueArr);
+		}
+		
+		return dataClone;
+	}
+	
+	private void refreshAxes() {
+		for (DiagramAxis axis : this.axes) {
+			axis.hide();
+			axis.show();
+			axis.showValues();
+		}
+	}
+	
+	private void refreshValueDisplayComponents() {
+		for (DiagramValueDisplayComponent dvdc : this.valueDisplayComponents) {
+			dvdc.hide();
+			dvdc.show();
+		}
+	}
+	
+	private void refreshNonValueDisplayComponents() {
+		for (DiagramComponent dc : this.nonValueDisplayComponents) {
+			dc.hide();
+			dc.show();
+		}
 	}
 	
 	public void refresh() {
-		
-	}
-	
-	public void update(Collection<?> data) {
-		
+		this.refreshAxes();
+		this.refreshValueDisplayComponents();
+		this.refreshNonValueDisplayComponents();
 	}
 	
 	public boolean addDiagramViewHelper(DiagramViewHelper dvh) {
@@ -56,10 +93,34 @@ public abstract class Diagram implements IDiagram {
 	}
 	
 	public DiagramComponent[] getNonValueDisplayDiagramComponentPrototype() {
-		return null;
+		if (this.nonValueDisplayComponents == null) {
+			return null;
+		}
+		
+		int length = this.nonValueDisplayComponents.length;
+		
+		DiagramComponent[] clones = new DiagramComponent[length];
+		
+		for (int i = 0; i < length; i++) {
+			clones[i] = this.nonValueDisplayComponents[i].clone();
+		}
+		
+		return clones;
 	}
 	
 	public DiagramValueDisplayComponent[] getDiagramValueDisplayComponentPrototypes() {
-		return null;
+		if (this.valueDisplayComponents == null) {
+			return null;
+		}
+		
+		int length = this.valueDisplayComponents.length;
+		
+		DiagramValueDisplayComponent[] clones = new DiagramValueDisplayComponent[length];
+		
+		for (int i = 0; i < length; i++) {
+			clones[i] = this.valueDisplayComponents[i].clone();
+		}
+		
+		return clones;
 	}
 }

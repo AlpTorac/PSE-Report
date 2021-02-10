@@ -19,7 +19,7 @@ public abstract class DiagramBuilder {
 	protected Container container;
 	
 	public DiagramBuilder(Container container) {
-
+		this.container = container;
 	}
 	
 	private void setDiagramData(DiagramData data) {
