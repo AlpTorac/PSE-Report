@@ -3,7 +3,6 @@ package gelf.view.diagrams.components;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import javax.swing.BorderFactory;
@@ -11,8 +10,11 @@ import javax.swing.JLabel;
 import javax.swing.border.Border;
 
 public abstract class DiagramBar extends DiagramValueDisplayComponent {
+	private static final Color DEFAULT_BORDER_COLOR = Color.BLACK;
+	
 	private PositionIn2DDiagram topLeft;
 	private PositionIn2DDiagram bottomRight;
+	private Color borderColor = DEFAULT_BORDER_COLOR;
 	private int borderThickness;
 
 	protected DiagramBar(Color color, float value, PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight,
@@ -96,7 +98,7 @@ public abstract class DiagramBar extends DiagramValueDisplayComponent {
 		this.borderThickness = borderThickness;
 		this.visualElement.repaint();
 	}
-	
+
 	protected class Bar extends JLabel {
 		
 		/**
@@ -109,7 +111,7 @@ public abstract class DiagramBar extends DiagramValueDisplayComponent {
 			this.bar = bar;
 			
 			this.setBounds(this.bar.getFrameBounds());
-			Border border = BorderFactory.createLineBorder(Color.BLACK, this.bar.borderThickness);
+			Border border = BorderFactory.createLineBorder(borderColor, this.bar.borderThickness);
 			
 			this.setBorder(border);
 			
@@ -121,7 +123,7 @@ public abstract class DiagramBar extends DiagramValueDisplayComponent {
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			this.setBounds(this.bar.getFrameBounds());
-			Border border = BorderFactory.createLineBorder(Color.BLACK, this.bar.borderThickness);
+			Border border = BorderFactory.createLineBorder(borderColor, this.bar.borderThickness);
 			
 			this.setBorder(border);
 			

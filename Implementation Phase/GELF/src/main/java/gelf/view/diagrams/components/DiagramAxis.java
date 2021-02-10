@@ -15,12 +15,17 @@ import javax.swing.JLabel;
 import javax.swing.border.Border;
 
 public abstract class DiagramAxis extends DiagramComponent {
-	private int fontSize = 10;
+	private static final int DEFAULT_FONT_SIZE = 10;
+	private static final String DEFAULT_FONT_TYPE = "TimesRoman";
+	private static final int DEFAULT_FONT_STYLE = Font.PLAIN;
+	private static final boolean DEFAULT_SHOW_VALUES_UNDER_AXIS = true;
+	
+	private int fontSize = DEFAULT_FONT_SIZE;
 	private float min;
 	private float max;
 	private int steps;
 	private boolean showValues;
-	private boolean showValuesUnderAxis = true;
+	private boolean showValuesUnderAxis = DEFAULT_SHOW_VALUES_UNDER_AXIS;
 	protected DiagramLine axisLine;
 
 	protected DiagramAxis(DiagramLine axisLine, float min, float max, int steps, Container containingElement) {
@@ -55,6 +60,15 @@ public abstract class DiagramAxis extends DiagramComponent {
 
 	public void setSteps(int steps) {
 		this.steps = steps;
+	}
+	
+	public int getFontSize() {
+		return this.fontSize;
+	}
+
+	public void setFontSize(int fontSize) {
+		this.fontSize = fontSize;
+		this.visualElement.repaint();
 	}
 
 	public void showValues() {
@@ -197,7 +211,7 @@ public abstract class DiagramAxis extends DiagramComponent {
 			
 			graphs.setColor(this.axis.getColor());
 			graphs.setStroke(new BasicStroke(this.axis.getLineThickness()));
-			graphs.setFont(new Font("TimesRoman", Font.PLAIN, fontSize));
+			graphs.setFont(new Font(DiagramAxis.DEFAULT_FONT_TYPE, DiagramAxis.DEFAULT_FONT_STYLE, fontSize));
 			
 			double rotationAngleInRadian = this.axis.axisLine.getAngleRadian();
 			

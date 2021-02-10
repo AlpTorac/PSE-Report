@@ -1,15 +1,12 @@
 package gelf.view.diagrams;
 
 import java.awt.Color;
-import java.awt.Font;
 
 public class SettingsProvider {
 	
 	private int axisThickness = 1;
 	private Color axisColor = Color.BLACK;
 	private int axisValueFontSize = 10;
-	private String axisFontType = "TimesRoman";
-	private int fontStyle = Font.PLAIN;
 	private boolean showAxisValues = true;
 	private int additionalSpaceForAxisValues = 5;
 	/**
@@ -25,21 +22,10 @@ public class SettingsProvider {
 	
 	private Color barColor = Color.RED;
 	private Color barComparisonColor = Color.GREEN;
-	private Color barBorderColor = Color.BLACK;
 	private int barBorderThickness = 1;
 	
-	private Color diagramLabelBorderColor = Color.BLACK;
-	private Color diagramLabelForegroundColor = Color.BLACK;
-	private int diagramLabelFontSize = 10;
-	private String diagramLabelFontType = "TimesRoman";
-	
-	private Color hoverLabelBorderColor = Color.BLACK;
-	private Color hoverLabelForegroundColor = Color.BLACK;
-	private int hoverLabelFontSize = 10;
-	private String hoverLabelFontType = "TimesRoman";
-	
-	private int functionGraphPointSize;
-	private Color functionGraphPointColor;
+	private int functionGraphPointSize = 5;
+	private Color functionGraphPointColor = Color.RED;
 	
 	private int heatMapLabelBorderThickness = 1;
 	private int heatMapColorScaleBorderThickness = 1;
@@ -77,14 +63,6 @@ public class SettingsProvider {
 		return axisValueFontSize;
 	}
 
-	public String getAxisFontType() {
-		return axisFontType;
-	}
-
-	public int getFontStyle() {
-		return fontStyle;
-	}
-
 	public boolean isShowAxisValues() {
 		return showAxisValues;
 	}
@@ -109,44 +87,8 @@ public class SettingsProvider {
 		return barComparisonColor;
 	}
 
-	public Color getBarBorderColor() {
-		return barBorderColor;
-	}
-
 	public int getBarBorderThickness() {
 		return barBorderThickness;
-	}
-
-	public Color getDiagramLabelBorderColor() {
-		return diagramLabelBorderColor;
-	}
-
-	public Color getDiagramLabelForegroundColor() {
-		return diagramLabelForegroundColor;
-	}
-
-	public int getDiagramLabelFontSize() {
-		return diagramLabelFontSize;
-	}
-
-	public String getDiagramLabelFontType() {
-		return diagramLabelFontType;
-	}
-
-	public Color getHoverLabelBorderColor() {
-		return hoverLabelBorderColor;
-	}
-
-	public Color getHoverLabelForegroundColor() {
-		return hoverLabelForegroundColor;
-	}
-
-	public int getHoverLabelFontSize() {
-		return hoverLabelFontSize;
-	}
-
-	public String getHoverLabelFontType() {
-		return hoverLabelFontType;
 	}
 
 	public Color[] getHeatMapColorScaleColors() {
@@ -167,14 +109,6 @@ public class SettingsProvider {
 
 	public void setAxisValueFontSize(int axisValueFontSize) {
 		this.axisValueFontSize = axisValueFontSize;
-	}
-
-	public void setAxisFontType(String axisFontType) {
-		this.axisFontType = axisFontType;
-	}
-
-	public void setFontStyle(int fontStyle) {
-		this.fontStyle = fontStyle;
 	}
 
 	public void setShowAxisValues(boolean showAxisValues) {
@@ -201,44 +135,8 @@ public class SettingsProvider {
 		this.barComparisonColor = barComparisonColor;
 	}
 
-	public void setBarBorderColor(Color barBorderColor) {
-		this.barBorderColor = barBorderColor;
-	}
-
 	public void setBarBorderThickness(int barBorderThickness) {
 		this.barBorderThickness = barBorderThickness;
-	}
-
-	public void setDiagramLabelBorderColor(Color diagramLabelBorderColor) {
-		this.diagramLabelBorderColor = diagramLabelBorderColor;
-	}
-
-	public void setDiagramLabelForegroundColor(Color diagramLabelForegroundColor) {
-		this.diagramLabelForegroundColor = diagramLabelForegroundColor;
-	}
-
-	public void setDiagramLabelFontSize(int diagramLabelFontSize) {
-		this.diagramLabelFontSize = diagramLabelFontSize;
-	}
-
-	public void setDiagramLabelFontType(String diagramLabelFontType) {
-		this.diagramLabelFontType = diagramLabelFontType;
-	}
-
-	public void setHoverLabelBorderColor(Color hoverLabelBorderColor) {
-		this.hoverLabelBorderColor = hoverLabelBorderColor;
-	}
-
-	public void setHoverLabelForegroundColor(Color hoverLabelForegroundColor) {
-		this.hoverLabelForegroundColor = hoverLabelForegroundColor;
-	}
-
-	public void setHoverLabelFontSize(int hoverLabelFontSize) {
-		this.hoverLabelFontSize = hoverLabelFontSize;
-	}
-
-	public void setHoverLabelFontType(String hoverLabelFontType) {
-		this.hoverLabelFontType = hoverLabelFontType;
 	}
 
 	public void setHeatMapColorScaleColors(Color[] heatMapColorScaleColors) {

@@ -10,9 +10,13 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
 public abstract class DiagramLabel extends DiagramComponent {
+	private static final Color DEFAULT_FOREGROUND = Color.BLACK;
+	
 	private String caption;
 	private PositionInFrame topLeft;
 	private PositionInFrame bottomRight;
+	private Color foreground = DEFAULT_FOREGROUND;
+	private Color borderColor;
 	private int borderThickness;
 
 	protected DiagramLabel(PositionInFrame topLeft, PositionInFrame bottomRight, Color color, String caption,
@@ -83,7 +87,7 @@ public abstract class DiagramLabel extends DiagramComponent {
 		this.visualElement = new LabelVisual(this);
 		this.attachToContainer(this.containingElement);
 	}
-	
+
 	protected class LabelVisual extends JLabel {
 		/**
 		 * Generated serial version ID.
@@ -95,7 +99,7 @@ public abstract class DiagramLabel extends DiagramComponent {
 			this.label = label;
 			this.setBounds(this.label.getFrameBounds());
 			this.setBackground(this.label.getColor());
-			this.setBorder(BorderFactory.createLineBorder(Color.BLACK, this.label.getBorderThickness()));
+			this.setBorder(BorderFactory.createLineBorder(borderColor, this.label.getBorderThickness()));
 			this.setOpaque(true);
 		}
 		
@@ -104,10 +108,10 @@ public abstract class DiagramLabel extends DiagramComponent {
 			super.paintComponent(g);
 			this.setBounds(this.label.getFrameBounds());
 			this.setBackground(this.label.getColor());
-			this.setBorder(BorderFactory.createLineBorder(Color.BLACK, this.label.getBorderThickness()));
+			this.setBorder(BorderFactory.createLineBorder(borderColor, this.label.getBorderThickness()));
 			this.setHorizontalAlignment(CENTER);
 			this.setVerticalAlignment(CENTER);
-			this.setForeground(Color.BLACK);
+			this.setForeground(foreground);
 			this.setText(this.label.getCaption());
 		}
 	}

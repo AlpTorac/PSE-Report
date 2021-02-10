@@ -11,9 +11,12 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
 public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
+	private static final Color DEFAULT_BORDER_COLOR = Color.BLACK;
+	
 	private PositionIn2DDiagram bottomRight;
 	private PositionIn2DDiagram topLeft;
 	private String caption;
+	private Color borderColor = DEFAULT_BORDER_COLOR;
 	private int borderThickness;
 
 	protected DiagramValueLabel(PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight, Color color, float value,
@@ -114,10 +117,10 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			this.setBounds(this.label.getFrameBounds());
-			this.setBorder(BorderFactory.createLineBorder(Color.BLACK, this.label.getBorderThickness()));
+			this.setBorder(BorderFactory.createLineBorder(borderColor, this.label.getBorderThickness()));
 			this.setHorizontalAlignment(CENTER);
 			this.setVerticalAlignment(CENTER);
-			this.setForeground(Color.BLACK);
+			this.setForeground(borderColor);
 			this.setText(this.label.getCaption());
 		}
 	}
