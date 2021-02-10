@@ -35,12 +35,14 @@ public class Library extends HigherElement {
     	this.index2 = index2;
     	this.path = path;
     	this.cells = cells;
+    	/*
     	this.setAvailableInputPower();
     	this.setAvailableOutputPower();
     	this.setAvailableTimGr();
     	this.setAvailableTimSen();
     	this.setAvailableTimType();
     	calculate();
+    	*/
     }
     
 	public float[] getIndex1() {
