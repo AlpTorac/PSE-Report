@@ -33,12 +33,14 @@ public class Cell extends HigherElement {
     	this.outPins = outPins;
     	this.leakages = leakages;
     	this.defaultLeakage = leakage;
+    	/*
     	this.setAvailableTimSen();
     	this.setAvailableTimGr();
     	this.setAvailableTimType();
     	this.setAvailableOutputPower();
     	this.setAvailableInputPower();
     	this.calculate();
+    	*/
     }
     
 	public float[] getIndex1() {

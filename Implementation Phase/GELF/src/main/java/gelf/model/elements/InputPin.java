@@ -13,8 +13,10 @@ public class InputPin extends Pin {
     	super.setName(name);
     	super.setParent(parentCell);
     	this.inputPowers = inputPowers;
+    	/*
     	this.setAvailablePower();
     	calculate();
+    	*/
     }
     
     public float getCapacitance() {

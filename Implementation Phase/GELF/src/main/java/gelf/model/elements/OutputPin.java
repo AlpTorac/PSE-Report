@@ -25,11 +25,13 @@ public class OutputPin extends Pin {
     	super.setParent(parentCell);
     	this.outputPowers = outputPowers;
     	this.timings = timings;
+    	/*
     	this.setAvailablePower();
     	this.setAvailableTimGr();
     	this.setAvailableTimSen();
     	this.setAvailableTimType();
     	calculate();
+    	*/
     }
     
     public ArrayList<Timing> getTimings() {
