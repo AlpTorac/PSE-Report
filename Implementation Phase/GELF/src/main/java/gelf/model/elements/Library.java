@@ -16,6 +16,7 @@ import gelf.model.elements.attributes.TimingGroup;
 import gelf.model.elements.attributes.TimingKey;
 import gelf.model.elements.attributes.TimingSense;
 import gelf.model.elements.attributes.TimingType;
+import gelf.model.project.FileManager;
 
 public class Library extends HigherElement {
 	private float[] index1;
