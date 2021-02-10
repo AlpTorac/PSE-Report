@@ -46,10 +46,13 @@ public abstract class DiagramComponent implements HasAttachablePart {
 	
 	@Override
 	public void attachToContainer(Container container) {
-		this.removeFromContainer();
+		if (this.containingElement != container) {
+			this.removeFromContainer();
+		}
 		this.containingElement = container;
 		this.containingElement.add(this.visualElement);
 		this.setComponentBounds(this.getFrameBounds());
+		this.visualElement.setIgnoreRepaint(true);
 	}
 	
 	@Override
