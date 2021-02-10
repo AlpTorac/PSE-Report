@@ -34,6 +34,12 @@ public class Library extends HigherElement {
     	this.index2 = index2;
     	this.path = path;
     	this.cells = cells;
+    	this.setAvailableInputPower();
+    	this.setAvailableOutputPower();
+    	this.setAvailableTimGr();
+    	this.setAvailableTimSen();
+    	this.setAvailableTimType();
+    	calculate();
     }
     
 	public float[] getIndex1() {
@@ -312,6 +318,83 @@ public class Library extends HigherElement {
 		 }
 		 */
 		FileManager.saveFile(super.getName(), fileData, path);
+	}
+
+	@Override
+	public void setAvailableTimSen() {
+		Iterator<Cell> cellsIt = cells.iterator();
+		while(cellsIt.hasNext()) {
+			Cell curCell = cellsIt.next();
+			Iterator<TimingSense> cellsTimSenIt = curCell.getAvailableTimSen()
+					.iterator();
+			
+			while(cellsTimSenIt.hasNext()) {
+				this.getAvailableTimSen().add(cellsTimSenIt.next());
+			}
+		}	
+		
+	}
+
+	@Override
+	public void setAvailableTimGr() {
+		Iterator<Cell> cellsIt = cells.iterator();
+		
+		while(cellsIt.hasNext()) {
+			Cell curCell = cellsIt.next();
+			Iterator<TimingGroup> cellsTimGrIt = curCell.getAvailableTimGr()
+					.iterator();
+			
+			while(cellsTimGrIt.hasNext()) {
+				this.getAvailableTimGr().add(cellsTimGrIt.next());
+			}
+		}	
+	}
+
+	@Override
+	public void setAvailableTimType() {
+		Iterator<Cell> cellsIt = cells.iterator();
+		
+		while(cellsIt.hasNext()) {
+			Cell curCell = cellsIt.next();
+			Iterator<TimingType> cellsTimTypeIt = curCell.getAvailableTimType()
+					.iterator();
+			
+			while(cellsTimTypeIt.hasNext()) {
+				this.getAvailableTimType().add(cellsTimTypeIt.next());
+			}
+		}		
+		
+	}
+
+	@Override
+	public void setAvailableOutputPower() {
+		Iterator<Cell> cellsIt = cells.iterator();
+		
+		while(cellsIt.hasNext()) {
+			Cell curCell = cellsIt.next();
+			Iterator<PowerGroup> cellsOutPowIt = curCell.getAvailableOutputPower()
+					.iterator();
+			
+			while(cellsOutPowIt.hasNext()) {
+				this.getAvailableOutputPower().add(cellsOutPowIt.next());
+			}
+		}		
+		
+	}
+
+	@Override
+	public void setAvailableInputPower() {
+		Iterator<Cell> cellsIt = cells.iterator();
+		
+		while(cellsIt.hasNext()) {
+			Cell curCell = cellsIt.next();
+			Iterator<PowerGroup> cellsInPowIt = curCell.getAvailableInputPower()
+					.iterator();
+			
+			while(cellsInPowIt.hasNext()) {
+				this.getAvailableInputPower().add(cellsInPowIt.next());
+			}
+		}		
 	}
 	
 	
