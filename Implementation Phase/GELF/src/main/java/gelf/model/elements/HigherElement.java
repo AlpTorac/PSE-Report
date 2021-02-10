@@ -22,45 +22,36 @@ public abstract class HigherElement extends Element {
     protected boolean hasShownElements;
     protected Stat leakage;
     
+    
 	public ArrayList<TimingSense> getAvailableTimSen() {
 		return availableTimSen;
 	}
 	
-	public void setAvailableTimSen(ArrayList<TimingSense> availableTimSen) {
-		this.availableTimSen = availableTimSen;
-	}
+	public abstract void setAvailableTimSen();
 	
 	public ArrayList<TimingGroup> getAvailableTimGr() {
 		return availableTimGr;
 	}
 	
-	public void setAvailableTimGr(ArrayList<TimingGroup> availableTimGr) {
-		this.availableTimGr = availableTimGr;
-	}
+	public abstract void setAvailableTimGr();
 	
 	public ArrayList<TimingType> getAvailableTimType() {
 		return availableTimType;
 	}
 	
-	public void setAvailableTimType(ArrayList<TimingType> availableTimType) {
-		this.availableTimType = availableTimType;
-	}
+	public abstract void setAvailableTimType();
 	
 	public ArrayList<PowerGroup> getAvailableOutputPower() {
 		return availableOutputPower;
 	}
 	
-	public void setAvailableOutputPower(ArrayList<PowerGroup> availableOutputPower) {
-		this.availableOutputPower = availableOutputPower;
-	}
+	public abstract void setAvailableOutputPower();
 	
 	public ArrayList<PowerGroup> getAvailableInputPower() {
 		return availableInputPower;
 	}
 	
-	public void setAvailableInputPower(ArrayList<PowerGroup> availableInputPower) {
-		this.availableInputPower = availableInputPower;
-	}
+	public abstract void setAvailableInputPower();
 /**
 	public Map<TimingSense, Map<TimingGroup, Map<TimingType, Stat>>> getTimingStat() {
 		return timingStat;

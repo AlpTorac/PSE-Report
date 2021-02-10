@@ -25,6 +25,10 @@ public class OutputPin extends Pin {
     	super.setParent(parentCell);
     	this.outputPowers = outputPowers;
     	this.timings = timings;
+    	this.setAvailablePower();
+    	this.setAvailableTimGr();
+    	this.setAvailableTimSen();
+    	this.setAvailableTimType();
     	calculate();
     }
     
@@ -48,24 +52,36 @@ public class OutputPin extends Pin {
     	return availableTimSen;
     }
     
-    public void setAvailableTimSen(ArrayList<TimingSense> availableTimSen) {
-    	this.availableTimSen = availableTimSen;
+    public void setAvailableTimSen() {
+    	Iterator<Timing> timIt = timings.iterator();
+		while(timIt.hasNext()) {
+			Timing curTim = timIt.next();
+			availableTimSen.add(curTim.getTimSense());
+		}
     }
     
     public ArrayList<TimingGroup> getAvailableTimGr(){
     	return availableTimGr;
     }
     
-    public void setAvailableTimGr(ArrayList<TimingGroup> availableTimGr) {
-    	this.availableTimGr = availableTimGr;
+    public void setAvailableTimGr() {
+    	Iterator<Timing> timIt = timings.iterator();
+		while(timIt.hasNext()) {
+			Timing curTim = timIt.next();
+			availableTimGr.add(curTim.getTimGroup());
+		}
     }
     
     public ArrayList<TimingType> getAvailableTimType() {
     	return availableTimType;
     }
     
-    public void setAvailableTimType(ArrayList<TimingType> availableTimType) {
-    	this.availableTimType = availableTimType;
+    public void setAvailableTimType() {
+    	Iterator<Timing> timIt = timings.iterator();
+		while(timIt.hasNext()) {
+			Timing curTim = timIt.next();
+			availableTimType.add(curTim.getTimType());
+		}
     }
     
     public String getOutputFunction() {
@@ -111,5 +127,14 @@ public class OutputPin extends Pin {
 
 	public void setMaxCapacitance(float maxCapacitance) {
 		this.maxCapacitance = maxCapacitance;
+	}
+
+	@Override
+	public void setAvailablePower() {
+		Iterator<OutputPower> outPowIt = outputPowers.iterator();
+		while(outPowIt.hasNext()) {
+			OutputPower curOutPow = outPowIt.next();
+			availablePower.add(curOutPow.getPowGroup());
+		}
 	}
 }
