@@ -49,24 +49,30 @@ public abstract class Diagram implements IDiagram {
 	}
 	
 	private void refreshAxes() {
-		for (DiagramAxis axis : this.axes) {
-			axis.hide();
-			axis.show();
-			axis.showValues();
+		if (this.axes != null) {
+			for (DiagramAxis axis : this.axes) {
+				axis.hide();
+				axis.show();
+				axis.showValues();
+			}
 		}
 	}
 	
 	private void refreshValueDisplayComponents() {
-		for (DiagramValueDisplayComponent dvdc : this.valueDisplayComponents) {
-			dvdc.hide();
-			dvdc.show();
+		if (this.valueDisplayComponents != null) {
+			for (DiagramValueDisplayComponent dvdc : this.valueDisplayComponents) {
+				dvdc.hide();
+				dvdc.show();
+			}
 		}
 	}
 	
 	private void refreshNonValueDisplayComponents() {
-		for (DiagramComponent dc : this.nonValueDisplayComponents) {
-			dc.hide();
-			dc.show();
+		if (this.nonValueDisplayComponents != null) {
+			for (DiagramComponent dc : this.nonValueDisplayComponents) {
+				dc.hide();
+				dc.show();
+			}
 		}
 	}
 	

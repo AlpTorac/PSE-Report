@@ -1,26 +1,24 @@
 package gelf.view.diagrams;
 
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
-import javax.swing.JFrame;
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
 
-public class TestFrame extends JFrame {
-
+public class TestPanel extends JPanel {
 	/**
-	 * Generated version serial ID.
+	 * Generated serial version ID.
 	 */
-	private static final long serialVersionUID = -9194415774691250413L;
-	
-	public TestFrame() {
+	private static final long serialVersionUID = -3044679383663006138L;
+
+	public TestPanel() {
 		super();
 		this.setBounds(0, 0, 1000, 1000);
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setLayout(null);
-		this.getContentPane().setLayout(null);
-		this.setBackground(new Color(200, 200, 200, 255));
+		
+		Border border = BorderFactory.createLineBorder(Color.BLACK);
+		this.setBorder(border);
 //		this.addMouseListener(new MouseAdapter() {
 //			@Override
 //			public void mouseEntered(MouseEvent me) {

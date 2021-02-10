@@ -2,6 +2,7 @@ package gelf.view.diagrams.builder;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.util.ArrayList;
 
 import gelf.view.diagrams.IDiagram;
 import gelf.view.diagrams.components.DiagramAxis;
@@ -9,9 +10,10 @@ import gelf.view.diagrams.components.DiagramColorScale;
 import gelf.view.diagrams.components.DiagramComponent;
 import gelf.view.diagrams.components.DiagramComponentFactory;
 import gelf.view.diagrams.components.DiagramValueDisplayComponent;
+import gelf.view.diagrams.components.HeatMapLabel;
 import gelf.view.diagrams.components.PositionIn2DDiagram;
 import gelf.view.diagrams.components.PositionInFrame;
-import gelf.view.diagrams.data.DiagramData;
+import gelf.view.diagrams.type.HeatMap;
 
 public class HeatMapBuilder extends DiagramBuilder {
 
@@ -36,16 +38,11 @@ public class HeatMapBuilder extends DiagramBuilder {
 		PositionInFrame endX = factory.makePositionInFrame(containerWidth, xAxisYpos);
 		PositionInFrame endY = factory.makePositionInFrame(yAxisXpos, 0);
 		
-		float[][] indices = null;
-		this.data.extractIndices().toArray(indices);
+		float minIndex1 = 0;
+		float maxIndex1 = this.data.getMaximumIndexAt(0);
 		
-		int sizeOfIndices = indices[0].length;
-		
-		float minIndex1 = indices[0][0];
-		float maxIndex1 = indices[0][sizeOfIndices];
-		
-		float minIndex2 = indices[1][0];
-		float maxIndex2 = indices[1][sizeOfIndices];
+		float minIndex2 = 0;
+		float maxIndex2 = this.data.getMaximumIndexAt(1);
 		
 		int stepsInXAxis = settingsProvider.getStepsInXAxis();
 		int stepsInYAxis = settingsProvider.getStepsInYAxis();
@@ -65,73 +62,102 @@ public class HeatMapBuilder extends DiagramBuilder {
 	@Override
 	protected DiagramValueDisplayComponent[] buildValueDisplayComponents(DiagramAxis[] axes,
 			DiagramComponent[] diagramSpecificComponent) {
-		float[][] indices = null;
-		this.data.extractIndices().toArray(indices);
 		
-		float[][] values = null;
-		this.data.extractValues().toArray(values);
+		ArrayList<float[]> indexList = this.data.extractIndices();
+		ArrayList<float[]> valueList = this.data.extractValues();
+		
+		float[][] indices = new float[indexList.size()][indexList.get(0).length];
+		indexList.toArray(indices);
+		
+		float[][] values = new float[valueList.size()][valueList.get(0).length];
+		valueList.toArray(values);
 		
 		int indexCount = values.length;
 		
 		int dvdcCount = indexCount * indexCount;
 		
-		float minVal = Float.MAX_VALUE;
-		float maxVal = Float.MIN_VALUE;
-		
-		for (int i = 0; i < values.length; i++) {
-			float currentMinCandidate = values[i][0];
-			if (minVal > currentMinCandidate) {
-				minVal = currentMinCandidate;
-			}
-			float currentMaxCandidate = values[i][values[0].length - 1];
-			if (maxVal < currentMaxCandidate) {
-				maxVal = currentMaxCandidate;
-			}
-		}
-		
 		DiagramValueDisplayComponent[] dvdc = new DiagramValueDisplayComponent[dvdcCount];
 		
 		int thickness = settingsProvider.getHeatMapLabelBorderThickness();
 		
-		for (int i = 0; i < indexCount; i++) {
-			for (int j = 0; j < indexCount; j++) {
-				PositionIn2DDiagram topLeft = factory.makePositionInDiagram(axes[0], indices[0][i], axes[1], indices[1][j]);
-				PositionIn2DDiagram bottomRight = factory.makePositionInDiagram(axes[0], indices[0][i + 1], axes[1], indices[1][j + 1]);
-				
-				
-				dvdc[i * indexCount + j] = factory.createHeatMapLabel(topLeft, bottomRight,
-						(DiagramColorScale) diagramSpecificComponent[0],
-						maxVal, thickness, this.container);
+		dvdc[0] = makeOriginLabel(axes, indices, values, diagramSpecificComponent, thickness);
+		
+		for (int i = 1; i < indexCount; i++) {
+			dvdc[i * indexCount] = makeNullIndex1Label(axes, indices, values, i, diagramSpecificComponent, thickness);
+		}
+		
+		for (int j = 1; j < indexCount; j++) {
+			dvdc[j] = makeNullIndex2Label(axes, indices, values, j, diagramSpecificComponent, thickness);
+		}
+		
+		for (int i = 1; i < indexCount; i++) {
+			for (int j = 1; j < indexCount; j++) {
+				dvdc[i * indexCount + j] = makeLabel(axes, indices, values, i, j, diagramSpecificComponent, thickness);
 			}
 		}
 		
 		return dvdc;
 	}
+	
+	/*
+	 * Make the heat map label, whose bottom left corner is the origin
+	 */
+	private HeatMapLabel makeOriginLabel(DiagramAxis[] axes, float[][] indices, float[][] values, DiagramComponent[] diagramSpecificComponent,
+			int thickness) {
+		PositionIn2DDiagram topLeft = factory.makePositionInDiagram(axes[0], 0, axes[1], indices[1][0]);
+		PositionIn2DDiagram bottomRight = factory.makePositionInDiagram(axes[0], indices[0][0], axes[1], 0);
+		
+		return factory.createHeatMapLabel(topLeft, bottomRight,
+				(DiagramColorScale) diagramSpecificComponent[0],
+				values[0][0], thickness, this.container);
+	}
+	
+	/*
+	 * Make a heat map label, whose left border is the axis line of the vertical index (but the bottom border is not the axis line of the horizontal index).
+	 */
+	private HeatMapLabel makeNullIndex1Label(DiagramAxis[] axes, float[][] indices, float[][] values, int i, DiagramComponent[] diagramSpecificComponent,
+			int thickness) {
+		PositionIn2DDiagram topLeft = factory.makePositionInDiagram(axes[0], indices[0][0], axes[1], indices[1][0]);
+		PositionIn2DDiagram bottomRight = factory.makePositionInDiagram(axes[0], indices[0][i], axes[1], 0);
+		
+		return factory.createHeatMapLabel(topLeft, bottomRight,
+				(DiagramColorScale) diagramSpecificComponent[0],
+				values[i][0], thickness, this.container);
+	}
+	
+	/*
+	 * Make a heat map label, whose bottom border is the axis line of the horizontal index (but the left border is not the axis line of the vertical index).
+	 */
+	private HeatMapLabel makeNullIndex2Label(DiagramAxis[] axes, float[][] indices, float[][] values, int j, DiagramComponent[] diagramSpecificComponent,
+			int thickness) {
+		PositionIn2DDiagram topLeft = factory.makePositionInDiagram(axes[0], 0, axes[1], indices[1][j]);
+		PositionIn2DDiagram bottomRight = factory.makePositionInDiagram(axes[0], indices[0][0], axes[1], indices[1][j - 1]);
+		
+		return factory.createHeatMapLabel(topLeft, bottomRight,
+				(DiagramColorScale) diagramSpecificComponent[0],
+				values[0][j], thickness, this.container);
+	}
+	
+	private HeatMapLabel makeLabel(DiagramAxis[] axes, float[][] indices, float[][] values, int i, int j, DiagramComponent[] diagramSpecificComponent,
+			int thickness) {
+		PositionIn2DDiagram topLeft = factory.makePositionInDiagram(axes[0], indices[0][i - 1], axes[1], indices[1][j]);
+		PositionIn2DDiagram bottomRight = factory.makePositionInDiagram(axes[0], indices[0][i], axes[1], indices[1][j - 1]);
+		
+		return factory.createHeatMapLabel(topLeft, bottomRight,
+				(DiagramColorScale) diagramSpecificComponent[0],
+				values[i][j], thickness, this.container);
+	}
 
 	@Override
 	protected DiagramComponent[] buildDiagramSpecificComponent() {
-		PositionInFrame topLeft = factory.makePositionInFrame(0, this.container.getHeight() - settingsProvider.getHeatMapColorScaleVerticalSpace());
+		PositionInFrame topLeft = factory.makePositionInFrame(0, this.container.getHeight() + settingsProvider.getHeatMapSpaceBetweenDiagramAndColorScale() - settingsProvider.getHeatMapColorScaleVerticalSpace());
 		PositionInFrame bottomRight = factory.makePositionInFrame(this.container.getWidth(), this.container.getHeight());
 		Color borderColor = settingsProvider.getHeatMapColorScaleBorderColor();
 		int borderThickness = settingsProvider.getHeatMapColorScaleBorderThickness();
 		Color[] colors = settingsProvider.getHeatMapColorScaleColors();
 		
-		float[][] values = null;
-		this.data.extractValues().toArray(values);
-		
-		float minVal = Float.MAX_VALUE;
-		float maxVal = Float.MIN_VALUE;
-		
-		for (int i = 0; i < values.length; i++) {
-			float currentMinCandidate = values[i][0];
-			if (minVal > currentMinCandidate) {
-				minVal = currentMinCandidate;
-			}
-			float currentMaxCandidate = values[i][values[0].length - 1];
-			if (maxVal < currentMaxCandidate) {
-				maxVal = currentMaxCandidate;
-			}
-		}
+		float minVal = this.data.getMinimumValue();
+		float maxVal = this.data.getMaximumValue();
 		
 		DiagramColorScale colorScale = factory.createBiColorScale(topLeft, bottomRight, borderColor, minVal, maxVal, colors[0], colors[1], borderThickness, this.container);
 		return new DiagramColorScale[] {colorScale};
@@ -139,8 +165,10 @@ public class HeatMapBuilder extends DiagramBuilder {
 
 	@Override
 	public IDiagram buildDiagram() {
-		
-		return null;
+		DiagramAxis[] axes = this.buildAxes();
+		DiagramComponent[] dc = this.buildDiagramSpecificComponent();
+		DiagramValueDisplayComponent[] dvdc = this.buildValueDisplayComponents(axes, dc);
+		return new HeatMap(this.data, axes, dvdc, dc, this.container);
 	}
 
 }

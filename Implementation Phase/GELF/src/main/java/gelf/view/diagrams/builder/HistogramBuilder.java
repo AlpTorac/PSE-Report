@@ -35,15 +35,11 @@ public class HistogramBuilder extends DiagramBuilder {
 		PositionInFrame endX = factory.makePositionInFrame(containerWidth, xAxisYpos);
 		PositionInFrame endY = factory.makePositionInFrame(yAxisXpos, 0);
 		
-		float[] indices = this.data.extractIndices().get(0);
-		int numberOfBars = indices.length;
-		float[] values = this.data.extractValues().get(0);
+		float minVal = 0;
+		float maxVal = this.data.getMaximumValue();
 		
-		float minVal = values[0];
-		float maxVal = values[numberOfBars - 1];
-		
-		float minIndex = indices[0];
-		float maxIndex = indices[numberOfBars - 1];
+		float minIndex = 0;
+		float maxIndex = this.data.getMaximumIndex();
 		
 		int stepsInXAxis = settingsProvider.getStepsInXAxis();
 		int stepsInYAxis = settingsProvider.getStepsInYAxis();

@@ -109,7 +109,9 @@ public class HoverLabel implements HasAttachablePart {
 	}
 
 	public void attachToContainer(Container container) {
-		this.removeFromContainer();
+		if (this.containingElement != container) {
+			this.removeFromContainer();
+		}
 		this.containingElement = container;
 		this.containingElement.add(this.component);
 		this.containingElement.repaint();

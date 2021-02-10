@@ -34,21 +34,22 @@ public class BarChartBuilder extends DiagramBuilder {
 		PositionInFrame endX = factory.makePositionInFrame(containerWidth, xAxisYpos);
 		PositionInFrame endY = factory.makePositionInFrame(yAxisXpos, 0);
 		
-		int numberOfBars = this.data.extractIndices().size();
+		int numberOfBars = this.data.extractValues().get(0).length;
 		float[] values = this.data.extractValues().get(0);
 		
 		int stepsInYAxis = values.length;
 		
-		float maxVal = values[stepsInYAxis - 1];
+		float minVal = 0;
+		float maxVal = this.data.getMaximumValue();
 		
-		Color axisLine = settingsProvider.getAxisColor();
+		Color axisLineColor = settingsProvider.getAxisColor();
 		int thickness = settingsProvider.getAxisThickness();
 		
 		DiagramAxis xAxis = factory
-				.createSolidAxis(axisOrigin, endX, 0, numberOfBars, numberOfBars + 1, axisLine, thickness, this.container);
+				.createSolidAxis(axisOrigin, endX, 0, numberOfBars, numberOfBars + 1, axisLineColor, thickness, this.container);
 		
 		DiagramAxis yAxis = factory
-				.createSolidAxis(axisOrigin, endY, 0, maxVal, stepsInYAxis, axisLine, thickness, this.container);
+				.createSolidAxis(axisOrigin, endY, minVal, maxVal, stepsInYAxis, axisLineColor, thickness, this.container);
 		
 		return new DiagramAxis[] {xAxis, yAxis};
 	}

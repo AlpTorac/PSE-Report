@@ -3,7 +3,6 @@ package gelf.view.diagrams;
 import java.awt.Color;
 
 public class SettingsProvider {
-	
 	private int axisThickness = 1;
 	private Color axisColor = Color.BLACK;
 	private int axisValueFontSize = 10;
@@ -20,22 +19,35 @@ public class SettingsProvider {
 	private int stepsInXAxis = 10;
 	private int stepsInYAxis = 10;
 	
-	private Color barColor = Color.RED;
-	private Color barComparisonColor = Color.GREEN;
+	/**
+	 * Controls how transparent the bars will be.
+	 * Needs a value between 0 - 255.
+	 * The higher the value, the more transparent.
+	 */
+	private int barAlpha = 100;
+	private Color barColor = new Color(255, 0, 0, barAlpha);
+	private Color barComparisonColor = new Color(0, 255, 0, barAlpha);
 	private int barBorderThickness = 1;
 	
 	private int functionGraphPointSize = 5;
 	private Color functionGraphPointColor = Color.RED;
 	
+	/**
+	 * Controls how transparent the bars will be.
+	 * Needs a value between 0 - 255.
+	 * The higher the value, the more transparent.
+	 */
+	private int heatMapLabelAlpha = 200;
 	private int heatMapLabelBorderThickness = 1;
 	private int heatMapColorScaleBorderThickness = 1;
 	private Color heatMapColorScaleBorderColor = Color.BLACK;
-	private Color[] heatMapColorScaleColors = new Color[] {Color.RED, Color.BLUE};
+	private Color[] heatMapColorScaleColors = new Color[] {new Color(255, 0, 0, heatMapLabelAlpha),
+			new Color(0, 0, 255, heatMapLabelAlpha)};
 	/**
 	 * The vertical space left for the color scale of the heat map.
 	 */
 	private int heatMapColorScaleVerticalSpace = 200;
-	
+	private int heatMapSpaceBetweenDiagramAndColorScale = 100;
 	/**
 	 * Increase the maximum index by this amount to leave some more space for the final bar.
 	 */
@@ -209,5 +221,13 @@ public class SettingsProvider {
 
 	public void setHistogramIndexEndIndexSpace(int histogramIndexEndIndexSpace) {
 		this.histogramIndexEndIndexSpace = histogramIndexEndIndexSpace;
+	}
+
+	public int getHeatMapSpaceBetweenDiagramAndColorScale() {
+		return heatMapSpaceBetweenDiagramAndColorScale;
+	}
+
+	public void setHeatMapSpaceBetweenDiagramAndColorScale(int heatMapSpaceBetweenDiagramAndColorScale) {
+		this.heatMapSpaceBetweenDiagramAndColorScale = heatMapSpaceBetweenDiagramAndColorScale;
 	}
 }

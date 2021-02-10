@@ -116,7 +116,6 @@ public abstract class DiagramBar extends DiagramValueDisplayComponent {
 			this.setBorder(border);
 			
 			this.setBackground(this.bar.getColor());
-			this.setOpaque(true);
 		}
 		
 		@Override
