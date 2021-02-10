@@ -32,11 +32,11 @@ public abstract class DiagramColorScale extends DiagramComponent {
 		
 		int index = 0;
 		
-		while (index < this.values.length && this.values[index] <= value) {
+		while (index < this.values.length - 1 && this.values[index] <= value) {
 			index++;
 		}
 		
-		return index - 1;
+		return (index - 1);
 	}
 	
 	@Override
@@ -79,7 +79,7 @@ public abstract class DiagramColorScale extends DiagramComponent {
 	
 	public Color valueToColor(float value) {
 		int rangeMinIndex = this.getRangeMinIndex(value);
-		int rangeMaxIndex = this.getRangeMinIndex(value) + 1;
+		int rangeMaxIndex = rangeMinIndex + 1;
 		
 		return this.getMixedColor(value, rangeMinIndex, rangeMaxIndex);
 	}
