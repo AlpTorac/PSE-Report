@@ -5,7 +5,11 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
+import gelf.model.elements.Cell;
+import gelf.model.elements.Library;
+import gelf.model.project.Project;
 import gelf.view.components.Menu;
 import gelf.view.components.MenuBar;
 import gelf.view.components.MenuItem;
@@ -60,11 +64,28 @@ public class MainWindow extends Window {
         // MainMenu setup
         setupMainMenu(this.getContentPane().getWidth(), 30);
 
+        // Model stub
+        Project project = new Project();
+        float index[] = {1f,2f};
+        ArrayList<Cell> cells = new ArrayList<Cell>();
+        Library lib1 = new Library("Library 1", index, index, "Path", cells);
+        Library lib2 = new Library("Library 2", index, index, "Path", cells);
+        ArrayList<Library> libraries = new ArrayList<Library>();
+        libraries.add(lib1);
+        libraries.add(lib2);
+        project.setLibraries(libraries);
+
         // Outliner setup
-        // outliner = new Outliner();
+        this.outliner = new Outliner(350, this.getContentPane().getHeight() - this.mainMenu.getHeight() - this.infoBar.getHeight(), project);
+        this.outliner.setLocation(0, this.mainMenu.getHeight());
+        this.outliner.setVisible(true);
+        this.add(this.outliner);
+        Resizer outlinerResizer = new Resizer(ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_TOP_LEFT,
+                ResizeMode.ABSOLUTE_BOTTOM_RIGHT, ResizeMode.ABSOLUTE_TOP_LEFT);
+        this.setResizer(outliner, outlinerResizer);
 
         // SubWindowArea setup
-        setupSubWindowArea(this.mainMenu.getHeight(), this.infoBar.getHeight(), 300);
+        setupSubWindowArea(this.mainMenu.getHeight(), this.infoBar.getHeight(), this.outliner.getWidth());
 
         // testing adding SubWindows
         SubWindow sub1 = new SubWindow(100, 100);
