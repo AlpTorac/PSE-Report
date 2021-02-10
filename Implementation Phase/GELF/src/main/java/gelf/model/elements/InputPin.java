@@ -13,6 +13,7 @@ public class InputPin extends Pin {
     	super.setName(name);
     	super.setParent(parentCell);
     	this.inputPowers = inputPowers;
+    	this.setAvailablePower();
     	calculate();
     }
     
@@ -42,4 +43,13 @@ public class InputPin extends Pin {
     public void setInputPowers(ArrayList<InputPower> inputPowers) {
     	this.inputPowers = inputPowers;
     }
+
+	@Override
+	public void setAvailablePower() {
+		Iterator<InputPower> inPowIt = inputPowers.iterator();
+		while(inPowIt.hasNext()) {
+			InputPower curInPow = inPowIt.next();
+			availablePower.add(curInPow.getPowGroup());
+		}
+	}
 }

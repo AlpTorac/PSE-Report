@@ -22,9 +22,7 @@ public abstract class Pin extends Element {
     	 return availablePower;
      }
      
-     public void setAvailablePower(ArrayList<PowerGroup> availablePower) {
-    	 this.availablePower = availablePower;
-     }
+     public abstract void setAvailablePower();
      
      @Override
  	public String getName() {

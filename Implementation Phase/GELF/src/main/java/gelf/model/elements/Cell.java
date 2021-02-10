@@ -33,7 +33,12 @@ public class Cell extends HigherElement {
     	this.outPins = outPins;
     	this.leakages = leakages;
     	this.defaultLeakage = leakage;
-    	calculate();
+    	this.setAvailableTimSen();
+    	this.setAvailableTimGr();
+    	this.setAvailableTimType();
+    	this.setAvailableOutputPower();
+    	this.setAvailableInputPower();
+    	this.calculate();
     }
     
 	public float[] getIndex1() {
@@ -316,6 +321,81 @@ public class Cell extends HigherElement {
 	
 	public void calculateLeakage() {
 		leakages.calculate();
+	}
+
+	@Override
+	public void setAvailableTimSen() {
+		Iterator<OutputPin> outPinIt = outPins.iterator();
+		
+		while(outPinIt.hasNext()) {
+			OutputPin curOutPin = outPinIt.next();
+			Iterator<TimingSense> timSenIt = curOutPin.getAvailableTimSen()
+					.iterator();
+			
+			while(timSenIt.hasNext()) {
+				this.getAvailableTimSen().add(timSenIt.next());
+			}
+		}	
+	}
+
+	@Override
+	public void setAvailableTimGr() {
+		Iterator<OutputPin> outPinIt = outPins.iterator();
+		
+		while(outPinIt.hasNext()) {
+			OutputPin curOutPin = outPinIt.next();
+			Iterator<TimingGroup> timGrIt = curOutPin.getAvailableTimGr()
+					.iterator();
+			
+			while(timGrIt.hasNext()) {
+				this.getAvailableTimGr().add(timGrIt.next());
+			}
+		}	
+	}
+
+	@Override
+	public void setAvailableTimType() {
+		Iterator<OutputPin> outPinIt = outPins.iterator();
+		
+		while(outPinIt.hasNext()) {
+			OutputPin curOutPin = outPinIt.next();
+			Iterator<TimingType> timTypeIt = curOutPin.getAvailableTimType()
+					.iterator();
+			
+			while(timTypeIt.hasNext()) {
+				this.getAvailableTimType().add(timTypeIt.next());
+			}
+		}		
+	}
+
+	@Override
+	public void setAvailableOutputPower() {
+		Iterator<OutputPin> outPinIt = outPins.iterator();
+		
+		while(outPinIt.hasNext()) {
+			OutputPin curOutPin = outPinIt.next();
+			Iterator<PowerGroup> outPowIt = curOutPin.getAvailablePower()
+					.iterator();
+			
+			while(outPowIt.hasNext()) {
+				this.getAvailableInputPower().add(outPowIt.next());
+			}
+		}
+	}
+
+	@Override
+	public void setAvailableInputPower() {
+		Iterator<InputPin> inPinIt = inPins.iterator();
+		
+		while(inPinIt.hasNext()) {
+			InputPin curInPin = inPinIt.next();
+			Iterator<PowerGroup> inPowIt = curInPin.getAvailablePower()
+					.iterator();
+			
+			while(inPowIt.hasNext()) {
+				this.getAvailableInputPower().add(inPowIt.next());
+			}
+		}
 	}
 
 }
