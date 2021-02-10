@@ -1,9 +1,12 @@
 package gelf.model.parsers;
 
+import java.text.CharacterIterator;
+import java.text.StringCharacterIterator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.regex.Pattern;
+import java.util.Stack;
 
 import gelf.model.elements.Cell;
 import gelf.model.elements.InputPin;
@@ -28,30 +31,34 @@ import gelf.model.project.Interpolator;
  * Parses the Liberty Files to their corresponding data objects
  */
 public class LibertyParser {
-    private static final String NAMEFORMAT = "([A-Za-z]|_|-|[0-9])*";
-    private static final String FUNCTIONFORMAT = "";
-    private static final String VALUEFORMAT = "\"([0-9]+";
-    private static final String ARRAYFORMAT = "\"(" + VALUEFORMAT +",)*(\\)?" + VALUEFORMAT + "\"";
+    private static final String NAMEFORMAT = "([a-zA-Z]|_|-|[0-9])*";
+    private static final String FUNCTIONFORMAT = "([a-zA-Z]|_|-|^|\\||\\(|\\)|&|\\!|[0-9])+";
+    private static final String FLOATFORMAT = "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?";
+    private static final String ARRAYFORMAT = "\"(" + FLOATFORMAT +",)*(\\)?" + FLOATFORMAT + "\"";
     private static final String DOUBLEARRAYFORMAT = "(" + ARRAYFORMAT + ")*,\\" + ARRAYFORMAT;
     private static final String INATTRIBUTESFORMAT = "";
     private static final String OUTATTRIBUTESFORMAT = "";
     private static String powerGroupSeparator = "";
     private static String timingGroupSeparator = "";
-    private static final String LIBRARYFORMAT = "";
-    private static final String CELLFORMAT = "";
     private static final String PINFORMAT = "";
+    private static final String CELLFORMAT = "";
+    private static final String LIBRARYFORMAT = "library\\(" + NAMEFORMAT + "\\)\\{"
+    		+ ".*(" + CELLFORMAT + ")+\\}";
 
     public static Library parseLibrary(String libraryString) throws InvalidFileFormatException {
-        libraryString.replaceAll("\\s+", "");
+    	checkBrackets(libraryString);
+        libraryString = libraryString.replaceAll("\\s+", "");
         String noCommentsString = "";
         String[] commentsSplit = libraryString.split("(\\/\\*)|(\\*\\/)");
         for (int i = 0; i < commentsSplit.length; i += 2) {
             noCommentsString += commentsSplit[i];
         }
-        if (!noCommentsString.matches(LIBRARYFORMAT)) {
+        /*if (!noCommentsString.matches(LIBRARYFORMAT)) {
             throw new InvalidFileFormatException("Library doesn't fit format");
-        }
+        }*/
         String[] cellStrings = noCommentsString.split("(?=(cell\\())");
+        String[] libData = cellStrings[0].split("\\{");
+        String name = libData[0].substring(libData[0].indexOf("(") + 1, libData[0].indexOf(")"));
         ArrayList<Cell> childCells = new ArrayList<Cell>();
         for (int i = 1; i < cellStrings.length; i++) {
             childCells.add(parseCell(cellStrings[i]));
@@ -61,15 +68,14 @@ public class LibertyParser {
         }
         float[] index1 = childCells.get(0).getIndex1();
         float[] index2 = childCells.get(0).getIndex2();
-        String[] libData = cellStrings[0].split("\\{");
-        String name = libData[0].substring(7, libData[0].length() - 1);
-        Library productLibrary = new Library(name, index1, index2, null, childCells);
         for (int i = 1; i < childCells.size(); i++) {
             Cell currentCell = childCells.get(i); 
-            if (!currentCell.getIndex1().equals(index1) || !currentCell.getIndex1().equals(index2)) {
+            if (!Arrays.equals(currentCell.getIndex1(),index1) 
+            		|| !Arrays.equals(currentCell.getIndex2(), index2)) {
                 currentCell.interpolate(index1, index2);
             }
         }
+        Library productLibrary = new Library(name, index1, index2, null, childCells);
         for (Cell cell : childCells) {
         	cell.setParentLibrary(productLibrary);
         }
@@ -86,7 +92,7 @@ public class LibertyParser {
         	int firstQuotation = leakageInfo.indexOf("\"", valueIndex);
         	int lastQuotation = leakageInfo.indexOf("\"", firstQuotation + 1);
         	String leakageString = leakageInfo.substring(firstQuotation + 1, lastQuotation);
-        	leakagesValues[i] = Float.parseFloat(leakageString);
+        	leakagesValues[i - 1] = Float.parseFloat(leakageString);
         }
         String dataAfterLeakageInfo = cellLeakages[cellLeakages.length - 1].split("\\{", 2)[1];
         cellLeakages[0] += dataAfterLeakageInfo;
@@ -101,7 +107,7 @@ public class LibertyParser {
         	switch (paramParts[0]) {
         	case "cell_leakage_power":
         		hasDefaultLeakage = true;
-        		defaultLeakage = Float.parseFloat(paramParts[0]);
+        		defaultLeakage = Float.parseFloat(paramParts[1]);
         		break;
         	default:
         		unsupportedData.add(cellParameters[i]);
@@ -151,17 +157,17 @@ public class LibertyParser {
                          ArrayList<InputPin> relatedPins) throws InvalidFileFormatException {
         if (powerGroupSeparator.equals("")) {
             for (PowerGroup powGroup : PowerGroup.values()) {
-                powerGroupSeparator += "|" + powGroup.name() + "\\(";
+                powerGroupSeparator += "|" + powGroup.name().toLowerCase() + "\\(";
             }
             powerGroupSeparator = powerGroupSeparator.substring(1);
         }
         if (timingGroupSeparator.equals("")) {
             for (TimingGroup timGroup : TimingGroup.values()) {
-                timingGroupSeparator += "|" + timGroup.name() + "\\(";
+                timingGroupSeparator += "|" + timGroup.name().toLowerCase() + "\\(";
             }
-            powerGroupSeparator = powerGroupSeparator.substring(1);
+            timingGroupSeparator = timingGroupSeparator.substring(1);
         }
-		String[] attributeStrings = pinString.split("(?=(timing\\()|internal_power\\()");
+		String[] attributeStrings = pinString.split("(?=internal_power\\(|timing\\()");
         String[] pinData = attributeStrings[0].split("\\{|\\}");
         String name = pinData[0].substring(pinData[0].indexOf("(") + 1, pinData[0].indexOf(")"));
         boolean isInput = false;
@@ -174,7 +180,8 @@ public class LibertyParser {
         float minCap = 0;
         ArrayList<String> leftOverData = new ArrayList<String>();
         String[] singleValueAttributes = pinData[1].split(";");
-        for (String attributeData : singleValueAttributes) {
+        for (int i = 0; i < singleValueAttributes.length - 1; i++) {
+            String attributeData = singleValueAttributes[i]; 
             String[] attributeParts = attributeData.split(":");
             String attrName = attributeParts[0];
             String attrValue = attributeParts[1];
@@ -190,13 +197,15 @@ public class LibertyParser {
                     }
                     break;
                 case "function":
-                    if (!attrValue.matches(FUNCTIONFORMAT)) {
+                    if (!attrValue.matches("\"\\(" + FUNCTIONFORMAT + "\\)\"")) {
                         throw new InvalidFileFormatException("Function format for Pin \"" + name + " \" is invalid");
                     }
-                    function = attrValue.substring(attrValue.indexOf("\"") + 2, attrValue.indexOf("\"") - 1);
+                    int firstIndex = attrValue.indexOf("\"");
+                    int secondIndex = attrValue.indexOf("\"", firstIndex + 1);
+                    function = attrValue.substring(firstIndex + 2, secondIndex - 1);
                     break;
                 case "max_capacitance":
-                    if (!attrValue.matches(VALUEFORMAT)) {
+                    if (!attrValue.matches(FLOATFORMAT)) {
                         throw new InvalidFileFormatException("Value format for" + attrName 
                                 + "in Pin \"" + name + "\" is invalid");
                     }
@@ -208,7 +217,7 @@ public class LibertyParser {
                     maxCap =  Float.parseFloat(attrValue);
                     break;
                 case "min_capacitance":
-                    if (!attrValue.matches(VALUEFORMAT)) {
+                    if (!attrValue.matches(FLOATFORMAT)) {
                         throw new InvalidFileFormatException("Value format for" + attrName 
                                 + "in Pin \"" + name + "\" is invalid");
                     }
@@ -220,7 +229,7 @@ public class LibertyParser {
                     minCap =  Float.parseFloat(attrValue);
                     break;
                 case "capacitance":
-                    if (!attrValue.matches(VALUEFORMAT)) {
+                    if (!attrValue.matches(FLOATFORMAT)) {
                         throw new InvalidFileFormatException("Value format for" + attrName 
                                 + "in Pin \"" + name + "\" is invalid");
                     }
@@ -246,21 +255,23 @@ public class LibertyParser {
             String attributeData = attributeStrings[i];
             InputPin relatedPin = null;
             if (attributeData.startsWith("internal_power")) {
-                String[] powerAttributes =  attributeData.split("(?=(" + powerGroupSeparator + "))");
+                String[] powerAttributes =  attributeData.split("(?=" + powerGroupSeparator + ")");
                 if (isOutput) {
+                	String relatedPinString = null;
                     String[] powerAttributeData = powerAttributes[0].split("(\\{)");
                     String[] powerAttributeParameters = powerAttributeData[1].split(";");
                     for (String attributeParam : powerAttributeParameters) {
                         String[] powerAttributeParamParts = attributeParam.split(":");
                         switch (powerAttributeParamParts[0]) {
                             case "related_pin":
+                            	relatedPinString = powerAttributeParamParts[1].substring(1, powerAttributeParamParts[1].length() - 1);
                                 if (!powerAttributeParamParts[1].matches("\"" + NAMEFORMAT + "\"")) {
                                     throw new InvalidFileFormatException("Name format of related_pin \"" 
                                     + powerAttributeParamParts[1] + "\" of Pin \"" + name + " is invalid");
                                 }
-                                for (InputPin pin: relatedPins) {
-                                    if (pin.getName() == powerAttributeParamParts[1]){
-                                        relatedPin = pin;
+                                for (InputPin inpin: relatedPins) {
+                                    if (inpin.getName().equals(relatedPinString)){
+                                        relatedPin = inpin;
                                     }
                                 }
                                 break;
@@ -269,9 +280,11 @@ public class LibertyParser {
                         }
                     }
                     for (int j = 1; j < powerAttributes.length; j++) {
-                        attributes.add(parseOutPower(powerAttributes[j]));
                         OutputPower power = parseOutPower(powerAttributes[j]);
-                        if (relatedPin == null) {
+                        if (relatedPin == null && relatedPinString != null) {
+                        	throw new InvalidFileFormatException("Related Pin \"" + relatedPinString + "\""
+                        			+ " on Pin \"" + name + "\" was not found before it");
+                        } else if (relatedPin == null) {
                             throw new InvalidFileFormatException("Nonexistant related Pin on Pin \""
                                 + name + "\"");
                         }
@@ -287,9 +300,10 @@ public class LibertyParser {
             } else if (attributeData.startsWith("timing")) {
                 TimingSense timSense = null;
                 TimingType timType = null;
-                String[] timingAttributes =  attributeData.split("(?=(" + timingGroupSeparator + "))");
+                String[] timingAttributes =  attributeData.split("(?=" + timingGroupSeparator + ")");
                 /** Parses timing for the output pin. Therefore ensures to fetch the relatedPin first */
                 if (isOutput) {
+                	String relatedPinString = null;
                     String[] timingAttributeData = timingAttributes[0].split("(\\{)");
                     String[] timingAttributeParameters = timingAttributeData[1].split(";");
                     for (String attributeParam : timingAttributeParameters) {
@@ -297,29 +311,31 @@ public class LibertyParser {
                         String value = timingAttributeParamParts[1];
                         switch (timingAttributeParamParts[0]) {
                             case "related_pin":
+                            	relatedPinString = value.substring(1, 
+                            			value.length() - 1);
                                 if (!value.matches("\"" + NAMEFORMAT + "\"")) {
                                     throw new InvalidFileFormatException("Name format of related_pin \"" 
                                     + value + "\" of Pin \"" + name + " is invalid");
                                 }
                                 for (InputPin pin: relatedPins) {
-                                    if (pin.getName() == timingAttributeParamParts[1]){
+                                    if (pin.getName().equals(relatedPinString)){
                                         relatedPin = pin;
                                     }
                                 }
                                 break;
                             case "timing_sense":
                                 for (TimingSense timSenseEnum : TimingSense.values()) {
-                                    if (value.matches(timSenseEnum.name())) {
+                                    if (value.matches(timSenseEnum.name().toLowerCase())) {
                                         timSense = timSenseEnum;
                                     }
                                 }
                                 break;
                             case "timing_type":
                                 for (TimingType timTypeEnum : TimingType.values()) {
-                                    if (value.matches(timTypeEnum.name())) {
+                                    if (value.matches(timTypeEnum.name().toLowerCase())) {
                                         timType = timTypeEnum;
                                     }   
-                                }   
+                                } 
                                 break;
                             default:
                                 /** No other parameters supported */
@@ -327,7 +343,15 @@ public class LibertyParser {
                     }
                     if (timSense != null && timType != null) {
                         for (int j = 1; j < timingAttributes.length; j++) {
+                        	if (relatedPin == null && relatedPinString != null) {
+                            	throw new InvalidFileFormatException("Related Pin \"" + relatedPinString + "\""
+                            			+ " on Pin \"" + name + "\" was not found before it");
+                            } else if (relatedPin == null) {
+                                throw new InvalidFileFormatException("Nonexistant related Pin on Pin \""
+                                    + name + "\"");
+                            }
                             Timing timing = parseOutTiming(timingAttributes[j], timSense, timType);
+                            timing.setRelatedPin(relatedPin);
                             attributes.add(timing);
                         }
                     }
@@ -349,7 +373,7 @@ public class LibertyParser {
                         if (uniformIndex1 == null) {
                             uniformIndex1 = index1;
                         }
-                        if (!uniformIndex1.equals(index1)) {
+                        if (!Arrays.equals(index1, uniformIndex1)) {
                             float[] newValues = Interpolator.interpolate(index1, inAttribute.getValues(), uniformIndex1);
                             inAttribute.setIndex1(uniformIndex1);
                             inAttribute.setValues(newValues);
@@ -368,7 +392,7 @@ public class LibertyParser {
                             uniformIndex1 = index1;
                             uniformIndex2 = index2;
                         }
-                        if (!uniformIndex1.equals(index1) || !uniformIndex2.equals(index2)) {
+                        if (!Arrays.equals(uniformIndex1, index1) || !Arrays.equals(uniformIndex2, index2)) {
                             float[][] newValues = Interpolator.bicubicInterpolate(index1, index2, outAttribute.getValues(), uniformIndex1, uniformIndex2);
                             outAttribute.setIndex1(uniformIndex1);
                             outAttribute.setIndex2(uniformIndex2);
@@ -402,7 +426,7 @@ public class LibertyParser {
             }
             OutputPin parsedPin = new OutputPin(name, null, powers, timings);
             if (hasMinCapacitance && hasCapacitance) {
-                parsedPin.setMaxCapacitance(capacitance);
+                parsedPin.setMaxCapacitance(maxCap);
                 parsedPin.setMinCapacitance(minCap);
             }
             if (!function.equals("")) {
@@ -530,5 +554,57 @@ public class LibertyParser {
         	}
         }
         return indexes;
+    }
+    
+    private static void checkBrackets(String content) throws InvalidFileFormatException {
+    	Stack<Integer> roundStack = new Stack<Integer>();
+    	Stack<Integer> curlyStack = new Stack<Integer>();
+    	
+    	CharacterIterator it = new StringCharacterIterator(content);
+    	 
+        while (it.current() != CharacterIterator.DONE) {
+            switch (it.current()) {
+            	case '(':
+                	roundStack.add(it.getIndex());
+                	break;
+            	case ')':
+            		if (roundStack.isEmpty()) {
+            			throw new InvalidFileFormatException("Closed bracket in index "
+            					+ it.getIndex() + " although no bracket was opened");
+            		}
+            		if (curlyStack.isEmpty()) {
+            			roundStack.pop();
+            		} else if (curlyStack.lastElement() > roundStack.pop()) {
+            			throw new InvalidFileFormatException("Closed bracket in index "
+            					+ it.getIndex() + " although was supposed to close curly "
+            							+ "brackets first");
+            		}
+            		break;
+            	case '{':
+            		curlyStack.add(it.getIndex());
+            		break;
+            	case '}':
+            		if (curlyStack.isEmpty()) {
+            			throw new InvalidFileFormatException("Closed bracket in index "
+            					+ it.getIndex() + " although no bracket was opened");
+            		}
+            		if (roundStack.isEmpty()) {
+            			curlyStack.pop();
+            		} else if (curlyStack.pop() < roundStack.lastElement()) {
+            			throw new InvalidFileFormatException("Closed bracket in index "
+            					+ it.getIndex() + " although was supposed to close round "
+            							+ "brackets first");
+            		}
+            		break;
+            	}
+            	it.next();
+        	}
+        if (!curlyStack.isEmpty()) {
+        	throw new InvalidFileFormatException("Unclosed curly bracket from index "
+        			+ it.getIndex());
+        } else if (!roundStack.isEmpty()) {
+        	throw new InvalidFileFormatException("Unclosed round bracket from index "
+        			+ it.getIndex());
+        }
     }
 }
