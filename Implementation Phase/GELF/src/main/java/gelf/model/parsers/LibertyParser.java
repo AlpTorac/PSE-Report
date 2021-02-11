@@ -4,8 +4,6 @@ import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.regex.Pattern;
 import java.util.Stack;
 
 import gelf.model.elements.Cell;
@@ -413,6 +411,11 @@ public class LibertyParser {
             if (hasCapacitance) {
                 parsedPin.setCapacitance(capacitance);
             }
+            for (Attribute attribute : attributes) {
+                if (attribute instanceof InAttribute) {
+                    ((InAttribute) attribute).setParentInPin(parsedPin);
+                }
+            }
             return parsedPin;
         } else {
             ArrayList<OutputPower> powers = new ArrayList<OutputPower>();
@@ -425,6 +428,11 @@ public class LibertyParser {
                 }
             }
             OutputPin parsedPin = new OutputPin(name, null, powers, timings);
+            for (Attribute attribute : attributes) {
+                if (attribute instanceof OutAttribute) {
+                    ((OutAttribute) attribute).setParentOutPin(parsedPin);
+                }
+            }
             if (hasMinCapacitance && hasCapacitance) {
                 parsedPin.setMaxCapacitance(maxCap);
                 parsedPin.setMinCapacitance(minCap);
@@ -442,9 +450,6 @@ public class LibertyParser {
             if (content.startsWith(powGroupEnum.name().toLowerCase())) {
                 powGroup = powGroupEnum;
             }   
-        }
-        if (powGroup == null) {
-            throw new InvalidFileFormatException("Unreachable Exception: Power Group not specified");
         }
         float[][] values = parseDoubleArray(content, "values");
         float[] index1 = parseArray(content, "index_1");
@@ -468,9 +473,6 @@ public class LibertyParser {
                 powGroup = powGroupEnum;
             }   
         }
-        if (powGroup == null) {
-            throw new InvalidFileFormatException("Unreachable Exception: Power Group not specified");
-        }
         float[] values = parseArray(content, "values");
         float[] index1 = parseArray(content, "index_1");
         InputPower attribute = new InputPower(powGroup, values);
@@ -491,9 +493,6 @@ public class LibertyParser {
             if (content.startsWith(timingEnum.name().toLowerCase())) {
                 timGroup = timingEnum;
             }
-        }
-        if (timGroup == null) {
-            throw new InvalidFileFormatException("Unreachable Exception: Timing Group not specified");
         }
         float[][] values = parseDoubleArray(content, "values");
         float[] index1 = parseArray(content, "index_1");
