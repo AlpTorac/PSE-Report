@@ -366,11 +366,31 @@ class LibertyParserTest {
 	@Test
 	void parseLibraryTest() throws InvalidFileFormatException {
 		Library library = LibertyParser.parseLibrary(libraryExample.replaceAll("\\s+", ""));
+		assertEquals("typical", library.getName());
+		Cell cell1 = library.getCells().get(0);
+		assertEquals("AND2_X1", cell1.getName());
+		assertEquals(library, cell1.getParentLibrary());
 	}
 	
 	@Test
 	void parseCellTest() throws InvalidFileFormatException {
 		Cell cell = LibertyParser.parseCell(cellExample.replaceAll("\\s+", ""));
+		assertEquals("AND2_X1", cell.getName());
+		assertEquals(0.005445f, cell.getDefaultLeakage());
+		assertArrayEquals(new float[] {0.002177f, 0.003654f, 0.003458f, 0.005445f}, cell.getLeakages().getValues());
+		InputPin pinA1 = cell.getInPins().get(0);
+		InputPin pinA2 = cell.getInPins().get(1);
+		OutputPin pinZ = cell.getOutPins().get(0);
+		assertEquals(cell, pinA1.getParent());
+		assertEquals(cell, pinA2.getParent());
+		assertEquals(cell, pinZ.getParent());
+		Timing testedTiming = pinZ.getTimings().get(0);
+		assertArrayEquals(exampleIndex1, testedTiming.getIndex1());
+		assertArrayEquals(exampleIndex2, testedTiming.getIndex2());
+		assertEquals(TimingSense.POSITIVE_UNATE, testedTiming.getTimSense());
+		assertEquals(TimingType.COMBINATIONAL, testedTiming.getTimType());
+		assertEquals(TimingGroup.CELL_FALL, testedTiming.getTimGroup());
+		assertEquals(pinA1, testedTiming.getRelatedPin());
 	}
 	
 	@Test
@@ -404,9 +424,11 @@ class LibertyParserTest {
 			{0.0158f, 0.01856f, 0.02694f, 0.04247f},
 			{0.02738f, 0.03029f, 0.03877f, 0.05432f}};
 		assertTrue(Arrays.deepEquals(expValues, testedTiming.getValues()));
+		assertEquals(pin, testedTiming.getParentOutPin());
 		OutputPower testedPower = powers.get(1);
 		assertEquals(pinA2.getName(), testedPower.getRelatedPin().getName());
 		assertEquals(PowerGroup.FALL_POWER, testedPower.getPowGroup());
+		assertEquals(pin, testedPower.getParentOutPin());
 	}
 	
 	@Test
@@ -421,6 +443,7 @@ class LibertyParserTest {
 		assertArrayEquals(new float[] {-9.968e-05f, -0.0001898f, -0.0002075f}, powers.get(1).getValues());
 		assertEquals(PowerGroup.FALL_POWER, powers.get(0).getPowGroup());
 		assertEquals(PowerGroup.RISE_POWER, powers.get(1).getPowGroup());
+		assertEquals(pin, powers.get(0).getParentInPin());
 	}
 	
 	@Test 
