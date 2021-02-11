@@ -14,18 +14,21 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.border.Border;
 
+import gelf.view.diagrams.SettingsProvider;
+
 public abstract class DiagramAxis extends DiagramComponent {
-	private static final int DEFAULT_FONT_SIZE = 10;
-	private static final String DEFAULT_FONT_TYPE = "TimesRoman";
-	private static final int DEFAULT_FONT_STYLE = Font.PLAIN;
-	private static final boolean DEFAULT_SHOW_VALUES_UNDER_AXIS = true;
+	private static SettingsProvider settingsProvider = SettingsProvider.getInstance();
+
+	private static int DEFAULT_FONT_SIZE = settingsProvider.getAxisValueFontSize();
+	private static String DEFAULT_FONT_TYPE = settingsProvider.getAxisFontType();
+	private static int DEFAULT_FONT_STYLE = Font.PLAIN;
 	
 	private int fontSize = DEFAULT_FONT_SIZE;
 	private float min;
 	private float max;
 	private int steps;
 	private boolean showValues;
-	private boolean showValuesUnderAxis = DEFAULT_SHOW_VALUES_UNDER_AXIS;
+	private boolean showValuesUnderAxis;
 	protected DiagramLine axisLine;
 
 	protected DiagramAxis(DiagramLine axisLine, float min, float max, int steps, Container containingElement) {
@@ -204,7 +207,7 @@ public abstract class DiagramAxis extends DiagramComponent {
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Graphics2D graphs = (Graphics2D) g;
-			this.setBounds(this.axis.getFrameBounds());
+//			this.setBounds(this.axis.getFrameBounds());
 			Rectangle bounds = this.getBounds();
 			
 			int fontSize = this.axis.fontSize;
@@ -239,7 +242,7 @@ public abstract class DiagramAxis extends DiagramComponent {
 				Shape line = new Line2D.Double(x1, y1, x1, y2);
 				graphs.draw(line);
 				if (this.axis.showValues) {
-					graphs.drawString(String.valueOf(currentValue), (float) x1 - fontSize, stringY);
+					graphs.drawString(String.valueOf(SettingsProvider.getInstance().getRoundedValue(currentValue)), (float) x1 - fontSize, stringY);
 					currentValue = currentValue + stepLengthInAxis;
 //					System.out.println(x2 + xValueSpace + ", " + y2 + yValueSpace);
 				}

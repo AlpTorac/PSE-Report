@@ -100,6 +100,10 @@ public abstract class DiagramLabel extends DiagramComponent {
 			this.setBounds(this.label.getFrameBounds());
 			this.setBackground(this.label.getColor());
 			this.setBorder(BorderFactory.createLineBorder(borderColor, this.label.getBorderThickness()));
+			this.setHorizontalAlignment(CENTER);
+			this.setVerticalAlignment(CENTER);
+			this.setForeground(foreground);
+			this.setText(this.label.getCaption());
 			this.setOpaque(true);
 		}
 		
@@ -109,10 +113,10 @@ public abstract class DiagramLabel extends DiagramComponent {
 			this.setBounds(this.label.getFrameBounds());
 			this.setBackground(this.label.getColor());
 			this.setBorder(BorderFactory.createLineBorder(borderColor, this.label.getBorderThickness()));
-			this.setHorizontalAlignment(CENTER);
-			this.setVerticalAlignment(CENTER);
-			this.setForeground(foreground);
-			this.setText(this.label.getCaption());
+//			this.setHorizontalAlignment(CENTER);
+//			this.setVerticalAlignment(CENTER);
+//			this.setForeground(foreground);
+//			this.setText(this.label.getCaption());
 		}
 	}
 }

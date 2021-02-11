@@ -9,6 +9,8 @@ import java.awt.Rectangle;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
+import gelf.view.diagrams.SettingsProvider;
+
 public abstract class DiagramColorScale extends DiagramComponent {
 	private PositionInFrame topLeft;
 	private PositionInFrame bottomRight;
@@ -73,8 +75,9 @@ public abstract class DiagramColorScale extends DiagramComponent {
 		int mixedColorBits = Color.HSBtoRGB((float) mixHue, (float) mixSaturation, (float) mixBrightness);
 		
 		Color mixedColor = new Color(mixedColorBits);
+		Color transparentColor = new Color(mixedColor.getRed(), mixedColor.getGreen(), mixedColor.getBlue(), SettingsProvider.getInstance().getHeatMapLabelAlpha());
 		
-		return mixedColor;
+		return transparentColor;
 	}
 	
 	public Color valueToColor(float value) {
@@ -170,6 +173,7 @@ public abstract class DiagramColorScale extends DiagramComponent {
 		protected ScalePanel(DiagramColorScale colorScale) {
 			this.colorScale = colorScale;
 			this.setBounds(this.colorScale.getFrameBounds());
+			this.setBorder(BorderFactory.createLineBorder(this.colorScale.getColor(), this.colorScale.getBorderThickness()));
 			this.setOpaque(true);
 		}
 		
@@ -177,7 +181,7 @@ public abstract class DiagramColorScale extends DiagramComponent {
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			this.setBounds(this.colorScale.getFrameBounds());
-			this.setBorder(BorderFactory.createLineBorder(this.colorScale.getColor(), this.colorScale.getBorderThickness()));
+//			this.setBorder(BorderFactory.createLineBorder(this.colorScale.getColor(), this.colorScale.getBorderThickness()));
 			Graphics2D graphs = (Graphics2D) g;
 			
 			float maxVal = this.colorScale.getValues()[this.colorScale.getValues().length - 1];

@@ -29,14 +29,14 @@ public class HeatMapBuilder extends DiagramBuilder {
 		int containerHeight = this.container.getHeight();
 		
 		int xSpaceForAxisValues = settingsProvider.getxSpaceForAxisValues();
-		int ySpaceForAxisValues = settingsProvider.getySpaceForAxisValues() + settingsProvider.getHeatMapColorScaleVerticalSpace();
+		int ySpaceForAxisValues = settingsProvider.getySpaceForAxisValues() + containerHeight / 10;
 		
 		int xAxisYpos = containerHeight - ySpaceForAxisValues;
 		int yAxisXpos = xSpaceForAxisValues;
 		
 		PositionInFrame axisOrigin = factory.makePositionInFrame(yAxisXpos, xAxisYpos);
-		PositionInFrame endX = factory.makePositionInFrame(containerWidth, xAxisYpos);
-		PositionInFrame endY = factory.makePositionInFrame(yAxisXpos, 0);
+		PositionInFrame endX = factory.makePositionInFrame(containerWidth - settingsProvider.getRightMariginForDiagrams(), xAxisYpos);
+		PositionInFrame endY = factory.makePositionInFrame(yAxisXpos, settingsProvider.getTopMariginForDiagrams());
 		
 		float minIndex1 = 0;
 		float maxIndex1 = this.data.getMaximumIndexAt(0);
@@ -52,9 +52,11 @@ public class HeatMapBuilder extends DiagramBuilder {
 		
 		DiagramAxis xAxis = factory
 				.createSolidAxis(axisOrigin, endX, minIndex1, maxIndex1, stepsInXAxis, axisLine, thickness, this.container);
+		xAxis.showValuesUnderAxis();
 		
 		DiagramAxis yAxis = factory
 				.createSolidAxis(axisOrigin, endY, minIndex2, maxIndex2, stepsInYAxis, axisLine, thickness, this.container);
+		yAxis.showValuesAboveAxis();
 		
 		return new DiagramAxis[] {xAxis, yAxis};
 	}
@@ -150,7 +152,9 @@ public class HeatMapBuilder extends DiagramBuilder {
 
 	@Override
 	protected DiagramComponent[] buildDiagramSpecificComponent() {
-		PositionInFrame topLeft = factory.makePositionInFrame(0, this.container.getHeight() + settingsProvider.getHeatMapSpaceBetweenDiagramAndColorScale() - settingsProvider.getHeatMapColorScaleVerticalSpace());
+		int containerHeight = this.container.getHeight();
+		
+		PositionInFrame topLeft = factory.makePositionInFrame(0, this.container.getHeight() + containerHeight / 20 - containerHeight / 10);
 		PositionInFrame bottomRight = factory.makePositionInFrame(this.container.getWidth(), this.container.getHeight());
 		Color borderColor = settingsProvider.getHeatMapColorScaleBorderColor();
 		int borderThickness = settingsProvider.getHeatMapColorScaleBorderThickness();

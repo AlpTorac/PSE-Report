@@ -3,19 +3,24 @@ package gelf.view.diagrams;
 import java.awt.Color;
 
 public class SettingsProvider {
+	private int topMariginForDiagrams = 10;
+	private int rightMariginForDiagrams = 10;
+	private int decimalDigitsToShow = 2;
+	
 	private int axisThickness = 1;
 	private Color axisColor = Color.BLACK;
 	private int axisValueFontSize = 10;
+	private String axisFontType = "TimesRoman";
 	private boolean showAxisValues = true;
 	private int additionalSpaceForAxisValues = 5;
 	/**
 	 * The horizontal space left between a vertical axis and the edges for displaying values.
 	 */
-	private int xSpaceForAxisValues = axisValueFontSize + additionalSpaceForAxisValues;
+	private int xSpaceForAxisValues = axisValueFontSize * 2 + additionalSpaceForAxisValues;
 	/**
 	 * The vertical space left between a horizontal axis and the edges for displaying values.
 	 */
-	private int ySpaceForAxisValues = axisValueFontSize + additionalSpaceForAxisValues;
+	private int ySpaceForAxisValues = axisValueFontSize * 2 + additionalSpaceForAxisValues;
 	private int stepsInXAxis = 10;
 	private int stepsInYAxis = 10;
 	
@@ -35,19 +40,15 @@ public class SettingsProvider {
 	/**
 	 * Controls how transparent the bars will be.
 	 * Needs a value between 0 - 255.
-	 * The higher the value, the more transparent.
+	 * The lower the value, the more transparent.
 	 */
-	private int heatMapLabelAlpha = 200;
+	private int heatMapLabelAlpha = 255;
 	private int heatMapLabelBorderThickness = 1;
 	private int heatMapColorScaleBorderThickness = 1;
 	private Color heatMapColorScaleBorderColor = Color.BLACK;
 	private Color[] heatMapColorScaleColors = new Color[] {new Color(255, 0, 0, heatMapLabelAlpha),
 			new Color(0, 0, 255, heatMapLabelAlpha)};
-	/**
-	 * The vertical space left for the color scale of the heat map.
-	 */
-	private int heatMapColorScaleVerticalSpace = 200;
-	private int heatMapSpaceBetweenDiagramAndColorScale = 100;
+	
 	/**
 	 * Increase the maximum index by this amount to leave some more space for the final bar.
 	 */
@@ -191,14 +192,6 @@ public class SettingsProvider {
 		this.heatMapLabelBorderThickness = heatMapLabelBorderThickness;
 	}
 
-	public int getHeatMapColorScaleVerticalSpace() {
-		return heatMapColorScaleVerticalSpace;
-	}
-
-	public void setHeatMapColorScaleVerticalSpace(int heatMapColorScaleVerticalSpace) {
-		this.heatMapColorScaleVerticalSpace = heatMapColorScaleVerticalSpace;
-	}
-
 	public Color getHeatMapColorScaleBorderColor() {
 		return heatMapColorScaleBorderColor;
 	}
@@ -223,11 +216,50 @@ public class SettingsProvider {
 		this.histogramIndexEndIndexFactor = histogramIndexEndIndexFactor;
 	}
 
-	public int getHeatMapSpaceBetweenDiagramAndColorScale() {
-		return heatMapSpaceBetweenDiagramAndColorScale;
+	public String getAxisFontType() {
+		return axisFontType;
 	}
 
-	public void setHeatMapSpaceBetweenDiagramAndColorScale(int heatMapSpaceBetweenDiagramAndColorScale) {
-		this.heatMapSpaceBetweenDiagramAndColorScale = heatMapSpaceBetweenDiagramAndColorScale;
+	public void setAxisFontType(String axisFontType) {
+		this.axisFontType = axisFontType;
+	}
+
+	public float getDecimalDigitsToShow() {
+		return decimalDigitsToShow;
+	}
+
+	public void setDecimalDigitsToShow(int decimalDigitsToShow) {
+		this.decimalDigitsToShow = decimalDigitsToShow;
+	}
+	
+	public double getRoundedValue(double value) {
+		double tenExponent = Math.pow(10, this.getDecimalDigitsToShow());
+		double result = Math.round(value * tenExponent) / tenExponent;
+		
+		return result;
+	}
+
+	public int getTopMariginForDiagrams() {
+		return topMariginForDiagrams;
+	}
+
+	public void setTopMariginForDiagrams(int topMariginForDiagrams) {
+		this.topMariginForDiagrams = topMariginForDiagrams;
+	}
+
+	public int getRightMariginForDiagrams() {
+		return rightMariginForDiagrams;
+	}
+
+	public void setRightMariginForDiagrams(int rightMariginForDiagrams) {
+		this.rightMariginForDiagrams = rightMariginForDiagrams;
+	}
+	
+	public int getHeatMapLabelAlpha() {
+		return heatMapLabelAlpha;
+	}
+
+	public void setHeatMapLabelAlpha(int heatMapLabelAlpha) {
+		this.heatMapLabelAlpha = heatMapLabelAlpha;
 	}
 }

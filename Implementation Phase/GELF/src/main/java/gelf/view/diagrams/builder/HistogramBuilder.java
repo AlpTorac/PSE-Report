@@ -8,6 +8,7 @@ import gelf.view.diagrams.components.DiagramAxis;
 import gelf.view.diagrams.components.DiagramComponent;
 import gelf.view.diagrams.components.DiagramComponentFactory;
 import gelf.view.diagrams.components.DiagramValueDisplayComponent;
+import gelf.view.diagrams.components.HistogramBar;
 import gelf.view.diagrams.components.PositionIn2DDiagram;
 import gelf.view.diagrams.components.PositionInFrame;
 import gelf.view.diagrams.type.Histogram;
@@ -32,8 +33,8 @@ public class HistogramBuilder extends DiagramBuilder {
 		int yAxisXpos = xSpaceForAxisValues;
 		
 		PositionInFrame axisOrigin = factory.makePositionInFrame(yAxisXpos, xAxisYpos);
-		PositionInFrame endX = factory.makePositionInFrame(containerWidth, xAxisYpos);
-		PositionInFrame endY = factory.makePositionInFrame(yAxisXpos, 0);
+		PositionInFrame endX = factory.makePositionInFrame(containerWidth - settingsProvider.getRightMariginForDiagrams(), xAxisYpos);
+		PositionInFrame endY = factory.makePositionInFrame(yAxisXpos, settingsProvider.getTopMariginForDiagrams());
 		
 		float minVal = 0;
 		float maxVal = this.data.getMaximumValue();
@@ -50,9 +51,11 @@ public class HistogramBuilder extends DiagramBuilder {
 		
 		DiagramAxis xAxis = DiagramComponentFactory.getDiagramComponentFactory()
 				.createSolidAxis(axisOrigin, endX, minIndex, endMaxIndex, stepsInXAxis, axisLine, thickness, this.container);
+		xAxis.showValuesUnderAxis();
 		
 		DiagramAxis yAxis = DiagramComponentFactory.getDiagramComponentFactory()
 				.createSolidAxis(axisOrigin, endY, minVal, maxVal, stepsInYAxis, axisLine, thickness, this.container);
+		yAxis.showValuesAboveAxis();
 		
 		return new DiagramAxis[] {xAxis, yAxis};
 	}
@@ -72,20 +75,28 @@ public class HistogramBuilder extends DiagramBuilder {
 		int thickness = settingsProvider.getBarBorderThickness();
 		
 		for (int i = 0; i < indices.length - 1; i++) {
-			PositionIn2DDiagram topLeft = factory.makePositionInDiagram(axes[0], indices[i], axes[1], values[i]);
-			PositionIn2DDiagram bottomRight = factory.makePositionInDiagram(axes[0], indices[i + 1], axes[1], 0);
-			
-			dvdc[i] = factory.createHistogramBar(barColor, values[i], topLeft, bottomRight, thickness, this.container);
+			dvdc[i] = this.makeHistogramBar(axes, indices, values, i, barColor, thickness);
 		}
 		
 		float additionalMaxIndex = indices[indices.length - 1] * settingsProvider.getHistogramIndexEndIndexFactor();
-		
-		PositionIn2DDiagram topLeft = factory.makePositionInDiagram(axes[0], indices[indices.length - 1], axes[1], values[indices.length - 1]);
-		PositionIn2DDiagram bottomRight = factory.makePositionInDiagram(axes[0], additionalMaxIndex, axes[1], 0);
-		
-		dvdc[indices.length - 1] = factory.createHistogramBar(barColor, values[indices.length - 1], topLeft, bottomRight, thickness, this.container);
+
+		dvdc[indices.length - 1] = this.makeLastHistogramBar(axes, indices, values, additionalMaxIndex, barColor, thickness);
 		
 		return dvdc;
+	}
+	
+	private HistogramBar makeHistogramBar(DiagramAxis[] axes, float[] indices, float[] values, int i, Color barColor, int thickness) {
+		PositionIn2DDiagram topLeft = factory.makePositionInDiagram(axes[0], indices[i], axes[1], values[i]);
+		PositionIn2DDiagram bottomRight = factory.makePositionInDiagram(axes[0], indices[i + 1], axes[1], 0);
+		
+		return factory.createHistogramBar(barColor, values[i], topLeft, bottomRight, thickness, this.container);
+	}
+	
+	private HistogramBar makeLastHistogramBar(DiagramAxis[] axes, float[] indices, float[] values, double lastBottomRightX, Color barColor, int thickness) {
+		PositionIn2DDiagram topLeft = factory.makePositionInDiagram(axes[0], indices[indices.length - 1], axes[1], values[indices.length - 1]);
+		PositionIn2DDiagram bottomRight = factory.makePositionInDiagram(axes[0], lastBottomRightX, axes[1], 0);
+		
+		return factory.createHistogramBar(barColor, values[indices.length - 1], topLeft, bottomRight, thickness, this.container);
 	}
 
 	@Override

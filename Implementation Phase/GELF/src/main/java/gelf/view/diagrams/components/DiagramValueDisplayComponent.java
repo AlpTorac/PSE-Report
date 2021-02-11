@@ -3,6 +3,8 @@ package gelf.view.diagrams.components;
 import java.awt.Color;
 import java.awt.Container;
 
+import gelf.view.diagrams.SettingsProvider;
+
 public abstract class DiagramValueDisplayComponent extends DiagramComponent implements Hoverable {
 	private float value;
 

@@ -1,20 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <typeInfoHistroy>
-    <typeInfo handle="=GELF/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;gelf.view.diagrams.components{BarChartBar.java[BarChartBar" modifiers="1" timestamp="1612625985538"/>
     <typeInfo handle="=GELF/C:\/Users\/atora\/eclipse\/jre\/lib\/jrt-fs.jar`java.desktop=/maven.pomderived=/true=/=/javadoc_location=/https:\/\/docs.oracle.com\/en\/java\/javase\/12\/docs\/api\/=/&lt;javax.swing(JFrame.class[JFrame" modifiers="33" timestamp="1563827642418"/>
-    <typeInfo handle="=GELF/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;gelf.view.diagrams.components{PositionInDiagram.java[PositionInDiagram" modifiers="1025" timestamp="1612998416015"/>
-    <typeInfo handle="=GELF/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;gelf.view.diagrams.components{PositionInFrame.java[PositionInFrame" modifiers="1" timestamp="1612729884773"/>
-    <typeInfo handle="=GELF/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;gelf.view.diagrams.components{PositionIn2DDiagram.java[PositionIn2DDiagram" modifiers="1" timestamp="1612729896779"/>
-    <typeInfo handle="=GELF/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;gelf.view.diagrams.components{DiagramLine.java[DiagramLine" modifiers="1025" timestamp="1612625985550"/>
-    <typeInfo handle="=GELF/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;gelf.view.diagrams.components{ValueDisplayPoint.java[ValueDisplayPoint" modifiers="1" timestamp="1612625985566"/>
-    <typeInfo handle="=GELF/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;gelf.view.diagrams.components{DiagramPoint.java[DiagramPoint" modifiers="1025" timestamp="1612625985551"/>
-    <typeInfo handle="=GELF/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;gelf.view.diagrams.components{DiagramLabel.java[DiagramLabel" modifiers="1025" timestamp="1612914885678"/>
-    <typeInfo handle="=GELF/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;gelf.view.diagrams.components{DiagramComponentFactory.java[DiagramComponentFactory" modifiers="1" timestamp="1612910088597"/>
-    <typeInfo handle="=GELF/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;gelf.view.diagrams.components{DiagramValueLabel.java[DiagramValueLabel" modifiers="1025" timestamp="1612915028707"/>
-    <typeInfo handle="=GELF/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;gelf.view.diagrams.components{BiColorScale.java[BiColorScale" modifiers="1" timestamp="1612625985539"/>
-    <typeInfo handle="=GELF/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;gelf.view.diagrams.components{HoverLabel.java[HoverLabel" modifiers="1" timestamp="1613000802202"/>
-    <typeInfo handle="=GELF/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;gelf.view.diagrams.data{DiagramDataExtractionStrategy.java[DiagramDataExtractionStrategy" modifiers="1024" timestamp="1612729406249"/>
-    <typeInfo handle="=GELF/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;gelf.view.diagrams.builder{BarChartBuilder.java[BarChartBuilder" modifiers="1" timestamp="1612990401295"/>
-    <typeInfo handle="=GELF/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;gelf.view.diagrams.builder{HistogramBuilder.java[HistogramBuilder" modifiers="1" timestamp="1613002288163"/>
-    <typeInfo handle="=GELF/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;gelf.view.diagrams.builder{HeatMapBuilder.java[HeatMapBuilder" modifiers="1" timestamp="1613001889765"/>
 </typeInfoHistroy>
