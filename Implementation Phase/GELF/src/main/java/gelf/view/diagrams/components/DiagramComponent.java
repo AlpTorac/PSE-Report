@@ -5,14 +5,18 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Rectangle;
 
+import gelf.view.diagrams.IDiagram;
+
 public abstract class DiagramComponent implements HasAttachablePart {
-	protected Container containingElement;
+	private int layer;
 	protected Component visualElement;
+	protected IDiagram diagram;
+	
 	private Color color;
 
-	protected DiagramComponent(Color color, Container containingElement) {
+	protected DiagramComponent(Color color, int layer) {
 		this.color = color;
-		this.containingElement = containingElement;
+		this.setLayer(layer);
 	}
 
 	@Override
@@ -45,20 +49,33 @@ public abstract class DiagramComponent implements HasAttachablePart {
 	}
 	
 	@Override
-	public void attachToContainer(Container container) {
-		if (this.containingElement != container) {
-			this.removeFromContainer();
+	public void attachToDiagram(IDiagram diagram) {
+		if (diagram != null) {
+			this.removeFromDiagram();
 		}
-		this.containingElement = container;
-		this.containingElement.add(this.visualElement);
-		this.setComponentBounds(this.getFrameBounds());
-		this.visualElement.setIgnoreRepaint(true);
+			this.diagram = diagram;
+			diagram.addComponent(this.getVisualElement(), this.layer);
+			this.setComponentBounds(this.getFrameBounds());
+			this.visualElement.setIgnoreRepaint(true);
 	}
 	
 	@Override
-	public void removeFromContainer() {
-		if (this.containingElement != null) {
-			this.containingElement.remove(this.visualElement);
+	public void removeFromDiagram() {
+		if (this.diagram != null) {
+			this.diagram.removeComponent(this.getVisualElement());
+			this.diagram = null;
 		}
+	}
+
+	public int getLayer() {
+		return layer;
+	}
+
+	public void setLayer(int layer) {
+		this.layer = layer;
+	}
+	
+	public Component getVisualElement() {
+		return this.visualElement;
 	}
 }

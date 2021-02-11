@@ -1,5 +1,7 @@
 package gelf.view.diagrams;
 
+import java.awt.Component;
+import java.awt.Container;
 import java.util.Collection;
 
 import gelf.view.diagrams.components.DiagramComponent;
@@ -11,7 +13,11 @@ public interface IDiagram {
 	public Collection<?> cloneData();
 	
 	public void refresh();
-		
+	
+	public void addComponent(Component visualElement, int layer);
+	
+	public void removeComponent(Component visualElement);
+	
 	public boolean addDiagramViewHelper(DiagramViewHelper dvh);
 	
 	public boolean removeDiagramViewHelper(IndicatorIdentifier id);
@@ -23,4 +29,19 @@ public interface IDiagram {
 	public DiagramComponent[] getNonValueDisplayDiagramComponentPrototype();
 	
 	public DiagramValueDisplayComponent[] getDiagramValueDisplayComponentPrototypes();
+	
+	public Component getContainingElement();
+	
+	public default void show() {
+		this.getContainingElement().setVisible(true);
+	}
+	
+	public default void hide() {
+		this.getContainingElement().setVisible(false);
+	}
+	
+	public default void attachToContainer(Container container) {
+		container.add(this.getContainingElement());
+		this.getContainingElement().setBounds(0, 0, container.getWidth(), container.getHeight());
+	}
 }

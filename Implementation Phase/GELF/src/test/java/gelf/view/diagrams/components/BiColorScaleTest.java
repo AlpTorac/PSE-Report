@@ -26,7 +26,7 @@ class BiColorScaleTest implements TestCase {
 	private static PositionInFrame topLeft = new PositionInFrame(400, 400);
 	private static PositionInFrame bottomRight = new PositionInFrame(700, 600);
 	
-	private static BiColorScale cs = DiagramComponentFactory.getDiagramComponentFactory().createBiColorScale(topLeft, bottomRight, borderColor, minVal, maxVal, minValColor, maxValColor, 1, container);
+	private static BiColorScale cs = DiagramComponentFactory.getDiagramComponentFactory().createBiColorScale(topLeft, bottomRight, borderColor, minVal, maxVal, minValColor, maxValColor, 1);
 	
 	@Test
 	void showAndHideTest() {

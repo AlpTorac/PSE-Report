@@ -15,16 +15,19 @@ import gelf.view.diagrams.TestFrame;
 import gelf.view.diagrams.TestPanel;
 
 class BarChartBuilderTest implements TestCase {
-	private static TestPanel panel = new TestPanel();
+	private static TestPanel panel;
 	private static TestFrame frame = new TestFrame();
-	private static Container container = panel;
+	private static Container container;
 	private static ArrayList<float[]> data;
 	
-	private static BarChartBuilder builder = new BarChartBuilder(container);
+	private static BarChartBuilder builder;
 	
 	@BeforeAll
 	private static void initialisePanel() {
-		frame.getContentPane().add(panel);
+		panel = new TestPanel();
+		frame.add(panel);
+		container = panel;
+		builder = new BarChartBuilder(container);
 	}
 	
 	@Test
@@ -35,6 +38,7 @@ class BarChartBuilderTest implements TestCase {
 		
 		builder.receiveDiagramData(data, 0);
 		IDiagram diagram = builder.buildDiagram();
+		diagram.attachToContainer(container);
 		
 		Assertions.assertEquals(data.get(0).length, diagram.getDiagramValueDisplayComponentPrototypes().length);
 		Assertions.assertNull(diagram.getNonValueDisplayDiagramComponentPrototype());

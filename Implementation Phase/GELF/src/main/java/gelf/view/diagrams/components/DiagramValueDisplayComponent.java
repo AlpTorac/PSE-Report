@@ -3,13 +3,14 @@ package gelf.view.diagrams.components;
 import java.awt.Color;
 import java.awt.Container;
 
+import gelf.view.diagrams.IDiagram;
 import gelf.view.diagrams.SettingsProvider;
 
 public abstract class DiagramValueDisplayComponent extends DiagramComponent implements Hoverable {
 	private float value;
 
-	protected DiagramValueDisplayComponent(Color color, float value, Container containingElement) {
-		super(color, containingElement);
+	protected DiagramValueDisplayComponent(Color color, float value) {
+		super(color, SettingsProvider.getInstance().getDiagramValueDisplayLayer());
 
 		this.value = value;
 	}
@@ -17,8 +18,13 @@ public abstract class DiagramValueDisplayComponent extends DiagramComponent impl
 	protected void initHoverableVisualElement() {
 		this.initVisualElement();
 		this.setColor(this.getColor());
-		this.attachToContainer(this.containingElement);
-		this.addHoverListener(this.visualElement, this.containingElement);
+//		this.addHoverListener(this.visualElement, this.diagram);
+	}
+	
+	@Override
+	public void attachToDiagram(IDiagram diagram) {
+		super.attachToDiagram(diagram);
+		this.addHoverListener(this.visualElement, this.diagram);
 	}
 	
 	public void setValue(float value) {

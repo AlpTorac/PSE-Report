@@ -2,14 +2,15 @@ package gelf.view.diagrams.components;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.border.Border;
+
+import gelf.view.diagrams.IDiagram;
+import gelf.view.diagrams.SettingsProvider;
 
 public class HoverLabel implements HasAttachablePart {
 	private String caption;
@@ -17,7 +18,7 @@ public class HoverLabel implements HasAttachablePart {
 	private PositionInFrame position;
 	private double width;
 	private double height;
-	private Container containingElement;
+	private IDiagram containingDiagram;
 	private Component component;
 	private static HoverLabel hoverLabel;
 
@@ -33,11 +34,11 @@ public class HoverLabel implements HasAttachablePart {
 
 	private void setComponentBounds() {
 		Rectangle bounds = new Rectangle();
-		bounds.setRect(this.getXPos(), this.getYPos(), this.getWidth(), this.getHeight());
+		bounds.setRect(this.getXPos(), this.getYPos() - this.getHeight(), this.getWidth(), this.getHeight());
 		
 		this.component.setBounds(bounds);
-		if (this.containingElement != null) {
-			this.containingElement.repaint();
+		if (this.containingDiagram != null) {
+			this.containingDiagram.getContainingElement().repaint();
 		}
 	}
 
@@ -111,22 +112,24 @@ public class HoverLabel implements HasAttachablePart {
 		this.component.setVisible(false);
 	}
 
-	public void attachToContainer(Container container) {
-		if (this.containingElement != container) {
+	public void attachToDiagram(IDiagram diagram) {
+		if (this.containingDiagram != null) {
 			this.hide();
-			this.removeFromContainer();
+			this.removeFromDiagram();
 		}
-		this.containingElement = container;
-		this.containingElement.add(this.component);
-		this.containingElement.repaint();
-		this.show();
+			this.containingDiagram = diagram;
+			this.containingDiagram.addComponent(this.component, SettingsProvider.getInstance().getDiagramHoverLabelLayer());
+			this.setComponentBounds();
+			this.containingDiagram.getContainingElement().repaint();
+//			this.visualElement.setIgnoreRepaint(true);
+			this.show();
 	}
 	
-	public void removeFromContainer() {
-		if (this.containingElement != null) {
-			this.containingElement.remove(this.component);
-			this.containingElement.repaint();
-			this.containingElement = null;
+	public void removeFromDiagram() {
+		if (this.containingDiagram != null) {
+			this.containingDiagram.removeComponent(this.component);
+			this.containingDiagram.getContainingElement().repaint();
+			this.containingDiagram = null;
 			this.hide();
 			this.setXPos(0);
 			this.setYPos(0);

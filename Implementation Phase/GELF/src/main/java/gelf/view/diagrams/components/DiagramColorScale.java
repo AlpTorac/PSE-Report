@@ -1,7 +1,6 @@
 package gelf.view.diagrams.components;
 
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -19,8 +18,8 @@ public abstract class DiagramColorScale extends DiagramComponent {
 	private Color[] valueColors;
 
 	protected DiagramColorScale(PositionInFrame topLeft, PositionInFrame bottomRight, Color borderColor,
-			float[] values, Color[] valueColors, int borderThickness, Container containingElement) {
-		super(borderColor, containingElement);
+			float[] values, Color[] valueColors, int borderThickness) {
+		super(borderColor, SettingsProvider.getInstance().getDiagramNonValueDisplayLayer());
 
 		this.topLeft = topLeft;
 		this.bottomRight = bottomRight;
@@ -75,9 +74,8 @@ public abstract class DiagramColorScale extends DiagramComponent {
 		int mixedColorBits = Color.HSBtoRGB((float) mixHue, (float) mixSaturation, (float) mixBrightness);
 		
 		Color mixedColor = new Color(mixedColorBits);
-		Color transparentColor = new Color(mixedColor.getRed(), mixedColor.getGreen(), mixedColor.getBlue(), SettingsProvider.getInstance().getHeatMapLabelAlpha());
 		
-		return transparentColor;
+		return mixedColor;
 	}
 	
 	public Color valueToColor(float value) {
@@ -159,7 +157,6 @@ public abstract class DiagramColorScale extends DiagramComponent {
 	@Override
 	protected void initVisualElement() {
 		this.visualElement = new ScalePanel(this);
-		this.attachToContainer(containingElement);
 	}
 	
 	protected class ScalePanel extends JPanel {

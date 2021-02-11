@@ -28,15 +28,12 @@ public class HeatMapBuilder extends DiagramBuilder {
 		int containerWidth = this.container.getWidth();
 		int containerHeight = this.container.getHeight();
 		
-		int xSpaceForAxisValues = settingsProvider.getxSpaceForAxisValues();
-		int ySpaceForAxisValues = settingsProvider.getySpaceForAxisValues() + containerHeight / 10;
-		
-		int xAxisYpos = containerHeight - ySpaceForAxisValues;
-		int yAxisXpos = xSpaceForAxisValues;
+		int xAxisYpos = Math.round(containerHeight * (1 - settingsProvider.getDiagramBottomMariginFactor()));
+		int yAxisXpos = Math.round(containerWidth * settingsProvider.getDiagramLeftMariginFactor());
 		
 		PositionInFrame axisOrigin = factory.makePositionInFrame(yAxisXpos, xAxisYpos);
-		PositionInFrame endX = factory.makePositionInFrame(containerWidth - settingsProvider.getRightMariginForDiagrams(), xAxisYpos);
-		PositionInFrame endY = factory.makePositionInFrame(yAxisXpos, settingsProvider.getTopMariginForDiagrams());
+		PositionInFrame endX = factory.makePositionInFrame(containerWidth * (1 - settingsProvider.getDiagramRightMariginFactor()), xAxisYpos);
+		PositionInFrame endY = factory.makePositionInFrame(yAxisXpos, containerHeight * settingsProvider.getDiagramTopMariginFactor());
 		
 		float minIndex1 = 0;
 		float maxIndex1 = this.data.getMaximumIndexAt(0);
@@ -51,11 +48,11 @@ public class HeatMapBuilder extends DiagramBuilder {
 		int thickness = settingsProvider.getAxisThickness();
 		
 		DiagramAxis xAxis = factory
-				.createSolidAxis(axisOrigin, endX, minIndex1, maxIndex1, stepsInXAxis, axisLine, thickness, this.container);
+				.createSolidAxis(axisOrigin, endX, minIndex1, maxIndex1, stepsInXAxis, axisLine, thickness);
 		xAxis.showValuesUnderAxis();
 		
 		DiagramAxis yAxis = factory
-				.createSolidAxis(axisOrigin, endY, minIndex2, maxIndex2, stepsInYAxis, axisLine, thickness, this.container);
+				.createSolidAxis(axisOrigin, endY, minIndex2, maxIndex2, stepsInYAxis, axisLine, thickness);
 		yAxis.showValuesAboveAxis();
 		
 		return new DiagramAxis[] {xAxis, yAxis};
@@ -111,7 +108,7 @@ public class HeatMapBuilder extends DiagramBuilder {
 		
 		return factory.createHeatMapLabel(topLeft, bottomRight,
 				(DiagramColorScale) diagramSpecificComponent[0],
-				values[0][0], thickness, this.container);
+				values[0][0], thickness);
 	}
 	
 	/*
@@ -124,7 +121,7 @@ public class HeatMapBuilder extends DiagramBuilder {
 		
 		return factory.createHeatMapLabel(topLeft, bottomRight,
 				(DiagramColorScale) diagramSpecificComponent[0],
-				values[i][0], thickness, this.container);
+				values[i][0], thickness);
 	}
 	
 	/*
@@ -137,7 +134,7 @@ public class HeatMapBuilder extends DiagramBuilder {
 		
 		return factory.createHeatMapLabel(topLeft, bottomRight,
 				(DiagramColorScale) diagramSpecificComponent[0],
-				values[0][j], thickness, this.container);
+				values[0][j], thickness);
 	}
 	
 	private HeatMapLabel makeLabel(DiagramAxis[] axes, float[][] indices, float[][] values, int i, int j, DiagramComponent[] diagramSpecificComponent,
@@ -147,7 +144,7 @@ public class HeatMapBuilder extends DiagramBuilder {
 		
 		return factory.createHeatMapLabel(topLeft, bottomRight,
 				(DiagramColorScale) diagramSpecificComponent[0],
-				values[i][j], thickness, this.container);
+				values[i][j], thickness);
 	}
 
 	@Override
@@ -163,7 +160,7 @@ public class HeatMapBuilder extends DiagramBuilder {
 		float minVal = this.data.getMinimumValue();
 		float maxVal = this.data.getMaximumValue();
 		
-		DiagramColorScale colorScale = factory.createBiColorScale(topLeft, bottomRight, borderColor, minVal, maxVal, colors[0], colors[1], borderThickness, this.container);
+		DiagramColorScale colorScale = factory.createBiColorScale(topLeft, bottomRight, borderColor, minVal, maxVal, colors[0], colors[1], borderThickness);
 		return new DiagramColorScale[] {colorScale};
 	}
 
@@ -172,7 +169,7 @@ public class HeatMapBuilder extends DiagramBuilder {
 		DiagramAxis[] axes = this.buildAxes();
 		DiagramComponent[] dc = this.buildDiagramSpecificComponent();
 		DiagramValueDisplayComponent[] dvdc = this.buildValueDisplayComponents(axes, dc);
-		return new HeatMap(this.data, axes, dvdc, dc, this.container);
+		return new HeatMap(this.data, axes, dvdc, dc);
 	}
 
 }

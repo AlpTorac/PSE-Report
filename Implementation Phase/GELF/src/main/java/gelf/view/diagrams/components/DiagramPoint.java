@@ -21,8 +21,8 @@ public abstract class DiagramPoint extends DiagramValueDisplayComponent {
 	 */
 	private float size;
 
-	protected DiagramPoint(PositionIn2DDiagram position, Color color, float value, float size, Container containingElement) {
-		super(color, value, containingElement);
+	protected DiagramPoint(PositionIn2DDiagram position, Color color, float value, float size) {
+		super(color, value);
 
 		this.position = position;
 		this.size = size;

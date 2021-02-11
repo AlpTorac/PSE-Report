@@ -1,8 +1,10 @@
 package gelf.view.diagrams.type;
 
-import java.awt.Container;
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.EnumMap;
+
+import javax.swing.JLayeredPane;
 
 import gelf.view.diagrams.IDiagram;
 import gelf.view.diagrams.components.DiagramAxis;
@@ -19,17 +21,30 @@ public abstract class Diagram implements IDiagram {
 	private DiagramComponent[] nonValueDisplayComponents;
 	private EnumMap<IndicatorIdentifier, DiagramViewHelper> viewHelpers;
 	
-	private Container containingElement;
-	
+	private JLayeredPane containingElement;
+
 	public Diagram(DiagramData data, DiagramAxis[] axes,
 			DiagramValueDisplayComponent[] valueDisplayComponents,
-			DiagramComponent[] nonValueDisplayComponents,
-			Container containingElement) {
+			DiagramComponent[] nonValueDisplayComponents) {
+		this.containingElement = new JLayeredPane();
+		this.containingElement.setLayout(null);
+		
 		this.data = data;
 		this.axes = axes;
 		this.valueDisplayComponents = valueDisplayComponents;
 		this.nonValueDisplayComponents = nonValueDisplayComponents;
-		this.containingElement = containingElement;
+		
+		this.attachComponents(this.axes);
+		this.attachComponents(this.nonValueDisplayComponents);
+		this.attachComponents(this.valueDisplayComponents);
+	}
+	
+	private void attachComponents(DiagramComponent[] dcs) {
+		if (dcs != null) {
+			for (int i = 0; i < dcs.length; i++) {
+				dcs[i].attachToDiagram(this);
+			}
+		}
 	}
 	
 	public ArrayList<float[]> cloneData() {
@@ -128,5 +143,17 @@ public abstract class Diagram implements IDiagram {
 		}
 		
 		return clones;
+	}
+	
+	public void addComponent(Component dc, int layer) {
+		this.containingElement.add(dc, layer);
+	}
+	
+	public void removeComponent(Component dc) {
+		this.containingElement.remove(dc);
+	}
+	
+	public JLayeredPane getContainingElement() {
+		return this.containingElement;
 	}
 }

@@ -7,8 +7,8 @@ public class HeatMapLabel extends DiagramValueLabel {
 	private DiagramColorScale colorScale;
 	
 	protected HeatMapLabel(PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight, DiagramColorScale colorScale, float value,
-			int borderThickness, Container containingElement) {
-		super(topLeft, bottomRight, colorScale.valueToColor(value), value, borderThickness, containingElement);
+			int borderThickness) {
+		super(topLeft, bottomRight, colorScale.valueToColor(value), value, borderThickness);
 		
 		this.colorScale = colorScale;
 	}
@@ -26,7 +26,6 @@ public class HeatMapLabel extends DiagramValueLabel {
 				this.getBottomRightInDiagram().clone(),
 				this.colorScale,
 				this.getValue(),
-				this.getBorderThickness(),
-				this.containingElement);
+				this.getBorderThickness());
 	}
 }

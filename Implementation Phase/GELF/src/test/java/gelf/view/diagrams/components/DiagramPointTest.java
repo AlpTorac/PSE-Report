@@ -18,8 +18,8 @@ class DiagramPointTest implements TestCase {
 	private static PositionInFrame endX = new PositionInFrame(800, 400);
 	private static PositionInFrame endY = new PositionInFrame(400, 100);
 
-	private static DiagramAxis yAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, endY, 0, 20, 10, Color.black, 1, frame.getContentPane());
-	private static DiagramAxis xAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, endX, 0, 20, 10, Color.black, 1, frame.getContentPane());
+	private static DiagramAxis yAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, endY, 0, 20, 10, Color.black, 1);
+	private static DiagramAxis xAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, endX, 0, 20, 10, Color.black, 1);
 
 	private static PositionIn2DDiagram pos = new PositionIn2DDiagram(xAxis, 10, yAxis, 10);
 	
@@ -28,7 +28,7 @@ class DiagramPointTest implements TestCase {
 	
 	private static Color color = new Color(255,0,0,100);
 	
-	private static DiagramPoint p = DiagramComponentFactory.getDiagramComponentFactory().createValueDisplayPoint(color, value, size, pos, frame.getContentPane());
+	private static DiagramPoint p = DiagramComponentFactory.getDiagramComponentFactory().createValueDisplayPoint(color, value, size, pos);
 	
 	@Test
 	void initialisationTest() {

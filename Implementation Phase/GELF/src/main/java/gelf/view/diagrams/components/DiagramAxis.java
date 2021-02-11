@@ -14,6 +14,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.border.Border;
 
+import gelf.view.diagrams.IDiagram;
 import gelf.view.diagrams.SettingsProvider;
 
 public abstract class DiagramAxis extends DiagramComponent {
@@ -31,8 +32,8 @@ public abstract class DiagramAxis extends DiagramComponent {
 	private boolean showValuesUnderAxis;
 	protected DiagramLine axisLine;
 
-	protected DiagramAxis(DiagramLine axisLine, float min, float max, int steps, Container containingElement) {
-		super(axisLine.getColor(), containingElement);
+	protected DiagramAxis(DiagramLine axisLine, float min, float max, int steps) {
+		super(axisLine.getColor(), SettingsProvider.getInstance().getDiagramAxisLayer());
 
 		this.min = min;
 		this.max = max;
@@ -163,28 +164,41 @@ public abstract class DiagramAxis extends DiagramComponent {
 		return bounds;
 	}
 	
-	@Override
-	protected void setComponentBounds(Rectangle bounds) {
+//	@Override
+//	protected void setComponentBounds(Rectangle bounds) {
 //		this.axisLine.setComponentBounds(bounds);
 //		this.visualElement.repaint();
-	}
+//	}
 	
 	@Override
 	protected void initVisualElement() {
 		this.visualElement = new AxisVisual(this);
-		this.attachToContainer(this.containingElement);
 	}
 	
 	@Override
 	public void show() {
 		super.show();
+		this.axisLine.show();
 		this.showValues();
 	}
 	
 	@Override
 	public void hide() {
 		super.hide();
+		this.axisLine.hide();
 		this.hideValues();
+	}
+	
+	@Override
+	public void attachToDiagram(IDiagram diagram) {
+		super.attachToDiagram(diagram);
+		this.axisLine.attachToDiagram(diagram);
+	}
+	
+	@Override
+	public void removeFromDiagram() {
+		super.removeFromDiagram();
+		this.axisLine.removeFromDiagram();
 	}
 	
 	protected class AxisVisual extends JLabel {
@@ -238,7 +252,7 @@ public abstract class DiagramAxis extends DiagramComponent {
 			
 			x1 = x1 + xStepLengthInFrame;
 			
-			for (int i = 1; i < this.axis.getSteps(); i++) {
+			for (int i = 1; i <= this.axis.getSteps(); i++) {
 				Shape line = new Line2D.Double(x1, y1, x1, y2);
 				graphs.draw(line);
 				if (this.axis.showValues) {

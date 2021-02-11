@@ -30,7 +30,7 @@ class DiagramColorScaleTest implements TestCase {
 	
 	private static int thickness = 1;
 	
-	private static DiagramColorScale cs = DiagramComponentFactory.getDiagramComponentFactory().createBiColorScale(topLeft, bottomRight, borderColor, minVal, maxVal, minValColor, maxValColor, thickness, container);
+	private static DiagramColorScale cs = DiagramComponentFactory.getDiagramComponentFactory().createBiColorScale(topLeft, bottomRight, borderColor, minVal, maxVal, minValColor, maxValColor, thickness);
 	
 	@Test
 	void initialisationTest() {

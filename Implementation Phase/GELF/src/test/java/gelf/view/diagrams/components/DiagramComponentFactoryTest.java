@@ -30,12 +30,12 @@ class DiagramComponentFactoryTest implements TestCase {
 	
 	private static PositionInFrame posFrameStart = new PositionInFrame(100, 100);
 	private static PositionInFrame posFrameEnd = new PositionInFrame(300, 200);
-	private static DiagramAxis xAxis = f.createSolidAxis(start, endX, 0, 10, 20, c, 1, container);
-	private static DiagramAxis yAxis = f.createSolidAxis(start, endY, 0, 10, 20, c, 1, container);
+	private static DiagramAxis xAxis = f.createSolidAxis(start, endX, 0, 10, 20, c, 1);
+	private static DiagramAxis yAxis = f.createSolidAxis(start, endY, 0, 10, 20, c, 1);
 	private static PositionIn2DDiagram startPosInAxis = new PositionIn2DDiagram(xAxis, 2, yAxis, 7);
 	private static PositionIn2DDiagram endPosInAxis = new PositionIn2DDiagram(xAxis, 4, yAxis, 0);
 	
-	private static DiagramColorScale cs = f.createBiColorScale(posFrameStart, posFrameEnd, c, 0, 20, minValColor, maxValColor, 1, container);
+	private static DiagramColorScale cs = f.createBiColorScale(posFrameStart, posFrameEnd, c, 0, 20, minValColor, maxValColor, 1);
 	
 	private static DiagramComponent[] diagramComponents = new DiagramComponent[8];
 	
@@ -47,32 +47,32 @@ class DiagramComponentFactoryTest implements TestCase {
 	
 	@Test
 	void createBarChartBarTest() {
-		diagramComponents[2] = f.createBarChartBar(c, 2, startPosInAxis, endPosInAxis, 1, container);
+		diagramComponents[2] = f.createBarChartBar(c, 2, startPosInAxis, endPosInAxis, 1);
 	}
 	
 	@Test
 	void createDescriptionLabelTest() {
-		diagramComponents[3] = f.createDescriptionLabel(posFrameStart, posFrameEnd, c, "Testing DescriptionLabel", 1, container);
+		diagramComponents[3] = f.createDescriptionLabel(posFrameStart, posFrameEnd, c, "Testing DescriptionLabel", 1);
 	}
 	
 	@Test
 	void createHeatMapLabelTest() {
-		diagramComponents[4] = f.createHeatMapLabel(startPosInAxis, endPosInAxis, cs, 10, 1, container);
+		diagramComponents[4] = f.createHeatMapLabel(startPosInAxis, endPosInAxis, cs, 10, 1);
 	}
 	
 	@Test
 	void createHistogramBarTest() {
-		diagramComponents[5] = f.createHistogramBar(c, 2, startPosInAxis, endPosInAxis, 1, container);
+		diagramComponents[5] = f.createHistogramBar(c, 2, startPosInAxis, endPosInAxis, 1);
 	}
 	
 	@Test
 	void createSolidLineTest() {
-		diagramComponents[6] = f.createSolidLine(posFrameStart, posFrameEnd, c, 1, container);
+		diagramComponents[6] = f.createSolidLine(posFrameStart, posFrameEnd, c, 1);
 	}
 	
 	@Test
 	void createValueDisplayPointTest() {
-		diagramComponents[7] = f.createValueDisplayPoint(c, 2, 1, startPosInAxis, container);
+		diagramComponents[7] = f.createValueDisplayPoint(c, 2, 1, startPosInAxis);
 	}
 
 	@AfterAll

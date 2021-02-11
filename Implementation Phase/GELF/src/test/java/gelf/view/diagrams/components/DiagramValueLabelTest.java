@@ -18,8 +18,8 @@ class DiagramValueLabelTest implements TestCase {
 	private static PositionInFrame endX = new PositionInFrame(800, 400);
 	private static PositionInFrame endY = new PositionInFrame(400, 100);
 
-	private static DiagramAxis yAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, endY, 0, 20, 10, Color.black, 1, frame.getContentPane());
-	private static DiagramAxis xAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, endX, 0, 20, 10, Color.black, 1, frame.getContentPane());
+	private static DiagramAxis yAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, endY, 0, 20, 10, Color.black, 1);
+	private static DiagramAxis xAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, endX, 0, 20, 10, Color.black, 1);
 	
 	private static PositionIn2DDiagram topLeftVL = new PositionIn2DDiagram(xAxis, 5, yAxis, 5);
 	private static PositionIn2DDiagram bottomRightVL = new PositionIn2DDiagram(xAxis, 10, yAxis, 0);
@@ -27,9 +27,9 @@ class DiagramValueLabelTest implements TestCase {
 	private static PositionInFrame topLeftCS = new PositionInFrame(400, 400);
 	private static PositionInFrame bottomRightCS = new PositionInFrame(700, 600);
 	
-	private static DiagramColorScale cs = DiagramComponentFactory.getDiagramComponentFactory().createBiColorScale(topLeftCS, bottomRightCS, Color.BLACK, 0, 20, Color.RED, Color.BLUE, 1, frame.getContentPane());
+	private static DiagramColorScale cs = DiagramComponentFactory.getDiagramComponentFactory().createBiColorScale(topLeftCS, bottomRightCS, Color.BLACK, 0, 20, Color.RED, Color.BLUE, 1);
 	
-	private static DiagramValueLabel label = DiagramComponentFactory.getDiagramComponentFactory().createHeatMapLabel(topLeftVL, bottomRightVL, cs, 5, 1, frame.getContentPane());
+	private static DiagramValueLabel label = DiagramComponentFactory.getDiagramComponentFactory().createHeatMapLabel(topLeftVL, bottomRightVL, cs, 5, 1);
 	
 	
 	@Test

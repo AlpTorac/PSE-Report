@@ -3,10 +3,11 @@ package gelf.view.diagrams;
 import java.awt.Color;
 
 import javax.swing.BorderFactory;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
-public class TestPanel extends JPanel {
+public class TestPanel extends JLayeredPane {
 	/**
 	 * Generated serial version ID.
 	 */
@@ -21,6 +22,7 @@ public class TestPanel extends JPanel {
 		this.setBorder(border);
 		
 		this.setBackground(new Color(200, 200, 200, 255));
+		this.setOpaque(true);
 //		this.addMouseListener(new MouseAdapter() {
 //			@Override
 //			public void mouseEntered(MouseEvent me) {

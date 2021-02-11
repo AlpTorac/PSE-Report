@@ -29,7 +29,7 @@ class DiagramAxisTest implements TestCase {
 	private static float maxVal = 20;
 	private static int steps = 10;
 	
-	private static DiagramAxis xAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, endX, minVal, maxVal, steps, color, thickness, frame.getContentPane());
+	private static DiagramAxis xAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, endX, minVal, maxVal, steps, color, thickness);
 	
 	@Test
 	void initialisationTest() {
@@ -42,7 +42,7 @@ class DiagramAxisTest implements TestCase {
 		
 		PositionInFrame start = new PositionInFrame(400, 400);
 		PositionInFrame endX = new PositionInFrame(400, 200);
-		DiagramAxis yAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, endX, 0, 20, 10, Color.black, 1, frame.getContentPane());
+		DiagramAxis yAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, endX, 0, 20, 10, Color.black, 1);
 		yAxis.showValues();
 		show(frame, yAxis, TestCase.SHOW_DURATION);
 	}
@@ -56,21 +56,21 @@ class DiagramAxisTest implements TestCase {
 		PositionInFrame start = new PositionInFrame(500, 500);
 		
 		PositionInFrame endX = new PositionInFrame(900, 500);
-		DiagramAxis xAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, endX, 0, 20, 10, Color.black, 3, frame.getContentPane());
+		DiagramAxis xAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, endX, 0, 20, 10, Color.black, 3);
 		xAxis.showValues();
 		
 //		System.out.println("xAxis calculation - end");
 //		System.out.println("yAxis calculation - start");
 		
 		PositionInFrame endY = new PositionInFrame(500, 100);
-		DiagramAxis yAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, endY, 0, 20, 10, Color.black, 3, frame.getContentPane());
+		DiagramAxis yAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, endY, 0, 20, 10, Color.black, 3);
 		yAxis.showValues();
 		
 //		System.out.println("yAxis calculation - end");
 //		System.out.println("xyAxis calculation - start");
 		
 		PositionInFrame endXY = new PositionInFrame(783, 217);
-		DiagramAxis xyAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, endXY, 0, 20, 10, Color.black, 3, frame.getContentPane());
+		DiagramAxis xyAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, endXY, 0, 20, 10, Color.black, 3);
 		xyAxis.showValues();
 		
 //		System.out.println("xyAxis calculation - end");
@@ -85,42 +85,42 @@ class DiagramAxisTest implements TestCase {
 		PositionInFrame start = new PositionInFrame(500, 500);
 		
 		PositionInFrame axis1End = new PositionInFrame(900, 500);
-		DiagramAxis axis1 = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, axis1End, 0, 20, 10, Color.black, 3, frame.getContentPane());
+		DiagramAxis axis1 = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, axis1End, 0, 20, 10, Color.black, 3);
 		axis1.showValues();
 		axis1.showValuesUnderAxis();
 		
 		PositionInFrame axis2End = new PositionInFrame(783, 217);
-		DiagramAxis axis2 = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, axis2End, 0, 20, 10, Color.black, 3, frame.getContentPane());
+		DiagramAxis axis2 = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, axis2End, 0, 20, 10, Color.black, 3);
 		axis2.showValues();
 		axis2.showValuesUnderAxis();
 		
 		PositionInFrame axis3End = new PositionInFrame(500, 100);
-		DiagramAxis axis3 = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, axis3End, 0, 20, 10, Color.black, 3, frame.getContentPane());
+		DiagramAxis axis3 = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, axis3End, 0, 20, 10, Color.black, 3);
 		axis3.showValues();
 		axis3.showValuesAboveAxis();
 		
 		PositionInFrame axis4End = new PositionInFrame(217, 217);
-		DiagramAxis axis4 = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, axis4End, 0, 20, 10, Color.black, 3, frame.getContentPane());
+		DiagramAxis axis4 = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, axis4End, 0, 20, 10, Color.black, 3);
 		axis4.showValues();
 		axis4.showValuesAboveAxis();
 		
 		PositionInFrame axis5End = new PositionInFrame(100, 500);
-		DiagramAxis axis5 = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, axis5End, 0, 20, 10, Color.black, 3, frame.getContentPane());
+		DiagramAxis axis5 = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, axis5End, 0, 20, 10, Color.black, 3);
 		axis5.showValues();
 		axis5.showValuesAboveAxis();
 		
 		PositionInFrame axis6End = new PositionInFrame(217, 783);
-		DiagramAxis axis6 = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, axis6End, 0, 20, 10, Color.black, 3, frame.getContentPane());
+		DiagramAxis axis6 = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, axis6End, 0, 20, 10, Color.black, 3);
 		axis6.showValues();
 		axis6.showValuesAboveAxis();
 		
 		PositionInFrame axis7End = new PositionInFrame(500, 900);
-		DiagramAxis axis7 = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, axis7End, 0, 20, 10, Color.black, 3, frame.getContentPane());
+		DiagramAxis axis7 = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, axis7End, 0, 20, 10, Color.black, 3);
 		axis7.showValues();
 		axis7.showValuesUnderAxis();
 		
 		PositionInFrame axis8End = new PositionInFrame(783, 783);
-		DiagramAxis axis8 = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, axis8End, 0, 20, 10, Color.black, 3, frame.getContentPane());
+		DiagramAxis axis8 = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, axis8End, 0, 20, 10, Color.black, 3);
 		axis8.showValues();
 		axis8.showValuesUnderAxis();
 		

@@ -1,9 +1,9 @@
 package gelf.view.diagrams.components;
 
-import java.awt.Container;
+import gelf.view.diagrams.IDiagram;
 
 public interface HasAttachablePart {
-	public void attachToContainer(Container container);
+	public void attachToDiagram(IDiagram diagram);
 	
-	public void removeFromContainer();
+	public void removeFromDiagram();
 }

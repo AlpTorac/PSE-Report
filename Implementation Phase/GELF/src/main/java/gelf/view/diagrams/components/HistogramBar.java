@@ -5,8 +5,8 @@ import java.awt.Container;
 
 public class HistogramBar extends DiagramBar {
 	protected HistogramBar(Color color, float value, PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight,
-			int borderThickness, Container containingElement) {
-		super(color, value, topLeft, bottomRight, borderThickness, containingElement);
+			int borderThickness) {
+		super(color, value, topLeft, bottomRight, borderThickness);
 	}
 
 	@Override
@@ -16,7 +16,6 @@ public class HistogramBar extends DiagramBar {
 			this.getValue(),
 			this.getTopLeftInDiagram().clone(),
 			this.getBottomRightInDiagram().clone(),
-			this.getBorderThickness(),
-			this.containingElement);
+			this.getBorderThickness());
 	}
 }

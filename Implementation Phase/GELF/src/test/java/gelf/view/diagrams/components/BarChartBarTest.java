@@ -16,9 +16,9 @@ class BarChartBarTest implements TestCase {
 	private static PositionInFrame endX = new PositionInFrame(800, 400);
 	private static PositionInFrame endY = new PositionInFrame(400, 100);
 
-	private static DiagramAxis yAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, endY, 0, 20, 10, Color.black, 1, frame.getContentPane());
+	private static DiagramAxis yAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, endY, 0, 20, 10, Color.black, 1);
 
-	private static DiagramAxis xAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, endX, 0, 20, 10, Color.black, 1, frame.getContentPane());
+	private static DiagramAxis xAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, endX, 0, 20, 10, Color.black, 1);
 
 	private static double tlXpos = 5;
 	private static double tlYpos = 10;
@@ -32,7 +32,7 @@ class BarChartBarTest implements TestCase {
 	private static float value = 10f;
 	private static Color color = new Color(255, 0, 0, 100);
 	
-	private static BarChartBar bar = DiagramComponentFactory.getDiagramComponentFactory().createBarChartBar(color, value, topLeft, bottomRight, thickness, frame.getContentPane());
+	private static BarChartBar bar = DiagramComponentFactory.getDiagramComponentFactory().createBarChartBar(color, value, topLeft, bottomRight, thickness);
 	
 	@Test
 	void initialisationTest() {

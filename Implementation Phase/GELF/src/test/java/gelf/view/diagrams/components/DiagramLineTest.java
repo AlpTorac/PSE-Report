@@ -18,7 +18,7 @@ class DiagramLineTest implements TestCase {
 		
 		PositionInFrame start = new PositionInFrame(100, 100);
 		PositionInFrame end = new PositionInFrame(400, 400);
-		DiagramLine line = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(start, end, Color.BLACK, 2, frame.getContentPane());
+		DiagramLine line = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(start, end, Color.BLACK, 2);
 		show(frame, line, TestCase.SHOW_DURATION);
 	}
 	
@@ -30,8 +30,8 @@ class DiagramLineTest implements TestCase {
 		PositionInFrame end1 = new PositionInFrame(400, 400);
 		PositionInFrame start2 = new PositionInFrame(100, 400);
 		PositionInFrame end2 = new PositionInFrame(400, 100);
-		DiagramLine line2 = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(start2, end2, Color.BLACK, 2, frame.getContentPane());
-		DiagramLine line1 = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(start1, end1, Color.BLACK, 2, frame.getContentPane());
+		DiagramLine line2 = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(start2, end2, Color.BLACK, 2);
+		DiagramLine line1 = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(start1, end1, Color.BLACK, 2);
 		show(frame, TestCase.SHOW_DURATION);
 	}
 	
@@ -42,8 +42,8 @@ class DiagramLineTest implements TestCase {
 		PositionInFrame origin = new PositionInFrame(400, 400);
 		PositionInFrame endX = new PositionInFrame(600, 400);
 		PositionInFrame endY = new PositionInFrame(400, 200);
-		DiagramLine xLine = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(origin, endX, Color.BLACK, 2, frame.getContentPane());
-		DiagramLine yLine = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(origin, endY, Color.BLACK, 2, frame.getContentPane());
+		DiagramLine xLine = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(origin, endX, Color.BLACK, 2);
+		DiagramLine yLine = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(origin, endY, Color.BLACK, 2);
 		show(frame, TestCase.SHOW_DURATION);
 	}
 	
@@ -54,9 +54,9 @@ class DiagramLineTest implements TestCase {
 		PositionInFrame endX = new PositionInFrame(203, 200);
 		PositionInFrame endY = new PositionInFrame(200, 196);
 		
-		DiagramLine horizontalLine = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(corner, endX, Color.BLACK, 1, frame.getContentPane());
-		DiagramLine verticalLine = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(corner, endY, Color.BLACK, 1, frame.getContentPane());
-		DiagramLine hypotenuse = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(endY, endX, Color.BLACK, 1, frame.getContentPane());
+		DiagramLine horizontalLine = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(corner, endX, Color.BLACK, 1);
+		DiagramLine verticalLine = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(corner, endY, Color.BLACK, 1);
+		DiagramLine hypotenuse = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(endY, endX, Color.BLACK, 1);
 		
 		Assertions.assertEquals(3, horizontalLine.calculateLength());
 		Assertions.assertEquals(4, verticalLine.calculateLength());
@@ -70,9 +70,9 @@ class DiagramLineTest implements TestCase {
 		PositionInFrame endX = new PositionInFrame(203, 200);
 		PositionInFrame endY = new PositionInFrame(200, 196);
 		
-		DiagramLine horizontalLine = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(corner, endX, Color.BLACK, 1, frame.getContentPane());
-		DiagramLine verticalLine = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(corner, endY, Color.BLACK, 1, frame.getContentPane());
-		DiagramLine hypotenuse = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(endY, endX, Color.BLACK, 1, frame.getContentPane());
+		DiagramLine horizontalLine = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(corner, endX, Color.BLACK, 1);
+		DiagramLine verticalLine = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(corner, endY, Color.BLACK, 1);
+		DiagramLine hypotenuse = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(endY, endX, Color.BLACK, 1);
 		
 		Assertions.assertEquals(3, horizontalLine.calculateHorizontalLength());
 		Assertions.assertEquals(0, verticalLine.calculateHorizontalLength());
@@ -86,9 +86,9 @@ class DiagramLineTest implements TestCase {
 		PositionInFrame endX = new PositionInFrame(203, 200);
 		PositionInFrame endY = new PositionInFrame(200, 196);
 		
-		DiagramLine horizontalLine = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(corner, endX, Color.BLACK, 1, frame.getContentPane());
-		DiagramLine verticalLine = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(corner, endY, Color.BLACK, 1, frame.getContentPane());
-		DiagramLine hypotenuse = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(endY, endX, Color.BLACK, 1, frame.getContentPane());
+		DiagramLine horizontalLine = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(corner, endX, Color.BLACK, 1);
+		DiagramLine verticalLine = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(corner, endY, Color.BLACK, 1);
+		DiagramLine hypotenuse = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(endY, endX, Color.BLACK, 1);
 		
 		Assertions.assertEquals(0, horizontalLine.calculateVerticalLength());
 		Assertions.assertEquals(4, verticalLine.calculateVerticalLength());
@@ -103,7 +103,7 @@ class DiagramLineTest implements TestCase {
 		
 		PositionInFrame start = new PositionInFrame(100, 100);
 		PositionInFrame end = new PositionInFrame(400, 400);
-		DiagramLine line = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(start, end, Color.BLACK, thickness, frame.getContentPane());
+		DiagramLine line = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(start, end, Color.BLACK, thickness);
 		
 		line.setStartInFrame(321, 54);
 		
@@ -131,7 +131,7 @@ class DiagramLineTest implements TestCase {
 		
 		PositionInFrame start = new PositionInFrame(100, 100);
 		PositionInFrame end = new PositionInFrame(400, 400);
-		DiagramLine line = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(start, end, Color.BLACK, thickness, frame.getContentPane());
+		DiagramLine line = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(start, end, Color.BLACK, thickness);
 		
 		line.setEndInFrame(321, 54);
 		
@@ -159,7 +159,7 @@ class DiagramLineTest implements TestCase {
 		
 		PositionInFrame start = new PositionInFrame(100, 100);
 		PositionInFrame end = new PositionInFrame(400, 400);
-		DiagramLine line = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(start, end, Color.BLACK, thickness, frame.getContentPane());
+		DiagramLine line = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(start, end, Color.BLACK, thickness);
 		
 		line.setThickness(4);
 		
@@ -174,7 +174,7 @@ class DiagramLineTest implements TestCase {
 		
 		PositionInFrame start = new PositionInFrame(100, 100);
 		PositionInFrame end = new PositionInFrame(400, 400);
-		DiagramLine line = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(start, end, Color.BLACK, thickness, frame.getContentPane());
+		DiagramLine line = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(start, end, Color.BLACK, thickness);
 		
 		show(frame, line, 50);
 	}

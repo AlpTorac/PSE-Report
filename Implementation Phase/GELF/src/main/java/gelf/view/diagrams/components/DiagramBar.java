@@ -18,8 +18,8 @@ public abstract class DiagramBar extends DiagramValueDisplayComponent {
 	private int borderThickness;
 
 	protected DiagramBar(Color color, float value, PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight,
-			int borderThickness, Container containingElement) {
-		super(color, value, containingElement);
+			int borderThickness) {
+		super(color, value);
 		
 		this.topLeft = topLeft;
 		this.bottomRight = bottomRight;

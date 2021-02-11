@@ -26,15 +26,12 @@ public class HistogramBuilder extends DiagramBuilder {
 		int containerWidth = this.container.getWidth();
 		int containerHeight = this.container.getHeight();
 		
-		int xSpaceForAxisValues = settingsProvider.getxSpaceForAxisValues();
-		int ySpaceForAxisValues = settingsProvider.getySpaceForAxisValues();
-		
-		int xAxisYpos = containerHeight - ySpaceForAxisValues;
-		int yAxisXpos = xSpaceForAxisValues;
+		int xAxisYpos = Math.round(containerHeight * (1 - settingsProvider.getDiagramBottomMariginFactor()));
+		int yAxisXpos = Math.round(containerWidth * settingsProvider.getDiagramLeftMariginFactor());
 		
 		PositionInFrame axisOrigin = factory.makePositionInFrame(yAxisXpos, xAxisYpos);
-		PositionInFrame endX = factory.makePositionInFrame(containerWidth - settingsProvider.getRightMariginForDiagrams(), xAxisYpos);
-		PositionInFrame endY = factory.makePositionInFrame(yAxisXpos, settingsProvider.getTopMariginForDiagrams());
+		PositionInFrame endX = factory.makePositionInFrame(containerWidth * (1 - settingsProvider.getDiagramRightMariginFactor()), xAxisYpos);
+		PositionInFrame endY = factory.makePositionInFrame(yAxisXpos, containerHeight * settingsProvider.getDiagramTopMariginFactor());
 		
 		float minVal = 0;
 		float maxVal = this.data.getMaximumValue();
@@ -50,11 +47,11 @@ public class HistogramBuilder extends DiagramBuilder {
 		float endMaxIndex = maxIndex * settingsProvider.getHistogramIndexEndIndexFactor();
 		
 		DiagramAxis xAxis = DiagramComponentFactory.getDiagramComponentFactory()
-				.createSolidAxis(axisOrigin, endX, minIndex, endMaxIndex, stepsInXAxis, axisLine, thickness, this.container);
+				.createSolidAxis(axisOrigin, endX, minIndex, endMaxIndex, stepsInXAxis, axisLine, thickness);
 		xAxis.showValuesUnderAxis();
 		
 		DiagramAxis yAxis = DiagramComponentFactory.getDiagramComponentFactory()
-				.createSolidAxis(axisOrigin, endY, minVal, maxVal, stepsInYAxis, axisLine, thickness, this.container);
+				.createSolidAxis(axisOrigin, endY, minVal, maxVal, stepsInYAxis, axisLine, thickness);
 		yAxis.showValuesAboveAxis();
 		
 		return new DiagramAxis[] {xAxis, yAxis};
@@ -89,14 +86,14 @@ public class HistogramBuilder extends DiagramBuilder {
 		PositionIn2DDiagram topLeft = factory.makePositionInDiagram(axes[0], indices[i], axes[1], values[i]);
 		PositionIn2DDiagram bottomRight = factory.makePositionInDiagram(axes[0], indices[i + 1], axes[1], 0);
 		
-		return factory.createHistogramBar(barColor, values[i], topLeft, bottomRight, thickness, this.container);
+		return factory.createHistogramBar(barColor, values[i], topLeft, bottomRight, thickness);
 	}
 	
 	private HistogramBar makeLastHistogramBar(DiagramAxis[] axes, float[] indices, float[] values, double lastBottomRightX, Color barColor, int thickness) {
 		PositionIn2DDiagram topLeft = factory.makePositionInDiagram(axes[0], indices[indices.length - 1], axes[1], values[indices.length - 1]);
 		PositionIn2DDiagram bottomRight = factory.makePositionInDiagram(axes[0], lastBottomRightX, axes[1], 0);
 		
-		return factory.createHistogramBar(barColor, values[indices.length - 1], topLeft, bottomRight, thickness, this.container);
+		return factory.createHistogramBar(barColor, values[indices.length - 1], topLeft, bottomRight, thickness);
 	}
 
 	@Override
@@ -108,7 +105,7 @@ public class HistogramBuilder extends DiagramBuilder {
 	public IDiagram buildDiagram() {
 		DiagramAxis[] axes = this.buildAxes();
 		DiagramValueDisplayComponent[] dvdc = this.buildValueDisplayComponents(axes, null);
-		return new Histogram(this.data, axes, dvdc, null, this.container);
+		return new Histogram(this.data, axes, dvdc, null);
 	}
 
 }

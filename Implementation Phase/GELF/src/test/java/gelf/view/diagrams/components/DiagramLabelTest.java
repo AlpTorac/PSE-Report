@@ -26,7 +26,7 @@ class DiagramLabelTest implements TestCase{
 	
 	@BeforeAll
 	static void initialisationTest() {
-		label = DiagramComponentFactory.getDiagramComponentFactory().createDescriptionLabel(topLeft, bottomRight, Color.RED, "Testing DiagramLabel", 0, container);
+		label = DiagramComponentFactory.getDiagramComponentFactory().createDescriptionLabel(topLeft, bottomRight, Color.RED, "Testing DiagramLabel", 0);
 	}
 
 	@Test

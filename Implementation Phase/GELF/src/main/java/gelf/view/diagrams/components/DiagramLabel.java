@@ -9,6 +9,8 @@ import java.awt.Rectangle;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
+import gelf.view.diagrams.SettingsProvider;
+
 public abstract class DiagramLabel extends DiagramComponent {
 	private static final Color DEFAULT_FOREGROUND = Color.BLACK;
 	
@@ -20,8 +22,8 @@ public abstract class DiagramLabel extends DiagramComponent {
 	private int borderThickness;
 
 	protected DiagramLabel(PositionInFrame topLeft, PositionInFrame bottomRight, Color color, String caption,
-			int borderThickness, Container containingElement) {
-		super(color, containingElement);
+			int borderThickness) {
+		super(color, SettingsProvider.getInstance().getDiagramNonValueDisplayLayer());
 
 		this.caption = caption;
 		this.topLeft = topLeft;
@@ -85,7 +87,6 @@ public abstract class DiagramLabel extends DiagramComponent {
 	@Override
 	protected void initVisualElement() {
 		this.visualElement = new LabelVisual(this);
-		this.attachToContainer(this.containingElement);
 	}
 
 	protected class LabelVisual extends JLabel {

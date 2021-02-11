@@ -6,9 +6,9 @@ import java.awt.Container;
 public class BiColorScale extends DiagramColorScale {
 
 	protected BiColorScale(PositionInFrame topLeft, PositionInFrame bottomRight, Color borderColor, float minVal,
-			float maxVal, Color minValColor, Color maxValColor, int borderThickness, Container containingElement) {
+			float maxVal, Color minValColor, Color maxValColor, int borderThickness) {
 		super(topLeft, bottomRight, borderColor, new float[] {minVal, maxVal},
-				new Color[] {minValColor, maxValColor}, borderThickness, containingElement);
+				new Color[] {minValColor, maxValColor}, borderThickness);
 	}
 
 	public Color getMinValueColor() {
@@ -59,6 +59,6 @@ public class BiColorScale extends DiagramColorScale {
 		Color maxValColor = new Color(this.getMaxValueColor().getRGB());
 		
 		return new BiColorScale(this.getTopLeftInFrame().clone(), this.getBottomRightInFrame().clone(), newColor, this.getMinValue(),
-				this.getMaxValue(), minValColor, maxValColor, this.getBorderThickness(), this.containingElement);
+				this.getMaxValue(), minValColor, maxValColor, this.getBorderThickness());
 	}
 }

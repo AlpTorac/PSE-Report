@@ -23,15 +23,12 @@ public class FunctionGraphBuilder extends DiagramBuilder {
 		int containerWidth = this.container.getWidth();
 		int containerHeight = this.container.getHeight();
 		
-		int xSpaceForAxisValues = settingsProvider.getxSpaceForAxisValues();
-		int ySpaceForAxisValues = settingsProvider.getySpaceForAxisValues();
-		
-		int xAxisYpos = containerHeight - ySpaceForAxisValues;
-		int yAxisXpos = xSpaceForAxisValues;
+		int xAxisYpos = Math.round(containerHeight * (1 - settingsProvider.getDiagramBottomMariginFactor()));
+		int yAxisXpos = Math.round(containerWidth * settingsProvider.getDiagramLeftMariginFactor());
 		
 		PositionInFrame axisOrigin = factory.makePositionInFrame(yAxisXpos, xAxisYpos);
-		PositionInFrame endX = factory.makePositionInFrame(containerWidth - settingsProvider.getRightMariginForDiagrams(), xAxisYpos);
-		PositionInFrame endY = factory.makePositionInFrame(yAxisXpos, settingsProvider.getTopMariginForDiagrams());
+		PositionInFrame endX = factory.makePositionInFrame(containerWidth * (1 - settingsProvider.getDiagramRightMariginFactor()), xAxisYpos);
+		PositionInFrame endY = factory.makePositionInFrame(yAxisXpos, containerHeight * settingsProvider.getDiagramTopMariginFactor());
 		
 		float[] indices = this.data.extractIndices().get(0);
 		int sizeOfIndices = indices.length;
@@ -50,11 +47,11 @@ public class FunctionGraphBuilder extends DiagramBuilder {
 		int thickness = settingsProvider.getAxisThickness();
 		
 		DiagramAxis xAxis = factory
-				.createSolidAxis(axisOrigin, endX, minIndex, maxIndex, stepsInXAxis, axisLine, thickness, this.container);
+				.createSolidAxis(axisOrigin, endX, minIndex, maxIndex, stepsInXAxis, axisLine, thickness);
 		xAxis.showValuesUnderAxis();
 		
 		DiagramAxis yAxis = factory
-				.createSolidAxis(axisOrigin, endY, minVal, maxVal, stepsInYAxis, axisLine, thickness, this.container);
+				.createSolidAxis(axisOrigin, endY, minVal, maxVal, stepsInYAxis, axisLine, thickness);
 		yAxis.showValuesAboveAxis();
 		
 		return new DiagramAxis[] {xAxis, yAxis};
@@ -75,7 +72,7 @@ public class FunctionGraphBuilder extends DiagramBuilder {
 		for (int i = 0; i < dvdc.length; i++) {
 			PositionIn2DDiagram position = factory.makePositionInDiagram(axes[0], indices[i], axes[1], values[i]);
 			
-			dvdc[i] = factory.createValueDisplayPoint(pointColor, values[i], size, position, this.container);
+			dvdc[i] = factory.createValueDisplayPoint(pointColor, values[i], size, position);
 		}
 		
 		return dvdc;
@@ -90,7 +87,7 @@ public class FunctionGraphBuilder extends DiagramBuilder {
 	public IDiagram buildDiagram() {
 		DiagramAxis[] axes = this.buildAxes();
 		DiagramValueDisplayComponent[] dvdc = this.buildValueDisplayComponents(axes, null);
-		return new FunctionGraph(this.data, axes, dvdc, null, this.container);
+		return new FunctionGraph(this.data, axes, dvdc, null);
 	}
 
 }

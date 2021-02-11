@@ -12,6 +12,8 @@ import java.awt.event.MouseListener;
 
 import javax.swing.Timer;
 
+import gelf.view.diagrams.IDiagram;
+
 public interface Hoverable {
 	public default void hoverAction() {
 
@@ -31,26 +33,26 @@ public interface Hoverable {
 		HoverLabel.getHoverLabel().hide();
 	}
 
-	public default void addHoverListener(Component component, Container container) {
+	public default void addHoverListener(Component component, IDiagram diagram) {
 		
 		MouseAdapter listener = new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				HoverLabel.getHoverLabel().attachToContainer(container);
+				HoverLabel.getHoverLabel().attachToDiagram(diagram);
 				showHoverLabel();
 			}
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
 				hoverAction();
-				Point cursorOnComponent = container.getMousePosition();
+				Point cursorOnComponent = diagram.getContainingElement().getMousePosition();
 				repositionHoverLabel(cursorOnComponent.getX(), cursorOnComponent.getY());
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
 				hideHoverLabel();
-				HoverLabel.getHoverLabel().removeFromContainer();
+				HoverLabel.getHoverLabel().removeFromDiagram();
 			}
 		};
 		
@@ -58,9 +60,9 @@ public interface Hoverable {
 		component.addMouseMotionListener(listener);
 	}
 
-	public default void addHoverListeners(Container containerOfComponents, Component[] components) {
+	public default void addHoverListeners(IDiagram diagram, Component[] components) {
 		for (Component c : components) {
-			this.addHoverListener(c, containerOfComponents);
+			this.addHoverListener(c, diagram);
 		}
 	}
 }

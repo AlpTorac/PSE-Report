@@ -15,13 +15,24 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.border.Border;
 
+import gelf.view.diagrams.SettingsProvider;
+
 public abstract class DiagramLine extends DiagramComponent {
 	private PositionInFrame start;
 	private PositionInFrame end;
 	private int thickness;
 
-	protected DiagramLine(PositionInFrame start, PositionInFrame end, Color color, int thickness, Container containingElement) {
-		super(color, containingElement);
+	protected DiagramLine(PositionInFrame start, PositionInFrame end, Color color, int thickness) {
+		super(color, SettingsProvider.getInstance().getDiagramNonValueDisplayLayer());
+
+		this.start = start;
+		this.end = end;
+		this.thickness = thickness;
+		this.initVisualElement();
+	}
+	
+	protected DiagramLine(PositionInFrame start, PositionInFrame end, Color color, int thickness, int layer) {
+		super(color, layer);
 
 		this.start = start;
 		this.end = end;
@@ -103,7 +114,6 @@ public abstract class DiagramLine extends DiagramComponent {
 	@Override
 	protected void initVisualElement() {
 		this.visualElement = new LineVisual(this);
-		this.attachToContainer(this.containingElement);
 	}
 	
 	protected class LineVisual extends JLabel {
@@ -116,8 +126,6 @@ public abstract class DiagramLine extends DiagramComponent {
 		protected LineVisual(DiagramLine line) {
 			this.line = line;
 			this.setBounds(this.line.getFrameBounds());
-			this.setOpaque(false);
-			
 //			Border border = BorderFactory.createLineBorder(Color.RED, this.line.getThickness());
 //			
 //			this.setBorder(border);

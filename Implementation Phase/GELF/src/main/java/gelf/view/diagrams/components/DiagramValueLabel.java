@@ -20,8 +20,8 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 	private int borderThickness;
 
 	protected DiagramValueLabel(PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight, Color color, float value,
-			int borderThickness, Container containingElement) {
-		super(color, value, containingElement);
+			int borderThickness) {
+		super(color, value);
 
 		this.bottomRight = bottomRight;
 		this.topLeft = topLeft;

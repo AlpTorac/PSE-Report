@@ -3,8 +3,17 @@ package gelf.view.diagrams;
 import java.awt.Color;
 
 public class SettingsProvider {
-	private int topMariginForDiagrams = 10;
-	private int rightMariginForDiagrams = 10;
+	private int diagramValueDisplayLayer = 3;
+	private int diagramAxisLayer = 2;
+	private int diagramNonValueDisplayLayer = 3;
+	private int diagramViewHelperDisplayLayer = 2;
+	private int diagramHoverLabelLayer = 1;
+	
+	private float diagramLeftMariginFactor = 1f / 20f;
+	private float diagramRightMariginFactor = 1f / 20f;
+	private float diagramTopMariginFactor = 2f / 20f;
+	private float diagramBottomMariginFactor = 2f / 20f;
+	
 	private int decimalDigitsToShow = 2;
 	
 	private int axisThickness = 1;
@@ -13,41 +22,21 @@ public class SettingsProvider {
 	private String axisFontType = "TimesRoman";
 	private boolean showAxisValues = true;
 	private int additionalSpaceForAxisValues = 5;
-	/**
-	 * The horizontal space left between a vertical axis and the edges for displaying values.
-	 */
-	private int xSpaceForAxisValues = axisValueFontSize * 2 + additionalSpaceForAxisValues;
-	/**
-	 * The vertical space left between a horizontal axis and the edges for displaying values.
-	 */
-	private int ySpaceForAxisValues = axisValueFontSize * 2 + additionalSpaceForAxisValues;
 	private int stepsInXAxis = 10;
 	private int stepsInYAxis = 10;
 	
-	/**
-	 * Controls how transparent the bars will be.
-	 * Needs a value between 0 - 255.
-	 * The higher the value, the more transparent.
-	 */
-	private int barAlpha = 100;
-	private Color barColor = new Color(255, 0, 0, barAlpha);
-	private Color barComparisonColor = new Color(0, 255, 0, barAlpha);
+	private Color barColor = Color.RED;
+	private Color barComparisonColor = Color.GREEN;
 	private int barBorderThickness = 1;
 	
 	private int functionGraphPointSize = 5;
 	private Color functionGraphPointColor = Color.RED;
 	
-	/**
-	 * Controls how transparent the bars will be.
-	 * Needs a value between 0 - 255.
-	 * The lower the value, the more transparent.
-	 */
-	private int heatMapLabelAlpha = 255;
 	private int heatMapLabelBorderThickness = 1;
 	private int heatMapColorScaleBorderThickness = 1;
 	private Color heatMapColorScaleBorderColor = Color.BLACK;
-	private Color[] heatMapColorScaleColors = new Color[] {new Color(255, 0, 0, heatMapLabelAlpha),
-			new Color(0, 0, 255, heatMapLabelAlpha)};
+	private Color[] heatMapColorScaleColors = new Color[] {Color.RED,
+			Color.BLUE};
 	
 	/**
 	 * Increase the maximum index by this amount to leave some more space for the final bar.
@@ -82,14 +71,6 @@ public class SettingsProvider {
 
 	public int getAdditionalSpaceForAxisValues() {
 		return additionalSpaceForAxisValues;
-	}
-
-	public int getxSpaceForAxisValues() {
-		return xSpaceForAxisValues;
-	}
-
-	public int getySpaceForAxisValues() {
-		return ySpaceForAxisValues;
 	}
 
 	public Color getBarColor() {
@@ -130,14 +111,6 @@ public class SettingsProvider {
 
 	public void setAdditionalSpaceForAxisValues(int additionalSpaceForAxisValues) {
 		this.additionalSpaceForAxisValues = additionalSpaceForAxisValues;
-	}
-
-	public void setxSpaceForAxisValues(int xSpaceForAxisValues) {
-		this.xSpaceForAxisValues = xSpaceForAxisValues;
-	}
-
-	public void setySpaceForAxisValues(int ySpaceForAxisValues) {
-		this.ySpaceForAxisValues = ySpaceForAxisValues;
 	}
 
 	public void setBarColor(Color barColor) {
@@ -232,34 +205,82 @@ public class SettingsProvider {
 		this.decimalDigitsToShow = decimalDigitsToShow;
 	}
 	
+	public int getDiagramValueDisplayLayer() {
+		return diagramValueDisplayLayer;
+	}
+
+	public void setDiagramValueDisplayLayer(int diagramValueDisplayLayer) {
+		this.diagramValueDisplayLayer = diagramValueDisplayLayer;
+	}
+
+	public int getDiagramAxisLayer() {
+		return diagramAxisLayer;
+	}
+
+	public void setDiagramAxisLayer(int diagramAxisLayer) {
+		this.diagramAxisLayer = diagramAxisLayer;
+	}
+
+	public int getDiagramNonValueDisplayLayer() {
+		return diagramNonValueDisplayLayer;
+	}
+
+	public void setDiagramNonValueDisplayLayer(int diagramNonValueDisplayLayer) {
+		this.diagramNonValueDisplayLayer = diagramNonValueDisplayLayer;
+	}
+
+	public int getDiagramViewHelperDisplayLayer() {
+		return diagramViewHelperDisplayLayer;
+	}
+
+	public void setDiagramViewHelperDisplayLayer(int diagramViewHelperDisplayLayer) {
+		this.diagramViewHelperDisplayLayer = diagramViewHelperDisplayLayer;
+	}
+
+	public int getDiagramHoverLabelLayer() {
+		return diagramHoverLabelLayer;
+	}
+
+	public void setDiagramHoverLabelLayer(int diagramHoverLabelLayer) {
+		this.diagramHoverLabelLayer = diagramHoverLabelLayer;
+	}
+
+	public float getDiagramLeftMariginFactor() {
+		return diagramLeftMariginFactor;
+	}
+
+	public void setDiagramLeftMariginFactor(float diagramLeftMariginFactor) {
+		this.diagramLeftMariginFactor = diagramLeftMariginFactor;
+	}
+
+	public float getDiagramRightMariginFactor() {
+		return diagramRightMariginFactor;
+	}
+
+	public void setDiagramRightMariginFactor(float diagramRightMariginFactor) {
+		this.diagramRightMariginFactor = diagramRightMariginFactor;
+	}
+
+	public float getDiagramTopMariginFactor() {
+		return diagramTopMariginFactor;
+	}
+
+	public void setDiagramTopMariginFactor(float diagramTopMariginFactor) {
+		this.diagramTopMariginFactor = diagramTopMariginFactor;
+	}
+
+	public float getDiagramBottomMariginFactor() {
+		return diagramBottomMariginFactor;
+	}
+
+	public void setDiagramBottomMariginFactor(float diagramBottomMariginFactor) {
+		this.diagramBottomMariginFactor = diagramBottomMariginFactor;
+	}
+	
 	public double getRoundedValue(double value) {
 		double tenExponent = Math.pow(10, this.getDecimalDigitsToShow());
 		double result = Math.round(value * tenExponent) / tenExponent;
 		
 		return result;
-	}
-
-	public int getTopMariginForDiagrams() {
-		return topMariginForDiagrams;
-	}
-
-	public void setTopMariginForDiagrams(int topMariginForDiagrams) {
-		this.topMariginForDiagrams = topMariginForDiagrams;
-	}
-
-	public int getRightMariginForDiagrams() {
-		return rightMariginForDiagrams;
-	}
-
-	public void setRightMariginForDiagrams(int rightMariginForDiagrams) {
-		this.rightMariginForDiagrams = rightMariginForDiagrams;
-	}
-	
-	public int getHeatMapLabelAlpha() {
-		return heatMapLabelAlpha;
-	}
-
-	public void setHeatMapLabelAlpha(int heatMapLabelAlpha) {
-		this.heatMapLabelAlpha = heatMapLabelAlpha;
 	}
 }

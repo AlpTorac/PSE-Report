@@ -20,8 +20,8 @@ class PositionsIn2DDiagramTest implements TestCase {
 	private PositionInFrame xAxisEnd = new PositionInFrame(500, 400);
 	private PositionInFrame yAxisEnd = new PositionInFrame(400, 300);
 	
-	private DiagramAxis xAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(origin, xAxisEnd, 0, 20, 10, Color.BLACK, 10, container);
-	private DiagramAxis yAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(origin, yAxisEnd, 0, 20, 10, Color.BLACK, 10, container);
+	private DiagramAxis xAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(origin, xAxisEnd, 0, 20, 10, Color.BLACK, 10);
+	private DiagramAxis yAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(origin, yAxisEnd, 0, 20, 10, Color.BLACK, 10);
 	
 	@Test
 	void initialisationTest() {
