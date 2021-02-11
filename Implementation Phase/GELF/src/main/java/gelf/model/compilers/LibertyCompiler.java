@@ -18,14 +18,14 @@ public class LibertyCompiler {
         output += "\n}";
         return output;
     }
- 
+
     /**
      * 2^input_pins will cause problem if left unattended
      * @param cell
      * @return
      */
     public static String compile(Cell cell) {
-        String output = "\tcell(" + cell.getName() + ") {\n" + cell.getCellData();
+        String output = "\tcell(" + cell.getName() + ") {\n"; //+ cell.getCellData();
         output += "\t\tcell_leakage_power : " + cell.getDefaultLeakage() + ";";
         ArrayList<InputPin> inPins = cell.getInPins();
         String[] inPinNames = new String[inPins.size()];
@@ -54,6 +54,7 @@ public class LibertyCompiler {
         for (OutputPin outPin : cell.getOutPins()) {
             output += compile(outPin);
         }
+        return output;
     }
 
     public static String compile(InputPin pin) {
@@ -72,6 +73,7 @@ public class LibertyCompiler {
         }
         return output;
     }
+
     public static String compile(OutputPin pin) {
         String index1String = "\t\t\t\t\tindex_1(" + compileArray(pin.getParent().getIndex1()) + ");\n";
         String index2String = "\t\t\t\t\tindex_2(" + compileArray(pin.getParent().getIndex2()) + ");\n";
