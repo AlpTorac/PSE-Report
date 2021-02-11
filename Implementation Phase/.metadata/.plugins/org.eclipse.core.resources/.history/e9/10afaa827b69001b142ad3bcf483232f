@@ -1,0 +1,21 @@
+package gelf.view.diagrams.data;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+public class SingleValueExtractor extends DiagramDataExtractionStrategy {
+
+	@Override
+	ArrayList<float[]> extractValues(Collection<?> data) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	ArrayList<float[]> extractIndices(Collection<?> data) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+}

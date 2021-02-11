@@ -1,0 +1,12 @@
+package gelf.view.diagrams.data;
+
+import java.util.Collection;
+
+public class ArrayDataFormatter extends DiagramDataFormatter {
+
+	@Override
+	public <E extends Object, T extends Collection<E>> E[] format(T data) {
+		return (E[]) data.toArray();
+	}
+
+}

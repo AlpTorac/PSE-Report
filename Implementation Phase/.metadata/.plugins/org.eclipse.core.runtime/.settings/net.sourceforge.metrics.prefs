@@ -1,0 +1,5 @@
+METRICS.defaultColor=255,255,255
+METRICS.lastPrefChange=1612441110790
+METRICS.linkedColor=0,255,255
+NORM.ExludeList=toString,hashCode,equals
+eclipse.preferences.version=1

@@ -1,0 +1,86 @@
+package gelf.view.diagrams.builder;
+
+import java.awt.Color;
+import java.awt.Container;
+
+import gelf.view.diagrams.IDiagram;
+import gelf.view.diagrams.components.DiagramAxis;
+import gelf.view.diagrams.components.DiagramComponent;
+import gelf.view.diagrams.components.DiagramComponentFactory;
+import gelf.view.diagrams.components.DiagramValueDisplayComponent;
+import gelf.view.diagrams.components.PositionInFrame;
+import gelf.view.diagrams.data.DiagramData;
+
+public class BarChartBuilder extends DiagramBuilder {
+
+	public BarChartBuilder(Container container) {
+		super(container);
+	}
+	
+	@Override
+	protected DiagramAxis[] buildAxes() {
+		DiagramComponentFactory factory = DiagramComponentFactory.getDiagramComponentFactory();
+		
+		int containerWidth = this.container.getWidth();
+		int containerHeight = this.container.getHeight();
+		
+		int spaceForAxisValues = 10;
+		
+		int xAxisYpos = containerHeight - spaceForAxisValues;
+		int yAxisXpos = spaceForAxisValues;
+		
+		PositionInFrame axisOrigin = factory.makePositionInFrame(yAxisXpos, xAxisYpos);
+		PositionInFrame endX = factory.makePositionInFrame(containerWidth, xAxisYpos);
+		PositionInFrame endY = factory.makePositionInFrame(yAxisXpos, 0);
+		
+		int numberOfBars = this.data.extractIndices().size();
+		float[] values = this.data.extractValues().get(0);
+		
+		int stepsInYAxis = values.length;
+		
+		float minVal = Float.MAX_VALUE;
+		float maxVal = Float.MIN_VALUE;
+		
+		for (float f : values) {
+			if (minVal > f) {
+				minVal = f;
+			}
+			if (maxVal < f) {
+				maxVal = f;
+			}
+		}
+		
+		Color axisLine = Color.BLACK;
+		int thickness = 1;
+		
+		DiagramAxis xAxis = DiagramComponentFactory.getDiagramComponentFactory()
+				.createSolidAxis(axisOrigin, endX, 1, numberOfBars, numberOfBars, axisLine, thickness, this.container);
+		
+		DiagramAxis yAxis = DiagramComponentFactory.getDiagramComponentFactory()
+				.createSolidAxis(axisOrigin, endY, minVal, maxVal, stepsInYAxis, axisLine, thickness, this.container);
+		
+		return new DiagramAxis[] {xAxis, yAxis};
+	}
+
+	@Override
+	protected DiagramValueDisplayComponent[] buildValueDisplayComponents(DiagramAxis[] axes,
+			DiagramComponent[] diagramSpecificComponent) {
+		DiagramComponentFactory factory = DiagramComponentFactory.getDiagramComponentFactory();
+		
+		
+		return null;
+	}
+
+	@Override
+	protected DiagramComponent[] buildDiagramSpecificComponent() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public IDiagram buildDiagram() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

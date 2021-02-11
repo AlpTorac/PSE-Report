@@ -1,0 +1,13 @@
+package gelf.view.diagrams.data;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+public class ArrayListDataFormatter extends DiagramDataFormatter {
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public <T extends Collection<?>> ArrayList<?> format(T data) {
+		ArrayList<?> list = new ArrayList(data);
+	}
+}

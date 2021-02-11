@@ -1,0 +1,14 @@
+package gelf.view.diagrams.components;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+class BiColorScaleTest {
+
+	@Test
+	void test() {
+		fail("Not yet implemented");
+	}
+
+}

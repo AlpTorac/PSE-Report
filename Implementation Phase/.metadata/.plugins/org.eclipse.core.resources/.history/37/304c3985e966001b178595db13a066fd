@@ -1,0 +1,14 @@
+package gelf.view.diagrams.components;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+class DiagramColorScaleTest implements TestCase {
+
+	@Test
+	void initialisationTest() {
+		fail("Not yet implemented");
+	}
+
+}

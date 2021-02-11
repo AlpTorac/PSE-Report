@@ -1,0 +1,17 @@
+package gelf.view.diagrams;
+
+public class SettingsProvider {
+	
+	private static SettingsProvider instance;
+	
+	private SettingsProvider() {
+		
+	}
+	
+	public SettingsProvider getInstance() {
+		if (instance == null) {
+			instance = new SettingsProvider();
+		}
+		return instance;
+	}
+}

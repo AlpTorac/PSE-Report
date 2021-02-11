@@ -1,0 +1,5 @@
+1611846910324	Encapsulate field 'instance'
+1611939128537	Rename field 'bottomLeft'
+1611942821940	Rename method 'setComponentSize'
+1612102985182	Rename method 'refreshHoverLabelPosition'
+1612111448998	Encapsulate field 'borderThickness'

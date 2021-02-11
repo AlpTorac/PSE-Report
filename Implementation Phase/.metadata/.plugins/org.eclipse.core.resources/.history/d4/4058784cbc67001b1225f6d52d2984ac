@@ -1,0 +1,75 @@
+package gelf.view.diagrams.components;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.awt.Color;
+import java.awt.Container;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+class DiagramComponentFactoryTest implements TestCase {
+
+	private Container container = new TestFrame().getContentPane();
+	
+	private DiagramComponentFactory f = DiagramComponentFactory.getDiagramComponentFactory();
+	
+	private Color c = Color.BLACK;
+	
+	private Color minValColor = Color.RED;
+	private Color maxValColor = Color.BLUE;
+	
+	private PositionInFrame posFrameStart = new PositionInFrame(100, 100);
+	private PositionInFrame posFrameEnd = new PositionInFrame(300, 200);
+	private DiagramAxis xAxis, yAxis;
+	private PositionIn2DDiagram startPosInAxis = new PositionIn2DDiagram(xAxis, 2, yAxis, 7);
+	private PositionIn2DDiagram endPosInAxis = new PositionIn2DDiagram(xAxis, 4, yAxis, 0);
+	
+	private DiagramColorScale cs;
+	
+	@BeforeAll
+	void diagramAxisCreationTest() {
+		PositionInFrame start = new PositionInFrame(500, 500);
+		PositionInFrame endX = new PositionInFrame(900, 500);
+		PositionInFrame endY = new PositionInFrame(500, 100);
+		
+		this.xAxis = f.createSolidAxis(start, endX, 0, 10, 20, this.c, 1, this.container);
+		this.yAxis = f.createSolidAxis(start, endY, 0, 10, 20, this.c, 1, this.container);
+	}
+	
+	@Test
+	void createBarChartBarTest() {
+		f.createBarChartBar(this.c, 2, startPosInAxis, endPosInAxis, 1, this.container);
+	}
+	
+	@BeforeAll
+	void createBiColorScaleTest() {
+		this.cs = f.createBiColorScale(posFrameStart, posFrameEnd, this.c, 0, 20, minValColor, maxValColor, 1, this.container);
+	}
+	
+	@Test
+	void createDescriptionLabelTest() {
+		f.createDescriptionLabel(posFrameStart, posFrameEnd, this.c, "Testing DescriptionLabel", 1, this.container);
+	}
+	
+	@Test
+	void createHeatMapLabelTest() {
+		f.createHeatMapLabel(startPosInAxis, endPosInAxis, this.cs, 10, 1, this.container);
+	}
+	
+	@Test
+	void createHistogramBarTest() {
+		f.createHistogramBar(this.c, 2, startPosInAxis, endPosInAxis, 1, this.container);
+	}
+	
+	@Test
+	void createSolidLineTest() {
+		f.createSolidLine(posFrameStart, posFrameEnd, this.c, 1, this.container);
+	}
+	
+	@Test
+	void createValueDisplayPointTest() {
+		f.createValueDisplayPoint(this.c, 2, 1, startPosInAxis, this.container);
+	}
+
+}

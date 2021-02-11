@@ -1,0 +1,24 @@
+package gelf.view.diagrams.components;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.awt.Container;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+class HoverLabelTest implements TestCase {
+	private static HoverLabel label = HoverLabel.getHoverLabel();
+	private static TestFrame frame = new TestFrame();
+	private static Container container = frame.getContentPane();
+	
+	@Test
+	void attachingTest() {
+		label.attachToContainer(container);
+		
+		show(frame, TestCase.SHOW_DURATION);
+		
+		Assertions.assertEquals(label.toString(), frame.getComponentAt((int) (label.getXPos() + label.getWidth() / 2), (int)  (label.getYPos() + label.getHeight() / 2)).toString());
+	}
+
+}

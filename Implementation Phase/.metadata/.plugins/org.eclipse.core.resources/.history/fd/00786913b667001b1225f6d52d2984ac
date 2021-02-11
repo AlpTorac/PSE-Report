@@ -1,0 +1,95 @@
+package gelf.view.diagrams.components;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.awt.Color;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+class DiagramLineTest implements TestCase {
+	
+	@Test
+	void initialisationTest() {
+		TestFrame frame = new TestFrame();
+		
+		PositionInFrame start = new PositionInFrame(100, 100);
+		PositionInFrame end = new PositionInFrame(400, 400);
+		DiagramLine line = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(start, end, Color.BLACK, 2, frame.getContentPane());
+//		show(frame);
+	}
+	
+	@Test
+	void lineIntersectionTest() {
+		TestFrame frame = new TestFrame();
+		
+		PositionInFrame start1 = new PositionInFrame(100, 100);
+		PositionInFrame end1 = new PositionInFrame(400, 400);
+		PositionInFrame start2 = new PositionInFrame(100, 400);
+		PositionInFrame end2 = new PositionInFrame(400, 100);
+		DiagramLine line2 = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(start2, end2, Color.BLACK, 2, frame.getContentPane());
+		DiagramLine line1 = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(start1, end1, Color.BLACK, 2, frame.getContentPane());
+//		show(frame);
+	}
+	
+	@Test
+	void straightLinesTest() {
+		TestFrame frame = new TestFrame();
+		
+		PositionInFrame origin = new PositionInFrame(400, 400);
+		PositionInFrame endX = new PositionInFrame(600, 400);
+		PositionInFrame endY = new PositionInFrame(400, 200);
+		DiagramLine xLine = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(origin, endX, Color.BLACK, 2, frame.getContentPane());
+		DiagramLine yLine = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(origin, endY, Color.BLACK, 2, frame.getContentPane());
+//		show(frame);
+	}
+	
+	@Test
+	void lengthTest() {
+		TestFrame frame = new TestFrame();
+		PositionInFrame corner = new PositionInFrame(200, 200);
+		PositionInFrame endX = new PositionInFrame(203, 200);
+		PositionInFrame endY = new PositionInFrame(200, 196);
+		
+		DiagramLine horizontalLine = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(corner, endX, Color.BLACK, 1, frame.getContentPane());
+		DiagramLine verticalLine = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(corner, endY, Color.BLACK, 1, frame.getContentPane());
+		DiagramLine hypotenuse = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(endY, endX, Color.BLACK, 1, frame.getContentPane());
+		
+		Assertions.assertEquals(horizontalLine.calculateLength(), 3);
+		Assertions.assertEquals(verticalLine.calculateLength(), 4);
+		Assertions.assertEquals(hypotenuse.calculateLength(), 5);
+	}
+	
+	@Test
+	void horizontalLengthTest() {
+		TestFrame frame = new TestFrame();
+		PositionInFrame corner = new PositionInFrame(200, 200);
+		PositionInFrame endX = new PositionInFrame(203, 200);
+		PositionInFrame endY = new PositionInFrame(200, 196);
+		
+		DiagramLine horizontalLine = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(corner, endX, Color.BLACK, 1, frame.getContentPane());
+		DiagramLine verticalLine = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(corner, endY, Color.BLACK, 1, frame.getContentPane());
+		DiagramLine hypotenuse = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(endY, endX, Color.BLACK, 1, frame.getContentPane());
+		
+		Assertions.assertEquals(horizontalLine.calculateHorizontalLength(), 3);
+		Assertions.assertEquals(verticalLine.calculateHorizontalLength(), 0);
+		Assertions.assertEquals(hypotenuse.calculateHorizontalLength(), 3);
+	}
+	
+	@Test
+	void verticalLengthTest() {
+		TestFrame frame = new TestFrame();
+		PositionInFrame corner = new PositionInFrame(200, 200);
+		PositionInFrame endX = new PositionInFrame(203, 200);
+		PositionInFrame endY = new PositionInFrame(200, 196);
+		
+		DiagramLine horizontalLine = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(corner, endX, Color.BLACK, 1, frame.getContentPane());
+		DiagramLine verticalLine = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(corner, endY, Color.BLACK, 1, frame.getContentPane());
+		DiagramLine hypotenuse = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(endY, endX, Color.BLACK, 1, frame.getContentPane());
+		
+		Assertions.assertEquals(horizontalLine.calculateVerticalLength(), 0);
+		Assertions.assertEquals(verticalLine.calculateVerticalLength(), 4);
+		Assertions.assertEquals(hypotenuse.calculateVerticalLength(), 4);
+	}
+
+}

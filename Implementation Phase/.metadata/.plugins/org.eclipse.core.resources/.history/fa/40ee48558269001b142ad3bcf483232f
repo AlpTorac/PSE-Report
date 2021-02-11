@@ -1,0 +1,16 @@
+package gelf.view.diagrams.data;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+abstract class DiagramDataExtractionStrategy {
+	
+	protected int numberOfIndices;
+	
+	protected DiagramDataExtractionStrategy(int numberOfIndices) {
+		this.numberOfIndices = numberOfIndices;
+	}
+	
+	protected abstract ArrayList<Object[]> extractValues(Collection<?> data);
+	protected abstract ArrayList<Object[]> extractIndices(Collection<?> data);
+}

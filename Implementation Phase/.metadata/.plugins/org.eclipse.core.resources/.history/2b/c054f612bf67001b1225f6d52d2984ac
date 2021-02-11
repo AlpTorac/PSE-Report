@@ -1,0 +1,25 @@
+package gelf.view.diagrams.components;
+
+public interface TestCase {
+	public default void show(TestFrame frame) {
+		frame.setVisible(true);
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public default void show(TestFrame frame, DiagramComponent dc) {
+		frame.setVisible(true);
+		try {
+			Thread.sleep(1000);
+			dc.hide();
+			Thread.sleep(1000);
+			dc.show();
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+}

@@ -1,0 +1,33 @@
+package gelf.view.diagrams.data;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+
+public class ValueIndexExtractor extends DiagramDataExtractionStrategy {
+
+	protected ValueIndexExtractor(int numberOfIndices) {
+		super(numberOfIndices);
+	}
+	
+	@Override
+	ArrayList<float[]> extractValues(Collection<?> data) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	ArrayList<float[]> extractIndices(Collection<?> data) {
+		ArrayList<float[]> listOfIndices = new ArrayList<float[]>();
+		
+		Iterator<float[]> it = (Iterator<float[]>) data.iterator();
+		
+		for (int i = 0; i < this.numberOfIndices; i++) {
+			listOfIndices.add(it.next());
+		}
+		
+		return listOfIndices;
+	}
+
+}

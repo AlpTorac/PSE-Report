@@ -1,0 +1,46 @@
+package gelf.view.diagrams.components;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.awt.Color;
+import java.awt.Container;
+
+import org.junit.jupiter.api.Test;
+
+class BiColorScaleTest implements TestCase {
+
+	private static TestFrame frame = new TestFrame();
+	private static Container container = frame.getContentPane();
+	
+	private static Color borderColor = Color.BLACK;
+	private static Color minValColor = Color.RED;
+	private static Color maxValColor = Color.BLUE;
+	
+	private static float minVal = 0;
+	private static float maxVal = 100;
+	
+	private static PositionInFrame topLeft = new PositionInFrame(400, 400);
+	private static PositionInFrame bottomRight = new PositionInFrame(700, 600);
+	
+	private static BiColorScale cs = DiagramComponentFactory.getDiagramComponentFactory().createBiColorScale(topLeft, bottomRight, borderColor, minVal, maxVal, minValColor, maxValColor, 1, container);
+	
+	@Test
+	void showAndHideTest() {
+		show(frame, cs, 500);
+	}
+	
+	@Test
+	void setColorTest() {
+		Color newMinValColor = Color.CYAN;
+		Color newMaxValColor = Color.GRAY;
+		
+		cs.setMinValueColor(newMinValColor);
+		cs.setMinValueColor(newMaxValColor);
+		
+		show(frame, cs, 500);
+		
+		cs.setMinValueColor(minValColor);
+		cs.setMaxValueColor(maxValColor);
+	}
+
+}
