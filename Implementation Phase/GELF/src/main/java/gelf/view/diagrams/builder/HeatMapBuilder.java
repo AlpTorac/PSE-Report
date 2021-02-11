@@ -117,7 +117,7 @@ public class HeatMapBuilder extends DiagramBuilder {
 	 */
 	private HeatMapLabel makeNullIndex1Label(DiagramAxis[] axes, float[][] indices, float[][] values, int i, DiagramComponent[] diagramSpecificComponent,
 			int thickness) {
-		PositionIn2DDiagram topLeft = factory.makePositionInDiagram(axes[0], indices[0][0], axes[1], indices[1][0]);
+		PositionIn2DDiagram topLeft = factory.makePositionInDiagram(axes[0], indices[0][i - 1], axes[1], indices[1][0]);
 		PositionIn2DDiagram bottomRight = factory.makePositionInDiagram(axes[0], indices[0][i], axes[1], 0);
 		
 		return factory.createHeatMapLabel(topLeft, bottomRight,

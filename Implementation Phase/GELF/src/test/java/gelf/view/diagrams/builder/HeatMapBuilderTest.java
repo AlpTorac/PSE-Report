@@ -23,7 +23,7 @@ class HeatMapBuilderTest implements TestCase {
 	void buildTest() {
 		data = new ArrayList<float[]>();
 		
-		data.add(new float[] {1f, 2f, 3f});
+		data.add(new float[] {0.15f, 0.5f, 1f});
 		data.add(new float[] {1f, 2f, 3f});
 		data.add(new float[] {1f, 2f, 3f});
 		data.add(new float[] {4f, 5f, 6f});
@@ -32,6 +32,6 @@ class HeatMapBuilderTest implements TestCase {
 		builder.receiveDiagramData(data, 2);
 		IDiagram diagram = builder.buildDiagram();
 		
-		show(frame, TestCase.SHOW_DURATION);
+		show(frame, TestCase.LONG_SHOW_DURATION);
 	}
 }

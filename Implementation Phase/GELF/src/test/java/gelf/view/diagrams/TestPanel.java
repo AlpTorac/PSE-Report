@@ -19,6 +19,8 @@ public class TestPanel extends JPanel {
 		
 		Border border = BorderFactory.createLineBorder(Color.BLACK);
 		this.setBorder(border);
+		
+		this.setBackground(new Color(200, 200, 200, 255));
 //		this.addMouseListener(new MouseAdapter() {
 //			@Override
 //			public void mouseEntered(MouseEvent me) {

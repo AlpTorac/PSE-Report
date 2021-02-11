@@ -33,7 +33,7 @@ class HistogramBuilderTest implements TestCase {
 		builder.receiveDiagramData(data, 1);
 		IDiagram diagram = builder.buildDiagram();
 		diagram.refresh();
-		show(frame, TestCase.SHOW_DURATION);
+		show(frame, TestCase.LONG_SHOW_DURATION);
 	}
 
 }

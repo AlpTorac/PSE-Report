@@ -51,7 +51,7 @@ public class SettingsProvider {
 	/**
 	 * Increase the maximum index by this amount to leave some more space for the final bar.
 	 */
-	private int histogramIndexEndIndexSpace = 10;
+	private float histogramIndexEndIndexFactor = 1.1f;
 	
 	private static SettingsProvider instance;
 	
@@ -215,12 +215,12 @@ public class SettingsProvider {
 		this.heatMapColorScaleBorderThickness = heatMapColorScaleBorderThickness;
 	}
 
-	public int getHistogramIndexEndIndexSpace() {
-		return histogramIndexEndIndexSpace;
+	public float getHistogramIndexEndIndexFactor() {
+		return histogramIndexEndIndexFactor;
 	}
 
-	public void setHistogramIndexEndIndexSpace(int histogramIndexEndIndexSpace) {
-		this.histogramIndexEndIndexSpace = histogramIndexEndIndexSpace;
+	public void setHistogramIndexEndIndexFactor(float histogramIndexEndIndexFactor) {
+		this.histogramIndexEndIndexFactor = histogramIndexEndIndexFactor;
 	}
 
 	public int getHeatMapSpaceBetweenDiagramAndColorScale() {
