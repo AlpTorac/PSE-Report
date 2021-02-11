@@ -17,3 +17,8 @@
 1612914626961	Encapsulate field 'foreground'
 1612989354225	Rename local variable 'axisLine'
 1612996573773	Encapsulate field 'heatMapSpaceBetweenDiagramAndColorScale'
+1613057720740	Encapsulate field 'axisFontType'
+1613057878717	Encapsulate field 'tolerance'
+1613057976802	Rename field 'tolerance'
+1613058835503	Encapsulate field 'topMariginForDiagrams'
+1613058969321	Encapsulate field 'rightMariginForDiagrams'

@@ -126,7 +126,7 @@ public abstract class DiagramLine extends DiagramComponent {
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			this.setBounds(this.line.getFrameBounds());
+//			this.setBounds(this.line.getFrameBounds());
 			Graphics2D graphs = (Graphics2D) g;
 			
 			Rectangle bounds = this.getBounds();

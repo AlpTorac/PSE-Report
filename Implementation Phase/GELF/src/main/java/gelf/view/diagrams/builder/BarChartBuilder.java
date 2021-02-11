@@ -31,8 +31,8 @@ public class BarChartBuilder extends DiagramBuilder {
 		int yAxisXpos = xSpaceForAxisValues;
 		
 		PositionInFrame axisOrigin = factory.makePositionInFrame(yAxisXpos, xAxisYpos);
-		PositionInFrame endX = factory.makePositionInFrame(containerWidth, xAxisYpos);
-		PositionInFrame endY = factory.makePositionInFrame(yAxisXpos, 0);
+		PositionInFrame endX = factory.makePositionInFrame(containerWidth - settingsProvider.getRightMariginForDiagrams(), xAxisYpos);
+		PositionInFrame endY = factory.makePositionInFrame(yAxisXpos, settingsProvider.getTopMariginForDiagrams());
 		
 		int numberOfBars = this.data.extractValues().get(0).length;
 		float[] values = this.data.extractValues().get(0);
@@ -47,9 +47,11 @@ public class BarChartBuilder extends DiagramBuilder {
 		
 		DiagramAxis xAxis = factory
 				.createSolidAxis(axisOrigin, endX, 0, numberOfBars, numberOfBars + 1, axisLineColor, thickness, this.container);
+		xAxis.showValuesUnderAxis();
 		
 		DiagramAxis yAxis = factory
 				.createSolidAxis(axisOrigin, endY, minVal, maxVal, stepsInYAxis, axisLineColor, thickness, this.container);
+		yAxis.showValuesAboveAxis();
 		
 		return new DiagramAxis[] {xAxis, yAxis};
 	}

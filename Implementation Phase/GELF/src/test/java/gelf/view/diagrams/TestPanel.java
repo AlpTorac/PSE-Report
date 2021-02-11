@@ -14,7 +14,7 @@ public class TestPanel extends JPanel {
 
 	public TestPanel() {
 		super();
-		this.setBounds(0, 0, 1000, 1000);
+		this.setBounds(250, 250, 500, 500);
 		this.setLayout(null);
 		
 		Border border = BorderFactory.createLineBorder(Color.BLACK);

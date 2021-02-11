@@ -30,8 +30,8 @@ public class FunctionGraphBuilder extends DiagramBuilder {
 		int yAxisXpos = xSpaceForAxisValues;
 		
 		PositionInFrame axisOrigin = factory.makePositionInFrame(yAxisXpos, xAxisYpos);
-		PositionInFrame endX = factory.makePositionInFrame(containerWidth, xAxisYpos);
-		PositionInFrame endY = factory.makePositionInFrame(yAxisXpos, 0);
+		PositionInFrame endX = factory.makePositionInFrame(containerWidth - settingsProvider.getRightMariginForDiagrams(), xAxisYpos);
+		PositionInFrame endY = factory.makePositionInFrame(yAxisXpos, settingsProvider.getTopMariginForDiagrams());
 		
 		float[] indices = this.data.extractIndices().get(0);
 		int sizeOfIndices = indices.length;
@@ -51,9 +51,11 @@ public class FunctionGraphBuilder extends DiagramBuilder {
 		
 		DiagramAxis xAxis = factory
 				.createSolidAxis(axisOrigin, endX, minIndex, maxIndex, stepsInXAxis, axisLine, thickness, this.container);
+		xAxis.showValuesUnderAxis();
 		
 		DiagramAxis yAxis = factory
 				.createSolidAxis(axisOrigin, endY, minVal, maxVal, stepsInYAxis, axisLine, thickness, this.container);
+		yAxis.showValuesAboveAxis();
 		
 		return new DiagramAxis[] {xAxis, yAxis};
 	}

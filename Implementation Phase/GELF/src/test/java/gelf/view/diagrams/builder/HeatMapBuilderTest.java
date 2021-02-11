@@ -6,18 +6,26 @@ import java.awt.Container;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import gelf.view.diagrams.IDiagram;
 import gelf.view.diagrams.TestCase;
 import gelf.view.diagrams.TestFrame;
+import gelf.view.diagrams.TestPanel;
 
 class HeatMapBuilderTest implements TestCase {
+	private static TestPanel panel = new TestPanel();
 	private static TestFrame frame = new TestFrame();
-	private static Container container = frame;
+	private static Container container = panel;
 	private static ArrayList<float[]> data;
 	
 	private static HeatMapBuilder builder = new HeatMapBuilder(container);
+	
+	@BeforeAll
+	private static void initialisePanel() {
+		frame.getContentPane().add(panel);
+	}
 	
 	@Test
 	void buildTest() {

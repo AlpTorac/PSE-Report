@@ -25,7 +25,7 @@ public class HoverLabel implements HasAttachablePart {
 		this.width = 100;
 		this.height = 50;
 		this.position = new PositionInFrame(0, 0);
-		this.color = Color.WHITE;
+		this.color = new Color(255, 255, 255, 255);
 		this.caption = "";
 		this.component = new HoverLabelVisual(this);
 		this.setComponentBounds();
@@ -36,6 +36,9 @@ public class HoverLabel implements HasAttachablePart {
 		bounds.setRect(this.getXPos(), this.getYPos(), this.getWidth(), this.getHeight());
 		
 		this.component.setBounds(bounds);
+		if (this.containingElement != null) {
+			this.containingElement.repaint();
+		}
 	}
 
 	private void setComponentColor() {
@@ -110,6 +113,7 @@ public class HoverLabel implements HasAttachablePart {
 
 	public void attachToContainer(Container container) {
 		if (this.containingElement != container) {
+			this.hide();
 			this.removeFromContainer();
 		}
 		this.containingElement = container;
@@ -159,12 +163,12 @@ public class HoverLabel implements HasAttachablePart {
 		
 		@Override
 		protected void paintComponent(Graphics g) {
-			this.setBackground(this.label.getColor());
+//			this.setBackground(this.label.getColor());
 			super.paintComponent(g);
-			Graphics2D graphs = (Graphics2D) g;
-			Border b = BorderFactory.createLineBorder(Color.BLACK, 1);
-			this.setBorder(b);
-			this.setText(this.label.getCaption());
+//			Graphics2D graphs = (Graphics2D) g;
+//			Border b = BorderFactory.createLineBorder(Color.BLACK, 1);
+//			this.setBorder(b);
+//			this.setText(this.label.getCaption());
 		}
 	}
 }
