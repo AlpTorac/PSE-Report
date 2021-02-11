@@ -1,5 +1,6 @@
 package gelf.controller.listeners;
 
+import gelf.model.commands.UndoCommand;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

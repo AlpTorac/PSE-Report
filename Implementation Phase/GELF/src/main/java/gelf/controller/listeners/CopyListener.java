@@ -4,7 +4,10 @@ import gelf.view.composites.Outliner;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import gelf.model.project.Model;
+import java.util.HashSet;
 
+import gelf.model.elements.Cell;
 import gelf.model.elements.Element;
 
 /*
@@ -20,9 +23,17 @@ public class CopyListener implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		ArrayList<Element> elements = new ArrayList<Element>();
-		CopyAction copy = new CopyAction();
-		copy.execute();
+		HashSet<Cell> cells = new HashSet<Cell>();
+		for (Element element: outliner.getSelectedElements()) {
+			if (element instanceof Cell) {
+				cells.add((Cell) element);
+			}
+			else {
+				//TODO error
+				return;
+			}
+		}
+		Model.getCurrentProject().setCopiedElements(cells);
 	}
 
 }

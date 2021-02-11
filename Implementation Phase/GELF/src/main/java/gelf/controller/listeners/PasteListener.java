@@ -1,5 +1,7 @@
 package gelf.controller.listeners;
 
+import gelf.model.commands.PasteCommand;
+import gelf.model.elements.Library;
 import gelf.view.composites.Outliner;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,8 +19,14 @@ public class PasteListener implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		PasteCommand paste = new PasteCommand();
-		paste.execute();
+		if (outliner.getSelectedElements().size() == 1 && outliner.getSelectedElements().get(0) instanceof Library) {
+			Library destinationLibrary = outliner.getSelectedElements().get(0);
+			PasteCommand paste = new PasteCommand(destinationLibrary);
+			paste.execute();
+		}
+		else {
+			//TODO error
+		}
 	}
 
 }

@@ -1,6 +1,9 @@
 package gelf.controller.listeners;
 
 import gelf.view.composites.Outliner;
+import gelf.view.composites.SubWindow;
+import gelf.view.composites.SubWindowArea;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -13,16 +16,25 @@ import gelf.model.elements.Element;
  */
 public class OpenElementListener implements ActionListener, MouseListener {
 	
-	public Outliner outliner;
+	private Outliner outliner;
 	
-	public OpenElementListener(Outliner outliner) {
+	private SubWindowArea subwindows; 
+	
+	public OpenElementListener(Outliner outliner, SubWindowArea subwindows) {
 		this.outliner = outliner;
+		this.subwindows = subwindows;
 	}
 	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Element element = outliner.getSelectedElements();
+		if (outliner.getSelectedElements().size() >= 3) {
+			//TODO error
+			return;
+		}
+		for (Element element: outliner.getSelectedElements()) {
+			subwindows.addSubWindow(new SubWindow(element));
+		}
 	}
 
 
@@ -30,34 +42,22 @@ public class OpenElementListener implements ActionListener, MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 2) {
 			Element element = outliner.getSelectedElements();
-		    Subwindow(element);
+		    subwindows.add(new SubWindow(element));
 		}
 		
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseEntered(MouseEvent arg0) {}
 
 	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseExited(MouseEvent arg0) {}
 
 	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mousePressed(MouseEvent arg0) {}
 
 	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseReleased(MouseEvent arg0) {}
 
 	
 }
