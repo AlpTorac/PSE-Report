@@ -1,6 +1,8 @@
 package gelf.view.representation;
 
 import gelf.model.elements.*;
+import gelf.view.components.Panel;
+import gelf.view.composites.SubWindow;
 
 import java.awt.Button;
 import java.awt.Color;
@@ -22,10 +24,10 @@ import javax.swing.ScrollPaneConstants;
 /*
  * Displays all child cells of the selected library.
  */
-public class LibraryPanel extends Panel implements MouseListener, Resizable{
+public class LibraryPanel extends Panel implements MouseListener{
    
 	private HashMap<Label, Cell> buttons;
-    private Panel listPanel;
+    private JPanel listPanel;
     private Library selectedLibrary;
 	private ArrayList<Cell> cells;
 	private SubWindow subwindow;
@@ -37,14 +39,16 @@ public class LibraryPanel extends Panel implements MouseListener, Resizable{
      * Constructor
      * @param library To be opened library.
      */
-    public LibraryPanel(Library library, Subwindow subwindow, DataPanel dataPanel) {
+    public LibraryPanel(int width, int height, Library library, SubWindow subwindow, DataPanel dataPanel) {
+    	super(width, height);
     	this.subwindow = subwindow;
     	this.dataPanel = dataPanel;
     	dataPanel.setElement(library);
     	selectedLibrary = library;
         cells = selectedLibrary.getCells();
        
-        listPanel = new Panel();
+        listPanel = new JPanel(); 
+        listPanel.setBackground(new Color(0.3f, 0.3f, 0.3f));
         scrollPane = new JScrollPane(listPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
         		ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         this.add(scrollPane);
@@ -52,9 +56,10 @@ public class LibraryPanel extends Panel implements MouseListener, Resizable{
         listPanel.setPreferredSize(new Dimension(200, cells.size() * 30));
          
         for (int i = 0; i < cells.size(); i++) {
-        	Label label = new JLabel();
+        	Label label = new Label();
         	label.setText(cells.get(i).getName());
         	label.setFont(new Font("Arial", Font.PLAIN, 12));
+        	label.setForeground(Color.WHITE);
         	listPanel.add(label);
         	label.addMouseListener(this);
         	buttons.put(label, cells.get(i));
@@ -85,14 +90,8 @@ public class LibraryPanel extends Panel implements MouseListener, Resizable{
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mousePressed(MouseEvent e) {}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseReleased(MouseEvent e) {}
 }

@@ -1,5 +1,8 @@
 package gelf.view.representation;
-import gelf.view.composites.Panel;
+
+import gelf.view.composites.SubWindow;
+import gelf.view.components.Label;
+import gelf.view.components.Panel;
 import gelf.model.elements.*;
 
 import java.awt.Button;
@@ -24,27 +27,30 @@ import java.util.Map;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.OverlayLayout;
 import javax.swing.ScrollPaneConstants;
 
 /*
  * Displays the selected cell on the navigation panel.
  */
-public class CellPanel extends JPanel implements ActionListener, MouseListener, ItemListener, Resizable{
+public class CellPanel extends Panel implements ActionListener, MouseListener, ItemListener{
 
     private Label imageLabel;
     private Panel mainPanel;
     private Panel lowerPanel;
     private JScrollPane scrollPane;
+    private JPanel imagePanel;
     
     private HashMap<Pin, Label> buttonMap;
 	private HashMap<Checkbox, InputPin> checkboxMap;
 	private ArrayList<Checkbox> checkboxes;
-	private Button libButton;
-	private Button cellButton; 
+	private JButton libButton;
+	private JButton cellButton; 
 	
     private Cell cell;
 	private ArrayList<InputPin> inputPins;
@@ -61,23 +67,30 @@ public class CellPanel extends JPanel implements ActionListener, MouseListener, 
 
 	/*
 	 * Constructor
-	 * @param cell Selected cell.
+	 * @param element 
+	 * @param subwindow
+	 * @param dataPanel
+	 * 
 	 */
-	public CellPanel(Element element, Subwindow subwindow, DataPanel dataPanel) {
+	public CellPanel(int width, int height, Element element, SubWindow subwindow, DataPanel dataPanel) {
+		super(width, height);
 		this.subwindow = subwindow;
 		this.dataPanel = dataPanel;
-		
 		setElement(element);
+		
 		
 		buttonMap = new HashMap<Pin, Label>();
 		checkboxMap = new HashMap<Checkbox, InputPin>();
 		checkboxes = new ArrayList<Checkbox>();
 		
-		mainPanel = new Panel();
-		lowerPanel = new Panel();
+		mainPanel = new Panel(width, height);
+		
 		scrollPane = new JScrollPane(mainPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		
+		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		this.setAlignmentX(Component.CENTER_ALIGNMENT);
+		this.add(scrollPane);
 		
 		libButton.addActionListener(this);
 		libButton.setSize(25, 20);
@@ -86,13 +99,9 @@ public class CellPanel extends JPanel implements ActionListener, MouseListener, 
 		cellButton.setSize(35, 20);
 		imageGen = new CellImageGenerator();
 		
-		this.setSize(new Dimension(200, 200));
-		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		
 		BoxLayout innerLayout = new BoxLayout(mainPanel, BoxLayout.Y_AXIS);
 		mainPanel.setLayout(innerLayout);
-		
-		this.setAlignmentX(Component.CENTER_ALIGNMENT);
-		this.add(scrollPane);
 		
 		imageLabel = new Label();
 		
@@ -105,9 +114,13 @@ public class CellPanel extends JPanel implements ActionListener, MouseListener, 
 		libButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		mainPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		cellButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		mainPanel.setPreferredSize(new Dimension(300, 300));
-		lowerPanel.setPreferredSize(new Dimension(300, (maxPins <= 5) ? 300 : 25 * maxPins));
-		imageLabel.setSize(150, 75);
+		//mainPanel.setPreferredSize(new Dimension(250, (maxPins <= 5) ? 200 : 22 * maxPins));
+	    //lowerPanel.setPreferredSize(new Dimension(250, (maxPins <= 5) ? 200 : 22 * maxPins));
+		imageLabel.setSize(120, 60);
+		
+		mainPanel.setBackground(new Color(0.3f, 0.3f, 0.3f));
+		lowerPanel.setBackground(new Color(0.3f, 0.3f, 0.3f));
+		imagePanel.setBackground(new Color(0.3f, 0.3f, 0.3f));
 		
 		createRepresentation();
 		imageLabel.setVisible(true);
@@ -118,8 +131,9 @@ public class CellPanel extends JPanel implements ActionListener, MouseListener, 
 	
 	/*
 	 * Sets the main element which will be shown in the panel.
+	 * @param element Element to be set in the panel.
 	 */
-	private void setElement(Element element) {
+	public void setElement(Element element) {
 		if (element instanceof Cell) {
 			this.cell = (Cell) element;
 			openedPin = null;
@@ -134,14 +148,15 @@ public class CellPanel extends JPanel implements ActionListener, MouseListener, 
 		selectedPins = new ArrayList<InputPin>();
 		outputPins = cell.getOutPins();
 		maxPins = (inputPins.size() < outputPins.size()) ? outputPins.size() : inputPins.size();
-		libButton = new Button(cell.getParentLibrary().getName());
-		cellButton = new Button(cell.getName());
+		libButton = new JButton(cell.getParentLibrary().getName());
+		cellButton = new JButton(cell.getName());
 		
 	}
 	
 	
 	/*
 	 * Highlights the label of a pin if the pin is opened in the panel.
+	 * @param element Pin to highlight.
 	 */
 	private void highlightPin(Element element) {
 		if (element instanceof Pin) {
@@ -177,6 +192,7 @@ public class CellPanel extends JPanel implements ActionListener, MouseListener, 
 		layout.setHgap(0);
 		lowerPanel.setLayout(layout);
 		
+		imagePanel = new JPanel();
 		JPanel leftCheckboxes = new JPanel();
 		//JPanel rightCheckboxes = new JPanel();
 		JPanel rightButtons = new JPanel();
@@ -187,12 +203,23 @@ public class CellPanel extends JPanel implements ActionListener, MouseListener, 
 		//rightCheckboxes.setLayout(new BoxLayout(rightCheckboxes, BoxLayout.Y_AXIS));
 		rightButtons.setLayout(new BoxLayout(rightButtons, BoxLayout.Y_AXIS));
 		
+		leftCheckboxes.setBackground(new Color(0.3f, 0.3f, 0.3f));
+	    leftButtons.setBackground(new Color(0.3f, 0.3f, 0.3f));
+	    rightButtons.setBackground(new Color(0.3f, 0.3f, 0.3f));
+		
 		lowerPanel.add(leftButtons);
 		lowerPanel.add(leftCheckboxes);
-		lowerPanel.add(imageLabel);
+		
+		lowerPanel.add(imagePanel);
 		//lowerPanel.add(rightCheckboxes);
-		lowerpanel.add(Box.createHorizontalStrut(5));
+		lowerPanel.add(Box.createHorizontalStrut(5));
 		lowerPanel.add(rightButtons);
+		
+		OverlayLayout overlay = new OverlayLayout(imagePanel);
+		imagePanel.setLayout(overlay);
+		
+		cellButton.setAlignmentX( Component.CENTER_ALIGNMENT);
+	    imageLabel.setAlignmentX( Component.CENTER_ALIGNMENT);
 		
 		cellImage = imageGen.buildCell(inputPins.size(), outputPins.size());
 		Image scaledImage = cellImage.getScaledInstance(imageLabel.getWidth(), imageLabel.getHeight(), Image.SCALE_SMOOTH);
@@ -200,11 +227,15 @@ public class CellPanel extends JPanel implements ActionListener, MouseListener, 
 		
 		
 		if (inputPins.size() < 6 && outputPins.size() < 4) {
+			imagePanel.add(cellButton, Component.CENTER_ALIGNMENT);//
+			imagePanel.add(imageLabel, Component.CENTER_ALIGNMENT);//
 			for (int i = 0; i < inputPins.size(); i++) {
-				JLabel cellButton = new JLabel(inputPins.get(i).getName());
+				Label cellButton = new Label(inputPins.get(i).getName());
 				buttonMap.put(inputPins.get(i), cellButton);
+				cellButton.setForeground(Color.WHITE);
 				cellButton.addMouseListener(this);
 				Checkbox checkbox = new Checkbox();
+				checkbox.setBackground(new Color(0.3f, 0.3f, 0.3f));
 				checkbox.addItemListener(this);
 				checkboxMap.put( checkbox, inputPins.get(i));
 				checkboxes.add(checkbox);
@@ -219,7 +250,8 @@ public class CellPanel extends JPanel implements ActionListener, MouseListener, 
 		    }
 			imageLabel.setIcon(new ImageIcon(scaledImage));
 			for(int i= 0; i < outputPins.size(); i++) {
-				JLabel cellButton = new JLabel();
+				Label cellButton = new Label(outputPins.get(i).getName());
+				cellButton.setForeground(Color.WHITE);
 				cellButton.addMouseListener(this);
 				buttonMap.put( outputPins.get(i), cellButton);
 				cellButton.setVisible(true);
@@ -237,10 +269,12 @@ public class CellPanel extends JPanel implements ActionListener, MouseListener, 
 		}
 		else {
 		    for(int i= 0; i < inputPins.size(); i++) {
-				JLabel cellButton = new JLabel();
+				Label cellButton = new Label(inputPins.get(i).getName());
+				cellButton.setForeground(Color.WHITE);
 				cellButton.addMouseListener(this);
 				buttonMap.put( inputPins.get(i), cellButton);
 				Checkbox checkbox = new Checkbox();
+				checkbox.setBackground(new Color(0.3f, 0.3f, 0.3f));
 				checkbox.addItemListener(this);
 				checkboxMap.put(checkbox, inputPins.get(i));
 				cellButton.setFont(new Font("Arial", Font.PLAIN, 10));	
@@ -254,7 +288,8 @@ public class CellPanel extends JPanel implements ActionListener, MouseListener, 
 		    }
 			imageLabel.setIcon(new ImageIcon(cellImage)); 
 			for(int i= 0; i < outputPins.size(); i++) {
-				JLabel cellButton = new JLabel();
+				Label cellButton = new Label(outputPins.get(i).getName());
+				cellButton.setForeground(Color.WHITE);
 				cellButton.addMouseListener(this);
 				buttonMap.put( outputPins.get(i), cellButton);
 				//JCheckBox checkbox = new JCheckBox();
@@ -275,7 +310,7 @@ public class CellPanel extends JPanel implements ActionListener, MouseListener, 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals(cell.getParentLibrary().getName())) {
-			subwindow.setElement(cell.getParentLibrary());
+			//subwindow.setElement(cell.getParentLibrary());
 			dataPanel.setElement(cell.getParentLibrary());
 			this.setVisible(false);
 		}
@@ -293,7 +328,7 @@ public class CellPanel extends JPanel implements ActionListener, MouseListener, 
 				}*/
 			}
 			else {
-				subwindow.setDiagram();//cell button click when element is cell
+				//subwindow.setDiagram();//cell button click when element is cell
 			}
 			
 		}
@@ -318,7 +353,7 @@ public class CellPanel extends JPanel implements ActionListener, MouseListener, 
 		for (InputPin input : inputPins) {
 			if (input.getName().equals(e.getComponent().getName())) {
 				openedPin = input;
-				subwindow.setElement(input);
+				//subwindow.setElement(input);
 				dataPanel.setElement(input);
 				setElement(input);
 				this.setVisible(false);
@@ -328,7 +363,7 @@ public class CellPanel extends JPanel implements ActionListener, MouseListener, 
 		for (OutputPin output : outputPins) {
             if (output.getName().equals(e.getComponent().getName())) {
             	openedPin = output;
-				subwindow.setElement(output);
+				//subwindow.setElement(output);
 				dataPanel.setElement(output);
 				setElement(output);
 				this.setVisible(false);
@@ -340,26 +375,18 @@ public class CellPanel extends JPanel implements ActionListener, MouseListener, 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		e.getComponent().setBackground(new Color(100));
-		
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		e.getComponent().setBackground(new Color(0));
-		
 	}
 
 	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mousePressed(MouseEvent arg0) {}
 
 	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseReleased(MouseEvent arg0) {}
 
 	
 }

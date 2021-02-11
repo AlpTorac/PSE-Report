@@ -57,26 +57,37 @@ public class CellImageGenerator implements ICellImageGenerator {
 			Graphics2D g2 = newImage.createGraphics();
 			for (int i = 1; i <= inputPins; i++) {
 				if (inputPins < maxPins) {
-					g2.drawImage(pinImage, 0, ((maxPins/2 - inputPins/2) + i - 1)
-							* cellImage.getHeight() / 6, null);
+					if (i % 2 == 0) {
+						g2.drawImage(pinImage, 0, ((maxPins/2 - inputPins/2) + i - 1)
+							* cellImage.getHeight() / 6 , null);
+					}
+					else {
+						g2.drawImage(pinImage, 0, ((maxPins/2 - inputPins/2) + i - 1)
+								* cellImage.getHeight() / 6 - 2 , null);
+					}
 				}
 				else {
-					g2.drawImage(pinImage, 0, ( i - 1) * cellImage.getHeight() / 6, null);
+					g2.drawImage(pinImage, 0, (i - 1) * cellImage.getHeight() / (6) , null);
 				}
 			}
 			for (int i = 1; i <= outputPins; i++) {
 				if (outputPins < maxPins) {
-					g2.drawImage(pinImage, pinImage.getWidth() * 2, ((maxPins/2 - outputPins/2) + i - 1)
-							* cellImage.getHeight() / (6), null);
+					if (i % 2 == 0) {
+						g2.drawImage(pinImage, pinImage.getWidth() * 2, ((maxPins/2 - outputPins/2) + i -1)
+							* cellImage.getHeight() / (6) , null);
+					}
+					else {
+						g2.drawImage(pinImage, pinImage.getWidth() * 2, ((maxPins/2 - outputPins/2) + i -1)
+								* cellImage.getHeight() / (6) - 2, null);
+					}
 				}
 				else {
-					g2.drawImage(pinImage, pinImage.getWidth() * 2, (i - 1) * cellImage.getHeight() / (6), null);
+					g2.drawImage(pinImage, pinImage.getWidth() * 2,  (i - 1)
+						* cellImage.getHeight() / (6), null);
 				}
-				
 			}
 				return newImage;
 		}
-		
 	}
 
 }
