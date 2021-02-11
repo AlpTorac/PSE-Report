@@ -4,8 +4,9 @@ import gelf.model.elements.attributes.Attribute;
 import gelf.model.project.Model;
 
 public class ScaleCommand implements Command {
-    Attribute attribute;
-    float scale;
+    private Attribute attribute;
+    private float scale;
+    private Model currentModel = Model.getInstance(); 
 
     public ScaleCommand(Attribute attribute, float scale) {
         this.attribute = attribute;
@@ -14,10 +15,12 @@ public class ScaleCommand implements Command {
 
     public void execute() {
         attribute.scale(scale);
-        Model.getInstance().getCurrentCommandHistory().addCommand(this);
+        currentModel.getCurrentCommandHistory().addCommand(this);
+		currentModel.getCurrentProject().inform();
     }
 
     public void undo() {
-
+    	attribute.scale(1/scale);
+		currentModel.getCurrentProject().inform();
     }
 }

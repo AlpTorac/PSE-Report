@@ -13,6 +13,7 @@ public class MergeCommand implements Command {
     private ArrayList<Library> mergedLibraries;
     private Library productLibrary;
     private String name;
+    private Model currentModel = Model.getInstance();
 
     public MergeCommand(String name, ArrayList<Library> mergedLibraries) {
         this.mergedLibraries = mergedLibraries;
@@ -39,12 +40,13 @@ public class MergeCommand implements Command {
             }
         }
         productLibrary = new Library(name, index1, index2, null, cells);
-        Model currentModel = Model.getInstance();
         currentModel.getCurrentProject().getLibraries().add(productLibrary);
         currentModel.getCurrentCommandHistory().addCommand(this);
+        currentModel.getCurrentProject().inform();
     }
 
     public void undo() {
-
+    	currentModel.getCurrentProject().getLibraries().remove(productLibrary);
+        currentModel.getCurrentProject().inform();
     }
 }

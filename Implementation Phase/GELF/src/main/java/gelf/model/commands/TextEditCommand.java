@@ -3,6 +3,7 @@ package gelf.model.commands;
 import gelf.model.parsers.LibertyParser;
 import gelf.model.project.Model;
 import gelf.model.elements.*;
+import gelf.model.exceptions.InvalidFileFormatException;
 
 import java.util.ArrayList;
 
@@ -10,10 +11,11 @@ import java.util.ArrayList;
  * NEED TO DISCUSS HOW OLD\NEW CONTENT IS SENT BACK TO THE PANEL
  */
 public class TextEditCommand implements Command {
-    String oldContent;
-    String newContent;
-    Element newElement;
-    Element oldElement;
+    private String oldContent;
+    private String newContent;
+    private Element newElement;
+    private Element oldElement;
+    private Model currentModel = Model.getInstance();
 
     public TextEditCommand(String oldContent, String newContent, Element element) throws InvalidFileFormatException {
         this.oldContent = oldContent;
@@ -24,13 +26,14 @@ public class TextEditCommand implements Command {
         } else if (element instanceof Cell) {
             newElement = LibertyParser.parseCell(newContent);
         } else {
-            newElement = LibertyParser.parsePin(newContent);
+            newElement = LibertyParser.parsePin(newContent, ((Pin) element).getParent().getInPins());
         }
     }
 
     public void execute() {
         replaceElement(oldElement, newElement);
-        Model.getInstance().getCurrentCommandHistory().addCommand(this);
+        currentModel.getCurrentCommandHistory().addCommand(this);
+        currentModel.getCurrentProject().inform();
     }
 
     /**
@@ -40,7 +43,7 @@ public class TextEditCommand implements Command {
      * @param newElement the element it is replaced with
      */
     private void replaceElement(Element oldElement, Element newElement) {
-        Model currentModel = Model.getInstance();
+        
         if (newElement instanceof Library) {
             Library newLibrary = (Library) newElement;
             ArrayList<Library> libraries = currentModel.getCurrentProject().getLibraries();
@@ -69,6 +72,7 @@ public class TextEditCommand implements Command {
     }
 
     public void undo() {
-
+    	replaceElement(newElement, oldElement);
+        currentModel.getCurrentProject().inform();
     }
 }
