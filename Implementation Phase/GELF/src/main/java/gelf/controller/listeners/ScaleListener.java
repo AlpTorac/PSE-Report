@@ -1,9 +1,13 @@
 package gelf.controller.listeners;
 
+import java.awt.TextComponent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.TextEvent;
 import java.awt.event.TextListener;
+
+import gelf.model.commands.ScaleCommand;
+import gelf.view.components.Panel;
 
 /*
  * Listener for scaling values of certain attributes.
@@ -11,6 +15,7 @@ import java.awt.event.TextListener;
 public class ScaleListener implements ActionListener, TextListener{
 	
 	private Panel panel;
+	float scale;
 	
 	public ScaleListener(Panel panel) {
 		this.panel = panel;
@@ -18,13 +23,13 @@ public class ScaleListener implements ActionListener, TextListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		ScaleCommand scale = new ScaleCommand(panel.toScale(), scale);
+		scale.execute();
 	}
 
 	@Override
 	public void textValueChanged(TextEvent e) {
-		// TODO Auto-generated method stub
-		
+		TextComponent tc = (TextComponent)e.getSource();
+	    scale = Float.parseFloat(tc.getText());
 	}
 }

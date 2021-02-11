@@ -1,5 +1,6 @@
 package gelf.controller.listeners;
 
+import gelf.model.commands.TextEditCommand;
 import gelf.view.composites.TextEditor;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -7,7 +8,7 @@ import javax.swing.event.DocumentListener;
 /*
  * Listener for the text editor.
  */
-public class EditListener implements DocumentListener {
+public class EditListener {
 	
 	private TextEditor editor;
 	
@@ -15,22 +16,14 @@ public class EditListener implements DocumentListener {
 		this.editor = editor;
 	}
 
-	@Override
-	public void changedUpdate(DocumentEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void insertUpdate(DocumentEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		String oldContent = editor.getDocument();
+		String newContent ; 
+		//TODO evaluate changes
+		TextEditCommand edit = new TextEditCommand(oldContent, newstring, editor.getElement());
+		edit.execute();
 	}
 
-	@Override
-	public void removeUpdate(DocumentEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 
 }
