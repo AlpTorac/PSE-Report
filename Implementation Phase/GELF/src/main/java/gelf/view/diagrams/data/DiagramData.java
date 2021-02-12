@@ -2,7 +2,6 @@ package gelf.view.diagrams.data;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
 public class DiagramData {
 	private Collection<?> data;
