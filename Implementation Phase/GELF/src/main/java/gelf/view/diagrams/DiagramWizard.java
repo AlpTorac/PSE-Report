@@ -8,6 +8,14 @@ import gelf.view.diagrams.builder.DiagramBuilder;
 import gelf.view.diagrams.builder.FunctionGraphBuilder;
 import gelf.view.diagrams.builder.HeatMapBuilder;
 import gelf.view.diagrams.builder.HistogramBuilder;
+import gelf.view.diagrams.overlayer.BarChartOverlayStrategy;
+import gelf.view.diagrams.overlayer.DiagramOverlayer;
+import gelf.view.diagrams.overlayer.FunctionGraphOverlayStrategy;
+import gelf.view.diagrams.overlayer.HistogramOverlayStrategy;
+import gelf.view.diagrams.type.BarChart;
+import gelf.view.diagrams.type.FunctionGraph;
+import gelf.view.diagrams.type.HeatMap;
+import gelf.view.diagrams.type.Histogram;
 
 public class DiagramWizard implements IDiagramWizard {
 	
@@ -18,35 +26,55 @@ public class DiagramWizard implements IDiagramWizard {
 	}
 	
 	@Override
-	public IDiagram makeBarChart(Container container, Collection<?> data) {
+	public BarChart makeBarChart(Container container, Collection<?> data) {
 		DiagramBuilder builder = new BarChartBuilder(container);
 		builder.receiveDiagramData(data, 0);
 		director.setBuilder(builder);
-		return director.build();
+		return (BarChart) director.build();
 	}
 
 	@Override
-	public IDiagram makeHeatMap(Container container, Collection<?> data) {
+	public HeatMap makeHeatMap(Container container, Collection<?> data) {
 		DiagramBuilder builder = new HeatMapBuilder(container);
 		builder.receiveDiagramData(data, 2);
 		director.setBuilder(builder);
-		return director.build();
+		return (HeatMap) director.build();
 	}
 
 	@Override
-	public IDiagram makeHistogram(Container container, Collection<?> data) {
+	public Histogram makeHistogram(Container container, Collection<?> data) {
 		DiagramBuilder builder = new HistogramBuilder(container);
 		builder.receiveDiagramData(data, 1);
 		director.setBuilder(builder);
-		return director.build();
+		return (Histogram) director.build();
 	}
 
 	@Override
-	public IDiagram makeFunctionGraph(Container container, Collection<?> data) {
+	public FunctionGraph makeFunctionGraph(Container container, Collection<?> data) {
 		DiagramBuilder builder = new FunctionGraphBuilder(container);
 		builder.receiveDiagramData(data, 1);
 		director.setBuilder(builder);
-		return director.build();
+		return (FunctionGraph) director.build();
 	}
 
+	@Override
+	public BarChart compareBarCharts(BarChart[] barCharts) {
+		DiagramOverlayer overlayer = new DiagramOverlayer(barCharts);
+		overlayer.setOverlayStrategy(new BarChartOverlayStrategy());
+		return (BarChart) overlayer.overlay();
+	}
+
+	@Override
+	public FunctionGraph compareFunctionGraphs(FunctionGraph[] functionGraphs) {
+		DiagramOverlayer overlayer = new DiagramOverlayer(functionGraphs);
+		overlayer.setOverlayStrategy(new FunctionGraphOverlayStrategy());
+		return (FunctionGraph) overlayer.overlay();
+	}
+
+	@Override
+	public Histogram compareHistograms(Histogram[] histograms) {
+		DiagramOverlayer overlayer = new DiagramOverlayer(histograms);
+		overlayer.setOverlayStrategy(new HistogramOverlayStrategy());
+		return (Histogram) overlayer.overlay();
+	}
 }

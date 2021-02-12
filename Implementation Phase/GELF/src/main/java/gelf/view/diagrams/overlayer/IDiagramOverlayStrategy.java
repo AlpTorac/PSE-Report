@@ -1,5 +1,9 @@
 package gelf.view.diagrams.overlayer;
 
-public interface IDiagramOverlayStrategy {
+import gelf.view.diagrams.IDiagram;
 
+public interface IDiagramOverlayStrategy {
+	public void setDiagrams(IDiagram[] diagrams);
+	
+	public IDiagram overlay();
 }

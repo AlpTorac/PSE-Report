@@ -23,3 +23,4 @@
 1613058835503	Encapsulate field 'topMariginForDiagrams'
 1613058969321	Encapsulate field 'rightMariginForDiagrams'
 1613063128625	Encapsulate field 'layer'
+1613148787566	Encapsulate field 'overlayStrategy'
