@@ -1,7 +1,5 @@
 package gelf.view.diagrams.components;
 
-import java.awt.Container;
-
 public class HeatMapLabel extends DiagramValueLabel {
 
 	private DiagramColorScale colorScale;

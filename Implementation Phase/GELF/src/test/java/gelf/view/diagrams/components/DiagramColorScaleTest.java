@@ -1,11 +1,7 @@
 package gelf.view.diagrams.components;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.awt.Color;
 import java.awt.Container;
-
-import javax.swing.JLabel;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

@@ -6,7 +6,6 @@ import java.awt.Container;
 import gelf.view.diagrams.IDiagram;
 import gelf.view.diagrams.components.DiagramAxis;
 import gelf.view.diagrams.components.DiagramComponent;
-import gelf.view.diagrams.components.DiagramComponentFactory;
 import gelf.view.diagrams.components.DiagramValueDisplayComponent;
 import gelf.view.diagrams.components.PositionIn2DDiagram;
 import gelf.view.diagrams.components.PositionInFrame;

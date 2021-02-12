@@ -1,9 +1,6 @@
 package gelf.view.diagrams;
 
-import java.util.Collection;
-
 import gelf.view.diagrams.builder.DiagramBuilder;
-import gelf.view.diagrams.data.DiagramData;
 
 public class DiagramDirector {
 	private DiagramBuilder builder;

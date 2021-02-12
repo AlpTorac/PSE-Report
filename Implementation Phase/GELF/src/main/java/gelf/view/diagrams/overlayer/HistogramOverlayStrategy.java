@@ -1,7 +1,6 @@
 package gelf.view.diagrams.overlayer;
 
 import gelf.view.diagrams.IDiagram;
-import gelf.view.diagrams.type.BarChart;
 import gelf.view.diagrams.type.Histogram;
 
 public class HistogramOverlayStrategy implements IDiagramOverlayStrategy {

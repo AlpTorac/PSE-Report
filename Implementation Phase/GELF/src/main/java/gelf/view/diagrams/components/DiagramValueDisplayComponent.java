@@ -1,7 +1,6 @@
 package gelf.view.diagrams.components;
 
 import java.awt.Color;
-import java.awt.Container;
 
 import gelf.view.diagrams.IDiagram;
 import gelf.view.diagrams.SettingsProvider;

@@ -1,8 +1,6 @@
 package gelf.view.diagrams.components;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;

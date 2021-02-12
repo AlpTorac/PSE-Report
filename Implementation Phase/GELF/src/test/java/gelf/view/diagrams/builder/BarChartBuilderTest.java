@@ -1,7 +1,5 @@
 package gelf.view.diagrams.builder;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.awt.Container;
 import java.util.ArrayList;
 

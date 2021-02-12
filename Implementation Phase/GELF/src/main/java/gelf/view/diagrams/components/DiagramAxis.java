@@ -2,7 +2,6 @@ package gelf.view.diagrams.components;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -10,9 +9,7 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Line2D;
 
-import javax.swing.BorderFactory;
 import javax.swing.JLabel;
-import javax.swing.border.Border;
 
 import gelf.view.diagrams.IDiagram;
 import gelf.view.diagrams.SettingsProvider;

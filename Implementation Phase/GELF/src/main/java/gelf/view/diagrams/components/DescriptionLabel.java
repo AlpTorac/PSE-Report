@@ -1,7 +1,6 @@
 package gelf.view.diagrams.components;
 
 import java.awt.Color;
-import java.awt.Container;
 
 public class DescriptionLabel extends DiagramLabel {
 

@@ -1,7 +1,5 @@
 package gelf.view.diagrams.components;
 
-import java.awt.Container;
-
 public class SolidAxis extends DiagramAxis {
 
 	protected SolidAxis(SolidLine axisLine, float min, float max, int steps) {

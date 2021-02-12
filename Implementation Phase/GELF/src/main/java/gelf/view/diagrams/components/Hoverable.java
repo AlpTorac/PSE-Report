@@ -1,16 +1,9 @@
 package gelf.view.diagrams.components;
 
 import java.awt.Component;
-import java.awt.Container;
-import java.awt.MouseInfo;
 import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
-import javax.swing.Timer;
 
 import gelf.view.diagrams.IDiagram;
 

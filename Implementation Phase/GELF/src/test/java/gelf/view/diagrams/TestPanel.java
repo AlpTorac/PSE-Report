@@ -4,7 +4,6 @@ import java.awt.Color;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
 import javax.swing.border.Border;
 
 public class TestPanel extends JLayeredPane {

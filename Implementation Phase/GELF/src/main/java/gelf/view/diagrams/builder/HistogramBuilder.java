@@ -60,8 +60,6 @@ public class HistogramBuilder extends DiagramBuilder {
 	@Override
 	protected DiagramValueDisplayComponent[] buildValueDisplayComponents(DiagramAxis[] axes,
 			DiagramComponent[] diagramSpecificComponent) {
-		DiagramComponentFactory factory = DiagramComponentFactory.getDiagramComponentFactory();
-		
 		float[] indices = this.data.extractIndices().get(0);
 		float[] values = this.data.extractValues().get(0);
 		int dvdcCount = values.length;
