@@ -2,10 +2,13 @@ package gelf.model.commands;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import gelf.model.elements.Cell;
+import gelf.model.elements.Element;
 import gelf.model.elements.Library;
+import gelf.model.project.Model;
 
 public class PasteCommand implements Command {
 	private ArrayList<Cell> pastedCells;
@@ -21,7 +24,13 @@ public class PasteCommand implements Command {
 	public PasteCommand(Library destinationLibrary) {
 		this.destinationLibrary = destinationLibrary;
 		Model currentModel = Model.getInstance();
-        copiedCells = currentModel.getProject().getCopiedCells();
+		copiedCells = new ArrayList<Cell>();
+        HashSet<Element> copiedElements = currentModel.getCurrentProject().getCopiedElements();
+		for (Element element : copiedElements) {
+			if (element instanceof Cell) {
+				copiedCells.add((Cell) element);
+			}
+		}
 	}
 	
 	public PasteCommand(Library destinationLibrary, 
@@ -67,8 +76,8 @@ public class PasteCommand implements Command {
 			}
 		}
 		Model currentModel = Model.getInstance();
-		currentModel.getProject().notify();
-		currentModel.getCommandHistory().addCommand(this);
+		currentModel.getCurrentProject().notify();
+		currentModel.getCurrentCommandHistory().addCommand(this);
 	}
 
 	@Override

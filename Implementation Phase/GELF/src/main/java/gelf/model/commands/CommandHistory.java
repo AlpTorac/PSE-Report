@@ -2,6 +2,8 @@ package gelf.model.commands;
 
 import java.util.Stack;
 
+import gelf.model.exceptions.InvalidFileFormatException;
+
 public class CommandHistory {
     private Stack<Command> commands;
     private Stack<Command> undoneCommands;
@@ -47,7 +49,7 @@ public class CommandHistory {
     	
     }
     
-    public void undoCommand() {
+    public void undoCommand() throws InvalidFileFormatException {
     	if (!commands.isEmpty()) {
     		Command latestCommand = getLatestCommand();
     		latestCommand.undo();
@@ -58,7 +60,7 @@ public class CommandHistory {
     	}
     }
     
-    public void redoCommand() {
+    public void redoCommand() throws InvalidFileFormatException {
     	if (!undoneCommands.isEmpty()) {
     		Command latestUndoneCommand = undoneCommands.lastElement();
     		latestUndoneCommand.execute();
