@@ -13,7 +13,7 @@ public class DiagramDirector {
 		
 	}
 	
-	public DiagramDirector getDiagramDirector() {
+	public static DiagramDirector getDiagramDirector() {
 		if (instance == null) {
 			instance = new DiagramDirector();
 		}

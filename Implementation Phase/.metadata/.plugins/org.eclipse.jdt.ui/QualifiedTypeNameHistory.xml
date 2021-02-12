@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="gelf.view.diagrams.components.Hoverable"/>
-    <fullyQualifiedTypeName name="java.awt.Point"/>
-    <fullyQualifiedTypeName name="java.awt.color.ColorSpace"/>
-    <fullyQualifiedTypeName name="java.awt.Rectangle"/>
     <fullyQualifiedTypeName name="java.awt.geom.Line2D.Double"/>
     <fullyQualifiedTypeName name="java.awt.Shape"/>
     <fullyQualifiedTypeName name="java.awt.geom.Line2D"/>
     <fullyQualifiedTypeName name="java.awt.geom.Ellipse2D"/>
     <fullyQualifiedTypeName name="javax.swing.JFrame"/>
     <fullyQualifiedTypeName name="java.awt.event.MouseAdapter"/>
-    <fullyQualifiedTypeName name="java.awt.Component"/>
     <fullyQualifiedTypeName name="java.awt.MouseInfo"/>
     <fullyQualifiedTypeName name="java.awt.geom.Point2D"/>
     <fullyQualifiedTypeName name="java.awt.geom.Point2D.Double"/>
@@ -29,7 +24,6 @@
     <fullyQualifiedTypeName name="gelf.view.diagrams.indicator.DiagramViewHelper"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.components.DiagramAxis"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.components.DiagramValueDisplayComponent"/>
-    <fullyQualifiedTypeName name="gelf.view.diagrams.components.DiagramComponent"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.builder.DiagramBuilder"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.data.DiagramData"/>
     <fullyQualifiedTypeName name="java.util.Iterator"/>
@@ -41,15 +35,11 @@
     <fullyQualifiedTypeName name="gelf.view.diagrams.components.ValueDisplayPoint"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.type.FunctionGraph"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.type.Histogram"/>
-    <fullyQualifiedTypeName name="gelf.view.diagrams.components.DiagramColorScale"/>
     <fullyQualifiedTypeName name="java.util.Collection"/>
     <fullyQualifiedTypeName name="java.util.Map"/>
     <fullyQualifiedTypeName name="java.util.EnumMap"/>
-    <fullyQualifiedTypeName name="gelf.view.diagrams.SettingsProvider"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.TestFrame"/>
-    <fullyQualifiedTypeName name="java.awt.Container"/>
     <fullyQualifiedTypeName name="org.junit.jupiter.api.BeforeAll"/>
-    <fullyQualifiedTypeName name="gelf.view.diagrams.IDiagram"/>
     <fullyQualifiedTypeName name="org.junit.jupiter.api.Assertions"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.TestCase"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.type.HeatMap"/>
@@ -60,4 +50,14 @@
     <fullyQualifiedTypeName name="javax.swing.BorderFactory"/>
     <fullyQualifiedTypeName name="java.awt.Color"/>
     <fullyQualifiedTypeName name="javax.swing.border.Border"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.components.HistogramBar"/>
+    <fullyQualifiedTypeName name="javax.swing.Timer"/>
+    <fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.components.DiagramColorScale"/>
+    <fullyQualifiedTypeName name="javax.swing.JLayeredPane"/>
+    <fullyQualifiedTypeName name="java.awt.Component"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.components.DiagramComponent"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.IDiagram"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.SettingsProvider"/>
+    <fullyQualifiedTypeName name="java.awt.Container"/>
 </qualifiedTypeNameHistroy>
