@@ -1,6 +1,7 @@
 package gelf.view.composites;
 
 import gelf.model.elements.Cell;
+import gelf.model.elements.Element;
 import gelf.model.elements.InputPin;
 import gelf.model.elements.Library;
 import gelf.model.elements.OutputPin;
@@ -21,6 +22,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.plaf.basic.BasicBorders;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
 
 import java.util.ArrayList;
 
@@ -70,6 +72,7 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
         this.tree.setBackground(cTree);
         this.tree.setShowsRootHandles(true);
         this.tree.expandRow(0);
+        this.tree.addTreeSelectionListener(this);   //respond to selection
         // this.tree.setRootVisible(false);
 
         // scroll pane
@@ -94,34 +97,45 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
         // generate library level
         ArrayList<Library> libraries = project.getLibraries();
         for (Library lib : libraries) {
-            DefaultMutableTreeNode libNode = new DefaultMutableTreeNode(lib.getName());
+            DefaultMutableTreeNode libNode = new DefaultMutableTreeNode(lib);
             treeModel.insertNodeInto(libNode, root, root.getChildCount());
 
             // generate cell levels
             ArrayList<Cell> cells = lib.getCells();
             for (Cell cell : cells) {
-                DefaultMutableTreeNode cellNode = new DefaultMutableTreeNode(cell.getName());
+                DefaultMutableTreeNode cellNode = new DefaultMutableTreeNode(cell);
                 treeModel.insertNodeInto(cellNode, libNode, libNode.getChildCount());
                 // generate in/out pin levels
                 ArrayList<InputPin> pinsIn = cell.getInPins();
                 ArrayList<OutputPin> pinsOut = cell.getOutPins();
                 // input pins
                 for (InputPin pinIn : pinsIn) {
-                    DefaultMutableTreeNode pinInNode = new DefaultMutableTreeNode(pinIn.getName() + "(In)");
+                    DefaultMutableTreeNode pinInNode = new DefaultMutableTreeNode(pinIn);
                     treeModel.insertNodeInto(pinInNode, cellNode, cellNode.getChildCount());
                 }
                 // output pins
                 for (OutputPin pinOut : pinsOut) {
-                    DefaultMutableTreeNode pinOutNode = new DefaultMutableTreeNode(pinOut.getName() + "(Out)");
+                    DefaultMutableTreeNode pinOutNode = new DefaultMutableTreeNode(pinOut);
                     treeModel.insertNodeInto(pinOutNode, cellNode, cellNode.getChildCount());
                 }
             }
         }
     }
+    //get list of all selected elements
+    public ArrayList<Element> getSelectedElements() {
+        ArrayList<Element> result = new ArrayList<Element>();
+        TreePath[] paths = this.tree.getSelectionPaths();
+        for(TreePath path : paths) {
+            if(Element.class.isAssignableFrom(((DefaultMutableTreeNode)path.getLastPathComponent()).getUserObject().getClass())) {
+                result.add((Element)((DefaultMutableTreeNode)path.getLastPathComponent()).getUserObject());
+            }
+        }
+        return result;
+    }
 
     //TreeSelectionListener method
     @Override
     public void valueChanged(TreeSelectionEvent e) {
-        
+        //TODO
     }
 }
