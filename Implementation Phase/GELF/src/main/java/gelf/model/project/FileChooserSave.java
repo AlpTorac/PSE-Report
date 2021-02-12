@@ -7,14 +7,14 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
-public class FileChooserOpen extends JFrame {
+public class FileChooserSave extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
 	JFileChooser fc = new JFileChooser();
 	
 	private File selectedFile;
 
-   public FileChooserOpen(String title)
+   public FileChooserSave(String title)
    {
 	   super(title);
 	   fc.setPreferredSize(new Dimension(800,600));
@@ -26,28 +26,27 @@ public class FileChooserOpen extends JFrame {
          	 if (file.isDirectory()) {
                   return true;
               } else {
-                  String filename = file.getName().toLowerCase();
-                  return filename.endsWith(".lib") ;
+                  return false;
               }
           }
  	
           @Override
           public String getDescription()
           {
-             return ".lib files";
+             return "Directories only";
           }
        });
       
-      fc.setAcceptAllFileFilterUsed(true);
+      fc.setAcceptAllFileFilterUsed(false);
       setDefaultCloseOperation(EXIT_ON_CLOSE);
       
-      switch (fc.showOpenDialog(FileChooserOpen.this))
+      switch (fc.showSaveDialog(FileChooserSave.this))
       {
          case JFileChooser.APPROVE_OPTION:
             final int option = JOptionPane.showConfirmDialog(
-            		FileChooserOpen.this, "Open: "+
+            		FileChooserSave.this, "Save: "+
                                           fc.getSelectedFile(),
-                                          "FileChooserOpen",
+                                          "FileChooserSave",
                                           JOptionPane.YES_NO_OPTION);
             if(option == JOptionPane.YES_OPTION){
             	selectedFile = fc.getSelectedFile();
@@ -58,19 +57,19 @@ public class FileChooserOpen extends JFrame {
             break;
 
          case JFileChooser.CANCEL_OPTION:
-            JOptionPane.showMessageDialog(FileChooserOpen.this, "Cancelled",
+            JOptionPane.showMessageDialog(FileChooserSave.this, "Cancelled",
                                           "FileChooserOpen",
                                           JOptionPane.OK_OPTION);
             break;
       
          case JFileChooser.ERROR_OPTION:
-            JOptionPane.showMessageDialog(FileChooserOpen.this, "Error",
+            JOptionPane.showMessageDialog(FileChooserSave.this, "Error",
                                           "FileChooserOpen",
                                           JOptionPane.OK_OPTION);
       }        
    }
    public void showCancel() {
-	   JOptionPane.showMessageDialog(FileChooserOpen.this, "Cancelled",
+	   JOptionPane.showMessageDialog(FileChooserSave.this, "Cancelled",
                "FileChooserOpen",
                JOptionPane.OK_OPTION);
    }

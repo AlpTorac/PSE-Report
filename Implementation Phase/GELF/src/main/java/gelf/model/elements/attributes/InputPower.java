@@ -7,6 +7,13 @@ public class InputPower extends InAttribute {
 		this.powGroup = powGroup;
 		this.values = values;
 	}
+	
+	public InputPower clone() {
+		InputPower clonedInputPower = new InputPower(powGroup, values);
+		clonedInputPower.setIndex1(index1);
+		clonedInputPower.setParentInPin(parentInPin);
+		return clonedInputPower;
+	}
 
 	public PowerGroup getPowGroup() {
 		return powGroup;

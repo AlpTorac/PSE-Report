@@ -9,7 +9,9 @@ public abstract class Pin extends Element {
      protected ArrayList<PowerGroup> availablePower;
      
      public Pin() {	 
+    	 
      }
+     
      public Cell getParent() {
     	 return parentCell;
      }

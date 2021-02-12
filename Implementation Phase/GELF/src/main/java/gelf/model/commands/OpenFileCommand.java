@@ -3,7 +3,10 @@ package gelf.model.commands;
 import java.io.File;
 
 import gelf.model.elements.Library;
+import gelf.model.exceptions.InvalidFileFormatException;
 import gelf.model.parsers.LibertyParser;
+import gelf.model.project.FileManager;
+import gelf.model.project.Model;
 
 public class OpenFileCommand implements Command {
 	private Library openedLibrary;
@@ -15,12 +18,12 @@ public class OpenFileCommand implements Command {
 	}
 
 	@Override
-	public void execute() {
+	public void execute() throws InvalidFileFormatException {
 		openedFile = FileManager.openFile();
 		LibertyParser.parseLibrary(libraryString);
 		Model currentModel = Model.getInstance();
-		currentModel.getProject().notify();
-		currentModel.getCommandHistory().addCommand(this);
+		currentModel.getCurrentProject().notify();
+		currentModel.getCurrentCommandHistory().addCommand(this);
 	}
 
 	@Override

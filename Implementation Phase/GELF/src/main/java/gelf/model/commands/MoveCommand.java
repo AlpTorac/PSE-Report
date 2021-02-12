@@ -6,6 +6,7 @@ import java.util.Iterator;
 
 import gelf.model.elements.Cell;
 import gelf.model.elements.Library;
+import gelf.model.project.Model;
 
 public class MoveCommand implements Command {
 	
@@ -64,8 +65,8 @@ public class MoveCommand implements Command {
 			}
 		}
 		Model currentModel = Model.getInstance();
-		currentModel.getProject().notify();
-		currentModel.getCommandHistory().addCommand(this);
+		currentModel.getCurrentProject().notify();
+		currentModel.getCurrentCommandHistory().addCommand(this);
 	}
 
 	public void undo() {

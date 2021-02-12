@@ -3,6 +3,8 @@ package gelf.model.elements;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import gelf.model.elements.attributes.InputPower;
+import gelf.model.elements.attributes.Leakage;
 import gelf.model.elements.attributes.OutputPower;
 import gelf.model.elements.attributes.Timing;
 import gelf.model.elements.attributes.TimingGroup;
@@ -33,6 +35,36 @@ public class OutputPin extends Pin {
     	calculate();
     	*/
     }
+    
+    public OutputPin clone() {
+		ArrayList<Timing> clonedTimings = new ArrayList<Timing>();
+		ArrayList<OutputPower> clonedPowers = new ArrayList<OutputPower>(); 
+		Iterator<Timing> timingsIt = timings.iterator();
+		Iterator<OutputPower> powersIt = outputPowers.iterator();
+		while(timingsIt.hasNext()) {
+			Timing curTiming = timingsIt.next();
+			clonedTimings.add(curTiming.clone());
+		}
+		while(powersIt.hasNext()) {
+			OutputPower curPower = powersIt.next();
+			clonedPowers.add(curPower.clone());
+		}
+		OutputPin clonedPin = new OutputPin(name, parentCell, clonedPowers, clonedTimings);
+		clonedPin.setOutputFunction(outputFunction);
+		clonedPin.setMaxCapacitance(maxCapacitance);
+		clonedPin.setMinCapacitance(minCapacitance);
+		timingsIt = clonedTimings.iterator();
+		while(timingsIt.hasNext()) {
+			Timing curTiming = timingsIt.next();
+			curTiming.setParentOutPin(clonedPin);
+		}
+		powersIt = clonedPowers.iterator();
+		while(powersIt.hasNext()) {
+			OutputPower curPower = powersIt.next();
+			curPower.setParentOutPin(clonedPin);
+		}
+		return clonedPin;
+	}
     
     public ArrayList<Timing> getTimings() {
 		return timings;

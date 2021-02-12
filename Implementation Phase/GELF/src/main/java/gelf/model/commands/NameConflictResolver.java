@@ -52,7 +52,6 @@ public class NameConflictResolver {
                         case CANCEL:
                         this.cells = new ArrayList<Cell>();
                         return;
-                        break;
                     }
                 }
             }

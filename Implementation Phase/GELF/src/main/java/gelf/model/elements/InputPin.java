@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import gelf.model.elements.attributes.InputPower;
+import gelf.model.elements.attributes.OutputPower;
+import gelf.model.elements.attributes.Timing;
 
 public class InputPin extends Pin {
 	private ArrayList<InputPower> inputPowers;
@@ -18,6 +20,23 @@ public class InputPin extends Pin {
     	calculate();
     	*/
     }
+    
+    public InputPin clone() {
+		ArrayList<InputPower> clonedPowers = new ArrayList<InputPower>();
+		Iterator<InputPower> powersIt = inputPowers.iterator();
+		while(powersIt.hasNext()) {
+			InputPower curPower = powersIt.next();
+			clonedPowers.add(curPower.clone());
+		}
+		InputPin clonedPin = new InputPin(name, parentCell, clonedPowers);
+		clonedPin.setCapacitance(capacitance);
+		powersIt = clonedPowers.iterator();
+		while(powersIt.hasNext()) {
+			InputPower curPower = powersIt.next();
+			curPower.setParentInPin(clonedPin);
+		}
+		return clonedPin;
+	}
     
     public float getCapacitance() {
    	    return capacitance;

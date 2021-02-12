@@ -2,6 +2,8 @@ package gelf.model.elements.attributes;
 
 import java.util.Arrays;
 
+import gelf.model.project.Interpolator;
+
 public class OutputPower extends OutAttribute{
 	private PowerGroup powGroup;
 	
@@ -16,6 +18,15 @@ public class OutputPower extends OutAttribute{
 
 	public void setPowGroup(PowerGroup powGroup) {
 		this.powGroup = powGroup;
+	}
+
+	public OutputPower clone() {
+		OutputPower clonedOutputPower = new OutputPower(powGroup, values);
+		clonedOutputPower.setIndex1(index1);
+		clonedOutputPower.setIndex2(index2);
+		clonedOutputPower.setParentOutPin(parentOutPin);
+		clonedOutputPower.setRelatedPin(relatedPin);
+		return clonedOutputPower;
 	}
 	
 	public OutputPower createComparedAttribute(OutputPower attribute) {

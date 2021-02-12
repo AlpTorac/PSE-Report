@@ -2,6 +2,8 @@ package gelf.model.elements.attributes;
 
 import java.util.Arrays;
 
+import gelf.model.project.Interpolator;
+
 public class Timing extends OutAttribute{
 	private TimingSense timSense;
 	private TimingType timType;
@@ -37,6 +39,15 @@ public class Timing extends OutAttribute{
 
 	public void setTimGroup(TimingGroup timGroup) {
 		this.timGroup = timGroup;
+	}
+	
+	public Timing clone() {
+		Timing clonedTiming = new Timing(timSense, timType, timGroup, values);
+		clonedTiming.setIndex1(index1);
+		clonedTiming.setIndex2(index2);
+		clonedTiming.setParentOutPin(parentOutPin);
+		clonedTiming.setRelatedPin(relatedPin);
+		return clonedTiming;
 	}
 
 	public Timing createComparedAttribute(Timing attribute) {

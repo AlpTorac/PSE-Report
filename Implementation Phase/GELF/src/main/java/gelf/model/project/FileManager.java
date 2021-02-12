@@ -1,8 +1,11 @@
 package gelf.model.project;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Date;
 
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
 @SuppressWarnings("serial")
@@ -14,50 +17,61 @@ public class FileManager extends JFrame{
    
 	public static File openFile() {
 		FileChooserOpen fc = new FileChooserOpen("Open");
-		if(fc.getSelectedFile() == null) {
-			fc.showCancel();
-		}
 		return fc.getSelectedFile();
 	}
 	
-	public static File openFile(String name) {
-		return null;
-		
+	public static void saveFile(String content, String extension) 
+			throws IOException {
+		FileChooserSave fc = new FileChooserSave("Save");
+		String path = fc.getSelectedFile().getAbsolutePath() + extension;
+		File file = new File(path);
+		writeStringToFile(file, content);
 	}
 	
-	public static void saveFile(String name, String[] fileData, String path) {
-		JFileChooser chooser = new JFileChooser(); 
-		chooser.setCurrentDirectory(new java.io.File("."));
-		chooser.setDialogTitle("Select a directory to save the library");
-		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		chooser.setAcceptAllFileFilterUsed(false);
+	public static void saveFileToPath(String content, String extension, String path) 
+			throws IOException {
+		String newPath = path + extension;
+		File file = new File(newPath);
+		writeStringToFile(file, content);
+	}
+	
+	public static void writeStringToFile(File file, String content) 
+			throws IOException {
+			    BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+			    writer.write(content);
+			    writer.close();
+	}
 
-		if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-			System.out.println("getCurrentDirectory(): " + chooser.getCurrentDirectory());
-		    System.out.println("getSelectedFile() : " + chooser.getSelectedFile());
-			/*
-		    String dirName = chooser.getCurrentDirectory().getPath();
-			File dir = new File (dirName);
-			 // not sure what to do after this
-			File actualFile = new File (dir, libraryFile.getPath());
-			Writer output = null;
-		    output = new BufferedWriter(new FileWriter(actualFile));
-		    
-		    output.close();
-		    */
-		} 
-		else {
-		     System.out.println("No Selection ");
+
+	
+	/**
+	 * 
+	 * @param file Properties of this file will be shown
+	 * @return String array of properties
+	 */
+	@SuppressWarnings("deprecation")
+	public static String[] showProperties(File file) {
+		file.length();
+		file.lastModified();
+		String[] propArray = new String[3];
+		propArray[0] = "Path: "+ file.getAbsolutePath();
+		propArray[1] = "Size: " + String.valueOf(file.length()) + " bytes";
+		Date d = new Date(file.lastModified());
+		propArray[2] = "Last modified: " + d.toGMTString();
+		
+		return propArray;
+	}
+	
+	
+	public static void main(String[] args) throws IOException {
+		saveFileToPath("Hello", ".lib", "C:\\Users\\kerem\\OneDrive\\Desktop\\libertyfiles\\ABC");
+		/*
+		if(file != null) {
+		System.out.println(showProperties(file)[0]);
+		System.out.println(showProperties(file)[1]);
+		System.out.println(showProperties(file)[2]);
+		*/
 		}
 	}
-/*
-	public static void saveFile(String name, String, String, String) {
-		
-	}
-	*/
-	
-	public static void main(String[] args) {
-		System.out.println(openFile());
-	}
  
-}
+
