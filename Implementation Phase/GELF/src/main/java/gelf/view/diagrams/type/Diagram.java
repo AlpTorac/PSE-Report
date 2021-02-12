@@ -63,6 +63,10 @@ public abstract class Diagram implements IDiagram {
 		return dataClone;
 	}
 	
+	public DiagramData cloneDiagramData() {
+		return this.data.clone();
+	}
+	
 	private void refreshAxes() {
 		if (this.axes != null) {
 			for (DiagramAxis axis : this.axes) {
@@ -140,6 +144,22 @@ public abstract class Diagram implements IDiagram {
 		
 		for (int i = 0; i < length; i++) {
 			clones[i] = this.valueDisplayComponents[i].clone();
+		}
+		
+		return clones;
+	}
+	
+	public DiagramAxis[] getDiagramAxisPrototypes() {
+		if (this.axes == null) {
+			return null;
+		}
+		
+		int length = this.axes.length;
+		
+		DiagramAxis[] clones = new DiagramAxis[length];
+		
+		for (int i = 0; i < length; i++) {
+			clones[i] = (DiagramAxis) this.axes[i].clone();
 		}
 		
 		return clones;

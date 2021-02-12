@@ -8,7 +8,7 @@ import gelf.view.diagrams.IDiagramOverlayer;
 public class DiagramOverlayer implements IDiagramOverlayer {
 
 	private ArrayList<IDiagram> diagrams;
-	private IDiagramOverlayStrategy overlayStrategy;
+	private DiagramOverlayStrategy overlayStrategy;
 	
 	public DiagramOverlayer() {
 		this.diagrams = new ArrayList<IDiagram>();
@@ -25,7 +25,7 @@ public class DiagramOverlayer implements IDiagramOverlayer {
 		}
 	}
 
-	public void setOverlayStrategy(IDiagramOverlayStrategy overlayStrategy) {
+	public void setOverlayStrategy(DiagramOverlayStrategy overlayStrategy) {
 		this.overlayStrategy = overlayStrategy;
 	}
 

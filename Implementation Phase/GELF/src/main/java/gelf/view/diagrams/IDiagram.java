@@ -4,13 +4,17 @@ import java.awt.Component;
 import java.awt.Container;
 import java.util.Collection;
 
+import gelf.view.diagrams.components.DiagramAxis;
 import gelf.view.diagrams.components.DiagramComponent;
 import gelf.view.diagrams.components.DiagramValueDisplayComponent;
+import gelf.view.diagrams.data.DiagramData;
 import gelf.view.diagrams.indicator.DiagramViewHelper;
 import gelf.view.diagrams.indicator.IndicatorIdentifier;
 
 public interface IDiagram {
 	public Collection<?> cloneData();
+	
+	public DiagramData cloneDiagramData();
 	
 	public void refresh();
 	
@@ -29,6 +33,8 @@ public interface IDiagram {
 	public DiagramComponent[] getNonValueDisplayDiagramComponentPrototype();
 	
 	public DiagramValueDisplayComponent[] getDiagramValueDisplayComponentPrototypes();
+	
+	public DiagramAxis[] getDiagramAxisPrototypes();
 	
 	public Component getContainingElement();
 	

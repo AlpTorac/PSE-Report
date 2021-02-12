@@ -2,14 +2,17 @@ package gelf.view.diagrams.data;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
 public class DiagramData {
 	private Collection<?> data;
 	private DiagramDataExtractionStrategy extractor;
-	
+	private int numberOfIndices;
+
 	public DiagramData(Collection<?> data, int numberOfIndices) {
 		this.data = data;
-		this.setExtractor(numberOfIndices);
+		this.numberOfIndices = numberOfIndices;
+		this.setExtractor(this.numberOfIndices);
 	}
 	
 	private void setExtractor(int numberOfIndices) {
@@ -144,5 +147,23 @@ public class DiagramData {
 		}
 		
 		return minVal;
+	}
+	
+	@Override
+	public DiagramData clone() {
+		ArrayList<float[]> indices = this.extractor.extractIndices(this.data);
+		ArrayList<float[]> values = this.extractor.extractValues(this.data);
+		
+		ArrayList<float[]> clonedData = new ArrayList<float[]>();
+		
+		clonedData.addAll(indices);
+		clonedData.addAll(values);
+		
+		DiagramData clone = new DiagramData(clonedData, indices.size());
+		return clone;
+	}
+	
+	public int getNumberOfIndices() {
+		return numberOfIndices;
 	}
 }
