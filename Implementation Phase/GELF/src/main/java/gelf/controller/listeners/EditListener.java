@@ -1,14 +1,18 @@
 package gelf.controller.listeners;
 
+import gelf.model.exceptions.*;
 import gelf.model.commands.TextEditCommand;
+import gelf.model.elements.Element;
 import gelf.view.composites.TextEditor;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 
 /*
  * Listener for the text editor.
  */
-public class EditListener {
+public class EditListener implements KeyListener{
 	
 	private TextEditor editor;
 	
@@ -16,13 +20,29 @@ public class EditListener {
 		this.editor = editor;
 	}
 
-	public void insertUpdate(DocumentEvent arg0) {
-		String oldContent = editor.getDocument();
-		String newContent ; 
-		//TODO evaluate changes
-		TextEditCommand edit = new TextEditCommand(oldContent, newstring, editor.getElement());
-		edit.execute();
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			String oldContent = editor.getDocument();
+			String newContent = editor.getActualText();
+			Element element = editor.getElement();
+			//TODO evaluate changes
+			try {
+				TextEditCommand edit = new TextEditCommand(oldContent, newContent, element);
+				edit.execute();
+			} catch (InvalidFileFormatException exc) {
+				
+			}
+			
+			
+		}
 	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {}
+
+	@Override
+	public void keyTyped(KeyEvent e) {}
 
 	
 

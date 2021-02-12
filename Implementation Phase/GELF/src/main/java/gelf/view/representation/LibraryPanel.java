@@ -71,7 +71,7 @@ public class LibraryPanel extends Panel implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		subwindow.setElement(buttons.get(e.getSource()));
+		//subwindow.setElement(buttons.get(e.getSource()));
 		this.setVisible(false);
 		dataPanel.setElement(buttons.get(e.getSource()));
 		

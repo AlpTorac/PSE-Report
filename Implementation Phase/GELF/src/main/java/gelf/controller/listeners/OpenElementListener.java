@@ -9,6 +9,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import gelf.model.elements.Element;
 
 /*
@@ -17,7 +20,6 @@ import gelf.model.elements.Element;
 public class OpenElementListener implements ActionListener, MouseListener {
 	
 	private Outliner outliner;
-	
 	private SubWindowArea subwindows; 
 	
 	public OpenElementListener(Outliner outliner, SubWindowArea subwindows) {
@@ -25,11 +27,10 @@ public class OpenElementListener implements ActionListener, MouseListener {
 		this.subwindows = subwindows;
 	}
 	
-	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (outliner.getSelectedElements().size() >= 3) {
-			//TODO error
+			JOptionPane.showMessageDialog(new JFrame(), "Select up to 3 elements to open.", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		for (Element element: outliner.getSelectedElements()) {
@@ -42,7 +43,7 @@ public class OpenElementListener implements ActionListener, MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 2) {
 			Element element = outliner.getSelectedElements();
-		    subwindows.add(new SubWindow(element));
+		    subwindows.addSubWindow(new SubWindow(element));
 		}
 		
 	}

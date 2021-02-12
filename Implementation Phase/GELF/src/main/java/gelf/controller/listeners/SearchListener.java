@@ -4,34 +4,50 @@ import gelf.view.components.Panel;
 import gelf.view.composites.Outliner;
 
 import java.awt.TextComponent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.TextEvent;
 import java.awt.event.TextListener;
 
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+
 /*
- * Listener the search bar of the outliner.
+ * Listens the search bar of the outliner.
  */
-public class SearchListener implements TextListener {
+public class SearchListener implements KeyListener {
 	
-	private Panel panel;
+	private Outliner outliner;
 	
-	public SearchListener(Panel panel) {
-		this.panel = panel;
+	public SearchListener(Outliner outliner) {
+		this.outliner = outliner;
+		
+	}
+	
+	private void search() {
+		String searchedText = outliner.searchBox.getText();
+		outliner.getTree();
+	    else {
+	    	
+	    }
 	}
 
 	@Override
-	public void textValueChanged(TextEvent e) {
-		TextComponent tc = (TextComponent) e.getSource();
-	    String text = tc.getText();
-	    if (tc.getText().equals("")) {
-	    	//outliner.show(text);
-	    }
-	    else {
-	    	for (TreeNode node: outliner.tree()) {
-	    		if (node.name.equals text) {
-	    			//outliner.show(text);
-	    		}
-	    	}
-	    }
+	public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			search();
+		}
+			
 	}
+		
+
+	@Override
+	public void keyReleased(KeyEvent e) {}
+
+	@Override
+	public void keyTyped(KeyEvent e) {}
+
+	
 
 }
