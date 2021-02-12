@@ -10,6 +10,8 @@ public abstract class Attribute {
 	
 	public abstract void scale(float scaleValue);
 	
+	protected abstract Attribute clone();
+	
 	protected abstract void calculate();
 	
 	public Stat getStats() {

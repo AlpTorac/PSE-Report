@@ -30,6 +30,9 @@ public class MergeCommand implements Command {
         if (cells.isEmpty()) {
             return;
         }
+        for (int i = 0; i < cells.size(); i++) {
+        	cells.set(i, (Cell) cells.get(i).clone());
+        }
         Cell firstCell = cells.get(0);
         float[] index1 = firstCell.getIndex1();
         float[] index2 = firstCell.getIndex2(); 

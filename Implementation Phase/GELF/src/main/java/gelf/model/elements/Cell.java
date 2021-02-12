@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import gelf.model.elements.attributes.InputPower;
 import gelf.model.elements.attributes.Leakage;
+import gelf.model.elements.attributes.OutAttribute;
 import gelf.model.elements.attributes.OutputPower;
 import gelf.model.elements.attributes.PowerGroup;
 import gelf.model.elements.attributes.Timing;
@@ -12,6 +13,7 @@ import gelf.model.elements.attributes.TimingGroup;
 import gelf.model.elements.attributes.TimingKey;
 import gelf.model.elements.attributes.TimingSense;
 import gelf.model.elements.attributes.TimingType;
+import gelf.model.project.Interpolator;
 
 public class Cell extends HigherElement {
 	private float[] index1;
@@ -99,6 +101,45 @@ public class Cell extends HigherElement {
 		this.defaultLeakage = defaultLeakage;
 	}
 	
+	public Cell clone() {
+		ArrayList<InputPin> clonedInPins = new ArrayList<InputPin>();
+		ArrayList<OutputPin> clonedOutPins = new ArrayList<OutputPin>(); 
+		Iterator<InputPin> inPinIt = inPins.iterator();
+		Iterator<OutputPin> outPinIt = outPins.iterator();
+		while(inPinIt.hasNext()) {
+			InputPin curInPin = inPinIt.next();
+			clonedInPins.add(curInPin.clone());
+		}
+		while(outPinIt.hasNext()) {
+			OutputPin curOutPin = outPinIt.next();
+			clonedOutPins.add(curOutPin.clone());
+		}
+		Leakage clonedLeakage = (Leakage) leakages.clone();
+		Cell clonedCell = new Cell(name, index1, index2, parentLibrary, 
+				clonedInPins, clonedOutPins, clonedLeakage, defaultLeakage);
+		ArrayList<OutAttribute> outAttributes = new ArrayList<OutAttribute>(); 
+		outPinIt = clonedOutPins.iterator();
+		while(outPinIt.hasNext()) {
+			OutputPin curOutPin = outPinIt.next();
+			outAttributes.addAll(curOutPin.getTimings());
+			outAttributes.addAll(curOutPin.getOutputPowers());
+			curOutPin.setParent(clonedCell);
+		}
+		inPinIt = clonedInPins.iterator();
+		while(inPinIt.hasNext()) {
+			InputPin curInPin = inPinIt.next();
+			curInPin.setParent(clonedCell);
+		}
+		for (OutAttribute outAttribute : outAttributes) {
+			for (InputPin inPin: clonedInPins) {
+				if (inPin.getName().equals(outAttribute.getRelatedPin().getName())) {
+					outAttribute.setRelatedPin(inPin);
+				}
+			}
+		}
+		return clonedCell;
+	}
+	
 	public void interpolate(float[] index1, float[] index2) {
 		Interpolator interpolator = new Interpolator();
 		Iterator<InputPin> inPinIt = inPins.iterator();
@@ -125,7 +166,7 @@ public class Cell extends HigherElement {
 			Iterator<OutputPower> outPowIt = outPows.iterator();
 			while(outPowIt.hasNext()) {
 				OutputPower curOutPow = outPowIt.next();
-				float[][] newValues = interpolator.interpolate(curOutPow.getIndex1(), 
+				float[][] newValues = interpolator.bicubicInterpolate(curOutPow.getIndex1(), 
 						curOutPow.getIndex2(), curOutPow.getValues(), index1, index2);
 				curOutPow.setIndex1(index1);
 				curOutPow.setIndex2(index2);
@@ -140,7 +181,7 @@ public class Cell extends HigherElement {
 			Iterator<Timing> timingIt = timings.iterator();
 			while(timingIt.hasNext()) {
 				Timing curTiming = timingIt.next();
-				float[][] newValues = interpolator.interpolate(curTiming.getIndex1(), 
+				float[][] newValues = interpolator.bicubicInterpolate(curTiming.getIndex1(), 
 						curTiming.getIndex2(), curTiming.getValues(), index1, index2);
 				curTiming.setIndex1(index1);
 				curTiming.setIndex2(index2);

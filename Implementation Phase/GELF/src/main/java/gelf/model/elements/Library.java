@@ -11,6 +11,7 @@ import java.util.Map;
 
 import javax.swing.JFileChooser;
 
+import gelf.model.elements.attributes.OutputPower;
 import gelf.model.elements.attributes.PowerGroup;
 import gelf.model.elements.attributes.TimingGroup;
 import gelf.model.elements.attributes.TimingKey;
@@ -27,7 +28,6 @@ public class Library extends HigherElement {
     private Stat defaultLeakage;
     private File libraryFile;
     
-    
     public Library(String name, float[] index1, float[] index2, 
     		String path, ArrayList<Cell> cells) {
     	super.setName(name);
@@ -43,6 +43,22 @@ public class Library extends HigherElement {
     	this.setAvailableTimType();
     	calculate();
     	*/
+    }
+    
+    public Library clone() {
+    	ArrayList<Cell> clonedCells = new ArrayList<Cell>();
+    	Iterator<Cell> cellsIt = cells.iterator();
+    	while(cellsIt.hasNext()) {
+			Cell curCell = cellsIt.next();
+			clonedCells.add(curCell.clone());
+		}
+    	Library clonedLibrary = new Library(name, index1, index2, path, clonedCells);
+    	cellsIt = clonedCells.iterator();
+    	while(cellsIt.hasNext()) {
+			Cell curCell = cellsIt.next();
+			clonedCells.add(curCell.clone());
+		}
+    	return clonedLibrary;
     }
     
 	public float[] getIndex1() {
