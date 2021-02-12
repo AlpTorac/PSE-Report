@@ -5,7 +5,12 @@ import gelf.view.composites.Outliner;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import gelf.model.project.Model;
+import gelf.model.project.Project;
+
 import java.util.HashSet;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import gelf.model.elements.Cell;
 import gelf.model.elements.Element;
@@ -29,11 +34,15 @@ public class CopyListener implements ActionListener {
 				cells.add((Cell) element);
 			}
 			else {
-				//TODO error
+				JOptionPane.showMessageDialog(new JFrame(), "Only cells can be copied.", "Error", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 		}
-		Model.getCurrentProject().setCopiedElements(cells);
+		Model currentModel = Model.getInstance();
+		Project project = currentModel.getCurrentProject();
+		for (Element element: cells) {
+			project.getCopiedElements().add(element);
+		}
 	}
 
 }

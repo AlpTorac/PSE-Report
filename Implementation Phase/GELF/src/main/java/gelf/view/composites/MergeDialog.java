@@ -1,7 +1,5 @@
 package gelf.view.composites;
 
-import gelf.view.components.Window;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -227,4 +225,7 @@ public class MergeDialog extends JDialog implements ActionListener, WindowListen
 
     @Override
 	public void windowOpened(WindowEvent e) {}
+
+	  	
+    	
 }

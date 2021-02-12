@@ -56,7 +56,7 @@ public class CellPanel extends Panel implements ActionListener, MouseListener, I
 	private ArrayList<InputPin> inputPins;
 	private ArrayList<OutputPin> outputPins;
 	private int maxPins;
-	private Pin openedPin;
+	private boolean pinTag;
 	private ArrayList<InputPin> selectedPins;
 	
 	private BufferedImage cellImage;
@@ -78,7 +78,6 @@ public class CellPanel extends Panel implements ActionListener, MouseListener, I
 		this.dataPanel = dataPanel;
 		setElement(element);
 		
-		
 		buttonMap = new HashMap<Pin, Label>();
 		checkboxMap = new HashMap<Checkbox, InputPin>();
 		checkboxes = new ArrayList<Checkbox>();
@@ -99,7 +98,6 @@ public class CellPanel extends Panel implements ActionListener, MouseListener, I
 		cellButton.setSize(35, 20);
 		imageGen = new CellImageGenerator();
 		
-		
 		BoxLayout innerLayout = new BoxLayout(mainPanel, BoxLayout.Y_AXIS);
 		mainPanel.setLayout(innerLayout);
 		
@@ -114,8 +112,6 @@ public class CellPanel extends Panel implements ActionListener, MouseListener, I
 		libButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		mainPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		cellButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		//mainPanel.setPreferredSize(new Dimension(250, (maxPins <= 5) ? 200 : 22 * maxPins));
-	    //lowerPanel.setPreferredSize(new Dimension(250, (maxPins <= 5) ? 200 : 22 * maxPins));
 		imageLabel.setSize(120, 60);
 		
 		mainPanel.setBackground(new Color(0.3f, 0.3f, 0.3f));
@@ -124,7 +120,6 @@ public class CellPanel extends Panel implements ActionListener, MouseListener, I
 		
 		createRepresentation();
 		imageLabel.setVisible(true);
-		dataPanel.setElement(element);
 		highlightPin(element);
 		
 	}
@@ -136,11 +131,11 @@ public class CellPanel extends Panel implements ActionListener, MouseListener, I
 	public void setElement(Element element) {
 		if (element instanceof Cell) {
 			this.cell = (Cell) element;
-			openedPin = null;
+			pinTag = false;
 		}
 		else if (element instanceof Pin) {
 			Pin pin = (Pin) element;
-			openedPin = pin;
+			pinTag = true;
 			this.cell = pin.getParent();
 			
 		}
@@ -150,7 +145,7 @@ public class CellPanel extends Panel implements ActionListener, MouseListener, I
 		maxPins = (inputPins.size() < outputPins.size()) ? outputPins.size() : inputPins.size();
 		libButton = new JButton(cell.getParentLibrary().getName());
 		cellButton = new JButton(cell.getName());
-		
+		highlightPin(element);
 	}
 	
 	
@@ -160,7 +155,6 @@ public class CellPanel extends Panel implements ActionListener, MouseListener, I
 	 */
 	private void highlightPin(Element element) {
 		if (element instanceof Pin) {
-			openedPin = (Pin) element;
 			for (InputPin input : inputPins) {
 				if (input.getName().equals(element.getName())) {
 					buttonMap.get(element).setBackground(new Color(100));
@@ -171,12 +165,15 @@ public class CellPanel extends Panel implements ActionListener, MouseListener, I
 					buttonMap.get(element).setBackground(new Color(100));
 				}
 			}
-			/*for (Checkbox checkbox : checkboxes) {
+			for (Checkbox checkbox : checkboxes) {
 				checkbox.setEnabled(false);
-			}*/
+			}
 			
 		}
 		else {
+			for (Checkbox checkbox : checkboxes) {
+				checkbox.setEnabled(true);
+			}
 			return;
 		}
 	}
@@ -194,13 +191,11 @@ public class CellPanel extends Panel implements ActionListener, MouseListener, I
 		
 		imagePanel = new JPanel();
 		JPanel leftCheckboxes = new JPanel();
-		//JPanel rightCheckboxes = new JPanel();
 		JPanel rightButtons = new JPanel();
 		JPanel leftButtons = new JPanel();
 		
 		leftButtons.setLayout(new BoxLayout(leftButtons	, BoxLayout.Y_AXIS));
 		leftCheckboxes.setLayout(new BoxLayout(leftCheckboxes, BoxLayout.Y_AXIS));
-		//rightCheckboxes.setLayout(new BoxLayout(rightCheckboxes, BoxLayout.Y_AXIS));
 		rightButtons.setLayout(new BoxLayout(rightButtons, BoxLayout.Y_AXIS));
 		
 		leftCheckboxes.setBackground(new Color(0.3f, 0.3f, 0.3f));
@@ -258,10 +253,10 @@ public class CellPanel extends Panel implements ActionListener, MouseListener, I
 				//JCheckBox checkbox = new JCheckBox();
 				//checkbox.addItemListener(this);
 				//checkboxes.put(checkbox, outputPins.get(i));
-				cellButton.setFont(new Font("Arial", Font.PLAIN, 10));
 				//checkbox.setPreferredSize(new Dimension(20, 20));
 				//rightCheckboxes.add(Box.createVerticalStrut(-3));
 			   // rightCheckboxes.add(checkbox);
+				cellButton.setFont(new Font("Arial", Font.PLAIN, 10));
 			    rightButtons.add(Box.createVerticalStrut(10 / outputPins.size()));
 				rightButtons.add(cellButton);
 					
@@ -295,10 +290,10 @@ public class CellPanel extends Panel implements ActionListener, MouseListener, I
 				//JCheckBox checkbox = new JCheckBox();
 				//checkbox.addItemListener(this);
 				//checkboxes.put( checkbox, outputPins.get(i));
-				cellButton.setFont(new Font("Arial", Font.PLAIN, 10));
 				//checkbox.setPreferredSize(new Dimension(20, 20));
 			   // rightCheckboxes.add(checkbox);
 			   // rightCheckboxes.add(Box.createVerticalStrut(-4));
+			    cellButton.setFont(new Font("Arial", Font.PLAIN, 10));
 			    rightButtons.add(cellButton);
 			    rightButtons.add(Box.createVerticalStrut(3));
 				
@@ -315,17 +310,17 @@ public class CellPanel extends Panel implements ActionListener, MouseListener, I
 			this.setVisible(false);
 		}
 		else {
-			if (openedPin != null) {
+			if (pinTag = true) {
 				setElement(cell);
 				for (InputPin input : inputPins) {
-					buttonMap.get(input).setBackground(new Color(0));
+					buttonMap.get(input).setBackground(new Color(0.3f, 0.3f, 0.3f));
 				}
 				for (OutputPin output : outputPins) {
-					buttonMap.get(output).setBackground(new Color(0));
+					buttonMap.get(output).setBackground(new Color(0.3f, 0.3f, 0.3f));
 				}
-				/*for (Checkbox checkbox : checkboxes) {
-					checkbox.setEnabled(false);
-				}*/
+				for (Checkbox checkbox : checkboxes) {
+					checkbox.setEnabled(true);
+				}
 			}
 			else {
 				//subwindow.setDiagram();//cell button click when element is cell
@@ -349,24 +344,21 @@ public class CellPanel extends Panel implements ActionListener, MouseListener, I
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		
 		for (InputPin input : inputPins) {
 			if (input.getName().equals(e.getComponent().getName())) {
-				openedPin = input;
+				pinTag = true;
 				//subwindow.setElement(input);
 				dataPanel.setElement(input);
 				setElement(input);
-				this.setVisible(false);
 				
 			}
 		}
 		for (OutputPin output : outputPins) {
             if (output.getName().equals(e.getComponent().getName())) {
-            	openedPin = output;
+            	pinTag = true;
 				//subwindow.setElement(output);
 				dataPanel.setElement(output);
 				setElement(output);
-				this.setVisible(false);
 			}
 		}
 		
@@ -374,12 +366,12 @@ public class CellPanel extends Panel implements ActionListener, MouseListener, I
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		e.getComponent().setBackground(new Color(100));
+		e.getComponent().setBackground(Color.YELLOW);
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		e.getComponent().setBackground(new Color(0));
+		e.getComponent().setBackground(new Color(0.3f, 0.3f, 0.3f));
 	}
 
 	@Override

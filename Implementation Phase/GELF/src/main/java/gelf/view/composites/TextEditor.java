@@ -1,5 +1,15 @@
 package gelf.view.composites;
 
+import gelf.controller.listeners.EditListener;
+import gelf.controller.listeners.SearchListener;
+import gelf.model.compilers.LibertyCompiler;
+import gelf.model.elements.Cell;
+import gelf.model.elements.Element;
+import gelf.model.elements.InputPin;
+import gelf.model.elements.Library;
+import gelf.model.elements.OutputPin;
+import gelf.model.elements.Pin;
+
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -19,12 +29,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 
-import gelf.controller.listeners.EditListener;
-import gelf.controller.listeners.SearchListener;
-import gelf.model.elements.Cell;
-import gelf.model.elements.Element;
-import gelf.model.elements.Library;
-import gelf.model.elements.Pin;
+
 
 /**
  * Displays the liberty text file.
@@ -39,7 +44,6 @@ public class TextEditor extends ElementManipulator implements KeyListener{
 	private int trace;
 	
 	private Element element;
-	private String path;
 	private String document;
 	
 	private final static Color HL_COLOR = Color.LIGHT_GRAY;
@@ -68,7 +72,6 @@ public class TextEditor extends ElementManipulator implements KeyListener{
     	searchBox.setForeground(Color.WHITE);
     	searchBox.setBorder(new LineBorder(Color.BLACK, 5, true));
     	searchBox.setSize(this.getWidth(), 120);
-    	//searchBox.setBorder();
     	
     	textArea = new JTextArea(300,300);
     	textArea.setEditable(true);
@@ -87,44 +90,17 @@ public class TextEditor extends ElementManipulator implements KeyListener{
     }
     
     /*
-     * 
+     * TODO
      */
     @Override
     public void setElement(Element element) {
     	this.element = element;
     	this.textArea.setText("");
-    	path = null;
-    	
-    	if (element instanceof Library) {
-    		Library library = (Library) element;
-    		path = library.getPath();
-    		
-    	}
-    	else if (element instanceof Cell) {
-    		Cell cell = (Cell) element;
-    		path = cell.getParentLibrary().getPath();
-    		
-    		
-    	}
-    	if (element instanceof Pin) {
-    		Pin pin = (Pin) element;
-    		path = pin.getParent().getParentLibrary().getPath();
-    		
-    	}
-    	
-    	try {
-			fr = new FileReader(path);
-			BufferedReader reader = new BufferedReader(fr);
-			textArea.read(reader, "x");
-			textArea.getDocument().addDocumentListener(new EditListener(this));
-			document = textArea.getText();
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-    	
-    	jumpInText();
-    	
+    
+		textArea.setText(createText(element));
+		textArea.addKeyListener(new EditListener(this));;
+		document = textArea.getText();
+	
     }
     
     /*
@@ -136,32 +112,29 @@ public class TextEditor extends ElementManipulator implements KeyListener{
     }
     
     /*
-     * 
+     * Saves the changes after save button is clicked.
      */
     public void saveChanges(String newText) {
-    	this.document = newText;
+        this.document = newText;
     	textArea.setText("");
     	textArea.setText(document);
     }
     
-    /*
-     * 
-     */
-    private void jumpInText() {
-    	String content = textArea.getText();
-    	int index = content.indexOf(element.getName());
-    	if (index >= 0 && index < content.length()) {  
-    	    int end = index + element.getName().length();
-            try {
-				hl.addHighlight(index, end , painter);
-				
-			} catch (BadLocationException e1) {
-				e1.printStackTrace();
-			}
-            textArea.setCaretPosition(end);
+    private String createText(Element element) {
+    	if (element instanceof Library) {
+    		return LibertyCompiler.compile((Library) element);
     	}
-    	
+    	else if (element instanceof Cell) {
+    		return LibertyCompiler.compile((Cell) element);
+    	}
+    	else if (element instanceof InputPin) {
+    		return LibertyCompiler.compile((InputPin) element);
+    	}
+    	else {
+    		return LibertyCompiler.compile((OutputPin) element);
+    	}
     }
+    
     
     /*
      * Highlights the searched string on the text field.
@@ -191,11 +164,26 @@ public class TextEditor extends ElementManipulator implements KeyListener{
     }
     
     /*
-     * Returns the old document.
+     * Returns the document without the changes made in the editor.
      * @return Document text
      */
     public String getDocument() {
     	return document;
+    }
+    
+    /*
+     * Returns the element opened in the editor.
+     * @return Element
+     */
+    public Element getElement() {
+    	return element;
+    }
+    
+    /*
+     * Returns the (changed) text.
+     */
+    public String getActualText() {
+    	return textArea.getText();
     }
 
 	@Override
@@ -214,4 +202,5 @@ public class TextEditor extends ElementManipulator implements KeyListener{
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {}
+    
 }

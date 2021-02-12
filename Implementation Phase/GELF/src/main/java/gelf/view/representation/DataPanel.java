@@ -16,11 +16,11 @@ import gelf.view.components.Panel;
  * Displays data about opened element.
  */
 public class DataPanel extends Panel {
-	
-	private Label upperLabel;
-	private Label middleLabel;
-	private Label lowerLabel;
-	private Label when;
+
+    private Label upperLabel;
+    private Label middleLabel;
+    private Label lowerLabel;
+    private Label when;
 	private Element element;
 	private String selectedText;
 	private String binary;
@@ -44,7 +44,9 @@ public class DataPanel extends Panel {
 		lowerLabel.setForeground(Color.WHITE);
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.add(upperLabel);
-		this.add(when);
+		if (element instanceof Cell) {
+			this.add(when);
+		}
 		this.add(middleLabel);
 		this.add(lowerLabel);
 		setText(element);	
@@ -68,7 +70,6 @@ public class DataPanel extends Panel {
 		if (element instanceof Library) {
 			Library library = (Library) element;
 			upperLabel.setText("");
-			
 			middleLabel.setText("");
 			lowerLabel.setText("");
 		}
@@ -85,7 +86,7 @@ public class DataPanel extends Panel {
 			}
 			
 			middleLabel.setText("Output Function:" + selectedText);
-			lowerLabel.setText("Value: " + cell.getLeakages()[Integer.parseInt(binary, 2)]);
+			lowerLabel.setText("Function Value: " + cell.getLeakages().getValues()[Integer.parseInt(binary, 2)]);
 			
 			
 		}
@@ -132,7 +133,7 @@ public class DataPanel extends Panel {
 				newBinary = newBinary + charBin[i];
 			}
 			middleLabel.setText("Output Function:" + selectedText);
-			lowerLabel.setText("Function Value: " + cell.getLeakages()[Integer.parseInt(newBinary, 2)]);
+			lowerLabel.setText("Function Value: " + cell.getLeakages().getValues()[Integer.parseInt(newBinary, 2)]);
 		}
 		
 
