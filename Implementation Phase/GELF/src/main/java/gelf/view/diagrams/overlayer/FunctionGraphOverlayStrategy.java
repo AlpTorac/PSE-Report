@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import gelf.view.diagrams.IDiagram;
-import gelf.view.diagrams.components.BarChartBar;
 import gelf.view.diagrams.components.DiagramAxis;
 import gelf.view.diagrams.components.DiagramComponent;
 import gelf.view.diagrams.components.DiagramValueDisplayComponent;

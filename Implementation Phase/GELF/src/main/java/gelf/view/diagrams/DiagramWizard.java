@@ -58,21 +58,21 @@ public class DiagramWizard implements IDiagramWizard {
 	}
 
 	@Override
-	public BarChart compareBarCharts(BarChart[] barCharts) {
+	public BarChart overlayBarCharts(BarChart[] barCharts) {
 		DiagramOverlayer overlayer = new DiagramOverlayer(barCharts);
 		overlayer.setOverlayStrategy(new BarChartOverlayStrategy());
 		return (BarChart) overlayer.overlay();
 	}
 
 	@Override
-	public FunctionGraph compareFunctionGraphs(FunctionGraph[] functionGraphs) {
+	public FunctionGraph overlayFunctionGraphs(FunctionGraph[] functionGraphs) {
 		DiagramOverlayer overlayer = new DiagramOverlayer(functionGraphs);
 		overlayer.setOverlayStrategy(new FunctionGraphOverlayStrategy());
 		return (FunctionGraph) overlayer.overlay();
 	}
 
 	@Override
-	public Histogram compareHistograms(Histogram[] histograms) {
+	public Histogram overlayHistograms(Histogram[] histograms) {
 		DiagramOverlayer overlayer = new DiagramOverlayer(histograms);
 		overlayer.setOverlayStrategy(new HistogramOverlayStrategy());
 		return (Histogram) overlayer.overlay();

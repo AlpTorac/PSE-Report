@@ -17,9 +17,9 @@ public interface IDiagramWizard {
 	
 	public FunctionGraph makeFunctionGraph(Container container, Collection<?> data);
 	
-	public BarChart compareBarCharts(BarChart[] barCharts);
+	public BarChart overlayBarCharts(BarChart[] barCharts);
 	
-	public FunctionGraph compareFunctionGraphs(FunctionGraph[] functionGraphs);
+	public FunctionGraph overlayFunctionGraphs(FunctionGraph[] functionGraphs);
 	
-	public Histogram compareHistograms(Histogram[] histograms);
+	public Histogram overlayHistograms(Histogram[] histograms);
 }
