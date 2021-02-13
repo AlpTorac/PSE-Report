@@ -13,7 +13,7 @@ import gelf.view.diagrams.components.DiagramValueDisplayComponent;
 import gelf.view.diagrams.components.PositionInFrame;
 import gelf.view.diagrams.data.DiagramData;
 
-public abstract class DiagramBuilder {
+public abstract class DiagramBuilder implements IDiagramBuilder {
 	public static final SettingsProvider settingsProvider = SettingsProvider.getInstance();
 	public static final DiagramComponentFactory factory = DiagramComponentFactory.getDiagramComponentFactory();
 	
@@ -93,23 +93,47 @@ public abstract class DiagramBuilder {
 		int thickness = settingsProvider.getAxisThickness();
 		
 		DiagramAxis xAxis = this.makeXAxis(axisOrigin, endX, xAxisMinVal, xAxisMaxVal, stepsInXAxis, axisLineColor, thickness);
-		
+		this.xAxisSpecificVisualEffect(xAxis);
 		DiagramAxis yAxis = this.makeYAxis(axisOrigin, endY, yAxisMinVal, yAxisMaxVal, stepsInYAxis, axisLineColor, thickness);
-		
+		this.yAxisSpecificVisualEffect(yAxis);
 		return new DiagramAxis[] {xAxis, yAxis};
 	}
 	
-	protected abstract DiagramValueDisplayComponent[] buildValueDisplayComponents(DiagramAxis[] axes,
+	protected DiagramComponent[] buildDiagramSpecificComponent() {
+		return this.buildDiagramSpecificComponentForOneDiagram(this.getDiagramData());
+	}
+
+	protected DiagramValueDisplayComponent[] buildValueDisplayComponents(DiagramAxis[] axes,
+			DiagramComponent[] diagramSpecificComponent) {
+		return this.buildValueDisplayComponentsForOneDiagram(this.getDiagramData(), axes, diagramSpecificComponent);
+	}
+	protected abstract IDiagram makeDiagram(DiagramAxis[] axes, DiagramValueDisplayComponent[] valueDisplayComponents,
 			DiagramComponent[] diagramSpecificComponent);
 	
-	protected DiagramComponent[] buildDiagramSpecificComponent() {
-		return null;
+	public IDiagram buildDiagram() {
+		DiagramAxis[] axes = this.buildAxes();
+		DiagramComponent[] dc = this.buildDiagramSpecificComponent();
+		DiagramValueDisplayComponent[] dvdc = this.buildValueDisplayComponents(axes, dc);
+		return this.makeDiagram(axes, dvdc, dc);
 	}
-	
-	public abstract IDiagram buildDiagram();
 	
 	public void receiveDiagramData(Collection<?> data, int numberOfIndices) {
 		DiagramData diagramData = new DiagramData(data, numberOfIndices);
 		this.setDiagramData(diagramData);
+	}
+	
+	protected void xAxisSpecificVisualEffect(DiagramAxis xAxis) {}
+	protected void yAxisSpecificVisualEffect(DiagramAxis yAxis) {
+		yAxis.showValuesAboveAxis();
+	}
+	
+	@Override
+	public DiagramData getDiagramData() {
+		return this.data;
+	}
+
+	@Override
+	public Container getContainer() {
+		return this.container;
 	}
 }

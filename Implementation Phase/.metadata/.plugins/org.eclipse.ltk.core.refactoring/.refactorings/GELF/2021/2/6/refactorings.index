@@ -26,3 +26,7 @@
 1613148787566	Encapsulate field 'overlayStrategy'
 1613168335850	Rename type 'IDiagramOverlayStrategy'
 1613249487938	Encapsulate field 'valueDisplayComponentColors'
+1613255418340	Rename method 'compareBarCharts'
+1613255426700	Rename method 'compareFunctionGraphs'
+1613255436759	Rename method 'compareHistograms'
+1613255606062	Delete element
