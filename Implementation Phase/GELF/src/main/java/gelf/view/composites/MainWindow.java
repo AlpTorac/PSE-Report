@@ -22,28 +22,28 @@ import gelf.view.components.Window;
  */
 public class MainWindow extends Window {
     // GUI subparts
-    MenuBar mainMenu;
-    Menu menuFile;
-    MenuItem itemNew;
-    MenuItem itemOpen;
-    MenuItem itemSave;
-    MenuItem itemSaveAll;
-    MenuItem itemSaveAs;
-    MenuItem itemClose;
-    Menu menuEdit;
-    MenuItem itemUndo;
-    MenuItem itemRedo;
-    MenuItem itemMergeSelected;
-    MenuItem itemMerge;
-    MenuItem itemSettings;
-    Menu menuInfo;
-    MenuItem itemManual;
-    MenuItem itemGithub;
-    MenuItem itemVersion;
+    public MenuBar mainMenu;
+    public Menu menuFile;
+    public MenuItem itemNew;
+    public MenuItem itemOpen;
+    public MenuItem itemSave;
+    public MenuItem itemSaveAll;
+    public MenuItem itemSaveAs;
+    public MenuItem itemClose;
+    public Menu menuEdit;
+    public MenuItem itemUndo;
+    public MenuItem itemRedo;
+    public MenuItem itemMergeSelected;
+    public MenuItem itemMerge;
+    public MenuItem itemSettings;
+    public Menu menuInfo;
+    public MenuItem itemManual;
+    public MenuItem itemGithub;
+    public MenuItem itemVersion;
 
-    InfoBar infoBar;
-    Outliner outliner;
-    SubWindowArea subWindowArea;
+    public InfoBar infoBar;
+    public Outliner outliner;
+    public SubWindowArea subWindowArea;
     // colors/graphics
     Color cBackground = new Color(0.1f, 0.1f, 0.1f);
     Image icon = Toolkit.getDefaultToolkit().getImage("/Images/AppIcon.png");

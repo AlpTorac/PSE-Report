@@ -30,10 +30,10 @@ import java.util.ArrayList;
  * Outliner
  */
 public class Outliner extends Panel implements Updatable, TreeSelectionListener {
-    Project project;
-    MenuBar menuBar;
-    JTree tree;
-    JScrollPane treePane;
+    public Project project;
+    public MenuBar menuBar;
+    public JTree tree;
+    public JScrollPane treePane;
 
     // colors
     private Color cBackground = new Color(0.23f, 0.23f, 0.23f);
