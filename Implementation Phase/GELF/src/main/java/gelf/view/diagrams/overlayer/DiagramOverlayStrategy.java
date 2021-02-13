@@ -1,6 +1,7 @@
 package gelf.view.diagrams.overlayer;
 
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 import gelf.view.diagrams.IDiagram;
 import gelf.view.diagrams.SettingsProvider;
@@ -28,19 +29,20 @@ public abstract class DiagramOverlayStrategy {
 		return clonedData;
 	}
 
-	protected void unifyIndices(DiagramData[] diagramData) {
+	protected ArrayList<TreeSet<Float>> unifyIndices(DiagramData[] diagramData) {
 		ArrayList<ArrayList<float[]>> allIndices = new ArrayList<ArrayList<float[]>>();
 		
 		for (DiagramData data : diagramData) {
 			ArrayList<float[]> currentIndices = data.extractIndices();
 			allIndices.add(currentIndices);
 		}
-		ArrayList<ArrayList<Float>> indexList = new ArrayList<ArrayList<Float>>();
+		
+		ArrayList<TreeSet<Float>> indexList = new ArrayList<TreeSet<Float>>();
 		
 		// put all indices at row k together
 		for (int k = 0; k < allIndices.get(0).size(); k++) {
 			
-			ArrayList<Float> allIndicesOfSameRow = new ArrayList<Float>();
+			TreeSet<Float> allIndicesOfSameRow = new TreeSet<Float>();
 			
 			// iterate through all the diagramData and get all the indices at row k
 			for (int i = 0; i < allIndices.size(); i++) {
@@ -52,10 +54,70 @@ public abstract class DiagramOverlayStrategy {
 			indexList.add(allIndicesOfSameRow);
 		}
 		
-		// sort all the indices
-		for (ArrayList<Float> rowOfIndices : indexList) {
-			rowOfIndices.sort(null);
+		return indexList;
+	}
+	
+	protected DiagramData[] unifyData(DiagramData[] diagramData, ArrayList<TreeSet<Float>> newIndices) {
+		ArrayList<float[]> newIndexOfData = new ArrayList<float[]>();
+		for (int i = 0; i < newIndices.size(); i++) {
+			Float[] newIndexObjects = (Float[]) newIndices.get(i).toArray();
+			float[] newIndexValues = new float[newIndexObjects.length];
+			
+			for (int j = 0; j < newIndexObjects.length; j++) {
+				newIndexValues[j] = newIndexObjects[j];
+			}
+			newIndexOfData.add(newIndexValues);
 		}
+		
+		DiagramData[] unifiedData = new DiagramData[diagramData.length];
+		
+		for (int i = 0; i < unifiedData.length; i++) {
+			DiagramData data = diagramData[i];
+			ArrayList<float[]> oldIndices = data.extractIndices();
+			ArrayList<float[]> oldValues = data.extractValues();
+			
+			ArrayList<float[]> newValues = new ArrayList<float[]>();
+			
+			int a = 0;
+			int b = 0;
+			
+			float[] newValueRow = null;
+			if (newIndexOfData.size() < 2) {
+				newValueRow = new float[newIndexOfData.get(newIndexOfData.size() - 1).length];
+			}
+			
+			traverseIndicesAndSetNewValues(newValues, oldIndices, newIndexOfData, a, b, oldValues.get(a)[b], true, newValueRow);
+
+			ArrayList<float[]> newData = new ArrayList<float[]>();
+			
+			newData.addAll(newIndexOfData);
+			newData.addAll(newValues);
+		}
+		
+		return unifiedData;
+	}
+	
+	private void traverseIndicesAndSetNewValues(ArrayList<float[]> newValues, ArrayList<float[]> oldIndices,
+			ArrayList<float[]> newIndexOfData, int row, int column, float lastOldValue,
+			boolean isOldIndex, float[] newValueRow) {
+			for (int b = column; b < newIndexOfData.get(row).length; b++) {
+				if (row + 2 == newIndexOfData.size()) {
+					if (newValueRow != null) {
+						newValues.add(newValueRow);
+					}
+					newValueRow = new float[newIndexOfData.get(row + 1).length];
+				}
+				
+				if (row + 1 < newIndexOfData.size()) {
+					if (isOldIndex && (column < oldIndices.get(row).length) && oldIndices.get(row)[column] == newIndexOfData.get(row)[column]) {
+						traverseIndicesAndSetNewValues(newValues, oldIndices, newIndexOfData, row + 1, b, oldIndices.get(row)[column], true, newValueRow);
+					} else {
+						traverseIndicesAndSetNewValues(newValues, oldIndices, newIndexOfData, row + 1, b, lastOldValue, false, newValueRow);
+					}
+				} else {
+					newValueRow[column] = lastOldValue;
+				}
+			}
 	}
 	
 	protected DiagramData getAverage(DiagramData[] diagramData) {
@@ -157,7 +219,7 @@ public abstract class DiagramOverlayStrategy {
 		DiagramData averages = this.getAverage(clonedData);
 		
 		DiagramAxis[] axes = this.unifyAxes(this.getAllAxes());
-		this.unifyIndices(clonedData);
+		clonedData = this.unifyData(clonedData, this.unifyIndices(clonedData));
 		DiagramValueDisplayComponent[] dvdcs = this.makeValueDisplayComponents(clonedData);
 		DiagramComponent[] dcs = this.makeNonValueDisplayComponents(clonedData);
 		
