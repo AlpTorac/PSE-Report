@@ -47,7 +47,7 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
         super(width, height);
         this.project = project;
         // style
-        this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
+        this.setLayout(new BorderLayout());
         this.setBackground(cBackground);
         Border margin = new EmptyBorder(5, 5, 5, 5);
         margin = BorderFactory.createLineBorder(cBorder, 5);
@@ -57,12 +57,12 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
         Menu menu = new Menu("View");
         Menu menu2 = new Menu("Sort");
         this.menuBar = new MenuBar();
-        this.menuBar.setBackground(Color.red);
+        this.menuBar.setBackground(cBackground);
         this.menuBar.setPreferredSize(new Dimension(this.getWidth(), 30));
         this.menuBar.setVisible(true);
         this.menuBar.add(menu);
         this.menuBar.add(menu2);
-        this.add(this.menuBar);
+        this.add(this.menuBar, BorderLayout.PAGE_START);
 
         // tree
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
@@ -80,9 +80,7 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
         this.treePane.setPreferredSize(new Dimension(this.getWidth(), this.getHeight() - this.menuBar.getHeight()));
         this.treePane.setVisible(true);
         this.treePane.setBorder(null);
-        this.add(treePane);
-
-        this.add(Box.createVerticalGlue());
+        this.add(treePane, BorderLayout.CENTER);
 
         // subscribe to project
         project.addUpdatable(this);

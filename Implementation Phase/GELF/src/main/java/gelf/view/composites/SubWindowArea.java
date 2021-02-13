@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
@@ -13,6 +15,8 @@ import gelf.view.components.Panel;
  * SubWindowArea
  */
 public class SubWindowArea extends Panel {
+    private JScrollPane pane;
+    private Panel windowPanel;
     private int maxSubWindows = 3;
     private ArrayList<SubWindow> subWindows = new ArrayList<>();
     //colors
@@ -20,27 +24,41 @@ public class SubWindowArea extends Panel {
 
     public SubWindowArea(int width, int height) {
         super(width, height);
-        this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
         this.setBackground(cBackground);
+        this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
         Border margin = new EmptyBorder(5, 5, 5, 5);
         this.setBorder(margin);
+        //window panel
+        this.windowPanel = new Panel(100, 100);
+        this.windowPanel.setBackground(cBackground);
+        this.windowPanel.setLayout(new BoxLayout(this.windowPanel, BoxLayout.LINE_AXIS));
+        this.windowPanel.setVisible(true);
+        //pane
+        this.pane = new JScrollPane(this.windowPanel, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        this.pane.setBorder(null);
+        this.pane.setBackground(cBackground);
+        this.pane.setVisible(true);
+        this.add(pane);
+        //SWA
+        this.revalidate();
+        this.repaint();
     }
     
     public void addSubWindow(SubWindow window) {
         if(subWindows.size() < maxSubWindows) {
             subWindows.add(window);
-            this.add(window);
+            this.windowPanel.add(window);
             this.revalidate();
             this.repaint();
         } else {
-            //TODO error handling
+            JOptionPane.showMessageDialog(this, "Cannot open Element: Maximum number of open Elements reached.");
         }
     }
 
     public void removeSubWindow(SubWindow window) {
         if(subWindows.contains(window)) {
             subWindows.remove(window);
-            this.remove(window);
+            this.windowPanel.remove(window);
             this.revalidate();
             this.repaint();
         } else {

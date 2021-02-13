@@ -26,7 +26,7 @@ public class SubWindow extends Panel {
     private Color cBorder = new Color(0.15f, 0.15f, 0.15f);
     SubWindow _this = this;
 
-    public SubWindow(Element e, SubWindowArea parent, int width, int height) {
+    public SubWindow(ElementManipulator em, SubWindowArea parent, int width, int height) {
         super(width, height);
         // style
         this.setLayout(new BorderLayout());
@@ -47,7 +47,7 @@ public class SubWindow extends Panel {
             }
         });
         //path/name label
-        this.path = new Label(e.getName());
+        this.path = new Label(em.getElement().toString());
         this.path.setVisible(true);
 
         this.bar.add(this.close);
@@ -55,5 +55,6 @@ public class SubWindow extends Panel {
         this.bar.add(Box.createHorizontalGlue());
 
         this.add(this.bar, BorderLayout.PAGE_START);
+        this.add(em, BorderLayout.CENTER);
     }
 }
