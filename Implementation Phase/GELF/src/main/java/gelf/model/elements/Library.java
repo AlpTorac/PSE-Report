@@ -1,17 +1,12 @@
 package gelf.model.elements;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 
-import javax.swing.JFileChooser;
 
-import gelf.model.elements.attributes.OutputPower;
 import gelf.model.elements.attributes.PowerGroup;
 import gelf.model.elements.attributes.TimingGroup;
 import gelf.model.elements.attributes.TimingKey;
@@ -23,7 +18,7 @@ public class Library extends HigherElement {
 	private float[] index1;
     private float[] index2;
     private String path;
-    private String[] fileData;
+    private String libraryContent;
     private ArrayList<Cell> cells;
     private Stat defaultLeakage;
     private File libraryFile;
@@ -85,12 +80,12 @@ public class Library extends HigherElement {
 		this.path = path;
 	}
 	
-	public String[] getFileData() {
-		return fileData;
+	public String getLibraryContent() {
+		return libraryContent;
 	}
 	
-	public void setFileData(String[] fileData) {
-		this.fileData = fileData;
+	public void setLibraryContent(String libraryContent) {
+		this.libraryContent = libraryContent;
 	}
 	
 	public ArrayList<Cell> getCells() {
@@ -309,34 +304,12 @@ public class Library extends HigherElement {
 		this.libraryFile = libraryFile;
 	}
 	
-	public void saveLibrary() {
-		FileManager.saveFile(super.getName(), fileData, path);
+	public void saveLibrary() throws IOException {
+		FileManager.saveFileToPath(libraryContent, ".lib", path);
 	}
 	
-	public void saveLibraryAs() {
-	    /*
-		 JFileChooser chooser = new JFileChooser(); 
-		 chooser.setCurrentDirectory(new java.io.File("."));
-		 chooser.setDialogTitle("Select a directory to save the library");
-		 chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		 chooser.setAcceptAllFileFilterUsed(false);
-
-		 if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-			 System.out.println("getCurrentDirectory(): " + chooser.getCurrentDirectory());
-		     System.out.println("getSelectedFile() : " + chooser.getSelectedFile());
-			 String dirName = chooser.getCurrentDirectory().getPath();
-			 File dir = new File (dirName);
-			 // not sure what to do after this
-			 File actualFile = new File (dir, libraryFile.getPath());
-			 Writer output = null;
-		     output = new BufferedWriter(new FileWriter(actualFile));
-		     output.close();
-		 } 
-		 else {
-		      System.out.println("No Selection ");
-		 }
-		 */
-		FileManager.saveFile(super.getName(), fileData, path);
+	public void saveLibraryAs() throws IOException {
+		FileManager.saveFile(libraryContent, ".lib");
 	}
 
 	@Override
