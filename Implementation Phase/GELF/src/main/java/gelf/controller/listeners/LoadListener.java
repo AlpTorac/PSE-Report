@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 public class LoadListener implements ActionListener{
 
 	@Override
-	public void actionPerformed(ActionEvent e) {System.out.println("hi");
+	public void actionPerformed(ActionEvent e) {
 		OpenFileCommand openFileCommand = new OpenFileCommand();
 		
 		try {
