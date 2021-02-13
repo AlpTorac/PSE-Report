@@ -16,6 +16,14 @@ public class SettingsProvider {
 	
 	private int decimalDigitsToShow = 2;
 	
+	/**
+	 * The colors to be used, when diagrams are being overlaid or
+	 * brought together.
+	 */
+	private Color[] valueDisplayComponentColors = new Color[] {
+			Color.RED, Color.GREEN
+	};
+	
 	private int axisThickness = 1;
 	private Color axisColor = Color.BLACK;
 	private int axisValueFontSize = 10;
@@ -25,12 +33,9 @@ public class SettingsProvider {
 	private int stepsInXAxis = 10;
 	private int stepsInYAxis = 10;
 	
-	private Color barColor = Color.RED;
-	private Color barComparisonColor = Color.GREEN;
 	private int barBorderThickness = 1;
 	
 	private int functionGraphPointSize = 5;
-	private Color functionGraphPointColor = Color.RED;
 	
 	private int heatMapLabelBorderThickness = 1;
 	private int heatMapColorScaleBorderThickness = 1;
@@ -73,14 +78,6 @@ public class SettingsProvider {
 		return additionalSpaceForAxisValues;
 	}
 
-	public Color getBarColor() {
-		return barColor;
-	}
-
-	public Color getBarComparisonColor() {
-		return barComparisonColor;
-	}
-
 	public int getBarBorderThickness() {
 		return barBorderThickness;
 	}
@@ -113,14 +110,6 @@ public class SettingsProvider {
 		this.additionalSpaceForAxisValues = additionalSpaceForAxisValues;
 	}
 
-	public void setBarColor(Color barColor) {
-		this.barColor = barColor;
-	}
-
-	public void setBarComparisonColor(Color barComparisonColor) {
-		this.barComparisonColor = barComparisonColor;
-	}
-
 	public void setBarBorderThickness(int barBorderThickness) {
 		this.barBorderThickness = barBorderThickness;
 	}
@@ -131,14 +120,6 @@ public class SettingsProvider {
 
 	public void setFunctionGraphPointSize(int functionGraphPointSize) {
 		this.functionGraphPointSize = functionGraphPointSize;
-	}
-
-	public Color getFunctionGraphPointColor() {
-		return functionGraphPointColor;
-	}
-
-	public void setFunctionGraphPointColor(Color functionGraphPointColor) {
-		this.functionGraphPointColor = functionGraphPointColor;
 	}
 
 	public int getStepsInYAxis() {
@@ -282,5 +263,13 @@ public class SettingsProvider {
 		double result = Math.round(value * tenExponent) / tenExponent;
 		
 		return result;
+	}
+
+	public Color getValueDisplayComponentColorAt(int index) {
+		return this.valueDisplayComponentColors[index];
+	}
+
+	public void setValueDisplayComponentColorAt(Color valueDisplayComponentColor, int index) {
+		this.valueDisplayComponentColors[index] = valueDisplayComponentColor;
 	}
 }

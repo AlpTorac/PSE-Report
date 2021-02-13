@@ -42,7 +42,7 @@ public class HistogramBuilder extends DiagramBuilder {
 		int stepsInXAxis = settingsProvider.getStepsInXAxis();
 		int stepsInYAxis = settingsProvider.getStepsInYAxis();
 		
-		Color axisLine = settingsProvider.getAxisColor();
+		Color axisLine = settingsProvider.getValueDisplayComponentColorAt(0);
 		int thickness = settingsProvider.getAxisThickness();
 		float endMaxIndex = maxIndex * settingsProvider.getHistogramIndexEndIndexFactor();
 		
@@ -66,7 +66,7 @@ public class HistogramBuilder extends DiagramBuilder {
 		
 		DiagramValueDisplayComponent[] dvdc = new DiagramValueDisplayComponent[dvdcCount];
 		
-		Color barColor = settingsProvider.getBarColor();
+		Color barColor = settingsProvider.getValueDisplayComponentColorAt(0);
 		int thickness = settingsProvider.getBarBorderThickness();
 		
 		for (int i = 0; i < indices.length - 1; i++) {

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="java.awt.BasicStroke"/>
-    <fullyQualifiedTypeName name="java.awt.geom.AffineTransform"/>
     <fullyQualifiedTypeName name="java.awt.geom.Rectangle2D"/>
     <fullyQualifiedTypeName name="java.awt.geom.Rectangle2D.Double"/>
     <fullyQualifiedTypeName name="java.awt.Robot"/>
@@ -48,7 +46,6 @@
     <fullyQualifiedTypeName name="gelf.view.diagrams.overlayer.FunctionGraphOverlayStrategy"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.overlayer.HistogramOverlayStrategy"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.TestCase"/>
-    <fullyQualifiedTypeName name="java.util.Iterator"/>
     <fullyQualifiedTypeName name="java.util.Collection"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.DiagramDirector"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.builder.BarChartBuilder"/>
@@ -60,4 +57,7 @@
     <fullyQualifiedTypeName name="gelf.view.diagrams.components.DiagramComponentFactory"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.SettingsProvider"/>
     <fullyQualifiedTypeName name="java.util.ArrayList"/>
+    <fullyQualifiedTypeName name="java.util.TreeSet"/>
+    <fullyQualifiedTypeName name="java.util.Iterator"/>
+    <fullyQualifiedTypeName name="java.util.Stack"/>
 </qualifiedTypeNameHistroy>

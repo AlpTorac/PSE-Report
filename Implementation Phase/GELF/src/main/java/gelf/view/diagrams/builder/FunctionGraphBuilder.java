@@ -65,7 +65,7 @@ public class FunctionGraphBuilder extends DiagramBuilder {
 		
 		DiagramValueDisplayComponent[] dvdc = new DiagramValueDisplayComponent[dvdcCount];
 		
-		Color pointColor = settingsProvider.getFunctionGraphPointColor();
+		Color pointColor = settingsProvider.getValueDisplayComponentColorAt(0);
 		float size = settingsProvider.getFunctionGraphPointSize();
 		
 		for (int i = 0; i < dvdc.length; i++) {

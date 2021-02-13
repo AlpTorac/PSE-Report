@@ -25,3 +25,4 @@
 1613063128625	Encapsulate field 'layer'
 1613148787566	Encapsulate field 'overlayStrategy'
 1613168335850	Rename type 'IDiagramOverlayStrategy'
+1613249487938	Encapsulate field 'valueDisplayComponentColors'

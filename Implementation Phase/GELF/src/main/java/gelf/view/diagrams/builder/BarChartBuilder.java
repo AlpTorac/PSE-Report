@@ -59,7 +59,7 @@ public class BarChartBuilder extends DiagramBuilder {
 		
 		DiagramValueDisplayComponent[] dvdc = new DiagramValueDisplayComponent[dvdcCount];
 		
-		Color barColor = settingsProvider.getBarColor();
+		Color barColor = settingsProvider.getValueDisplayComponentColorAt(0);
 		int thickness = settingsProvider.getBarBorderThickness();
 		
 		for (int i = 0; i < dvdc.length; i++) {

@@ -108,9 +108,16 @@ public abstract class DiagramOverlayStrategy {
 					newValueRow = new float[newIndexOfData.get(row + 1).length];
 				}
 				
+				float oldIndex = oldIndices.get(row)[column];
+				float newIndex = newIndexOfData.get(row)[column];
+				
+				if (oldIndex < newIndex) {
+					break;
+				}
+				
 				if (row + 1 < newIndexOfData.size()) {
-					if (isOldIndex && (column < oldIndices.get(row).length) && oldIndices.get(row)[column] == newIndexOfData.get(row)[column]) {
-						traverseIndicesAndSetNewValues(newValues, oldIndices, newIndexOfData, row + 1, b, oldIndices.get(row)[column], true, newValueRow);
+					if (isOldIndex && (column < oldIndices.get(row).length) && oldIndex == newIndex) {
+						traverseIndicesAndSetNewValues(newValues, oldIndices, newIndexOfData, row + 1, b, oldIndex, true, newValueRow);
 					} else {
 						traverseIndicesAndSetNewValues(newValues, oldIndices, newIndexOfData, row + 1, b, lastOldValue, false, newValueRow);
 					}
@@ -209,7 +216,7 @@ public abstract class DiagramOverlayStrategy {
 		return axes;
 	}
 	
-	protected abstract DiagramValueDisplayComponent[] makeValueDisplayComponents(DiagramData[] diagramData);
+	protected abstract DiagramValueDisplayComponent[] makeValueDisplayComponents(DiagramAxis[] axes, DiagramComponent[] nonValueDisplayComponents, DiagramData[] diagramData);
 	protected abstract DiagramComponent[] makeNonValueDisplayComponents(DiagramData[] diagramData);
 	protected abstract IDiagram buildDiagram(DiagramData data, DiagramAxis[] axes, DiagramValueDisplayComponent[] valueDisplayComponents, DiagramComponent[] nonValueDisplayComponents);
 	
@@ -219,9 +226,12 @@ public abstract class DiagramOverlayStrategy {
 		DiagramData averages = this.getAverage(clonedData);
 		
 		DiagramAxis[] axes = this.unifyAxes(this.getAllAxes());
-		clonedData = this.unifyData(clonedData, this.unifyIndices(clonedData));
-		DiagramValueDisplayComponent[] dvdcs = this.makeValueDisplayComponents(clonedData);
+		if (clonedData[0].extractIndices().size() > 0) {
+			clonedData = this.unifyData(clonedData, this.unifyIndices(clonedData));
+		}
+		
 		DiagramComponent[] dcs = this.makeNonValueDisplayComponents(clonedData);
+		DiagramValueDisplayComponent[] dvdcs = this.makeValueDisplayComponents(axes, dcs, clonedData);
 		
 		return this.buildDiagram(averages, axes, dvdcs, dcs);
 	}
