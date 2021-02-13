@@ -1,15 +1,10 @@
 package gelf.view.diagrams.overlayer;
 
-import java.awt.Color;
-import java.util.ArrayList;
-
 import gelf.view.diagrams.IDiagram;
 import gelf.view.diagrams.builder.IBarChartBuilder;
-import gelf.view.diagrams.components.BarChartBar;
 import gelf.view.diagrams.components.DiagramAxis;
 import gelf.view.diagrams.components.DiagramComponent;
 import gelf.view.diagrams.components.DiagramValueDisplayComponent;
-import gelf.view.diagrams.components.PositionIn2DDiagram;
 import gelf.view.diagrams.data.DiagramData;
 import gelf.view.diagrams.type.BarChart;
 

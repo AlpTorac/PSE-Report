@@ -3,11 +3,9 @@ package gelf.view.diagrams.builder;
 import java.awt.Color;
 
 import gelf.view.diagrams.components.DiagramAxis;
-import gelf.view.diagrams.components.DiagramColorScale;
 import gelf.view.diagrams.components.DiagramComponent;
 import gelf.view.diagrams.components.DiagramValueDisplayComponent;
 import gelf.view.diagrams.components.PositionIn2DDiagram;
-import gelf.view.diagrams.components.PositionInFrame;
 import gelf.view.diagrams.data.DiagramData;
 
 public interface IBarChartBuilder extends IDiagramBuilder {
