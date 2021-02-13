@@ -8,47 +8,12 @@ import gelf.view.diagrams.components.DiagramAxis;
 import gelf.view.diagrams.components.DiagramComponent;
 import gelf.view.diagrams.components.DiagramValueDisplayComponent;
 import gelf.view.diagrams.components.PositionIn2DDiagram;
-import gelf.view.diagrams.components.PositionInFrame;
 import gelf.view.diagrams.type.BarChart;
 
 public class BarChartBuilder extends DiagramBuilder {
 
 	public BarChartBuilder(Container container) {
 		super(container);
-	}
-	
-	@Override
-	protected DiagramAxis[] buildAxes() {
-		int containerWidth = this.container.getWidth();
-		int containerHeight = this.container.getHeight();
-		
-		int xAxisYpos = Math.round(containerHeight * (1 - settingsProvider.getDiagramBottomMariginFactor()));
-		int yAxisXpos = Math.round(containerWidth * settingsProvider.getDiagramLeftMariginFactor());
-		
-		PositionInFrame axisOrigin = factory.makePositionInFrame(yAxisXpos, xAxisYpos);
-		PositionInFrame endX = factory.makePositionInFrame(containerWidth * (1 - settingsProvider.getDiagramRightMariginFactor()), xAxisYpos);
-		PositionInFrame endY = factory.makePositionInFrame(yAxisXpos, containerHeight * settingsProvider.getDiagramTopMariginFactor());
-		
-		int numberOfBars = this.data.extractValues().get(0).length;
-		float[] values = this.data.extractValues().get(0);
-		
-		int stepsInYAxis = values.length;
-		
-		float minVal = 0;
-		float maxVal = this.data.getMaximumValue();
-		
-		Color axisLineColor = settingsProvider.getAxisColor();
-		int thickness = settingsProvider.getAxisThickness();
-		
-		DiagramAxis xAxis = factory
-				.createSolidAxis(axisOrigin, endX, 0, numberOfBars, numberOfBars, axisLineColor, thickness);
-		xAxis.showValuesUnderAxis();
-		
-		DiagramAxis yAxis = factory
-				.createSolidAxis(axisOrigin, endY, minVal, maxVal, stepsInYAxis, axisLineColor, thickness);
-		yAxis.showValuesAboveAxis();
-		
-		return new DiagramAxis[] {xAxis, yAxis};
 	}
 
 	@Override
@@ -73,15 +38,30 @@ public class BarChartBuilder extends DiagramBuilder {
 	}
 
 	@Override
-	protected DiagramComponent[] buildDiagramSpecificComponent() {
-		return null;
-	}
-
-	@Override
 	public IDiagram buildDiagram() {
 		DiagramAxis[] axes = this.buildAxes();
 		DiagramValueDisplayComponent[] dvdc = this.buildValueDisplayComponents(axes, null);
 		return new BarChart(this.data, axes, dvdc, null);
+	}
+
+	@Override
+	protected float getXAxisMaxValue() {
+		return this.data.extractValues().get(0).length;
+	}
+
+	@Override
+	protected float getYAxisMaxValue() {
+		return this.data.getMaximumValue();
+	}
+
+	@Override
+	protected int getXAxisSteps() {
+		return (int) this.getXAxisMaxValue();
+	}
+
+	@Override
+	protected int getYAxisSteps() {
+		return this.data.extractValues().get(0).length;
 	}
 
 }

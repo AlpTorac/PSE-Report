@@ -20,44 +20,6 @@ public class HistogramBuilder extends DiagramBuilder {
 	}
 
 	@Override
-	protected DiagramAxis[] buildAxes() {
-		DiagramComponentFactory factory = DiagramComponentFactory.getDiagramComponentFactory();
-		
-		int containerWidth = this.container.getWidth();
-		int containerHeight = this.container.getHeight();
-		
-		int xAxisYpos = Math.round(containerHeight * (1 - settingsProvider.getDiagramBottomMariginFactor()));
-		int yAxisXpos = Math.round(containerWidth * settingsProvider.getDiagramLeftMariginFactor());
-		
-		PositionInFrame axisOrigin = factory.makePositionInFrame(yAxisXpos, xAxisYpos);
-		PositionInFrame endX = factory.makePositionInFrame(containerWidth * (1 - settingsProvider.getDiagramRightMariginFactor()), xAxisYpos);
-		PositionInFrame endY = factory.makePositionInFrame(yAxisXpos, containerHeight * settingsProvider.getDiagramTopMariginFactor());
-		
-		float minVal = 0;
-		float maxVal = this.data.getMaximumValue();
-		
-		float minIndex = 0;
-		float maxIndex = this.data.getMaximumIndex();
-		
-		int stepsInXAxis = settingsProvider.getStepsInXAxis();
-		int stepsInYAxis = settingsProvider.getStepsInYAxis();
-		
-		Color axisLine = settingsProvider.getValueDisplayComponentColorAt(0);
-		int thickness = settingsProvider.getAxisThickness();
-		float endMaxIndex = maxIndex * settingsProvider.getHistogramIndexEndIndexFactor();
-		
-		DiagramAxis xAxis = DiagramComponentFactory.getDiagramComponentFactory()
-				.createSolidAxis(axisOrigin, endX, minIndex, endMaxIndex, stepsInXAxis, axisLine, thickness);
-		xAxis.showValuesUnderAxis();
-		
-		DiagramAxis yAxis = DiagramComponentFactory.getDiagramComponentFactory()
-				.createSolidAxis(axisOrigin, endY, minVal, maxVal, stepsInYAxis, axisLine, thickness);
-		yAxis.showValuesAboveAxis();
-		
-		return new DiagramAxis[] {xAxis, yAxis};
-	}
-
-	@Override
 	protected DiagramValueDisplayComponent[] buildValueDisplayComponents(DiagramAxis[] axes,
 			DiagramComponent[] diagramSpecificComponent) {
 		float[] indices = this.data.extractIndices().get(0);
@@ -95,15 +57,19 @@ public class HistogramBuilder extends DiagramBuilder {
 	}
 
 	@Override
-	protected DiagramComponent[] buildDiagramSpecificComponent() {
-		return null;
-	}
-
-	@Override
 	public IDiagram buildDiagram() {
 		DiagramAxis[] axes = this.buildAxes();
 		DiagramValueDisplayComponent[] dvdc = this.buildValueDisplayComponents(axes, null);
 		return new Histogram(this.data, axes, dvdc, null);
 	}
 
+	@Override
+	protected float getXAxisMaxValue() {
+		return this.data.getMaximumIndex() * settingsProvider.getHistogramIndexEndIndexFactor();
+	}
+
+	@Override
+	protected float getYAxisMaxValue() {
+		return this.data.getMaximumValue();
+	}
 }

@@ -18,45 +18,6 @@ public class FunctionGraphBuilder extends DiagramBuilder {
 	}
 
 	@Override
-	protected DiagramAxis[] buildAxes() {
-		int containerWidth = this.container.getWidth();
-		int containerHeight = this.container.getHeight();
-		
-		int xAxisYpos = Math.round(containerHeight * (1 - settingsProvider.getDiagramBottomMariginFactor()));
-		int yAxisXpos = Math.round(containerWidth * settingsProvider.getDiagramLeftMariginFactor());
-		
-		PositionInFrame axisOrigin = factory.makePositionInFrame(yAxisXpos, xAxisYpos);
-		PositionInFrame endX = factory.makePositionInFrame(containerWidth * (1 - settingsProvider.getDiagramRightMariginFactor()), xAxisYpos);
-		PositionInFrame endY = factory.makePositionInFrame(yAxisXpos, containerHeight * settingsProvider.getDiagramTopMariginFactor());
-		
-		float[] indices = this.data.extractIndices().get(0);
-		int sizeOfIndices = indices.length;
-		float[] values = this.data.extractValues().get(0);
-		
-		float minVal = values[0];
-		float maxVal = values[sizeOfIndices - 1];
-		
-		float minIndex = indices[0];
-		float maxIndex = indices[sizeOfIndices - 1];
-		
-		int stepsInXAxis = settingsProvider.getStepsInXAxis();
-		int stepsInYAxis = settingsProvider.getStepsInYAxis();
-		
-		Color axisLine = settingsProvider.getAxisColor();
-		int thickness = settingsProvider.getAxisThickness();
-		
-		DiagramAxis xAxis = factory
-				.createSolidAxis(axisOrigin, endX, minIndex, maxIndex, stepsInXAxis, axisLine, thickness);
-		xAxis.showValuesUnderAxis();
-		
-		DiagramAxis yAxis = factory
-				.createSolidAxis(axisOrigin, endY, minVal, maxVal, stepsInYAxis, axisLine, thickness);
-		yAxis.showValuesAboveAxis();
-		
-		return new DiagramAxis[] {xAxis, yAxis};
-	}
-
-	@Override
 	protected DiagramValueDisplayComponent[] buildValueDisplayComponents(DiagramAxis[] axes,
 			DiagramComponent[] diagramSpecificComponent) {
 		float[] indices = this.data.extractIndices().get(0);
@@ -78,15 +39,29 @@ public class FunctionGraphBuilder extends DiagramBuilder {
 	}
 
 	@Override
-	protected DiagramComponent[] buildDiagramSpecificComponent() {
-		return null;
-	}
-
-	@Override
 	public IDiagram buildDiagram() {
 		DiagramAxis[] axes = this.buildAxes();
 		DiagramValueDisplayComponent[] dvdc = this.buildValueDisplayComponents(axes, null);
 		return new FunctionGraph(this.data, axes, dvdc, null);
 	}
 
+	@Override
+	protected float getXAxisMinValue() {
+		return this.data.extractIndices().get(0)[0];
+	}
+
+	@Override
+	protected float getYAxisMinValue() {
+		return this.data.extractValues().get(0)[0];
+	}
+
+	@Override
+	protected float getXAxisMaxValue() {
+		return this.data.extractIndices().get(0)[this.data.extractIndices().get(0).length - 1];
+	}
+
+	@Override
+	protected float getYAxisMaxValue() {
+		return this.data.extractValues().get(0)[this.data.extractValues().get(0).length - 1];
+	}
 }

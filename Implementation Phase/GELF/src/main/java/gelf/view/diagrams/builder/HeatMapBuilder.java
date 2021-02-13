@@ -22,43 +22,6 @@ public class HeatMapBuilder extends DiagramBuilder {
 	}
 
 	@Override
-	protected DiagramAxis[] buildAxes() {
-		DiagramComponentFactory factory = DiagramComponentFactory.getDiagramComponentFactory();
-		
-		int containerWidth = this.container.getWidth();
-		int containerHeight = this.container.getHeight();
-		
-		int xAxisYpos = Math.round(containerHeight * (1 - settingsProvider.getDiagramBottomMariginFactor()));
-		int yAxisXpos = Math.round(containerWidth * settingsProvider.getDiagramLeftMariginFactor());
-		
-		PositionInFrame axisOrigin = factory.makePositionInFrame(yAxisXpos, xAxisYpos);
-		PositionInFrame endX = factory.makePositionInFrame(containerWidth * (1 - settingsProvider.getDiagramRightMariginFactor()), xAxisYpos);
-		PositionInFrame endY = factory.makePositionInFrame(yAxisXpos, containerHeight * settingsProvider.getDiagramTopMariginFactor());
-		
-		float minIndex1 = 0;
-		float maxIndex1 = this.data.getMaximumIndexAt(0);
-		
-		float minIndex2 = 0;
-		float maxIndex2 = this.data.getMaximumIndexAt(1);
-		
-		int stepsInXAxis = settingsProvider.getStepsInXAxis();
-		int stepsInYAxis = settingsProvider.getStepsInYAxis();
-		
-		Color axisLine = settingsProvider.getAxisColor();
-		int thickness = settingsProvider.getAxisThickness();
-		
-		DiagramAxis xAxis = factory
-				.createSolidAxis(axisOrigin, endX, minIndex1, maxIndex1, stepsInXAxis, axisLine, thickness);
-		xAxis.showValuesUnderAxis();
-		
-		DiagramAxis yAxis = factory
-				.createSolidAxis(axisOrigin, endY, minIndex2, maxIndex2, stepsInYAxis, axisLine, thickness);
-		yAxis.showValuesAboveAxis();
-		
-		return new DiagramAxis[] {xAxis, yAxis};
-	}
-
-	@Override
 	protected DiagramValueDisplayComponent[] buildValueDisplayComponents(DiagramAxis[] axes,
 			DiagramComponent[] diagramSpecificComponent) {
 		
@@ -172,4 +135,13 @@ public class HeatMapBuilder extends DiagramBuilder {
 		return new HeatMap(this.data, axes, dvdc, dc);
 	}
 
+	@Override
+	protected float getXAxisMaxValue() {
+		return this.data.getMaximumIndexAt(0);
+	}
+
+	@Override
+	protected float getYAxisMaxValue() {
+		return this.data.getMaximumIndexAt(1);
+	}
 }
