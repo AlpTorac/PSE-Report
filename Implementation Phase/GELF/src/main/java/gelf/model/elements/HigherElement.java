@@ -1,6 +1,7 @@
 package gelf.model.elements;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import gelf.model.elements.attributes.PowerGroup;
@@ -10,18 +11,25 @@ import gelf.model.elements.attributes.TimingSense;
 import gelf.model.elements.attributes.TimingType;
 
 public abstract class HigherElement extends Element {
-	protected ArrayList<TimingSense> availableTimSen;
-    protected ArrayList<TimingGroup> availableTimGr;
-    protected ArrayList<TimingType> availableTimType;
-    protected ArrayList<PowerGroup> availableOutputPower;
-    protected ArrayList<PowerGroup> availableInputPower;
+	protected ArrayList<TimingSense> availableTimSen = 
+			new ArrayList<TimingSense>();
+    protected ArrayList<TimingGroup> availableTimGr =
+    		new ArrayList<TimingGroup>();
+    protected ArrayList<TimingType> availableTimType =
+    		new ArrayList<TimingType>();
+    protected ArrayList<PowerGroup> availableOutputPower = 
+    		new ArrayList<PowerGroup>();
+    protected ArrayList<PowerGroup> availableInputPower =
+    		new ArrayList<PowerGroup>();
     // protected Map<TimingSense, Map<TimingGroup, Map<TimingType, Stat>>> timingStat;
-    protected Map<TimingKey, Stat> timingStat;
-    protected Map<PowerGroup, Stat> inPowerStat;
-    protected Map<PowerGroup, Stat> outPowerStat;
+    protected Map<TimingKey, Stat> timingStat = 
+    		new HashMap<TimingKey, Stat>();
+    protected Map<PowerGroup, Stat> inPowerStat = 
+    		new HashMap<PowerGroup, Stat>();
+    protected Map<PowerGroup, Stat> outPowerStat =
+    		new HashMap<PowerGroup, Stat>();
     protected boolean hasShownElements;
     protected Stat leakage;
-    
     
 	public ArrayList<TimingSense> getAvailableTimSen() {
 		return availableTimSen;

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import gelf.model.elements.attributes.InputPower;
-import gelf.model.elements.attributes.OutputPower;
-import gelf.model.elements.attributes.Timing;
 
 public class InputPin extends Pin {
 	private ArrayList<InputPower> inputPowers;
@@ -15,10 +13,8 @@ public class InputPin extends Pin {
     	super.setName(name);
     	super.setParent(parentCell);
     	this.inputPowers = inputPowers;
-    	/*
     	this.setAvailablePower();
     	calculate();
-    	*/
     }
     
     public InputPin clone() {

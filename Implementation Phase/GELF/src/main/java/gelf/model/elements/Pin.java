@@ -6,7 +6,8 @@ import gelf.model.elements.attributes.PowerGroup;
 
 public abstract class Pin extends Element {
 	 protected Cell parentCell;
-     protected ArrayList<PowerGroup> availablePower;
+     protected ArrayList<PowerGroup> availablePower 
+     	= new ArrayList<PowerGroup>();
      
      public Pin() {	 
     	 

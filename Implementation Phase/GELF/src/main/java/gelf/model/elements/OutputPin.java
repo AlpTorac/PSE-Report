@@ -3,8 +3,6 @@ package gelf.model.elements;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import gelf.model.elements.attributes.InputPower;
-import gelf.model.elements.attributes.Leakage;
 import gelf.model.elements.attributes.OutputPower;
 import gelf.model.elements.attributes.Timing;
 import gelf.model.elements.attributes.TimingGroup;
@@ -12,14 +10,17 @@ import gelf.model.elements.attributes.TimingSense;
 import gelf.model.elements.attributes.TimingType;
 
 public class OutputPin extends Pin {
-	private ArrayList<TimingSense> availableTimSen;
-    private ArrayList<TimingGroup> availableTimGr;
-    private ArrayList<TimingType> availableTimType;
+	private ArrayList<TimingSense> availableTimSen = 
+			new ArrayList<TimingSense>();
+    private ArrayList<TimingGroup> availableTimGr =
+    		new ArrayList<TimingGroup>();
+    private ArrayList<TimingType> availableTimType =
+    		new ArrayList<TimingType>();
     private ArrayList<OutputPower> outputPowers;
     private ArrayList<Timing> timings;
     private float minCapacitance;
     private float maxCapacitance;
-    private String outputFunction;
+    private String outputFunction;	
     
     public OutputPin(String name, Cell parentCell, ArrayList<OutputPower> outputPowers, 
     		ArrayList<Timing> timings) {
