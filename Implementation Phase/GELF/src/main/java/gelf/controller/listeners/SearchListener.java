@@ -22,15 +22,13 @@ public class SearchListener implements KeyListener {
 	
 	public SearchListener(Outliner outliner) {
 		this.outliner = outliner;
-		
 	}
 	
 	private void search() {
-		String searchedText = outliner.searchBox.getText();
-		outliner.getTree();
-	    else {
-	    	
-	    }
+		/*String searchedText = outliner.searchBox.getText();
+		outliner
+		DefaultMutableTreeNode node = tree.
+	    if (tree.contains())*/
 	}
 
 	@Override

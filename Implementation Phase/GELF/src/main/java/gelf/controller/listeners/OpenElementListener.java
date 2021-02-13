@@ -34,7 +34,7 @@ public class OpenElementListener implements ActionListener, MouseListener {
 			return;
 		}
 		for (Element element: outliner.getSelectedElements()) {
-			subwindows.addSubWindow(new SubWindow(element));
+			subwindows.addSubWindow(new SubWindow(element, subwindows, 100, 100));
 		}
 	}
 
@@ -42,8 +42,8 @@ public class OpenElementListener implements ActionListener, MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 2) {
-			Element element = outliner.getSelectedElements();
-		    subwindows.addSubWindow(new SubWindow(element));
+			Element element = outliner.getSelectedElements().get(0);
+		    subwindows.addSubWindow(new SubWindow(element, subwindows, 100, 100));
 		}
 		
 	}

@@ -25,7 +25,7 @@ public class RemoveListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		ArrayList<Library> libraries = new ArrayList<Library>();
-		for (Element element: outliner.getSelectedElement()) {
+		for (Element element: outliner.getSelectedElements()) {
 			if (element instanceof Library) {
 				libraries.add((Library) element);
 			}

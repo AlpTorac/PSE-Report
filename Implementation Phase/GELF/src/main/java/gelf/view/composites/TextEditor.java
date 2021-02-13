@@ -40,7 +40,6 @@ public class TextEditor extends ElementManipulator implements KeyListener{
 	private JTextArea textArea;
 	private JScrollPane scrollPane;
 	
-	private FileReader fr;
 	private int trace;
 	
 	private Element element;
@@ -53,8 +52,8 @@ public class TextEditor extends ElementManipulator implements KeyListener{
 	/*
 	 * Constructor
 	 */
-    public TextEditor(int width, int height){
-        super(width, height);
+    public TextEditor(Element element, int width, int height){
+        super(element, width, height);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     	this.setBorder(new LineBorder(Color.BLACK, 4, true));
     	hl = new DefaultHighlighter();
@@ -90,9 +89,9 @@ public class TextEditor extends ElementManipulator implements KeyListener{
     }
     
     /*
-     * TODO
+     * Sets the element shown in the editor.
      */
-    @Override
+   
     public void setElement(Element element) {
     	this.element = element;
     	this.textArea.setText("");
@@ -120,6 +119,9 @@ public class TextEditor extends ElementManipulator implements KeyListener{
     	textArea.setText(document);
     }
     
+    /*
+     * Creates the text shown through the LibertyCompiler.
+     */
     private String createText(Element element) {
     	if (element instanceof Library) {
     		return LibertyCompiler.compile((Library) element);

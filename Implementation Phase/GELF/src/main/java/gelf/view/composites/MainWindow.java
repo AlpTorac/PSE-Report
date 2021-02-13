@@ -7,6 +7,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import gelf.controller.EventManager;
+import gelf.controller.listeners.LoadListener;
 import gelf.model.elements.Cell;
 import gelf.model.elements.Library;
 import gelf.model.project.Project;
@@ -210,5 +212,6 @@ public class MainWindow extends Window {
 
     public static void main(String[] args) {
         MainWindow mainWindow = new MainWindow("GELF - Graphical Editor for Liberty Files", 1200, 800);
+        EventManager em = new EventManager(mainWindow);
     }
 }

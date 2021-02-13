@@ -31,7 +31,7 @@ public class EditListener implements KeyListener{
 				TextEditCommand edit = new TextEditCommand(oldContent, newContent, element);
 				edit.execute();
 			} catch (InvalidFileFormatException exc) {
-				
+				//TODO error
 			}
 			
 			
@@ -43,7 +43,4 @@ public class EditListener implements KeyListener{
 
 	@Override
 	public void keyTyped(KeyEvent e) {}
-
-	
-
 }

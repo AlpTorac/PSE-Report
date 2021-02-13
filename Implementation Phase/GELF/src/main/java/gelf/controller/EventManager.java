@@ -1,5 +1,6 @@
 package gelf.controller;
 
+import java.awt.event.ActionListener;
 import java.util.EventListener;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,7 +26,7 @@ public class EventManager {
 		
 		this.view = view;
 		listeners = new HashMap<Event, EventListener>();
-		
+		initListeners();
 	}
 	
 	/*
@@ -40,20 +41,37 @@ public class EventManager {
 	 */
 	public void initListeners() {
 		listeners.put(Event.LOAD, new LoadListener());
-		listeners.put(Event.OPEN, new OpenElementListener(view.getOutliner(), view.getSubWindowArea()));
-		listeners.put(Event.DELETE, new DeleteCellListener(view.getOutliner()));
-		listeners.put(Event.REMOVE, new RemoveListener(view.getOutliner()));
-		listeners.put(Event.COPY, new CopyListener(view.getOutliner()));
-		listeners.put(Event.PASTE, new PasteListener(view.getOutliner()));
-		listeners.put(Event.MOVE, new MoveListener(view.getOutliner()));
-		listeners.put(Event.MERGE, new MergeListener(view.getOutliner()));
-		listeners.put(Event.SEARCH, new SearchListener(view.getOutliner()));
-		listeners.put(Event.RENAME, new RenameListener(view.getOutliner()));
+		listeners.put(Event.OPEN, new OpenElementListener(view.outliner, view.subWindowArea));
+		listeners.put(Event.DELETE, new DeleteCellListener(view.outliner));
+		listeners.put(Event.REMOVE, new RemoveListener(view.outliner));
+		listeners.put(Event.COPY, new CopyListener(view.outliner));
+		listeners.put(Event.PASTE, new PasteListener(view.outliner));
+		listeners.put(Event.MOVE, new MoveListener(view.outliner));
+		listeners.put(Event.MERGE, new MergeListener(view.outliner));
+		listeners.put(Event.SEARCH, new SearchListener(view.outliner));
+		listeners.put(Event.RENAME, new RenameListener(view.outliner));
 		listeners.put(Event.SAVE, new SaveListener());
 		listeners.put(Event.SAVEAS, new SaveAsListener());
 		listeners.put(Event.LOADPROJECT, new LoadProjectListener());
 		listeners.put(Event.UNDO, new UndoListener());
 		listeners.put(Event.REDO, new RedoListener());
+		
+		view.itemOpen.addActionListener((ActionListener) listeners.get(Event.LOAD));
+		//
+		//view.outliner
+		//view.outliner
+		//view.outliner
+		//view.outliner
+		//view.outliner
+		view.itemUndo.addActionListener((ActionListener) listeners.get(Event.UNDO));
+		view.itemRedo.addActionListener((ActionListener) listeners.get(Event.REDO));
+		view.itemMergeSelected.addActionListener((ActionListener) listeners.get(Event.MERGE));
+		view.itemSave.addActionListener((ActionListener) listeners.get(Event.SAVE));
+		view.itemSaveAs.addActionListener((ActionListener) listeners.get(Event.SAVEAS));
+		
+		
+		
+		
 	}
 	
 	

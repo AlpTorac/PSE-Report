@@ -34,7 +34,7 @@ public class ScaleListener implements ActionListener {
 		float scaleValue = 1.0f;
 		if(e.getSource() instanceof JButton) {
 			try {
-				scaleValue = Float.parseFloat(panel.getJTextField().getText());
+				scaleValue = Float.parseFloat(panel.getTextField().getText());
 			} catch (NumberFormatException exc) {
 				JOptionPane.showMessageDialog(new JFrame(), "Please enter a float value.", "Error", JOptionPane.ERROR_MESSAGE);
 				return;

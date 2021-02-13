@@ -31,27 +31,27 @@ public class RenameListener implements TreeModelListener {
 
 	@Override
 	public void treeNodesChanged(TreeModelEvent e) {
-		if (outliner.getSelectedElements().size() != 1) {
-			JOptionPane.showMessageDialog(new JFrame(), "Only one element can be renamed at a time.", "Error", JOptionPane.ERROR_MESSAGE);
+		DefaultMutableTreeNode node = (DefaultMutableTreeNode) (e.getTreePath().getLastPathComponent());
+        Element element = (Element) node.getUserObject();
+		String newName = node.getUserObject().toString();
+		if (checkExistingName(element, newName)) {
 			return;
 		}
-		Element element = outliner.getSelectedElements.get(0);
-	
-		DefaultMutableTreeNode node;
-        node = (DefaultMutableTreeNode) (e.getTreePath().getLastPathComponent());
-        try {
+       /* try {
             int index = e.getChildIndices()[0];
-            node = (DefaultMutableTreeNode) (node.getChildAt(index));
-        } catch (NullPointerException exc) {}
+           node = (DefaultMutableTreeNode) (node.getChildAt(index));
+        } catch (NullPointerException exc) {
+        	
+        }*/
         
-        String newName = outliner.getNewName().getText();
-		checkExistingName(element, newName);
 		RenameCommand rename = new RenameCommand(element, newName);
 		rename.execute();
 	}
 	
 	/*
-	 * 
+	 * Checks if there is an element with the same name.
+	 * @param element
+	 * @param elementName
 	 */
 	public boolean checkExistingName(Element element, String elementName) {
 		if (element instanceof Library) {
@@ -95,12 +95,12 @@ public class RenameListener implements TreeModelListener {
 	}
 
 	@Override
-	public void treeNodesInserted(TreeModelEvent arg0) {}
+	public void treeNodesInserted(TreeModelEvent e) {}
 
 	@Override
-	public void treeNodesRemoved(TreeModelEvent arg0) {}
+	public void treeNodesRemoved(TreeModelEvent e) {}
 
 	@Override
-	public void treeStructureChanged(TreeModelEvent arg0) {}
+	public void treeStructureChanged(TreeModelEvent e) {}
 
 }

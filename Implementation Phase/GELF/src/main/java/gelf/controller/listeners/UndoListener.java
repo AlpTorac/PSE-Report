@@ -1,6 +1,8 @@
 package gelf.controller.listeners;
 
 import gelf.model.commands.UndoCommand;
+import gelf.model.exceptions.InvalidFileFormatException;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,7 +14,11 @@ public class UndoListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		UndoCommand undo = new UndoCommand();
-		undo.execute();
+		try {
+			undo.execute();
+		} catch (InvalidFileFormatException e1) {
+			//TODO error
+		}
 	}
 
 }

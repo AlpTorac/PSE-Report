@@ -1,6 +1,8 @@
 package gelf.controller.listeners;
 
 import gelf.model.commands.OpenFileCommand;
+import gelf.model.exceptions.InvalidFileFormatException;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,9 +12,14 @@ import java.awt.event.ActionListener;
 public class LoadListener implements ActionListener{
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {System.out.println("hi");
 		OpenFileCommand openFileCommand = new OpenFileCommand();
-		openFileCommand.execute();
+		
+		try {
+			openFileCommand.execute();
+		} catch (InvalidFileFormatException e1) {
+			//TODO error
+		}
 	}
 
 }
