@@ -216,8 +216,26 @@ public abstract class DiagramOverlayStrategy {
 		return axes;
 	}
 	
-	protected abstract DiagramValueDisplayComponent[] makeValueDisplayComponents(DiagramAxis[] axes, DiagramComponent[] nonValueDisplayComponents, DiagramData[] diagramData);
-	protected abstract DiagramComponent[] makeNonValueDisplayComponents(DiagramData[] diagramData);
+	protected abstract DiagramValueDisplayComponent[] makeValueDisplayComponentsForOneDiagram(DiagramData diagramData, DiagramAxis[] axes, DiagramComponent[] nonValueDisplayComponents);
+	
+	protected DiagramValueDisplayComponent[] makeValueDisplayComponents(DiagramAxis[] axes, DiagramComponent[] nonValueDisplayComponents, DiagramData[] diagramData) {
+		ArrayList<DiagramValueDisplayComponent> dvdcList = new ArrayList<DiagramValueDisplayComponent>();
+		
+		for (int index = 0; index < diagramData.length; index++) {
+			DiagramValueDisplayComponent[] dvdcs = this.makeValueDisplayComponentsForOneDiagram(diagramData[index], axes, nonValueDisplayComponents);
+			
+			for (DiagramValueDisplayComponent dvdc : dvdcs) {
+				dvdcList.add(dvdc);
+			}
+		}
+		
+		return (DiagramValueDisplayComponent[]) dvdcList.toArray();
+	}
+	
+	protected DiagramComponent[] makeDiagramSpecificComponents(DiagramData[] diagramData) {
+		return null;
+	}
+	
 	protected abstract IDiagram buildDiagram(DiagramData data, DiagramAxis[] axes, DiagramValueDisplayComponent[] valueDisplayComponents, DiagramComponent[] nonValueDisplayComponents);
 	
 	public IDiagram overlay() {
@@ -230,7 +248,7 @@ public abstract class DiagramOverlayStrategy {
 			clonedData = this.unifyData(clonedData, this.unifyIndices(clonedData));
 		}
 		
-		DiagramComponent[] dcs = this.makeNonValueDisplayComponents(clonedData);
+		DiagramComponent[] dcs = this.makeDiagramSpecificComponents(clonedData);
 		DiagramValueDisplayComponent[] dvdcs = this.makeValueDisplayComponents(axes, dcs, clonedData);
 		
 		return this.buildDiagram(averages, axes, dvdcs, dcs);

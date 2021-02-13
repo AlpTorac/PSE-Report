@@ -13,7 +13,7 @@ import gelf.view.diagrams.components.DiagramValueDisplayComponent;
 import gelf.view.diagrams.components.PositionInFrame;
 import gelf.view.diagrams.data.DiagramData;
 
-public abstract class DiagramBuilder implements IDiagramBuilder {
+public abstract class DiagramBuilder implements IDiagramBuilder, DataAccessPoint, ContainerAccessPoint {
 	public static final SettingsProvider settingsProvider = SettingsProvider.getInstance();
 	public static final DiagramComponentFactory factory = DiagramComponentFactory.getDiagramComponentFactory();
 	

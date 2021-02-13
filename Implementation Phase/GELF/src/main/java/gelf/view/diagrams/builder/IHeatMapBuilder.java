@@ -12,7 +12,7 @@ import gelf.view.diagrams.components.PositionIn2DDiagram;
 import gelf.view.diagrams.components.PositionInFrame;
 import gelf.view.diagrams.data.DiagramData;
 
-public interface IHeatMapBuilder extends IDiagramBuilder {
+public interface IHeatMapBuilder extends IDiagramBuilder, ContainerAccessPoint {
 	@Override
 	public default DiagramValueDisplayComponent[] buildValueDisplayComponentsForOneDiagram(DiagramData data, DiagramAxis[] axes,
 			DiagramComponent[] diagramSpecificComponent) {
