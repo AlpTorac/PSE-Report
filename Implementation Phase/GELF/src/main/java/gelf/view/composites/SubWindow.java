@@ -5,6 +5,8 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.border.Border;
 
+import org.w3c.dom.Text;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,9 +27,23 @@ public class SubWindow extends Panel {
     private Color cBackground = new Color(0.23f, 0.23f, 0.23f);
     private Color cBorder = new Color(0.15f, 0.15f, 0.15f);
     SubWindow _this = this;
+    //element manipulators
+    public enum ManipulatorType {
+        VISUALIZER,
+        TEXT_EDITOR,
+    }
+    private ElementManipulator activeManipulator;
+    private Visualizer eVisualizer;
+    private TextEditor eTextEditor;
 
-    public SubWindow(ElementManipulator em, SubWindowArea parent, int width, int height) {
+    public SubWindow(Element e, SubWindowArea parent, int width, int height) {
         super(width, height);
+        //element manipulators
+        this.eVisualizer = new Visualizer(e, 200, 100);
+        this.eVisualizer.setVisible(true);
+        this.eTextEditor = new TextEditor(e, 200, 100);
+        this.eTextEditor.setVisible(true);
+        this.activeManipulator = eVisualizer;
         // style
         this.setLayout(new BorderLayout());
         this.setBackground(cBackground);
@@ -47,7 +63,7 @@ public class SubWindow extends Panel {
             }
         });
         //path/name label
-        this.path = new Label(em.getElement().toString());
+        this.path = new Label(e.toString());
         this.path.setVisible(true);
 
         this.bar.add(this.close);
@@ -55,6 +71,18 @@ public class SubWindow extends Panel {
         this.bar.add(Box.createHorizontalGlue());
 
         this.add(this.bar, BorderLayout.PAGE_START);
-        this.add(em, BorderLayout.CENTER);
+        this.add(this.eVisualizer, BorderLayout.CENTER);
+    }
+    public void setElement(Element e) {
+
+    }
+    public void setManipulatorType(ManipulatorType m) {
+        switch(m) {
+            case VISUALIZER:
+                
+            break;
+            case TEXT_EDITOR:
+            break;
+        }
     }
 }

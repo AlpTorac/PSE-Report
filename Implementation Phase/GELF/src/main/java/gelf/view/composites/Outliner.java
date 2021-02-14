@@ -10,6 +10,7 @@ import gelf.model.project.Updatable;
 import gelf.view.components.Label;
 import gelf.view.components.Menu;
 import gelf.view.components.MenuBar;
+import gelf.view.components.MenuItem;
 import gelf.view.components.Panel;
 import gelf.view.components.Tree;
 
@@ -34,6 +35,8 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
     public MenuBar menuBar;
     public JTree tree;
     public JScrollPane treePane;
+    public Menu menuView;
+        public MenuItem itemOpen;
 
     // colors
     private Color cBackground = new Color(0.23f, 0.23f, 0.23f);
@@ -54,14 +57,16 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
         this.setBorder(margin);
 
         // menu
-        Menu menu = new Menu("View");
-        Menu menu2 = new Menu("Sort");
+        
         this.menuBar = new MenuBar();
         this.menuBar.setBackground(cBackground);
         this.menuBar.setPreferredSize(new Dimension(this.getWidth(), 30));
         this.menuBar.setVisible(true);
-        this.menuBar.add(menu);
-        this.menuBar.add(menu2);
+
+        this.menuView = new Menu("View");
+        this.itemOpen = new MenuItem("Open");
+        this.menuView.add(this.itemOpen);
+        this.menuBar.add(menuView);
         this.add(this.menuBar, BorderLayout.PAGE_START);
 
         // tree
