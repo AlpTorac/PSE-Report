@@ -168,6 +168,9 @@ public class HoverLabel implements HasAttachablePart {
 		protected void paintComponent(Graphics g) {
 //			this.setBackground(this.label.getColor());
 			super.paintComponent(g);
+			this.setHorizontalAlignment(CENTER);
+			this.setVerticalAlignment(CENTER);
+			this.setText(this.label.getCaption());
 //			Graphics2D graphs = (Graphics2D) g;
 //			Border b = BorderFactory.createLineBorder(Color.BLACK, 1);
 //			this.setBorder(b);
