@@ -11,6 +11,8 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
 import gelf.model.elements.Element;
 
@@ -29,21 +31,23 @@ public class OpenElementListener implements ActionListener, MouseListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (outliner.getSelectedElements().size() >= 3) {
-			JOptionPane.showMessageDialog(new JFrame(), "Select up to 3 elements to open.", "Error", JOptionPane.ERROR_MESSAGE);
+		if (outliner.getSelectedElements().size() != 1) {
+			JOptionPane.showMessageDialog(new JFrame(), "Select one element to open in the working area.", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		for (Element element: outliner.getSelectedElements()) {
-			subwindows.addSubWindow(new SubWindow(element, subwindows, 100, 100));
-		}
+		Element element = outliner.getSelectedElements().get(0);
+		//subwindows.addSubWindow(new SubWindow(element, subwindows, 100, 100));
+		
 	}
 
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 2) {
-			Element element = outliner.getSelectedElements().get(0);
-		    subwindows.addSubWindow(new SubWindow(element, subwindows, 100, 100));
+			TreePath path = outliner.tree.getPathForLocation(e.getX(), e.getY());
+			Element element = (Element) ((DefaultMutableTreeNode)path.getLastPathComponent()).getUserObject();
+		    //subwindows.addSubWindow(new SubWindow(element, subwindows, 100, 100));
+			
 		}
 		
 	}

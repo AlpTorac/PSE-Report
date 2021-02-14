@@ -84,7 +84,7 @@ public class DataPanel extends Panel {
 				selectedText += " " + "!" + input.getName(); 
 				binary = "0" + binary ;
 			}
-			
+			selectedText = selectedText.substring(0, selectedText.length() - 1);
 			middleLabel.setText("Output Function:" + selectedText);
 			lowerLabel.setText("Function Value: " + cell.getLeakages().getValues()[Integer.parseInt(binary, 2)]);
 			

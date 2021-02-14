@@ -33,6 +33,10 @@ public enum Event {
 	 */
 	SAVEAS,
 	
+	/*
+	 * Save all opened files.
+	 */
+	SAVEALL,
 	
 	/*
 	 * Search action.

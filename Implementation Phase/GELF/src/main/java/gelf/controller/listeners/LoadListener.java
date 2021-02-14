@@ -14,7 +14,6 @@ public class LoadListener implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		OpenFileCommand openFileCommand = new OpenFileCommand();
-		
 		try {
 			openFileCommand.execute();
 		} catch (InvalidFileFormatException e1) {
