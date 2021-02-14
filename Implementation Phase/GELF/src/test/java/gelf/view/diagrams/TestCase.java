@@ -8,7 +8,7 @@ public interface TestCase {
 	public static final long SHOW_DURATION = 1000;
 	public static final long LONG_SHOW_DURATION = 10000;
 	
-	public static final double TOLERANCE = 1E-5;
+	public static final double TOLERANCE = 1E-3;
 	
 	public default void show(TestFrame frame, long ms) {
 		TestCase.showStatic(frame, ms);
