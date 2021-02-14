@@ -11,6 +11,7 @@ import gelf.controller.EventManager;
 import gelf.controller.listeners.LoadListener;
 import gelf.model.elements.Cell;
 import gelf.model.elements.Library;
+import gelf.model.project.Model;
 import gelf.model.project.Project;
 import gelf.view.components.Menu;
 import gelf.view.components.MenuBar;
@@ -52,7 +53,7 @@ public class MainWindow extends Window {
     // other
     String version = "0.0.0";
 
-    public MainWindow(String name, int width, int height) {
+    public MainWindow(String name, int width, int height, Project project) {
         // MainWindow setup
         super(name, width, height);
         this.setSize(width, height);
@@ -67,7 +68,7 @@ public class MainWindow extends Window {
         setupMainMenu(this.getContentPane().getWidth(), 30);
 
         // Model stub
-        Project project = new Project();
+        Project testProject = new Project();
         float index[] = {1f,2f};
         ArrayList<Cell> cells = new ArrayList<Cell>();
         Library lib1 = new Library("Library 1", index, index, "Path", cells);
@@ -75,7 +76,7 @@ public class MainWindow extends Window {
         ArrayList<Library> libraries = new ArrayList<Library>();
         libraries.add(lib1);
         libraries.add(lib2);
-        project.setLibraries(libraries);
+        testProject.setLibraries(libraries);
 
         // Outliner setup
         this.outliner = new Outliner(350, this.getContentPane().getHeight() - this.mainMenu.getHeight() - this.infoBar.getHeight(), project);
@@ -90,14 +91,14 @@ public class MainWindow extends Window {
         setupSubWindowArea(this.mainMenu.getHeight(), this.infoBar.getHeight(), this.outliner.getWidth());
 
         // testing adding SubWindows
-        SubWindow sub1 = new SubWindow(new Visualizer(lib1, 100, 100), this.subWindowArea, 100, 100);
+        SubWindow sub1 = new SubWindow(lib1, this.subWindowArea, 100, 100);
         sub1.setVisible(true);
         subWindowArea.addSubWindow(sub1);
-        SubWindow sub2 = new SubWindow(new Visualizer(lib2, 100, 100), this.subWindowArea, 100, 100);
+        SubWindow sub2 = new SubWindow(lib2, this.subWindowArea, 100, 100);
         sub2.setBackground(new Color(.2f, .4f, .2f));
         sub2.setVisible(true);
         subWindowArea.addSubWindow(sub2);
-        SubWindow sub3 = new SubWindow(new Visualizer(lib1, 100, 100), this.subWindowArea, 100, 100);
+        SubWindow sub3 = new SubWindow(lib1, this.subWindowArea, 100, 100);
         sub3.setBackground(new Color(.4f, .2f, .2f));
         sub3.setVisible(true);
         subWindowArea.addSubWindow(sub3);
@@ -211,7 +212,7 @@ public class MainWindow extends Window {
 
 
     public static void main(String[] args) {
-        MainWindow mainWindow = new MainWindow("GELF - Graphical Editor for Liberty Files", 1200, 800);
+        MainWindow mainWindow = new MainWindow("GELF - Graphical Editor for Liberty Files", 1200, 800, Model.getInstance().getCurrentProject());
         EventManager em = new EventManager(mainWindow);
     }
 }
