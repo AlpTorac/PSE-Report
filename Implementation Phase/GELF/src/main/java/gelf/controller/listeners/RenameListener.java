@@ -78,14 +78,14 @@ public class RenameListener implements TreeModelListener {
 			Cell parent = pin.getParent();
 			for (Pin pins: parent.getInPins()) {
 				if (pins.getName().equals(elementName)) {
-					JOptionPane.showMessageDialog(new JFrame(), "A pin with the same name already exists in the cell",
+					JOptionPane.showMessageDialog(new JFrame(), "An input pin with the same name already exists in the cell",
 							"Error", JOptionPane.ERROR_MESSAGE);
 					return true;
 				}
 			}
 			for (Pin pins: parent.getOutPins()) {
 				if (pins.getName().equals(elementName)) {
-					JOptionPane.showMessageDialog(new JFrame(), "A pin with the same name already exists in the cell",
+					JOptionPane.showMessageDialog(new JFrame(), "An output pin with the same name already exists in the cell",
 							"Error", JOptionPane.ERROR_MESSAGE);
 					return true;
 				}

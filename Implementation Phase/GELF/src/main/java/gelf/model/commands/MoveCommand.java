@@ -15,6 +15,7 @@ public class MoveCommand implements Command {
     private HashMap<Cell, String> renamedCellsOldNames;
     private Library destinationLibrary;
     private ArrayList<Cell> cellsToMove;
+    private Model currentModel = Model.getInstance();
 	
 	public MoveCommand(ArrayList<Cell> cellsToMove, Library destinationLibrary) {
 		this.destinationLibrary = destinationLibrary;
@@ -64,8 +65,7 @@ public class MoveCommand implements Command {
 				destinationLibrary.getCells().add(curCell);
 			}
 		}
-		Model currentModel = Model.getInstance();
-		currentModel.getCurrentProject().notify();
+		currentModel.getCurrentProject().inform();
 		currentModel.getCurrentCommandHistory().addCommand(this);
 	}
 

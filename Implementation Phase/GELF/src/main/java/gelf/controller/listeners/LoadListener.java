@@ -6,6 +6,9 @@ import gelf.model.exceptions.InvalidFileFormatException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 /*
  * Listener for loading a liberty file into the application.
  */
@@ -14,11 +17,11 @@ public class LoadListener implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		OpenFileCommand openFileCommand = new OpenFileCommand();
-		
 		try {
 			openFileCommand.execute();
 		} catch (InvalidFileFormatException e1) {
-			//TODO error
+			JOptionPane.showMessageDialog(new JFrame(), e1.getLocalizedMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			return;
 		}
 	}
 

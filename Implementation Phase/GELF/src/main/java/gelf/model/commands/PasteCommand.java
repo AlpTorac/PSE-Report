@@ -16,6 +16,7 @@ public class PasteCommand implements Command {
 	private ArrayList<Cell> copiedCells;
 	private Library destinationLibrary;
 	private HashMap<Cell, String> renamedCellsOldNames;
+	private Model currentModel = Model.getInstance();
 	
 	/* If the list of copied cells won't be given as a parameter, then it will
 	 * be taken from the project
@@ -75,8 +76,7 @@ public class PasteCommand implements Command {
 				destinationLibrary.getCells().add(curCell);
 			}
 		}
-		Model currentModel = Model.getInstance();
-		currentModel.getCurrentProject().notify();
+		currentModel.getCurrentProject().inform();
 		currentModel.getCurrentCommandHistory().addCommand(this);
 	}
 

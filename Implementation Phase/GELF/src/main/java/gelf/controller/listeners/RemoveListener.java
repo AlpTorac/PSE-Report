@@ -3,6 +3,8 @@ package gelf.controller.listeners;
 import gelf.model.commands.RemoveCommand;
 import gelf.model.elements.Element;
 import gelf.model.elements.Library;
+import gelf.model.project.Model;
+import gelf.model.project.Project;
 import gelf.view.composites.Outliner;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -35,8 +37,10 @@ public class RemoveListener implements ActionListener {
 				return;
 			}
 		}
-		RemoveCommand remove = new RemoveCommand(libraries);
-		remove.execute();
+		Model currentModel = Model.getInstance();
+		Project currentProject = currentModel.getCurrentProject();
+		currentProject.getLibraries().removeAll(libraries);
+		currentProject.inform();
 	}
 
 }
