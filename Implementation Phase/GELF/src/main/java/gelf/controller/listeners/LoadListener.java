@@ -6,6 +6,9 @@ import gelf.model.exceptions.InvalidFileFormatException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 /*
  * Listener for loading a liberty file into the application.
  */
