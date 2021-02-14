@@ -10,7 +10,7 @@ import gelf.view.diagrams.data.DiagramData;
 
 public interface IFunctionGraphBuilder extends IDiagramBuilder {
 	@Override
-	public default DiagramValueDisplayComponent[] buildValueDisplayComponentsForOneDiagram(DiagramData data, DiagramAxis[] axes,
+	public default DiagramValueDisplayComponent[] buildValueDisplayComponentsForOneDiagram(DiagramData data, int orderInSameDiagram, DiagramAxis[] axes,
 			DiagramComponent[] diagramSpecificComponent) {
 		float[] indices = data.extractIndices().get(0);
 		float[] values = data.extractValues().get(0);
@@ -18,7 +18,7 @@ public interface IFunctionGraphBuilder extends IDiagramBuilder {
 		
 		DiagramValueDisplayComponent[] dvdc = new DiagramValueDisplayComponent[dvdcCount];
 		
-		Color pointColor = this.getSettingsProvider().getValueDisplayComponentColorAt(0);
+		Color pointColor = this.getColorForDiagram(orderInSameDiagram);
 		float size = this.getSettingsProvider().getFunctionGraphPointSize();
 		
 		for (int i = 0; i < dvdc.length; i++) {

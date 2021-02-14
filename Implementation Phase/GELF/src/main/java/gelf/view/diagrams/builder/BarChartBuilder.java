@@ -9,7 +9,6 @@ import gelf.view.diagrams.components.DiagramValueDisplayComponent;
 import gelf.view.diagrams.type.BarChart;
 
 public class BarChartBuilder extends DiagramBuilder implements IBarChartBuilder {
-
 	public BarChartBuilder(Container container) {
 		super(container);
 	}

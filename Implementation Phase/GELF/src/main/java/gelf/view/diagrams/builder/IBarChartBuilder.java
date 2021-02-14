@@ -10,14 +10,14 @@ import gelf.view.diagrams.data.DiagramData;
 
 public interface IBarChartBuilder extends IDiagramBuilder {
 	@Override
-	public default DiagramValueDisplayComponent[] buildValueDisplayComponentsForOneDiagram(DiagramData data, DiagramAxis[] axes,
+	public default DiagramValueDisplayComponent[] buildValueDisplayComponentsForOneDiagram(DiagramData data, int orderInSameDiagram, DiagramAxis[] axes,
 			DiagramComponent[] diagramSpecificComponent) {
 		float[] values = data.extractValues().get(0);
 		int dvdcCount = values.length;
 		
 		DiagramValueDisplayComponent[] dvdc = new DiagramValueDisplayComponent[dvdcCount];
 		
-		Color barColor = this.getSettingsProvider().getValueDisplayComponentColorAt(0);
+		Color barColor = this.getColorForDiagram(orderInSameDiagram);
 		int thickness = this.getSettingsProvider().getBarBorderThickness();
 		
 		for (int i = 0; i < dvdc.length; i++) {

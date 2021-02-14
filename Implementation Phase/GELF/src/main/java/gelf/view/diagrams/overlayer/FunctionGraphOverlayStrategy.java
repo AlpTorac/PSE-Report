@@ -37,8 +37,8 @@ public class FunctionGraphOverlayStrategy extends DiagramOverlayStrategy impleme
 	}
 
 	@Override
-	protected DiagramValueDisplayComponent[] makeValueDisplayComponentsForOneDiagram(DiagramData diagramData,
+	protected DiagramValueDisplayComponent[] makeValueDisplayComponentsForOneDiagram(DiagramData diagramData, int orderInSameDiagram,
 			DiagramAxis[] axes, DiagramComponent[] nonValueDisplayComponents) {
-		return this.buildValueDisplayComponentsForOneDiagram(diagramData, axes, nonValueDisplayComponents);
+		return this.buildValueDisplayComponentsForOneDiagram(diagramData, orderInSameDiagram, axes, nonValueDisplayComponents);
 	}
 }

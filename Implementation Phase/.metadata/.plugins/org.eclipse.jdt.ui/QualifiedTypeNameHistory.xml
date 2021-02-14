@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="java.awt.geom.Rectangle2D"/>
-    <fullyQualifiedTypeName name="java.awt.geom.Rectangle2D.Double"/>
-    <fullyQualifiedTypeName name="java.awt.Robot"/>
-    <fullyQualifiedTypeName name="java.awt.Font"/>
     <fullyQualifiedTypeName name="org.junit.jupiter.api.AfterAll"/>
     <fullyQualifiedTypeName name="javax.swing.JLabel"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.components.TestCase"/>
@@ -50,14 +46,18 @@
     <fullyQualifiedTypeName name="gelf.view.diagrams.DiagramDirector"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.builder.BarChartBuilder"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.components.DiagramAxis"/>
-    <fullyQualifiedTypeName name="gelf.view.diagrams.data.DiagramData"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.components.DiagramValueDisplayComponent"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.components.DiagramComponent"/>
-    <fullyQualifiedTypeName name="java.awt.Container"/>
-    <fullyQualifiedTypeName name="gelf.view.diagrams.components.DiagramComponentFactory"/>
-    <fullyQualifiedTypeName name="gelf.view.diagrams.SettingsProvider"/>
-    <fullyQualifiedTypeName name="java.util.ArrayList"/>
     <fullyQualifiedTypeName name="java.util.TreeSet"/>
     <fullyQualifiedTypeName name="java.util.Iterator"/>
     <fullyQualifiedTypeName name="java.util.Stack"/>
+    <fullyQualifiedTypeName name="java.util.ArrayList"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.components.BarChartBar"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.SettingsProvider"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.components.DiagramComponentFactory"/>
+    <fullyQualifiedTypeName name="java.awt.Container"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.data.DiagramData"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.builder.IBarChartBuilder"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.builder.IFunctionGraphBuilder"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.builder.IHistogramBuilder"/>
 </qualifiedTypeNameHistroy>

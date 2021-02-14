@@ -13,7 +13,7 @@ import gelf.view.diagrams.components.DiagramValueDisplayComponent;
 import gelf.view.diagrams.components.PositionInFrame;
 import gelf.view.diagrams.data.DiagramData;
 
-public abstract class DiagramBuilder implements IDiagramBuilder, DataAccessPoint, ContainerAccessPoint {
+public abstract class DiagramBuilder implements IDiagramBuilder, ContainerAccessPoint {
 	public static final SettingsProvider settingsProvider = SettingsProvider.getInstance();
 	public static final DiagramComponentFactory factory = DiagramComponentFactory.getDiagramComponentFactory();
 	
@@ -105,7 +105,8 @@ public abstract class DiagramBuilder implements IDiagramBuilder, DataAccessPoint
 
 	protected DiagramValueDisplayComponent[] buildValueDisplayComponents(DiagramAxis[] axes,
 			DiagramComponent[] diagramSpecificComponent) {
-		return this.buildValueDisplayComponentsForOneDiagram(this.getDiagramData(), axes, diagramSpecificComponent);
+		return this.buildValueDisplayComponentsForOneDiagram(this.getDiagramData(),
+				axes, diagramSpecificComponent);
 	}
 	protected abstract IDiagram makeDiagram(DiagramAxis[] axes, DiagramValueDisplayComponent[] valueDisplayComponents,
 			DiagramComponent[] diagramSpecificComponent);
@@ -126,12 +127,11 @@ public abstract class DiagramBuilder implements IDiagramBuilder, DataAccessPoint
 	protected void yAxisSpecificVisualEffect(DiagramAxis yAxis) {
 		yAxis.showValuesAboveAxis();
 	}
-	
-	@Override
-	public DiagramData getDiagramData() {
+
+	protected DiagramData getDiagramData() {
 		return this.data;
 	}
-
+	
 	@Override
 	public Container getContainer() {
 		return this.container;

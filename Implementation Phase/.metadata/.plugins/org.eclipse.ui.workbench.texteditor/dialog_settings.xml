@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value=""/>
+		<item key="selection" value="this.getDiagramComponentFactory()"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="factory"/>
+			<item value="settingsProvider"/>
+			<item value="container"/>
+			<item value="this.data"/>
+			<item value="barColor"/>
 			<item value=", container"/>
 			<item value=", frame.getContentPane()"/>
 			<item value=", this.container"/>
@@ -18,13 +23,13 @@
 			<item value="DiagramBuilder.s"/>
 			<item value="DiagramComponentFactory.getDiagramComponentFactory()"/>
 			<item value="setInstance"/>
-			<item value="500"/>
-			<item value="show(frame)"/>
-			<item value="this."/>
-			<item value="PositionInFrame"/>
-			<item value="float borderThickness"/>
 		</list>
 		<list key="replacehistory">
+			<item value="this.getDiagramComponentFactory()"/>
+			<item value="this.getSettingsProvider()"/>
+			<item value="getContainer()"/>
+			<item value="this.getDiagramData()"/>
+			<item value="this.getDiagramData"/>
 			<item value=""/>
 			<item value="s"/>
 			<item value="DiagramBuilder.factory.getDiagramComponentFactory()"/>
@@ -35,11 +40,6 @@
 			<item value="int borderThickness"/>
 			<item value="double"/>
 			<item value="float"/>
-			<item value="end"/>
-			<item value="start"/>
-			<item value="bottomRight"/>
-			<item value="topLeft"/>
-			<item value="topRight"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">

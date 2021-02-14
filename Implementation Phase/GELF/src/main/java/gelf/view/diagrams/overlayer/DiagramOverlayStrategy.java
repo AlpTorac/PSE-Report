@@ -216,13 +216,13 @@ public abstract class DiagramOverlayStrategy {
 		return axes;
 	}
 	
-	protected abstract DiagramValueDisplayComponent[] makeValueDisplayComponentsForOneDiagram(DiagramData diagramData, DiagramAxis[] axes, DiagramComponent[] nonValueDisplayComponents);
+	protected abstract DiagramValueDisplayComponent[] makeValueDisplayComponentsForOneDiagram(DiagramData diagramData, int orderInSameDiagram, DiagramAxis[] axes, DiagramComponent[] nonValueDisplayComponents);
 	
 	protected DiagramValueDisplayComponent[] makeValueDisplayComponents(DiagramAxis[] axes, DiagramComponent[] nonValueDisplayComponents, DiagramData[] diagramData) {
 		ArrayList<DiagramValueDisplayComponent> dvdcList = new ArrayList<DiagramValueDisplayComponent>();
 		
 		for (int index = 0; index < diagramData.length; index++) {
-			DiagramValueDisplayComponent[] dvdcs = this.makeValueDisplayComponentsForOneDiagram(diagramData[index], axes, nonValueDisplayComponents);
+			DiagramValueDisplayComponent[] dvdcs = this.makeValueDisplayComponentsForOneDiagram(diagramData[index], index, axes, nonValueDisplayComponents);
 			
 			for (DiagramValueDisplayComponent dvdc : dvdcs) {
 				dvdcList.add(dvdc);
