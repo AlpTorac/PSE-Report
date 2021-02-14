@@ -37,9 +37,11 @@ public interface Hoverable {
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				hoverAction();
 				Point cursorOnComponent = diagram.getContainingElement().getMousePosition();
-				repositionHoverLabel(cursorOnComponent.getX(), cursorOnComponent.getY());
+				if (cursorOnComponent != null) {
+					hoverAction();
+					repositionHoverLabel(cursorOnComponent.getX(), cursorOnComponent.getY());
+				}
 			}
 
 			@Override

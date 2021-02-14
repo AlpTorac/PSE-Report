@@ -118,6 +118,10 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
+			this.setHorizontalAlignment(CENTER);
+			this.setVerticalAlignment(CENTER);
+			this.setForeground(borderColor);
+			this.setText(this.label.getCaption());
 //			this.setBounds(this.label.getFrameBounds());
 //			this.setBorder(BorderFactory.createLineBorder(borderColor, this.label.getBorderThickness()));
 //			this.setHorizontalAlignment(CENTER);

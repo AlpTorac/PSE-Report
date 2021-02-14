@@ -109,8 +109,12 @@ public abstract class DiagramLabel extends DiagramComponent {
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			this.setBounds(this.label.getFrameBounds());
+//			this.setBounds(this.label.getFrameBounds());
 			this.setBackground(this.label.getColor());
+			this.setHorizontalAlignment(CENTER);
+			this.setVerticalAlignment(CENTER);
+			this.setForeground(foreground);
+			this.setText(this.label.getCaption());
 			this.setBorder(BorderFactory.createLineBorder(borderColor, this.label.getBorderThickness()));
 //			this.setHorizontalAlignment(CENTER);
 //			this.setVerticalAlignment(CENTER);
