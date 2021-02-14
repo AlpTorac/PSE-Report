@@ -535,7 +535,7 @@ public class LibertyParser {
         return stringToArray(arrayString);
     }
 
-    public static float[][] parseDoubleArray(String content, String arrayName) throws {
+    public static float[][] parseDoubleArray(String content, String arrayName) {
         int firstIndex = content.indexOf(arrayName) + arrayName.length();
         int lastIndex = content.indexOf(";", firstIndex);
         String arrayStrings = content.substring(firstIndex + 1, lastIndex - 1);

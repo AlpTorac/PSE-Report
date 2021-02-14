@@ -93,11 +93,16 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
 
     @Override
     public void update() {
+        System.out.println("UPDATED");
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) this.tree.getModel().getRoot();
+        root.removeAllChildren();
+        System.out.println(root.getChildCount());
         DefaultTreeModel treeModel = (DefaultTreeModel) this.tree.getModel();
+        treeModel.nodeStructureChanged(root);
 
         // generate library level
         ArrayList<Library> libraries = this.project.getLibraries();
+        System.out.println(libraries.size() + " || " + libraries);
         for (Library lib : libraries) {
             DefaultMutableTreeNode libNode = new DefaultMutableTreeNode(lib);
             treeModel.insertNodeInto(libNode, root, root.getChildCount());
@@ -122,6 +127,8 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
                 }
             }
         }
+        this.revalidate();
+        this.repaint();
     }
     //get list of all selected elements
     public ArrayList<Element> getSelectedElements() {

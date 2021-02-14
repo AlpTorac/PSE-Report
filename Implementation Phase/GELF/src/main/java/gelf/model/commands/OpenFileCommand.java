@@ -2,6 +2,7 @@ package gelf.model.commands;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import gelf.model.elements.Library;
@@ -32,6 +33,11 @@ public class OpenFileCommand implements Command {
 			openedLibrary = LibertyParser.parseLibrary(libraryContent);
 			openedLibrary.setPath(openedFile.getAbsolutePath());
 			openedLibrary.setLibraryFile(openedFile);
+
+			ArrayList<Library> libraries = currentModel.getCurrentProject().getLibraries();
+			libraries.add(openedLibrary);
+			currentModel.getCurrentProject().setLibraries(libraries);
+
 			currentModel.getCurrentProject().inform();
 			currentModel.getCurrentCommandHistory().addCommand(this);
 		} catch (IOException e) {
