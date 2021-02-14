@@ -199,7 +199,8 @@ public class LibertyParser {
                     break;
                 case "function":
                     if (!attrValue.matches("\"\\(" + FUNCTIONFORMAT + "\\)\"")) {
-                        throw new InvalidFileFormatException("Function format for Pin \"" + name + " \" is invalid");
+                        throw new InvalidFileFormatException("Function format: \"" + attrValue + 
+                        		"\" for Pin \"" + name + " \" is invalid");
                     }
                     int firstIndex = attrValue.indexOf("\"");
                     int secondIndex = attrValue.indexOf("\"", firstIndex + 1);

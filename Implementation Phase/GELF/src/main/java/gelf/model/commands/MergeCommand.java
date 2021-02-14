@@ -23,7 +23,9 @@ public class MergeCommand implements Command {
     public void execute() {
         ArrayList<Cell> cells = new ArrayList<Cell>();
         for (Library library : mergedLibraries) {
-            cells.addAll(library.getCells());
+            for (Cell cell : library.getCells()) {
+                cells.add(cell);
+            }
         }
         NameConflictResolver conflictResolver = new NameConflictResolver(cells);
         cells = conflictResolver.getCells();
@@ -35,7 +37,7 @@ public class MergeCommand implements Command {
         }
         Cell firstCell = cells.get(0);
         float[] index1 = firstCell.getIndex1();
-        float[] index2 = firstCell.getIndex2(); 
+        float[] index2 = firstCell.getIndex2();
         for (int i = 1; i < cells.size(); i++) {
             Cell currentCell = cells.get(i);
             if (!currentCell.getIndex1().equals(index1) || !currentCell.getIndex1().equals(index2)) {
