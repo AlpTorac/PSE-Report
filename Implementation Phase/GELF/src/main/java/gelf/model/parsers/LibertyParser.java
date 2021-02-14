@@ -535,10 +535,7 @@ public class LibertyParser {
         return stringToArray(arrayString);
     }
 
-    public static float[][] parseDoubleArray(String content, String arrayName) throws InvalidFileFormatException{
-    	if (!content.matches(OUTATTRIBUTESFORMAT)) {
-    		throw new InvalidFileFormatException("yo");
-    	}
+    public static float[][] parseDoubleArray(String content, String arrayName) throws {
         int firstIndex = content.indexOf(arrayName) + arrayName.length();
         int lastIndex = content.indexOf(";", firstIndex);
         String arrayStrings = content.substring(firstIndex + 1, lastIndex - 1);
