@@ -15,6 +15,7 @@ public class OpenFileCommand implements Command {
 	private Library openedLibrary;
 	private File openedFile;
 	private String libraryContent;
+	private Model currentModel = Model.getInstance();
 	
 	public OpenFileCommand() {
 		
@@ -31,8 +32,7 @@ public class OpenFileCommand implements Command {
 			openedLibrary = LibertyParser.parseLibrary(libraryContent);
 			openedLibrary.setPath(openedFile.getAbsolutePath());
 			openedLibrary.setLibraryFile(openedFile);
-			Model currentModel = Model.getInstance();
-			currentModel.getCurrentProject().notify();
+			currentModel.getCurrentProject().inform();
 			currentModel.getCurrentCommandHistory().addCommand(this);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
