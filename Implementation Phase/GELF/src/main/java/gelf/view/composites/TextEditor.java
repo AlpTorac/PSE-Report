@@ -52,12 +52,13 @@ public class TextEditor extends ElementManipulator implements KeyListener{
 	 */
     public TextEditor(Element element, int width, int height){
         super(element, width, height);
+        setup();
         this.setElement(element);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     	this.setBorder(new LineBorder(Color.BLACK, 4, true));
     	hl = new DefaultHighlighter();
         painter = new DefaultHighlighter.DefaultHighlightPainter(HL_COLOR);
-    	setup();
+    	
     }
     
     /*
@@ -103,7 +104,7 @@ public class TextEditor extends ElementManipulator implements KeyListener{
     	this.element = element;
     	this.textArea.setText("");
     
-		textArea.setText(createText(element));
+		//textArea.setText(createText(element));
 		document = textArea.getText();
 	
     }
