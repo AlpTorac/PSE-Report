@@ -193,22 +193,30 @@ class LibraryTest {
 		outPinList.add(outPin1);
 		outPinList.add(outPin2);
 		
-		Cell cell = new Cell(null, null, null, null, null, outPinList, null, 0);
+		Cell cell1 = new Cell(null, null, null, null, null, outPinList, null, 0);
+		Cell cell2 = new Cell(null, null, null, null, null, outPinList, null, 0);
+		
+		cellList.add(cell1);
+		cellList.add(cell2);
+		Library library = new Library(null, null, null, null, cellList);
 		
 		
-		cell.calculateTiming();
+		cell1.calculateTiming();
+		cell2.calculateTiming();
 		
+		
+		library.calculateTiming();		
 		float min = 0.00131f;
 		float max = 0.003528f;
 		float avg = 0.097124f / 49f;
 		float med = 0f;
 		
 		Stat stat = null;
-		for (TimingKey timKey : cell.getTimingStat().keySet()) {
+		for (TimingKey timKey : library.getTimingStat().keySet()) {
 		    if(timKey.getTimSense().equals(TimingSense.NEGATIVE_UNATE) &&
 		    		timKey.getTimType().equals(TimingType.COMBINATIONAL) &&
 		    		timKey.getTimGroup().equals(TimingGroup.CELL_RISE)) {
-		    	stat = cell.getTimingStat().get(timKey);
+		    	stat = library.getTimingStat().get(timKey);
 		    }
 		}
 		
@@ -224,13 +232,22 @@ class LibraryTest {
     			0.003113f, 0.005081f, 0.004988f, 0.01069f};
     	Leakage leakage = new Leakage(values);
     	
-    	Cell cell = new Cell(null, null, null, null, null, null, leakage, 0);
-    	cell.calculateLeakage();
-		Stat stats = leakage.getStats();
+    	Cell cell1 = new Cell(null, null, null, null, null, null, leakage, 0);
+    	Cell cell2 = new Cell(null, null, null, null, null, null, leakage, 0);
+    	
+    	cellList.add(cell1);
+		cellList.add(cell2);
+    	Library library = new Library(null, null, null, null, cellList);
+    	
+    	cell1.calculateLeakage();
+    	cell2.calculateLeakage();
+    	
+    	library.calculateLeakage();
+		Stat stats = library.leakage;
 		float min = 0.00291f;
 		float max = 0.01069f;
 		float avg = 0.038409f / 8f;
-		float med = 0.0040525f;
+		float med = 0f;
 		
 		Assertions.assertEquals(min, stats.getMin());
 		Assertions.assertEquals(max, stats.getMax());

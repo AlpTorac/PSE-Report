@@ -3,6 +3,7 @@ package gelf.model.elements;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -33,9 +34,9 @@ public class Library extends HigherElement {
     	
     	this.setAvailableInputPower();
     	this.setAvailableOutputPower();
-    	//this.setAvailableTimGr();
-    	//this.setAvailableTimSen();
-    	//this.setAvailableTimType();
+    	this.setAvailableTimGr();
+    	this.setAvailableTimSen();
+    	this.setAvailableTimType();
     	//calculate();
     }
     
@@ -113,17 +114,21 @@ public class Library extends HigherElement {
 	}
 	
 	public void calculateLeakage() {
-		float min = 0;
-		float max = 0;
+		if (cells == null) {
+			return;
+		}
+		float min = cells.get(0).getLeakage().getMin();
+		float max = cells.get(0).getLeakage().getMax();
 		float avg = 0;
 		float med = 0;
 		
 		// traverse the cells to calculate leakage stats of the library
 		Iterator<Cell> cellsIt = cells.iterator();
 		while(cellsIt.hasNext()) {
-			min = Math.min(min, cellsIt.next().leakage.getMin());
-			max = Math.max(max, cellsIt.next().leakage.getMax());
-			avg += cellsIt.next().leakage.getAvg();
+			Cell curCell = cellsIt.next();
+			min = Math.min(min, curCell.leakage.getMin());
+			max = Math.max(max, curCell.leakage.getMax());
+			avg += curCell.leakage.getAvg();
 		}
 		avg = avg / (float)cells.size();
 		
@@ -139,7 +144,7 @@ public class Library extends HigherElement {
 	}
 	
 	public void calculateInPow() {
-		
+		inPowerStat = new HashMap<PowerGroup, Stat>();
 		Iterator<PowerGroup> avPowGrIt = availableInputPower.iterator();
 		
 		
@@ -180,6 +185,7 @@ public class Library extends HigherElement {
 	}
 	
 	public void calculateOutPow() {
+		outPowerStat = new HashMap<PowerGroup, Stat>();
 		Iterator<PowerGroup> avPowGrIt = availableOutputPower.iterator();
 		
 		
@@ -222,25 +228,27 @@ public class Library extends HigherElement {
 	}
 	
 	public void calculateTiming() {
+		timingStat = new HashMap<TimingKey, Stat>();
 		Iterator<TimingSense> avTimSenIt = availableTimSen.iterator();
-		Iterator<TimingGroup> avTimGrIt = availableTimGr.iterator();
-		Iterator<TimingType> avTimTypeIt = availableTimType.iterator();
-		
-		Iterator<Cell> cellsIt = cells.iterator();
-		
 		
 		
 		while(avTimSenIt.hasNext()) {
 			TimingSense curTimSen = avTimSenIt.next();
-			while(avTimGrIt.hasNext()) {
-				TimingGroup curTimGr = avTimGrIt.next();
-				while(avTimTypeIt.hasNext()) {
-					TimingType curTimType = avTimTypeIt.next();
+			
+			Iterator<TimingType> avTimTypeIt = availableTimType.iterator();
+			
+			while(avTimTypeIt.hasNext()) {
+				TimingType curTimType = avTimTypeIt.next();
+				
+				Iterator<TimingGroup> avTimGrIt = availableTimGr.iterator();
+				
+				while(avTimGrIt.hasNext()) {
+					TimingGroup curTimGr = avTimGrIt.next();
 					
 					// ArrayList toCalc to put Stats of the same Timing in the same place
 					ArrayList<Stat> toCalc = new ArrayList<Stat>();
-					Iterator<Stat> toCalcIt = toCalc.iterator();
 					
+					Iterator<Cell> cellsIt = cells.iterator();
 					while(cellsIt.hasNext()) {
 						for (Map.Entry<TimingKey, Stat> entry : cellsIt.next().
 								timingStat.entrySet())  
@@ -250,12 +258,15 @@ public class Library extends HigherElement {
 				            	toCalc.add(entry.getValue());
 				            }
 					}
-					
-					float min = 0;
-					float max = 0;
+					if(toCalc.isEmpty()) {
+						return;
+					}
+					float min = toCalc.get(0).getMin();
+					float max = toCalc.get(0).getMax();
 					float avg = 0;
 					float med = 0;
 					
+					Iterator<Stat> toCalcIt = toCalc.iterator();
 					// calculate the stats for the desired Timing
 					while(toCalcIt.hasNext()) {
 						Stat curStat = toCalcIt.next();
