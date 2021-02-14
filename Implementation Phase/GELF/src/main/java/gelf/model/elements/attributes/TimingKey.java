@@ -6,10 +6,10 @@ public class TimingKey {
 	private TimingGroup timGroup;
 	private TimingType timType;
 	
-	public TimingKey(TimingSense timSense, TimingGroup timGroup, TimingType timType) {
+	public TimingKey(TimingSense timSense, TimingType timType, TimingGroup timGroup) {
 		this.timSense = timSense;
-		this.timGroup = timGroup;
 		this.timType = timType;
+		this.timGroup = timGroup;
 	}
 	
 	public TimingSense getTimSense() {

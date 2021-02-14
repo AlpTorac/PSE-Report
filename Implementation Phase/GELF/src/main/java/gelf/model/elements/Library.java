@@ -263,7 +263,7 @@ public class Library extends HigherElement {
 					avg = avg / (float) toCalc.size();
 					
 					Stat stat = new Stat(min, max, avg, med);
-					TimingKey key = new TimingKey(curTimSen, curTimGr, curTimType);
+					TimingKey key = new TimingKey(curTimSen, curTimType, curTimGr);
 					this.timingStat.put(key, stat);
 				}
 			}	

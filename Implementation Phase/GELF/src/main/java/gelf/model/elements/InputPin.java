@@ -63,10 +63,15 @@ public class InputPin extends Pin {
 
 	@Override
 	public void setAvailablePower() {
+		if(inputPowers == null) {
+			return;
+		}
 		Iterator<InputPower> inPowIt = inputPowers.iterator();
 		while(inPowIt.hasNext()) {
 			InputPower curInPow = inPowIt.next();
-			availablePower.add(curInPow.getPowGroup());
+			if(!availablePower.contains(curInPow.getPowGroup())) {
+				availablePower.add(curInPow.getPowGroup());
+			}
 		}
 	}
 }

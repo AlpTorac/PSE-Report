@@ -28,13 +28,13 @@ public class OutputPin extends Pin {
     	super.setParent(parentCell);
     	this.outputPowers = outputPowers;
     	this.timings = timings;
-    	/*
+    	
     	this.setAvailablePower();
     	this.setAvailableTimGr();
     	this.setAvailableTimSen();
     	this.setAvailableTimType();
     	calculate();
-    	*/
+    	
     }
     
     public OutputPin clone() {
@@ -88,10 +88,15 @@ public class OutputPin extends Pin {
     }
     
     public void setAvailableTimSen() {
+    	if(timings == null) {
+    		return;
+    	}
     	Iterator<Timing> timIt = timings.iterator();
 		while(timIt.hasNext()) {
 			Timing curTim = timIt.next();
-			availableTimSen.add(curTim.getTimSense());
+			if(!availableTimSen.contains(curTim.getTimSense())) {
+				availableTimSen.add(curTim.getTimSense());
+			}
 		}
     }
     
@@ -100,10 +105,15 @@ public class OutputPin extends Pin {
     }
     
     public void setAvailableTimGr() {
+    	if(timings == null) {
+    		return;
+    	}
     	Iterator<Timing> timIt = timings.iterator();
 		while(timIt.hasNext()) {
 			Timing curTim = timIt.next();
-			availableTimGr.add(curTim.getTimGroup());
+			if(!availableTimGr.contains(curTim.getTimGroup())) {
+				availableTimGr.add(curTim.getTimGroup());
+			}
 		}
     }
     
@@ -112,10 +122,15 @@ public class OutputPin extends Pin {
     }
     
     public void setAvailableTimType() {
+    	if(timings == null) {
+    		return;
+    	}
     	Iterator<Timing> timIt = timings.iterator();
 		while(timIt.hasNext()) {
 			Timing curTim = timIt.next();
-			availableTimType.add(curTim.getTimType());
+			if(!availableTimType.contains(curTim.getTimType())) {
+				availableTimType.add(curTim.getTimType());
+			}
 		}
     }
     
@@ -133,6 +148,9 @@ public class OutputPin extends Pin {
     }
     
     public void calculatePower() {
+    	if(outputPowers == null) {
+    		return;
+    	}
     	Iterator<OutputPower> i = outputPowers.iterator();
     	
     	while(i.hasNext()) {
@@ -141,6 +159,9 @@ public class OutputPin extends Pin {
     }
     
     public void calculateTiming() {
+    	if (timings == null) {
+    		return;
+    	}
     	Iterator<Timing> i = timings.iterator();
     	
     	while(i.hasNext()) {
@@ -166,10 +187,15 @@ public class OutputPin extends Pin {
 
 	@Override
 	public void setAvailablePower() {
+		if(outputPowers == null) {
+			return;
+		}
 		Iterator<OutputPower> outPowIt = outputPowers.iterator();
 		while(outPowIt.hasNext()) {
 			OutputPower curOutPow = outPowIt.next();
-			availablePower.add(curOutPow.getPowGroup());
+			if(!availablePower.contains(curOutPow.getPowGroup())) {
+				availablePower.add(curOutPow.getPowGroup());
+			}
 		}
 	}
 }

@@ -35,14 +35,13 @@ public class Cell extends HigherElement {
     	this.outPins = outPins;
     	this.leakages = leakages;
     	this.defaultLeakage = leakage;
-    	/*
+    	
     	this.setAvailableTimSen();
     	this.setAvailableTimGr();
     	this.setAvailableTimType();
     	this.setAvailableOutputPower();
     	this.setAvailableInputPower();
-    	this.calculate();
-    	*/
+    	// this.calculate();
     }
     
 	public float[] getIndex1() {
@@ -141,9 +140,7 @@ public class Cell extends HigherElement {
 	}
 	
 	public void interpolate(float[] index1, float[] index2) {
-		Interpolator interpolator = new Interpolator();
 		Iterator<InputPin> inPinIt = inPins.iterator();
-		Iterator<OutputPin> outPinIt = outPins.iterator();
 		
 		/* Calculating new input powers of input pins */
 		while(inPinIt.hasNext()) {
@@ -152,12 +149,14 @@ public class Cell extends HigherElement {
 			Iterator<InputPower> inPowIt = inPows.iterator();
 			while(inPowIt.hasNext()) {
 				InputPower curInPow = inPowIt.next();
-				float[] newValues = interpolator.interpolate(curInPow.getIndex1(),
+				float[] newValues = Interpolator.interpolate(curInPow.getIndex1(),
 						curInPow.getValues(), index1);
 				curInPow.setIndex1(index1);
 				curInPow.setValues(newValues);
 			}
 		}
+		
+		Iterator<OutputPin> outPinIt = outPins.iterator();
 		
 		/* Calculating new output powers of output pins */
 		while(outPinIt.hasNext()) {
@@ -166,13 +165,15 @@ public class Cell extends HigherElement {
 			Iterator<OutputPower> outPowIt = outPows.iterator();
 			while(outPowIt.hasNext()) {
 				OutputPower curOutPow = outPowIt.next();
-				float[][] newValues = interpolator.bicubicInterpolate(curOutPow.getIndex1(), 
+				float[][] newValues = Interpolator.bicubicInterpolate(curOutPow.getIndex1(), 
 						curOutPow.getIndex2(), curOutPow.getValues(), index1, index2);
 				curOutPow.setIndex1(index1);
 				curOutPow.setIndex2(index2);
 				curOutPow.setValues(newValues);
 			}
 		}
+		
+		outPinIt = outPins.iterator();
 		
 		/* Calculating new timings of output pins */
 		while(outPinIt.hasNext()) {
@@ -181,7 +182,7 @@ public class Cell extends HigherElement {
 			Iterator<Timing> timingIt = timings.iterator();
 			while(timingIt.hasNext()) {
 				Timing curTiming = timingIt.next();
-				float[][] newValues = interpolator.bicubicInterpolate(curTiming.getIndex1(), 
+				float[][] newValues = Interpolator.bicubicInterpolate(curTiming.getIndex1(), 
 						curTiming.getIndex2(), curTiming.getValues(), index1, index2);
 				curTiming.setIndex1(index1);
 				curTiming.setIndex2(index2);
@@ -199,39 +200,47 @@ public class Cell extends HigherElement {
 	}
 	
 	public void calculateInPow() {
-		
+		if (availableInputPower == null || inPins == null) {
+			return;
+		}
+
 		Iterator<PowerGroup> avPowGrIt = availableInputPower.iterator();
-		
-		Iterator<InputPin> inPinIt = inPins.iterator();
-		
-		Iterator<InputPower> inPowIt = null;
-		
+				
 		// traverse all available PowerGroups
 		while(avPowGrIt.hasNext()) {
 			PowerGroup curPowGr = avPowGrIt.next();
-			// ArrayList toCalc to put InputPowers of the same PowerGroup in the same place
+			// ArrayList toCalc to put InputPowers of the same PowerGroup in 
+			// the same place
 			ArrayList<InputPower> toCalc = new ArrayList<InputPower>();
-			Iterator<InputPower> toCalcIt = toCalc.iterator();
 			
+			Iterator<InputPin> inPinIt = inPins.iterator();
 			// traverse Input Pins
 			while(inPinIt.hasNext()) {
 				InputPin curInPin = inPinIt.next();
 				// traverse Input Powers of Input Pins
-				inPowIt = curInPin.getInputPowers().iterator();
+				if (curInPin.getInputPowers() == null) {
+					continue;
+				}
+				Iterator<InputPower> inPowIt = 
+						curInPin.getInputPowers().iterator();
 				
 				while(inPowIt.hasNext()) {
 					InputPower curInPow = inPowIt.next();
 					// put in the list if the Input Power has the desired Power Group
-					if(curPowGr == curInPow.getPowGroup()) {
+					if(curPowGr.equals(curInPow.getPowGroup())) {
 						toCalc.add(curInPow);
 					}
 				}
 			}
-			float min = 0;
-			float max = 0;
+			if(toCalc.isEmpty()) {
+				return;
+			}
+			float min = toCalc.get(0).getStats().getMin();
+			float max = toCalc.get(0).getStats().getMax();
 			float avg = 0;
 			float med = 0;
 			
+			Iterator<InputPower> toCalcIt = toCalc.iterator();
 			// calculate the stats for the desired Power Group
 			while(toCalcIt.hasNext()) {
 				InputPower curInPowCal = toCalcIt.next();
@@ -247,24 +256,31 @@ public class Cell extends HigherElement {
 	}
 	
 	public void calculateOutPow() {
+		
+		if (availableOutputPower == null || outPins == null) {
+			return;
+		}
 		Iterator<PowerGroup> avPowGrIt = availableOutputPower.iterator();
 		
-		Iterator<OutputPin> outPinIt = outPins.iterator();
 		
-		Iterator<OutputPower> outPowIt = null;
 		
 		// traverse all available PowerGroups
 		while(avPowGrIt.hasNext()) {
 			PowerGroup curPowGr = avPowGrIt.next();
 			// ArrayList toCalc to put OutputPowers of the same PowerGroup in the same place
 			ArrayList<OutputPower> toCalc = new ArrayList<OutputPower>();
-			Iterator<OutputPower> toCalcIt = toCalc.iterator();
 			
+			
+			Iterator<OutputPin> outPinIt = outPins.iterator();
 			// traverse Output Pins
 			while(outPinIt.hasNext()) {
 				OutputPin curOutPin = outPinIt.next();
 				// traverse Output Powers of Input Pins
-				outPowIt = curOutPin.getOutputPowers().iterator();
+				if (curOutPin.getOutputPowers() == null) {
+					continue;
+				}
+				Iterator<OutputPower> outPowIt = 
+						curOutPin.getOutputPowers().iterator();
 				
 				while(outPowIt.hasNext()) {
 					OutputPower curOutPow = outPowIt.next();
@@ -274,11 +290,14 @@ public class Cell extends HigherElement {
 					}
 				}
 			}
-			float min = 0;
-			float max = 0;
+			if(toCalc.isEmpty()) {
+				return;
+			}
+			float min = toCalc.get(0).getStats().getMin();
+			float max = toCalc.get(0).getStats().getMax();
 			float avg = 0;
 			float med = 0;
-			
+			Iterator<OutputPower> toCalcIt = toCalc.iterator();
 			// calculate the stats for the desired Power Group
 			while(toCalcIt.hasNext()) {
 				OutputPower curOutPowCal = toCalcIt.next();
@@ -294,30 +313,35 @@ public class Cell extends HigherElement {
 	}
 	
 	public void calculateTiming() {
+		if (availableTimSen == null || availableTimGr == null || 
+				availableTimType == null || outPins == null) {
+			return;
+		}
 		Iterator<TimingSense> avTimSenIt = availableTimSen.iterator();
-		Iterator<TimingGroup> avTimGrIt = availableTimGr.iterator();
-		Iterator<TimingType> avTimTypeIt = availableTimType.iterator();
-		
-		Iterator<OutputPin> outPinIt = outPins.iterator();
-		
-		Iterator<Timing> outTimIt = null;
-		
 		// traverse all available Timing Senses, Timing Groups, Timing Types
 		while(avTimSenIt.hasNext()) {
 			TimingSense curTimSen = avTimSenIt.next();
+			
+			Iterator<TimingGroup> avTimGrIt = availableTimGr.iterator();
 			while(avTimGrIt.hasNext()) {
 				TimingGroup curTimGr = avTimGrIt.next();
+				
+				Iterator<TimingType> avTimTypeIt = availableTimType.iterator();
 				while(avTimTypeIt.hasNext()) {
 					TimingType curTimType = avTimTypeIt.next();
 					// ArrayList toCalc to put Timings of the same sense, group, types
 					ArrayList<Timing> toCalc = new ArrayList<Timing>();
-					Iterator<Timing> toCalcIt = toCalc.iterator();
 					
+					Iterator<OutputPin> outPinIt = outPins.iterator();
 					// traverse Output Pins
 					while(outPinIt.hasNext()) {
 						OutputPin curOutPin = outPinIt.next();
 						// traverse timings of Output Pins
-						outTimIt = curOutPin.getTimings().iterator();
+						if (curOutPin.getTimings() == null) {
+							continue;
+						}
+						Iterator<Timing> outTimIt = curOutPin.
+								getTimings().iterator();
 						
 						while(outTimIt.hasNext()) {
 							Timing curTim = outTimIt.next();
@@ -330,11 +354,15 @@ public class Cell extends HigherElement {
 							}
 						}
 					}
-					float min = 0;
-					float max = 0;
+					if(toCalc.isEmpty()) {
+						return;
+					}
+					float min = toCalc.get(0).getStats().getMin();
+					float max = toCalc.get(0).getStats().getMax();
 					float avg = 0;
 					float med = 0;
 					
+					Iterator<Timing> toCalcIt = toCalc.iterator();
 					// calculate the stats for the desired Power Group
 					while(toCalcIt.hasNext()) {
 						Timing curTimCal = toCalcIt.next();
@@ -352,11 +380,12 @@ public class Cell extends HigherElement {
 					 **/
 					
 					// create a new key
-					TimingKey key = new TimingKey(curTimSen, curTimGr, 
-							curTimType);
+					TimingKey key = new TimingKey(curTimSen, curTimType, 
+							curTimGr);
 					
 					// put the stat of the timing in the map
 					timingStat.put(key, stat);
+					
 				}
 			}
 		}
@@ -368,6 +397,9 @@ public class Cell extends HigherElement {
 
 	@Override
 	public void setAvailableTimSen() {
+		if(outPins == null) {
+			return;
+		}
 		Iterator<OutputPin> outPinIt = outPins.iterator();
 		
 		while(outPinIt.hasNext()) {
@@ -376,13 +408,19 @@ public class Cell extends HigherElement {
 					.iterator();
 			
 			while(timSenIt.hasNext()) {
-				this.getAvailableTimSen().add(timSenIt.next());
+				TimingSense curTimSen = timSenIt.next();
+				if(!availableTimSen.contains(curTimSen)) {
+				    this.getAvailableTimSen().add(curTimSen);
+			    }
 			}
 		}	
 	}
 
 	@Override
 	public void setAvailableTimGr() {
+		if(outPins == null) {
+			return;
+		}
 		Iterator<OutputPin> outPinIt = outPins.iterator();
 		
 		while(outPinIt.hasNext()) {
@@ -391,13 +429,19 @@ public class Cell extends HigherElement {
 					.iterator();
 			
 			while(timGrIt.hasNext()) {
-				this.getAvailableTimGr().add(timGrIt.next());
+				TimingGroup curTimGr = timGrIt.next();
+				if(!availableTimGr.contains(curTimGr)) {
+				    this.getAvailableTimGr().add(curTimGr);
+			    }
 			}
 		}	
 	}
 
 	@Override
 	public void setAvailableTimType() {
+		if(outPins == null) {
+			return;
+		}
 		Iterator<OutputPin> outPinIt = outPins.iterator();
 		
 		while(outPinIt.hasNext()) {
@@ -406,13 +450,19 @@ public class Cell extends HigherElement {
 					.iterator();
 			
 			while(timTypeIt.hasNext()) {
-				this.getAvailableTimType().add(timTypeIt.next());
+				TimingType curTimType = timTypeIt.next();
+				if(!availableTimType.contains(curTimType)) {
+				    this.getAvailableTimType().add(curTimType);
+			    }
 			}
 		}		
 	}
 
 	@Override
 	public void setAvailableOutputPower() {
+		if(outPins == null) {
+			return;
+		}
 		Iterator<OutputPin> outPinIt = outPins.iterator();
 		
 		while(outPinIt.hasNext()) {
@@ -421,13 +471,19 @@ public class Cell extends HigherElement {
 					.iterator();
 			
 			while(outPowIt.hasNext()) {
-				this.getAvailableInputPower().add(outPowIt.next());
+				PowerGroup curPowGr = outPowIt.next();
+				if(!availableOutputPower.contains(curPowGr)) {
+				    this.getAvailableOutputPower().add(curPowGr);
+			    }
 			}
 		}
 	}
 
 	@Override
 	public void setAvailableInputPower() {
+		if(inPins == null) {
+			return;
+		}
 		Iterator<InputPin> inPinIt = inPins.iterator();
 		
 		while(inPinIt.hasNext()) {
@@ -436,7 +492,10 @@ public class Cell extends HigherElement {
 					.iterator();
 			
 			while(inPowIt.hasNext()) {
-				this.getAvailableInputPower().add(inPowIt.next());
+			    PowerGroup curPowGr = inPowIt.next();
+				if(!availableInputPower.contains(curPowGr)) {
+				    this.getAvailableInputPower().add(curPowGr);
+			    }
 			}
 		}
 	}

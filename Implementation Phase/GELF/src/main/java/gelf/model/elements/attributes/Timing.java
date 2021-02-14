@@ -55,9 +55,8 @@ public class Timing extends OutAttribute{
 				Arrays.equals(this.index2, attribute.index2 )) {
 			return attribute;
 		}
-		Interpolator interpolator = new Interpolator();
 		
-		float[][] newValues = interpolator.bicubicInterpolate(attribute.index1, attribute.index2, 
+		float[][] newValues = Interpolator.bicubicInterpolate(attribute.index1, attribute.index2, 
 				attribute.values, this.index1, this.index2);
 		Timing newAttr = new Timing(attribute.getTimSense(), attribute.getTimType(),
 				attribute.getTimGroup(), newValues);
