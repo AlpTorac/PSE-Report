@@ -3411,7 +3411,7 @@ class LibertyParserTest {
 	
 	@Test
 	void parseLibraryTempTest() throws InvalidFileFormatException {
-		Library library = LibertyParser.parseLibrary(libraryExample.replaceAll("\\s+", ""));
+		Library library = LibertyParser.parseLibrary(sample.replaceAll("\\s+", ""));
 		assertEquals("typical", library.getName());
 		Cell cell1 = library.getCells().get(0);
 		assertEquals("AND2_X1", cell1.getName());
@@ -3542,7 +3542,7 @@ class LibertyParserTest {
     }
 
 	@Test
-	void parseDoubleArrayTest() {
+	void parseDoubleArrayTest() throws InvalidFileFormatException {
 		float[][] desiredResult = new float[][] {{0.001009f, 0.001043f, 0.001056f, 0.001058f}, 
 												{0.0009569f, 0.0009777f, 0.0009895f, 0.0009899f},
 												{0.0009458f, 0.0009591f, 0.0009767f, 0.0009837f}};

@@ -33,20 +33,35 @@ import gelf.model.elements.*;
 public class LibertyParser {
 //<<<<<<< HEAD
     private static final String NAMEFORMAT = "([a-zA-Z]|_|-|[0-9])*";
-    private static final String FUNCTIONFORMAT = "([a-zA-Z]|_|-|^|\\||\\(|\\)|&|\\!|[0-9])+";
-    private static final String FLOATFORMAT = "[-+]?[0-9]*\\.?[0-9]+([eE][-+]?[0-9]+)?";
-    private static final String ARRAYFORMAT = "\"(" + FLOATFORMAT +",)*(\\)?" + FLOATFORMAT + "\"";
-    private static final String DOUBLEARRAYFORMAT = "(" + ARRAYFORMAT + ")*,\\" + ARRAYFORMAT;
-    private static final String INATTRIBUTESFORMAT = "";
-    private static final String OUTATTRIBUTESFORMAT = "";
+    private static final String ATTRNAMEFORMAT = "([a-zA-Z]+[_]?[a-zA-Z]+)+";
+    private static final String FUNCTIONFORMAT = "([a-zA-Z]|_|-|\\^|\\||\\(|\\)|&|\\!|[0-9])+";
+    private static final String FLOATFORMAT = "[-+]?[0-9]*(\\.)?[0-9]+([eE][-+]?[0-9]+)?";
+    private static final String PARAMFORMAT = ATTRNAMEFORMAT + ":(\"\\(" + FUNCTIONFORMAT + "\\)\"|"
+    		+ "\"" + NAMEFORMAT + "\"|" + FLOATFORMAT + ")";
+    private static final String ARRAYFORMAT = "\"((" + FLOATFORMAT +",)(\\\\)?)*" + FLOATFORMAT + "\"";
+    private static final String DOUBLEARRAYFORMAT = "(" + ARRAYFORMAT + ",(\\\\)?)*" + ARRAYFORMAT;
+    private static final String INATTRIBUTESFORMAT = ATTRNAMEFORMAT + "\\(" + NAMEFORMAT + "\\)\\{"
+    		+ "index_1\\(" + ARRAYFORMAT + "\\);values\\(" + ARRAYFORMAT + "\\);\\}";
+    private static final String OUTATTRIBUTESFORMAT = ATTRNAMEFORMAT + "\\(" + NAMEFORMAT + "\\)\\{"
+    		+ "index_1\\(" + ARRAYFORMAT + "\\);index_2\\(" + ARRAYFORMAT + "\\);values\\("
+    				+ DOUBLEARRAYFORMAT + "\\);\\}";
+    private static final String LEAKAGEFORMAT = "leakage_power\\(\\)\\{when:\"" + FUNCTIONFORMAT
+			+ "\";value:\"" + FLOATFORMAT + "\";\\}";
     private static String powerGroupSeparator = "";
     private static String timingGroupSeparator = "";
-    private static final String PINFORMAT = "";
-    private static final String CELLFORMAT = "";
+    private static final String PINFORMAT = "pin\\(" + NAMEFORMAT + "\\)\\{(" + PARAMFORMAT
+    		+ ")+((internal_power|timing)\\(" + NAMEFORMAT + "\\)\\{(" + PARAMFORMAT
+    		+ ")*(" + INATTRIBUTESFORMAT + "|" + OUTATTRIBUTESFORMAT + ")+\\})+\\}";
+    private static final String CELLFORMAT = "cell\\(" + NAMEFORMAT + "\\)\\{(" + PARAMFORMAT
+    		+ ")+(" + LEAKAGEFORMAT + ")+(" + PINFORMAT + ")+\\}"; 
     private static final String LIBRARYFORMAT = "library\\(" + NAMEFORMAT + "\\)\\{"
     		+ ".*(" + CELLFORMAT + ")+\\}";
 
     public static Library parseLibrary(String libraryString) throws InvalidFileFormatException {
+    	if (libraryString == null || libraryString.length() == 0) {
+    		throw new InvalidFileFormatException("File is empty or file content"
+    				+ " can't be read");
+    	}
     	checkBrackets(libraryString);
         libraryString = libraryString.replaceAll("\\s+", "");
         String noCommentsString = "";
@@ -520,7 +535,10 @@ public class LibertyParser {
         return stringToArray(arrayString);
     }
 
-    public static float[][] parseDoubleArray(String content, String arrayName){
+    public static float[][] parseDoubleArray(String content, String arrayName) throws InvalidFileFormatException{
+    	if (!content.matches(OUTATTRIBUTESFORMAT)) {
+    		throw new InvalidFileFormatException("yo");
+    	}
         int firstIndex = content.indexOf(arrayName) + arrayName.length();
         int lastIndex = content.indexOf(";", firstIndex);
         String arrayStrings = content.substring(firstIndex + 1, lastIndex - 1);
