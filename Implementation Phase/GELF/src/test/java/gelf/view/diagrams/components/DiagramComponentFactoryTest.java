@@ -1,7 +1,6 @@
 package gelf.view.diagrams.components;
 
 import java.awt.Color;
-import java.awt.Container;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -9,12 +8,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import gelf.view.diagrams.TestCase;
-import gelf.view.diagrams.TestFrame;
 
 class DiagramComponentFactoryTest implements TestCase {
-
-	private static Container container = new TestFrame().getContentPane();
-	
 	private static DiagramComponentFactory f = DiagramComponentFactory.getDiagramComponentFactory();
 	
 	private static Color c = Color.BLACK;

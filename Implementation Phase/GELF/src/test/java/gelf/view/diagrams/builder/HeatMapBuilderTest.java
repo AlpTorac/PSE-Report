@@ -38,6 +38,6 @@ class HeatMapBuilderTest implements TestCase {
 		IDiagram diagram = builder.buildDiagram();
 		diagram.attachToContainer(container);
 		diagram.refresh();
-		show(frame, TestCase.LONG_SHOW_DURATION);
+		show(frame, TestCase.SHOW_DURATION);
 	}
 }

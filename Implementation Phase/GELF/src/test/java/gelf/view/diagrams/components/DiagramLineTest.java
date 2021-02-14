@@ -7,47 +7,51 @@ import org.junit.jupiter.api.Test;
 
 import gelf.view.diagrams.TestCase;
 import gelf.view.diagrams.TestFrame;
+import gelf.view.diagrams.type.BarChart;
 
 class DiagramLineTest implements TestCase {
+	private static TestFrame frame = new TestFrame();
+	
+	private static void initAndShow(DiagramComponent[] lines) {
+		BarChart diagram = new BarChart(null, null,
+				null, lines);
+		
+		diagram.attachToContainer(frame);
+		TestCase.showStatic(frame, TestCase.SHOW_DURATION);
+		diagram.removeFromContainer();
+	}
 	
 	@Test
 	void initialisationTest() {
-		TestFrame frame = new TestFrame();
-		
 		PositionInFrame start = new PositionInFrame(100, 100);
 		PositionInFrame end = new PositionInFrame(400, 400);
 		DiagramLine line = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(start, end, Color.BLACK, 2);
-		show(frame, line, TestCase.SHOW_DURATION);
+		initAndShow(new DiagramComponent[] {line});
 	}
 	
 	@Test
 	void lineIntersectionTest() {
-		TestFrame frame = new TestFrame();
-		
 		PositionInFrame start1 = new PositionInFrame(100, 100);
 		PositionInFrame end1 = new PositionInFrame(400, 400);
 		PositionInFrame start2 = new PositionInFrame(100, 400);
 		PositionInFrame end2 = new PositionInFrame(400, 100);
 		DiagramLine line2 = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(start2, end2, Color.BLACK, 2);
 		DiagramLine line1 = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(start1, end1, Color.BLACK, 2);
-		show(frame, TestCase.SHOW_DURATION);
+		initAndShow(new DiagramComponent[] {line1, line2});
 	}
 	
 	@Test
 	void straightLinesTest() {
-		TestFrame frame = new TestFrame();
-		
 		PositionInFrame origin = new PositionInFrame(400, 400);
 		PositionInFrame endX = new PositionInFrame(600, 400);
 		PositionInFrame endY = new PositionInFrame(400, 200);
 		DiagramLine xLine = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(origin, endX, Color.BLACK, 2);
 		DiagramLine yLine = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(origin, endY, Color.BLACK, 2);
-		show(frame, TestCase.SHOW_DURATION);
+		initAndShow(new DiagramComponent[] {xLine, yLine});
 	}
 	
 	@Test
 	void lengthTest() {
-		TestFrame frame = new TestFrame();
 		PositionInFrame corner = new PositionInFrame(200, 200);
 		PositionInFrame endX = new PositionInFrame(203, 200);
 		PositionInFrame endY = new PositionInFrame(200, 196);
@@ -63,7 +67,6 @@ class DiagramLineTest implements TestCase {
 	
 	@Test
 	void horizontalLengthTest() {
-		TestFrame frame = new TestFrame();
 		PositionInFrame corner = new PositionInFrame(200, 200);
 		PositionInFrame endX = new PositionInFrame(203, 200);
 		PositionInFrame endY = new PositionInFrame(200, 196);
@@ -79,7 +82,6 @@ class DiagramLineTest implements TestCase {
 	
 	@Test
 	void verticalLengthTest() {
-		TestFrame frame = new TestFrame();
 		PositionInFrame corner = new PositionInFrame(200, 200);
 		PositionInFrame endX = new PositionInFrame(203, 200);
 		PositionInFrame endY = new PositionInFrame(200, 196);
@@ -95,8 +97,6 @@ class DiagramLineTest implements TestCase {
 
 	@Test
 	void setStartTest() {
-		TestFrame frame = new TestFrame();
-		
 		int thickness = 2;
 		
 		PositionInFrame start = new PositionInFrame(100, 100);
@@ -123,8 +123,6 @@ class DiagramLineTest implements TestCase {
 	
 	@Test
 	void setEndTest() {
-		TestFrame frame = new TestFrame();
-		
 		int thickness = 2;
 		
 		PositionInFrame start = new PositionInFrame(100, 100);
@@ -151,8 +149,6 @@ class DiagramLineTest implements TestCase {
 	
 	@Test
 	void setThicknessTest() {
-		TestFrame frame = new TestFrame();
-		
 		int thickness = 2;
 		
 		PositionInFrame start = new PositionInFrame(100, 100);
@@ -166,14 +162,12 @@ class DiagramLineTest implements TestCase {
 	
 	@Test
 	void showAndHideTest() {
-		TestFrame frame = new TestFrame();
-		
 		int thickness = 5;
 		
 		PositionInFrame start = new PositionInFrame(100, 100);
 		PositionInFrame end = new PositionInFrame(400, 400);
 		DiagramLine line = DiagramComponentFactory.getDiagramComponentFactory().createSolidLine(start, end, Color.BLACK, thickness);
 		
-		show(frame, line, 50);
+		initAndShow(new DiagramComponent[] {line});
 	}
 }

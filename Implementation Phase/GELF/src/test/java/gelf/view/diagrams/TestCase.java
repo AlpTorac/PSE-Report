@@ -11,6 +11,14 @@ public interface TestCase {
 	public static final double TOLERANCE = 1E-5;
 	
 	public default void show(TestFrame frame, long ms) {
+		TestCase.showStatic(frame, ms);
+	}
+	
+	public default void show(TestFrame frame, DiagramComponent dc, long ms) {
+		TestCase.showStatic(frame, dc, ms);
+	}
+	
+	public static void showStatic(TestFrame frame, long ms) {
 		frame.setVisible(true);
 		try {
 			Thread.sleep(ms);
@@ -19,7 +27,7 @@ public interface TestCase {
 		}
 	}
 	
-	public default void show(TestFrame frame, DiagramComponent dc, long ms) {
+	public static void showStatic(TestFrame frame, DiagramComponent dc, long ms) {
 		frame.setVisible(true);
 		try {
 			Thread.sleep(ms);

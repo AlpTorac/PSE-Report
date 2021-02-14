@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import gelf.view.diagrams.TestCase;
 import gelf.view.diagrams.TestFrame;
+import gelf.view.diagrams.type.BarChart;
 
 class DiagramAxisTest implements TestCase {
 
@@ -29,26 +30,32 @@ class DiagramAxisTest implements TestCase {
 	
 	private static DiagramAxis xAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, endX, minVal, maxVal, steps, color, thickness);
 	
+	private static void initAndShow(DiagramAxis[] axes) {
+		BarChart diagram = new BarChart(null, axes, null, null);
+		
+		diagram.attachToContainer(frame);
+		TestCase.showStatic(frame, TestCase.SHOW_DURATION);
+		frame.remove(diagram.getContainingElement());
+	}
+	
 	@Test
 	void initialisationTest() {
-		show(frame, xAxis, TestCase.SHOW_DURATION);
+		initAndShow(new DiagramAxis[] {xAxis});
+		//show(frame, xAxis, TestCase.SHOW_DURATION);
 	}
 	
 	@Test
 	void verticalAxisTest() {
-		TestFrame frame = new TestFrame();
-		
 		PositionInFrame start = new PositionInFrame(400, 400);
 		PositionInFrame endX = new PositionInFrame(400, 200);
 		DiagramAxis yAxis = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, endX, 0, 20, 10, Color.black, 1);
 		yAxis.showValues();
-		show(frame, yAxis, TestCase.SHOW_DURATION);
+		initAndShow(new DiagramAxis[] {yAxis});
+		//show(frame, yAxis, TestCase.SHOW_DURATION);
 	}
 	
 	@Test
 	void coordinateSystemTest() {
-		TestFrame frame = new TestFrame();
-		
 //		System.out.println("xAxis calculation - start");
 		
 		PositionInFrame start = new PositionInFrame(500, 500);
@@ -73,13 +80,12 @@ class DiagramAxisTest implements TestCase {
 		
 //		System.out.println("xyAxis calculation - end");
 		
-		show(frame, TestCase.SHOW_DURATION);
+		initAndShow(new DiagramAxis[] {xAxis, yAxis, xyAxis});
+		//show(frame, TestCase.SHOW_DURATION);
 	}
 	
 	@Test
 	void axisBloomTest() {
-		TestFrame frame = new TestFrame();
-		
 		PositionInFrame start = new PositionInFrame(500, 500);
 		
 		PositionInFrame axis1End = new PositionInFrame(900, 500);
@@ -122,7 +128,8 @@ class DiagramAxisTest implements TestCase {
 		axis8.showValues();
 		axis8.showValuesUnderAxis();
 		
-		show(frame, TestCase.SHOW_DURATION);
+		initAndShow(new DiagramAxis[] {axis1, axis2, axis3, axis4, axis5, axis6, axis7, axis8});
+		//show(frame, TestCase.SHOW_DURATION);
 	}
 
 	@Test
@@ -144,7 +151,8 @@ class DiagramAxisTest implements TestCase {
 		Assertions.assertEquals(newThickness, xAxis.getLineThickness());
 		Assertions.assertEquals(newThickness, xAxis.axisLine.getThickness());
 		
-		show(frame, xAxis, TestCase.SHOW_DURATION);
+		initAndShow(new DiagramAxis[] {xAxis});
+		//show(frame, xAxis, TestCase.SHOW_DURATION);
 		
 		xAxis.setLineThickness(thickness);
 	}
@@ -158,7 +166,8 @@ class DiagramAxisTest implements TestCase {
 		Assertions.assertEquals(newColor, xAxis.getColor());
 		Assertions.assertEquals(color, xAxis.axisLine.getColor());
 		
-		show(frame, xAxis, TestCase.SHOW_DURATION);
+		initAndShow(new DiagramAxis[] {xAxis});
+		//show(frame, xAxis, TestCase.SHOW_DURATION);
 		
 		xAxis.setColor(color);
 	}
@@ -172,7 +181,8 @@ class DiagramAxisTest implements TestCase {
 		Assertions.assertEquals(color, xAxis.getColor());
 		Assertions.assertEquals(newColor, xAxis.axisLine.getColor());
 		
-		show(frame, xAxis, TestCase.SHOW_DURATION);
+		initAndShow(new DiagramAxis[] {xAxis});
+		//show(frame, xAxis, TestCase.SHOW_DURATION);
 		
 		xAxis.setLineColor(color);
 	}
@@ -191,7 +201,8 @@ class DiagramAxisTest implements TestCase {
 		Assertions.assertEquals(newEndPosX, xAxis.getLineEnd().getXPos());
 		Assertions.assertEquals(newEndPosY, xAxis.getLineEnd().getYPos());
 		
-		show(frame, xAxis, TestCase.SHOW_DURATION);
+		initAndShow(new DiagramAxis[] {xAxis});
+		//show(frame, xAxis, TestCase.SHOW_DURATION);
 		
 		xAxis.setLineByPos(startPosX, startPosY, endPosX, endPosY);
 	}
@@ -223,7 +234,8 @@ class DiagramAxisTest implements TestCase {
 		Assertions.assertTrue(compareFloatingPoint(valuePosInFrame.getYPos(), xAxis.valueToCoordinate(valueOnAxis).getYPos()));
 		Assertions.assertTrue(compareFloatingPoint(valuePosInFrame.getXPos(), xAxis.valueToCoordinate(valueOnAxis).getXPos()));
 
-		show(frame, xAxis, TestCase.SHOW_DURATION);
+		initAndShow(new DiagramAxis[] {xAxis});
+		//show(frame, xAxis, TestCase.SHOW_DURATION);
 		
 		xAxis.setMin(minVal);
 		xAxis.setMax(maxVal);

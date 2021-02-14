@@ -20,7 +20,6 @@
     <fullyQualifiedTypeName name="javax.swing.JPanel"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.TestPanel"/>
     <fullyQualifiedTypeName name="javax.swing.BorderFactory"/>
-    <fullyQualifiedTypeName name="java.awt.Color"/>
     <fullyQualifiedTypeName name="javax.swing.border.Border"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.components.HistogramBar"/>
     <fullyQualifiedTypeName name="javax.swing.Timer"/>
@@ -60,4 +59,5 @@
     <fullyQualifiedTypeName name="gelf.view.diagrams.builder.IBarChartBuilder"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.builder.IFunctionGraphBuilder"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.builder.IHistogramBuilder"/>
+    <fullyQualifiedTypeName name="java.awt.Color"/>
 </qualifiedTypeNameHistroy>

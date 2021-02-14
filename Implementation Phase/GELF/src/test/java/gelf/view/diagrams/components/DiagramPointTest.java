@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import gelf.view.diagrams.TestCase;
 import gelf.view.diagrams.TestFrame;
+import gelf.view.diagrams.type.FunctionGraph;
 
 class DiagramPointTest implements TestCase {
 
@@ -28,11 +29,22 @@ class DiagramPointTest implements TestCase {
 	
 	private static DiagramPoint p = DiagramComponentFactory.getDiagramComponentFactory().createValueDisplayPoint(color, value, size, pos);
 	
+	private static void initAndShow() {
+		FunctionGraph diagram = new FunctionGraph(null, new DiagramAxis[] {xAxis, yAxis},
+				new DiagramValueDisplayComponent[] {p}, null);
+		
+		diagram.attachToContainer(frame);
+		yAxis.showValues();
+		xAxis.showValues();
+		TestCase.showStatic(frame, TestCase.SHOW_DURATION);
+		frame.remove(diagram.getContainingElement());
+	}
+	
 	@Test
 	void initialisationTest() {
 		xAxis.showValues();
 		yAxis.showValues();
-		show(frame, p, TestCase.SHOW_DURATION);
+		initAndShow();
 	}
 	
 	@Test
@@ -52,7 +64,7 @@ class DiagramPointTest implements TestCase {
 		Assertions.assertEquals(Math.ceil(newPos.toPositionInFrame().getXPos() + size / 2f), p.visualElement.getBounds().getMaxX());
 		Assertions.assertEquals(Math.ceil(newPos.toPositionInFrame().getYPos() + size / 2f), p.visualElement.getBounds().getMaxY());
 		
-		show(frame, p, TestCase.SHOW_DURATION);
+		initAndShow();
 		
 		p.setXPositionInDiagram(oldXPos);
 	}
@@ -72,7 +84,7 @@ class DiagramPointTest implements TestCase {
 		Assertions.assertEquals(Math.ceil(newPos.toPositionInFrame().getXPos() + size / 2f), p.visualElement.getBounds().getMaxX());
 		Assertions.assertEquals(Math.ceil(newPos.toPositionInFrame().getYPos() + size / 2f), p.visualElement.getBounds().getMaxY());
 		
-		show(frame, p, TestCase.SHOW_DURATION);
+		initAndShow();
 		
 		p.setValue(value);
 	}
@@ -88,7 +100,7 @@ class DiagramPointTest implements TestCase {
 		Assertions.assertEquals(Math.ceil(pos.toPositionInFrame().getXPos() + newSize / 2f), p.visualElement.getBounds().getMaxX());
 		Assertions.assertEquals(Math.ceil(pos.toPositionInFrame().getYPos() + newSize / 2f), p.visualElement.getBounds().getMaxY());
 		
-		show(frame, p, TestCase.SHOW_DURATION);
+		initAndShow();
 		
 		p.setSize(size);
 	}

@@ -1,18 +1,17 @@
 package gelf.view.diagrams.components;
 
 import java.awt.Color;
-import java.awt.Container;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import gelf.view.diagrams.TestCase;
 import gelf.view.diagrams.TestFrame;
+import gelf.view.diagrams.type.HeatMap;
 
 class DiagramColorScaleTest implements TestCase {
 
 	private static TestFrame frame = new TestFrame();
-	private static Container container = frame.getContentPane();
 	
 	private static Color borderColor = Color.BLACK;
 	private static Color minValColor = Color.RED;
@@ -28,9 +27,18 @@ class DiagramColorScaleTest implements TestCase {
 	
 	private static DiagramColorScale cs = DiagramComponentFactory.getDiagramComponentFactory().createBiColorScale(topLeft, bottomRight, borderColor, minVal, maxVal, minValColor, maxValColor, thickness);
 	
+	private static void initAndShow() {
+		HeatMap diagram = new HeatMap(null, null,
+				null, new DiagramComponent[] {cs});
+		
+		diagram.attachToContainer(frame);
+		TestCase.showStatic(frame, TestCase.SHOW_DURATION);
+		frame.remove(diagram.getContainingElement());
+	}
+	
 	@Test
 	void initialisationTest() {
-		show(frame, cs, TestCase.SHOW_DURATION);
+		initAndShow();
 	}
 	
 	@Test
@@ -99,7 +107,7 @@ class DiagramColorScaleTest implements TestCase {
 		Assertions.assertEquals(newBottomRX, cs.visualElement.getBounds().getMaxX());
 		Assertions.assertEquals(newBottomRY, cs.visualElement.getBounds().getMaxY());
 		
-		show(frame, cs, TestCase.SHOW_DURATION);
+		initAndShow();
 		
 		cs.setTopLeftInFrame(oldTopLX, oldTopLY);
 		cs.setBottomRightInFrame(oldBottomRX, oldBottomRY);
@@ -159,7 +167,7 @@ class DiagramColorScaleTest implements TestCase {
 		
 		Assertions.assertEquals(newThickness, cs.getBorderThickness());
 		
-		show(frame, cs, TestCase.SHOW_DURATION);
+		initAndShow();
 		
 		cs.setBorderThickness(thickness);
 	}
