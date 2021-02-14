@@ -7,6 +7,7 @@ import gelf.model.elements.Element;
 import gelf.model.elements.InputPin;
 import gelf.model.elements.Library;
 import gelf.model.elements.OutputPin;
+import gelf.model.project.Project;
 import gelf.view.components.Button;
 
 import java.awt.Color;
@@ -50,8 +51,8 @@ public class TextEditor extends ElementManipulator implements KeyListener{
 	/*
 	 * Constructor
 	 */
-    public TextEditor(Element element, int width, int height){
-        super(element, width, height);
+    public TextEditor(Element element, Project p, int width, int height){
+        super(element, p, width, height);
         setup();
         this.setElement(element);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));

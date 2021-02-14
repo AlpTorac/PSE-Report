@@ -57,7 +57,6 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
         this.setBorder(margin);
 
         // menu
-        
         this.menuBar = new MenuBar();
         this.menuBar.setBackground(cBackground);
         this.menuBar.setPreferredSize(new Dimension(this.getWidth(), 30));
@@ -81,14 +80,14 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
         // this.tree.setRootVisible(false);
 
         // scroll pane
-        this.treePane = new JScrollPane(tree);
+        this.treePane = new JScrollPane(this.tree);
         this.treePane.setPreferredSize(new Dimension(this.getWidth(), this.getHeight() - this.menuBar.getHeight()));
         this.treePane.setVisible(true);
         this.treePane.setBorder(null);
         this.add(treePane, BorderLayout.CENTER);
 
         // subscribe to project
-        project.addUpdatable(this);
+        this.project.addUpdatable(this);
         this.update();
     }
 
@@ -98,7 +97,7 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
         DefaultTreeModel treeModel = (DefaultTreeModel) this.tree.getModel();
 
         // generate library level
-        ArrayList<Library> libraries = project.getLibraries();
+        ArrayList<Library> libraries = this.project.getLibraries();
         for (Library lib : libraries) {
             DefaultMutableTreeNode libNode = new DefaultMutableTreeNode(lib);
             treeModel.insertNodeInto(libNode, root, root.getChildCount());
