@@ -17,7 +17,8 @@ public class LoadListener implements ActionListener{
 		try {
 			openFileCommand.execute();
 		} catch (InvalidFileFormatException e1) {
-			//TODO error
+			JOptionPane.showMessageDialog(new JFrame(), "Invalid file format.", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
 		}
 	}
 
