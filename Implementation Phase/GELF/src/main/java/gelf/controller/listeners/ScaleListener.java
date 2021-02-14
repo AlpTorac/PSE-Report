@@ -31,22 +31,23 @@ public class ScaleListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		float scaleValue = 1.0f;
-		if(e.getSource() instanceof JButton) {
-			try {
-				scaleValue = Float.parseFloat(panel.getTextField().getText());
-			} catch (NumberFormatException exc) {
-				JOptionPane.showMessageDialog(new JFrame(), "Please enter a float value.", "Error", JOptionPane.ERROR_MESSAGE);
-				return;
-			}
 		
-			Attribute attribute = panel.getComboBox().getSelected();
-			ScaleCommand scale = new ScaleCommand(attribute, scaleValue);
+		try {
+			String scaleValue = JOptionPane.showInputDialog(panel,"Enter your message","Messages",JOptionPane.OK_CANCEL_OPTION);
+				
+			float value = Float.parseFloat(scaleValue);
+			Attribute attribute = panel.combobox.getSelected();
+			ScaleCommand scale = new ScaleCommand(attribute, value);
 			scale.execute();
-			scale = null;
+		} catch (NumberFormatException exc) {
+			JOptionPane.showMessageDialog(new JFrame(), "Please enter a float value.", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
 		}
 		
-		
+	
 	}
+		
+		
+	
 
 }

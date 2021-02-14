@@ -27,6 +27,10 @@ public abstract class Element {
 		return name;
 	}
 
+	public String toString() {
+		return this.getName();
+	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
