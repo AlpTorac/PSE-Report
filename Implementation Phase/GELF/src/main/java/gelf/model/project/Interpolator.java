@@ -1,23 +1,32 @@
 package gelf.model.project;
 
-/**
- * Modified code of apache interpolation to fit the purposes of this project
- * Copyright 2021 [name of copyright owner]
- * SPDX-License-Identifier: Apache-2.0
- */
-import org.apache.commons.math3.analysis.interpolation.SplineInterpolator;
-import org.apache.commons.math3.analysis.polynomials.PolynomialSplineFunction;
+import org.apache.commons.math3.analysis.polynomials.PolynomialFunctionLagrangeForm;
 import org.apache.commons.math3.analysis.interpolation.BicubicInterpolator;
+import org.apache.commons.math3.analysis.interpolation.NevilleInterpolator;
 import org.apache.commons.math3.analysis.interpolation.BicubicInterpolatingFunction;
 
 public class Interpolator {
     
     public static float[] interpolate(float[] indexes, float[] values, float[] newIndexes) {
+    	if (indexes == null || values == null || newIndexes == null) {
+    		return null;
+    	}
+    	if (indexes.length == 0 || values.length == 0 || newIndexes.length == 0) {
+    		return null;
+    	}
         float[] newValues = new float[newIndexes.length];
+    	if (values.length == 1) {
+        	float value = values[0];
+        	for (int i = 0; i < newValues.length; i++) {
+        		newValues[i] = value;
+        	}
+        	return newValues;
+        }
         double[] doubleValues = convertFloatsToDoubles(values);
         double[] doubleIndexes = convertFloatsToDoubles(indexes);
-        SplineInterpolator interpolator = new SplineInterpolator();
-        PolynomialSplineFunction function = interpolator.interpolate(doubleIndexes, doubleValues);
+        PolynomialFunctionLagrangeForm function;
+    	NevilleInterpolator interpolator = new NevilleInterpolator();
+    	function = interpolator.interpolate(doubleIndexes, doubleValues);
         for (int i = 0; i < newIndexes.length; i++) {
             Double newIndex = (double) newIndexes[i];
             newValues[i] = (float) function.value(newIndex);
@@ -34,7 +43,7 @@ public class Interpolator {
         float[][] newValues = new float[newIndexes1.length][newIndexes2.length];
         double[][] newDoubleValues = new double[newIndexes1.length][newIndexes2.length];
         double[] doubleIndexes1 = convertFloatsToDoubles(indexes1);
-        double[] doubleIndexes2 = convertFloatsToDoubles(indexes1);
+        double[] doubleIndexes2 = convertFloatsToDoubles(indexes2);
         double[][] doubleValues = new double[values.length][values[0].length];
         for (int i = 0; i < values.length; i++) {
             doubleValues[i] = convertFloatsToDoubles(values[i]);
