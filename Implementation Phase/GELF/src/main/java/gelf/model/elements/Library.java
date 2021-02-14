@@ -30,14 +30,13 @@ public class Library extends HigherElement {
     	this.index2 = index2;
     	this.path = path;
     	this.cells = cells;
-    	/*
+    	
     	this.setAvailableInputPower();
     	this.setAvailableOutputPower();
-    	this.setAvailableTimGr();
-    	this.setAvailableTimSen();
-    	this.setAvailableTimType();
-    	calculate();
-    	*/
+    	//this.setAvailableTimGr();
+    	//this.setAvailableTimSen();
+    	//this.setAvailableTimType();
+    	//calculate();
     }
     
     public Library clone() {
@@ -143,16 +142,13 @@ public class Library extends HigherElement {
 		
 		Iterator<PowerGroup> avPowGrIt = availableInputPower.iterator();
 		
-		Iterator<Cell> cellsIt = cells.iterator();
-		
-		
 		
 		while(avPowGrIt.hasNext()) {
 			PowerGroup curPowGr = avPowGrIt.next();
 			// ArrayList toCalc to put Stats of the same PowerGroup in the same place
 			ArrayList<Stat> toCalc = new ArrayList<Stat>();
-			Iterator<Stat> toCalcIt = toCalc.iterator();
 			
+			Iterator<Cell> cellsIt = cells.iterator();
 			while(cellsIt.hasNext()) {
 				for (Map.Entry<PowerGroup, Stat> entry : cellsIt.next().
 						inPowerStat.entrySet())  
@@ -160,11 +156,15 @@ public class Library extends HigherElement {
 		            	toCalc.add(entry.getValue());
 		            }
 			}
-			float min = 0;
-			float max = 0;
+			if(toCalc.isEmpty()) {
+				return;
+			}
+			float min = toCalc.get(0).getMin();
+			float max = toCalc.get(0).getMax();
 			float avg = 0;
 			float med = 0;
 			
+			Iterator<Stat> toCalcIt = toCalc.iterator();
 			// calculate the stats for the desired Power Group
 			while(toCalcIt.hasNext()) {
 				Stat curStat = toCalcIt.next();
@@ -182,7 +182,6 @@ public class Library extends HigherElement {
 	public void calculateOutPow() {
 		Iterator<PowerGroup> avPowGrIt = availableOutputPower.iterator();
 		
-		Iterator<Cell> cellsIt = cells.iterator();
 		
 		
 		
@@ -190,8 +189,8 @@ public class Library extends HigherElement {
 			PowerGroup curPowGr = avPowGrIt.next();
 			// ArrayList toCalc to put Stats of the same PowerGroup in the same place
 			ArrayList<Stat> toCalc = new ArrayList<Stat>();
-			Iterator<Stat> toCalcIt = toCalc.iterator();
 			
+			Iterator<Cell> cellsIt = cells.iterator();
 			while(cellsIt.hasNext()) {
 				for (Map.Entry<PowerGroup, Stat> entry : cellsIt.next().
 						outPowerStat.entrySet())  
@@ -199,11 +198,15 @@ public class Library extends HigherElement {
 		            	toCalc.add(entry.getValue());
 		            }
 			}
-			float min = 0;
-			float max = 0;
+			if(toCalc.isEmpty()) {
+				return;
+			}
+			float min = toCalc.get(0).getMin();
+			float max = toCalc.get(0).getMax();
 			float avg = 0;
 			float med = 0;
 			
+			Iterator<Stat> toCalcIt = toCalc.iterator();
 			// calculate the stats for the desired Power Group
 			while(toCalcIt.hasNext()) {
 				Stat curStat = toCalcIt.next();
@@ -274,16 +277,19 @@ public class Library extends HigherElement {
 		Iterator<Cell> cellsIt = cells.iterator();
 		
 		ArrayList<Float> toCalc = new ArrayList<Float>();
-		Iterator<Float> toCalcIt = toCalc.iterator();
 		
 		while(cellsIt.hasNext()) {
 			toCalc.add(cellsIt.next().getDefaultLeakage());
 		}
-		float min = 0;
-		float max = 0;
+		if(toCalc.isEmpty()) {
+			return;
+		}
+		float min = toCalc.get(0);
+		float max = toCalc.get(0);
 		float avg = 0;
 		float med = 0;
 		
+		Iterator<Float> toCalcIt = toCalc.iterator();
 		// calculate the stats for the desired Timing
 		while(toCalcIt.hasNext()) {
 			float curLeak = toCalcIt.next();
@@ -314,6 +320,9 @@ public class Library extends HigherElement {
 
 	@Override
 	public void setAvailableTimSen() {
+		if (cells == null) {
+			return;
+		}
 		Iterator<Cell> cellsIt = cells.iterator();
 		while(cellsIt.hasNext()) {
 			Cell curCell = cellsIt.next();
@@ -321,7 +330,10 @@ public class Library extends HigherElement {
 					.iterator();
 			
 			while(cellsTimSenIt.hasNext()) {
-				this.getAvailableTimSen().add(cellsTimSenIt.next());
+				TimingSense curTimSen = cellsTimSenIt.next();
+				if(!availableTimSen.contains(curTimSen)) {
+					availableTimSen.add(curTimSen);
+				}
 			}
 		}	
 		
@@ -329,6 +341,9 @@ public class Library extends HigherElement {
 
 	@Override
 	public void setAvailableTimGr() {
+		if (cells == null) {
+			return;
+		}
 		Iterator<Cell> cellsIt = cells.iterator();
 		
 		while(cellsIt.hasNext()) {
@@ -337,13 +352,19 @@ public class Library extends HigherElement {
 					.iterator();
 			
 			while(cellsTimGrIt.hasNext()) {
-				this.getAvailableTimGr().add(cellsTimGrIt.next());
+				TimingGroup curTimGr = cellsTimGrIt.next();
+				if(!availableTimGr.contains(curTimGr)) {
+					availableTimGr.add(curTimGr);
+				}
 			}
 		}	
 	}
 
 	@Override
 	public void setAvailableTimType() {
+		if (cells == null) {
+			return;
+		}
 		Iterator<Cell> cellsIt = cells.iterator();
 		
 		while(cellsIt.hasNext()) {
@@ -352,7 +373,10 @@ public class Library extends HigherElement {
 					.iterator();
 			
 			while(cellsTimTypeIt.hasNext()) {
-				this.getAvailableTimType().add(cellsTimTypeIt.next());
+				TimingType curTimType = cellsTimTypeIt.next();
+				if(!availableTimType.contains(curTimType)) {
+					availableTimType.add(curTimType);
+				}
 			}
 		}		
 		
@@ -360,6 +384,9 @@ public class Library extends HigherElement {
 
 	@Override
 	public void setAvailableOutputPower() {
+		if (cells == null) {
+			return;
+		}
 		Iterator<Cell> cellsIt = cells.iterator();
 		
 		while(cellsIt.hasNext()) {
@@ -368,7 +395,10 @@ public class Library extends HigherElement {
 					.iterator();
 			
 			while(cellsOutPowIt.hasNext()) {
-				this.getAvailableOutputPower().add(cellsOutPowIt.next());
+				PowerGroup curPowGr = cellsOutPowIt.next();
+				if(!availableOutputPower.contains(curPowGr)) {
+					availableOutputPower.add(curPowGr);
+				}
 			}
 		}		
 		
@@ -376,6 +406,9 @@ public class Library extends HigherElement {
 
 	@Override
 	public void setAvailableInputPower() {
+		if (cells == null) {
+			return;
+		}
 		Iterator<Cell> cellsIt = cells.iterator();
 		
 		while(cellsIt.hasNext()) {
@@ -384,7 +417,10 @@ public class Library extends HigherElement {
 					.iterator();
 			
 			while(cellsInPowIt.hasNext()) {
-				this.getAvailableInputPower().add(cellsInPowIt.next());
+				PowerGroup curPowGr = cellsInPowIt.next();
+				if(!availableInputPower.contains(curPowGr)) {
+					availableInputPower.add(curPowGr);
+				}
 			}
 		}		
 	}
