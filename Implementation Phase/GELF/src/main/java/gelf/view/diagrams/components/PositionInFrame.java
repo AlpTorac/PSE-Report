@@ -1,6 +1,10 @@
 package gelf.view.diagrams.components;
 
+import gelf.view.diagrams.SettingsProvider;
+
 public class PositionInFrame {
+	private static double TOLERANCE = 1E-5;
+	
 	private double xPos;
 	private double yPos;
 
@@ -33,5 +37,21 @@ public class PositionInFrame {
 	@Override
 	public PositionInFrame clone() {
 		return new PositionInFrame(this.getXPos(), this.getYPos());
+	}
+	
+	@Override
+	public boolean equals(Object pos) {
+		if (pos == null || !(pos instanceof PositionInFrame)) {
+			return false;
+		}
+		
+		PositionInFrame otherPos = (PositionInFrame) pos;
+		
+		if (Math.abs(this.getXPos() - otherPos.getXPos()) <= TOLERANCE &&
+				Math.abs(this.getYPos() - otherPos.getYPos()) <= TOLERANCE) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }
