@@ -20,7 +20,7 @@ public class LoadListener implements ActionListener{
 		try {
 			openFileCommand.execute();
 		} catch (InvalidFileFormatException e1) {
-			JOptionPane.showMessageDialog(new JFrame(), "Invalid file format.", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(new JFrame(), e1.getLocalizedMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 	}
