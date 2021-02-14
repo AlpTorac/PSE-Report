@@ -4,6 +4,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.border.Border;
+import javax.swing.plaf.DimensionUIResource;
 
 import org.w3c.dom.Text;
 
@@ -63,6 +64,7 @@ public class SubWindow extends Panel {
         this.setBackground(cBackground);
         Border margin = BorderFactory.createLineBorder(cBorder, 2);
         this.setBorder(margin);
+        this.setPreferredSize(new Dimension(300, 200));
         // menu
         this.bar = new Panel(this.getWidth(), 30);
         this.bar.setLayout(new BoxLayout(this.bar, BoxLayout.LINE_AXIS));
@@ -79,6 +81,7 @@ public class SubWindow extends Panel {
         //dropdown element manipulator type
         ManipulatorType[] options = {ManipulatorType.VISUALIZER, ManipulatorType.TEXT_EDITOR};
         this.dropdown  = new DropdownSelector(options);
+        this.dropdown.setPreferredSize(new Dimension(10, 10));
         this.dropdown.setVisible(true);
         this.dropdown.addActionListener(new ActionListener() {
             @Override
