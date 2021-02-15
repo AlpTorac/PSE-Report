@@ -3,6 +3,7 @@ package gelf.view.diagrams.overlayer;
 import java.awt.Container;
 import java.util.ArrayList;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -12,6 +13,8 @@ import gelf.view.diagrams.TestFrame;
 import gelf.view.diagrams.TestPanel;
 import gelf.view.diagrams.builder.BarChartBuilder;
 import gelf.view.diagrams.builder.DiagramBuilder;
+import gelf.view.diagrams.components.BarChartBar;
+import gelf.view.diagrams.components.DiagramValueDisplayComponent;
 
 class BarChartOverlayerStrategyTest implements TestCase {
 
@@ -53,6 +56,30 @@ class BarChartOverlayerStrategyTest implements TestCase {
 		
 		IDiagram overlaidCharts = overlayer.overlay(new IDiagram[] {diagram1, diagram2});
 		overlaidCharts.attachToContainer(container);
+		
+		DiagramValueDisplayComponent[] dvdcs = overlaidCharts.getDiagramValueDisplayComponentPrototypes();
+		
+		ArrayList<ArrayList<float[]>> datas = new ArrayList<ArrayList<float[]>>();
+		
+		datas.add(data1);
+		datas.add(data2);
+		
+		int dataCount = datas.size();
+		
+		for (int i = 0; i < dataCount; i++) {
+			for (int j = 0; j < datas.get(i).get(0).length; j++) {
+				int barIndex = i * datas.get(i).get(0).length + j;
+				
+				BarChartBar bar = (BarChartBar) dvdcs[barIndex];
+				
+				Assertions.assertEquals(datas.get(i).get(0)[j], bar.getValue(), 1E-3);
+				
+				Assertions.assertEquals(datas.get(i).get(0)[j], bar.getTopLeftInDiagram().getYCoordinate(), 1E-3);
+				Assertions.assertEquals(j, bar.getTopLeftInDiagram().getXCoordinate(), 1E-3);
+				Assertions.assertEquals(0, bar.getBottomRightInDiagram().getYCoordinate(), 1E-3);
+				Assertions.assertEquals(j + 1, bar.getBottomRightInDiagram().getXCoordinate(), 1E-3);
+			}
+		}
 		
 		overlaidCharts.refresh();
 		show(frame, TestCase.LONG_SHOW_DURATION);

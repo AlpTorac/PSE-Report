@@ -3,6 +3,7 @@ package gelf.view.diagrams.overlayer;
 import java.awt.Container;
 import java.util.ArrayList;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -12,6 +13,7 @@ import gelf.view.diagrams.TestCase;
 import gelf.view.diagrams.TestFrame;
 import gelf.view.diagrams.TestPanel;
 import gelf.view.diagrams.builder.FunctionGraphBuilder;
+import gelf.view.diagrams.components.BarChartBar;
 import gelf.view.diagrams.components.DiagramValueDisplayComponent;
 import gelf.view.diagrams.components.ValueDisplayPoint;
 
@@ -60,7 +62,36 @@ class FunctionOverlayStrategyTest implements TestCase {
 		
 		DiagramValueDisplayComponent[] dvdcs = overlayDiagram.getDiagramValueDisplayComponentPrototypes();
 		
-		for (int i = 0; i < 14; i++) {
+		ArrayList<ArrayList<float[]>> datas = new ArrayList<ArrayList<float[]>>();
+		
+		datas.add(data1);
+		datas.add(data2);
+		
+		int dataCount = datas.size();
+		
+		for (int i = 0; i < dataCount; i++) {
+			for (int j = 0; j < datas.get(i).get(0).length; j++) {
+				int pointIndex = i * datas.get(i).get(0).length + j;
+				
+				ValueDisplayPoint point = (ValueDisplayPoint) dvdcs[pointIndex];
+				
+				Assertions.assertEquals(datas.get(i).get(0)[j], point.getPositionInDiagram().getXCoordinate(), 1E-3);
+				
+				Assertions.assertEquals(datas.get(i).get(1)[j], point.getValue(), 1E-3);
+				Assertions.assertEquals(datas.get(i).get(1)[j], point.getPositionInDiagram().getYCoordinate(), 1E-3);
+			}
+		}
+		
+		overlayDiagram.refresh();
+		show(frame, TestCase.LONG_SHOW_DURATION);
+		SettingsProvider.getInstance().setFunctionGraphPointSize(oldSize);
+	}
+
+	@SuppressWarnings("unused")
+	private void displayPositions(IDiagram overlayDiagram) {
+		DiagramValueDisplayComponent[] dvdcs = overlayDiagram.getDiagramValueDisplayComponentPrototypes();
+		
+		for (int i = 0; i < dvdcs.length; i++) {
 			ValueDisplayPoint currentPoint = (ValueDisplayPoint) dvdcs[i];
 			
 			System.out.print("x on axis = " + currentPoint.getPositionInDiagram().getXCoordinate());
@@ -69,10 +100,6 @@ class FunctionOverlayStrategyTest implements TestCase {
 			System.out.print(", y on frame = " + currentPoint.getPositionInDiagram().toPositionInFrame().getYPos() + "\n");
 			System.out.print("value = " + currentPoint.getValue() + "\n\n");
 		}
-		
-		overlayDiagram.refresh();
-		show(frame, TestCase.LONG_SHOW_DURATION);
-		SettingsProvider.getInstance().setFunctionGraphPointSize(oldSize);
 	}
-
+	
 }
