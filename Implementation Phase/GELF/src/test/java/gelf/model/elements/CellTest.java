@@ -75,7 +75,7 @@ class CellTest {
 		Cell cell = new Cell(null, null, null, null, inPinList, null, null, 0);
 		
 		
-		cell.calculateInPow();
+		//cell.calculateInPow();
 		float min = -0.0002599f;
 		float max = -0.000201f;
 		float avg = -0.0017397f / 7f;
@@ -112,7 +112,7 @@ class CellTest {
 		Cell cell = new Cell(null, null, null, null, null, outPinList, null, 0);
 		
 		
-		cell.calculateOutPow();
+		//cell.calculateOutPow();
 		
 		float min = 0.00131f;
 		float max = 0.003528f;
@@ -150,7 +150,7 @@ class CellTest {
 		Cell cell = new Cell(null, null, null, null, null, outPinList, null, 0);
 		
 		
-		cell.calculateTiming();
+		//cell.calculateTiming();
 		
 		float min = 0.00131f;
 		float max = 0.003528f;
@@ -179,8 +179,8 @@ class CellTest {
     	Leakage leakage = new Leakage(values);
     	
     	Cell cell = new Cell(null, null, null, null, null, null, leakage, 0);
-    	cell.calculateLeakage();
-		Stat stats = leakage.getStats();
+    	//cell.calculateLeakage();
+		Stat stats = cell.leakage;
 		float min = 0.00291f;
 		float max = 0.01069f;
 		float avg = 0.038409f / 8f;
@@ -190,5 +190,57 @@ class CellTest {
 		Assertions.assertEquals(max, stats.getMax());
 		Assertions.assertEquals(avg, stats.getAvg());
 		Assertions.assertEquals(med, stats.getMed());
+    }
+    
+    @Test
+    void cloneTest() {
+    	inPowList.add(inPow1);
+		inPowList.add(inPow2);
+		
+		InputPin inPin1 = new InputPin("name1", null, inPowList);
+		InputPin inPin2 = new InputPin("name2", null, inPowList);
+		
+		inPinList.add(inPin1);
+		inPinList.add(inPin2);
+		
+		float[] index1 = {0.0004f, 0.009027f, 0.03931f, 0.09714f, 0.1872f, 0.3137f, 0.48f};
+    	float[] index2 = {0.0004f, 0.002192f, 0.008481f, 0.02049f, 0.0392f, 0.06545f, 0.1f};
+    	outPow1.setIndex1(index1);
+    	outPow1.setIndex2(index2);
+    	outPow2.setIndex1(index1);
+    	outPow2.setIndex2(index2);
+    	
+    	outPow1.setRelatedPin(inPin1);
+    	outPow2.setRelatedPin(inPin2);
+    	outPowList.add(outPow1);
+		outPowList.add(outPow2);
+		
+    	timing1.setIndex1(index1);
+    	timing1.setIndex2(index2);
+    	timing2.setIndex1(index1);
+    	timing2.setIndex2(index2);
+    	
+    	timing1.setRelatedPin(inPin1);
+    	timing2.setRelatedPin(inPin2);
+    	timingList.add(timing1);
+		timingList.add(timing2);
+		
+		OutputPin outPin1 = new OutputPin("name1", null, outPowList, timingList);
+		OutputPin outPin2 = new OutputPin("name2", null, outPowList, timingList);
+		outPinList.add(outPin1);
+		outPinList.add(outPin2);
+		
+    	float[] values = {0.00291f, 0.003117f, 0.003117f, 0.005393f, 
+    			0.003113f, 0.005081f, 0.004988f, 0.01069f};
+    	Leakage leakage = new Leakage(values);
+    	
+    	Cell cell = new Cell(null, null, null, null, inPinList, outPinList, leakage, 0);
+
+    	Assertions.assertEquals(cell.getInPins().get(0).name, 
+    			cell.clone().getInPins().get(0).name);
+    	Assertions.assertEquals(cell.getOutPins().get(0).getMaxCapacitance(), 
+    			cell.clone().getOutPins().get(0).getMaxCapacitance());
+    	Assertions.assertEquals(cell.getDefaultLeakage(), cell.clone().getDefaultLeakage());;
+    	
     }
 }

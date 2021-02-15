@@ -42,7 +42,7 @@ public class Cell extends HigherElement {
     	this.setAvailableTimType();
     	this.setAvailableOutputPower();
     	this.setAvailableInputPower();
-    	// this.calculate();
+    	this.calculate();
     }
     
 	public float[] getIndex1() {
@@ -395,6 +395,9 @@ public class Cell extends HigherElement {
 	}
 	
 	public void calculateLeakage() {
+		if (leakages == null) {
+			return;
+		}
 		leakages.calculate();
 		leakage = leakages.getStats();
 	}
