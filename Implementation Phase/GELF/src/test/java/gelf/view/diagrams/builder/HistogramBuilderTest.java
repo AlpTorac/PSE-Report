@@ -14,7 +14,6 @@ import gelf.view.diagrams.TestPanel;
 import gelf.view.diagrams.components.DiagramValueDisplayComponent;
 import gelf.view.diagrams.components.HistogramBar;
 import gelf.view.diagrams.components.PositionIn2DDiagram;
-import gelf.view.diagrams.components.ValueDisplayPoint;
 
 class HistogramBuilderTest implements TestCase {
 

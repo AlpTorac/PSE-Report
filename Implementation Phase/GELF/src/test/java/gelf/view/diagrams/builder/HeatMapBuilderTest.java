@@ -11,11 +11,9 @@ import gelf.view.diagrams.IDiagram;
 import gelf.view.diagrams.TestCase;
 import gelf.view.diagrams.TestFrame;
 import gelf.view.diagrams.TestPanel;
-import gelf.view.diagrams.components.BarChartBar;
 import gelf.view.diagrams.components.DiagramValueDisplayComponent;
 import gelf.view.diagrams.components.HeatMapLabel;
 import gelf.view.diagrams.components.PositionIn2DDiagram;
-import gelf.view.diagrams.components.ValueDisplayPoint;
 
 class HeatMapBuilderTest implements TestCase {
 	private static TestPanel panel = new TestPanel();

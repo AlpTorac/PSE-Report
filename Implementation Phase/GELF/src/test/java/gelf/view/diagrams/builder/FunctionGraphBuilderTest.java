@@ -4,14 +4,12 @@ import java.awt.Container;
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import gelf.view.diagrams.IDiagram;
 import gelf.view.diagrams.TestCase;
 import gelf.view.diagrams.TestFrame;
 import gelf.view.diagrams.TestPanel;
-import gelf.view.diagrams.components.BarChartBar;
 import gelf.view.diagrams.components.DiagramValueDisplayComponent;
 import gelf.view.diagrams.components.PositionIn2DDiagram;
 import gelf.view.diagrams.components.ValueDisplayPoint;

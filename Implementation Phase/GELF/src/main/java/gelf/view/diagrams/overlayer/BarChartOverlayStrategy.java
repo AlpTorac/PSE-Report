@@ -1,8 +1,5 @@
 package gelf.view.diagrams.overlayer;
 
-import java.awt.Color;
-import java.awt.Rectangle;
-
 import gelf.view.diagrams.IDiagram;
 import gelf.view.diagrams.SettingsProvider;
 import gelf.view.diagrams.builder.IBarChartBuilder;
