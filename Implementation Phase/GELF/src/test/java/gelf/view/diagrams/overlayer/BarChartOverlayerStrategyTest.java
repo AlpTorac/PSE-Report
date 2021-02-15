@@ -82,7 +82,7 @@ class BarChartOverlayerStrategyTest implements TestCase {
 		}
 		
 		overlaidCharts.refresh();
-		show(frame, TestCase.LONG_SHOW_DURATION);
+		show(frame, TestCase.SHOW_DURATION);
 	}
 
 }

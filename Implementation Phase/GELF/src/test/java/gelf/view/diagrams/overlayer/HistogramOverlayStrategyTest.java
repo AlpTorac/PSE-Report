@@ -71,7 +71,7 @@ class HistogramOverlayStrategyTest implements TestCase {
 		}
 		
 		overlayDiagram.refresh();
-		show(frame, TestCase.LONG_SHOW_DURATION * 1000);
+		show(frame, TestCase.SHOW_DURATION);
 	}
 	
 	private void checkAssertionsForBar(float[] expectedIndices, float[] expectedValues, HistogramBar bar, int barIndex) {

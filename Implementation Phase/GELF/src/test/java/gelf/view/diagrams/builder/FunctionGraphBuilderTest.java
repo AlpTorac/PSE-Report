@@ -60,7 +60,7 @@ class FunctionGraphBuilderTest implements TestCase {
 		}
 		
 		diagram.refresh();
-		show(frame, TestCase.LONG_SHOW_DURATION);
+		show(frame, TestCase.SHOW_DURATION);
 	}
 
 }

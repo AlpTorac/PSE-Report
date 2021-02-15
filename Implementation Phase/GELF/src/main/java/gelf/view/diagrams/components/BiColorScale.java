@@ -45,11 +45,6 @@ public class BiColorScale extends DiagramColorScale {
 		super.setValue(1, maxValue);
 		this.visualElement.repaint();
 	}
-
-//	@Override
-//	public Color valueToColor(float value) {
-//		return super.getMixedColor(value, 0, 1);
-//	}
 	
 	@Override
 	public BiColorScale clone() {

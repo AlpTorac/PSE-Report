@@ -51,7 +51,6 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 	}
 
 	protected void refreshCaption() {
-//		((ValueLabelVisual) this.visualElement).setText(this.caption);
 		this.visualElement.repaint();
 	}
 
@@ -97,6 +96,20 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 		this.visualElement = new ValueLabelVisual(this);
 	}
 	
+	@Override
+	protected String getRoundedPositionInDiagramString() {
+		String result = "";
+		
+		result += "index1: " +
+		String.valueOf(this.getRoundedString(this.getTopLeftInDiagram().getXCoordinate())) + " - " +
+		String.valueOf(this.getRoundedString(this.getBottomRightInDiagram().getXCoordinate())) + "\n" +
+		"index2: " +
+		String.valueOf(this.getRoundedString(this.getBottomRightInDiagram().getYCoordinate())) + " - " +
+		String.valueOf(this.getRoundedString(this.getTopLeftInDiagram().getYCoordinate()));
+		
+		return result;
+	}
+	
 	protected class ValueLabelVisual extends JLabel {
 		/**
 		 * Generated serial version ID.
@@ -122,12 +135,6 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 			this.setVerticalAlignment(CENTER);
 			this.setForeground(borderColor);
 			this.setText(this.label.getCaption());
-//			this.setBounds(this.label.getFrameBounds());
-//			this.setBorder(BorderFactory.createLineBorder(borderColor, this.label.getBorderThickness()));
-//			this.setHorizontalAlignment(CENTER);
-//			this.setVerticalAlignment(CENTER);
-//			this.setForeground(borderColor);
-//			this.setText(this.label.getCaption());
 		}
 	}
 }

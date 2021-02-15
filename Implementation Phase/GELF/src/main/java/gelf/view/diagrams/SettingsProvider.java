@@ -48,6 +48,8 @@ public class SettingsProvider {
 	 */
 	private float histogramIndexEndIndexFactor = 1.1f;
 	
+	private int hoverLabelColorAlpha = 150;
+	
 	private static SettingsProvider instance;
 	
 	public static SettingsProvider getInstance() {
@@ -289,6 +291,14 @@ public class SettingsProvider {
 		Color mixedColor = new Color(mixedColorBits);
 		
 		return mixedColor;
+	}
+
+	public int getHoverLabelColorAlpha() {
+		return hoverLabelColorAlpha;
+	}
+
+	public void setHoverLabelColorAlpha(int hoverLabelColorAlpha) {
+		this.hoverLabelColorAlpha = hoverLabelColorAlpha;
 	}
 	
 }
