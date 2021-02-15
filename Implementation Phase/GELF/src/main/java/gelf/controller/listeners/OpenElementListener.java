@@ -33,12 +33,16 @@ public class OpenElementListener implements ActionListener, MouseListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if (Model.getInstance().getCurrentProject().getLibraries().isEmpty()) {
+			JOptionPane.showMessageDialog(new JFrame(), "No library has been loaded in the application.", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		if (outliner.getSelectedElements().size() != 1) {
-			JOptionPane.showMessageDialog(new JFrame(), "Select one element to open in the working area.", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(new JFrame(), "Select only one element to open in the working area.", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		Element element = outliner.getSelectedElements().get(0);
-		subwindows.addSubWindow(new SubWindow(element, Model.getInstance().getCurrentProject() ,subwindows, 100, 100));
+		subwindows.addSubWindow(new SubWindow(element, Model.getInstance().getCurrentProject() ,subwindows, 200, 200));
 		
 	}
 

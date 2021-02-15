@@ -32,10 +32,10 @@ public class ScaleListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		String scaleValue = JOptionPane.showInputDialog(panel,"Enter your message","Messages",JOptionPane.OK_CANCEL_OPTION);
+		String attribute 
+		String scaleValue = JOptionPane.showInputDialog(panel,"Enter the scale value.", "Scale", JOptionPane.OK_CANCEL_OPTION, attributes);
 		try {
 			float value = Float.parseFloat(scaleValue);
-			Attribute attribute = panel.combobox.getSelected();
 			ScaleCommand scale = new ScaleCommand(attribute, value);
 			scale.execute();
 		} catch (NumberFormatException exc) {

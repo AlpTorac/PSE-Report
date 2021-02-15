@@ -31,13 +31,13 @@ import gelf.model.elements.*;
  * Parses the Liberty Files to their corresponding data objects
  */
 public class LibertyParser {
-//<<<<<<< HEAD
     private static final String NAMEFORMAT = "([a-zA-Z]|_|-|[0-9])*";
-    private static final String ATTRNAMEFORMAT = "([a-zA-Z]+[_]?[a-zA-Z]+)+";
+    private static final String ATTRNAMEFORMAT = "([a-zA-Z]*[_]?[a-zA-Z]*)+";
     private static final String FUNCTIONFORMAT = "([a-zA-Z]|_|-|\\^|\\||\\(|\\)|&|\\!|[0-9])+";
     private static final String FLOATFORMAT = "[-+]?[0-9]*(\\.)?[0-9]+([eE][-+]?[0-9]+)?";
-    private static final String PARAMFORMAT = ATTRNAMEFORMAT + ":(\"\\(" + FUNCTIONFORMAT + "\\)\"|"
-    		+ "\"" + NAMEFORMAT + "\"|" + FLOATFORMAT + ")";
+    private static final String PARAMFORMAT = ATTRNAMEFORMAT + "\\:(\"\\(" + FUNCTIONFORMAT 
+    		+ "\\)\"|\"" + NAMEFORMAT + "\"|" + FLOATFORMAT + "|" + ATTRNAMEFORMAT + "|\"" 
+			+ ATTRNAMEFORMAT + "\");";
     private static final String ARRAYFORMAT = "\"((" + FLOATFORMAT +",)(\\\\)?)*" + FLOATFORMAT + "\"";
     private static final String DOUBLEARRAYFORMAT = "(" + ARRAYFORMAT + ",(\\\\)?)*" + ARRAYFORMAT;
     private static final String INATTRIBUTESFORMAT = ATTRNAMEFORMAT + "\\(" + NAMEFORMAT + "\\)\\{"
@@ -51,7 +51,7 @@ public class LibertyParser {
     private static String timingGroupSeparator = "";
     private static final String PINFORMAT = "pin\\(" + NAMEFORMAT + "\\)\\{(" + PARAMFORMAT
     		+ ")+((internal_power|timing)\\(" + NAMEFORMAT + "\\)\\{(" + PARAMFORMAT
-    		+ ")*(" + INATTRIBUTESFORMAT + "|" + OUTATTRIBUTESFORMAT + ")+\\})+\\}";
+    		+ ")*((" + INATTRIBUTESFORMAT + ")+|(" + OUTATTRIBUTESFORMAT + ")+)\\})+\\}";
     private static final String CELLFORMAT = "cell\\(" + NAMEFORMAT + "\\)\\{(" + PARAMFORMAT
     		+ ")+(" + LEAKAGEFORMAT + ")+(" + PINFORMAT + ")+\\}"; 
     private static final String LIBRARYFORMAT = "library\\(" + NAMEFORMAT + "\\)\\{"
@@ -129,11 +129,6 @@ public class LibertyParser {
         		unsupportedData.add(cellParameters[i]);
         	}
         }
-        /* Checks if the number of leakage entries is not a power of 2 */
-        if ((leakagesValues.length & (leakagesValues.length - 1)) != 0) {
-        	throw new InvalidFileFormatException("Invalid number of leakage entries "
-        			+ "in cell \"" + name + "\"");
-        }
         if (!hasDefaultLeakage) {
         	throw new InvalidFileFormatException("No default leakages specified in cell "
         			+ "\"" + name + "\"");
@@ -148,6 +143,10 @@ public class LibertyParser {
             } else {
                 childOutPins.add((OutputPin) childPin);
             }
+        }
+        if (java.lang.Math.pow(2 , childInPins.size()) != leakages.getValues().length) {
+        	throw new InvalidFileFormatException("Invalid number of leakage entries "
+        			+ "in cell \"" + name + "\"");
         }
         ArrayList<Pin> childPins = new ArrayList<Pin>();
         childPins.addAll(childInPins);
@@ -183,6 +182,9 @@ public class LibertyParser {
             }
             timingGroupSeparator = timingGroupSeparator.substring(1);
         }
+        /*if (!pinString.matches(PINFORMAT)) {
+        	throw new InvalidFileFormatException("Pin doesn't match format");
+        }*/
 		String[] attributeStrings = pinString.split("(?=internal_power\\(|timing\\()");
         String[] pinData = attributeStrings[0].split("\\{|\\}");
         String name = pinData[0].substring(pinData[0].indexOf("(") + 1, pinData[0].indexOf(")"));
@@ -196,7 +198,7 @@ public class LibertyParser {
         float minCap = 0;
         ArrayList<String> leftOverData = new ArrayList<String>();
         String[] singleValueAttributes = pinData[1].split(";");
-        for (int i = 0; i < singleValueAttributes.length - 1; i++) {
+        for (int i = 0; i < singleValueAttributes.length; i++) {
             String attributeData = singleValueAttributes[i]; 
             String[] attributeParts = attributeData.split(":");
             String attrName = attributeParts[0];
@@ -223,12 +225,12 @@ public class LibertyParser {
                     break;
                 case "max_capacitance":
                     if (!attrValue.matches(FLOATFORMAT)) {
-                        throw new InvalidFileFormatException("Value format for" + attrName 
-                                + "in Pin \"" + name + "\" is invalid");
+                        throw new InvalidFileFormatException("Value format for " + attrValue 
+                                + " in Pin \"" + name + "\" is invalid");
                     }
                     if (hasCapacitance) {
                         throw new InvalidFileFormatException(attrName 
-                                + "in Pin \"" + name + "\" is defined twice");
+                                + " in Pin \"" + name + "\" is defined twice");
                     }
                     hasCapacitance = true;
                     maxCap =  Float.parseFloat(attrValue);

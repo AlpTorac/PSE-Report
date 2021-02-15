@@ -24,6 +24,10 @@ public class MergeListener implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if (outliner.getSelectedElements().size() <= 1) {
+			JOptionPane.showMessageDialog(new JFrame(), "Select at least 2 libraries.", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		ArrayList<Library> libraries = new ArrayList<Library>();
 		for (Element element: outliner.getSelectedElements()) {
 			if (element instanceof Library) {
@@ -34,7 +38,12 @@ public class MergeListener implements ActionListener {
 				return;
 			}
 		}
-		MergeCommand merge = new MergeCommand(null, libraries);
+		String name = JOptionPane.showInputDialog(new JFrame(), "Please enter a name for the new library", "Hi", JOptionPane.OK_CANCEL_OPTION);
+		if (name == null || name == "") {
+			JOptionPane.showMessageDialog(new JFrame(), "Merging cancelled", "Alert", JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+		MergeCommand merge = new MergeCommand(name, libraries);
 		merge.execute();
 	}
 

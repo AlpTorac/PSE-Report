@@ -7,6 +7,8 @@ import gelf.model.elements.Pin;
 import gelf.model.project.Model;
 import gelf.model.commands.RenameCommand;
 import gelf.view.composites.Outliner;
+import gelf.view.composites.SubWindowArea;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -23,9 +25,11 @@ import javax.swing.tree.DefaultMutableTreeNode;
 public class RenameListener implements TreeModelListener {
 	
 	private Outliner outliner;
+	private SubWindowArea subwindows;
 	
-	public RenameListener(Outliner outliner) {
+	public RenameListener(Outliner outliner, SubWindowArea subwindows) {
 		this.outliner = outliner;
+		this.subwindows = subwindows;
 	}
 	
 
@@ -46,6 +50,7 @@ public class RenameListener implements TreeModelListener {
         
 		RenameCommand rename = new RenameCommand(element, newName);
 		rename.execute();
+		
 	}
 	
 	/*

@@ -240,7 +240,7 @@ class CellTest {
     			cell.clone().getInPins().get(0).name);
     	Assertions.assertEquals(cell.getOutPins().get(0).getMaxCapacitance(), 
     			cell.clone().getOutPins().get(0).getMaxCapacitance());
-    	Assertions.assertEquals(cell.getDefaultLeakage(), cell.clone().getDefaultLeakage());;
+    	Assertions.assertEquals(cell.getDefaultLeakage(), cell.clone().getDefaultLeakage());
     	
     }
 }
