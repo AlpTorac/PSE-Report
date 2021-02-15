@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="this.getDiagramComponentFactory()"/>
+		<item key="selection" value="ValueDisplayPoint"/>
 		<item key="wrap" value="true"/>
-		<item key="casesensitive" value="false"/>
+		<item key="casesensitive" value="true"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
-			<item value="factory"/>
-			<item value="settingsProvider"/>
+			<item value="HistogramBar"/>
+			<item value="barCharts"/>
+			<item value="BarChart"/>
+			<item value="Integer("/>
+			<item value="Integer"/>
+			<item value="attachToDiagram"/>
+			<item value="insertIndexForLayer"/>
+			<item value="add"/>
+			<item value="visible"/>
+			<item value="setVisible"/>
+			<item value="maxValueColor"/>
+			<item value="minValueColor"/>
+			<item value="getYPos"/>
+			<item value="getXPos"/>
 			<item value="container"/>
-			<item value="this.data"/>
-			<item value="barColor"/>
-			<item value=", container"/>
-			<item value=", frame.getContentPane()"/>
-			<item value=", this.container"/>
-			<item value=", containingElement"/>
-			<item value=", Container containingElement"/>
-			<item value="getwidth"/>
-			<item value="width"/>
-			<item value="DiagramBuilder.s"/>
-			<item value="DiagramComponentFactory.getDiagramComponentFactory()"/>
-			<item value="setInstance"/>
 		</list>
 		<list key="replacehistory">
-			<item value="this.getDiagramComponentFactory()"/>
-			<item value="this.getSettingsProvider()"/>
-			<item value="getContainer()"/>
-			<item value="this.getDiagramData()"/>
-			<item value="this.getDiagramData"/>
+			<item value="ValueDisplayPoint"/>
+			<item value="FunctionGraph"/>
+			<item value="functionGraphs"/>
+			<item value="histograms"/>
+			<item value="Histogram"/>
+			<item value="hsbColor2"/>
+			<item value="hsbColor1"/>
+			<item value="getYCoordinate"/>
+			<item value="getXCoordinate"/>
+			<item value="diagram"/>
+			<item value="removeFromDiagram"/>
+			<item value="attachToDiagram"/>
 			<item value=""/>
-			<item value="s"/>
-			<item value="DiagramBuilder.factory.getDiagramComponentFactory()"/>
-			<item value="TestCase.SHOW_DURATION"/>
-			<item value="show(frame, 500)"/>
-			<item value="show(frame, , 500)"/>
-			<item value="PositionIn2DDiagram"/>
-			<item value="int borderThickness"/>
-			<item value="double"/>
-			<item value="float"/>
+			<item value="  "/>
+			<item value="//show(frame"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">

@@ -21,12 +21,12 @@ public class FunctionGraphBuilder extends DiagramBuilder implements IFunctionGra
 
 	@Override
 	protected float getXAxisMinValue() {
-		return this.getDiagramData().getMinimumIndexAt(0);
+		return 0;
 	}
 
 	@Override
 	protected float getYAxisMinValue() {
-		return this.getDiagramData().getMinimumValueAt(0);
+		return 0;
 	}
 
 	@Override

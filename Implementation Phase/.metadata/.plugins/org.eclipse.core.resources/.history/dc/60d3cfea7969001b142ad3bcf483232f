@@ -1,7 +1,0 @@
-package gelf.view.diagrams.data;
-
-abstract class DiagramDataExtractionStrategy {
-	abstract float[][] extractValues();
-	abstract float[] extractIndex1();
-	abstract float[] extractIndex2();
-}
