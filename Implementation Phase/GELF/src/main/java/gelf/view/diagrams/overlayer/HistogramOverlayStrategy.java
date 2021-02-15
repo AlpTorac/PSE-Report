@@ -41,4 +41,10 @@ public class HistogramOverlayStrategy extends DiagramOverlayStrategy implements 
 			DiagramAxis[] axes, DiagramComponent[] nonValueDisplayComponents) {
 		return this.buildValueDisplayComponentsForOneDiagram(diagramData, orderInSameDiagram, axes, nonValueDisplayComponents);
 	}
+
+	@Override
+	protected void configureVisibilityAndColor(DiagramValueDisplayComponent[][] dvdcArray) {
+		// TODO Auto-generated method stub
+		
+	}
 }
