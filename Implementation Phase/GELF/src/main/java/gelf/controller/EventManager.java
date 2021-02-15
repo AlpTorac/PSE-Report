@@ -53,9 +53,9 @@ public class EventManager {
 		listeners.put(Event.MOVE, new MoveListener(view.outliner));
 		listeners.put(Event.MERGE, new MergeListener(view.outliner));
 		listeners.put(Event.SEARCH, new SearchListener(view.outliner));
-		listeners.put(Event.RENAME, new RenameListener(view.outliner));
-		listeners.put(Event.SAVE, new SaveListener());
-		listeners.put(Event.SAVEAS, new SaveAsListener());
+		listeners.put(Event.RENAME, new RenameListener(view.outliner, view.subWindowArea));
+		listeners.put(Event.SAVE, new SaveListener(view.outliner));
+		listeners.put(Event.SAVEAS, new SaveAsListener(view.outliner));
 		listeners.put(Event.SAVEALL, new SaveAllListener());
 		listeners.put(Event.LOADPROJECT, new LoadProjectListener());
 		listeners.put(Event.UNDO, new UndoListener());
@@ -63,6 +63,7 @@ public class EventManager {
 		
 		view.itemOpen.addActionListener((ActionListener) listeners.get(Event.LOAD));
 		view.outliner.tree.addMouseListener((MouseListener) listeners.get(Event.OPEN));
+		view.outliner.itemOpen.addActionListener((ActionListener) listeners.get(Event.OPEN));
 		//
 		//view.outliner
 		//view.outliner

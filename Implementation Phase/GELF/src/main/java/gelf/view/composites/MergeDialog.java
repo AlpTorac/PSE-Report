@@ -11,6 +11,8 @@ import java.awt.event.WindowListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
@@ -204,7 +206,9 @@ public class MergeDialog extends JDialog implements ActionListener, WindowListen
 	public void windowClosing(WindowEvent e) {
     	conflictData = new ConflictData(ResolutionMethod.CANCEL, null);
 		setVisible(false);
+		JOptionPane.showMessageDialog(new JFrame(), "Merging cancelled.", "!!!", JOptionPane.CANCEL_OPTION);
 		dispose();
+		
 	}
 	    
 	    
