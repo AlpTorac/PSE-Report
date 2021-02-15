@@ -17,9 +17,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.border.LineBorder;
 
 /*
  * Displays all child cells of the selected library.
@@ -32,28 +35,32 @@ public class LibraryPanel extends Panel implements MouseListener{
 	private ArrayList<Cell> cells;
 	private SubWindow subwindow;
     private JScrollPane scrollPane;
-    private DataPanel dataPanel;
+   // private DataPanel dataPanel;
     
    
     /*
      * Constructor
      * @param library To be opened library.
      */
-    public LibraryPanel(int width, int height, Library library, SubWindow subwindow, DataPanel dataPanel) {
+    public LibraryPanel(int width, int height, Library library, SubWindow subwindow) {
     	super(width, height);
     	this.subwindow = subwindow;
-    	this.dataPanel = dataPanel;
-    	dataPanel.setElement(library);
+    	//this.dataPanel = dataPanel;
+    	//dataPanel.setElement(library);
     	selectedLibrary = library;
+    	this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+    	this.setBorder(new LineBorder(Color.BLACK));
         cells = selectedLibrary.getCells();
-       
+        buttons = new HashMap<Label,Cell>();
+        this.setBorder(new LineBorder(Color.WHITE));
         listPanel = new JPanel(); 
+        listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.Y_AXIS));
         listPanel.setBackground(new Color(0.3f, 0.3f, 0.3f));
         scrollPane = new JScrollPane(listPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
         		ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         this.add(scrollPane);
         scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
-        listPanel.setPreferredSize(new Dimension(200, cells.size() * 30));
+        listPanel.setSize(width, height);
          
         for (int i = 0; i < cells.size(); i++) {
         	Label label = new Label();
@@ -71,21 +78,21 @@ public class LibraryPanel extends Panel implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		//subwindow.setElement(buttons.get(e.getSource()));
+		subwindow.setElement(buttons.get(e.getSource()));
 		this.setVisible(false);
-		dataPanel.setElement(buttons.get(e.getSource()));
+		//dataPanel.setElement(buttons.get(e.getSource()));
 		
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		e.getComponent().setBackground(new Color(100));
+		e.getComponent().setBackground(Color.GREEN);
 		
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		e.getComponent().setBackground(new Color(0));
+		e.getComponent().setBackground(new Color(0.3f, 0.3f, 0.3f));
 		
 	}
 

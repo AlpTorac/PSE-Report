@@ -13,6 +13,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 
+import gelf.controller.listeners.SaveAsListener;
+import gelf.controller.listeners.SaveListener;
 import gelf.model.elements.Element;
 import gelf.model.project.Project;
 import gelf.model.project.Updatable;
@@ -47,14 +49,18 @@ public class SubWindow extends Panel {
             return this.str;
         }
     }
+    private Element e;
     private ElementManipulator activeManipulator;
     private Visualizer eVisualizer;
     private TextEditor eTextEditor;
 
     public SubWindow(Element e, Project p, SubWindowArea parent, int width, int height) {
         super(width, height);
+        this.e = e;
+        this.addFocusListener(new SaveListener());
+        this.addFocusListener(new SaveAsListener());
         //element manipulators
-        this.eVisualizer = new Visualizer(e, p, 200, 100);
+        this.eVisualizer = new Visualizer(e,this, p, 200, 100);
         this.eVisualizer.setVisible(true);
         this.eTextEditor = new TextEditor(e, p, 200, 100);
         this.eTextEditor.setVisible(true);
@@ -105,8 +111,14 @@ public class SubWindow extends Panel {
     }
 
     public void setElement(Element e) {
+    	this.e = e;
+    	this.path.setText(e.getName());
         this.eVisualizer.setElement(e);
         this.eTextEditor.setElement(e);
+    }
+    
+    public Element getElement() {
+    	return e;
     }
 
     public void setManipulatorType(ManipulatorType m) {

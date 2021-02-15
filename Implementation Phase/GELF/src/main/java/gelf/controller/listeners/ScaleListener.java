@@ -3,6 +3,7 @@ package gelf.controller.listeners;
 import gelf.model.commands.ScaleCommand;
 import gelf.model.elements.attributes.Attribute;
 import gelf.view.components.Panel;
+import gelf.view.composites.Visualizer;
 
 import java.awt.TextComponent;
 import java.awt.event.ActionEvent;
@@ -22,19 +23,17 @@ import javax.swing.JTextField;
  */
 public class ScaleListener implements ActionListener {
 	
-	private Panel panel;
+	private Visualizer panel;
 	
-	public ScaleListener(Panel panel) {
+	public ScaleListener(Visualizer panel) {
 	
 		this.panel = panel;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+		String scaleValue = JOptionPane.showInputDialog(panel,"Enter your message","Messages",JOptionPane.OK_CANCEL_OPTION);
 		try {
-			String scaleValue = JOptionPane.showInputDialog(panel,"Enter your message","Messages",JOptionPane.OK_CANCEL_OPTION);
-				
 			float value = Float.parseFloat(scaleValue);
 			Attribute attribute = panel.combobox.getSelected();
 			ScaleCommand scale = new ScaleCommand(attribute, value);

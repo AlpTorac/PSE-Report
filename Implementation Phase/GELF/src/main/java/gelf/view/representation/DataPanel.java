@@ -70,6 +70,7 @@ public class DataPanel extends Panel {
 		if (element instanceof Library) {
 			Library library = (Library) element;
 			upperLabel.setText("");
+			when.setText("");
 			middleLabel.setText("");
 			lowerLabel.setText("");
 		}
@@ -81,7 +82,7 @@ public class DataPanel extends Panel {
 			binary = "";
 			
 			for (InputPin input : cell.getInPins()) {
-				selectedText += " " + "!" + input.getName(); 
+				selectedText += " " + "!" + input.getName() + "&"; 
 				binary = "0" + binary ;
 			}
 			selectedText = selectedText.substring(0, selectedText.length() - 1);
@@ -94,12 +95,14 @@ public class DataPanel extends Panel {
 			if (element instanceof InputPin) {
 				InputPin pin = (InputPin) element;
 				upperLabel.setText("");
+				when.setText("");
 				middleLabel.setText("");
 				lowerLabel.setText("");
 			}
 			else if(element instanceof OutputPin) {
 				OutputPin pin = (OutputPin) element;
 				upperLabel.setText("");
+				when.setText("");
 				middleLabel.setText("");
 				lowerLabel.setText("");
 			}
@@ -117,23 +120,22 @@ public class DataPanel extends Panel {
 		
 		if (element instanceof Cell) {
 			Cell cell = (Cell) element;
-			char[] charBin = binary.toCharArray();
 			String newBinary = "";
 			for (InputPin pin : cell.getInPins()) {
 				if (selectedPins.contains(pin)) {
-					selectedText.replace("!" + pin.getName(), pin.getName());
-					charBin[charBin.length - cell.getInPins().indexOf(pin) - 1] = 1;
+					selectedText = selectedText.replace("!" + pin.getName(), pin.getName());
+					newBinary = "1" + newBinary;
 				}
 				else {
-					selectedText.replace(pin.getName(), "!" + pin.getName());
-					charBin[charBin.length - cell.getInPins().indexOf(pin) - 1] = 1;
+					selectedText = selectedText.replace("!" + pin.getName(), pin.getName());
+					selectedText = selectedText.replace(pin.getName(), "!" + pin.getName());
+					newBinary = "0" + newBinary;
 				}
 			}
-			for (int i = 0; i < charBin.length; i++) {
-				newBinary = newBinary + charBin[i];
-			}
+			
 			middleLabel.setText("Output Function:" + selectedText);
 			lowerLabel.setText("Function Value: " + cell.getLeakages().getValues()[Integer.parseInt(newBinary, 2)]);
+			binary = newBinary;
 		}
 		
 

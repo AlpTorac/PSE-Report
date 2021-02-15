@@ -25,10 +25,8 @@ public class SearchListener implements KeyListener {
 	}
 	
 	private void search() {
-		/*String searchedText = outliner.searchBox.getText();
-		outliner
-		DefaultMutableTreeNode node = tree.
-	    if (tree.contains())*/
+		String searchedText = outliner.searchBox.getText();
+		if (outliner)
 	}
 
 	@Override
