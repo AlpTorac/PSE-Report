@@ -51,7 +51,7 @@ public class Library extends HigherElement {
     	cellsIt = clonedCells.iterator();
     	while(cellsIt.hasNext()) {
 			Cell curCell = cellsIt.next();
-			clonedCells.add(curCell.clone());
+			curCell.setParentLibrary(clonedLibrary);
 		}
     	return clonedLibrary;
     }
