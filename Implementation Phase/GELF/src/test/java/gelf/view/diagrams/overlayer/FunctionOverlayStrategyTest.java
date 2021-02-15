@@ -12,6 +12,8 @@ import gelf.view.diagrams.TestCase;
 import gelf.view.diagrams.TestFrame;
 import gelf.view.diagrams.TestPanel;
 import gelf.view.diagrams.builder.FunctionGraphBuilder;
+import gelf.view.diagrams.components.DiagramValueDisplayComponent;
+import gelf.view.diagrams.components.ValueDisplayPoint;
 
 class FunctionOverlayStrategyTest implements TestCase {
 
@@ -55,6 +57,18 @@ class FunctionOverlayStrategyTest implements TestCase {
 		
 		IDiagram overlayDiagram = overlayer.overlay(new IDiagram[] {diagram1, diagram2});
 		overlayDiagram.attachToContainer(container);
+		
+		DiagramValueDisplayComponent[] dvdcs = overlayDiagram.getDiagramValueDisplayComponentPrototypes();
+		
+		for (int i = 0; i < 14; i++) {
+			ValueDisplayPoint currentPoint = (ValueDisplayPoint) dvdcs[i];
+			
+			System.out.print("x on axis = " + currentPoint.getPositionInDiagram().getXCoordinate());
+			System.out.print(", y on axis = " + currentPoint.getPositionInDiagram().getYCoordinate() + "\n");
+			System.out.print("x on frame = " + currentPoint.getPositionInDiagram().toPositionInFrame().getXPos());
+			System.out.print(", y on frame = " + currentPoint.getPositionInDiagram().toPositionInFrame().getYPos() + "\n");
+			System.out.print("value = " + currentPoint.getValue() + "\n\n");
+		}
 		
 		overlayDiagram.refresh();
 		show(frame, TestCase.LONG_SHOW_DURATION);
