@@ -5,7 +5,9 @@ import gelf.view.diagrams.builder.IHistogramBuilder;
 import gelf.view.diagrams.components.DiagramAxis;
 import gelf.view.diagrams.components.DiagramComponent;
 import gelf.view.diagrams.components.DiagramValueDisplayComponent;
+import gelf.view.diagrams.components.HistogramBar;
 import gelf.view.diagrams.data.DiagramData;
+import gelf.view.diagrams.type.BarChart;
 import gelf.view.diagrams.type.Histogram;
 
 public class HistogramOverlayStrategy extends DiagramOverlayStrategy implements IHistogramBuilder {
@@ -22,7 +24,13 @@ public class HistogramOverlayStrategy extends DiagramOverlayStrategy implements 
 
 	@Override
 	public void setDiagrams(IDiagram[] diagrams) {
-		this.histograms = (Histogram[]) diagrams;
+		Histogram[] histograms = new Histogram[diagrams.length];
+		
+		for (int i = 0; i < histograms.length; i++) {
+			histograms[i] = (Histogram) diagrams[i];
+		}
+		
+		this.histograms = histograms;
 	}
 
 	@Override
@@ -43,8 +51,23 @@ public class HistogramOverlayStrategy extends DiagramOverlayStrategy implements 
 	}
 
 	@Override
-	protected void configureVisibilityAndColor(DiagramValueDisplayComponent[][] dvdcArray) {
-		// TODO Auto-generated method stub
+	protected boolean covers(DiagramValueDisplayComponent currentDvdc,
+			DiagramValueDisplayComponent dvdcToCompareTo) {
+		if (!(currentDvdc instanceof HistogramBar && dvdcToCompareTo instanceof HistogramBar)) {
+			return false;
+		}
 		
+		HistogramBar cDvdc = (HistogramBar) currentDvdc;
+		HistogramBar nDvdc = (HistogramBar) dvdcToCompareTo;
+		
+		double minXCurrent = cDvdc.getTopLeftInDiagram().getXCoordinate();
+		float valueCurrent = cDvdc.getValue();
+		double maxYCurrent = cDvdc.getBottomRightInDiagram().getYCoordinate();
+		
+		double minXNext = nDvdc.getTopLeftInDiagram().getXCoordinate();
+		float valueNext = nDvdc.getValue();
+		double maxYNext = nDvdc.getBottomRightInDiagram().getYCoordinate();
+		
+		return (minXCurrent <= minXNext) && (valueCurrent >= valueNext) && (maxYCurrent >= maxYNext);
 	}
 }

@@ -50,28 +50,10 @@ public class BarChartOverlayStrategy extends DiagramOverlayStrategy implements I
 	}
 
 	@Override
-	protected void configureVisibilityAndColor(DiagramValueDisplayComponent[][] dvdcArray) {
-		for (int j = 0, i = 0; j < dvdcArray[i].length; j++) {
-			for (;i < dvdcArray.length - 1; i++) {
-				DiagramValueDisplayComponent currentDvdc = dvdcArray[i][j];
-				
-				float currentVal = currentDvdc.getValue();
-				
-				for (int k = i + 1; k < dvdcArray.length; k++) {
-					DiagramValueDisplayComponent dvdcToCompareTo = dvdcArray[k][j];
-					
-					float nextVal = dvdcToCompareTo.getValue();
-					
-					if (currentVal >= nextVal) {
-						currentDvdc.decrementLayer();
-						dvdcToCompareTo.setColor(SettingsProvider.getMixedColor(currentDvdc.getColor(), dvdcToCompareTo.getColor()));
-					} else {
-						dvdcToCompareTo.decrementLayer();
-						currentDvdc.setColor(SettingsProvider.getMixedColor(currentDvdc.getColor(), dvdcToCompareTo.getColor()));
-					}
-				}
-			}
-			i = 0;
-		}
+	protected boolean covers(DiagramValueDisplayComponent currentDvdc,
+			DiagramValueDisplayComponent dvdcToCompareTo) {
+		float currentVal = currentDvdc.getValue();
+		float nextVal = dvdcToCompareTo.getValue();
+		return (currentVal >= nextVal);
 	}
 }
