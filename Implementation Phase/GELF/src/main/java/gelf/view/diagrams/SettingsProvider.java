@@ -3,11 +3,11 @@ package gelf.view.diagrams;
 import java.awt.Color;
 
 public class SettingsProvider {
-	private int diagramValueDisplayLayer = 3;
+	private int diagramValueDisplayLayer = 1;
 	private int diagramAxisLayer = 2;
-	private int diagramNonValueDisplayLayer = 3;
+	private int diagramNonValueDisplayLayer = 1;
 	private int diagramViewHelperDisplayLayer = 2;
-	private int diagramHoverLabelLayer = 1;
+	private int diagramHoverLabelLayer = 3;
 	
 	private float diagramLeftMariginFactor = 1f / 20f;
 	private float diagramRightMariginFactor = 1f / 20f;
@@ -272,4 +272,23 @@ public class SettingsProvider {
 	public void setValueDisplayComponentColorAt(Color valueDisplayComponentColor, int index) {
 		this.valueDisplayComponentColors[index] = valueDisplayComponentColor;
 	}
+	
+	public static Color getMixedColor(Color color1, Color color2) {
+		float[] hsbColor1 = new float[3];
+		Color.RGBtoHSB(color1.getRed(), color1.getGreen(), color1.getBlue(), hsbColor1);
+		
+		float[] hsbColor2 = new float[3];
+		Color.RGBtoHSB(color2.getRed(), color2.getGreen(), color2.getBlue(), hsbColor2);
+		
+		double mixHue = (hsbColor1[0] + hsbColor2[0]) / 2d;
+		double mixSaturation = (hsbColor1[1] + hsbColor2[1]) / 2d;
+		double mixBrightness = (hsbColor1[2] + hsbColor2[2]) / 2d;
+		
+		int mixedColorBits = Color.HSBtoRGB((float) mixHue, (float) mixSaturation, (float) mixBrightness);
+		
+		Color mixedColor = new Color(mixedColorBits);
+		
+		return mixedColor;
+	}
+	
 }

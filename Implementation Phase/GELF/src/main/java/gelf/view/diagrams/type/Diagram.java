@@ -166,7 +166,7 @@ public abstract class Diagram implements IDiagram {
 	}
 	
 	public void addComponent(Component dc, int layer) {
-		this.containingElement.add(dc, layer);
+		this.containingElement.add(dc, Integer.valueOf(layer));
 	}
 	
 	public void removeComponent(Component dc) {
