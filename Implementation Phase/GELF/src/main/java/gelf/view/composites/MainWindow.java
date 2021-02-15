@@ -48,7 +48,7 @@ public class MainWindow extends Window {
     public Outliner outliner;
     public SubWindowArea subWindowArea;
     // colors/graphics
-    Color cBackground = new Color(0.1f, 0.1f, 0.1f);
+    Color cBackground = ColorTheme.frame;
     Image icon = Toolkit.getDefaultToolkit().getImage("/Images/AppIcon.png");
     // other
     String version = "0.0.0";
@@ -58,6 +58,7 @@ public class MainWindow extends Window {
         super(name, width, height);
         this.setSize(width, height);
         this.getContentPane().setBackground(cBackground);
+        this.setBackground(cBackground);
         this.setIconImage(icon);
         this.setVisible(true);
 
@@ -90,19 +91,19 @@ public class MainWindow extends Window {
         // SubWindowArea setup
         setupSubWindowArea(this.mainMenu.getHeight(), this.infoBar.getHeight(), this.outliner.getWidth());
 
-        // testing adding SubWindows
-       /* SubWindow sub1 = new SubWindow(lib1, project, this.subWindowArea, 250, 100);
-        sub1.setVisible(true);
-        subWindowArea.addSubWindow(sub1);
-        SubWindow sub2 = new SubWindow(lib2, project, this.subWindowArea, 250, 100);
-        sub2.setBackground(new Color(.2f, .4f, .2f));
-        sub2.setVisible(true);
-        subWindowArea.addSubWindow(sub2);
-        SubWindow sub3 = new SubWindow(lib1, project, this.subWindowArea, 250, 100);
-        sub3.setBackground(new Color(.4f, .2f, .2f));
-        sub3.setVisible(true);
-        subWindowArea.addSubWindow(sub3);
-        */
+        // // testing adding SubWindows
+        // SubWindow sub1 = new SubWindow(lib1, project, this.subWindowArea, 250, 100);
+        // sub1.setVisible(true);
+        // subWindowArea.addSubWindow(sub1);
+        // SubWindow sub2 = new SubWindow(lib2, project, this.subWindowArea, 250, 100);
+        // sub2.setBackground(new Color(.2f, .4f, .2f));
+        // sub2.setVisible(true);
+        // subWindowArea.addSubWindow(sub2);
+        // SubWindow sub3 = new SubWindow(lib1, project, this.subWindowArea, 250, 100);
+        // sub3.setBackground(new Color(.4f, .2f, .2f));
+        // sub3.setVisible(true);
+        // subWindowArea.addSubWindow(sub3);
+        
         this.revalidate();
         this.repaint();
     }
@@ -133,7 +134,7 @@ public class MainWindow extends Window {
         // make menu bar
         mainMenu = new MenuBar();
         mainMenu.setBounds(0, 0, width, height);
-        mainMenu.setBackground(new Color(.3f, .3f, .3f));
+        mainMenu.setBackground(ColorTheme.section);
         mainMenu.setVisible(true);
         // set resize bahaviour
         Resizer mainMenuResizer = new Resizer(ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_TOP_LEFT,

@@ -32,8 +32,8 @@ public class SubWindow extends Panel {
     Button close;
     DropdownSelector dropdown;
     Label path;
-    private Color cBackground = new Color(0.23f, 0.23f, 0.23f);
-    private Color cBorder = new Color(0.15f, 0.15f, 0.15f);
+    private Color cBackground = ColorTheme.subsection;
+    private Color cBorder = ColorTheme.frame;
     SubWindow _this = this;
     //element manipulators
     public enum ManipulatorType {
@@ -74,6 +74,7 @@ public class SubWindow extends Panel {
         // menu
         this.bar = new Panel(this.getWidth(), 30);
         this.bar.setLayout(new BoxLayout(this.bar, BoxLayout.LINE_AXIS));
+        this.bar.setBackground(ColorTheme.subsection);
         this.bar.setVisible(true);
         // close button
         this.close = new Button("Close");
@@ -99,6 +100,7 @@ public class SubWindow extends Panel {
         });
         //path/name label
         this.path = new Label(e.toString());
+        path.setForeground(ColorTheme.active);
         this.path.setVisible(true);
 
         this.bar.add(this.close);

@@ -4,14 +4,16 @@ import javax.swing.JMenu;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
+import gelf.view.composites.ColorTheme;
+
 import java.awt.*;
 import java.awt.event.*;
 
 public class Menu extends JMenu implements MouseListener, MenuListener {
     Color cBackground = new Color(0.2f, 0.2f, 0.2f);
     Color cText = new Color(.8f, .8f, .8f);
-    Color cHover = new Color(0.2f, 0.4f, 0.2f);
-    Color cClick = new Color(0.2f, 0.8f, 0.2f);
+    Color cHover = ColorTheme.hover;
+    Color cClick = ColorTheme.active;
 
     public Menu() {
         super();

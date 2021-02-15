@@ -7,9 +7,11 @@ import javax.swing.JLabel;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
+import gelf.view.composites.ColorTheme;
+
 public class Label extends JLabel {
-    private Color cText = new Color(0.8f, 0.8f, 0.8f);
-    private Color cBackground = new Color(0.2f, 0.2f, 0.2f);
+    private Color cText = ColorTheme.text;
+    private Color cBackground = ColorTheme.interactable;
 
     public Label() {
         super();

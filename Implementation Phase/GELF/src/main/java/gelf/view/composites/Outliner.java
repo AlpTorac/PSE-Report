@@ -39,8 +39,8 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
         public MenuItem itemOpen;
 
     // colors
-    private Color cBackground = new Color(0.23f, 0.23f, 0.23f);
-    private Color cBorder = new Color(0.15f, 0.15f, 0.15f);
+    private Color cBackground = ColorTheme.section;
+    private Color cBorder = ColorTheme.frame;
 
     private Color cTree = new Color(0.2f, 0.2f, 0.2f);
     private Color CNode = new Color(0.3f, 0.3f, 0.3f);
@@ -93,16 +93,13 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
 
     @Override
     public void update() {
-        System.out.println("UPDATED");
         DefaultMutableTreeNode root = (DefaultMutableTreeNode) this.tree.getModel().getRoot();
         root.removeAllChildren();
-        System.out.println(root.getChildCount());
         DefaultTreeModel treeModel = (DefaultTreeModel) this.tree.getModel();
         treeModel.nodeStructureChanged(root);
 
         // generate library level
         ArrayList<Library> libraries = this.project.getLibraries();
-        System.out.println(libraries.size() + " || " + libraries);
         for (Library lib : libraries) {
             DefaultMutableTreeNode libNode = new DefaultMutableTreeNode(lib);
             treeModel.insertNodeInto(libNode, root, root.getChildCount());

@@ -20,13 +20,13 @@ public class SubWindowArea extends Panel {
     private int maxSubWindows = 3;
     private ArrayList<SubWindow> subWindows = new ArrayList<>();
     //colors
-    private Color cBackground = new Color(0.15f, 0.15f, 0.15f);
+    private Color cBackground = ColorTheme.frame;
 
     public SubWindowArea(int width, int height) {
         super(width, height);
         this.setBackground(cBackground);
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
-        Border margin = new EmptyBorder(5, 5, 5, 5);
+        Border margin = new EmptyBorder(3, 5, 3, 3);
         this.setBorder(margin);
         //window panel
         this.windowPanel = new Panel(100, 100);

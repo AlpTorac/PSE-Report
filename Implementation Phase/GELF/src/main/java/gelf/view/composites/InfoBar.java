@@ -21,8 +21,8 @@ public class InfoBar extends Panel {
     private Map<InfoBarID, Label> labels = new HashMap<>();
     private Map<InfoBarID, String> labelPrefix = new HashMap<>();
     //colors
-    private Color textColor = new Color(0.9f, 0.9f, 0.9f);
-    private Color backgroundColor = new Color(0.3f, 0.3f, 0.3f);
+    private Color textColor = ColorTheme.text;
+    private Color backgroundColor = ColorTheme.section;
 
     //Create new InfoBar with corresponding labels
     public InfoBar(int width, int height) {
