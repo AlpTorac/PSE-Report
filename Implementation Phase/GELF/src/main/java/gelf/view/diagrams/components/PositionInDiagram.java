@@ -72,12 +72,12 @@ public abstract class PositionInDiagram {
 		
 		PositionInDiagram otherPos = (PositionInDiagram) pos;
 		
-		boolean areEqual = true;
-		
 		for (int i = 0; i < this.getAxes().length; i++) {
-			areEqual = areEqual && (this.getAxisPos(i) == otherPos.getAxisPos(i)) && (this.getAxes()[i].equals(otherPos.getAxes()[i]));
+			if (!((Math.abs(this.getAxisPos(i) - otherPos.getAxisPos(i)) <= TOLERANCE) && (this.getAxes()[i].equals(otherPos.getAxes()[i])))) {
+				return false;
+			}
 		}
 		
-		return areEqual;
+		return true;
 	}
 }

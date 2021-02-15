@@ -1,7 +1,5 @@
 package gelf.view.diagrams.components;
 
-import gelf.view.diagrams.SettingsProvider;
-
 public class PositionInFrame {
 	private static double TOLERANCE = 1E-5;
 	
