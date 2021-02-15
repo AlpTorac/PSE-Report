@@ -1,6 +1,7 @@
 package gelf.view.diagrams.overlayer;
 
 import gelf.view.diagrams.IDiagram;
+import gelf.view.diagrams.SettingsProvider;
 import gelf.view.diagrams.builder.IBarChartBuilder;
 import gelf.view.diagrams.components.DiagramAxis;
 import gelf.view.diagrams.components.DiagramComponent;
@@ -22,7 +23,13 @@ public class BarChartOverlayStrategy extends DiagramOverlayStrategy implements I
 
 	@Override
 	public void setDiagrams(IDiagram[] diagrams) {
-		this.barCharts = (BarChart[]) diagrams;
+		BarChart[] barCharts = new BarChart[diagrams.length];
+		
+		for (int i = 0; i < barCharts.length; i++) {
+			barCharts[i] = (BarChart) diagrams[i];
+		}
+		
+		this.barCharts = barCharts;
 	}
 
 	@Override
@@ -40,5 +47,13 @@ public class BarChartOverlayStrategy extends DiagramOverlayStrategy implements I
 	protected DiagramValueDisplayComponent[] makeValueDisplayComponentsForOneDiagram(DiagramData diagramData, int orderInSameDiagram,
 			DiagramAxis[] axes, DiagramComponent[] nonValueDisplayComponents) {
 		return this.buildValueDisplayComponentsForOneDiagram(diagramData, orderInSameDiagram, axes, nonValueDisplayComponents);
+	}
+
+	@Override
+	protected boolean covers(DiagramValueDisplayComponent currentDvdc,
+			DiagramValueDisplayComponent dvdcToCompareTo) {
+		float currentVal = currentDvdc.getValue();
+		float nextVal = dvdcToCompareTo.getValue();
+		return (currentVal >= nextVal);
 	}
 }

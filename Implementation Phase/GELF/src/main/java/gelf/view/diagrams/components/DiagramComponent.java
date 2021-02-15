@@ -15,7 +15,7 @@ public abstract class DiagramComponent implements HasAttachablePart {
 
 	protected DiagramComponent(Color color, int layer) {
 		this.color = color;
-		this.setLayer(layer);
+		this.layer = layer;
 	}
 
 	@Override
@@ -50,28 +50,51 @@ public abstract class DiagramComponent implements HasAttachablePart {
 	@Override
 	public void attachToDiagram(IDiagram diagram) {
 		if (diagram != null) {
-			this.removeFromDiagram();
+			this.removeFromDiagramOnly();
 		}
 			this.diagram = diagram;
 			diagram.addComponent(this.getVisualElement(), this.layer);
 			this.setComponentBounds(this.getFrameBounds());
-			this.visualElement.setIgnoreRepaint(true);
 	}
 	
 	@Override
 	public void removeFromDiagram() {
-		if (this.diagram != null) {
-			this.diagram.removeComponent(this.getVisualElement());
-			this.diagram = null;
-		}
+		this.removeFromDiagramOnly();
+		this.cleanDiagramReference();
 	}
 
+	private void removeFromDiagramOnly() {
+		if (this.diagram != null) {
+			this.diagram.removeComponent(this.getVisualElement());
+		}
+	}
+	
+	private void cleanDiagramReference() {
+		this.diagram = null;
+	}
+	
+	private void deAndReAttachToDiagram() {
+		if (this.diagram != null) {
+			this.removeFromDiagramOnly();
+			this.attachToDiagram(this.diagram);
+		}
+	}
+	
 	public int getLayer() {
 		return layer;
 	}
 
 	public void setLayer(int layer) {
 		this.layer = layer;
+		this.deAndReAttachToDiagram();
+	}
+	
+	public void incrementLayer() {
+		this.setLayer(this.layer + 1);
+	}
+	
+	public void decrementLayer() {
+		this.setLayer(this.layer - 1);
 	}
 	
 	public Component getVisualElement() {

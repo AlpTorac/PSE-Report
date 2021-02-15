@@ -3,6 +3,7 @@ package gelf.controller.listeners;
 import gelf.view.composites.Outliner;
 import gelf.view.composites.SubWindow;
 import gelf.view.composites.SubWindowArea;
+import gelf.view.composites.Visualizer;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +16,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
 import gelf.model.elements.Element;
+import gelf.model.project.Model;
 
 /*
  * Listener for opening an element in the working area.
@@ -36,7 +38,7 @@ public class OpenElementListener implements ActionListener, MouseListener {
 			return;
 		}
 		Element element = outliner.getSelectedElements().get(0);
-		subwindows.addSubWindow(new SubWindow(element, subwindows, 100, 100));
+		subwindows.addSubWindow(new SubWindow(element, Model.getInstance().getCurrentProject() ,subwindows, 100, 100));
 		
 	}
 
@@ -44,10 +46,13 @@ public class OpenElementListener implements ActionListener, MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 2) {
-			TreePath path = outliner.tree.getPathForLocation(e.getX(), e.getY());
-			Element element = (Element) ((DefaultMutableTreeNode)path.getLastPathComponent()).getUserObject();
-		    subwindows.addSubWindow(new SubWindow(element, subwindows, 100, 100));
-			
+			DefaultMutableTreeNode node = (DefaultMutableTreeNode)
+                    outliner.tree.getLastSelectedPathComponent();
+             if (node == null) {
+            	 return;
+             }
+			Element element = (Element) node.getUserObject();
+			subwindows.addSubWindow(new SubWindow(element, Model.getInstance().getCurrentProject(), subwindows, 100, 100));			
 		}
 		
 	}

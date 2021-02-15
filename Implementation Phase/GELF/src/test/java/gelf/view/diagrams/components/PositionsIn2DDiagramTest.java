@@ -1,18 +1,13 @@
 package gelf.view.diagrams.components;
 
 import java.awt.Color;
-import java.awt.Container;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import gelf.view.diagrams.TestCase;
-import gelf.view.diagrams.TestFrame;
 
 class PositionsIn2DDiagramTest implements TestCase {
-
-	private TestFrame frame = new TestFrame();
-	private Container container = frame.getContentPane();
 	
 	private PositionInFrame origin = new PositionInFrame(400, 400);
 	private PositionInFrame xAxisEnd = new PositionInFrame(500, 400);

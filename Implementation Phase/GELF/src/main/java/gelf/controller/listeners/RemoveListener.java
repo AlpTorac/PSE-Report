@@ -1,6 +1,5 @@
 package gelf.controller.listeners;
 
-import gelf.model.commands.RemoveCommand;
 import gelf.model.elements.Element;
 import gelf.model.elements.Library;
 import gelf.model.project.Model;

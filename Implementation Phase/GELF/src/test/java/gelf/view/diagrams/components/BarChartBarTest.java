@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import gelf.view.diagrams.TestCase;
 import gelf.view.diagrams.TestFrame;
+import gelf.view.diagrams.type.BarChart;
 
 class BarChartBarTest implements TestCase {
 
@@ -34,11 +35,20 @@ class BarChartBarTest implements TestCase {
 	
 	private static BarChartBar bar = DiagramComponentFactory.getDiagramComponentFactory().createBarChartBar(color, value, topLeft, bottomRight, thickness);
 	
-	@Test
-	void initialisationTest() {
+	private static void initAndShow() {
+		BarChart diagram = new BarChart(null, new DiagramAxis[] {xAxis, yAxis},
+				new DiagramValueDisplayComponent[] {bar}, null);
+		
+		diagram.attachToContainer(frame);
 		yAxis.showValues();
 		xAxis.showValues();
-		show(frame, bar, TestCase.SHOW_DURATION);
+		TestCase.showStatic(frame, TestCase.SHOW_DURATION);
+		diagram.removeFromContainer();
+	}
+	
+	@Test
+	void initialisationTest() {
+		initAndShow();
 	}
 	
 	@Test
@@ -48,8 +58,8 @@ class BarChartBarTest implements TestCase {
 		bar.setBorderThickness(newThickness);
 		
 		Assertions.assertEquals(newThickness, bar.getBorderThickness());
-		
-		show(frame, bar, TestCase.SHOW_DURATION);
+
+		initAndShow();
 		
 		bar.setBorderThickness(thickness);
 	}
@@ -75,7 +85,7 @@ class BarChartBarTest implements TestCase {
 		Assertions.assertEquals(newBottomRight.toPositionInFrame().getXPos(), bar.visualElement.getBounds().getMaxX());
 		Assertions.assertEquals(newBottomRight.toPositionInFrame().getYPos(), bar.visualElement.getBounds().getMaxY());
 		
-		show(frame, bar, TestCase.SHOW_DURATION);
+		initAndShow();
 		
 		bar.setPositionInDiagram(tlXpos, brXpos, brYpos);
 	}

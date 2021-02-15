@@ -7,5 +7,7 @@ import javax.swing.JComboBox;
  */
 public class DropdownSelector extends JComboBox {
 
-    
+    public DropdownSelector(Object[] items) {
+        super(items);
+    }
 }

@@ -1,18 +1,17 @@
 package gelf.view.diagrams.components;
 
 import java.awt.Color;
-import java.awt.Container;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import gelf.view.diagrams.TestCase;
 import gelf.view.diagrams.TestFrame;
+import gelf.view.diagrams.type.HeatMap;
 
 class BiColorScaleTest implements TestCase {
 
 	private static TestFrame frame = new TestFrame();
-	private static Container container = frame.getContentPane();
 	
 	private static Color borderColor = Color.BLACK;
 	private static Color minValColor = Color.RED;
@@ -26,9 +25,18 @@ class BiColorScaleTest implements TestCase {
 	
 	private static BiColorScale cs = DiagramComponentFactory.getDiagramComponentFactory().createBiColorScale(topLeft, bottomRight, borderColor, minVal, maxVal, minValColor, maxValColor, 1);
 	
+	private static void initAndShow() {
+		HeatMap diagram = new HeatMap(null, null,
+				null, new DiagramComponent[] {cs});
+		
+		diagram.attachToContainer(frame);
+		TestCase.showStatic(frame, TestCase.SHOW_DURATION);
+		diagram.removeFromContainer();
+	}
+	
 	@Test
 	void showAndHideTest() {
-		show(frame, cs, TestCase.SHOW_DURATION);
+		initAndShow();
 	}
 	
 	@Test
@@ -39,7 +47,7 @@ class BiColorScaleTest implements TestCase {
 		cs.setMinValueColor(newMinValColor);
 		cs.setMinValueColor(newMaxValColor);
 		
-		show(frame, cs, TestCase.SHOW_DURATION);
+		initAndShow();
 		
 		cs.setMinValueColor(minValColor);
 		cs.setMaxValueColor(maxValColor);
@@ -53,7 +61,7 @@ class BiColorScaleTest implements TestCase {
 		cs.setMaxValue(newMaxVal);
 		cs.setMinValue(newMinVal);
 		
-		show(frame, cs, TestCase.SHOW_DURATION);
+		initAndShow();
 		
 		Assertions.assertEquals(cs.valueToColor(55), Color.GREEN);
 		

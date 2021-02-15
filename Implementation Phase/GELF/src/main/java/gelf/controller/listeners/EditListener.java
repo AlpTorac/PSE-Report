@@ -10,6 +10,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 
 /*
  * Listener for the text editor.
@@ -31,7 +34,8 @@ public class EditListener implements ActionListener{
 			TextEditCommand edit = new TextEditCommand(oldContent, newContent, element);
 			edit.execute();
 		} catch (InvalidFileFormatException exc) {
-			//TODO error
+			JOptionPane.showMessageDialog(new JFrame(), exc.getLocalizedMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+			return;
 		}
 	}
 	

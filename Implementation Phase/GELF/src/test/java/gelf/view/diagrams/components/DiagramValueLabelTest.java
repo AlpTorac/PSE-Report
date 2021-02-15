@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import gelf.view.diagrams.TestCase;
 import gelf.view.diagrams.TestFrame;
+import gelf.view.diagrams.type.HeatMap;
 
 class DiagramValueLabelTest implements TestCase {
 
@@ -29,12 +30,22 @@ class DiagramValueLabelTest implements TestCase {
 	
 	private static DiagramValueLabel label = DiagramComponentFactory.getDiagramComponentFactory().createHeatMapLabel(topLeftVL, bottomRightVL, cs, 5, 1);
 	
+	private static void initAndShow() {
+		HeatMap diagram = new HeatMap(null, new DiagramAxis[] {xAxis, yAxis},
+				new DiagramValueDisplayComponent[] {label}, new DiagramComponent[] {cs});
+		
+		diagram.attachToContainer(frame);
+		yAxis.showValues();
+		xAxis.showValues();
+		TestCase.showStatic(frame, TestCase.SHOW_DURATION);
+		diagram.removeFromContainer();
+	}
 	
 	@Test
 	void initialisationTest() {
 		yAxis.showValues();
 		xAxis.showValues();
-		show(frame, TestCase.SHOW_DURATION);
+		initAndShow();
 	}
 	
 	@Test
@@ -65,12 +76,12 @@ class DiagramValueLabelTest implements TestCase {
 		Assertions.assertTrue(compareFloatingPoint(bottomR.toPositionInFrame().getXPos(), label.visualElement.getBounds().getMaxX()));
 		Assertions.assertTrue(compareFloatingPoint(bottomR.toPositionInFrame().getYPos(), label.visualElement.getBounds().getMaxY()));
 		
-//		show(frame, label, TestCase.SHOW_DURATION);
+		initAndShow();
 		
 		label.setTopLeftInDiagram(oldTopLeftX, oldTopLeftY);
 		label.setBottomRightInDiagram(oldBottomRightX, oldBottomRightY);
 		
-//		show(frame, label, TestCase.SHOW_DURATION);
+		initAndShow();
 	}
 
 	@Test
@@ -82,11 +93,11 @@ class DiagramValueLabelTest implements TestCase {
 		
 		Assertions.assertEquals(newValue, label.getValue());
 		
-		show(frame, label, TestCase.SHOW_DURATION);
+		initAndShow();
 		
 		label.setValue(oldValue);
 		
-		show(frame, label, TestCase.SHOW_DURATION);
+		initAndShow();
 	}
 	
 	@Test
@@ -96,7 +107,7 @@ class DiagramValueLabelTest implements TestCase {
 		
 		label.setBorderThickness(newThickness);
 		
-//		show(frame, label, TestCase.SHOW_DURATION);
+		initAndShow();
 		
 		label.setBorderThickness(oldThickness);
 	}

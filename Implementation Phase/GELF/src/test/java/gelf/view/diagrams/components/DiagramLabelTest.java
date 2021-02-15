@@ -1,7 +1,6 @@
 package gelf.view.diagrams.components;
 
 import java.awt.Color;
-import java.awt.Container;
 
 import javax.swing.JLabel;
 
@@ -11,16 +10,24 @@ import org.junit.jupiter.api.Test;
 
 import gelf.view.diagrams.TestCase;
 import gelf.view.diagrams.TestFrame;
+import gelf.view.diagrams.type.BarChart;
 
 class DiagramLabelTest implements TestCase{
 
 	private static TestFrame frame = new TestFrame();
-	private static Container container = frame.getContentPane();
 	
 	private static PositionInFrame topLeft = new PositionInFrame(400, 400);
 	private static PositionInFrame bottomRight = new PositionInFrame(600, 500);
 	
 	private static DiagramLabel label;
+	private static void initAndShow() {
+		BarChart diagram = new BarChart(null, null,
+				null, new DiagramComponent[] {label});
+		
+		diagram.attachToContainer(frame);
+		TestCase.showStatic(frame, TestCase.SHOW_DURATION);
+		frame.remove(diagram.getContainingElement());
+	}
 	
 	@BeforeAll
 	static void initialisationTest() {
@@ -29,7 +36,7 @@ class DiagramLabelTest implements TestCase{
 
 	@Test
 	void showAndHideTest() {
-		show(frame, label, TestCase.SHOW_DURATION);
+		initAndShow();
 	}
 	
 	@Test
@@ -37,11 +44,11 @@ class DiagramLabelTest implements TestCase{
 		String newCaption = "Different caption";
 		
 		label.setCaption(newCaption);
-		Assertions.assertEquals(label.getCaption(), newCaption);
+		Assertions.assertEquals(newCaption, label.getCaption());
 		
-		show(frame, label, TestCase.SHOW_DURATION);
+		initAndShow();
 		
-		Assertions.assertEquals(((JLabel) label.visualElement).getText(), newCaption);
+		Assertions.assertEquals(newCaption, ((JLabel) label.visualElement).getText());
 	}
 	
 	@Test
@@ -64,12 +71,12 @@ class DiagramLabelTest implements TestCase{
 		Assertions.assertEquals(label.visualElement.getBounds().getMaxX(), endX);
 		Assertions.assertEquals(label.visualElement.getBounds().getMaxY(), endY);
 		
-		show(frame, label, TestCase.SHOW_DURATION);
+		initAndShow();
 		
 		label.setTopLeftInDiagram(400, 400);
 		label.setBottomRightInDiagram(600, 500);
 		
-		show(frame, label, TestCase.SHOW_DURATION);
+		initAndShow();
 	}
 	
 	@Test

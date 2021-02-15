@@ -1,6 +1,8 @@
 package gelf.view.diagrams.components;
 
 public abstract class PositionInDiagram {
+	private static double TOLERANCE = 1E-5;
+	
 	private DiagramAxis[] axes;
 	private double[] coordinatesInAxes;
 
@@ -61,4 +63,21 @@ public abstract class PositionInDiagram {
 	
 	@Override
 	public abstract PositionInDiagram clone();
+	
+	@Override
+	public boolean equals(Object pos) {
+		if (pos == null || !(pos instanceof PositionInDiagram)) {
+			return false;
+		}
+		
+		PositionInDiagram otherPos = (PositionInDiagram) pos;
+		
+		for (int i = 0; i < this.getAxes().length; i++) {
+			if (!((Math.abs(this.getAxisPos(i) - otherPos.getAxisPos(i)) <= TOLERANCE) && (this.getAxes()[i].equals(otherPos.getAxes()[i])))) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
 }

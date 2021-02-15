@@ -32,3 +32,16 @@
 1613255606062	Delete element
 1613260160459	Delete element
 1613260161785	Delete element
+1613316725915	Rename method 'init'
+1613325422874	Rename local variable 'bars'
+1613325432590	Rename local variable 'barCount'
+1613325649872	Rename local variable 'bar'
+1613325727794	Rename local variable 'bars'
+1613325737507	Rename local variable 'barCount'
+1613325762617	Rename local variable 'points'
+1613325772367	Rename local variable 'pointCount'
+1613329947763	Rename local variable 'pointCount'
+1613329955971	Rename local variable 'points'
+1613329963170	Rename local variable 'point'
+1613338945481	Rename field 'data'
+1613344596278	Delete element

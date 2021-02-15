@@ -1,6 +1,7 @@
 package gelf.model.elements;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import gelf.model.elements.attributes.InputPower;
@@ -41,7 +42,7 @@ public class Cell extends HigherElement {
     	this.setAvailableTimType();
     	this.setAvailableOutputPower();
     	this.setAvailableInputPower();
-    	// this.calculate();
+    	this.calculate();
     }
     
 	public float[] getIndex1() {
@@ -200,6 +201,7 @@ public class Cell extends HigherElement {
 	}
 	
 	public void calculateInPow() {
+		inPowerStat = new HashMap<PowerGroup, Stat>();
 		if (availableInputPower == null || inPins == null) {
 			return;
 		}
@@ -256,7 +258,7 @@ public class Cell extends HigherElement {
 	}
 	
 	public void calculateOutPow() {
-		
+		outPowerStat = new HashMap<PowerGroup, Stat>();
 		if (availableOutputPower == null || outPins == null) {
 			return;
 		}
@@ -313,6 +315,7 @@ public class Cell extends HigherElement {
 	}
 	
 	public void calculateTiming() {
+		timingStat = new HashMap<TimingKey, Stat>();
 		if (availableTimSen == null || availableTimGr == null || 
 				availableTimType == null || outPins == null) {
 			return;
@@ -392,7 +395,11 @@ public class Cell extends HigherElement {
 	}
 	
 	public void calculateLeakage() {
+		if (leakages == null) {
+			return;
+		}
 		leakages.calculate();
+		leakage = leakages.getStats();
 	}
 
 	@Override

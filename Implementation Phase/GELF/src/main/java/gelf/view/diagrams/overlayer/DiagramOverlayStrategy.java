@@ -60,7 +60,8 @@ public abstract class DiagramOverlayStrategy {
 	protected DiagramData[] unifyData(DiagramData[] diagramData, ArrayList<TreeSet<Float>> newIndices) {
 		ArrayList<float[]> newIndexOfData = new ArrayList<float[]>();
 		for (int i = 0; i < newIndices.size(); i++) {
-			Float[] newIndexObjects = (Float[]) newIndices.get(i).toArray();
+			Float[] newIndexObjects = new Float[newIndices.get(i).size()];
+			newIndices.get(i).toArray(newIndexObjects);
 			float[] newIndexValues = new float[newIndexObjects.length];
 			
 			for (int j = 0; j < newIndexObjects.length; j++) {
@@ -76,62 +77,45 @@ public abstract class DiagramOverlayStrategy {
 			ArrayList<float[]> oldIndices = data.extractIndices();
 			ArrayList<float[]> oldValues = data.extractValues();
 			
-			ArrayList<float[]> newValues = new ArrayList<float[]>();
+			float[] newValues = this.fillEmptyValues(newIndexOfData.get(0), oldIndices.get(0), oldValues.get(0));
 			
-			int a = 0;
-			int b = 0;
-			
-			float[] newValueRow = null;
-			if (newIndexOfData.size() < 2) {
-				newValueRow = new float[newIndexOfData.get(newIndexOfData.size() - 1).length];
-			}
-			
-			traverseIndicesAndSetNewValues(newValues, oldIndices, newIndexOfData, a, b, oldValues.get(a)[b], true, newValueRow);
-
 			ArrayList<float[]> newData = new ArrayList<float[]>();
 			
 			newData.addAll(newIndexOfData);
-			newData.addAll(newValues);
+			newData.add(newValues);
+			
+			unifiedData[i] = new DiagramData(newData, newIndices.size());
 		}
 		
 		return unifiedData;
 	}
 	
-	private void traverseIndicesAndSetNewValues(ArrayList<float[]> newValues, ArrayList<float[]> oldIndices,
-			ArrayList<float[]> newIndexOfData, int row, int column, float lastOldValue,
-			boolean isOldIndex, float[] newValueRow) {
-			for (int b = column; b < newIndexOfData.get(row).length; b++) {
-				if (row + 2 == newIndexOfData.size()) {
-					if (newValueRow != null) {
-						newValues.add(newValueRow);
-					}
-					newValueRow = new float[newIndexOfData.get(row + 1).length];
-				}
-				
-				float oldIndex = oldIndices.get(row)[column];
-				float newIndex = newIndexOfData.get(row)[column];
-				
-				if (oldIndex < newIndex) {
-					break;
-				}
-				
-				if (row + 1 < newIndexOfData.size()) {
-					if (isOldIndex && (column < oldIndices.get(row).length) && oldIndex == newIndex) {
-						traverseIndicesAndSetNewValues(newValues, oldIndices, newIndexOfData, row + 1, b, oldIndex, true, newValueRow);
-					} else {
-						traverseIndicesAndSetNewValues(newValues, oldIndices, newIndexOfData, row + 1, b, lastOldValue, false, newValueRow);
-					}
-				} else {
-					newValueRow[column] = lastOldValue;
-				}
+	private float[] fillEmptyValues(float[] newIndices, float[] oldIndices, float[] oldValues) {
+		float[] newValues = new float[newIndices.length];
+		
+		for (int i = 0, j = 0; j < oldIndices.length; i++) {
+			if (Math.abs(newIndices[i] - oldIndices[j]) <= 1E-3) {
+				newValues[i] = oldValues[j];
+				j++;
+			} else {
+				newValues[i] = oldValues[j];
 			}
+		}
+		
+		return newValues;
 	}
 	
 	protected DiagramData getAverage(DiagramData[] diagramData) {
-		float[][] allValues = (float[][]) diagramData[0].extractValues().toArray();
+		ArrayList<float[]> values = diagramData[0].extractValues();
+		
+		float[][] allValues = new float[values.size()][];
+		values.toArray(allValues);
 		
 		for (int i = 1; i < diagramData.length; i++) {
-			float[][] currentValues = (float[][]) diagramData[i].extractValues().toArray();
+			ArrayList<float[]> iteratorValues = diagramData[i].extractValues();
+			
+			float[][] currentValues = new float[iteratorValues.size()][];
+			iteratorValues.toArray(currentValues);
 			
 			for (int j = 0; j < allValues.length; j++) {
 				float[] currentValueRow = currentValues[j];
@@ -183,24 +167,30 @@ public abstract class DiagramOverlayStrategy {
 	}
 	
 	protected DiagramAxis[] unifyAxes(DiagramAxis[][] allAxes) {
-		DiagramAxis visuallyShortestAxis = allAxes[0][0];
-		DiagramAxis axisWithMinimumValue = allAxes[0][0];
-		DiagramAxis axisWithMaximumValue = allAxes[0][0];
-		
 		int axesPerDiagram = allAxes.length;
 		int diagramCount = allAxes[0].length;
+		
+		DiagramAxis[] visuallyShortestAxis = new DiagramAxis[axesPerDiagram];
+		DiagramAxis[] axisWithMinimumValue = new DiagramAxis[axesPerDiagram];
+		DiagramAxis[] axisWithMaximumValue = new DiagramAxis[axesPerDiagram];
+		
+		for (int i = 0; i < axesPerDiagram; i++) {
+			visuallyShortestAxis[i] = allAxes[i][0];
+			axisWithMinimumValue[i] = allAxes[i][0];
+			axisWithMaximumValue[i] = allAxes[i][0];
+		}
 		
 		for (int i = 0; i < axesPerDiagram; i++) {
 			for (int j = 0; j < diagramCount; j++) {
 				DiagramAxis currentAxis = allAxes[i][j];
-				if (visuallyShortestAxis.getLineLength() > currentAxis.getLineLength()) {
-					visuallyShortestAxis = currentAxis;
+				if (visuallyShortestAxis[i].getLineLength() > currentAxis.getLineLength()) {
+					visuallyShortestAxis[i] = currentAxis;
 				}
-				if (axisWithMinimumValue.getMin() > currentAxis.getMin()) {
-					axisWithMinimumValue = currentAxis;
+				if (axisWithMinimumValue[i].getMin() > currentAxis.getMin()) {
+					axisWithMinimumValue[i] = currentAxis;
 				}
-				if (axisWithMinimumValue.getMax() < currentAxis.getMax()) {
-					axisWithMinimumValue = currentAxis;
+				if (axisWithMaximumValue[i].getMax() < currentAxis.getMax()) {
+					axisWithMaximumValue[i] = currentAxis;
 				}
 			}
 		}
@@ -208,9 +198,9 @@ public abstract class DiagramOverlayStrategy {
 		DiagramAxis[] axes = new DiagramAxis[axesPerDiagram];
 		
 		for (int index = 0; index < axesPerDiagram; index++) {
-			axes[index] = factory.createSolidAxis(visuallyShortestAxis.getLineStart(), visuallyShortestAxis.getLineEnd(),
-					axisWithMinimumValue.getMin(), axisWithMaximumValue.getMax(),
-					visuallyShortestAxis.getSteps(), visuallyShortestAxis.getColor(), visuallyShortestAxis.getLineThickness());
+			axes[index] = factory.createSolidAxis(visuallyShortestAxis[index].getLineStart(), visuallyShortestAxis[index].getLineEnd(),
+					axisWithMinimumValue[index].getMin(), axisWithMaximumValue[index].getMax(),
+					visuallyShortestAxis[index].getSteps(), visuallyShortestAxis[index].getColor(), visuallyShortestAxis[index].getLineThickness());
 		}
 		
 		return axes;
@@ -219,17 +209,59 @@ public abstract class DiagramOverlayStrategy {
 	protected abstract DiagramValueDisplayComponent[] makeValueDisplayComponentsForOneDiagram(DiagramData diagramData, int orderInSameDiagram, DiagramAxis[] axes, DiagramComponent[] nonValueDisplayComponents);
 	
 	protected DiagramValueDisplayComponent[] makeValueDisplayComponents(DiagramAxis[] axes, DiagramComponent[] nonValueDisplayComponents, DiagramData[] diagramData) {
-		ArrayList<DiagramValueDisplayComponent> dvdcList = new ArrayList<DiagramValueDisplayComponent>();
+//		ArrayList<DiagramValueDisplayComponent> dvdcList = new ArrayList<DiagramValueDisplayComponent>();
+		int dataCount = diagramData.length;
+		DiagramValueDisplayComponent[][] dvdcArray = new DiagramValueDisplayComponent[dataCount][];
 		
-		for (int index = 0; index < diagramData.length; index++) {
+		int totalValueDisplayComponentCount = 0;
+		
+		for (int index = 0; index < dataCount; index++) {
 			DiagramValueDisplayComponent[] dvdcs = this.makeValueDisplayComponentsForOneDiagram(diagramData[index], index, axes, nonValueDisplayComponents);
+			totalValueDisplayComponentCount += dvdcs.length;
 			
-			for (DiagramValueDisplayComponent dvdc : dvdcs) {
-				dvdcList.add(dvdc);
+			dvdcArray[index] = dvdcs;
+		}
+		
+		this.setVisibilityAndColor(dvdcArray);
+		
+		DiagramValueDisplayComponent[] allDvdcs = new DiagramValueDisplayComponent[totalValueDisplayComponentCount];
+		
+		int currentIndex = 0;
+		
+		for (int i = 0; i < dvdcArray.length; i++) {
+			for (int j = 0; j < dvdcArray[i].length; j++) {
+				allDvdcs[currentIndex] = dvdcArray[i][j];
+				currentIndex++;
 			}
 		}
 		
-		return (DiagramValueDisplayComponent[]) dvdcList.toArray();
+		return allDvdcs;
+	}
+	
+	protected abstract boolean covers(DiagramValueDisplayComponent currentDvdc, DiagramValueDisplayComponent dvdcToCompareTo);
+	
+	protected void overlapCovered(DiagramValueDisplayComponent currentDvdc, DiagramValueDisplayComponent dvdcToCompareTo) {
+		if (this.covers(currentDvdc, dvdcToCompareTo)) {
+			currentDvdc.decrementLayer();
+			dvdcToCompareTo.setColor(SettingsProvider.getMixedColor(currentDvdc.getColor(), dvdcToCompareTo.getColor()));
+		} else {
+			dvdcToCompareTo.decrementLayer();
+			currentDvdc.setColor(SettingsProvider.getMixedColor(currentDvdc.getColor(), dvdcToCompareTo.getColor()));
+		}
+	}
+	
+	protected void setVisibilityAndColor(DiagramValueDisplayComponent[][] dvdcArray) {
+		for (int j = 0, i = 0; j < dvdcArray[i].length; j++) {
+			for (;i < dvdcArray.length - 1; i++) {
+				DiagramValueDisplayComponent currentDvdc = dvdcArray[i][j];
+				
+				for (int k = i + 1; k < dvdcArray.length; k++) {
+					DiagramValueDisplayComponent dvdcToCompareTo = dvdcArray[k][j];
+					this.overlapCovered(currentDvdc, dvdcToCompareTo);
+				}
+			}
+			i = 0;
+		}
 	}
 	
 	protected DiagramComponent[] makeDiagramSpecificComponents(DiagramData[] diagramData) {
@@ -241,7 +273,7 @@ public abstract class DiagramOverlayStrategy {
 	public IDiagram overlay() {
 		DiagramData[] clonedData = this.cloneData();
 		
-		DiagramData averages = this.getAverage(clonedData);
+		DiagramData data = clonedData[0];
 		
 		DiagramAxis[] axes = this.unifyAxes(this.getAllAxes());
 		if (clonedData[0].extractIndices().size() > 0) {
@@ -251,6 +283,6 @@ public abstract class DiagramOverlayStrategy {
 		DiagramComponent[] dcs = this.makeDiagramSpecificComponents(clonedData);
 		DiagramValueDisplayComponent[] dvdcs = this.makeValueDisplayComponents(axes, dcs, clonedData);
 		
-		return this.buildDiagram(averages, axes, dvdcs, dcs);
+		return this.buildDiagram(data, axes, dvdcs, dcs);
 	}
 }

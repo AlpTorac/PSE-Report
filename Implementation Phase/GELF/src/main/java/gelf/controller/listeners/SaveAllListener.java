@@ -2,7 +2,11 @@ package gelf.controller.listeners;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.HashSet;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import gelf.model.elements.Cell;
 import gelf.model.elements.Element;
@@ -31,7 +35,12 @@ public class SaveAllListener implements ActionListener {
 		}
 		
 		for (Library library: libraries) {
-			library.saveLibrary();
+			try {
+				library.saveLibrary();
+			} catch (IOException e) {
+				JOptionPane.showMessageDialog(new JFrame(), e.getLocalizedMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 		}
 	}
 

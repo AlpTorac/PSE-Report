@@ -14,7 +14,7 @@ import gelf.model.elements.attributes.TimingKey;
 import gelf.model.elements.attributes.TimingSense;
 import gelf.model.elements.attributes.TimingType;
 
-class CellTest {
+class LibraryTest {
 	
 	float[] values1 = {0.000302f, 0.0003592f, 0.0003661f, 0.0003644f, 
 			  0.000366f, 0.0003663f, 0.0003662f};
@@ -58,8 +58,36 @@ class CellTest {
     
     ArrayList<InputPin> inPinList = new ArrayList<InputPin>();
     ArrayList<OutputPin> outPinList = new ArrayList<OutputPin>();
+    ArrayList<Cell> cellList = new ArrayList<Cell>();
        
     
+    
+    
+    
+    @Test
+    void calculateDefaultLeakageTest() {
+    	Cell cell1 = new Cell(null, null, null, null, null, null, null, 2f);
+    	Cell cell2 = new Cell(null, null, null, null, null, null, null, 2f);
+    	Cell cell3 = new Cell(null, null, null, null, null, null, null, 3f);
+    	Cell cell4 = new Cell(null, null, null, null, null, null, null, 4f);
+    	
+    	cellList.add(cell1);
+    	cellList.add(cell2);
+    	cellList.add(cell3);
+    	cellList.add(cell4);
+    	
+    	Library library = new Library(null, null, null, null, cellList);
+    	library.calculateDefaultLeakage();
+    	float min = 2f;
+		float max = 4f;
+		float avg = 11f / 4f;
+		float med = 0f;
+		
+		Assertions.assertEquals(min, library.getDefaultLeakage().getMin());
+		Assertions.assertEquals(max, library.getDefaultLeakage().getMax());
+		Assertions.assertEquals(avg, library.getDefaultLeakage().getAvg());
+		Assertions.assertEquals(med, library.getDefaultLeakage().getMed());
+    }
     
     @Test
     void calculateInPowTest() {
@@ -72,22 +100,30 @@ class CellTest {
 		inPinList.add(inPin1);
 		inPinList.add(inPin2);
 		
-		Cell cell = new Cell(null, null, null, null, inPinList, null, null, 0);
+		Cell cell1 = new Cell(null, null, null, null, inPinList, null, null, 0);
+		Cell cell2 = new Cell(null, null, null, null, inPinList, null, null, 0);
+		
+		cell1.calculateInPow();
+		cell2.calculateInPow();
+		
+		cellList.add(cell1);
+		cellList.add(cell2);
+		Library library = new Library(null, null, null, null, cellList);
 		
 		
-		//cell.calculateInPow();
+		library.calculateInPow();
 		float min = -0.0002599f;
 		float max = -0.000201f;
 		float avg = -0.0017397f / 7f;
 		float med = 0f;
 		
-		Assertions.assertEquals(min, cell.getInPowerStat().
+		Assertions.assertEquals(min, library.getInPowerStat().
 				get(PowerGroup.RISE_POWER).getMin());
-		Assertions.assertEquals(max, cell.getInPowerStat().
+		Assertions.assertEquals(max, library.getInPowerStat().
 				get(PowerGroup.RISE_POWER).getMax());
-		Assertions.assertEquals(avg, cell.getInPowerStat().
+		Assertions.assertEquals(avg, library.getInPowerStat().
 				get(PowerGroup.RISE_POWER).getAvg());
-		Assertions.assertEquals(med, cell.getInPowerStat().
+		Assertions.assertEquals(med, library.getInPowerStat().
 				get(PowerGroup.RISE_POWER).getMed());
     }
     
@@ -109,24 +145,34 @@ class CellTest {
 		outPinList.add(outPin1);
 		outPinList.add(outPin2);
 		
-		Cell cell = new Cell(null, null, null, null, null, outPinList, null, 0);
+		Cell cell1 = new Cell(null, null, null, null, null, outPinList, null, 0);
+		Cell cell2 = new Cell(null, null, null, null, null, outPinList, null, 0);
+		
+		cell1.calculateOutPow();
+		cell2.calculateOutPow();
+		
+		cellList.add(cell1);
+		cellList.add(cell2);
+		Library library = new Library(null, null, null, null, cellList);
 		
 		
-		//cell.calculateOutPow();
+		cell1.calculateOutPow();
+		cell2.calculateOutPow();
 		
+		library.calculateOutPow();
 		float min = 0.00131f;
 		float max = 0.003528f;
 		float avg = 0.097124f / 49f;
 		float med = 0f;
 			
 		
-		Assertions.assertEquals(min, cell.getOutPowerStat().
+		Assertions.assertEquals(min, library.getOutPowerStat().
 				get(PowerGroup.RISE_POWER).getMin());
-		Assertions.assertEquals(max, cell.getOutPowerStat().
+		Assertions.assertEquals(max, library.getOutPowerStat().
 				get(PowerGroup.RISE_POWER).getMax());
-		Assertions.assertEquals(avg, cell.getOutPowerStat().
+		Assertions.assertEquals(avg, library.getOutPowerStat().
 				get(PowerGroup.RISE_POWER).getAvg());
-		Assertions.assertEquals(med, cell.getOutPowerStat().
+		Assertions.assertEquals(med, library.getOutPowerStat().
 				get(PowerGroup.RISE_POWER).getMed());
     }
     @Test
@@ -147,22 +193,30 @@ class CellTest {
 		outPinList.add(outPin1);
 		outPinList.add(outPin2);
 		
-		Cell cell = new Cell(null, null, null, null, null, outPinList, null, 0);
+		Cell cell1 = new Cell(null, null, null, null, null, outPinList, null, 0);
+		Cell cell2 = new Cell(null, null, null, null, null, outPinList, null, 0);
+		
+		cellList.add(cell1);
+		cellList.add(cell2);
+		Library library = new Library(null, null, null, null, cellList);
 		
 		
-		//cell.calculateTiming();
+		cell1.calculateTiming();
+		cell2.calculateTiming();
 		
+		
+		library.calculateTiming();		
 		float min = 0.00131f;
 		float max = 0.003528f;
 		float avg = 0.097124f / 49f;
 		float med = 0f;
 		
 		Stat stat = null;
-		for (TimingKey timKey : cell.getTimingStat().keySet()) {
+		for (TimingKey timKey : library.getTimingStat().keySet()) {
 		    if(timKey.getTimSense().equals(TimingSense.NEGATIVE_UNATE) &&
 		    		timKey.getTimType().equals(TimingType.COMBINATIONAL) &&
 		    		timKey.getTimGroup().equals(TimingGroup.CELL_RISE)) {
-		    	stat = cell.getTimingStat().get(timKey);
+		    	stat = library.getTimingStat().get(timKey);
 		    }
 		}
 		
@@ -178,13 +232,22 @@ class CellTest {
     			0.003113f, 0.005081f, 0.004988f, 0.01069f};
     	Leakage leakage = new Leakage(values);
     	
-    	Cell cell = new Cell(null, null, null, null, null, null, leakage, 0);
-    	//cell.calculateLeakage();
-		Stat stats = cell.leakage;
+    	Cell cell1 = new Cell(null, null, null, null, null, null, leakage, 0);
+    	Cell cell2 = new Cell(null, null, null, null, null, null, leakage, 0);
+    	
+    	cellList.add(cell1);
+		cellList.add(cell2);
+    	Library library = new Library(null, null, null, null, cellList);
+    	
+    	cell1.calculateLeakage();
+    	cell2.calculateLeakage();
+    	
+    	library.calculateLeakage();
+		Stat stats = library.leakage;
 		float min = 0.00291f;
 		float max = 0.01069f;
 		float avg = 0.038409f / 8f;
-		float med = 0.0040525f;
+		float med = 0f;
 		
 		Assertions.assertEquals(min, stats.getMin());
 		Assertions.assertEquals(max, stats.getMax());
@@ -196,51 +259,56 @@ class CellTest {
     void cloneTest() {
     	inPowList.add(inPow1);
 		inPowList.add(inPow2);
-		
+			
 		InputPin inPin1 = new InputPin("name1", null, inPowList);
 		InputPin inPin2 = new InputPin("name2", null, inPowList);
-		
+			
 		inPinList.add(inPin1);
 		inPinList.add(inPin2);
-		
+			
 		float[] index1 = {0.0004f, 0.009027f, 0.03931f, 0.09714f, 0.1872f, 0.3137f, 0.48f};
-    	float[] index2 = {0.0004f, 0.002192f, 0.008481f, 0.02049f, 0.0392f, 0.06545f, 0.1f};
-    	outPow1.setIndex1(index1);
-    	outPow1.setIndex2(index2);
-    	outPow2.setIndex1(index1);
-    	outPow2.setIndex2(index2);
-    	
-    	outPow1.setRelatedPin(inPin1);
-    	outPow2.setRelatedPin(inPin2);
-    	outPowList.add(outPow1);
+	    float[] index2 = {0.0004f, 0.002192f, 0.008481f, 0.02049f, 0.0392f, 0.06545f, 0.1f};
+	    outPow1.setIndex1(index1);
+	    outPow1.setIndex2(index2);
+	    outPow2.setIndex1(index1);
+	    outPow2.setIndex2(index2);
+	    	
+	    outPow1.setRelatedPin(inPin1);
+	   	outPow2.setRelatedPin(inPin2);
+	   	outPowList.add(outPow1);
 		outPowList.add(outPow2);
 		
-    	timing1.setIndex1(index1);
-    	timing1.setIndex2(index2);
-    	timing2.setIndex1(index1);
-    	timing2.setIndex2(index2);
-    	
-    	timing1.setRelatedPin(inPin1);
-    	timing2.setRelatedPin(inPin2);
+		timing1.setIndex1(index1);
+	    timing1.setIndex2(index2);
+	   	timing2.setIndex1(index1);
+	   	timing2.setIndex2(index2);
+	    	
+	   	timing1.setRelatedPin(inPin1);
+	   	timing2.setRelatedPin(inPin2);
     	timingList.add(timing1);
-		timingList.add(timing2);
-		
+    	timingList.add(timing2);
+			
 		OutputPin outPin1 = new OutputPin("name1", null, outPowList, timingList);
-		OutputPin outPin2 = new OutputPin("name2", null, outPowList, timingList);
-		outPinList.add(outPin1);
+		OutputPin outPin2 = new OutputPin("name2", null, outPowList, timingList);			outPinList.add(outPin1);
 		outPinList.add(outPin2);
-		
+			
     	float[] values = {0.00291f, 0.003117f, 0.003117f, 0.005393f, 
     			0.003113f, 0.005081f, 0.004988f, 0.01069f};
     	Leakage leakage = new Leakage(values);
+	    	
+    	Cell cell1 = new Cell(null, null, null, null, inPinList, outPinList, leakage, 0);
+    	Cell cell2 = new Cell(null, null, null, null, inPinList, outPinList, leakage, 0);
     	
-    	Cell cell = new Cell(null, null, null, null, inPinList, outPinList, leakage, 0);
-
-    	Assertions.assertEquals(cell.getInPins().get(0).name, 
-    			cell.clone().getInPins().get(0).name);
-    	Assertions.assertEquals(cell.getOutPins().get(0).getMaxCapacitance(), 
-    			cell.clone().getOutPins().get(0).getMaxCapacitance());
-    	Assertions.assertEquals(cell.getDefaultLeakage(), cell.clone().getDefaultLeakage());
+    	cellList.add(cell1);
+    	cellList.add(cell2);
     	
-    }
+    	Library library = new Library("libraryCell", null, null, null, cellList);
+    	Assertions.assertEquals(library.getCells().get(0).getInPins().get(0).name, 
+    			library.clone().getCells().get(0).getInPins().get(0).name);
+    	Assertions.assertEquals(library.getCells().get(0).getOutPins().get(0).
+    			getMaxCapacitance(), library.clone().getCells().get(0).getOutPins().
+    			get(0).getMaxCapacitance());
+    	Assertions.assertEquals(library.getDefaultLeakage(), library.clone().getDefaultLeakage());
+    	
+    }    	 
 }
