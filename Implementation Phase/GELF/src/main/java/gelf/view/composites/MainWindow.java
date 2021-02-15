@@ -91,7 +91,7 @@ public class MainWindow extends Window {
         setupSubWindowArea(this.mainMenu.getHeight(), this.infoBar.getHeight(), this.outliner.getWidth());
 
         // testing adding SubWindows
-        SubWindow sub1 = new SubWindow(lib1, project, this.subWindowArea, 250, 100);
+       /* SubWindow sub1 = new SubWindow(lib1, project, this.subWindowArea, 250, 100);
         sub1.setVisible(true);
         subWindowArea.addSubWindow(sub1);
         SubWindow sub2 = new SubWindow(lib2, project, this.subWindowArea, 250, 100);
@@ -102,7 +102,7 @@ public class MainWindow extends Window {
         sub3.setBackground(new Color(.4f, .2f, .2f));
         sub3.setVisible(true);
         subWindowArea.addSubWindow(sub3);
-
+        */
         this.revalidate();
         this.repaint();
     }

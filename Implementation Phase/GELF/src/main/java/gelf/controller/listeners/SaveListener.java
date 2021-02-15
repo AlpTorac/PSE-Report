@@ -4,8 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import gelf.model.elements.Cell;
 import gelf.model.elements.Element;
@@ -33,29 +37,47 @@ public class SaveListener implements ActionListener, FocusListener {
 			Element element = subwindows.get(0).getElement();
 			if (element instanceof Pin) {
 				Library library = ((Pin) element).getParent().getParentLibrary();
-				library.saveLibrary();
+				try {
+					library.saveLibrary();
+				} catch (IOException e1) {
+					JOptionPane.showMessageDialog(new JFrame(), e1.getLocalizedMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 			}
 			else if (element instanceof Cell) {
 				Library library = ((Cell) element).getParentLibrary();
-				library.saveLibrary();
+				try {
+					library.saveLibrary();
+				} catch (IOException e1) {
+					JOptionPane.showMessageDialog(new JFrame(), e1.getLocalizedMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 			}
 			else {
 				Library library = (Library) element;
-				library.saveLibrary();
+				try {
+					library.saveLibrary();
+				} catch (IOException e1) {
+					JOptionPane.showMessageDialog(new JFrame(), e1.getLocalizedMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 			}
-			
+			subwindows.removeAll(subwindows);
+		}
+		else {
+			JOptionPane.showMessageDialog(new JFrame(), "hii", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
 		}
 		
 	}
 
 	@Override
 	public void focusGained(FocusEvent e) {
+		subwindows.removeAll(subwindows);
 		subwindows.add((SubWindow) e.getSource());
 	}
 
 	@Override
-	public void focusLost(FocusEvent e) {
-		subwindows.remove((SubWindow) e.getSource());
-	}
+	public void focusLost(FocusEvent e) {}
 
 }

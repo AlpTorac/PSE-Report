@@ -26,8 +26,6 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 
-
-
 /**
  * Displays the liberty text file.
  */
@@ -53,13 +51,13 @@ public class TextEditor extends ElementManipulator implements KeyListener{
 	 */
     public TextEditor(Element element, Project p, int width, int height){
         super(element, p, width, height);
+        hl = new DefaultHighlighter();
+        painter = new DefaultHighlighter.DefaultHighlightPainter(HL_COLOR);
         setup();
         this.setElement(element);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     	this.setBorder(new LineBorder(Color.BLACK, 4, true));
-    	hl = new DefaultHighlighter();
-        painter = new DefaultHighlighter.DefaultHighlightPainter(HL_COLOR);
-    	
+    	    	
     }
     
     /*
@@ -94,7 +92,6 @@ public class TextEditor extends ElementManipulator implements KeyListener{
     	this.add(lowerPanel);
     	lowerPanel.add(updateButton);
     	updateButton.addActionListener(new EditListener(this));
-    	
     }
     
     /*
@@ -105,7 +102,8 @@ public class TextEditor extends ElementManipulator implements KeyListener{
     	this.element = element;
     	this.textArea.setText("");
     
-		//textArea.setText(createText(element));
+		textArea.setText(createText(element));
+		textArea.setCaretPosition(0);
 		document = textArea.getText();
 	
     }
@@ -115,11 +113,12 @@ public class TextEditor extends ElementManipulator implements KeyListener{
      * @param value Value to be highlighted.
      */
     public void highlightValue(int value) {
-    	removeHighlights();
+    	
     	if (searchBox.getText().equals("")) {
+    		removeHighlights();
     		return;
     	}
-    	
+    	removeHighlights();
 		String s = searchBox.getText();
 		String content = textArea.getText();
 		int index = content.indexOf(s);
@@ -187,10 +186,12 @@ public class TextEditor extends ElementManipulator implements KeyListener{
      * @param start Starting index of the text.
      */
     private int searchHighlight(int start) {
-    	removeHighlights();
+    	
     	if (searchBox.getText().equals("")) {
+    		removeHighlights();
     		return -1;
     	}
+    	removeHighlights();
 		String s = searchBox.getText();
 		String content = textArea.getText();
 		int index = content.indexOf(s, start);
@@ -237,11 +238,12 @@ public class TextEditor extends ElementManipulator implements KeyListener{
 	@Override
 	public void keyPressed(KeyEvent arg0) {
         if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
-			trace = searchHighlight(trace);
 			if (trace == -1) {
 				trace = 0;
 				searchHighlight(0);
 			}
+			trace = searchHighlight(trace);
+			
 		}
 	}
 

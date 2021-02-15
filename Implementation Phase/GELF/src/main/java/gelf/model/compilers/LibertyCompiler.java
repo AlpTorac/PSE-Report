@@ -11,7 +11,7 @@ public class LibertyCompiler {
     private static DecimalFormat format = new DecimalFormat("##.#######");
 
     public static String compile(Library library) {
-        String output = "library(" + library.getName() + ") {\n" + library.getFileData()[0];
+        String output = "library(" + library.getName() + ") {\n" + library.getLibraryContent();
         for (Cell cell : library.getCells()) {
             output += compile(cell);
         }
