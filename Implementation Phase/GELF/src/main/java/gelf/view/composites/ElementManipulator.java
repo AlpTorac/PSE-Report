@@ -19,7 +19,7 @@ public abstract class ElementManipulator extends Panel {
         super(width, height);
         this.element = e;
         this.project = p;
-        this.setBackground(Color.red);
+        this.setBackground(ColorTheme.section);
     }
 
     public gelf.model.elements.Element getElement() {

@@ -58,7 +58,7 @@ public class SubWindow extends Panel {
         super(width, height);
         this.e = e;
         //element manipulators
-        this.eVisualizer = new Visualizer(e,this, p, 200, 100);
+        this.eVisualizer = new Visualizer(e,this, p, 300, 100);
         this.eVisualizer.setVisible(true);
         this.eTextEditor = new TextEditor(e, p, 200, 100);
         this.eTextEditor.setVisible(true);
@@ -68,7 +68,7 @@ public class SubWindow extends Panel {
         this.setBackground(cBackground);
         Border margin = BorderFactory.createLineBorder(cBorder, 2);
         this.setBorder(margin);
-        this.setPreferredSize(new Dimension(300, 200));
+        this.setPreferredSize(new Dimension(500, 500));
         // menu
         this.bar = new Panel(this.getWidth(), 30);
         this.bar.setLayout(new BoxLayout(this.bar, BoxLayout.LINE_AXIS));
