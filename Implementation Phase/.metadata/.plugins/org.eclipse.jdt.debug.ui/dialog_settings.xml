@@ -9,11 +9,12 @@
 		<item key="SashWeightDetails" value="500"/>
 	</section>
 	<section name="conditionHistory">
-		<item key="conditionHistoryEntry_0" value="(dc instanceof DiagramValueDisplayComponent) &amp;&amp; ((DiagramValueDisplayComponent) dc).getValue() == 7"/>
-		<item key="conditionHistoryEntryCount" value="5"/>
-		<item key="conditionHistoryEntry_1" value="(dc instanceof DiagramValueComponent) &amp;&amp; ((DiagramValueComponent) dc).getValue() == 7"/>
-		<item key="conditionHistoryEntry_2" value="(dc instanceof BarChartBar) &amp;&amp; ((BarChartBar) dc).getValue() == 7"/>
-		<item key="conditionHistoryEntry_3" value="diagram.getContainingElement() == null"/>
-		<item key="conditionHistoryEntry_4" value="diagram == null"/>
+		<item key="conditionHistoryEntry_0" value="barIndex == 10"/>
+		<item key="conditionHistoryEntryCount" value="6"/>
+		<item key="conditionHistoryEntry_1" value="(dc instanceof DiagramValueDisplayComponent) &amp;&amp; ((DiagramValueDisplayComponent) dc).getValue() == 7"/>
+		<item key="conditionHistoryEntry_2" value="(dc instanceof DiagramValueComponent) &amp;&amp; ((DiagramValueComponent) dc).getValue() == 7"/>
+		<item key="conditionHistoryEntry_3" value="(dc instanceof BarChartBar) &amp;&amp; ((BarChartBar) dc).getValue() == 7"/>
+		<item key="conditionHistoryEntry_4" value="diagram.getContainingElement() == null"/>
+		<item key="conditionHistoryEntry_5" value="diagram == null"/>
 	</section>
 </section>

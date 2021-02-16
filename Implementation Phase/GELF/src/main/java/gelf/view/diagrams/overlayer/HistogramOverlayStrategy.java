@@ -7,7 +7,6 @@ import gelf.view.diagrams.components.DiagramComponent;
 import gelf.view.diagrams.components.DiagramValueDisplayComponent;
 import gelf.view.diagrams.components.HistogramBar;
 import gelf.view.diagrams.data.DiagramData;
-import gelf.view.diagrams.type.BarChart;
 import gelf.view.diagrams.type.Histogram;
 
 public class HistogramOverlayStrategy extends DiagramOverlayStrategy implements IHistogramBuilder {

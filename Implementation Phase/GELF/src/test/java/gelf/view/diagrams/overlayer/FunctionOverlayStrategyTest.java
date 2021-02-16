@@ -13,7 +13,6 @@ import gelf.view.diagrams.TestCase;
 import gelf.view.diagrams.TestFrame;
 import gelf.view.diagrams.TestPanel;
 import gelf.view.diagrams.builder.FunctionGraphBuilder;
-import gelf.view.diagrams.components.BarChartBar;
 import gelf.view.diagrams.components.DiagramValueDisplayComponent;
 import gelf.view.diagrams.components.ValueDisplayPoint;
 
