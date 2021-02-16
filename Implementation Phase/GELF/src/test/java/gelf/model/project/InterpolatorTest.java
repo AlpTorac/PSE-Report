@@ -5,16 +5,23 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class InterpolatorTest {
+	Interpolator interpolator;
+
+	@BeforeAll
+	void buildInterpolator() {
+		Interpolator interpolator = new Interpolator();
+	}
 
 	@Test
 	void interpolateTest1() {
 		float[] index1 = new float[] {1f, 2.5f, 3.1f};
 		float[] values = new float[] {0.32f, 0.45f, 0.52f};
 		float[] newIndex = new float[] {1f, 2.5f, 2.2f};
-		float[] newValues = Interpolator.interpolate(index1, values, newIndex);
+		float[] newValues = interpolator.interpolate(index1, values, newIndex);
 		assertArrayEquals(new float[] {0.32f, 0.45f, 0.4188f}, newValues, 0.001f);
 	}
 	
@@ -23,7 +30,7 @@ class InterpolatorTest {
 		float[] index1 = new float[] {1f, 2.5f};
 		float[] values = new float[] {0.32f, 0.45f};
 		float[] newIndex = new float[] {1f, 2.2f};
-		float[] newValues = Interpolator.interpolate(index1, values, newIndex);
+		float[] newValues = interpolator.interpolate(index1, values, newIndex);
 		assertArrayEquals(new float[] {0.32f, 0.424f}, newValues, 0.001f);
 	}
 	
@@ -32,7 +39,7 @@ class InterpolatorTest {
 		float[] index1 = new float[] {1f};
 		float[] values = new float[] {0.32f};
 		float[] newIndex = new float[] {1f, 2.2f, 4.5f};
-		float[] newValues = Interpolator.interpolate(index1, values, newIndex);
+		float[] newValues = interpolator.interpolate(index1, values, newIndex);
 		assertArrayEquals(new float[] {0.32f, 0.32f, 0.32f}, newValues);
 	}
 	
@@ -41,7 +48,7 @@ class InterpolatorTest {
 		float[] index1 = new float[] {1f};
 		float[] values = new float[] {0.32f};
 		float[] newIndex = null;
-		float[] newValues = Interpolator.interpolate(index1, values, newIndex);
+		float[] newValues = interpolator.interpolate(index1, values, newIndex);
 		Assertions.assertNull(newValues);
 	}
 	
@@ -50,7 +57,7 @@ class InterpolatorTest {
 		float[] index1 = new float[] {1f};
 		float[] values = new float[] {0.32f};
 		float[] newIndex = new float[0];
-		float[] newValues = Interpolator.interpolate(index1, values, newIndex);
+		float[] newValues = interpolator.interpolate(index1, values, newIndex);
 		Assertions.assertNull(newValues);
 	}
 	
@@ -65,7 +72,7 @@ class InterpolatorTest {
 										{0.7f, 0.43f, -1f, 5f, -4f}};
 		float[] newIndex1 = new float[] {0.3f, 2.5f, 2.2f};
 		float[] newIndex2 = new float[] {0.43f, 0.52f};
-		float[][] newValues = Interpolator.bicubicInterpolate(index1, index2, values, newIndex1, newIndex2);
+		float[][] newValues = interpolator.bicubicInterpolate(index1, index2, values, newIndex1, newIndex2);
 		float[][] expectedValues = new float[][] {{0.32f, 0.45f, 0.52f}, 
 			{0.1f, 0.4f, -0.3f},
 			{0.7f, 0.43f, -1f}};

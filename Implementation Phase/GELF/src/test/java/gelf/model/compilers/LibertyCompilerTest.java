@@ -399,7 +399,7 @@ class LibertyCompilerTest {
 	void compileCellTest() throws InvalidFileFormatException {
 		Cell focusedCell = exampleLibrary.getCells().get(0);
 		String compiledString = LibertyCompiler.compile(focusedCell);
-		Cell resCell = LibertyParser.parseCell(compiledString.replaceAll("\\s+", ""));
+		Cell resCell = LibertyParser.parseCell(compiledString.replaceAll("\\s+", ""), "library");
 		assertEquals(focusedCell.getName(), resCell.getName());
 		for (int i = 0; i < focusedCell.getLeakages().getValues().length; i++) {
 			assertEquals(focusedCell.getLeakages().getValues()[i], resCell.getLeakages().getValues()[i]);
@@ -418,7 +418,7 @@ class LibertyCompilerTest {
 		ArrayList<InputPin> relatedPins = exampleLibrary.getCells().get(0).getInPins();
 		InputPin focusedPin = relatedPins.get(0);
 		String compiledString = LibertyCompiler.compile(focusedPin);
-		Pin resultingPin = LibertyParser.parsePin(compiledString.replaceAll("\\s+", ""), relatedPins);
+		Pin resultingPin = LibertyParser.parsePin(compiledString.replaceAll("\\s+", ""), relatedPins, "library/AND2_X1");
 		assertTrue(resultingPin instanceof InputPin);
 		InputPin resInPin = (InputPin) resultingPin;
 		assertEquals(focusedPin.getName(), resInPin.getName());
@@ -435,7 +435,7 @@ class LibertyCompilerTest {
 		ArrayList<InputPin> relatedPins = exampleLibrary.getCells().get(0).getInPins();
 		OutputPin focusedPin = exampleLibrary.getCells().get(0).getOutPins().get(0);
 		String compiledString = LibertyCompiler.compile(focusedPin);
-		Pin resultingPin = LibertyParser.parsePin(compiledString.replaceAll("\\s+", ""), relatedPins);
+		Pin resultingPin = LibertyParser.parsePin(compiledString.replaceAll("\\s+", ""), relatedPins, "library/AND2_X1");
 		assertTrue(resultingPin instanceof OutputPin);
 		OutputPin resOutPin = (OutputPin) resultingPin;
 		assertEquals(focusedPin.getName(), resOutPin.getName());

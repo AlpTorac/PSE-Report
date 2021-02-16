@@ -473,7 +473,7 @@ class LibertyParserTest {
 	
 	@Test 
 	void parsyTest() throws InvalidFileFormatException {
-		Cell celly = LibertyParser.parseCell(test);
+		Cell celly = LibertyParser.parseCell(test, "library");
 		assertTrue(true);
 	}
 	
@@ -488,7 +488,7 @@ class LibertyParserTest {
 	
 	@Test
 	void parseCellTest() throws InvalidFileFormatException {
-		Cell cell = LibertyParser.parseCell(cellExample.replaceAll("\\s+", ""));
+		Cell cell = LibertyParser.parseCell(cellExample.replaceAll("\\s+", ""), "library");
 		assertEquals("AND2_X1", cell.getName());
 		assertEquals(0.005445f, cell.getDefaultLeakage());
 		assertArrayEquals(new float[] {0.002177f, 0.003654f, 0.003458f, 0.005445f}, cell.getLeakages().getValues());
@@ -514,7 +514,7 @@ class LibertyParserTest {
 		ArrayList<InputPin> relatedPins = new ArrayList<InputPin>();
 		relatedPins.add(pinA1);
 		relatedPins.add(pinA2);
-		OutputPin pin = (OutputPin) LibertyParser.parsePin(outputPinExample.replaceAll("\\s+", ""), relatedPins);
+		OutputPin pin = (OutputPin) LibertyParser.parsePin(outputPinExample.replaceAll("\\s+", ""), relatedPins, "library/cell");
 		assertEquals(0.1f, pin.getMaxCapacitance());
 		assertEquals(0.0004f, pin.getMinCapacitance());
 		assertEquals("Z", pin.getName());
@@ -547,7 +547,7 @@ class LibertyParserTest {
 	
 	@Test
 	void parsePinTest1() throws InvalidFileFormatException { 
-		InputPin pin = (InputPin) LibertyParser.parsePin(inputPinExample.replaceAll("\\s+", ""), new ArrayList<InputPin>()); 
+		InputPin pin = (InputPin) LibertyParser.parsePin(inputPinExample.replaceAll("\\s+", ""), new ArrayList<InputPin>(), "library/cell"); 
 		assertEquals(pin.getCapacitance(), 0.001469f);
 		assertEquals(pin.getName(), "A3");
 		ArrayList<InputPower> powers = pin.getInputPowers();
@@ -562,7 +562,7 @@ class LibertyParserTest {
 	
 	@Test 
 	void parseOutPowerTest() throws InvalidFileFormatException {
-		OutputPower outPower = LibertyParser.parseOutPower(outputPowerExample);
+		OutputPower outPower = LibertyParser.parseOutPower(outputPowerExample, "library/cell/pin");
 		float[][] values = new float[][] {{0.001009f, 0.001043f, 0.001056f, 0.001058f}, 
 									{0.0009569f, 0.0009777f, 0.0009895f, 0.0009899f},
 									{0.0009458f, 0.0009591f, 0.0009767f, 0.0009837f}};
@@ -573,7 +573,7 @@ class LibertyParserTest {
 	
 	@Test 
 	void parseInPowerTest() throws InvalidFileFormatException {
-		InputPower inPower = LibertyParser.parseInPower(inPowerExample);
+		InputPower inPower = LibertyParser.parseInPower(inPowerExample, "library/cell/pin");
 		assertEquals(PowerGroup.RISE_POWER, inPower.getPowGroup());
 		assertArrayEquals(exampleIndex1, inPower.getIndex1());
 		assertArrayEquals(new float[] {-1.642e-05f, -4.167e-05f, -5.856e-05f}, inPower.getValues());
@@ -581,7 +581,7 @@ class LibertyParserTest {
 	
 	@Test
 	void parseOutTimingTest() throws InvalidFileFormatException {
-		Timing timing = LibertyParser.parseOutTiming(timingExample, TimingSense.NEGATIVE_UNATE, TimingType.COMBINATIONAL_RISE);
+		Timing timing = LibertyParser.parseOutTiming(timingExample, TimingSense.NEGATIVE_UNATE, TimingType.COMBINATIONAL_RISE, "library/cell/pin");
 		float[][] values = new float[][] {{0.003091f, 0.00493f, 0.01122f, 0.02329f},
 										{0.006286f, 0.008379f, 0.01472f, 0.02668f},
 										{0.01125f, 0.01586f, 0.02594f, 0.03874f}};
