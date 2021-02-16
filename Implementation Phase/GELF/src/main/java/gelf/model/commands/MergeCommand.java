@@ -40,12 +40,14 @@ public class MergeCommand implements Command {
         float[] index2 = firstCell.getIndex2();
         for (int i = 1; i < cells.size(); i++) {
             Cell currentCell = cells.get(i);
-            if (!currentCell.getIndex1().equals(index1) || !currentCell.getIndex1().equals(index2)) {
+            if (!currentCell.getIndex1().equals(index1) || !currentCell.getIndex2().equals(index2)) {
                 currentCell.interpolate(index1, index2);
             }
         }
         productLibrary = new Library(name, index1, index2, null, cells);
-        currentModel.getCurrentProject().getLibraries().add(productLibrary);
+        ArrayList<Library> libraries = currentModel.getCurrentProject().getLibraries();
+        libraries.add(productLibrary);
+        currentModel.getCurrentProject().setLibraries(libraries);
         currentModel.getCurrentCommandHistory().addCommand(this);
         currentModel.getCurrentProject().inform();
     }

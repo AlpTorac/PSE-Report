@@ -11,9 +11,9 @@ import java.util.Collections;
 import java.util.HashMap;
 
 public class NameConflictResolver {
-    private ArrayList<Cell> deletedCells;
-    private ArrayList<Cell> cells;
-    private HashMap<Cell, String> renamedCells;
+    private ArrayList<Cell> deletedCells =  new ArrayList<Cell>();
+    private ArrayList<Cell> cells = new ArrayList<Cell>();
+    private HashMap<Cell, String> renamedCells = new HashMap<Cell, String>();
 
     public NameConflictResolver(ArrayList<Cell> cells) {
         if (cells.size() <= 1) {

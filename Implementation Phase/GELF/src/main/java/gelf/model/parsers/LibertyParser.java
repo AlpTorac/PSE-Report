@@ -118,7 +118,7 @@ public class LibertyParser {
         float defaultLeakage = 0f;
         boolean hasDefaultLeakage = false;
         ArrayList<String> unsupportedData = new ArrayList<String>();
-        for (int i = 0; i < cellParameters.length - 1; i++) {
+        for (int i = 0; i < cellParameters.length; i++) {
         	String[] paramParts = cellParameters[i].split(":");
         	switch (paramParts[0]) {
         	case "cell_leakage_power":
