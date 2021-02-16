@@ -17,7 +17,7 @@ import gelf.view.components.Panel;
 public class SubWindowArea extends Panel {
     private JScrollPane pane;
     private Panel windowPanel;
-    private int maxSubWindows = 3;
+    private int maxSubWindows = 10;
     private ArrayList<SubWindow> subWindows = new ArrayList<>();
     //colors
     private Color cBackground = ColorTheme.frame;

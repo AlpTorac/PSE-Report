@@ -3,15 +3,20 @@ package gelf.view.composites;
 import gelf.model.elements.Cell;
 import gelf.model.elements.Element;
 import gelf.model.elements.Library;
+import gelf.model.elements.Stat;
 import gelf.model.project.Project;
 
 import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 
 import gelf.view.components.Checkbox;
 import gelf.view.components.Panel;
+import gelf.view.diagrams.DiagramWizard;
+import gelf.view.diagrams.IDiagram;
 import gelf.view.representation.CellPanel;
 import gelf.view.representation.DataPanel;
 import gelf.view.representation.LibraryPanel;
@@ -24,6 +29,8 @@ public class Visualizer extends ElementManipulator {
 	DataPanel dataPanel;
 	Panel upperPanel;
 	Panel lowerPanel;
+	Panel diagramPanel;
+	IDiagram diagram;
 	
     public Visualizer(gelf.model.elements.Element e, SubWindow w, Project p, int width, int height) {
         super(e, p, width, height);
@@ -67,9 +74,23 @@ public class Visualizer extends ElementManipulator {
 		Checkbox med = new Checkbox("Median");
 		med.setVisible(true);
 		stats.add(med);
-		//stats.add(Box.createHorizontalGlue());
-		this.lowerPanel.add(stats, BorderLayout.PAGE_START);
+		this.lowerPanel.add(stats, BorderLayout.PAGE_END);
+		//diagram viewport
+		DiagramWizard wiz = new DiagramWizard();
+		ArrayList<float[]> data = new ArrayList<float[]>();
+		data.add(new float[]{1,2,3.5f,5.3f,4.9f});
+		this.diagramPanel = new Panel(500, 500);
+		this.diagramPanel.setBackground(ColorTheme.text);
+		this.diagramPanel.setLayout(null);
+		this.diagramPanel.setOpaque(true);
+		this.diagram = wiz.makeBarChart(this.diagramPanel, data);
+		this.diagram.attachToContainer(this.diagramPanel);
+		this.diagram.refresh();
+		this.diagramPanel.setVisible(true);
+		this.lowerPanel.add(this.diagramPanel, BorderLayout.CENTER);
+
 		this.add(this.lowerPanel);
+		this.addComponentListener(this);
     } 
     
     public void setElement(Element e) {
@@ -84,6 +105,18 @@ public class Visualizer extends ElementManipulator {
     	upperPanel.add(dataPanel);
     	this.revalidate();
     	this.repaint();
-    	
   	}
+
+	@Override
+	public void componentResized(ComponentEvent e) {
+		super.componentResized(e);
+		
+		DiagramWizard wiz = new DiagramWizard();
+		ArrayList<float[]> data = new ArrayList<float[]>();
+		data.add(new float[]{1,2,3.5f,5.3f,4.9f});
+		this.diagram.removeFromContainer();
+		this.diagram = wiz.makeBarChart(this.diagramPanel, data);
+		this.diagram.attachToContainer(this.diagramPanel);
+		this.diagram.refresh();
+	}
 }
