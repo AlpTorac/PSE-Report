@@ -56,24 +56,32 @@ public class PasteCommand implements Command {
 		NameConflictResolver conflictResolver = 
 				new NameConflictResolver(cellsToComp);
 		ArrayList<Cell> cells = conflictResolver.getCells();
+		
 		deletedCells = conflictResolver.getDeletedCells();
+		
 		renamedCellsOldNames = conflictResolver.getRenamedCells();
 		
-		Iterator<Cell> cellsIt = cells.iterator();
-		boolean exists = false;
 		
+		Iterator<Cell> cellsIt = cells.iterator();
 		while(cellsIt.hasNext()) {
-			
+			boolean exists = false;
 			Cell curCell = cellsIt.next();
+			//System.out.println(curCell.getName());
+			
+			destLibCellsIt = destLibCells.iterator();
 			while(destLibCellsIt.hasNext()) {
-				Cell curLibCell = destLibCellsIt.next();
-				if(curCell.equals(curLibCell)) {
+				Cell curDestCell = destLibCellsIt.next();
+				System.out.println(curDestCell);
+				System.out.println(curCell);
+				if(curCell.getName().equals(curDestCell.getName())) {
 					exists = true;
 					break;
 				}
 			}
-			if(exists = false) {
-				destinationLibrary.getCells().add(curCell);
+			if(exists == false) {
+				Cell cloneCell = curCell.clone();
+				destinationLibrary.getCells().add(cloneCell);
+				cloneCell.setParentLibrary(destinationLibrary);
 			}
 		}
 		currentModel.getCurrentProject().inform();

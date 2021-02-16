@@ -61,6 +61,9 @@ public class NameConflictResolver {
 
     @SuppressWarnings("unchecked")
     public ArrayList<Cell> getDeletedCells() {
+    	if (deletedCells == null) {
+    		return null;
+    	}
         return (ArrayList<Cell>) deletedCells.clone();
     }
 
@@ -71,6 +74,9 @@ public class NameConflictResolver {
 
     @SuppressWarnings("unchecked")
     public HashMap<Cell, String> getRenamedCells() {
+    	if (renamedCells == null) {
+    		return null;
+    	}
         return (HashMap<Cell, String>) renamedCells.clone();
     }
 }
