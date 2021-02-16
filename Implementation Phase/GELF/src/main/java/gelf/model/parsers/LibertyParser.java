@@ -145,6 +145,7 @@ public class LibertyParser {
     /**
      * Parses a String data assuming it is a Cell
      * @param cellString the String data of a Cell file
+     * @param path the path to the Cell
      * @return the parsed Cell object
      * @throws InvalidFileFormatException if the format of the Cell is not recognised
      */
@@ -233,6 +234,7 @@ public class LibertyParser {
      * parsing new Files, we don't initially know which pin to expect
      * @param pinString the String data of a Pin
      * @param relatedPins the pins related to it. Neccessary if it is an output Pin
+     * @param path the path to the Pin
      * @return the parsed Pin. Eithe InputPin or OutputPin
      * @throws InvalidFileFormatException if the format of the Cell is not recognised
      */
@@ -563,6 +565,7 @@ public class LibertyParser {
      * Parses an array that contains Internal Power information on an output Pin to give the
      * OutputPower object
      * @param content the string of the Internal Power attribute
+     * @param path the path to the Internal Power
      * @return the parsed Internal Power Attribute
      * @throws InvalidFileFormatException if the Format of the Internal Power attribute doesn't fit
      * expected format
@@ -574,7 +577,7 @@ public class LibertyParser {
                 powGroup = powGroupEnum;
             }   
         }
-        float[][] values = parseDoubleArray(content, "values");
+        float[][] values = parseDoubleArray(content, "values", path);
         float[] index1 = parseArray(content, "index_1");
         float[] index2 = parseArray(content, "index_2");
         OutputPower attribute = new OutputPower(powGroup, values);
@@ -583,7 +586,7 @@ public class LibertyParser {
         if (values.length == 0) {
             throw new InvalidFileFormatException("Values are empty in internal_power of Pin \"" + path + "\"");
         }
-        if (values.length != index1.length && values[0].length != index2.length) {
+        if (values.length != index1.length || values[0].length != index2.length) {
             throw new InvalidFileFormatException("Values length mismatch in internal_power of Pin \"" + path + "\"");
         }
         return attribute;
@@ -593,6 +596,7 @@ public class LibertyParser {
      * Parses an array that contains Internal Power information on an input Pin to give the
      * InputPower object
      * @param content the string of the Internal Power attribute
+     * @param path the path to the Internal Power
      * @return the parsed Internal Power Attribute
      * @throws InvalidFileFormatException if the Format of the Internal Power attribute doesn't fit
      * expected format
@@ -623,6 +627,7 @@ public class LibertyParser {
      * @param content the string of the Timing attribute
      * @param timSense the timing Sense
      * @param timType the timing Type
+     * @param path the path to this timing
      * @return the parsed Timing Attribute
      * @throws InvalidFileFormatException if the Format of the Timing attribute doesn't fit
      * expected format
@@ -635,7 +640,7 @@ public class LibertyParser {
                 timGroup = timingEnum;
             }
         }
-        float[][] values = parseDoubleArray(content, "values");
+        float[][] values = parseDoubleArray(content, "values", path);
         float[] index1 = parseArray(content, "index_1");
         float[] index2 = parseArray(content, "index_2");
         Timing attribute = new Timing(timSense, timType, timGroup, values);
@@ -644,7 +649,7 @@ public class LibertyParser {
         if (values.length == 0) {
             throw new InvalidFileFormatException("Values are empty in timing of Pin \"" + path + "\"");
         }
-        if (values.length != index1.length && values[0].length != index2.length) {
+        if (values.length != index1.length || values[0].length != index2.length) {
             throw new InvalidFileFormatException("Values mismatch in timing of Pin \"" + path + "\"");
         }
         return attribute;
@@ -667,11 +672,15 @@ public class LibertyParser {
     /**
      * Parses the string of an attribute but looking for a double array of the
      * parameter arrayName, so that values can be parsed for attributes
-     * @param content the String of an attribute that contains the double array
+     * 
+     * @param content   the String of an attribute that contains the double array
      * @param arrayName the parameter name
+     * @param path the path to the double array
      * @return the array object of the parameter name
+     * @throws InvalidFileFormatException
      */
-    public static float[][] parseDoubleArray(String content, String arrayName) {
+    public static float[][] parseDoubleArray(String content, String arrayName, String path)
+            throws InvalidFileFormatException {
         int firstIndex = content.indexOf(arrayName) + arrayName.length();
         int lastIndex = content.indexOf(";", firstIndex);
         String arrayStrings = content.substring(firstIndex + 1, lastIndex - 1);
@@ -679,6 +688,16 @@ public class LibertyParser {
         float[][] result = new float[separatedArrayStrings.length][]; 
         for (int i = 0; i < separatedArrayStrings.length; i++) {
             result[i] = stringToArray(separatedArrayStrings[i] + "\"");
+        }
+        if (result.length == 0) {
+            throw new InvalidFileFormatException("Values are empty in timing of Pin \"" + path + "\"");
+        }
+        int uniformLength = result[0].length;
+        for (float[] array : result) {
+            if (array.length != uniformLength) {
+                throw new InvalidFileFormatException("Values have differen array lengths " 
+                    + "in timing of Pin \"" + path + "\"");
+            }
         }
         return result;
     }
