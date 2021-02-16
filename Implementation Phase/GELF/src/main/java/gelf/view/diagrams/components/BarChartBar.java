@@ -17,4 +17,14 @@ public class BarChartBar extends DiagramBar {
 				this.getBottomRightInDiagram().clone(),
 				this.getBorderThickness());
 	}
+	
+	@Override
+	protected String getRoundedPositionInDiagramString() {
+		String result = "";
+		
+		result += "bar " +
+		String.valueOf((int) this.getBottomRightInDiagram().getXCoordinate());
+		
+		return result;
+	}
 }
