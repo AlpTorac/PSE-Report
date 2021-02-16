@@ -2,20 +2,23 @@ package gelf.model.commands;
 
 import gelf.model.parsers.LibertyParser;
 import gelf.model.project.Model;
+import gelf.model.project.Project;
 import gelf.model.elements.*;
 import gelf.model.exceptions.InvalidFileFormatException;
 
-import java.util.ArrayList;
-
 /**
- * NEED TO DISCUSS HOW OLD\NEW CONTENT IS SENT BACK TO THE PANEL
+ * Updates the data in a given element according to the user input String in the text edit
+ * @author Xhulio Pernoca
  */
 public class TextEditCommand implements Command {
+    //Useful depending on how the undo functionality is implemented for TextEdit
     private String oldContent;
     private String newContent;
+
     private Element newElement;
     private Element oldElement;
     private Model currentModel = Model.getInstance();
+    private Project currentProject = currentModel.getCurrentProject();
 
     public TextEditCommand(String oldContent, String newContent, Element element) throws InvalidFileFormatException {
         this.oldContent = oldContent;
@@ -31,48 +34,13 @@ public class TextEditCommand implements Command {
     }
 
     public void execute() {
-        replaceElement(oldElement, newElement);
+        currentProject.replaceElement(oldElement, newElement);
         currentModel.getCurrentCommandHistory().addCommand(this);
-        currentModel.getCurrentProject().inform();
-    }
-
-    /**
-     * Method to replace old elements with new ones using different strategies according
-     * to the class type. It can also be used by undo(). SHOULD THIS BE IN PROJECT?
-     * @param oldElement the element to be replaced
-     * @param newElement the element it is replaced with
-     */
-    private void replaceElement(Element oldElement, Element newElement) {
-        
-        if (newElement instanceof Library) {
-            Library newLibrary = (Library) newElement;
-            ArrayList<Library> libraries = currentModel.getCurrentProject().getLibraries();
-            libraries.remove(oldElement);
-            libraries.add(newLibrary);
-            currentModel.getCurrentProject().setLibraries(libraries);
-        } else if (newElement instanceof Cell) {
-            Cell newCell = (Cell) newElement;
-            ArrayList<Cell> cells = newCell.getParentLibrary().getCells();
-            cells.remove(oldElement);
-            cells.add(newCell);
-            newCell.getParentLibrary().setCells(cells);
-        } else if (newElement instanceof InputPin) {
-            InputPin newPin = (InputPin) newElement;
-            ArrayList<InputPin> pins = newPin.getParent().getInPins();
-            pins.remove(oldElement);
-            pins.add(newPin);
-            newPin.getParent().setInPins(pins);
-        } else {
-            OutputPin newPin = (OutputPin) newElement;
-            ArrayList<OutputPin> pins = newPin.getParent().getOutPins();
-            pins.remove(oldElement);
-            pins.add(newPin);
-            newPin.getParent().setOutPins(pins);
-        }
+        currentProject.inform();
     }
 
     public void undo() {
-    	replaceElement(newElement, oldElement);
-        currentModel.getCurrentProject().inform();
+    	currentProject.replaceElement(newElement, oldElement);
+        currentProject.inform();
     }
 }

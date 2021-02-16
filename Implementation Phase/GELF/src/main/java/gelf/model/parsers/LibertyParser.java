@@ -24,57 +24,100 @@ import gelf.model.elements.attributes.TimingSense;
 import gelf.model.elements.attributes.TimingType;
 import gelf.model.exceptions.InvalidFileFormatException;
 import gelf.model.project.Interpolator;
-import java.util.ArrayList;
-import gelf.model.elements.*;
 
 /**
- * Parses the Liberty Files to their corresponding data objects
+ * Parses the Liberty Files to their corresponding data objects so that
+ * they can be easily manipulated and displayed in graphs
+ * @author Xhulio Pernoca
  */
 public class LibertyParser {
+    // The format of an Elements name
     private static final String NAMEFORMAT = "([a-zA-Z]|_|-|[0-9])*";
-    private static final String ATTRNAMEFORMAT = "([a-zA-Z]*[_]?[a-zA-Z]*)+";
-    private static final String FUNCTIONFORMAT = "([a-zA-Z]|_|-|\\^|\\||\\(|\\)|&|\\!|[0-9])+";
-    private static final String FLOATFORMAT = "[-+]?[0-9]*(\\.)?[0-9]+([eE][-+]?[0-9]+)?";
-    private static final String PARAMFORMAT = ATTRNAMEFORMAT + "\\:(\"\\(" + FUNCTIONFORMAT 
-    		+ "\\)\"|\"" + NAMEFORMAT + "\"|" + FLOATFORMAT + "|" + ATTRNAMEFORMAT + "|\"" 
-			+ ATTRNAMEFORMAT + "\");";
-    private static final String ARRAYFORMAT = "\"((" + FLOATFORMAT +",)(\\\\)?)*" + FLOATFORMAT + "\"";
-    private static final String DOUBLEARRAYFORMAT = "(" + ARRAYFORMAT + ",(\\\\)?)*" + ARRAYFORMAT;
-    private static final String INATTRIBUTESFORMAT = ATTRNAMEFORMAT + "\\(" + NAMEFORMAT + "\\)\\{"
-    		+ "index_1\\(" + ARRAYFORMAT + "\\);values\\(" + ARRAYFORMAT + "\\);\\}";
-    private static final String OUTATTRIBUTESFORMAT = ATTRNAMEFORMAT + "\\(" + NAMEFORMAT + "\\)\\{"
-    		+ "index_1\\(" + ARRAYFORMAT + "\\);index_2\\(" + ARRAYFORMAT + "\\);values\\("
-    				+ DOUBLEARRAYFORMAT + "\\);\\}";
-    private static final String LEAKAGEFORMAT = "leakage_power\\(\\)\\{when:\"" + FUNCTIONFORMAT
-			+ "\";value:\"" + FLOATFORMAT + "\";\\}";
-    private static String powerGroupSeparator = "";
-    private static String timingGroupSeparator = "";
-    private static final String PINFORMAT = "pin\\(" + NAMEFORMAT + "\\)\\{(" + PARAMFORMAT
-    		+ ")+((internal_power|timing)\\(" + NAMEFORMAT + "\\)\\{(" + PARAMFORMAT
-    		+ ")*((" + INATTRIBUTESFORMAT + ")+|(" + OUTATTRIBUTESFORMAT + ")+)\\})+\\}";
-    private static final String CELLFORMAT = "cell\\(" + NAMEFORMAT + "\\)\\{(" + PARAMFORMAT
-    		+ ")+(" + LEAKAGEFORMAT + ")+(" + PINFORMAT + ")+\\}"; 
-    private static final String LIBRARYFORMAT = "library\\(" + NAMEFORMAT + "\\)\\{"
-    		+ ".*(" + CELLFORMAT + ")+\\}";
 
+    // The format of an attribute's or parameter's name, not implemented because of runtime
+    /* private static final String ATTRNAMEFORMAT = "([a-zA-Z]*[_]?[a-zA-Z]*)+";*/
+    
+    // The format of a function 
+    private static final String FUNCTIONFORMAT = "([a-zA-Z]|_|-|\\^|\\||\\(|\\)|&|\\!|[0-9])+";
+    
+    // The format of a float value
+    private static final String FLOATFORMAT = "[-+]?[0-9]*(\\.)?[0-9]+([eE][-+]?[0-9]+)?";
+
+    // The format of a parameter, not implemented because of runtime
+    /* private static final String PARAMFORMAT = ATTRNAMEFORMAT + "\\:(\"\\(" + FUNCTIONFORMAT 
+    		+ "\\)\"|\"" + NAMEFORMAT + "\"|" + FLOATFORMAT + "|" + ATTRNAMEFORMAT + "|\"" 
+			+ ATTRNAMEFORMAT + "\");"; */
+
+    // The format of an array, not implemented because of runtime
+    /* private static final String ARRAYFORMAT = "\"((" + FLOATFORMAT +",)(\\\\)?)*" + FLOATFORMAT + "\"";*/
+
+    // The format of an array with a depth of 2, not implemented because of runtime
+    /* private static final String DOUBLEARRAYFORMAT = "(" + ARRAYFORMAT + ",(\\\\)?)*" + ARRAYFORMAT;*/
+
+    // The format of an input Pin Attribute, not implemented because of runtime
+    /* private static final String INATTRIBUTESFORMAT = ATTRNAMEFORMAT + "\\(" + NAMEFORMAT + "\\)\\{"
+    		+ "index_1\\(" + ARRAYFORMAT + "\\);values\\(" + ARRAYFORMAT + "\\);\\}"; */
+
+    // The format of an output Pin Attribute, not implemented because of runtime
+    /* private static final String OUTATTRIBUTESFORMAT = ATTRNAMEFORMAT + "\\(" + NAMEFORMAT + "\\)\\{"
+    		+ "index_1\\(" + ARRAYFORMAT + "\\);index_2\\(" + ARRAYFORMAT + "\\);values\\("
+    				+ DOUBLEARRAYFORMAT + "\\);\\}"; */
+
+    // The format of a Leakage Attribute, not implemented because of runtime
+    /* private static final String LEAKAGEFORMAT = "leakage_power\\(\\)\\{when:\"" + FUNCTIONFORMAT
+			+ "\";value:\"" + FLOATFORMAT + "\";\\}"; */
+
+    // The format of a regex that encompasses all Power groups
+    private static String powerGroupSeparator = "";
+
+    // The format of a regex that encompasses all Timing groups
+    private static String timingGroupSeparator = "";
+
+    // The format of a pin, not implemented because of runtime
+    /* private static final String PINFORMAT = "pin\\(" + NAMEFORMAT + "\\)\\{(" + PARAMFORMAT
+    		+ ")+((internal_power|timing)\\(" + NAMEFORMAT + "\\)\\{(" + PARAMFORMAT
+    		+ ")*((" + INATTRIBUTESFORMAT + ")+|(" + OUTATTRIBUTESFORMAT + ")+)\\})+\\}"; */
+
+    // The format of a cell, not implemented because of runtime
+    /* private static final String CELLFORMAT = "cell\\(" + NAMEFORMAT + "\\)\\{(" + PARAMFORMAT
+    		+ ")+(" + LEAKAGEFORMAT + ")+(" + PINFORMAT + ")+\\}"; */
+
+    // The format of a Library, not implemented because of runtime
+    /* private static final String LIBRARYFORMAT = "library\\(" + NAMEFORMAT + "\\)\\{"
+    		+ ".*(" + CELLFORMAT + ")+\\}"; */
+
+    /**
+     * Parses a String data assuming it is a Library
+     * @param libraryString the String data of a Liberty file
+     * @return the parsed Library object
+     * @throws InvalidFileFormatException if the format of the File is not recognised
+     */
     public static Library parseLibrary(String libraryString) throws InvalidFileFormatException {
+        // checks if File data is empty
     	if (libraryString == null || libraryString.length() == 0) {
     		throw new InvalidFileFormatException("File is empty or file content"
     				+ " can't be read");
     	}
+        // checks brackets
     	checkBrackets(libraryString);
+        // removes all whitespaces
         libraryString = libraryString.replaceAll("\\s+", "");
         String noCommentsString = "";
+        // removes comments
         String[] commentsSplit = libraryString.split("(\\/\\*)|(\\*\\/)");
         for (int i = 0; i < commentsSplit.length; i += 2) {
             noCommentsString += commentsSplit[i];
         }
+        // checks format validity, removed because of current exceeding runtime 
         /*if (!noCommentsString.matches(LIBRARYFORMAT)) {
             throw new InvalidFileFormatException("Library doesn't fit format");
         }*/
+        // Splits text by cell
         String[] cellStrings = noCommentsString.split("(?=(cell\\())");
+        // Finds library name
         String[] libData = cellStrings[0].split("\\{");
         String name = libData[0].substring(libData[0].indexOf("(") + 1, libData[0].indexOf(")"));
+        // parses Cells
         ArrayList<Cell> childCells = new ArrayList<Cell>();
         for (int i = 1; i < cellStrings.length; i++) {
             childCells.add(parseCell(cellStrings[i]));
@@ -82,6 +125,7 @@ public class LibertyParser {
         if (childCells.isEmpty()) {
             throw new InvalidFileFormatException("Library doesn't have any cells in it");
         }
+        // unifies child Cells indexes
         float[] index1 = childCells.get(0).getIndex1();
         float[] index2 = childCells.get(0).getIndex2();
         for (int i = 1; i < childCells.size(); i++) {
@@ -98,10 +142,19 @@ public class LibertyParser {
         return productLibrary;
     }
 
+    /**
+     * Parses a String data assuming it is a Cell
+     * @param cellString the String data of a Cell file
+     * @return the parsed Cell object
+     * @throws InvalidFileFormatException if the format of the Cell is not recognised
+     */
     public static Cell parseCell(String cellString) throws InvalidFileFormatException {
+        // splits by pins
         String[] pinStrings = cellString.split("(?=(pin\\())");
+        // finds leakage attributes
         String[] cellLeakages = pinStrings[0].split("(?=(leakage_power\\())");
         float[] leakagesValues = new float[cellLeakages.length - 1];
+        // parses leakage values
         for (int i = 1; i < cellLeakages.length; i++) {
         	String leakageInfo = cellLeakages[i];
         	int valueIndex = leakageInfo.indexOf("value");
@@ -112,12 +165,15 @@ public class LibertyParser {
         }
         String dataAfterLeakageInfo = cellLeakages[cellLeakages.length - 1].split("\\{", 2)[1];
         cellLeakages[0] += dataAfterLeakageInfo;
+        // fetches cell name
         String[] cellData = cellLeakages[0].split("\\{");
         String name = cellData[0].substring(cellData[0].indexOf("(") + 1, cellData[0].indexOf(")"));
+        //splits the cell parameters
         String[] cellParameters = cellData[1].split(";");
         float defaultLeakage = 0f;
         boolean hasDefaultLeakage = false;
         ArrayList<String> unsupportedData = new ArrayList<String>();
+        // parses all known cell parameters
         for (int i = 0; i < cellParameters.length; i++) {
         	String[] paramParts = cellParameters[i].split(":");
         	switch (paramParts[0]) {
@@ -144,6 +200,7 @@ public class LibertyParser {
                 childOutPins.add((OutputPin) childPin);
             }
         }
+        //checks leakages attribute validity
         if (java.lang.Math.pow(2 , childInPins.size()) != leakages.getValues().length) {
         	throw new InvalidFileFormatException("Invalid number of leakage entries "
         			+ "in cell \"" + name + "\"");
@@ -168,24 +225,39 @@ public class LibertyParser {
         return productCell;
     }
 
+    /**
+     * Parses a String data assuming it is a Pin. It checks midway if it is an input Pin or
+     * an output Pin so that it can decide which format to expect. It is done this way since when
+     * parsing new Files, we don't initially know which pin to expect
+     * @param pinString the String data of a Pin
+     * @param relatedPins the pins related to it. Neccessary if it is an output Pin
+     * @return the parsed Pin. Eithe InputPin or OutputPin
+     * @throws InvalidFileFormatException if the format of the Cell is not recognised
+     */
     public static Pin parsePin(String pinString,
                          ArrayList<InputPin> relatedPins) throws InvalidFileFormatException {
+        // might move to constructor
+        // recalculates regex to separate power groups
         if (powerGroupSeparator.equals("")) {
             for (PowerGroup powGroup : PowerGroup.values()) {
                 powerGroupSeparator += "|" + powGroup.name().toLowerCase() + "\\(";
             }
             powerGroupSeparator = powerGroupSeparator.substring(1);
         }
+        // recalculates regex to separate timing groups
         if (timingGroupSeparator.equals("")) {
             for (TimingGroup timGroup : TimingGroup.values()) {
                 timingGroupSeparator += "|" + timGroup.name().toLowerCase() + "\\(";
             }
             timingGroupSeparator = timingGroupSeparator.substring(1);
         }
+        //checks pin format, removed because of exceeding runtime
         /*if (!pinString.matches(PINFORMAT)) {
         	throw new InvalidFileFormatException("Pin doesn't match format");
         }*/
+        // searches for attribute groups
 		String[] attributeStrings = pinString.split("(?=internal_power\\(|timing\\()");
+        // parses pin name
         String[] pinData = attributeStrings[0].split("\\{|\\}");
         String name = pinData[0].substring(pinData[0].indexOf("(") + 1, pinData[0].indexOf(")"));
         boolean isInput = false;
@@ -197,7 +269,9 @@ public class LibertyParser {
         float maxCap = 0;
         float minCap = 0;
         ArrayList<String> leftOverData = new ArrayList<String>();
+        // searches attribute group parameters
         String[] singleValueAttributes = pinData[1].split(";");
+        // parses all known pin parameters
         for (int i = 0; i < singleValueAttributes.length; i++) {
             String attributeData = singleValueAttributes[i]; 
             String[] attributeParts = attributeData.split(":");
@@ -263,6 +337,7 @@ public class LibertyParser {
                     leftOverData.add(attributeData);
             }
         }
+        // throws exceptions for invalid pin direction
         if (isInput & isOutput) {
             throw new InvalidFileFormatException("Pin \"" + name + "\" is defined as both input and output");
         }
@@ -270,11 +345,14 @@ public class LibertyParser {
             throw new InvalidFileFormatException("Pin \"" + name + "\" is defined as neither input nor output");
         }
         ArrayList<Attribute> attributes = new ArrayList<Attribute>();
+        // parses all known attribute
         for (int i = 1; i < attributeStrings.length; i++) {
             String attributeData = attributeStrings[i];
             InputPin relatedPin = null;
+            // parses internal power
             if (attributeData.startsWith("internal_power")) {
                 String[] powerAttributes =  attributeData.split("(?=" + powerGroupSeparator + ")");
+                // parses internal power for an output pin
                 if (isOutput) {
                 	String relatedPinString = null;
                     String[] powerAttributeData = powerAttributes[0].split("(\\{)");
@@ -298,6 +376,7 @@ public class LibertyParser {
                                 /** No other parameters supported */
                         }
                     }
+                    // gets related Pins
                     for (int j = 1; j < powerAttributes.length; j++) {
                         OutputPower power = parseOutPower(powerAttributes[j]);
                         if (relatedPin == null && relatedPinString != null) {
@@ -310,12 +389,14 @@ public class LibertyParser {
                         power.setRelatedPin(relatedPin);
                         attributes.add(power);
                     }
-                } else {
+                }
+                // parses internal power for input pins
+                else {
                     for (int j = 1; j < powerAttributes.length; j++) {
                         attributes.add(parseInPower(powerAttributes[j]));
                     }
                 }
-
+            // parses timing
             } else if (attributeData.startsWith("timing")) {
                 TimingSense timSense = null;
                 TimingType timType = null;
@@ -325,6 +406,7 @@ public class LibertyParser {
                 	String relatedPinString = null;
                     String[] timingAttributeData = timingAttributes[0].split("(\\{)");
                     String[] timingAttributeParameters = timingAttributeData[1].split(";");
+                    // parses all known timing parameters
                     for (String attributeParam : timingAttributeParameters) {
                         String[] timingAttributeParamParts = attributeParam.split(":");
                         String value = timingAttributeParamParts[1];
@@ -360,6 +442,7 @@ public class LibertyParser {
                                 /** No other parameters supported */
                         }
                     }
+                    // filters only timings of known timing groups, senses and types
                     if (timSense != null && timType != null) {
                         for (int j = 1; j < timingAttributes.length; j++) {
                         	if (relatedPin == null && relatedPinString != null) {
@@ -382,6 +465,7 @@ public class LibertyParser {
                 /* no other known multiple value attributes. Can be implemented later */
             }
         }
+        // unifies attribute indexes
         if (attributes.size() != 0) {
             if (isInput) {
                 float[] uniformIndex1 = null;
@@ -421,6 +505,7 @@ public class LibertyParser {
                 }
             }
         }
+        // instantiates the input pin if it is input
         if (isInput) {
             ArrayList<InputPower> powers = new ArrayList<InputPower>();
             for (Attribute attribute : attributes) {
@@ -438,7 +523,9 @@ public class LibertyParser {
                 }
             }
             return parsedPin;
-        } else {
+        } 
+        // instantiates the output pin if it is output
+        else {
             ArrayList<OutputPower> powers = new ArrayList<OutputPower>();
             ArrayList<Timing> timings = new ArrayList<Timing>();
             for (Attribute attribute : attributes) {
@@ -465,6 +552,15 @@ public class LibertyParser {
         }
     }
 
+
+    /**
+     * Parses an array that contains Internal Power information on an output Pin to give the
+     * OutputPower object
+     * @param content the string of the Internal Power attribute
+     * @return the parsed Internal Power Attribute
+     * @throws InvalidFileFormatException if the Format of the Internal Power attribute doesn't fit
+     * expected format
+     */
     public static OutputPower parseOutPower(String content) throws InvalidFileFormatException {
         PowerGroup powGroup = null;
         for (PowerGroup powGroupEnum : PowerGroup.values()) {
@@ -487,6 +583,14 @@ public class LibertyParser {
         return attribute;
     }
 
+    /**
+     * Parses an array that contains Internal Power information on an input Pin to give the
+     * InputPower object
+     * @param content the string of the Internal Power attribute
+     * @return the parsed Internal Power Attribute
+     * @throws InvalidFileFormatException if the Format of the Internal Power attribute doesn't fit
+     * expected format
+     */
     public static InputPower parseInPower(String content) throws InvalidFileFormatException {
         PowerGroup powGroup = null;
         for (PowerGroup powGroupEnum : PowerGroup.values()) {
@@ -507,6 +611,16 @@ public class LibertyParser {
         return attribute;
     }
 
+    /**
+     * Parses an array that contains Timing information on an output Pin to give the
+     * Timing object
+     * @param content the string of the Timing attribute
+     * @param timSense the timing Sense
+     * @param timType the timing Type
+     * @return the parsed Timing Attribute
+     * @throws InvalidFileFormatException if the Format of the Timing attribute doesn't fit
+     * expected format
+     */
     public static Timing parseOutTiming(String content, TimingSense timSense, TimingType timType)
             throws InvalidFileFormatException {
         TimingGroup timGroup = null;
@@ -530,6 +644,13 @@ public class LibertyParser {
         return attribute;
     }
 
+    /**
+     * Parses the string of an attribute, but looking for an array of the
+     * parameter arrayName, so that indexes can be parsed for attributes
+     * @param content the String of an attribute that contains the array
+     * @param arrayName the parameter name
+     * @return the array object of the parameter name
+     */
     public static float[] parseArray(String content, String arrayName){
         int firstIndex = content.indexOf(arrayName) + arrayName.length();
         int lastIndex = content.indexOf(";", firstIndex);
@@ -537,6 +658,13 @@ public class LibertyParser {
         return stringToArray(arrayString);
     }
 
+    /**
+     * Parses the string of an attribute but looking for a double array of the
+     * parameter arrayName, so that values can be parsed for attributes
+     * @param content the String of an attribute that contains the double array
+     * @param arrayName the parameter name
+     * @return the array object of the parameter name
+     */
     public static float[][] parseDoubleArray(String content, String arrayName) {
         int firstIndex = content.indexOf(arrayName) + arrayName.length();
         int lastIndex = content.indexOf(";", firstIndex);
@@ -549,6 +677,12 @@ public class LibertyParser {
         return result;
     }
 
+    /**
+     * Parses a String of an array to an float[] array object so that the attributes
+     * can read the values
+     * @param content the string containing the array
+     * @return the float[] array object
+     */
     public static float[] stringToArray(String content) {
         content = content.replaceAll("(\"|\\\\)", "");
         String[] stringArray = content.split(",");
@@ -559,6 +693,12 @@ public class LibertyParser {
         return floatArray;
     }
     
+    /**
+     * Checks the indexes on an output Pin of a Cell so that the Cell (and also its parent Library) 
+     * can get the indexes
+     * @param outPins the output Pins of the cell
+     * @return An array containing index1 array in it's first index and index2 in it's second
+     */
     private static float[][] findCellIndex(ArrayList<OutputPin> outPins) {
     	float[][] indexes = null;
         for (OutputPin outPin : outPins) {
@@ -576,6 +716,12 @@ public class LibertyParser {
         return indexes;
     }
     
+    /**
+     * Checks whether the brackets are respected in the file, so that it can reject
+     * files with corrupted format
+     * @param content The String to be checked
+     * @throws InvalidFileFormatException if the String doesn't respect brackets
+     */
     private static void checkBrackets(String content) throws InvalidFileFormatException {
     	Stack<Integer> roundStack = new Stack<Integer>();
     	Stack<Integer> curlyStack = new Stack<Integer>();
