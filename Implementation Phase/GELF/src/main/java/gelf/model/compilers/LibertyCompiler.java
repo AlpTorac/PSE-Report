@@ -9,7 +9,7 @@ import gelf.model.exceptions.InvalidFileFormatException;
  * Compiles the data objects to their Liberty Format equivalents
  */
 public class LibertyCompiler {
-    private static DecimalFormat format = new DecimalFormat("#.#######");
+    private static DecimalFormat format = new DecimalFormat("#.#######", DecimalFormatSymbols.getInstance(Locale.US));
     private static DecimalFormat scFormat = new DecimalFormat("0.###E00");
 
     public static String compile(Library library) {
