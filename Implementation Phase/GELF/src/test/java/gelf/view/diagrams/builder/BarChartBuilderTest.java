@@ -62,6 +62,6 @@ class BarChartBuilderTest implements TestCase {
 		}
 		
 		diagram.refresh();
-		show(frame, TestCase.SHOW_DURATION);
+		show(frame, TestCase.LONG_SHOW_DURATION);
 	}
 }

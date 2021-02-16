@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="java.awt.Graphics"/>
     <fullyQualifiedTypeName name="java.awt.Graphics2D"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.indicator.IndicatorIdentifier"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.indicator.DiagramViewHelper"/>
@@ -8,7 +7,6 @@
     <fullyQualifiedTypeName name="java.lang.Float"/>
     <fullyQualifiedTypeName name="java.util.Map"/>
     <fullyQualifiedTypeName name="java.util.EnumMap"/>
-    <fullyQualifiedTypeName name="org.junit.jupiter.api.Assertions"/>
     <fullyQualifiedTypeName name="javax.swing.JPanel"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.TestPanel"/>
     <fullyQualifiedTypeName name="javax.swing.BorderFactory"/>
@@ -41,10 +39,7 @@
     <fullyQualifiedTypeName name="gelf.view.diagrams.type.FunctionGraph"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.type.HeatMap"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.type.BarChart"/>
-    <fullyQualifiedTypeName name="gelf.view.diagrams.components.BarChartBar"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.components.PositionIn2DDiagram"/>
-    <fullyQualifiedTypeName name="gelf.view.diagrams.components.DiagramValueDisplayComponent"/>
-    <fullyQualifiedTypeName name="gelf.view.diagrams.components.ValueDisplayPoint"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.components.HeatMapLabel"/>
     <fullyQualifiedTypeName name="org.junit.jupiter.api.BeforeAll"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.data.DiagramData"/>
@@ -56,8 +51,13 @@
     <fullyQualifiedTypeName name="java.awt.geom.Point2D.Double"/>
     <fullyQualifiedTypeName name="java.awt.geom.Point2D"/>
     <fullyQualifiedTypeName name="java.awt.Rectangle"/>
-    <fullyQualifiedTypeName name="gelf.view.diagrams.components.HistogramBar"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.builder.FunctionGraphBuilder"/>
-    <fullyQualifiedTypeName name="gelf.view.diagrams.SettingsProvider"/>
     <fullyQualifiedTypeName name="java.awt.Color"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.components.ValueDisplayPoint"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.components.DiagramValueDisplayComponent"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.components.BarChartBar"/>
+    <fullyQualifiedTypeName name="org.junit.jupiter.api.Assertions"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.components.HistogramBar"/>
+    <fullyQualifiedTypeName name="java.awt.Dimension"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.SettingsProvider"/>
 </qualifiedTypeNameHistroy>

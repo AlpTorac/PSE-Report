@@ -1,10 +1,2 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<typeInfoHistroy>
-    <typeInfo handle="=GELF/C:\/Users\/atora\/eclipse\/jre\/lib\/jrt-fs.jar`java.desktop=/module=/true=/=/maven.pomderived=/true=/=/javadoc_location=/https:\/\/docs.oracle.com\/en\/java\/javase\/12\/docs\/api\/=/&lt;javax.swing(JFrame.class[JFrame" modifiers="33" timestamp="1563827642418"/>
-    <typeInfo handle="=GELF/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;gelf.view.diagrams{IDiagramWizard.java[IDiagramWizard" modifiers="513" timestamp="1613255436754"/>
-    <typeInfo handle="=GELF/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;gelf.view.diagrams{IDiagramOverlayer.java[IDiagramOverlayer" modifiers="513" timestamp="1613168335803"/>
-    <typeInfo handle="=GELF/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;gelf.view.diagrams.builder{FunctionGraphBuilder.java[FunctionGraphBuilder" modifiers="1" timestamp="1613324141785"/>
-    <typeInfo handle="=GELF/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;gelf.view.diagrams.overlayer{BarChartOverlayStrategy.java[BarChartOverlayStrategy" modifiers="1" timestamp="1613354444487"/>
-    <typeInfo handle="=GELF/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;gelf.view.diagrams.overlayer{HistogramOverlayStrategy.java[HistogramOverlayStrategy" modifiers="1" timestamp="1613397683389"/>
-    <typeInfo handle="=GELF/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;gelf.view.diagrams.overlayer{FunctionGraphOverlayStrategy.java[FunctionGraphOverlayStrategy" modifiers="1" timestamp="1613398299586"/>
-</typeInfoHistroy>
+<typeInfoHistroy/>
