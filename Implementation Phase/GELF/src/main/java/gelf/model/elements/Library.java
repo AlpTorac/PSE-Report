@@ -40,6 +40,7 @@ public class Library extends HigherElement {
     	//calculate();
     }
     
+	@Override
     public Library clone() {
     	ArrayList<Cell> clonedCells = new ArrayList<Cell>();
     	Iterator<Cell> cellsIt = cells.iterator();

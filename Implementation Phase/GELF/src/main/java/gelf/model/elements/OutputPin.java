@@ -37,6 +37,7 @@ public class OutputPin extends Pin {
     	
     }
     
+	@Override
     public OutputPin clone() {
 		ArrayList<Timing> clonedTimings = new ArrayList<Timing>();
 		ArrayList<OutputPower> clonedPowers = new ArrayList<OutputPower>(); 

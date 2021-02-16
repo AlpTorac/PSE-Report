@@ -13,6 +13,7 @@ public class Leakage extends Attribute {
     	this.values = values;
     }
     
+	@Override
     public Leakage clone() {
     	Leakage clonedLeakage = new Leakage(values);
     	clonedLeakage.setParentCell(parentCell);

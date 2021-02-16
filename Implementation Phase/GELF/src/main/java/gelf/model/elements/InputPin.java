@@ -17,6 +17,7 @@ public class InputPin extends Pin {
     	calculate();
     }
     
+	@Override
     public InputPin clone() {
 		ArrayList<InputPower> clonedPowers = new ArrayList<InputPower>();
 		Iterator<InputPower> powersIt = inputPowers.iterator();

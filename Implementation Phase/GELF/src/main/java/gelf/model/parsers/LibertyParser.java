@@ -149,6 +149,7 @@ public class LibertyParser {
      * @throws InvalidFileFormatException if the format of the Cell is not recognised
      */
     public static Cell parseCell(String cellString) throws InvalidFileFormatException {
+    	cellString = cellString.replaceAll("\\s+", "");
         // splits by pins
         String[] pinStrings = cellString.split("(?=(pin\\())");
         // finds leakage attributes
@@ -251,6 +252,7 @@ public class LibertyParser {
             }
             timingGroupSeparator = timingGroupSeparator.substring(1);
         }
+        pinString.replaceAll("\\s+", "");
         //checks pin format, removed because of exceeding runtime
         /*if (!pinString.matches(PINFORMAT)) {
         	throw new InvalidFileFormatException("Pin doesn't match format");
@@ -477,7 +479,8 @@ public class LibertyParser {
                             uniformIndex1 = index1;
                         }
                         if (!Arrays.equals(index1, uniformIndex1)) {
-                            float[] newValues = Interpolator.interpolate(index1, inAttribute.getValues(), uniformIndex1);
+                            Interpolator interpolator = new Interpolator();
+                            float[] newValues = interpolator.interpolate(index1, inAttribute.getValues(), uniformIndex1);
                             inAttribute.setIndex1(uniformIndex1);
                             inAttribute.setValues(newValues);
                         }
@@ -496,7 +499,8 @@ public class LibertyParser {
                             uniformIndex2 = index2;
                         }
                         if (!Arrays.equals(uniformIndex1, index1) || !Arrays.equals(uniformIndex2, index2)) {
-                            float[][] newValues = Interpolator.bicubicInterpolate(index1, index2, outAttribute.getValues(), uniformIndex1, uniformIndex2);
+                            Interpolator interpolator = new Interpolator();
+                            float[][] newValues = interpolator.bicubicInterpolate(index1, index2, outAttribute.getValues(), uniformIndex1, uniformIndex2);
                             outAttribute.setIndex1(uniformIndex1);
                             outAttribute.setIndex2(uniformIndex2);
                             outAttribute.setValues(newValues);

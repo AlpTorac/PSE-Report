@@ -24,12 +24,18 @@ public class TextEditCommand implements Command {
         this.oldContent = oldContent;
         this.newContent = newContent;
         this.oldElement = element;
+        
         if (element instanceof Library) {
             newElement = LibertyParser.parseLibrary(newContent);
         } else if (element instanceof Cell) {
             newElement = LibertyParser.parseCell(newContent);
         } else {
             newElement = LibertyParser.parsePin(newContent, ((Pin) element).getParent().getInPins());
+        }
+        
+        if (!oldElement.getClass().equals(newElement.getClass())) {
+            throw new InvalidFileFormatException("Element type change not possible within" +
+            "the Element visualiser");
         }
     }
 

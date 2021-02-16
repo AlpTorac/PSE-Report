@@ -34,7 +34,7 @@ public class CommandHistory {
     	}
     }
     
-    private void resetCommands() {
+    public void resetCommands() {
     	commands.removeAllElements();
     }
     

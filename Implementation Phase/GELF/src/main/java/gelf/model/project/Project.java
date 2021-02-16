@@ -48,30 +48,33 @@ public class Project {
      * @param newElement the element it is replaced with
      */
     public void replaceElement(Element oldElement, Element newElement) {
-        if (!oldElement.getClass().equals(newElement.getClass())) {
-            return;
-        }
         if (newElement instanceof Library) {
             Library newLibrary = (Library) newElement;
             libraries.remove(oldElement);
             libraries.add(newLibrary);
         } else if (newElement instanceof Cell) {
             Cell newCell = (Cell) newElement;
-            ArrayList<Cell> cells = newCell.getParentLibrary().getCells();
-            cells.remove(oldElement);
+            Cell oldCell = (Cell) oldElement;
+            ArrayList<Cell> cells = oldCell.getParentLibrary().getCells();
+            cells.remove(oldCell);
             cells.add(newCell);
+            newCell.setParentLibrary(oldCell.getParentLibrary());
             newCell.getParentLibrary().setCells(cells);
         } else if (newElement instanceof InputPin) {
             InputPin newPin = (InputPin) newElement;
-            ArrayList<InputPin> pins = newPin.getParent().getInPins();
-            pins.remove(oldElement);
+            InputPin oldPin = (InputPin) oldElement;
+            ArrayList<InputPin> pins = oldPin.getParent().getInPins();
+            pins.remove(oldPin);
             pins.add(newPin);
+            newPin.setParent(oldPin.getParent());
             newPin.getParent().setInPins(pins);
         } else {
             OutputPin newPin = (OutputPin) newElement;
-            ArrayList<OutputPin> pins = newPin.getParent().getOutPins();
-            pins.remove(oldElement);
+            OutputPin oldPin = (OutputPin) oldElement;
+            ArrayList<OutputPin> pins = oldPin.getParent().getOutPins();
+            pins.remove(oldPin);
             pins.add(newPin);
+            oldPin.setParent(oldPin.getParent());
             newPin.getParent().setOutPins(pins);
         }
     }
@@ -109,6 +112,7 @@ public class Project {
      */
     public void setLibraries(ArrayList<Library> libraries) {
         this.libraries = libraries;
+        
     }
 
     /**

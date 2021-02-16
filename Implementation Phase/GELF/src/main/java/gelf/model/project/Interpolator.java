@@ -6,8 +6,11 @@ import org.apache.commons.math3.analysis.interpolation.NevilleInterpolator;
 import org.apache.commons.math3.analysis.interpolation.BicubicInterpolatingFunction;
 
 public class Interpolator {
-    
-    public static float[] interpolate(float[] indexes, float[] values, float[] newIndexes) {
+
+    public Interpolator() {
+    }
+
+    public float[] interpolate(float[] indexes, float[] values, float[] newIndexes) {
     	if (indexes == null || values == null || newIndexes == null) {
     		return null;
     	}
@@ -34,7 +37,7 @@ public class Interpolator {
         return newValues;
     }
 
-    public static float[][] bicubicInterpolate(float[] indexes1, float[] indexes2,
+    public float[][] bicubicInterpolate(float[] indexes1, float[] indexes2,
                      float[][] values, float[] newIndexes1, float[] newIndexes2) {
         if (values == null || values[0] == null || indexes1 == null 
             || indexes2 == null || newIndexes1 == null || newIndexes2 == null){

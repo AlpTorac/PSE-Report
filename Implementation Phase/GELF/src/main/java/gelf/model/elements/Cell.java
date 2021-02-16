@@ -101,6 +101,7 @@ public class Cell extends HigherElement {
 		this.defaultLeakage = defaultLeakage;
 	}
 	
+	@Override
 	public Cell clone() {
 		ArrayList<InputPin> clonedInPins = new ArrayList<InputPin>();
 		ArrayList<OutputPin> clonedOutPins = new ArrayList<OutputPin>(); 
@@ -150,7 +151,8 @@ public class Cell extends HigherElement {
 			Iterator<InputPower> inPowIt = inPows.iterator();
 			while(inPowIt.hasNext()) {
 				InputPower curInPow = inPowIt.next();
-				float[] newValues = Interpolator.interpolate(curInPow.getIndex1(),
+				Interpolator interpolator = new Interpolator();
+				float[] newValues = interpolator.interpolate(curInPow.getIndex1(),
 						curInPow.getValues(), index1);
 				curInPow.setIndex1(index1);
 				curInPow.setValues(newValues);
@@ -166,7 +168,8 @@ public class Cell extends HigherElement {
 			Iterator<OutputPower> outPowIt = outPows.iterator();
 			while(outPowIt.hasNext()) {
 				OutputPower curOutPow = outPowIt.next();
-				float[][] newValues = Interpolator.bicubicInterpolate(curOutPow.getIndex1(), 
+				Interpolator interpolator = new Interpolator();
+				float[][] newValues = interpolator.bicubicInterpolate(curOutPow.getIndex1(), 
 						curOutPow.getIndex2(), curOutPow.getValues(), index1, index2);
 				curOutPow.setIndex1(index1);
 				curOutPow.setIndex2(index2);
@@ -183,7 +186,8 @@ public class Cell extends HigherElement {
 			Iterator<Timing> timingIt = timings.iterator();
 			while(timingIt.hasNext()) {
 				Timing curTiming = timingIt.next();
-				float[][] newValues = Interpolator.bicubicInterpolate(curTiming.getIndex1(), 
+				Interpolator interpolator = new Interpolator();
+				float[][] newValues = interpolator.bicubicInterpolate(curTiming.getIndex1(), 
 						curTiming.getIndex2(), curTiming.getValues(), index1, index2);
 				curTiming.setIndex1(index1);
 				curTiming.setIndex2(index2);

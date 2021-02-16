@@ -41,6 +41,7 @@ public class Timing extends OutAttribute{
 		this.timGroup = timGroup;
 	}
 	
+	@Override
 	public Timing clone() {
 		Timing clonedTiming = new Timing(timSense, timType, timGroup, values);
 		clonedTiming.setIndex1(index1);
@@ -55,8 +56,8 @@ public class Timing extends OutAttribute{
 				Arrays.equals(this.index2, attribute.index2 )) {
 			return attribute;
 		}
-		
-		float[][] newValues = Interpolator.bicubicInterpolate(attribute.index1, attribute.index2, 
+		Interpolator interpolator = new Interpolator();
+		float[][] newValues = interpolator.bicubicInterpolate(attribute.index1, attribute.index2, 
 				attribute.values, this.index1, this.index2);
 		Timing newAttr = new Timing(attribute.getTimSense(), attribute.getTimType(),
 				attribute.getTimGroup(), newValues);
