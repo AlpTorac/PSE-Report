@@ -32,8 +32,8 @@ public class Project {
     }
 
     /**
-     * It informs the View that changes have been made so that the
-     * data would be re-fetched
+     * It informs the subscribed components that changes have been made in the project
+     * so that the data would be re-fetched
      */
     public void inform() {
         for (Updatable updatable : updatables) {
@@ -77,16 +77,18 @@ public class Project {
     }
 
     /**
-     * 
-     * @param updatable
+     * Unsubscribes a component that no longer needs to be informed to avoid memory leakage.
+     * Otherwise the component would be kept alive and would in addition eat more resources
+     * everytime inform() is called, further slowing down the program
+     * @param updatable the unsubscribed component
      */
     public void removeUpdatable(Updatable updatable) {
         updatables.remove(updatable);
     }
 
     /**
-     * 
-     * @param updatable
+     * Subscribes a component to the updatables so that it's informed when changes are made
+     * @param updatable the subscribed component
      */
     public void addUpdatable(Updatable updatable) {
         updatables.add(updatable);

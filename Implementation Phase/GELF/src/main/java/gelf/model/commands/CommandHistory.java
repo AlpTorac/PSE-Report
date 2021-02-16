@@ -49,7 +49,7 @@ public class CommandHistory {
     	
     }
     
-    public void undoCommand() throws InvalidFileFormatException {
+    public void undoCommand() {
     	if (!commands.isEmpty()) {
     		Command latestCommand = getLatestCommand();
     		latestCommand.undo();
