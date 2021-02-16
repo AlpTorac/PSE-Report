@@ -57,8 +57,6 @@ public class SubWindow extends Panel {
     public SubWindow(Element e, Project p, SubWindowArea parent, int width, int height) {
         super(width, height);
         this.e = e;
-        this.addFocusListener(new SaveListener());
-        this.addFocusListener(new SaveAsListener());
         //element manipulators
         this.eVisualizer = new Visualizer(e,this, p, 200, 100);
         this.eVisualizer.setVisible(true);

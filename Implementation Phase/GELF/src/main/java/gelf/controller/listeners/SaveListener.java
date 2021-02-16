@@ -19,22 +19,27 @@ import gelf.model.elements.OutputPin;
 import gelf.model.elements.Pin;
 import gelf.model.project.Model;
 import gelf.model.project.Project;
+import gelf.view.composites.Outliner;
 import gelf.view.composites.SubWindow;
 /*
  * Listener for saving changes.
  */
-public class SaveListener implements ActionListener, FocusListener {
+public class SaveListener implements ActionListener{
 	
-	ArrayList<SubWindow> subwindows;
+	private Outliner outliner;
 	
-	public SaveListener() {
-		subwindows = new ArrayList<SubWindow>();
+	public SaveListener(Outliner outliner) {
+		this.outliner = outliner;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (subwindows.size() == 1) {
-			Element element = subwindows.get(0).getElement();
+		if (Model.getInstance().getCurrentProject().getLibraries().isEmpty()) {
+			JOptionPane.showMessageDialog(new JFrame(), "No library has been loaded in the application.", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		if (outliner.getSelectedElements().size() == 1) {
+			Element element = outliner.getSelectedElements().get(0);
 			if (element instanceof Pin) {
 				Library library = ((Pin) element).getParent().getParentLibrary();
 				try {
@@ -62,22 +67,12 @@ public class SaveListener implements ActionListener, FocusListener {
 					return;
 				}
 			}
-			subwindows.removeAll(subwindows);
+			
 		}
 		else {
-			JOptionPane.showMessageDialog(new JFrame(), "hii", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(new JFrame(), "Select one element to save.", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		
 	}
-
-	@Override
-	public void focusGained(FocusEvent e) {
-		subwindows.removeAll(subwindows);
-		subwindows.add((SubWindow) e.getSource());
-	}
-
-	@Override
-	public void focusLost(FocusEvent e) {}
-
 }

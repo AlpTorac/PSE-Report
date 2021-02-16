@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
 
 import gelf.model.elements.*;
 import gelf.view.components.Label;
@@ -31,13 +32,14 @@ public class DataPanel extends Panel {
 	 */
 	public DataPanel(int width, int height, Element element) {
 		super(width, height);
-		this.setPreferredSize(new Dimension(300, 200));
+		//this.setPreferredSize(new Dimension(300, 200));
 		this.setBackground(new Color(0.3f, 0.3f, 0.3f));
 		this.element = element;
 		upperLabel = new Label();
 		when = new Label();
 		middleLabel = new Label();
 		lowerLabel = new Label();
+		this.setBorder(new LineBorder(Color.WHITE));
 		upperLabel.setForeground(Color.WHITE);
 		when.setForeground(Color.WHITE);
 		middleLabel.setForeground(Color.WHITE);
@@ -53,14 +55,6 @@ public class DataPanel extends Panel {
 		this.setVisible(true);
 	}
 	
-	/*
-	 * Assigns a new element to the panel.
-	 * @param element Assigned element.
-	 */
-	public void setElement(Element element) {
-		this.element = element;
-		setText(element);
-	}
 	
 	/*
 	 * Changes the text displayed.
@@ -69,10 +63,10 @@ public class DataPanel extends Panel {
 	public void setText(Element element) {
 		if (element instanceof Library) {
 			Library library = (Library) element;
-			upperLabel.setText("");
-			when.setText("");
-			middleLabel.setText("");
-			lowerLabel.setText("");
+			upperLabel.setText("Library Name: " + library.getName());
+			this.remove(when);
+			this.remove(middleLabel);
+			this.remove(lowerLabel);
 		}
 		else if(element instanceof Cell) {
 			Cell cell = (Cell) element;
@@ -94,17 +88,17 @@ public class DataPanel extends Panel {
 		else {
 			if (element instanceof InputPin) {
 				InputPin pin = (InputPin) element;
-				upperLabel.setText("");
-				when.setText("");
-				middleLabel.setText("");
-				lowerLabel.setText("");
+				upperLabel.setText("Selected Pin: " + pin.getName());
+				this.remove(when);
+				this.remove(middleLabel);
+				this.remove(lowerLabel);
 			}
 			else if(element instanceof OutputPin) {
 				OutputPin pin = (OutputPin) element;
-				upperLabel.setText("");
-				when.setText("");
-				middleLabel.setText("");
-				lowerLabel.setText("");
+				upperLabel.setText("Selected Pin: " + pin.getName());
+				this.remove(when);
+				middleLabel.setText("Output Function: " + pin.getOutputFunction());
+				this.remove(lowerLabel);
 			}
 			
 		}

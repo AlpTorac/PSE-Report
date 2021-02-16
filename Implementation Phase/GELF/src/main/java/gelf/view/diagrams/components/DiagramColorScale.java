@@ -177,8 +177,6 @@ public abstract class DiagramColorScale extends DiagramComponent {
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-//			this.setBounds(this.colorScale.getFrameBounds());
-//			this.setBorder(BorderFactory.createLineBorder(this.colorScale.getColor(), this.colorScale.getBorderThickness()));
 			Graphics2D graphs = (Graphics2D) g;
 			
 			float maxVal = this.colorScale.getValues()[this.colorScale.getValues().length - 1];

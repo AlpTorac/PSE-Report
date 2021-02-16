@@ -120,15 +120,11 @@ public abstract class DiagramLine extends DiagramComponent {
 		protected LineVisual(DiagramLine line) {
 			this.line = line;
 			this.setBounds(this.line.getFrameBounds());
-//			Border border = BorderFactory.createLineBorder(Color.RED, this.line.getThickness());
-//			
-//			this.setBorder(border);
 		}
 		
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-//			this.setBounds(this.line.getFrameBounds());
 			Graphics2D graphs = (Graphics2D) g;
 			
 			Rectangle bounds = this.getBounds();

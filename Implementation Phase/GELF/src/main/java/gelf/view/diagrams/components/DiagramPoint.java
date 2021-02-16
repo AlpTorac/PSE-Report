@@ -82,6 +82,16 @@ public abstract class DiagramPoint extends DiagramValueDisplayComponent {
 		this.setComponentBounds(this.getFrameBounds());
 	}
 	
+	@Override
+	protected String getRoundedPositionInDiagramString() {
+		String result = "";
+		
+		result += "index1: " +
+		String.valueOf(this.getRoundedString(this.getPositionInDiagram().getXCoordinate()));
+		
+		return result;
+	}
+	
 	protected class PointVisual extends JLabel {
 
 		private DiagramPoint point;
@@ -100,7 +110,6 @@ public abstract class DiagramPoint extends DiagramValueDisplayComponent {
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-//			this.setBounds(this.point.getFrameBounds());
 			Graphics2D graphs = (Graphics2D) g;
 			
 			double radius = this.point.getSize() * 0.5d;

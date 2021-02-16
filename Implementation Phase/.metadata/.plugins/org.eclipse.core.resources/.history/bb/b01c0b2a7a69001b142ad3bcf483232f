@@ -1,7 +1,0 @@
-package gelf.view.diagrams.data;
-
-import java.util.ArrayList;
-
-abstract class DiagramDataExtractionStrategy {
-	abstract ArrayList<float[]> extract();
-}

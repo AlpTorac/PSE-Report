@@ -33,6 +33,7 @@ public class OpenFileCommand implements Command {
 			openedLibrary = LibertyParser.parseLibrary(libraryContent);
 			openedLibrary.setPath(openedFile.getAbsolutePath());
 			openedLibrary.setLibraryFile(openedFile);
+			openedLibrary.setLibraryContent(libraryContent);
 
 			ArrayList<Library> libraries = currentModel.getCurrentProject().getLibraries();
 			libraries.add(openedLibrary);

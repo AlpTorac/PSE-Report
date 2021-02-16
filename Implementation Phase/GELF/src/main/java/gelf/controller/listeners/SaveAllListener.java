@@ -19,6 +19,10 @@ public class SaveAllListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		if (Model.getInstance().getCurrentProject().getLibraries().isEmpty()) {
+			JOptionPane.showMessageDialog(new JFrame(), "No library has been loaded in the application.", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		Model currentModel = Model.getInstance();
 		Project project = currentModel.getCurrentProject();
 		HashSet<Library> libraries = new HashSet<Library>();

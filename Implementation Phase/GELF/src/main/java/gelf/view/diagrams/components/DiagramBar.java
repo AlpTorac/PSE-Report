@@ -97,6 +97,17 @@ public abstract class DiagramBar extends DiagramValueDisplayComponent {
 		this.visualElement.repaint();
 	}
 
+	@Override
+	protected String getRoundedPositionInDiagramString() {
+		String result = "";
+		
+		result += "index1: " +
+		String.valueOf(this.getRoundedString(this.getTopLeftInDiagram().getXCoordinate())) + " - " +
+		String.valueOf(this.getRoundedString(this.getBottomRightInDiagram().getXCoordinate()));
+		
+		return result;
+	}
+	
 	protected class Bar extends JLabel {
 		
 		/**

@@ -75,7 +75,7 @@ public class TextEditor extends ElementManipulator implements KeyListener{
     	textArea.setEditable(true);
     	textArea.setBackground(new Color(0.2f, 0.2f, 0.2f));
     	textArea.setForeground(Color.WHITE);
-    	
+    	textArea.setTabSize(3);
     	scrollPane = new JScrollPane(textArea, 
     			 ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     	

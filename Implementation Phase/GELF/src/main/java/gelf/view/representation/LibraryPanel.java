@@ -35,7 +35,6 @@ public class LibraryPanel extends Panel implements MouseListener{
 	private ArrayList<Cell> cells;
 	private SubWindow subwindow;
     private JScrollPane scrollPane;
-   // private DataPanel dataPanel;
     
    
     /*
@@ -44,15 +43,13 @@ public class LibraryPanel extends Panel implements MouseListener{
      */
     public LibraryPanel(int width, int height, Library library, SubWindow subwindow) {
     	super(width, height);
+    	this.setMaximumSize(new Dimension(100, 100));
     	this.subwindow = subwindow;
-    	//this.dataPanel = dataPanel;
-    	//dataPanel.setElement(library);
     	selectedLibrary = library;
     	this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     	this.setBorder(new LineBorder(Color.BLACK));
         cells = selectedLibrary.getCells();
         buttons = new HashMap<Label,Cell>();
-        this.setBorder(new LineBorder(Color.WHITE));
         listPanel = new JPanel(); 
         listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.Y_AXIS));
         listPanel.setBackground(new Color(0.3f, 0.3f, 0.3f));
@@ -80,7 +77,6 @@ public class LibraryPanel extends Panel implements MouseListener{
 	public void mouseClicked(MouseEvent e) {
 		subwindow.setElement(buttons.get(e.getSource()));
 		this.setVisible(false);
-		//dataPanel.setElement(buttons.get(e.getSource()));
 		
 	}
 

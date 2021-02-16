@@ -5,6 +5,7 @@ import java.awt.Color;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import gelf.view.diagrams.SettingsProvider;
 import gelf.view.diagrams.TestCase;
 import gelf.view.diagrams.TestFrame;
 import gelf.view.diagrams.type.BarChart;
@@ -75,7 +76,7 @@ class HoverLabelTest implements TestCase {
 		label.attachToDiagram(diagram);
 		
 		Color oldColor = label.getColor();
-		Color newColor = Color.BLUE;
+		Color newColor = new Color(0,0,255,SettingsProvider.getInstance().getHoverLabelColorAlpha());
 		
 		label.setColor(newColor);
 		

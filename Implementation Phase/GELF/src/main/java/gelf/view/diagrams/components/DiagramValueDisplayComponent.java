@@ -17,13 +17,12 @@ public abstract class DiagramValueDisplayComponent extends DiagramComponent impl
 	protected void initHoverableVisualElement() {
 		this.initVisualElement();
 		this.setColor(this.getColor());
-//		this.addHoverListener(this.visualElement, this.diagram);
 	}
 	
 	@Override
 	public void attachToDiagram(IDiagram diagram) {
 		super.attachToDiagram(diagram);
-		this.addHoverListener(this.visualElement, this.diagram);
+		this.addHoverListener(this, this.visualElement, this.diagram);
 	}
 	
 	public void setValue(float value) {
@@ -39,4 +38,15 @@ public abstract class DiagramValueDisplayComponent extends DiagramComponent impl
 	
 	@Override
 	public abstract DiagramValueDisplayComponent clone();
+	
+	protected abstract String getRoundedPositionInDiagramString();
+	
+	protected String getRoundedString(double number) {
+		return String.valueOf(SettingsProvider.getInstance().getRoundedValue(number));
+	}
+	
+	@Override
+	public String toString() {
+		return this.getRoundedPositionInDiagramString() + "\n\n" + "value: " + this.getRoundedString(this.value);
+	}
 }
