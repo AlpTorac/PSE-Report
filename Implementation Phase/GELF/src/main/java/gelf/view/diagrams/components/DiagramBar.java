@@ -48,7 +48,7 @@ public abstract class DiagramBar extends DiagramValueDisplayComponent {
 	public void setPositionInDiagram(double x1, double x2, double y2) {
 		this.setBottomRightInDiagram(x2, y2);
 		
-		double y1 = (new PositionIn2DDiagram(this.getBottomRightInDiagram(), new double[] {0, this.getValue()})).getYCoordinate();
+		double y1 = (new PositionIn2DDiagram(this.getBottomRightInDiagram(), 0, this.getValue())).getYCoordinate();
 		
 		this.setTopLeftInDiagram(x1, y1);
 		this.setComponentBounds(this.getFrameBounds());
@@ -78,7 +78,7 @@ public abstract class DiagramBar extends DiagramValueDisplayComponent {
 	
 	@Override
 	protected void refreshValueRelevantAttributes() {
-		double y1 = (new PositionIn2DDiagram(this.getBottomRightInDiagram(), new double[] {0, this.getValue()})).getYCoordinate();
+		double y1 = (new PositionIn2DDiagram(this.getBottomRightInDiagram(), 0, this.getValue())).getYCoordinate();
 		
 		this.setTopLeftInDiagram(this.getTopLeftInDiagram().getXCoordinate(), y1);
 	}

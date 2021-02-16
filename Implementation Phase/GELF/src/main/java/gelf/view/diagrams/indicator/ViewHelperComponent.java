@@ -6,7 +6,7 @@ public class ViewHelperComponent {
 	private DiagramComponent dc;
 	
 	protected ViewHelperComponent(DiagramComponent dc) {
-		
+		this.dc = dc;
 	}
 	
 	public void show() {

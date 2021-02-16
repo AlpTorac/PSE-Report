@@ -12,7 +12,7 @@ public class ValueFixColorDisplayer extends HelperComponentDisplayer {
 	protected ValueFixColorDisplayer(IDiagram diagram, 
 			TreeMap<Float, Color> mapping, IndicatorIdentifier id) {
 		super(diagram, SettingsProvider.getInstance().getDiagramViewHelperDisplayLayer(), id);
-		// TODO Auto-generated constructor stub
+		this.mapping = mapping;
 	}
 
 }

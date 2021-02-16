@@ -115,7 +115,7 @@ public abstract class DiagramLine extends DiagramComponent {
 		 * Generated serial version ID.
 		 */
 		private static final long serialVersionUID = -2051091734012179305L;
-		private DiagramLine line;
+		protected DiagramLine line;
 		
 		protected LineVisual(DiagramLine line) {
 			this.line = line;
@@ -130,7 +130,7 @@ public abstract class DiagramLine extends DiagramComponent {
 			Rectangle bounds = this.getBounds();
 			
 			graphs.setColor(this.line.getColor());
-			graphs.setStroke(new BasicStroke(this.line.getThickness()));
+			this.setStroke(graphs);
 			
 			double x1 = this.line.getStartInFrame().getXPos() - bounds.getMinX();
 			double y1 = this.line.getStartInFrame().getYPos() - bounds.getMinY();
@@ -140,6 +140,10 @@ public abstract class DiagramLine extends DiagramComponent {
 			Line2D line = new Line2D.Double(x1, y1, x2, y2);
 			
 			graphs.draw(line);
+		}
+		
+		protected void setStroke(Graphics2D graphs) {
+			graphs.setStroke(new BasicStroke(this.line.getThickness()));
 		}
 	}
 }

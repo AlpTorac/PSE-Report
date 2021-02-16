@@ -10,6 +10,13 @@ public class DiagramViewHelperFactory {
 		
 	}
 	
+	public static DiagramViewHelperFactory getInstance() {
+		if (instance == null) {
+			instance = new DiagramViewHelperFactory();
+		}
+		return instance;
+	}
+	
 	public HelperComponentDisplayer createValueColorDisplayer(IDiagram diagram,
 			IndicatorIdentifier id) {
 		return null;

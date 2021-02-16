@@ -15,6 +15,9 @@ public class ValueLineDisplayer extends HelperLineDisplayer {
 	protected ValueLineDisplayer(IDiagram diagram, DiagramAxis axis, Color color, float thickness,
 			float value, IndicatorIdentifier id) {
 		super(diagram, SettingsProvider.getInstance().getDiagramViewHelperDisplayLayer(), id);
+		this.axis = axis;
+		this.thickness = thickness;
+		this.value = value;
 	}
 	
 	private void createValueLine() {

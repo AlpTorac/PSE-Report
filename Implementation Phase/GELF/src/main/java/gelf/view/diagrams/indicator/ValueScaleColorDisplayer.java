@@ -10,6 +10,7 @@ public class ValueScaleColorDisplayer extends HelperComponentDisplayer {
 	protected ValueScaleColorDisplayer(IDiagram diagram,
 			DiagramColorScale colorScale, IndicatorIdentifier id) {
 		super(diagram, SettingsProvider.getInstance().getDiagramViewHelperDisplayLayer(), id);
+		this.colorScale = colorScale;
 	}
 
 }

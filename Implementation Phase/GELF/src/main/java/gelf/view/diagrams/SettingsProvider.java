@@ -50,6 +50,8 @@ public class SettingsProvider {
 	
 	private int hoverLabelColorAlpha = 150;
 	
+	private Color diagramCoordinateLineColor = Color.BLACK;
+	
 	private static SettingsProvider instance;
 	
 	public static SettingsProvider getInstance() {
@@ -299,6 +301,14 @@ public class SettingsProvider {
 
 	public void setHoverLabelColorAlpha(int hoverLabelColorAlpha) {
 		this.hoverLabelColorAlpha = hoverLabelColorAlpha;
+	}
+
+	public Color getDiagramCoordinateLineColor() {
+		return diagramCoordinateLineColor;
+	}
+
+	public void setDiagramCoordinateLineColor(Color diagramCoordinateLineColor) {
+		this.diagramCoordinateLineColor = diagramCoordinateLineColor;
 	}
 	
 }
