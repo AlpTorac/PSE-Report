@@ -118,12 +118,12 @@ public class DataPanel extends Panel {
 			for (InputPin pin : cell.getInPins()) {
 				if (selectedPins.contains(pin)) {
 					selectedText = selectedText.replace("!" + pin.getName(), pin.getName());
-					newBinary = "1" + newBinary;
+					newBinary =  newBinary + "1";
 				}
 				else {
 					selectedText = selectedText.replace("!" + pin.getName(), pin.getName());
 					selectedText = selectedText.replace(pin.getName(), "!" + pin.getName());
-					newBinary = "0" + newBinary;
+					newBinary = newBinary + "0";
 				}
 			}
 			

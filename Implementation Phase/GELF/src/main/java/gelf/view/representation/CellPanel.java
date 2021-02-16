@@ -83,7 +83,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 		imageGen = new CellImageGenerator();
 		imageLabel = new Label();
 		imagePanel = new JPanel();
-		imageLabel.setSize(200, 100);
+		imageLabel.setSize(150, 75);
 		buttonMap = new HashMap<Pin, Label>();
 		checkboxMap = new HashMap<Checkbox, InputPin>();
 		checkboxes = new ArrayList<Checkbox>();
@@ -126,8 +126,8 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 		mainPanel.add(libButton);
 		mainPanel.add(Box.createRigidArea(new Dimension(0,5)));
 		if (cell.getInPins().size() > 5 || cell.getOutPins().size() > 3) {
-		mainPanel.add(cellButton);
-		mainPanel.add(Box.createRigidArea(new Dimension(0,5)));
+			mainPanel.add(cellButton);
+			mainPanel.add(Box.createRigidArea(new Dimension(0,5)));
 		}
 		mainPanel.add(lowerPanel);
 		scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -150,7 +150,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 	 * Sets the main element which will be shown in the panel.
 	 * @param element Element to be set in the panel.
 	 */
-	/*public void setElement(Element element) {
+	public void setElement(Element element) {
 		if (element instanceof Cell) {
 			this.cell = (Cell) element;
 			pinTag = false;
@@ -171,7 +171,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 		createRepresentation();
 		highlightPin(element);
 	}
-	*/
+	
 	
 	/*
 	 * Highlights the label of a pin if the pin is opened in the panel.
@@ -320,6 +320,26 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 		
 	}
 	
+	/*
+	 *
+	 */
+	public HashMap<Pin, Label> getButtonMap() {
+		return buttonMap;
+	}
+	
+	/*
+	 * 
+	 */
+	public ArrayList<InputPin> getInputPins() {
+		return inputPins;
+	}
+	
+	/*
+	 * 
+	 */
+	public ArrayList<OutputPin> getOutputPins() {
+		return outputPins;
+	}
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {

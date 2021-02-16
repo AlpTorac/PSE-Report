@@ -35,18 +35,18 @@ public class RenameListener implements TreeModelListener {
 
 	@Override
 	public void treeNodesChanged(TreeModelEvent e) {
+		
 		DefaultMutableTreeNode node = (DefaultMutableTreeNode) (e.getTreePath().getLastPathComponent());
         Element element = (Element) node.getUserObject();
-		String newName = node.getUserObject().toString();
+        String newName = JOptionPane.showInputDialog(new JFrame(), "New Name: ", "Rename", JOptionPane.OK_CANCEL_OPTION);
+        if (newName == "" || newName == null) {
+        	JOptionPane.showMessageDialog(new JFrame(), "Not a valid name", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+        	
+        }
 		if (checkExistingName(element, newName)) {
 			return;
 		}
-       /* try {
-            int index = e.getChildIndices()[0];
-           node = (DefaultMutableTreeNode) (node.getChildAt(index));
-        } catch (NullPointerException exc) {
-        	
-        }*/
         
 		RenameCommand rename = new RenameCommand(element, newName);
 		rename.execute();

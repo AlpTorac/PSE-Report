@@ -56,7 +56,8 @@ public class OpenElementListener implements ActionListener, MouseListener {
             	 return;
              }
 			Element element = (Element) node.getUserObject();
-			subwindows.addSubWindow(new SubWindow(element, Model.getInstance().getCurrentProject(), subwindows, 100, 100));			
+			subwindows.addSubWindow(new SubWindow(element, Model.getInstance().getCurrentProject(), subwindows, 200, 200));			
+			
 		}
 		
 	}
