@@ -11,6 +11,7 @@ public class RenameCommand implements Command {
 	private Model currentModel = Model.getInstance();
 	
 	public RenameCommand(Element element, String newName) {
+		this.element = element;
 		this.oldName = element.getName();
 		this.newName = newName;
 	}

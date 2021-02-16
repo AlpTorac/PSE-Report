@@ -47,6 +47,9 @@ public class InputPin extends Pin {
     }
     
     public void calculatePower() {
+    	if (inputPowers == null) {
+    		return;
+    	}
     	Iterator<InputPower> i = inputPowers.iterator();
     	
     	while(i.hasNext()) {

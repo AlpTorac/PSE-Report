@@ -61,17 +61,7 @@ public class FileManager extends JFrame{
 		
 		return propArray;
 	}
+}
 	
-	
-	public static void main(String[] args) throws IOException {
-		saveFileToPath("Hello", ".lib", "C:\\Users\\kerem\\OneDrive\\Desktop\\libertyfiles\\ABC");
-		/*
-		if(file != null) {
-		System.out.println(showProperties(file)[0]);
-		System.out.println(showProperties(file)[1]);
-		System.out.println(showProperties(file)[2]);
-		*/
-		}
-	}
  
 
