@@ -22,7 +22,7 @@ public class PinCompareSubPanel extends CellPanel {
 	private Label cellButton;
 	private Cell cell;
 
-	public PinCompareSubPanel(int width, int height, Cell cell, SubWindow subwindow, ArrayList<Pin> pins) {
+	public PinCompareSubPanel(int width, int height, Cell cell, SubWindow subwindow) {
 		super(width, height, cell, subwindow, null);
 		this.cell = cell;
 		
@@ -30,9 +30,6 @@ public class PinCompareSubPanel extends CellPanel {
 		this.outputPins = super.getOutputPins();
 		this.buttonMap = super.getButtonMap();
 		this.cellButton = super.getCellButton();
-		for (Pin pin: pins) {
-			buttonMap.get(pin).setBackground(Color.BLUE);;
-		}
 
 	}
 	

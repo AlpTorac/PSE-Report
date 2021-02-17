@@ -18,6 +18,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 
 import gelf.model.elements.Cell;
+import gelf.model.elements.Element;
 import gelf.model.elements.Library;
 import gelf.model.elements.Pin;
 import gelf.view.components.Panel;
@@ -30,7 +31,7 @@ public class PinComparePanel extends Panel {
     private JScrollPane scrollPane;
     private JPanel listPanel;
 
-	public PinComparePanel(int width, int height, SubWindow subwindow, ArrayList<Pin> pins) {
+	public PinComparePanel(int width, int height, SubWindow subwindow, ArrayList<Element> elements) {
 		super(width, height);
 		this.subwindow = subwindow;
 		cells = new ArrayList<Cell>();
@@ -48,22 +49,20 @@ public class PinComparePanel extends Panel {
 	     
 	    this.setVisible(true);
 	    ArrayList<Cell> cells = new ArrayList<Cell>();
-	    
-	    for (Pin pin: pins) {
-	    	if (!cells.contains(pin.getParent())) {
-	    		cells.add(pin.getParent());
-	    	}
-	    	
-	    }
-	    for (int i = 0; i < cells.size(); i++) {
-	    	ArrayList<Pin> selectedPins = new ArrayList<Pin>();
-	    		for (Pin pin: pins) {
-	    			if (pin.getParent().equals(cells.get(i))) {
-	    				selectedPins.add(pin);
-	    			}
+	    for (Element element: elements) {
+	    	if (element instanceof Pin) {
+	    		if (!cells.contains(((Pin)element).getParent())) {
+	    			cells.add(((Pin)element).getParent());
 	    		}
-	    	listPanel.add(new PinCompareSubPanel(width, height, cells.get(i), subwindow, selectedPins));
+	    	}
+	    	else if (element instanceof Cell) {
+	    		if (!cells.contains((Cell) element)) {
+	    			cells.add((Cell) element);
+	    		}
+	    	}
 	    }
-
+	    for (Cell cell: cells) {
+	    	listPanel.add(new PinCompareSubPanel(width, height, cell, subwindow));
+	    }
 	}
 }
