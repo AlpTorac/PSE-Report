@@ -20,8 +20,8 @@ public class Cell extends HigherElement {
 	private float[] index1;
     private float[] index2;
     private Library parentLibrary;
-    private ArrayList<InputPin> inPins;
-    private ArrayList<OutputPin> outPins;
+    private ArrayList<InputPin> inPins = new ArrayList<InputPin>();
+    private ArrayList<OutputPin> outPins = new ArrayList<OutputPin>();
     private Leakage leakages;
     private float defaultLeakage;
     
@@ -205,10 +205,10 @@ public class Cell extends HigherElement {
 	}
 	
 	public void calculateInPow() {
-		inPowerStat = new HashMap<PowerGroup, Stat>();
-		if (availableInputPower == null || inPins == null) {
+		if (inPins == null || availableInputPower == null) {
 			return;
 		}
+		inPowerStat = new HashMap<PowerGroup, Stat>();
 
 		Iterator<PowerGroup> avPowGrIt = availableInputPower.iterator();
 				
@@ -262,10 +262,11 @@ public class Cell extends HigherElement {
 	}
 	
 	public void calculateOutPow() {
-		outPowerStat = new HashMap<PowerGroup, Stat>();
-		if (availableOutputPower == null || outPins == null) {
+		if (outPins == null || availableOutputPower == null) {
 			return;
 		}
+		outPowerStat = new HashMap<PowerGroup, Stat>();
+		
 		Iterator<PowerGroup> avPowGrIt = availableOutputPower.iterator();
 		
 		
@@ -319,11 +320,12 @@ public class Cell extends HigherElement {
 	}
 	
 	public void calculateTiming() {
-		timingStat = new HashMap<TimingKey, Stat>();
-		if (availableTimSen == null || availableTimGr == null || 
-				availableTimType == null || outPins == null) {
+		if (outPins == null || availableTimSen == null || availableTimType == null
+				|| availableTimGr == null) {
 			return;
 		}
+		timingStat = new HashMap<TimingKey, Stat>();
+		
 		Iterator<TimingSense> avTimSenIt = availableTimSen.iterator();
 		// traverse all available Timing Senses, Timing Groups, Timing Types
 		while(avTimSenIt.hasNext()) {
@@ -408,7 +410,7 @@ public class Cell extends HigherElement {
 
 	@Override
 	public void setAvailableTimSen() {
-		if(outPins == null) {
+		if (outPins == null) {
 			return;
 		}
 		Iterator<OutputPin> outPinIt = outPins.iterator();
@@ -429,7 +431,7 @@ public class Cell extends HigherElement {
 
 	@Override
 	public void setAvailableTimGr() {
-		if(outPins == null) {
+		if (outPins == null) {
 			return;
 		}
 		Iterator<OutputPin> outPinIt = outPins.iterator();
@@ -450,7 +452,7 @@ public class Cell extends HigherElement {
 
 	@Override
 	public void setAvailableTimType() {
-		if(outPins == null) {
+		if (outPins == null) {
 			return;
 		}
 		Iterator<OutputPin> outPinIt = outPins.iterator();
@@ -471,7 +473,7 @@ public class Cell extends HigherElement {
 
 	@Override
 	public void setAvailableOutputPower() {
-		if(outPins == null) {
+		if (outPins == null) {
 			return;
 		}
 		Iterator<OutputPin> outPinIt = outPins.iterator();
@@ -492,7 +494,7 @@ public class Cell extends HigherElement {
 
 	@Override
 	public void setAvailableInputPower() {
-		if(inPins == null) {
+		if (inPins == null) {
 			return;
 		}
 		Iterator<InputPin> inPinIt = inPins.iterator();

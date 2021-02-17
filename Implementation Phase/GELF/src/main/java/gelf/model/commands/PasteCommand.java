@@ -66,13 +66,10 @@ public class PasteCommand implements Command {
 		while(cellsIt.hasNext()) {
 			boolean exists = false;
 			Cell curCell = cellsIt.next();
-			//System.out.println(curCell.getName());
 			
 			destLibCellsIt = destLibCells.iterator();
 			while(destLibCellsIt.hasNext()) {
 				Cell curDestCell = destLibCellsIt.next();
-				System.out.println(curDestCell);
-				System.out.println(curCell);
 				if(curCell.getName().equals(curDestCell.getName())) {
 					exists = true;
 					break;
