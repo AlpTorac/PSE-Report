@@ -8,6 +8,8 @@ import gelf.view.diagrams.builder.DiagramBuilder;
 import gelf.view.diagrams.builder.FunctionGraphBuilder;
 import gelf.view.diagrams.builder.HeatMapBuilder;
 import gelf.view.diagrams.builder.HistogramBuilder;
+import gelf.view.diagrams.indicator.DiagramViewHelper;
+import gelf.view.diagrams.indicator.DiagramViewHelperFactory;
 import gelf.view.diagrams.overlayer.BarChartOverlayStrategy;
 import gelf.view.diagrams.overlayer.DiagramOverlayer;
 import gelf.view.diagrams.overlayer.FunctionGraphOverlayStrategy;
@@ -20,61 +22,112 @@ import gelf.view.diagrams.type.Histogram;
 public class DiagramWizard implements IDiagramWizard {
 	
 	private DiagramDirector director = DiagramDirector.getDiagramDirector();
+	private DiagramViewHelperFactory viewHelperFactory = DiagramViewHelperFactory.getInstance();
 	
 	public DiagramWizard() {
 		
 	}
 	
 	@Override
-	public BarChart makeBarChart(Container container, Collection<?> data) {
+	public BarChart makeAndAttachBarChart(Container container, Collection<?> data) {
 		DiagramBuilder builder = new BarChartBuilder(container);
 		builder.receiveDiagramData(data, 0);
 		director.setBuilder(builder);
-		return (BarChart) director.build();
+		BarChart diagram = (BarChart) director.build();
+		diagram.attachToContainer(container);
+		return diagram;
 	}
 
 	@Override
-	public HeatMap makeHeatMap(Container container, Collection<?> data) {
+	public HeatMap makeAndAttachHeatMap(Container container, Collection<?> data) {
 		DiagramBuilder builder = new HeatMapBuilder(container);
 		builder.receiveDiagramData(data, 2);
-		director.setBuilder(builder);
-		return (HeatMap) director.build();
+		director.setBuilder(builder); 
+		HeatMap diagram = (HeatMap) director.build();
+		diagram.attachToContainer(container);
+		return diagram;
 	}
 
 	@Override
-	public Histogram makeHistogram(Container container, Collection<?> data) {
+	public Histogram makeAndAttachHistogram(Container container, Collection<?> data) {
 		DiagramBuilder builder = new HistogramBuilder(container);
 		builder.receiveDiagramData(data, 1);
 		director.setBuilder(builder);
-		return (Histogram) director.build();
+		Histogram diagram = (Histogram) director.build();
+		diagram.attachToContainer(container);
+		return diagram;
 	}
 
 	@Override
-	public FunctionGraph makeFunctionGraph(Container container, Collection<?> data) {
+	public FunctionGraph makeAndAttachFunctionGraph(Container container, Collection<?> data) {
 		DiagramBuilder builder = new FunctionGraphBuilder(container);
 		builder.receiveDiagramData(data, 1);
 		director.setBuilder(builder);
-		return (FunctionGraph) director.build();
+		FunctionGraph diagram = (FunctionGraph) director.build();
+		diagram.attachToContainer(container);
+		return diagram;
 	}
 
 	@Override
-	public BarChart overlayBarCharts(BarChart[] barCharts) {
+	public BarChart overlayAndAttachBarCharts(Container container, BarChart[] barCharts) {
 		DiagramOverlayer overlayer = new DiagramOverlayer(barCharts);
 		overlayer.setOverlayStrategy(new BarChartOverlayStrategy());
-		return (BarChart) overlayer.overlay();
+		BarChart overlaidDiagram = (BarChart) overlayer.overlay();
+		overlaidDiagram.attachToContainer(container);
+		return overlaidDiagram;
 	}
 
 	@Override
-	public FunctionGraph overlayFunctionGraphs(FunctionGraph[] functionGraphs) {
+	public FunctionGraph overlayAndAttachFunctionGraphs(Container container, FunctionGraph[] functionGraphs) {
 		DiagramOverlayer overlayer = new DiagramOverlayer(functionGraphs);
 		overlayer.setOverlayStrategy(new FunctionGraphOverlayStrategy());
-		return (FunctionGraph) overlayer.overlay();
+		FunctionGraph overlaidDiagram = (FunctionGraph) overlayer.overlay();
+		overlaidDiagram.attachToContainer(container);
+		return overlaidDiagram;
 	}
 
 	@Override
-	public Histogram overlayHistograms(Histogram[] histograms) {
+	public Histogram overlayAndAttachHistograms(Container container, Histogram[] histograms) {
 		DiagramOverlayer overlayer = new DiagramOverlayer(histograms);
 		overlayer.setOverlayStrategy(new HistogramOverlayStrategy());
-		return (Histogram) overlayer.overlay();
+		Histogram overlaidDiagram = (Histogram) overlayer.overlay();
+		overlaidDiagram.attachToContainer(container);
+		return overlaidDiagram;
+	}
+
+	@Override
+	public void addMinDisplayer(IDiagram diagram) {
+		DiagramViewHelper dvh = viewHelperFactory.createMinLineDisplayer(diagram);
+		diagram.addDiagramViewHelper(dvh);
+	}
+
+	@Override
+	public void addMaxDisplayer(IDiagram diagram) {
+		DiagramViewHelper dvh = viewHelperFactory.createMaxLineDisplayer(diagram);
+		diagram.addDiagramViewHelper(dvh);
+	}
+
+	@Override
+	public void addAvgDisplayer(IDiagram diagram) {
+		DiagramViewHelper dvh = viewHelperFactory.createAvgLineDisplayer(diagram);
+		diagram.addDiagramViewHelper(dvh);
+	}
+
+	@Override
+	public void addMedDisplayer(IDiagram diagram) {
+		DiagramViewHelper dvh = viewHelperFactory.createMedLineDisplayer(diagram);
+		diagram.addDiagramViewHelper(dvh);
+	}
+
+	@Override
+	public void xAxisCoordinateDisplayer(IDiagram diagram) {
+		DiagramViewHelper dvh = viewHelperFactory.createXCoordinateGridDisplayer(diagram);
+		diagram.addDiagramViewHelper(dvh);
+	}
+
+	@Override
+	public void yAxisCoordinateDisplayer(IDiagram diagram) {
+		DiagramViewHelper dvh = viewHelperFactory.createYCoordinateGridDisplayer(diagram);
+		diagram.addDiagramViewHelper(dvh);
 	}
 }

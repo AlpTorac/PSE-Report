@@ -31,7 +31,19 @@ public class DiagramViewHelperFactory {
 		return new YCoordinateIndicatorLineDisplayer(diagram, sp.getAxisColor(), sp.getAxisThickness());
 	}
 	
-	public HelperLineDisplayer createValueLineDisplayer(IDiagram diagram, IndicatorIdentifier id) {
-		return new ValueLineDisplayer(diagram, sp.getAxisThickness(), id);
+	public HelperLineDisplayer createMinLineDisplayer(IDiagram diagram) {
+		return new ValueLineDisplayer(diagram, sp.getAxisThickness(), IndicatorIdentifier.MIN);
+	}
+	
+	public HelperLineDisplayer createMaxLineDisplayer(IDiagram diagram) {
+		return new ValueLineDisplayer(diagram, sp.getAxisThickness(), IndicatorIdentifier.MAX);
+	}
+	
+	public HelperLineDisplayer createAvgLineDisplayer(IDiagram diagram) {
+		return new ValueLineDisplayer(diagram, sp.getAxisThickness(), IndicatorIdentifier.AVG);
+	}
+	
+	public HelperLineDisplayer createMedLineDisplayer(IDiagram diagram) {
+		return new ValueLineDisplayer(diagram, sp.getAxisThickness(), IndicatorIdentifier.MED);
 	}
 }
