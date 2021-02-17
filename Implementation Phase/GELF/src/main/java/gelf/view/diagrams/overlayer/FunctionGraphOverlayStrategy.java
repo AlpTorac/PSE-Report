@@ -91,6 +91,7 @@ public class FunctionGraphOverlayStrategy extends DiagramOverlayStrategy impleme
 		double minXNext = nDvdc.getPositionInDiagram().getXCoordinate();
 		float valueNext = nDvdc.getValue();
 		
-		return (Math.abs(minXCurrent - minXNext) <= 1E-3) && (Math.abs(valueCurrent - valueNext) <= 1E-3);
+		return (Math.abs(minXCurrent - minXNext) <= SettingsProvider.getTolerance()) &&
+				(Math.abs(valueCurrent - valueNext) <= SettingsProvider.getTolerance());
 	}
 }

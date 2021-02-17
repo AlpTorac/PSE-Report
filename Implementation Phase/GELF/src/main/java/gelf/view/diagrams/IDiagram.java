@@ -26,9 +26,9 @@ public interface IDiagram {
 	
 	public boolean removeDiagramViewHelper(IndicatorIdentifier id);
 	
-	public boolean showDiagramViewHelper(IndicatorIdentifier id);
+	public void showDiagramViewHelper(IndicatorIdentifier id);
 	
-	public boolean hideDiagramViewHelper(IndicatorIdentifier id);
+	public void hideDiagramViewHelper(IndicatorIdentifier id);
 	
 	public DiagramComponent[] getNonValueDisplayDiagramComponentPrototype();
 	

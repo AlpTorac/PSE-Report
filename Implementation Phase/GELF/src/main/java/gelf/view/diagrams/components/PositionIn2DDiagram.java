@@ -8,8 +8,8 @@ public class PositionIn2DDiagram extends PositionInDiagram {
 		super(new DiagramAxis[] { xAxis, yAxis }, new double[] { xCoordinate, yCoordinate });
 	}
 	
-	protected PositionIn2DDiagram(PositionIn2DDiagram referencePoint, double[] vector) {
-		super(referencePoint, vector);
+	protected PositionIn2DDiagram(PositionIn2DDiagram referencePoint, double xCoordinate, double yCoordinate) {
+		super(referencePoint, new double[] {xCoordinate, yCoordinate});
 	}
 
 	public void setXCoordinate(double xCoordinate) {

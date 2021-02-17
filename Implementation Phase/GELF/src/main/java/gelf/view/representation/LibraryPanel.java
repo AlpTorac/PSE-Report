@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.ScrollPane;
 import java.awt.event.MouseEvent;
@@ -51,7 +52,7 @@ public class LibraryPanel extends Panel implements MouseListener{
         cells = selectedLibrary.getCells();
         buttons = new HashMap<Label,Cell>();
         listPanel = new JPanel(); 
-        listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.Y_AXIS));
+        listPanel.setLayout(new GridLayout(0,4));
         listPanel.setBackground(new Color(0.3f, 0.3f, 0.3f));
         scrollPane = new JScrollPane(listPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
         		ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);

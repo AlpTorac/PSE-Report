@@ -94,7 +94,7 @@ public abstract class DiagramOverlayStrategy {
 		float[] newValues = new float[newIndices.length];
 		
 		for (int i = 0, j = 0; j < oldIndices.length; i++) {
-			if (Math.abs(newIndices[i] - oldIndices[j]) <= 1E-3) {
+			if (Math.abs(newIndices[i] - oldIndices[j]) <= SettingsProvider.getTolerance()) {
 				newValues[i] = oldValues[j];
 				j++;
 			} else {

@@ -206,7 +206,7 @@ public class MergeDialog extends JDialog implements ActionListener, WindowListen
 	public void windowClosing(WindowEvent e) {
     	conflictData = new ConflictData(ResolutionMethod.CANCEL, null);
 		setVisible(false);
-		JOptionPane.showMessageDialog(new JFrame(), "Merging cancelled.", "!!!", JOptionPane.CANCEL_OPTION);
+		JOptionPane.showMessageDialog(new JFrame(), "Merging cancelled.", "", JOptionPane.CANCEL_OPTION);
 		dispose();
 		
 	}

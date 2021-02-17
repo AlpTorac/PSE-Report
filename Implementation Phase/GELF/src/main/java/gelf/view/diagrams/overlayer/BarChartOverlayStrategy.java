@@ -1,7 +1,6 @@
 package gelf.view.diagrams.overlayer;
 
 import gelf.view.diagrams.IDiagram;
-import gelf.view.diagrams.SettingsProvider;
 import gelf.view.diagrams.builder.IBarChartBuilder;
 import gelf.view.diagrams.components.DiagramAxis;
 import gelf.view.diagrams.components.DiagramComponent;

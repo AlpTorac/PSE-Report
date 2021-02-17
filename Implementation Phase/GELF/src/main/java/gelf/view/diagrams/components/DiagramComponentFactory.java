@@ -22,6 +22,14 @@ public class DiagramComponentFactory {
 		return new PositionIn2DDiagram(xAxis, xCoordinate, yAxis, yCoordinate);
 	}
 	
+	public PositionInFrame makePositionInFrame(PositionInFrame referencePoint, double x, double y) {
+		return new PositionInFrame(referencePoint, x, y);
+	}
+	
+	public PositionIn2DDiagram makePositionInDiagram(PositionIn2DDiagram referencePoint, double xCoordinate, double yCoordinate) {
+		return new PositionIn2DDiagram(referencePoint, xCoordinate, yCoordinate);
+	}
+	
 	public SolidLine createSolidLine(PositionInFrame start, PositionInFrame end, Color color, int thickness) {
 		return new SolidLine(start, end, color, thickness);
 	}

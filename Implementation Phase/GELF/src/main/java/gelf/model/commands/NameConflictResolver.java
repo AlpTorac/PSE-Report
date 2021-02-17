@@ -1,14 +1,12 @@
 package gelf.model.commands;
 
-import gelf.view.composites.MergeDialog;
-import gelf.model.parsers.LibertyParser;
-import gelf.model.elements.Library;
-import gelf.model.elements.Cell;
-import gelf.model.elements.CompareElementByName;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+
+import gelf.model.elements.Cell;
+import gelf.model.elements.CompareElementByName;
+import gelf.view.composites.MergeDialog;
 
 public class NameConflictResolver {
     private ArrayList<Cell> deletedCells = new ArrayList<Cell>();
@@ -61,9 +59,6 @@ public class NameConflictResolver {
 
     @SuppressWarnings("unchecked")
     public ArrayList<Cell> getDeletedCells() {
-    	if (deletedCells == null) {
-    		return null;
-    	}
         return (ArrayList<Cell>) deletedCells.clone();
     }
 
@@ -74,9 +69,6 @@ public class NameConflictResolver {
 
     @SuppressWarnings("unchecked")
     public HashMap<Cell, String> getRenamedCells() {
-    	if (renamedCells == null) {
-    		return null;
-    	}
         return (HashMap<Cell, String>) renamedCells.clone();
     }
 }

@@ -20,6 +20,7 @@ public class OutputPower extends OutAttribute{
 		this.powGroup = powGroup;
 	}
 
+	@Override
 	public OutputPower clone() {
 		OutputPower clonedOutputPower = new OutputPower(powGroup, values);
 		clonedOutputPower.setIndex1(index1);

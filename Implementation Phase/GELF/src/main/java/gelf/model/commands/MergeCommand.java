@@ -1,14 +1,15 @@
 package gelf.model.commands;
 
-import gelf.model.parsers.LibertyParser;
-import gelf.model.elements.Library;
-import gelf.model.elements.Cell;
-import gelf.model.commands.NameConflictResolver;
-import gelf.model.project.Model;
-
 import java.util.ArrayList;
 
+import gelf.model.elements.Cell;
+import gelf.model.elements.Library;
+import gelf.model.project.Model;
 
+/**
+ * A command that handles the merging of several libraries
+ * 
+ */
 public class MergeCommand implements Command {
     private ArrayList<Library> mergedLibraries;
     private Library productLibrary;

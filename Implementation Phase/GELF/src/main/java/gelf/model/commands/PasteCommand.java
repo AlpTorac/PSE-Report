@@ -11,11 +11,11 @@ import gelf.model.elements.Library;
 import gelf.model.project.Model;
 
 public class PasteCommand implements Command {
-	private ArrayList<Cell> pastedCells;
-	private ArrayList<Cell> deletedCells;
-	private ArrayList<Cell> copiedCells;
+	private ArrayList<Cell> pastedCells = new ArrayList<Cell>();
+	private ArrayList<Cell> deletedCells = new ArrayList<Cell>();
+	private ArrayList<Cell> copiedCells = new ArrayList<Cell>();
 	private Library destinationLibrary;
-	private HashMap<Cell, String> renamedCellsOldNames;
+	private HashMap<Cell, String> renamedCellsOldNames = new HashMap<Cell, String>();
 	private Model currentModel = Model.getInstance();
 	
 	/* If the list of copied cells won't be given as a parameter, then it will
@@ -66,13 +66,10 @@ public class PasteCommand implements Command {
 		while(cellsIt.hasNext()) {
 			boolean exists = false;
 			Cell curCell = cellsIt.next();
-			//System.out.println(curCell.getName());
 			
 			destLibCellsIt = destLibCells.iterator();
 			while(destLibCellsIt.hasNext()) {
 				Cell curDestCell = destLibCellsIt.next();
-				System.out.println(curDestCell);
-				System.out.println(curCell);
 				if(curCell.getName().equals(curDestCell.getName())) {
 					exists = true;
 					break;

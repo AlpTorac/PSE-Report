@@ -8,6 +8,7 @@ public class InputPower extends InAttribute {
 		this.values = values;
 	}
 	
+	@Override
 	public InputPower clone() {
 		InputPower clonedInputPower = new InputPower(powGroup, values);
 		clonedInputPower.setIndex1(index1);

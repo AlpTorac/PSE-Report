@@ -2,7 +2,12 @@ package gelf.view.diagrams;
 
 import java.awt.Color;
 
+import gelf.model.project.Model;
+
 public class SettingsProvider {
+	private final static int LOWEST_DIGIT = 5;
+	private final static double TOLERANCE = Double.valueOf("1E-" + LOWEST_DIGIT);
+	
 	private int diagramValueDisplayLayer = 1;
 	private int diagramAxisLayer = 2;
 	private int diagramNonValueDisplayLayer = 1;
@@ -13,8 +18,6 @@ public class SettingsProvider {
 	private float diagramRightMariginFactor = 1f / 20f;
 	private float diagramTopMariginFactor = 2f / 20f;
 	private float diagramBottomMariginFactor = 2f / 20f;
-	
-	private int decimalDigitsToShow = 2;
 	
 	/**
 	 * The colors to be used, when diagrams are being overlaid or
@@ -49,6 +52,8 @@ public class SettingsProvider {
 	private float histogramIndexEndIndexFactor = 1.1f;
 	
 	private int hoverLabelColorAlpha = 150;
+	
+	private Color diagramCoordinateLineColor = Color.BLACK;
 	
 	private static SettingsProvider instance;
 	
@@ -179,14 +184,6 @@ public class SettingsProvider {
 	public void setAxisFontType(String axisFontType) {
 		this.axisFontType = axisFontType;
 	}
-
-	public float getDecimalDigitsToShow() {
-		return decimalDigitsToShow;
-	}
-
-	public void setDecimalDigitsToShow(int decimalDigitsToShow) {
-		this.decimalDigitsToShow = decimalDigitsToShow;
-	}
 	
 	public int getDiagramValueDisplayLayer() {
 		return diagramValueDisplayLayer;
@@ -260,11 +257,12 @@ public class SettingsProvider {
 		this.diagramBottomMariginFactor = diagramBottomMariginFactor;
 	}
 	
-	public double getRoundedValue(double value) {
-		double tenExponent = Math.pow(10, this.getDecimalDigitsToShow());
-		double result = Math.round(value * tenExponent) / tenExponent;
-		
-		return result;
+	public String getRoundedValueAsString(float value) {
+		return Model.formatFloat((float) value);
+	}
+	
+	public String getRoundedValueAsString(double value) {
+		return Model.formatFloat((float) value);
 	}
 
 	public Color getValueDisplayComponentColorAt(int index) {
@@ -299,6 +297,18 @@ public class SettingsProvider {
 
 	public void setHoverLabelColorAlpha(int hoverLabelColorAlpha) {
 		this.hoverLabelColorAlpha = hoverLabelColorAlpha;
+	}
+
+	public Color getDiagramCoordinateLineColor() {
+		return diagramCoordinateLineColor;
+	}
+
+	public void setDiagramCoordinateLineColor(Color diagramCoordinateLineColor) {
+		this.diagramCoordinateLineColor = diagramCoordinateLineColor;
+	}
+
+	public static double getTolerance() {
+		return TOLERANCE;
 	}
 	
 }
