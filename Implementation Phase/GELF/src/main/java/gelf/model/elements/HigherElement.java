@@ -120,6 +120,16 @@ public abstract class HigherElement extends Element {
 	}
 	
 	@Override
+	public String getElementContent() {
+		return super.getElementContent();
+	}
+	
+	@Override
+	public void setElementContent(String content) {
+		super.setElementContent(content);
+	}
+	
+	@Override
 	public boolean getFiltered() {
 		return super.getFiltered();
 	}
