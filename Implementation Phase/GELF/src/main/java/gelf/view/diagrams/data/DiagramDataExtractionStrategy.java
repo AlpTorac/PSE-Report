@@ -13,4 +13,6 @@ abstract class DiagramDataExtractionStrategy {
 	
 	protected abstract ArrayList<float[]> extractValues(Collection<?> data);
 	protected abstract ArrayList<float[]> extractIndices(Collection<?> data);
+	protected abstract ArrayList<String[]> extractValueDescriptions(Collection<?> descriptions);
+	protected abstract ArrayList<String[]> extractIndexDescriptions(Collection<?> descriptions);
 }

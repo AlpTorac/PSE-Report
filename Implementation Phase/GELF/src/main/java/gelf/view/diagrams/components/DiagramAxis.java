@@ -29,6 +29,8 @@ public abstract class DiagramAxis extends DiagramComponent {
 	private boolean showValuesUnderAxis;
 	protected DiagramLine axisLine;
 
+	private String[] stepDisplays;
+	
 	protected DiagramAxis(DiagramLine axisLine, float min, float max, int steps) {
 		super(axisLine.getColor(), SettingsProvider.getInstance().getDiagramAxisLayer());
 
@@ -38,7 +40,49 @@ public abstract class DiagramAxis extends DiagramComponent {
 		this.axisLine = axisLine;
 		this.initVisualElement();
 	}
+	
+	protected DiagramAxis(DiagramLine axisLine, float min, float max, int steps, String[] stepDisplays) {
+		super(axisLine.getColor(), SettingsProvider.getInstance().getDiagramAxisLayer());
 
+		this.min = min;
+		this.max = max;
+		this.steps = steps;
+		this.axisLine = axisLine;
+		
+		if (stepDisplays != null) {
+			this.stepDisplays = this.fillNullsWithEmptyString(stepDisplays, this.steps);
+		}
+		
+		this.initVisualElement();
+	}
+
+	private String[] fillNullsWithEmptyString(String[] stepDisplays, int steps) {
+		String[] result;
+
+		if (stepDisplays.length < steps) {
+			result = new String[steps];
+			
+			int i = 0;
+			for (; i < stepDisplays.length; i++) {
+				result[i] = stepDisplays[i];
+			}
+			for (; i < result.length; i++) {
+				result[i] = "";
+			}
+		} else {
+			result = stepDisplays.clone();
+			for (int i = 0; i < result.length; i++) {
+				if (i < stepDisplays.length && stepDisplays[i] != null) {
+					result[i] = stepDisplays[i];
+				} else {
+					result[i] = "";
+				}
+			}
+		}
+		
+		return result;
+	}
+	
 	public float getMin() {
 		return this.min;
 	}
@@ -77,14 +121,12 @@ public abstract class DiagramAxis extends DiagramComponent {
 		this.visualElement.repaint();
 	}
 	
-	public void showValuesUnderAxis() {
-		this.showValuesUnderAxis = true;
-		this.visualElement.repaint();
+	public void setShowValuesUnderAxis(boolean showValuesUnderAxis) {
+		this.showValuesUnderAxis = showValuesUnderAxis;
 	}
 	
-	public void showValuesAboveAxis() {
-		this.showValuesUnderAxis = false;
-		this.visualElement.repaint();
+	public boolean areValuesUnderAxis() {
+		return this.showValuesUnderAxis;
 	}
 
 	public void hideValues() {
@@ -193,6 +235,13 @@ public abstract class DiagramAxis extends DiagramComponent {
 	}
 	
 	protected String[] getStepDisplays() {
+		if (this.stepDisplays == null) {
+			this.setStepDisplays();
+		}
+		return this.stepDisplays.clone();
+	}
+	
+	protected void setStepDisplays() {
 		int displayCount = this.getSteps();
 		String[] stepDisplays = new String[displayCount];
 		
@@ -202,10 +251,8 @@ public abstract class DiagramAxis extends DiagramComponent {
 		for (int i = 0; i < displayCount; i++) {
 			stepDisplays[i] = SettingsProvider.getInstance().getRoundedValueAsString(currentValue);
 			currentValue += stepLengthInAxis;
-//			System.out.print(stepDisplays[i] + ", ");
 		}
-//		System.out.print("\n");
-		return stepDisplays;
+		this.stepDisplays = stepDisplays;
 	}
 	
 	protected class AxisVisual extends JLabel {
@@ -246,33 +293,34 @@ public abstract class DiagramAxis extends DiagramComponent {
 			graphs.rotate(rotationAngleInRadian, axisLineStartX, axisLineStartY);
 			
 			double xStepLengthInFrame = this.axis.axisLine.calculateLength() / ((double) this.axis.getSteps());
-//			float stringY = this.getStringYPos(y1, y2, fontSize);
 			
 			String[] displays = this.axis.getStepDisplays();
 			
 			for (int i = 1; i <= this.axis.getSteps(); i++) {
-//				Shape line = new Line2D.Double(x1, y1, x1, y2);
-//				graphs.draw(line);
-//				if (this.axis.showValues) {
-//					graphs.drawString(displays[i - 1], (float) x1 - fontSize, stringY);
-//				}
 				x1 += xStepLengthInFrame;
 				this.drawStepDisplay(graphs, displays[i - 1], fontSize, x1, y1, y2);
 			}
 		}
 		
 		private void drawStepDisplay(Graphics2D graphs, String display, int fontSize, double x1, double y1, double y2) {
-				Shape line = new Line2D.Double(x1, y1, x1, y2);
-				graphs.draw(line);
-				if (this.axis.showValues) {
-					graphs.drawString(display, this.getStringXPos(display, fontSize, x1), this.getStringYPos(y1, y2, fontSize));
-				}
+			String stringToDisplay = display;
+			
+			if (stringToDisplay == null) {
+				stringToDisplay = "";
+			}
+			
+			Shape line = new Line2D.Double(x1, y1, x1, y2);
+			graphs.draw(line);
+			if (this.axis.showValues) {
+				graphs.drawString(stringToDisplay, this.getStringXPos(stringToDisplay, fontSize, x1),
+						this.getStringYPos(y1, y2, fontSize));
+			}
 		}
 		
 		private float getStringYPos(double indicatorLineY1, double indicatorLineY2, int fontSize) {
 			float stringY;
 			
-			if (this.axis.showValuesUnderAxis) {
+			if (this.axis.areValuesUnderAxis()) {
 				stringY = (float) (indicatorLineY2 + fontSize);
 			} else {
 				stringY = (float) (indicatorLineY1 - fontSize / 2d);

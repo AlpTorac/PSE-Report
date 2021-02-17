@@ -20,7 +20,7 @@ public class BarChartBuilder extends DiagramBuilder implements IBarChartBuilder 
 
 	@Override
 	protected float getXAxisMaxValue() {
-		return this.getDiagramData().extractValues().get(0).length;
+		return this.getDiagramData().extractValues().get(0).length + 1;
 	}
 
 	@Override
@@ -36,5 +36,14 @@ public class BarChartBuilder extends DiagramBuilder implements IBarChartBuilder 
 	@Override
 	protected int getYAxisSteps() {
 		return this.getDiagramData().extractValues().get(0).length;
+	}
+	
+	@Override
+	protected String[] getXAxisDescriptions() {
+		if (this.getDiagramData().extractValueDescriptions() != null) {
+			return this.getDiagramData().extractValueDescriptions().get(0);
+		} else {
+			return null;
+		}
 	}
 }

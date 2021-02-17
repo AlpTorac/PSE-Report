@@ -17,6 +17,8 @@ public interface IDiagramWizard {
 	
 	public FunctionGraph makeAndAttachFunctionGraph(Container container, Collection<?> data);
 	
+	public BarChart makeAndAttachBarChartWithDescriptions(Container container, Collection<?> data, Collection<?> descriptions);
+	
 	public BarChart overlayAndAttachBarCharts(Container container, BarChart[] barCharts);
 	
 	public FunctionGraph overlayAndAttachFunctionGraphs(Container container, FunctionGraph[] functionGraphs);

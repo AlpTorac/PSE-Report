@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import gelf.view.diagrams.IDiagram;
+import gelf.view.diagrams.SettingsProvider;
 import gelf.view.diagrams.TestCase;
 import gelf.view.diagrams.TestFrame;
 import gelf.view.diagrams.TestPanel;
@@ -20,6 +21,7 @@ class BarChartBuilderTest implements TestCase {
 	private static TestFrame frame = new TestFrame();
 	private static Container container;
 	private static ArrayList<float[]> data;
+	private static ArrayList<String[]> desc;
 	
 	private static BarChartBuilder builder;
 	
@@ -37,7 +39,11 @@ class BarChartBuilderTest implements TestCase {
 		float[] values = new float[] {6, 5, 1, 1, 2, 3};
 		data.add(values);
 		
-		builder.receiveDiagramData(data, 0);
+		desc = new ArrayList<String[]>();
+		String[] descs = new String[] {"cell1", "cell2", "cell3", "cell4", "cell5", "cell6"};
+		desc.add(descs);
+		
+		builder.receiveDiagramData(data, desc, 0);
 		IDiagram diagram = builder.buildDiagram();
 		diagram.attachToContainer(container);
 		
@@ -47,21 +53,23 @@ class BarChartBuilderTest implements TestCase {
 		Assertions.assertEquals(data.get(0).length, barCount);
 		Assertions.assertNull(diagram.getNonValueDisplayDiagramComponentPrototype());
 		
-		for (int i = 0; i < barCount; i++) {
-			BarChartBar bar = (BarChartBar) bars[i];
+		double halfBarWidthInSteps = SettingsProvider.getInstance().getBarChartBarWidthInSteps() / 2d;
+		
+		for (int i = 1; i <= barCount; i++) {
+			BarChartBar bar = (BarChartBar) bars[i - 1];
 			
-			Assertions.assertEquals(values[i], bar.getValue());
+			Assertions.assertEquals(values[i - 1], bar.getValue());
 			
 			PositionIn2DDiagram topLeft = bar.getTopLeftInDiagram();
 			PositionIn2DDiagram bottomRight = bar.getBottomRightInDiagram();
 			
-			Assertions.assertEquals(values[i], topLeft.getYCoordinate());
-			Assertions.assertEquals(i, topLeft.getXCoordinate());
+			Assertions.assertEquals(values[i - 1], topLeft.getYCoordinate());
+			Assertions.assertEquals(i - halfBarWidthInSteps, topLeft.getXCoordinate());
 			Assertions.assertEquals(0, bottomRight.getYCoordinate());
-			Assertions.assertEquals(i + 1, bottomRight.getXCoordinate());
+			Assertions.assertEquals(i + halfBarWidthInSteps, bottomRight.getXCoordinate());
 		}
 		
 		diagram.refresh();
-		show(frame, TestCase.SHOW_DURATION);
+		show(frame, TestCase.LONG_SHOW_DURATION);
 	}
 }

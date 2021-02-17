@@ -42,15 +42,13 @@ public abstract class DiagramBuilder implements IDiagramBuilder, ContainerAccess
 	
 	private DiagramAxis makeXAxis(PositionInFrame axisOrigin, PositionInFrame endX, float minVal, float maxVal,
 			int steps, Color axisLineColor, int thickness) {
-		DiagramAxis xAxis = factory.createSolidAxis(axisOrigin, endX, minVal, maxVal, steps, axisLineColor, thickness);
-		xAxis.showValuesUnderAxis();
+		DiagramAxis xAxis = factory.createSolidAxis(axisOrigin, endX, minVal, maxVal, steps, axisLineColor, thickness, this.getXAxisDescriptions());
 		return xAxis;
 	}
 	
 	private DiagramAxis makeYAxis(PositionInFrame axisOrigin, PositionInFrame endY, float minVal, float maxVal,
 			int steps, Color axisLineColor, int thickness) {
-		DiagramAxis yAxis = factory.createSolidAxis(axisOrigin, endY, minVal, maxVal, steps, axisLineColor, thickness);
-		yAxis.showValuesUnderAxis();
+		DiagramAxis yAxis = factory.createSolidAxis(axisOrigin, endY, minVal, maxVal, steps, axisLineColor, thickness, this.getYAxisDescriptions());
 		return yAxis;
 	}
 	
@@ -62,6 +60,13 @@ public abstract class DiagramBuilder implements IDiagramBuilder, ContainerAccess
 	}
 	protected abstract float getXAxisMaxValue();
 	protected abstract float getYAxisMaxValue();
+	
+	protected String[] getXAxisDescriptions() {
+		return null;
+	}
+	protected String[] getYAxisDescriptions() {
+		return null;
+	}
 	
 	protected int getXAxisSteps() {
 		return settingsProvider.getStepsInXAxis();
@@ -123,9 +128,16 @@ public abstract class DiagramBuilder implements IDiagramBuilder, ContainerAccess
 		this.setDiagramData(diagramData);
 	}
 	
-	protected void xAxisSpecificVisualEffect(DiagramAxis xAxis) {}
+	public void receiveDiagramData(Collection<?> data, Collection<?> descriptions, int numberOfIndices) {
+		DiagramData diagramData = new DiagramData(data, descriptions, numberOfIndices);
+		this.setDiagramData(diagramData);
+	}
+	
+	protected void xAxisSpecificVisualEffect(DiagramAxis xAxis) {
+		xAxis.setShowValuesUnderAxis(true);
+	}
 	protected void yAxisSpecificVisualEffect(DiagramAxis yAxis) {
-		yAxis.showValuesAboveAxis();
+		yAxis.setShowValuesUnderAxis(false);
 	}
 
 	protected DiagramData getDiagramData() {

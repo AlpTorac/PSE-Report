@@ -130,4 +130,15 @@ public class DiagramWizard implements IDiagramWizard {
 		DiagramViewHelper dvh = viewHelperFactory.createYCoordinateGridDisplayer(diagram);
 		diagram.addDiagramViewHelper(dvh);
 	}
+
+	@Override
+	public BarChart makeAndAttachBarChartWithDescriptions(Container container, Collection<?> data,
+			Collection<?> descriptions) {
+		DiagramBuilder builder = new BarChartBuilder(container);
+		builder.receiveDiagramData(data, descriptions, 0);
+		director.setBuilder(builder);
+		BarChart diagram = (BarChart) director.build();
+		diagram.attachToContainer(container);
+		return diagram;
+	}
 }

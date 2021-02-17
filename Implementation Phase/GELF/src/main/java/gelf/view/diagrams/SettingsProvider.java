@@ -54,6 +54,8 @@ public class SettingsProvider {
 	 */
 	private float histogramIndexEndIndexFactor = 1.1f;
 	
+	private double barChartBarWidthInSteps = 0.5d;
+	
 	private int hoverLabelColorAlpha = 150;
 	
 	private Color diagramCoordinateLineColor = Color.BLACK;
@@ -277,11 +279,11 @@ public class SettingsProvider {
 	}
 	
 	public String getRoundedValueAsString(float value) {
-		return Model.formatFloat((float) value);
+		return Model.formatIndex((float) value, LOWEST_DIGIT);
 	}
 	
 	public String getRoundedValueAsString(double value) {
-		return Model.formatFloat((float) value);
+		return Model.formatIndex((float) value, LOWEST_DIGIT);
 	}
 
 	public Color getValueDisplayComponentColorAt(int index) {
@@ -328,6 +330,14 @@ public class SettingsProvider {
 
 	public static double getTolerance() {
 		return TOLERANCE;
+	}
+
+	public double getBarChartBarWidthInSteps() {
+		return barChartBarWidthInSteps;
+	}
+
+	public void setBarChartBarWidthInSteps(double barChartBarWidthInSteps) {
+		this.barChartBarWidthInSteps = barChartBarWidthInSteps;
 	}
 	
 }

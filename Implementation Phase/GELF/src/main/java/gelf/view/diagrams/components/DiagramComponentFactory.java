@@ -52,6 +52,10 @@ public class DiagramComponentFactory {
 		SolidLine l = createSolidLine(start, end, color, thickness);
 		return new SolidAxis(l, min, max, steps);
 	}
+	public SolidAxis createSolidAxis(PositionInFrame start, PositionInFrame end, float min, float max, int steps, Color color, int thickness, String[] stepDisplays) {
+		SolidLine l = createSolidLine(start, end, color, thickness);
+		return new SolidAxis(l, min, max, steps, stepDisplays);
+	}
 	public HeatMapLabel createHeatMapLabel(PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight, DiagramColorScale colorScale, float value,
 			int borderThickness) {
 		return new HeatMapLabel(topLeft, bottomRight, colorScale, value, borderThickness);

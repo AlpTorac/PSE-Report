@@ -42,4 +42,44 @@ public class ValueIndexExtractor extends DiagramDataExtractionStrategy {
 		return listOfIndices;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	protected ArrayList<String[]> extractValueDescriptions(Collection<?> descriptions) {
+		if (descriptions != null) {
+			ArrayList<String[]> listOfValues = new ArrayList<String[]>();
+			
+			Iterator<String[]> it = (Iterator<String[]>) descriptions.iterator();
+			
+			for (int i = 0; i < this.numberOfIndices; i++) {
+				it.next();
+			}
+			
+			while (it.hasNext()) {
+				listOfValues.add(it.next());
+			}
+			
+			return listOfValues;
+		} else {
+			return null;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected ArrayList<String[]> extractIndexDescriptions(Collection<?> descriptions) {
+		if (descriptions != null) {
+			ArrayList<String[]> listOfIndices = new ArrayList<String[]>();
+			
+			Iterator<String[]> it = (Iterator<String[]>) descriptions.iterator();
+			
+			for (int i = 0; i < this.numberOfIndices; i++) {
+				listOfIndices.add(it.next());
+			}
+			
+			return listOfIndices;
+		} else {
+			return null;
+		}
+	}
+
 }

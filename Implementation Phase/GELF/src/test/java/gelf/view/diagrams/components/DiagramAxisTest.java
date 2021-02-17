@@ -91,42 +91,42 @@ class DiagramAxisTest implements TestCase {
 		PositionInFrame axis1End = new PositionInFrame(900, 500);
 		DiagramAxis axis1 = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, axis1End, 0, 20, 10, Color.black, 3);
 		axis1.showValues();
-		axis1.showValuesUnderAxis();
+		axis1.setShowValuesUnderAxis(true);
 		
 		PositionInFrame axis2End = new PositionInFrame(783, 217);
 		DiagramAxis axis2 = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, axis2End, 0, 20, 10, Color.black, 3);
 		axis2.showValues();
-		axis2.showValuesUnderAxis();
+		axis2.setShowValuesUnderAxis(true);
 		
 		PositionInFrame axis3End = new PositionInFrame(500, 100);
 		DiagramAxis axis3 = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, axis3End, 0, 20, 10, Color.black, 3);
 		axis3.showValues();
-		axis3.showValuesAboveAxis();
+		axis3.setShowValuesUnderAxis(false);
 		
 		PositionInFrame axis4End = new PositionInFrame(217, 217);
 		DiagramAxis axis4 = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, axis4End, 0, 20, 10, Color.black, 3);
 		axis4.showValues();
-		axis4.showValuesAboveAxis();
+		axis4.setShowValuesUnderAxis(false);
 		
 		PositionInFrame axis5End = new PositionInFrame(100, 500);
 		DiagramAxis axis5 = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, axis5End, 0, 20, 10, Color.black, 3);
 		axis5.showValues();
-		axis5.showValuesAboveAxis();
+		axis5.setShowValuesUnderAxis(false);
 		
 		PositionInFrame axis6End = new PositionInFrame(217, 783);
 		DiagramAxis axis6 = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, axis6End, 0, 20, 10, Color.black, 3);
 		axis6.showValues();
-		axis6.showValuesAboveAxis();
+		axis6.setShowValuesUnderAxis(false);
 		
 		PositionInFrame axis7End = new PositionInFrame(500, 900);
 		DiagramAxis axis7 = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, axis7End, 0, 20, 10, Color.black, 3);
 		axis7.showValues();
-		axis7.showValuesUnderAxis();
+		axis7.setShowValuesUnderAxis(true);
 		
 		PositionInFrame axis8End = new PositionInFrame(783, 783);
 		DiagramAxis axis8 = DiagramComponentFactory.getDiagramComponentFactory().createSolidAxis(start, axis8End, 0, 20, 10, Color.black, 3);
 		axis8.showValues();
-		axis8.showValuesUnderAxis();
+		axis8.setShowValuesUnderAxis(true);
 		
 		initAndShow(new DiagramAxis[] {axis1, axis2, axis3, axis4, axis5, axis6, axis7, axis8});
 		//show(frame, TestCase.SHOW_DURATION);

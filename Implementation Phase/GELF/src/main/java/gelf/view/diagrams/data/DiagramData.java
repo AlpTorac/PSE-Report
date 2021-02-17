@@ -5,11 +5,19 @@ import java.util.Collection;
 
 public class DiagramData {
 	private Collection<?> data;
+	private Collection<?> descriptions;
 	private DiagramDataExtractionStrategy extractor;
 	private int numberOfIndices;
 
 	public DiagramData(Collection<?> data, int numberOfIndices) {
 		this.data = data;
+		this.numberOfIndices = numberOfIndices;
+		this.setExtractor(this.numberOfIndices);
+	}
+	
+	public DiagramData(Collection<?> data, Collection<?> descriptions, int numberOfIndices) {
+		this.data = data;
+		this.descriptions = descriptions;
 		this.numberOfIndices = numberOfIndices;
 		this.setExtractor(this.numberOfIndices);
 	}
@@ -26,6 +34,14 @@ public class DiagramData {
 	
 	public ArrayList<float[]> extractIndices() {
 		return this.extractor.extractIndices(this.data);
+	}
+	
+	public ArrayList<String[]> extractValueDescriptions() {
+		return this.extractor.extractValueDescriptions(this.descriptions);
+	}
+	
+	public ArrayList<String[]> extractIndexDescriptions() {
+		return this.extractor.extractIndexDescriptions(this.descriptions);
 	}
 	
 	public float getMaximumValue() {

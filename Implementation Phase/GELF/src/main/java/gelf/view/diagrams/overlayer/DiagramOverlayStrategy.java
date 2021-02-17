@@ -201,6 +201,7 @@ public abstract class DiagramOverlayStrategy {
 			axes[index] = factory.createSolidAxis(visuallyShortestAxis[index].getLineStart(), visuallyShortestAxis[index].getLineEnd(),
 					axisWithMinimumValue[index].getMin(), axisWithMaximumValue[index].getMax(),
 					visuallyShortestAxis[index].getSteps(), visuallyShortestAxis[index].getColor(), visuallyShortestAxis[index].getLineThickness());
+			axes[index].setShowValuesUnderAxis(visuallyShortestAxis[index].areValuesUnderAxis());
 		}
 		
 		return axes;

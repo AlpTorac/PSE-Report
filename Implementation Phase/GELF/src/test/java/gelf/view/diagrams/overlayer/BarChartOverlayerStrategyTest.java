@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import gelf.view.diagrams.IDiagram;
+import gelf.view.diagrams.SettingsProvider;
 import gelf.view.diagrams.TestCase;
 import gelf.view.diagrams.TestFrame;
 import gelf.view.diagrams.TestPanel;
@@ -66,6 +67,8 @@ class BarChartOverlayerStrategyTest implements TestCase {
 		
 		int dataCount = datas.size();
 		
+		double halfBarChartBarWidthInSteps = SettingsProvider.getInstance().getBarChartBarWidthInSteps() / 2d;
+		
 		for (int i = 0; i < dataCount; i++) {
 			for (int j = 0; j < datas.get(i).get(0).length; j++) {
 				int barIndex = i * datas.get(i).get(0).length + j;
@@ -75,9 +78,9 @@ class BarChartOverlayerStrategyTest implements TestCase {
 				Assertions.assertEquals(datas.get(i).get(0)[j], bar.getValue(), 1E-3);
 				
 				Assertions.assertEquals(datas.get(i).get(0)[j], bar.getTopLeftInDiagram().getYCoordinate(), 1E-3);
-				Assertions.assertEquals(j, bar.getTopLeftInDiagram().getXCoordinate(), 1E-3);
+				Assertions.assertEquals(j + 1 - halfBarChartBarWidthInSteps, bar.getTopLeftInDiagram().getXCoordinate(), 1E-3);
 				Assertions.assertEquals(0, bar.getBottomRightInDiagram().getYCoordinate(), 1E-3);
-				Assertions.assertEquals(j + 1, bar.getBottomRightInDiagram().getXCoordinate(), 1E-3);
+				Assertions.assertEquals(j + 1 + halfBarChartBarWidthInSteps, bar.getBottomRightInDiagram().getXCoordinate(), 1E-3);
 			}
 		}
 		

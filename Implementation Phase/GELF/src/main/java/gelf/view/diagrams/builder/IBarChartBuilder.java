@@ -20,14 +20,20 @@ public interface IBarChartBuilder extends IDiagramBuilder {
 		Color barColor = this.getColorForDiagram(orderInSameDiagram);
 		int thickness = this.getSettingsProvider().getBarBorderThickness();
 		
-		for (int i = 0; i < dvdc.length; i++) {
-			PositionIn2DDiagram topLeft = this.getDiagramComponentFactory().makePositionInDiagram(axes[0], i, axes[1], values[i]);
-			PositionIn2DDiagram bottomRight = this.getDiagramComponentFactory().makePositionInDiagram(axes[0], i + 1, axes[1], 0);
+		double halfBarWidthInSteps = this.getBarWidth() / 2d;
+		
+		for (int i = 1; i <= dvdc.length; i++) {
+			PositionIn2DDiagram topLeft = this.getDiagramComponentFactory().makePositionInDiagram(axes[0], i - halfBarWidthInSteps, axes[1], values[i - 1]);
+			PositionIn2DDiagram bottomRight = this.getDiagramComponentFactory().makePositionInDiagram(axes[0], i + halfBarWidthInSteps, axes[1], 0);
 			
-			dvdc[i] = this.getDiagramComponentFactory().createBarChartBar(barColor, values[i], topLeft, bottomRight, thickness);
+			dvdc[i - 1] = this.getDiagramComponentFactory().createBarChartBar(barColor, values[i - 1], topLeft, bottomRight, thickness);
 		}
 		
 		return dvdc;
+	}
+	
+	public default double getBarWidth() {
+		return this.getSettingsProvider().getBarChartBarWidthInSteps();
 	}
 	
 	@Override
