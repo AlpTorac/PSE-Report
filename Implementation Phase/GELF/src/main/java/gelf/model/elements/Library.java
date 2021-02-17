@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-
+import gelf.model.compilers.LibertyCompiler;
 import gelf.model.elements.attributes.PowerGroup;
 import gelf.model.elements.attributes.TimingGroup;
 import gelf.model.elements.attributes.TimingKey;
@@ -19,7 +19,6 @@ public class Library extends HigherElement {
 	private float[] index1;
     private float[] index2;
     private String path;
-    private String libraryContent;
     private ArrayList<Cell> cells = new ArrayList<Cell>();
     private Stat defaultLeakage;
     private File libraryFile;
@@ -99,14 +98,6 @@ public class Library extends HigherElement {
 	
 	public void setPath(String path) {
 		this.path = path;
-	}
-	
-	public String getLibraryContent() {
-		return libraryContent;
-	}
-	
-	public void setLibraryContent(String libraryContent) {
-		this.libraryContent = libraryContent;
 	}
 	
 	public ArrayList<Cell> getCells() {
@@ -343,14 +334,11 @@ public class Library extends HigherElement {
 	}
 	
 	public void saveLibrary() throws IOException {
-		if (path == null) {
-			saveLibraryAs();
-		}
-		FileManager.saveFileToPath(libraryContent, ".lib", path);
+		FileManager.saveFileToPath(LibertyCompiler.compile(this), ".lib", path);
 	}
 	
 	public void saveLibraryAs() throws IOException {
-		FileManager.saveFile(libraryContent, ".lib");
+		FileManager.saveFile(LibertyCompiler.compile(this), ".lib");
 	}
 
 	@Override

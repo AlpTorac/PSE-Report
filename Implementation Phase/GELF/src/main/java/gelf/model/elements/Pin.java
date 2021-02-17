@@ -56,6 +56,16 @@ public abstract class Pin extends Element {
  	public void setSearched(boolean searched) {
  		super.setSearched(searched);
  	}
+ 	
+ 	@Override
+	public String getElementContent() {
+		return super.getElementContent();
+	}
+	
+	@Override
+	public void setElementContent(String content) {
+		super.setElementContent(content);
+	}
      
 }
 

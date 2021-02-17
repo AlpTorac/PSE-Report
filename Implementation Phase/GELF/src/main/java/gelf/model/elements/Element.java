@@ -4,6 +4,7 @@ public abstract class Element {
 	protected boolean filtered;
 	protected boolean searched;
 	protected String name;
+	protected String elementContent;
 	
 	public Element() {}
 
@@ -39,5 +40,13 @@ public abstract class Element {
 	
 	public int compareTo(Element element) {
 		return this.name.compareTo(element.name);
+	}
+
+	public String getElementContent() {
+		return elementContent;
+	}
+
+	public void setElementContent(String elementContent) {
+		this.elementContent = elementContent;
 	}
 }
