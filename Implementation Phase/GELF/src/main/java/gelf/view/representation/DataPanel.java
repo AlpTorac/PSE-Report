@@ -18,7 +18,7 @@ import gelf.view.components.Panel;
  */
 public class DataPanel extends Panel {
 
-    private Label upperLabel;
+    public Label upperLabel;
     private Label middleLabel;
     private Label lowerLabel;
     private Label when;
@@ -134,5 +134,13 @@ public class DataPanel extends Panel {
 		
 
 		
+	}
+	
+	public Element getElement() {
+		return element;
+	}
+	
+	public void setElement(Element element) {
+		this.element = element;
 	}
 }

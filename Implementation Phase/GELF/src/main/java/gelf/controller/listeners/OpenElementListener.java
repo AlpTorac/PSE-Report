@@ -42,7 +42,7 @@ public class OpenElementListener implements ActionListener, MouseListener {
 			return;
 		}
 		Element element = outliner.getSelectedElements().get(0);
-		subwindows.addSubWindow(new SubWindow(element, Model.getInstance().getCurrentProject() ,subwindows, 200, 200));
+		subwindows.addSubWindow(new SubWindow(element, Model.getInstance().getCurrentProject(), outliner ,subwindows, 200, 200));
 		
 	}
 
@@ -56,7 +56,7 @@ public class OpenElementListener implements ActionListener, MouseListener {
             	 return;
              }
 			Element element = (Element) node.getUserObject();
-			subwindows.addSubWindow(new SubWindow(element, Model.getInstance().getCurrentProject(), subwindows, 200, 200));			
+			subwindows.addSubWindow(new SubWindow(element, Model.getInstance().getCurrentProject(), outliner,  subwindows, 200, 200));			
 			
 		}
 		

@@ -69,7 +69,7 @@ public class EventManager {
 		//view.outliner
 		//view.outliner
 		//view.outliner
-		((DefaultTreeModel) view.outliner.tree.getModel()).addTreeModelListener((TreeModelListener) listeners.get(Event.RENAME));
+		
 		view.itemUndo.addActionListener((ActionListener) listeners.get(Event.UNDO));
 		view.itemRedo.addActionListener((ActionListener) listeners.get(Event.REDO));
 		view.itemMergeSelected.addActionListener((ActionListener) listeners.get(Event.MERGE));

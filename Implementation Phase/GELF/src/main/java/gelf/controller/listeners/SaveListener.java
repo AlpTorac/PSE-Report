@@ -21,16 +21,19 @@ import gelf.model.project.Model;
 import gelf.model.project.Project;
 import gelf.view.composites.Outliner;
 import gelf.view.composites.SubWindow;
+import gelf.view.composites.SubWindowArea;
 /*
  * Listener for saving changes.
  */
 public class SaveListener implements ActionListener{
 	
 	private Outliner outliner;
+	private SubWindowArea subwindows;
 	
 	public SaveListener(Outliner outliner) {
 		this.outliner = outliner;
 	}
+	
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
