@@ -1,9 +1,7 @@
 package gelf.model.project;
 
-import org.apache.commons.math3.analysis.polynomials.PolynomialFunctionLagrangeForm;
-import org.apache.commons.math3.analysis.interpolation.BicubicInterpolator;
 import org.apache.commons.math3.analysis.interpolation.NevilleInterpolator;
-import org.apache.commons.math3.analysis.interpolation.BicubicInterpolatingFunction;
+import org.apache.commons.math3.analysis.polynomials.PolynomialFunctionLagrangeForm;
 
 public class Interpolator {
 
@@ -37,6 +35,7 @@ public class Interpolator {
         return newValues;
     }
 
+
     public float[][] bicubicInterpolate(float[] indexes1, float[] indexes2,
                      float[][] values, float[] newIndexes1, float[] newIndexes2) {
         if (values == null || values[0] == null || indexes1 == null 
@@ -47,18 +46,25 @@ public class Interpolator {
         double[][] newDoubleValues = new double[newIndexes1.length][newIndexes2.length];
         double[] doubleIndexes1 = convertFloatsToDoubles(indexes1);
         double[] doubleIndexes2 = convertFloatsToDoubles(indexes2);
+        double[][] newIntermediateValues = new double[newIndexes2.length][indexes1.length];
         double[][] doubleValues = new double[values.length][values[0].length];
         for (int i = 0; i < values.length; i++) {
             doubleValues[i] = convertFloatsToDoubles(values[i]);
         }
-        BicubicInterpolator interpolator = new BicubicInterpolator();
-        BicubicInterpolatingFunction function = interpolator.interpolate(doubleIndexes1, doubleIndexes2, doubleValues);
-        for (int i = 0; i < newIndexes1.length; i++) {
-            Double newIndex1 = (double) newIndexes1[i];
-            int length = newIndexes2.length;
-            for (int j = 0; j < length; j++) {
-                Double newIndex2 = (double) newIndexes2[j];
-                newDoubleValues[i][j] = function.value(newIndex1, newIndex2);
+        for (int i = 0; i < indexes1.length; i++) {
+            PolynomialFunctionLagrangeForm function;
+    	    NevilleInterpolator interpolator = new NevilleInterpolator();
+            function = interpolator.interpolate(doubleIndexes2, doubleValues[i]);
+            for (int j = 0; j < newIndexes2.length; j++) {
+                newIntermediateValues[j][i] = function.value(newIndexes2[j]);
+            }
+        }
+        for (int i = 0; i < newIndexes2.length; i++) {
+            PolynomialFunctionLagrangeForm function;
+    	    NevilleInterpolator interpolator = new NevilleInterpolator();
+            function = interpolator.interpolate(doubleIndexes1, newIntermediateValues[i]);
+            for (int j = 0; j < newIndexes1.length; j++) {
+                newDoubleValues[j][i] = function.value(newIndexes1[j]);
             }
         }
         for (int i = 0; i < newDoubleValues.length; i++) {

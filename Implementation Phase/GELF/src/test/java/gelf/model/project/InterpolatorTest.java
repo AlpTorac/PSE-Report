@@ -9,11 +9,11 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class InterpolatorTest {
-	Interpolator interpolator;
+	private static Interpolator interpolator;
 
 	@BeforeAll
-	void buildInterpolator() {
-		Interpolator interpolator = new Interpolator();
+	static void buildInterpolator() {
+		interpolator = new Interpolator();
 	}
 
 	@Test
@@ -63,19 +63,19 @@ class InterpolatorTest {
 	
 	@Test
 	void bicubicInterpolateTest() {
-		float[] index1 = new float[] {1f, 2.5f, 3.1f, 5.5f, 7.0f};
-		float[] index2 = new float[] {0.43f, 0.51f, 0.52f, 0.64f, 76f};
-		float[][] values = new float[][] {{0.32f, 0.45f, 0.52f, 2.5f, 1f}, 
-										{0.1f, 0.4f, -0.3f, 23f, 0.5f},
-										{0.7f, 0.43f, -1f, 5f, -4f},
-										{0.7f, 0.43f, -1f, 5f, -4f},
-										{0.7f, 0.43f, -1f, 5f, -4f}};
-		float[] newIndex1 = new float[] {0.3f, 2.5f, 2.2f};
-		float[] newIndex2 = new float[] {0.43f, 0.52f};
+		float[] index1 = new float[] {1f, 2f};
+		float[] index2 = new float[] {1f, 2f, 3f};
+		float[][] values = new float[][] {
+			{1, 2, 3}, // index1 = 1
+			{1, 2, 3}, // index1 = 2
+			};
+		float[] newIndex1 = new float[] {5f, 6f};
+		float[] newIndex2 = new float[] {6f, 7f};
 		float[][] newValues = interpolator.bicubicInterpolate(index1, index2, values, newIndex1, newIndex2);
-		float[][] expectedValues = new float[][] {{0.32f, 0.45f, 0.52f}, 
-			{0.1f, 0.4f, -0.3f},
-			{0.7f, 0.43f, -1f}};
+		float[][] expectedValues = new float[][] {
+			{6, 7}, // index1 = 5
+			{6, 7}, // index1 = 6
+			};
 		assertTrue(Arrays.deepEquals(expectedValues, newValues));
 	}
 

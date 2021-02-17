@@ -164,7 +164,7 @@ class LibertyParserTest {
 			"    leakage_power() { \r\n" + 
 			"      when : \"A1&A2\" ; \r\n" + 
 			"      value : \"0.005445\" ; \r\n" + 
-			"    }\r\n" + 
+			"    }\r\n" + "hallo : welt ;" +
 			"\r\n" + 
 			"    pin(A1) { \r\n" + 
 			"      capacitance : 0.001439 ; \r\n" + 
@@ -366,7 +366,7 @@ class LibertyParserTest {
 	
 	@Test
 	void parseLibraryTest() throws InvalidFileFormatException {
-		Library library = LibertyParser.parseLibrary(libraryExample.replaceAll("\\s+", ""));
+		Library library = LibertyParser.parseLibrary(libraryExample);
 		assertEquals("typical", library.getName());
 		Cell cell1 = library.getCells().get(0);
 		assertEquals("AND2_X1", cell1.getName());
@@ -375,7 +375,7 @@ class LibertyParserTest {
 	
 	@Test
 	void parseCellTest() throws InvalidFileFormatException {
-		Cell cell = LibertyParser.parseCell(cellExample.replaceAll("\\s+", ""), "library");
+		Cell cell = LibertyParser.parseCell(cellExample, "library");
 		assertEquals("AND2_X1", cell.getName());
 		assertEquals(0.005445f, cell.getDefaultLeakage());
 		assertArrayEquals(new float[] {0.002177f, 0.003654f, 0.003458f, 0.005445f}, cell.getLeakages().getValues());
@@ -401,7 +401,7 @@ class LibertyParserTest {
 		ArrayList<InputPin> relatedPins = new ArrayList<InputPin>();
 		relatedPins.add(pinA1);
 		relatedPins.add(pinA2);
-		OutputPin pin = (OutputPin) LibertyParser.parsePin(outputPinExample.replaceAll("\\s+", ""), relatedPins, "library/cell");
+		OutputPin pin = (OutputPin) LibertyParser.parsePin(outputPinExample, relatedPins, "library/cell");
 		assertEquals(0.1f, pin.getMaxCapacitance());
 		assertEquals(0.0004f, pin.getMinCapacitance());
 		assertEquals("Z", pin.getName());
@@ -434,7 +434,7 @@ class LibertyParserTest {
 	
 	@Test
 	void parsePinTest1() throws InvalidFileFormatException { 
-		InputPin pin = (InputPin) LibertyParser.parsePin(inputPinExample.replaceAll("\\s+", ""), new ArrayList<InputPin>(), "library/cell"); 
+		InputPin pin = (InputPin) LibertyParser.parsePin(inputPinExample, new ArrayList<InputPin>(), "library/cell"); 
 		assertEquals(pin.getCapacitance(), 0.001469f);
 		assertEquals(pin.getName(), "A3");
 		ArrayList<InputPower> powers = pin.getInputPowers();
