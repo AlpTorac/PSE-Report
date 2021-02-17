@@ -28,9 +28,11 @@ public class TextEditCommand implements Command {
         if (element instanceof Library) {
             newElement = LibertyParser.parseLibrary(newContent);
         } else if (element instanceof Cell) {
-            newElement = LibertyParser.parseCell(newContent);
+            newElement = LibertyParser.parseCell(newContent, ((Cell) element).getParentLibrary().getName());
         } else {
-            newElement = LibertyParser.parsePin(newContent, ((Pin) element).getParent().getInPins());
+            Pin oldPin = (Pin) element;
+            newElement = LibertyParser.parsePin(newContent, oldPin.getParent().getInPins(), 
+                            oldPin.getParent().getParentLibrary().getName() + "/" + oldPin.getParent().getName());
         }
         
         if (!oldElement.getClass().equals(newElement.getClass())) {

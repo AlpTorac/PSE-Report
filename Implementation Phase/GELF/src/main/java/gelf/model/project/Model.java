@@ -1,6 +1,8 @@
 package gelf.model.project;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 import gelf.model.commands.CommandHistory;
 
@@ -12,11 +14,12 @@ public class Model {
     private static Model instance = new Model();
     private Project currentProject;
     private CommandHistory currentCommandHistory;
+    private static DecimalFormatSymbols formatSymbols = DecimalFormatSymbols.getInstance(Locale.US);
 
     // The format for numbers bigger than e^(-4)
-    private static DecimalFormat format = new DecimalFormat("#.#######");
+    private static DecimalFormat format = new DecimalFormat("#.#######", formatSymbols);
     // The scientific number format for numbers smaller than e^(-4)
-    private static DecimalFormat scFormat = new DecimalFormat("0.###E00");
+    private static DecimalFormat scFormat = new DecimalFormat("0.###E00", formatSymbols);
 
     /**
      * Instantiates the model and it's component classes

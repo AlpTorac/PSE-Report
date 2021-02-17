@@ -120,7 +120,7 @@ public class LibertyParser {
         // parses Cells
         ArrayList<Cell> childCells = new ArrayList<Cell>();
         for (int i = 1; i < cellStrings.length; i++) {
-            childCells.add(parseCell(cellStrings[i]));
+            childCells.add(parseCell(cellStrings[i], name));
         }
         if (childCells.isEmpty()) {
             throw new InvalidFileFormatException("Library doesn't have any cells in it");
@@ -145,10 +145,11 @@ public class LibertyParser {
     /**
      * Parses a String data assuming it is a Cell
      * @param cellString the String data of a Cell file
+     * @param path the path to the Cell
      * @return the parsed Cell object
      * @throws InvalidFileFormatException if the format of the Cell is not recognised
      */
-    public static Cell parseCell(String cellString) throws InvalidFileFormatException {
+    public static Cell parseCell(String cellString, String path) throws InvalidFileFormatException {
     	cellString = cellString.replaceAll("\\s+", "");
         // splits by pins
         String[] pinStrings = cellString.split("(?=(pin\\())");
@@ -169,6 +170,7 @@ public class LibertyParser {
         // fetches cell name
         String[] cellData = cellLeakages[0].split("\\{");
         String name = cellData[0].substring(cellData[0].indexOf("(") + 1, cellData[0].indexOf(")"));
+        path += "/" + name;
         //splits the cell parameters
         String[] cellParameters = cellData[1].split(";");
         float defaultLeakage = 0f;
@@ -188,13 +190,13 @@ public class LibertyParser {
         }
         if (!hasDefaultLeakage) {
         	throw new InvalidFileFormatException("No default leakages specified in cell "
-        			+ "\"" + name + "\"");
+        			+ "\"" + path + "\"");
         }
         Leakage leakages = new Leakage(leakagesValues);
         ArrayList<InputPin> childInPins = new ArrayList<InputPin>();
         ArrayList<OutputPin> childOutPins = new ArrayList<OutputPin>();
         for (int i = 1; i < pinStrings.length; i++) {
-            Pin childPin = parsePin(pinStrings[i], childInPins);
+            Pin childPin = parsePin(pinStrings[i], childInPins, path);
             if (childPin instanceof InputPin) {
                 childInPins.add((InputPin) childPin);
             } else {
@@ -204,17 +206,17 @@ public class LibertyParser {
         //checks leakages attribute validity
         if (java.lang.Math.pow(2 , childInPins.size()) != leakages.getValues().length) {
         	throw new InvalidFileFormatException("Invalid number of leakage entries "
-        			+ "in cell \"" + name + "\"");
+        			+ "in cell \"" + path + "\"");
         }
         ArrayList<Pin> childPins = new ArrayList<Pin>();
         childPins.addAll(childInPins);
         childPins.addAll(childOutPins);
         if (childPins.isEmpty()) {
-            throw new InvalidFileFormatException("Cell \"" + name + "\" has no child pins");
+            throw new InvalidFileFormatException("Cell \"" + path + "\" has no child pins");
         }
         float[][] indexes = findCellIndex(childOutPins);
         if (indexes == null) {
-        	throw new InvalidFileFormatException("Cell \"" + name + "\" has no valid indexes");
+        	throw new InvalidFileFormatException("Cell \"" + path + "\" has no valid indexes");
         }
         float[] index1 = indexes[0];
         float[] index2 = indexes[1];
@@ -232,11 +234,12 @@ public class LibertyParser {
      * parsing new Files, we don't initially know which pin to expect
      * @param pinString the String data of a Pin
      * @param relatedPins the pins related to it. Neccessary if it is an output Pin
+     * @param path the path to the Pin
      * @return the parsed Pin. Eithe InputPin or OutputPin
      * @throws InvalidFileFormatException if the format of the Cell is not recognised
      */
     public static Pin parsePin(String pinString,
-                         ArrayList<InputPin> relatedPins) throws InvalidFileFormatException {
+                         ArrayList<InputPin> relatedPins, String path) throws InvalidFileFormatException {
         // might move to constructor
         // recalculates regex to separate power groups
         if (powerGroupSeparator.equals("")) {
@@ -262,6 +265,7 @@ public class LibertyParser {
         // parses pin name
         String[] pinData = attributeStrings[0].split("\\{|\\}");
         String name = pinData[0].substring(pinData[0].indexOf("(") + 1, pinData[0].indexOf(")"));
+        path += "/" + name;
         boolean isInput = false;
         boolean isOutput = false;
         String function = "";
@@ -287,13 +291,13 @@ public class LibertyParser {
                         isOutput = true;
                     } else {
                         throw new InvalidFileFormatException("Direction \"" + attrValue + "\" in pin"
-                        + " \"" + name + "not supported");
+                        + " \"" + path + "not supported");
                     }
                     break;
                 case "function":
                     if (!attrValue.matches("\"\\(" + FUNCTIONFORMAT + "\\)\"")) {
                         throw new InvalidFileFormatException("Function format: \"" + attrValue + 
-                        		"\" for Pin \"" + name + " \" is invalid");
+                        		"\" for Pin \"" + path + " \" is invalid");
                     }
                     int firstIndex = attrValue.indexOf("\"");
                     int secondIndex = attrValue.indexOf("\"", firstIndex + 1);
@@ -302,11 +306,11 @@ public class LibertyParser {
                 case "max_capacitance":
                     if (!attrValue.matches(FLOATFORMAT)) {
                         throw new InvalidFileFormatException("Value format for " + attrValue 
-                                + " in Pin \"" + name + "\" is invalid");
+                                + " in Pin \"" + path + "\" is invalid");
                     }
                     if (hasCapacitance) {
                         throw new InvalidFileFormatException(attrName 
-                                + " in Pin \"" + name + "\" is defined twice");
+                                + " in Pin \"" + path + "\" is defined twice");
                     }
                     hasCapacitance = true;
                     maxCap =  Float.parseFloat(attrValue);
@@ -314,11 +318,11 @@ public class LibertyParser {
                 case "min_capacitance":
                     if (!attrValue.matches(FLOATFORMAT)) {
                         throw new InvalidFileFormatException("Value format for" + attrName 
-                                + "in Pin \"" + name + "\" is invalid");
+                                + "in Pin \"" + path + "\" is invalid");
                     }
                     if (hasMinCapacitance) {
                         throw new InvalidFileFormatException(attrName 
-                                + "in Pin \"" + name + "\" is defined twice");
+                                + "in Pin \"" + path + "\" is defined twice");
                     }
                     hasMinCapacitance = true;
                     minCap =  Float.parseFloat(attrValue);
@@ -326,11 +330,11 @@ public class LibertyParser {
                 case "capacitance":
                     if (!attrValue.matches(FLOATFORMAT)) {
                         throw new InvalidFileFormatException("Value format for" + attrName 
-                                + "in Pin \"" + name + "\" is invalid");
+                                + "in Pin \"" + path + "\" is invalid");
                     }
                     if (hasCapacitance) {
                         throw new InvalidFileFormatException(attrName 
-                                + "in Pin \"" + name + "\" is defined twice");
+                                + "in Pin \"" + path + "\" is defined twice");
                     }
                     hasCapacitance = true;
                     capacitance =  Float.parseFloat(attrValue);
@@ -341,10 +345,10 @@ public class LibertyParser {
         }
         // throws exceptions for invalid pin direction
         if (isInput & isOutput) {
-            throw new InvalidFileFormatException("Pin \"" + name + "\" is defined as both input and output");
+            throw new InvalidFileFormatException("Pin \"" + path + "\" is defined as both input and output");
         }
         if (!isInput & !isOutput) {
-            throw new InvalidFileFormatException("Pin \"" + name + "\" is defined as neither input nor output");
+            throw new InvalidFileFormatException("Pin \"" + path + "\" is defined as neither input nor output");
         }
         ArrayList<Attribute> attributes = new ArrayList<Attribute>();
         // parses all known attribute
@@ -366,7 +370,7 @@ public class LibertyParser {
                             	relatedPinString = powerAttributeParamParts[1].substring(1, powerAttributeParamParts[1].length() - 1);
                                 if (!powerAttributeParamParts[1].matches("\"" + NAMEFORMAT + "\"")) {
                                     throw new InvalidFileFormatException("Name format of related_pin \"" 
-                                    + powerAttributeParamParts[1] + "\" of Pin \"" + name + " is invalid");
+                                    + powerAttributeParamParts[1] + "\" of Pin \"" + path + " is invalid");
                                 }
                                 for (InputPin inpin: relatedPins) {
                                     if (inpin.getName().equals(relatedPinString)){
@@ -380,13 +384,13 @@ public class LibertyParser {
                     }
                     // gets related Pins
                     for (int j = 1; j < powerAttributes.length; j++) {
-                        OutputPower power = parseOutPower(powerAttributes[j]);
+                        OutputPower power = parseOutPower(powerAttributes[j], path);
                         if (relatedPin == null && relatedPinString != null) {
                         	throw new InvalidFileFormatException("Related Pin \"" + relatedPinString + "\""
-                        			+ " on Pin \"" + name + "\" was not found before it");
+                        			+ " on Pin \"" + path + "\" was not found before it");
                         } else if (relatedPin == null) {
                             throw new InvalidFileFormatException("Nonexistant related Pin on Pin \""
-                                + name + "\"");
+                                + path + "\"");
                         }
                         power.setRelatedPin(relatedPin);
                         attributes.add(power);
@@ -395,7 +399,7 @@ public class LibertyParser {
                 // parses internal power for input pins
                 else {
                     for (int j = 1; j < powerAttributes.length; j++) {
-                        attributes.add(parseInPower(powerAttributes[j]));
+                        attributes.add(parseInPower(powerAttributes[j], path));
                     }
                 }
             // parses timing
@@ -418,7 +422,7 @@ public class LibertyParser {
                             			value.length() - 1);
                                 if (!value.matches("\"" + NAMEFORMAT + "\"")) {
                                     throw new InvalidFileFormatException("Name format of related_pin \"" 
-                                    + value + "\" of Pin \"" + name + " is invalid");
+                                    + value + "\" of Pin \"" + path + " is invalid");
                                 }
                                 for (InputPin pin: relatedPins) {
                                     if (pin.getName().equals(relatedPinString)){
@@ -449,12 +453,12 @@ public class LibertyParser {
                         for (int j = 1; j < timingAttributes.length; j++) {
                         	if (relatedPin == null && relatedPinString != null) {
                             	throw new InvalidFileFormatException("Related Pin \"" + relatedPinString + "\""
-                            			+ " on Pin \"" + name + "\" was not found before it");
+                            			+ " on Pin \"" + path + "\" was not found before it");
                             } else if (relatedPin == null) {
                                 throw new InvalidFileFormatException("Nonexistant related Pin on Pin \""
-                                    + name + "\"");
+                                    + path + "\"");
                             }
-                            Timing timing = parseOutTiming(timingAttributes[j], timSense, timType);
+                            Timing timing = parseOutTiming(timingAttributes[j], timSense, timType, path);
                             timing.setRelatedPin(relatedPin);
                             attributes.add(timing);
                         }
@@ -561,28 +565,29 @@ public class LibertyParser {
      * Parses an array that contains Internal Power information on an output Pin to give the
      * OutputPower object
      * @param content the string of the Internal Power attribute
+     * @param path the path to the Internal Power
      * @return the parsed Internal Power Attribute
      * @throws InvalidFileFormatException if the Format of the Internal Power attribute doesn't fit
      * expected format
      */
-    public static OutputPower parseOutPower(String content) throws InvalidFileFormatException {
+    public static OutputPower parseOutPower(String content, String path) throws InvalidFileFormatException {
         PowerGroup powGroup = null;
         for (PowerGroup powGroupEnum : PowerGroup.values()) {
             if (content.startsWith(powGroupEnum.name().toLowerCase())) {
                 powGroup = powGroupEnum;
             }   
         }
-        float[][] values = parseDoubleArray(content, "values");
+        float[][] values = parseDoubleArray(content, "values", path);
         float[] index1 = parseArray(content, "index_1");
         float[] index2 = parseArray(content, "index_2");
         OutputPower attribute = new OutputPower(powGroup, values);
         attribute.setIndex1(index1);
         attribute.setIndex2(index2);
         if (values.length == 0) {
-            throw new InvalidFileFormatException("Values are empty");
+            throw new InvalidFileFormatException("Values are empty in internal_power of Pin \"" + path + "\"");
         }
-        if (values.length != index1.length && values[0].length != index2.length) {
-            throw new InvalidFileFormatException("Values mismatch");
+        if (values.length != index1.length || values[0].length != index2.length) {
+            throw new InvalidFileFormatException("Values length mismatch in internal_power of Pin \"" + path + "\"");
         }
         return attribute;
     }
@@ -591,11 +596,12 @@ public class LibertyParser {
      * Parses an array that contains Internal Power information on an input Pin to give the
      * InputPower object
      * @param content the string of the Internal Power attribute
+     * @param path the path to the Internal Power
      * @return the parsed Internal Power Attribute
      * @throws InvalidFileFormatException if the Format of the Internal Power attribute doesn't fit
      * expected format
      */
-    public static InputPower parseInPower(String content) throws InvalidFileFormatException {
+    public static InputPower parseInPower(String content, String path) throws InvalidFileFormatException {
         PowerGroup powGroup = null;
         for (PowerGroup powGroupEnum : PowerGroup.values()) {
             if (content.startsWith(powGroupEnum.name().toLowerCase())) {
@@ -607,10 +613,10 @@ public class LibertyParser {
         InputPower attribute = new InputPower(powGroup, values);
         attribute.setIndex1(index1);
         if (values.length == 0) {
-            throw new InvalidFileFormatException("Values are empty");
+            throw new InvalidFileFormatException("Values are empty in internal_power of Pin \"" + path + "\"");
         }
         if (values.length != index1.length) {
-            throw new InvalidFileFormatException("Values mismatch");
+            throw new InvalidFileFormatException("Values mismatch in internal_power of Pin \"" + path + "\"");
         }
         return attribute;
     }
@@ -621,11 +627,12 @@ public class LibertyParser {
      * @param content the string of the Timing attribute
      * @param timSense the timing Sense
      * @param timType the timing Type
+     * @param path the path to this timing
      * @return the parsed Timing Attribute
      * @throws InvalidFileFormatException if the Format of the Timing attribute doesn't fit
      * expected format
      */
-    public static Timing parseOutTiming(String content, TimingSense timSense, TimingType timType)
+    public static Timing parseOutTiming(String content, TimingSense timSense, TimingType timType, String path)
             throws InvalidFileFormatException {
         TimingGroup timGroup = null;
         for (TimingGroup timingEnum : TimingGroup.values()) {
@@ -633,17 +640,17 @@ public class LibertyParser {
                 timGroup = timingEnum;
             }
         }
-        float[][] values = parseDoubleArray(content, "values");
+        float[][] values = parseDoubleArray(content, "values", path);
         float[] index1 = parseArray(content, "index_1");
         float[] index2 = parseArray(content, "index_2");
         Timing attribute = new Timing(timSense, timType, timGroup, values);
         attribute.setIndex1(index1);
         attribute.setIndex2(index2);
         if (values.length == 0) {
-            throw new InvalidFileFormatException("Values are empty");
+            throw new InvalidFileFormatException("Values are empty in timing of Pin \"" + path + "\"");
         }
-        if (values.length != index1.length && values[0].length != index2.length) {
-            throw new InvalidFileFormatException("Values mismatch");
+        if (values.length != index1.length || values[0].length != index2.length) {
+            throw new InvalidFileFormatException("Values mismatch in timing of Pin \"" + path + "\"");
         }
         return attribute;
     }
@@ -665,11 +672,15 @@ public class LibertyParser {
     /**
      * Parses the string of an attribute but looking for a double array of the
      * parameter arrayName, so that values can be parsed for attributes
-     * @param content the String of an attribute that contains the double array
+     * 
+     * @param content   the String of an attribute that contains the double array
      * @param arrayName the parameter name
+     * @param path the path to the double array
      * @return the array object of the parameter name
+     * @throws InvalidFileFormatException
      */
-    public static float[][] parseDoubleArray(String content, String arrayName) {
+    public static float[][] parseDoubleArray(String content, String arrayName, String path)
+            throws InvalidFileFormatException {
         int firstIndex = content.indexOf(arrayName) + arrayName.length();
         int lastIndex = content.indexOf(";", firstIndex);
         String arrayStrings = content.substring(firstIndex + 1, lastIndex - 1);
@@ -677,6 +688,16 @@ public class LibertyParser {
         float[][] result = new float[separatedArrayStrings.length][]; 
         for (int i = 0; i < separatedArrayStrings.length; i++) {
             result[i] = stringToArray(separatedArrayStrings[i] + "\"");
+        }
+        if (result.length == 0) {
+            throw new InvalidFileFormatException("Values are empty in timing of Pin \"" + path + "\"");
+        }
+        int uniformLength = result[0].length;
+        for (float[] array : result) {
+            if (array.length != uniformLength) {
+                throw new InvalidFileFormatException("Values have differen array lengths " 
+                    + "in timing of Pin \"" + path + "\"");
+            }
         }
         return result;
     }
