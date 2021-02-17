@@ -2,9 +2,15 @@ package gelf.view.composites;
 
 import gelf.model.elements.Cell;
 import gelf.model.elements.Element;
+import gelf.model.elements.InputPin;
 import gelf.model.elements.Library;
+import gelf.model.elements.OutputPin;
 import gelf.model.elements.Stat;
+import gelf.model.elements.attributes.PowerGroup;
 import gelf.model.elements.attributes.Timing;
+import gelf.model.elements.attributes.TimingGroup;
+import gelf.model.elements.attributes.TimingSense;
+import gelf.model.elements.attributes.TimingType;
 import gelf.model.project.Project;
 
 import java.awt.*;
@@ -13,9 +19,10 @@ import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
 
 import gelf.view.components.Checkbox;
-import gelf.view.components.DropdownSelector;
+//import gelf.view.components.DropdownSelector;
 import gelf.view.components.Panel;
 import gelf.view.diagrams.DiagramWizard;
 import gelf.view.diagrams.IDiagram;
@@ -31,84 +38,40 @@ public class Visualizer extends ElementManipulator {
 	DataPanel dataPanel;
 	Panel upperPanel;
 	Panel lowerPanel;
+	Panel dropdowns;
+
 	Panel diagramPanel;
 	IDiagram diagram;
-	// dropdown enums
-	//attributes
-    public enum Attribute {
-        INPUT_INTERNAL_POWER("Input Internal Power"),
-        OUTPUT_INTERNAL_POWER("Output Internal Power"),
-		LEAKAGE_POWER("Leakage Power"),
-		OUTPUT_TIMING("Output Timing");
-        private String str;
-        private Attribute(String s) {
-            this.str = s;
-        }
+	private JComboBox<Attribute> libCellDropdown = new JComboBox<Attribute>();
+	private JComboBox<Attribute> outpinDropdown = new JComboBox<Attribute>();
+	private JComboBox<PowerGroup> powerGroupDropdown = new JComboBox<PowerGroup>();
+	private JComboBox<TimingType> timingTypeDropdown = new JComboBox<TimingType>();
+	private JComboBox<TimingGroup> timingGroupDropdown = new JComboBox<TimingGroup>();
+	private JComboBox<TimingSense> timingSenseDropdown = new JComboBox<TimingSense>();
 
-        @Override
-        public String toString() {
-            return this.str;
-        }
-    }
-	//internal power
-		//power groups
-		public enum PowerGroups {
-			FALL_POWER("Fall-Power"),
-			RISE_POWER("Rise-Power");
-			private String str;
-			private PowerGroups(String s) {
-				this.str = s;
-			}
-
-			@Override
-			public String toString() {
-				return this.str;
-			}
+	//attributes enum for dropdowns
+	public enum Attribute {
+		INPUT_POWER("Input Power"),
+		OUTPUT_POWER("Output Power"),
+		TIMING("Timing");
+		private String str;
+		private Attribute(String s) {
+			this.str = s;
 		}
-	//output timing
-		//timing sense
-		public enum TimingSense {
-			POSITIVE_UNNATE("Positive-Unate"),
-			NEGATIVE_UNNATE("Negative-Unate"),
-			NON_UNNATE("Non-Unate");
-			private String str;
-			private TimingSense(String s) {
-				this.str = s;
-			}
-
-			@Override
-			public String toString() {
-				return this.str;
-			}
+		@Override
+		public String toString() {
+			return this.str;
 		}
-		public enum TimingType {
-			COMBINATIONAL("Combinational"),
-			THREE_STATE_ENABLE("Three-State-Enable");
-			private String str;
-			private TimingType(String s) {
-				this.str = s;
-			}
+	}
 
-			@Override
-			public String toString() {
-				return this.str;
-			}
-		}
-		public enum TimingGroup {
-			CELL_FALL("Cell-Fall"),
-			CELL_RISE("Cell-Rise"),
-			FALL_TRANSITION("Fall-Transition"),
-			RISE_TRANSITION("Rise-Transition");
-			private String str;
-			private TimingGroup(String s) {
-				this.str = s;
-			}
-
-			@Override
-			public String toString() {
-				return this.str;
-			}
-		}
+	//tracks dropdown state
+	private static class DropdownStatus {
+		public static Attribute attribute;		//for cell/library									||	output pin
+		public static PowerGroup powerGroup;	//for cell/library if attribute input/output power	||	output if attribute output power	||	input pin
+		public static TimingSense timingSense;	//for cell/library if attribute timing				||	output if attribute timing
+		public static TimingGroup timingGroup;	//for cell/library if attribute timing				||	output if attribute timing
+		public static TimingType timingType;	//for cell/library if attribute timing				||	output if attribute timing
+	}
 
     public Visualizer(gelf.model.elements.Element e, SubWindow w, Project p, int width, int height) {
         super(e, p, width, height);
@@ -135,10 +98,12 @@ public class Visualizer extends ElementManipulator {
 		this.lowerPanel.setBackground(ColorTheme.subsection);
 		this.lowerPanel.setVisible(true);
 		//dropdowns
-		Panel dropdowns = new Panel(width, height);
+		dropdowns = new Panel(width, height);
 		dropdowns.setLayout(new BoxLayout(dropdowns, BoxLayout.X_AXIS));
 		dropdowns.setBackground(ColorTheme.section);
 		dropdowns.setVisible(true);
+		initDropdowns();
+		this.lowerPanel.add(dropdowns, BorderLayout.PAGE_START);
 
 		//statistics checkboxes
 		Panel stats = new Panel(width, height);
@@ -162,20 +127,22 @@ public class Visualizer extends ElementManipulator {
 		//diagram viewport
 		DiagramWizard wiz = new DiagramWizard();
 
-		Cell cell = (Cell)e;
-		float[] leakageValues = cell.getLeakages().getValues();
-		ArrayList<float[]> data = new ArrayList<float[]>();
-		data.add(leakageValues);
+		// Cell cell = (Cell)e;
+		// float[] leakageValues = cell.getLeakages().getValues();
+		// ArrayList<float[]> data = new ArrayList<float[]>();
+		// data.add(leakageValues);
 		
 		this.diagramPanel = new Panel(500, 500);
 		this.diagramPanel.setBackground(ColorTheme.text);
 		this.diagramPanel.setLayout(null);
 		this.diagramPanel.setOpaque(true);
-		this.diagram = wiz.makeBarChart(this.diagramPanel, data);
-		this.diagram.attachToContainer(this.diagramPanel);
-		this.diagram.refresh();
-		this.diagramPanel.setVisible(true);
-		this.lowerPanel.add(this.diagramPanel, BorderLayout.CENTER);
+
+		updateDiagram();
+		// this.diagram = wiz.makeBarChart(this.diagramPanel, data);
+		// this.diagram.attachToContainer(this.diagramPanel);
+		// this.diagram.refresh();
+		// this.diagramPanel.setVisible(true);
+		// this.lowerPanel.add(this.diagramPanel, BorderLayout.CENTER);
 
 		this.add(this.lowerPanel);
 		this.addComponentListener(this);
@@ -191,18 +158,172 @@ public class Visualizer extends ElementManipulator {
     		upperPanel.add(new CellPanel(100, 100, e, subWindow, dataPanel)); 
     	}
     	upperPanel.add(dataPanel);
+
+		//dropdowns
+		initDropdowns();;
+
     	this.revalidate();
     	this.repaint();
   	}
+
+	private void initDropdowns() {
+		this.dropdowns.removeAll();
+		libCellDropdown = new JComboBox<Attribute>();
+		outpinDropdown = new JComboBox<Attribute>();
+		powerGroupDropdown = new JComboBox<PowerGroup>();
+		timingTypeDropdown = new JComboBox<TimingType>();
+		timingGroupDropdown = new JComboBox<TimingGroup>();
+		timingSenseDropdown = new JComboBox<TimingSense>();
+
+		libCellDropdown.setVisible(true);
+		libCellDropdown.addItem(Attribute.INPUT_POWER);
+		libCellDropdown.addItem(Attribute.OUTPUT_POWER);
+		libCellDropdown.addItem(Attribute.TIMING);
+		
+		outpinDropdown.setVisible(true);
+		outpinDropdown.addItem(Attribute.OUTPUT_POWER);
+		outpinDropdown.addItem(Attribute.TIMING);
+		
+		powerGroupDropdown.setVisible(true);
+		for(PowerGroup val : PowerGroup.values()) {
+			powerGroupDropdown.addItem(val);
+		}
+		
+		timingTypeDropdown.setVisible(true);
+		for(TimingType val : TimingType.values()) {
+			timingTypeDropdown.addItem(val);
+		}
+		
+		timingGroupDropdown.setVisible(true);
+		for(TimingGroup val : TimingGroup.values()) {
+			timingGroupDropdown.addItem(val);
+		}
+		
+		timingSenseDropdown.setVisible(true);
+		for(TimingSense val : TimingSense.values()) {
+			timingSenseDropdown.addItem(val);
+		}
+		
+		//listeners
+		ItemListener updateAttribute = new ItemListener(){
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				//remove old dropdowns
+				if(DropdownStatus.attribute == Attribute.INPUT_POWER) {
+					dropdowns.remove(powerGroupDropdown);
+				} else if(DropdownStatus.attribute == Attribute.OUTPUT_POWER) {
+					dropdowns.remove(powerGroupDropdown);
+				} else if(DropdownStatus.attribute == Attribute.TIMING) {
+					dropdowns.remove(timingSenseDropdown);
+					dropdowns.remove(timingTypeDropdown);
+					dropdowns.remove(timingGroupDropdown);
+				} else {
+					System.out.println("Attribute selection error(dropdown removal failed)");
+				}
+				//update attribute
+				DropdownStatus.attribute = (Attribute)e.getItem();
+				updateAttributeSubDropdowns();
+			}
+		};
+		libCellDropdown.addItemListener(updateAttribute);
+		outpinDropdown.addItemListener(updateAttribute);
+		
+		ItemListener updatePowerGroup = new ItemListener(){
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				DropdownStatus.powerGroup = (PowerGroup)e.getItem();
+				updateDiagram();
+			}
+		};
+		powerGroupDropdown.addItemListener(updatePowerGroup);
+		
+		ItemListener updateTimingSense = new ItemListener(){
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				DropdownStatus.timingSense = (TimingSense)e.getItem();
+				updateDiagram();
+			}
+		};
+		timingSenseDropdown.addItemListener(updateTimingSense);
+		
+		ItemListener updateTimingType = new ItemListener(){
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				DropdownStatus.timingType = (TimingType)e.getItem();
+				updateDiagram();
+			}
+		};
+		timingTypeDropdown.addItemListener(updateTimingType);
+		
+		ItemListener updateTimingGroup = new ItemListener(){
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				DropdownStatus.timingGroup = (TimingGroup)e.getItem();
+				updateDiagram();
+			}
+		};
+		timingGroupDropdown.addItemListener(updateTimingGroup);
+		
+		
+		if(this.subWindow.getElement().getClass() == Library.class) {
+			Library lib = (Library)this.subWindow.getElement();
+			this.dropdowns.add(libCellDropdown);
+			//update attribute
+			DropdownStatus.attribute = (Attribute)libCellDropdown.getSelectedItem();
+			updateAttributeSubDropdowns();
+		} else if(this.subWindow.getElement().getClass() == Cell.class) {
+			Cell cell = (Cell)this.subWindow.getElement();
+			this.dropdowns.add(libCellDropdown);
+			//update attribute
+			DropdownStatus.attribute = (Attribute)libCellDropdown.getSelectedItem();
+			updateAttributeSubDropdowns();
+		} else if(this.subWindow.getElement().getClass() == InputPin.class) {
+			InputPin inpin = (InputPin)this.subWindow.getElement();
+			this.dropdowns.add(powerGroupDropdown);
+		} else {
+			OutputPin outpin = (OutputPin)this.subWindow.getElement();
+			this.dropdowns.add(outpinDropdown);
+			//update attribute
+			DropdownStatus.attribute = (Attribute)outpinDropdown.getSelectedItem();
+			updateAttributeSubDropdowns();
+		}
+		this.dropdowns.revalidate();
+		this.dropdowns.repaint();
+	}
+	
+
+	private void updateAttributeSubDropdowns() {
+		//add appropriate dropdowns
+		if(DropdownStatus.attribute == Attribute.INPUT_POWER) {
+			dropdowns.add(powerGroupDropdown);
+		} else if(DropdownStatus.attribute == Attribute.OUTPUT_POWER) {
+			dropdowns.add(powerGroupDropdown);
+		} else if(DropdownStatus.attribute == Attribute.TIMING) {
+			dropdowns.add(timingSenseDropdown);
+			dropdowns.add(timingTypeDropdown);
+			dropdowns.add(timingGroupDropdown);
+		} else {
+			System.out.println("Attribute selection error(dropdown add failed)");
+		}
+		dropdowns.revalidate();
+		dropdowns.repaint();
+		updateDiagram();
+	}
+
+
+	//update diagram depending on dropdown status
+	private void updateDiagram() {
+
+	}
 
 	@Override
 	public void componentResized(ComponentEvent e) {
 		super.componentResized(e);
 		
-		DiagramWizard wiz = new DiagramWizard();
-		this.diagram.removeFromContainer();
-		this.diagram = wiz.makeBarChart(this.diagramPanel, this.diagram.cloneData());
-		this.diagram.attachToContainer(this.diagramPanel);
-		this.diagram.refresh();
+		// DiagramWizard wiz = new DiagramWizard();
+		// this.diagram.removeFromContainer();
+		// this.diagram = wiz.makeBarChart(this.diagramPanel, this.diagram.cloneData());
+		// this.diagram.attachToContainer(this.diagramPanel);
+		// this.diagram.refresh();
 	}
 }
