@@ -1,7 +1,5 @@
 package gelf.view.diagrams.indicator;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.awt.Container;
 import java.util.ArrayList;
 
@@ -45,7 +43,7 @@ class ValueLineDisplayerTest implements TestCase {
 	
 	@Test
 	void minTest() {
-		DiagramViewHelper min = factory.createValueLineDisplayer(chart, IndicatorIdentifier.MIN);
+		DiagramViewHelper min = factory.createMinLineDisplayer(chart);
 		
 		min.show();
 		
@@ -55,7 +53,7 @@ class ValueLineDisplayerTest implements TestCase {
 	
 	@Test
 	void maxTest() {
-		DiagramViewHelper max = factory.createValueLineDisplayer(chart, IndicatorIdentifier.MAX);
+		DiagramViewHelper max = factory.createMaxLineDisplayer(chart);
 		
 		max.show();
 		
@@ -65,7 +63,7 @@ class ValueLineDisplayerTest implements TestCase {
 	
 	@Test
 	void avgTest() {
-		DiagramViewHelper avg = factory.createValueLineDisplayer(chart, IndicatorIdentifier.AVG);
+		DiagramViewHelper avg = factory.createAvgLineDisplayer(chart);
 		
 		avg.show();
 		
@@ -75,7 +73,7 @@ class ValueLineDisplayerTest implements TestCase {
 	
 	@Test
 	void medTest() {
-		DiagramViewHelper med = factory.createValueLineDisplayer(chart, IndicatorIdentifier.MED);
+		DiagramViewHelper med = factory.createMedLineDisplayer(chart);
 		
 		med.show();
 		
