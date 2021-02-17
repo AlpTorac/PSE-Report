@@ -74,8 +74,8 @@ public abstract class DiagramBuilder implements IDiagramBuilder, ContainerAccess
 		int containerWidth = this.container.getWidth();
 		int containerHeight = this.container.getHeight();
 		
-		int xAxisYpos = Math.round(containerHeight * (1 - settingsProvider.getDiagramBottomMariginFactor()));
-		int yAxisXpos = Math.round(containerWidth * settingsProvider.getDiagramLeftMariginFactor());
+		int xAxisYpos = Math.round(containerHeight - settingsProvider.getDiagramBottomMarigin(containerHeight));
+		int yAxisXpos = Math.round(settingsProvider.getDiagramLeftMarigin(containerWidth));
 		
 		PositionInFrame axisOrigin = this.getAxisOriginPosition(xAxisYpos, yAxisXpos);
 		PositionInFrame endX = this.getXAxisEndPosition(containerWidth, xAxisYpos);
