@@ -36,6 +36,9 @@ public class SettingsProvider {
 	private int stepsInXAxis = 10;
 	private int stepsInYAxis = 10;
 	
+	private int diagramMinimumLeftMarigin = axisValueFontSize * 3;
+	private int diagramMinimumBottomMarigin = axisValueFontSize * 3;
+	
 	private int barBorderThickness = 1;
 	
 	private int functionGraphPointSize = 5;
@@ -231,6 +234,22 @@ public class SettingsProvider {
 
 	public void setDiagramLeftMariginFactor(float diagramLeftMariginFactor) {
 		this.diagramLeftMariginFactor = diagramLeftMariginFactor;
+	}
+	
+	public float getDiagramLeftMarigin(int containerWidth) {
+		if (containerWidth * this.getDiagramLeftMariginFactor() < this.diagramMinimumLeftMarigin) {
+			return this.diagramMinimumLeftMarigin;
+		} else {
+			return containerWidth * this.getDiagramLeftMariginFactor();
+		}
+	}
+	
+	public float getDiagramBottomMarigin(int containerHeight) {
+		if (containerHeight * this.getDiagramBottomMariginFactor() < this.diagramMinimumBottomMarigin) {
+			return this.diagramMinimumBottomMarigin;
+		} else {
+			return containerHeight * this.getDiagramBottomMariginFactor();
+		}
 	}
 
 	public float getDiagramRightMariginFactor() {

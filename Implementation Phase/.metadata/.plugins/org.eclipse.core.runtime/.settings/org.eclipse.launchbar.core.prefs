@@ -27,4 +27,4 @@ org.eclipse.launchbar.core.descriptorType.default\:PositionsIn2DDiagramTest/acti
 org.eclipse.launchbar.core.descriptorType.default\:ValueLineDisplayerTest/activeLaunchMode=run
 org.eclipse.launchbar.core.descriptorType.default\:gelf.view.diagrams.components/activeLaunchMode=coverage
 org.eclipse.launchbar.core.descriptorType.default\:gelf.view.diagrams/activeLaunchMode=coverage
-org.eclipse.launchbar.core.descriptorType.default\:java\ (1)/activeLaunchMode=coverage
+org.eclipse.launchbar.core.descriptorType.default\:java\ (1)/activeLaunchMode=run
