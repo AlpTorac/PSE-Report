@@ -153,8 +153,8 @@ public abstract class DiagramAxis extends DiagramComponent {
 		
 		double topLeftX = bounds.getX() - centeringX - this.fontSize;
 		double topLeftY = bounds.getY() - centeringY - this.fontSize;
-		double width = bounds.getWidth() + absValOfDifference * Math.abs(Math.sin(lineAngleRadian)) + this.fontSize;
-		double height = bounds.getHeight() + absValOfDifference * Math.abs(Math.cos(lineAngleRadian)) + this.fontSize;
+		double width = bounds.getWidth() + absValOfDifference * Math.abs(Math.sin(lineAngleRadian)) + this.fontSize * 4;
+		double height = bounds.getHeight() + absValOfDifference * Math.abs(Math.cos(lineAngleRadian)) + this.fontSize * 4;
 		
 		bounds.setRect(topLeftX, topLeftY, width, height);
 		
@@ -190,6 +190,22 @@ public abstract class DiagramAxis extends DiagramComponent {
 	public void removeFromDiagram() {
 		super.removeFromDiagram();
 		this.axisLine.removeFromDiagram();
+	}
+	
+	protected String[] getStepDisplays() {
+		int displayCount = this.getSteps();
+		String[] stepDisplays = new String[displayCount];
+		
+		float stepLengthInAxis = (this.getMax() - this.getMin()) / ((float) this.getSteps());
+		float currentValue = this.getMin() + stepLengthInAxis;
+		
+		for (int i = 0; i < displayCount; i++) {
+			stepDisplays[i] = SettingsProvider.getInstance().getRoundedValueAsString(currentValue);
+			currentValue += stepLengthInAxis;
+//			System.out.print(stepDisplays[i] + ", ");
+		}
+//		System.out.print("\n");
+		return stepDisplays;
 	}
 	
 	protected class AxisVisual extends JLabel {
@@ -230,23 +246,27 @@ public abstract class DiagramAxis extends DiagramComponent {
 			graphs.rotate(rotationAngleInRadian, axisLineStartX, axisLineStartY);
 			
 			double xStepLengthInFrame = this.axis.axisLine.calculateLength() / ((double) this.axis.getSteps());
+//			float stringY = this.getStringYPos(y1, y2, fontSize);
 			
-			float stepLengthInAxis = (this.axis.getMax() - this.axis.getMin()) / ((float) this.axis.getSteps());
-			float currentValue = this.axis.getMin() + stepLengthInAxis;
-			
-			float stringY = this.getStringYPos(y1, y2, fontSize);
-			
-			x1 = x1 + xStepLengthInFrame;
+			String[] displays = this.axis.getStepDisplays();
 			
 			for (int i = 1; i <= this.axis.getSteps(); i++) {
+//				Shape line = new Line2D.Double(x1, y1, x1, y2);
+//				graphs.draw(line);
+//				if (this.axis.showValues) {
+//					graphs.drawString(displays[i - 1], (float) x1 - fontSize, stringY);
+//				}
+				x1 += xStepLengthInFrame;
+				this.drawStepDisplay(graphs, displays[i - 1], fontSize, x1, y1, y2);
+			}
+		}
+		
+		private void drawStepDisplay(Graphics2D graphs, String display, int fontSize, double x1, double y1, double y2) {
 				Shape line = new Line2D.Double(x1, y1, x1, y2);
 				graphs.draw(line);
 				if (this.axis.showValues) {
-					graphs.drawString(SettingsProvider.getInstance().getRoundedValueAsString(currentValue), (float) x1 - fontSize, stringY);
-					currentValue = currentValue + stepLengthInAxis;
+					graphs.drawString(display, this.getStringXPos(display, fontSize, x1), this.getStringYPos(y1, y2, fontSize));
 				}
-				x1 = x1 + xStepLengthInFrame;
-			}
 		}
 		
 		private float getStringYPos(double indicatorLineY1, double indicatorLineY2, int fontSize) {
@@ -261,5 +281,8 @@ public abstract class DiagramAxis extends DiagramComponent {
 			return stringY;
 		}
 		
+		private float getStringXPos(String stringToDisplay, int fontSize, double x1) {
+			return (float) (x1 - (stringToDisplay.length() * fontSize) / 4d);
+		}
 	}
 }

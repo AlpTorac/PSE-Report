@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="String"/>
+		<item key="selection" value="overlayAndAttach"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="overlayAndInsert"/>
+			<item value=" overlay"/>
+			<item value="overlay"/>
+			<item value="make"/>
 			<item value="String"/>
 			<item value="get"/>
 			<item value="yAxis"/>
@@ -19,12 +23,12 @@
 			<item value="HistogramBar"/>
 			<item value="barCharts"/>
 			<item value="BarChart"/>
-			<item value="Integer("/>
-			<item value="Integer"/>
-			<item value="attachToDiagram"/>
-			<item value="insertIndexForLayer"/>
 		</list>
 		<list key="replacehistory">
+			<item value="overlayAndAttach"/>
+			<item value=" overlayAndInsert"/>
+			<item value="overlayAndInsert"/>
+			<item value="makeAndAttach"/>
 			<item value="this.getParallelAxis()"/>
 			<item value="this.getAxisToIndicate()"/>
 			<item value="dvdc"/>
@@ -36,14 +40,10 @@
 			<item value="histograms"/>
 			<item value="Histogram"/>
 			<item value="hsbColor2"/>
-			<item value="hsbColor1"/>
-			<item value="getYCoordinate"/>
-			<item value="getXCoordinate"/>
-			<item value="diagram"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="1391"/>
+		<item key="DIALOG_X_ORIGIN" value="1170"/>
 		<item key="DIALOG_Y_ORIGIN" value="550"/>
 		<item key="DIALOG_WIDTH" value="284"/>
 		<item key="DIALOG_HEIGHT" value="391"/>

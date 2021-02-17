@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="java.util.Map"/>
-    <fullyQualifiedTypeName name="java.util.EnumMap"/>
-    <fullyQualifiedTypeName name="javax.swing.JPanel"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.TestPanel"/>
     <fullyQualifiedTypeName name="javax.swing.BorderFactory"/>
     <fullyQualifiedTypeName name="javax.swing.border.Border"/>
@@ -60,4 +57,7 @@
     <fullyQualifiedTypeName name="gelf.model.project.Model"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.SettingsProvider"/>
     <fullyQualifiedTypeName name="java.awt.Container"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.indicator.DiagramViewHelperFactory"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.indicator.IndicatorIdentifier"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.indicator.DiagramViewHelper"/>
 </qualifiedTypeNameHistroy>
