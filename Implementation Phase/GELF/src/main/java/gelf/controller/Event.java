@@ -96,7 +96,12 @@ public enum Event {
 	/*
 	 * Export a file in CSV format.
 	 */
-	EXPORT;
+	EXPORT,
+    
+    /*
+     *
+     */
+    COMPARE;
 	
 	
 
