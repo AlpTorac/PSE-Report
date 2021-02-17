@@ -11,11 +11,11 @@ import gelf.model.elements.Library;
 import gelf.model.project.Model;
 
 public class PasteCommand implements Command {
-	private ArrayList<Cell> pastedCells;
-	private ArrayList<Cell> deletedCells;
-	private ArrayList<Cell> copiedCells;
+	private ArrayList<Cell> pastedCells = new ArrayList<Cell>();
+	private ArrayList<Cell> deletedCells = new ArrayList<Cell>();
+	private ArrayList<Cell> copiedCells = new ArrayList<Cell>();
 	private Library destinationLibrary;
-	private HashMap<Cell, String> renamedCellsOldNames;
+	private HashMap<Cell, String> renamedCellsOldNames = new HashMap<Cell, String>();
 	private Model currentModel = Model.getInstance();
 	
 	/* If the list of copied cells won't be given as a parameter, then it will
