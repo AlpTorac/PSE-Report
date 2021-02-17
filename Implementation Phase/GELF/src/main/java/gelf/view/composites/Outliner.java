@@ -37,6 +37,10 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
     public JScrollPane treePane;
     public Menu menuView;
         public MenuItem itemOpen;
+        public MenuItem itemCopy;
+        public MenuItem itemDelete;
+        public MenuItem itemRemove;
+        public MenuItem itemCompare;
         public MenuItem itemProperties;
 
     // colors
@@ -65,8 +69,16 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
 
         this.menuView = new Menu("View");
         this.itemOpen = new MenuItem("Open");
+        this.itemCopy = new MenuItem("Copy");
+        this.itemDelete = new MenuItem("Delete");
+        this.itemRemove = new MenuItem("Remove");
+        this.itemCompare = new MenuItem("Compare");
         this.itemProperties = new MenuItem("Properties");
         this.menuView.add(this.itemOpen);
+        this.menuView.add(this.itemCopy);
+        this.menuView.add(this.itemDelete);
+        this.menuView.add(this.itemRemove);
+        this.menuView.add(this.itemCompare);
         this.menuView.add(this.itemProperties);
         this.menuBar.add(menuView);
         this.add(this.menuBar, BorderLayout.PAGE_START);
