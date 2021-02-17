@@ -36,9 +36,13 @@ public class OutputPin extends Pin {
     	this.setAvailableTimSen();
     	this.setAvailableTimType();
     	calculate();
-    	
     }
     
+	/**
+	 * Returns a deep copy of the output Pin object
+	 * @return the deep copy of the output Pin object
+	 * @author Xhulio Pernoca
+	 */
 	@Override
     public OutputPin clone() {
 		ArrayList<Timing> clonedTimings = new ArrayList<Timing>();
@@ -70,6 +74,22 @@ public class OutputPin extends Pin {
 		return clonedPin;
 	}
     
+	/**
+	 * Replaces all the attributes that change while reparsing, so that there is no need
+	 * to change reference from the object in the view
+	 * @param dataPin the output pin object with the necessary data
+	 * @author Xhulio Pernoca
+	 */
+	public void replaceData(OutputPin dataPin) {
+		setName(dataPin.getName());
+		setSearched(dataPin.getSearched());
+		setOutputPowers(dataPin.getOutputPowers());
+		setTimings(dataPin.getTimings());
+		setMaxCapacitance(dataPin.getMaxCapacitance());
+		setMinCapacitance(dataPin.getMinCapacitance());
+		setOutputFunction(dataPin.getOutputFunction());
+	}
+
     public ArrayList<Timing> getTimings() {
 		return timings;
 	}

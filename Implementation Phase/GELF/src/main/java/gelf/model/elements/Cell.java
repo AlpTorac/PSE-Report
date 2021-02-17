@@ -101,6 +101,11 @@ public class Cell extends HigherElement {
 		this.defaultLeakage = defaultLeakage;
 	}
 	
+	/**
+	 * Returns a deep copy of the Cell object
+	 * @return the deep copy of the Cell object
+	 * @author Xhulio Pernoca
+	 */
 	@Override
 	public Cell clone() {
 		ArrayList<InputPin> clonedInPins = new ArrayList<InputPin>();
@@ -139,6 +144,24 @@ public class Cell extends HigherElement {
 			}
 		}
 		return clonedCell;
+	}
+
+	/**
+	 * Replaces all the attributes that change while reparsing, so that there is no need
+	 * to change reference from the object in the view
+	 * @param dataCell the cell object with the necessary data
+	 * @author Xhulio Pernoca
+	 */
+	public void replaceData(Cell dataCell) {
+		setName(dataCell.getName());
+		setLeakages(dataCell.getLeakages());
+		setDefaultLeakage(dataCell.getDefaultLeakage());
+		setSearched(dataCell.getSearched());
+		setHasShownElements(dataCell.isHasShownElements());
+		setInPins(dataCell.getInPins());
+		setOutPins(dataCell.getOutPins());
+		setIndex1(dataCell.getIndex1());
+		setIndex2(dataCell.getIndex2());
 	}
 	
 	public void interpolate(float[] index1, float[] index2) {

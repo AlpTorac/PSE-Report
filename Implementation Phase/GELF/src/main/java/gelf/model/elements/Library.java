@@ -39,8 +39,13 @@ public class Library extends HigherElement {
     	this.setAvailableTimType();
     }
     
+	/**
+	 * Returns a deep copy of the Library object
+	 * @return the deep copy of the Library object
+	 * @author Xhulio Pernoca
+	 */
 	@Override
-    public Library clone() {
+	public Library clone() {
     	ArrayList<Cell> clonedCells = new ArrayList<Cell>();
     	Iterator<Cell> cellsIt = cells.iterator();
     	while(cellsIt.hasNext()) {
@@ -55,6 +60,22 @@ public class Library extends HigherElement {
 		}
     	return clonedLibrary;
     }
+
+	/**
+	 * Replaces all the attributes that change while reparsing, so that there is no need
+	 * to change reference from the object in the view
+	 * @param dataLib the library object with the necessary data
+	 * @author Xhulio Pernoca
+	 */
+	public void replaceData(Library dataLib) {
+        setName(dataLib.getName());
+        setSearched(dataLib.getSearched());
+		setHasShownElements(dataLib.isHasShownElements());
+    	setCells(dataLib.getCells());
+        setIndex1(dataLib.getIndex1());
+	    setIndex2(dataLib.getIndex2());
+        setLibraryContent(dataLib.getLibraryContent());
+	}
     
 	public float[] getIndex1() {
 		return index1;

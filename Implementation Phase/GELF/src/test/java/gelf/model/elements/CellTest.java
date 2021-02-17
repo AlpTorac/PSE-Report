@@ -235,12 +235,15 @@ class CellTest {
     	Leakage leakage = new Leakage(values);
     	
     	Cell cell = new Cell(null, null, null, null, inPinList, outPinList, leakage, 0);
-
-    	Assertions.assertEquals(cell.getInPins().get(0).name, 
-    			cell.clone().getInPins().get(0).name);
-    	Assertions.assertEquals(cell.getOutPins().get(0).getMaxCapacitance(), 
-    			cell.clone().getOutPins().get(0).getMaxCapacitance());
-    	Assertions.assertEquals(cell.getDefaultLeakage(), cell.clone().getDefaultLeakage());
+    	Cell clone = cell.clone();
     	
+    	Assertions.assertEquals(cell.getInPins().get(0).name, 
+    			clone.getInPins().get(0).name);
+    	Assertions.assertEquals(cell.getOutPins().get(0).getMaxCapacitance(), 
+    			clone.getOutPins().get(0).getMaxCapacitance());
+    	Assertions.assertEquals(cell.getDefaultLeakage(), cell.clone().getDefaultLeakage());
+    	Assertions.assertNotSame(cell, clone);
+    	Assertions.assertNotSame(cell.getOutPins().get(0), clone.getOutPins().get(0));
+    	Assertions.assertNotSame(cell.getLeakage(), clone.getLeakage());
     }
 }

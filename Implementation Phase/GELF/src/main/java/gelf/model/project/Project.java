@@ -44,9 +44,11 @@ public class Project {
     /**
      * It replaces an element with another so that after an object is edited,
      * it can be updated in the project
+     * No longer used, so commented out not to count in lines out code
      * @param oldElement the element to be replaced
      * @param newElement the element it is replaced with
      */
+    /*@Deprecated
     public void replaceElement(Element oldElement, Element newElement) {
         if (newElement instanceof Library) {
             Library newLibrary = (Library) newElement;
@@ -77,7 +79,7 @@ public class Project {
             oldPin.setParent(oldPin.getParent());
             newPin.getParent().setOutPins(pins);
         }
-    }
+    }*/
 
     /**
      * Unsubscribes a component that no longer needs to be informed to avoid memory leakage.

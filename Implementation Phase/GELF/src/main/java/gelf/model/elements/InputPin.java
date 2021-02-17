@@ -17,6 +17,11 @@ public class InputPin extends Pin {
     	calculate();
     }
     
+	/**
+	 * Returns a deep copy of the input Pin object
+	 * @return the deep copy of the input Pin object
+	 * @author Xhulio Pernoca
+	 */
 	@Override
     public InputPin clone() {
 		ArrayList<InputPower> clonedPowers = new ArrayList<InputPower>();
@@ -33,6 +38,19 @@ public class InputPin extends Pin {
 			curPower.setParentInPin(clonedPin);
 		}
 		return clonedPin;
+	}
+
+	/**
+	 * Replaces all the attributes that change while reparsing, so that there is no need
+	 * to change reference from the object in the view
+	 * @param dataPin the input pin object with the necessary data
+	 * @author Xhulio Pernoca
+	 */
+	public void replaceData(InputPin dataPin) {
+		setName(dataPin.getName());
+		setSearched(dataPin.getSearched());
+		setInputPowers(dataPin.getInputPowers());
+		setCapacitance(dataPin.getCapacitance());
 	}
     
     public float getCapacitance() {
