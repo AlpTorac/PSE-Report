@@ -36,10 +36,23 @@ public class Model {
      * @return the formatted String of the number
      */
     public static String formatFloat(float number) {
-    	if (number < 0.0001 || number > 1000000) {
+    	if ((number < 0.0001 || number > 1000000) && number != 0) {
             return scFormat.format(number).toLowerCase();
     	} else {
     		return format.format(number);
+    	}
+    }
+
+    public static String formatIndex(float number, int decimalSpots) {
+        String decimals = "";
+        for (int i = 0; i < decimalSpots; i++) {
+            decimals += "#";
+        }
+        DecimalFormat indexFormat = new DecimalFormat("#." + decimals, formatSymbols);
+        if ((number < 0.0001 || number > 1000000) && number != 0) {
+            return scFormat.format(number).toLowerCase();
+    	} else {
+    		return indexFormat.format(number);
     	}
     }
 

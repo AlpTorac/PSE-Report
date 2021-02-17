@@ -100,10 +100,8 @@ public class LibertyParser {
     	}
         // checks brackets
     	checkBrackets(libraryString);
-        // removes all whitespaces
-        libraryString = libraryString.replaceAll("\\s+", "");
-        String noCommentsString = "";
         // removes comments
+        String noCommentsString = "";
         String[] commentsSplit = libraryString.split("(\\/\\*)|(\\*\\/)");
         for (int i = 0; i < commentsSplit.length; i += 2) {
             noCommentsString += commentsSplit[i];
@@ -115,8 +113,12 @@ public class LibertyParser {
         // Splits text by cell
         String[] cellStrings = noCommentsString.split("(?=(cell\\())");
         // Finds library name
-        String[] libData = cellStrings[0].split("\\{");
+        String[] libData = cellStrings[0].split("\\{", 2);
         String name = libData[0].substring(libData[0].indexOf("(") + 1, libData[0].indexOf(")"));
+        String unsupportedData = "";
+        if (libData.length == 2){
+        	unsupportedData = libData[1];
+        }
         // parses Cells
         ArrayList<Cell> childCells = new ArrayList<Cell>();
         for (int i = 1; i < cellStrings.length; i++) {
@@ -165,7 +167,7 @@ public class LibertyParser {
         	String leakageString = leakageInfo.substring(firstQuotation + 1, lastQuotation);
         	leakagesValues[i - 1] = Float.parseFloat(leakageString);
         }
-        String dataAfterLeakageInfo = cellLeakages[cellLeakages.length - 1].split("\\{", 2)[1];
+        String dataAfterLeakageInfo = cellLeakages[cellLeakages.length - 1].split("\\}", 2)[1];
         cellLeakages[0] += dataAfterLeakageInfo;
         // fetches cell name
         String[] cellData = cellLeakages[0].split("\\{");
@@ -185,12 +187,8 @@ public class LibertyParser {
         		defaultLeakage = Float.parseFloat(paramParts[1]);
         		break;
         	default:
-        		unsupportedData.add(cellParameters[i]);
+        		unsupportedData.add(cellParameters[i].replace(":", " : ") + " ;");
         	}
-        }
-        if (!hasDefaultLeakage) {
-        	throw new InvalidFileFormatException("No default leakages specified in cell "
-        			+ "\"" + path + "\"");
         }
         Leakage leakages = new Leakage(leakagesValues);
         ArrayList<InputPin> childInPins = new ArrayList<InputPin>();
@@ -233,9 +231,9 @@ public class LibertyParser {
      * an output Pin so that it can decide which format to expect. It is done this way since when
      * parsing new Files, we don't initially know which pin to expect
      * @param pinString the String data of a Pin
-     * @param relatedPins the pins related to it. Neccessary if it is an output Pin
+     * @param relatedPins the pins related to it. Necessary if it is an output Pin
      * @param path the path to the Pin
-     * @return the parsed Pin. Eithe InputPin or OutputPin
+     * @return the parsed Pin. Either InputPin or OutputPin
      * @throws InvalidFileFormatException if the format of the Cell is not recognised
      */
     public static Pin parsePin(String pinString,
@@ -255,7 +253,7 @@ public class LibertyParser {
             }
             timingGroupSeparator = timingGroupSeparator.substring(1);
         }
-        pinString.replaceAll("\\s+", "");
+        pinString = pinString.replaceAll("\\s+", "");
         //checks pin format, removed because of exceeding runtime
         /*if (!pinString.matches(PINFORMAT)) {
         	throw new InvalidFileFormatException("Pin doesn't match format");
@@ -350,8 +348,30 @@ public class LibertyParser {
         if (!isInput & !isOutput) {
             throw new InvalidFileFormatException("Pin \"" + path + "\" is defined as neither input nor output");
         }
-        ArrayList<Attribute> attributes = new ArrayList<Attribute>();
-        // parses all known attribute
+        if (isInput) {
+        	ArrayList<InAttribute> attributes = parseInAttributes(attributeStrings, path);
+        	return parseInputPin(attributes, name, hasCapacitance, capacitance);
+        } else {
+        	ArrayList<OutAttribute> attributes = parseOutAttributes(attributeStrings, relatedPins, path);
+        	return parseOutputPin(attributes, name, hasCapacitance, hasMinCapacitance,
+        			maxCap, minCap, function);
+        }
+    }
+    
+    /**
+     * Parses the attributes of an output Pin from an array of Strings with it's attributes
+     * and the pins related to them
+     * @param attributeStrings the array with String representations of attributes
+     * @param relatedPins the related Pins
+     * @param path The path to these attributes
+     * @return an array with the parsed attributes
+     * @throws InvalidFileFormatException if the stated related pins don't match the ones
+     * provided or the format of the attributes doesn't match
+     */
+    private static ArrayList<OutAttribute> parseOutAttributes(String[] attributeStrings, ArrayList<InputPin> relatedPins,
+    		String path) throws InvalidFileFormatException {
+    	ArrayList<OutAttribute> attributes = new ArrayList<OutAttribute>();
+        // parses all known attributes
         for (int i = 1; i < attributeStrings.length; i++) {
             String attributeData = attributeStrings[i];
             InputPin relatedPin = null;
@@ -359,207 +379,241 @@ public class LibertyParser {
             if (attributeData.startsWith("internal_power")) {
                 String[] powerAttributes =  attributeData.split("(?=" + powerGroupSeparator + ")");
                 // parses internal power for an output pin
-                if (isOutput) {
-                	String relatedPinString = null;
-                    String[] powerAttributeData = powerAttributes[0].split("(\\{)");
-                    String[] powerAttributeParameters = powerAttributeData[1].split(";");
-                    for (String attributeParam : powerAttributeParameters) {
-                        String[] powerAttributeParamParts = attributeParam.split(":");
-                        switch (powerAttributeParamParts[0]) {
-                            case "related_pin":
-                            	relatedPinString = powerAttributeParamParts[1].substring(1, powerAttributeParamParts[1].length() - 1);
-                                if (!powerAttributeParamParts[1].matches("\"" + NAMEFORMAT + "\"")) {
-                                    throw new InvalidFileFormatException("Name format of related_pin \"" 
-                                    + powerAttributeParamParts[1] + "\" of Pin \"" + path + " is invalid");
+              	String relatedPinString = null;
+                String[] powerAttributeData = powerAttributes[0].split("(\\{)");
+                String[] powerAttributeParameters = powerAttributeData[1].split(";");
+                for (String attributeParam : powerAttributeParameters) {
+                   String[] powerAttributeParamParts = attributeParam.split(":");
+                   switch (powerAttributeParamParts[0]) {
+                        case "related_pin":
+                        	relatedPinString = powerAttributeParamParts[1].substring(1, powerAttributeParamParts[1].length() - 1);
+                            if (!powerAttributeParamParts[1].matches("\"" + NAMEFORMAT + "\"")) {
+                                throw new InvalidFileFormatException("Name format of related_pin \"" 
+                                + powerAttributeParamParts[1] + "\" of Pin \"" + path + " is invalid");
+                            }
+                            for (InputPin inpin: relatedPins) {
+                                if (inpin.getName().equals(relatedPinString)){
+                                    relatedPin = inpin;
                                 }
-                                for (InputPin inpin: relatedPins) {
-                                    if (inpin.getName().equals(relatedPinString)){
-                                        relatedPin = inpin;
-                                    }
-                                }
-                                break;
-                            default:
-                                /** No other parameters supported */
-                        }
-                    }
-                    // gets related Pins
-                    for (int j = 1; j < powerAttributes.length; j++) {
-                        OutputPower power = parseOutPower(powerAttributes[j], path);
-                        if (relatedPin == null && relatedPinString != null) {
-                        	throw new InvalidFileFormatException("Related Pin \"" + relatedPinString + "\""
-                        			+ " on Pin \"" + path + "\" was not found before it");
-                        } else if (relatedPin == null) {
-                            throw new InvalidFileFormatException("Nonexistant related Pin on Pin \""
-                                + path + "\"");
-                        }
-                        power.setRelatedPin(relatedPin);
-                        attributes.add(power);
+                            }
+                            break;
+                        default:
+                            /** No other parameters supported */
                     }
                 }
-                // parses internal power for input pins
-                else {
-                    for (int j = 1; j < powerAttributes.length; j++) {
-                        attributes.add(parseInPower(powerAttributes[j], path));
+                // gets related Pins
+                for (int j = 1; j < powerAttributes.length; j++) {
+                    OutputPower power = parseOutPower(powerAttributes[j], path);
+                    if (relatedPin == null && relatedPinString != null) {
+                      	throw new InvalidFileFormatException("Related Pin \"" + relatedPinString + "\""
+                   			+ " on Pin \"" + path + "\" was not found before it");
+                    } else if (relatedPin == null) {
+                        throw new InvalidFileFormatException("Nonexistant related Pin on Pin \""
+                            + path + "\"");
                     }
+                    power.setRelatedPin(relatedPin);
+                    attributes.add(power);
                 }
             // parses timing
             } else if (attributeData.startsWith("timing")) {
                 TimingSense timSense = null;
                 TimingType timType = null;
                 String[] timingAttributes =  attributeData.split("(?=" + timingGroupSeparator + ")");
-                /** Parses timing for the output pin. Therefore ensures to fetch the relatedPin first */
-                if (isOutput) {
-                	String relatedPinString = null;
-                    String[] timingAttributeData = timingAttributes[0].split("(\\{)");
-                    String[] timingAttributeParameters = timingAttributeData[1].split(";");
-                    // parses all known timing parameters
-                    for (String attributeParam : timingAttributeParameters) {
-                        String[] timingAttributeParamParts = attributeParam.split(":");
-                        String value = timingAttributeParamParts[1];
-                        switch (timingAttributeParamParts[0]) {
-                            case "related_pin":
-                            	relatedPinString = value.substring(1, 
-                            			value.length() - 1);
-                                if (!value.matches("\"" + NAMEFORMAT + "\"")) {
-                                    throw new InvalidFileFormatException("Name format of related_pin \"" 
-                                    + value + "\" of Pin \"" + path + " is invalid");
-                                }
+                // Parses timing for the output pin. Therefore ensures to fetch the relatedPin first
+                String relatedPinString = null;
+                String[] timingAttributeData = timingAttributes[0].split("(\\{)");
+                String[] timingAttributeParameters = timingAttributeData[1].split(";");
+                // parses all known timing parameters
+                for (String attributeParam : timingAttributeParameters) {
+                	String[] timingAttributeParamParts = attributeParam.split(":");
+                	String value = timingAttributeParamParts[1];
+                	switch (timingAttributeParamParts[0]) {
+                		case "related_pin":
+                			relatedPinString = value.substring(1, 
+                			value.length() - 1);
+                            if (!value.matches("\"" + NAMEFORMAT + "\"")) {
+                            	throw new InvalidFileFormatException("Name format of related_pin \"" 
+                            			+ value + "\" of Pin \"" + path + " is invalid");
+                                	}
                                 for (InputPin pin: relatedPins) {
-                                    if (pin.getName().equals(relatedPinString)){
-                                        relatedPin = pin;
-                                    }
+                                if (pin.getName().equals(relatedPinString)){
+                                    relatedPin = pin;
                                 }
-                                break;
-                            case "timing_sense":
-                                for (TimingSense timSenseEnum : TimingSense.values()) {
-                                    if (value.matches(timSenseEnum.name().toLowerCase())) {
-                                        timSense = timSenseEnum;
-                                    }
-                                }
-                                break;
-                            case "timing_type":
-                                for (TimingType timTypeEnum : TimingType.values()) {
-                                    if (value.matches(timTypeEnum.name().toLowerCase())) {
-                                        timType = timTypeEnum;
-                                    }   
-                                } 
-                                break;
-                            default:
-                                /** No other parameters supported */
-                        }
-                    }
-                    // filters only timings of known timing groups, senses and types
-                    if (timSense != null && timType != null) {
-                        for (int j = 1; j < timingAttributes.length; j++) {
-                        	if (relatedPin == null && relatedPinString != null) {
-                            	throw new InvalidFileFormatException("Related Pin \"" + relatedPinString + "\""
-                            			+ " on Pin \"" + path + "\" was not found before it");
-                            } else if (relatedPin == null) {
-                                throw new InvalidFileFormatException("Nonexistant related Pin on Pin \""
-                                    + path + "\"");
                             }
-                            Timing timing = parseOutTiming(timingAttributes[j], timSense, timType, path);
-                            timing.setRelatedPin(relatedPin);
-                            attributes.add(timing);
-                        }
+                            break;
+                		case "timing_sense":
+                            for (TimingSense timSenseEnum : TimingSense.values()) {
+                            	if (value.matches(timSenseEnum.name().toLowerCase())) {
+                            		timSense = timSenseEnum;
+                            	}
+                            }
+                            break;
+                        case "timing_type":
+                        	for (TimingType timTypeEnum : TimingType.values()) {
+                        		if (value.matches(timTypeEnum.name().toLowerCase())) {
+                        			timType = timTypeEnum;
+                        		}   
+                            } 
+                            break;
+                        default:
+                        	/** No other parameters supported */
                     }
-                } else {
-                    /* Timing for input pins not supported and therefore ignored, although it can 
-                    be found in some Liberty files */
+                }
+                // filters only timings of known timing groups, senses and types
+                if (timSense != null && timType != null) {
+                	for (int j = 1; j < timingAttributes.length; j++) {
+                		if (relatedPin == null && relatedPinString != null) {
+                			throw new InvalidFileFormatException("Related Pin \"" + relatedPinString + "\""
+                					+ " on Pin \"" + path + "\" was not found before it");
+                		} else if (relatedPin == null) {
+                			throw new InvalidFileFormatException("Nonexistant related Pin on Pin \""
+                					+ path + "\"");
+                		}
+                		Timing timing = parseOutTiming(timingAttributes[j], timSense, timType, path);
+                		timing.setRelatedPin(relatedPin);
+                		attributes.add(timing);
+                	}
                 }
             } else {
                 /* no other known multiple value attributes. Can be implemented later */
             }
         }
-        // unifies attribute indexes
-        if (attributes.size() != 0) {
-            if (isInput) {
-                float[] uniformIndex1 = null;
-                for (Attribute attribute : attributes) {
-                    if (attribute instanceof InAttribute) {
-                        InAttribute inAttribute = (InAttribute) attribute;
-                        float[] index1 = inAttribute.getIndex1();
-                        if (uniformIndex1 == null) {
-                            uniformIndex1 = index1;
-                        }
-                        if (!Arrays.equals(index1, uniformIndex1)) {
-                            Interpolator interpolator = new Interpolator();
-                            float[] newValues = interpolator.interpolate(index1, inAttribute.getValues(), uniformIndex1);
-                            inAttribute.setIndex1(uniformIndex1);
-                            inAttribute.setValues(newValues);
-                        }
-                    }
+        return attributes;
+    }
+    
+    /**
+     * Parses the attributes of an input Pin from an array of Strings with it's attributes
+     * @param attributeStrings the array with String representations of attributes
+     * @param path The path to these attributes
+     * @return an array with the parsed attributes
+     * @throws InvalidFileFormatException if the format of the attributes doesn't match
+     */
+    private static ArrayList<InAttribute> parseInAttributes(String[] attributeStrings, String path) throws InvalidFileFormatException {
+    	ArrayList<InAttribute> attributes = new ArrayList<InAttribute>();
+        // parses all known attribute
+        for (int i = 1; i < attributeStrings.length; i++) {
+            String attributeData = attributeStrings[i];
+            // parses internal power
+            if (attributeData.startsWith("internal_power")) {
+                String[] powerAttributes =  attributeData.split("(?=" + powerGroupSeparator + ")");
+                // parses internal power
+                for (int j = 1; j < powerAttributes.length; j++) {
+                    attributes.add(parseInPower(powerAttributes[j], path));
                 }
+            // parses timing
+            } else if (attributeData.startsWith("timing")) {
+                /* Timing for input pins not supported and therefore ignored, although it can 
+                be found in some Liberty files */
             } else {
-                float[] uniformIndex1 = null;
-                float[] uniformIndex2 = null;
-                for (Attribute attribute : attributes) {
-                    if (attribute instanceof OutAttribute) {
-                        OutAttribute outAttribute = (OutAttribute) attribute;
-                        float[] index1 = outAttribute.getIndex1();
-                        float[] index2 = outAttribute.getIndex2();
-                        if (uniformIndex1 == null | uniformIndex2 == null) {
-                            uniformIndex1 = index1;
-                            uniformIndex2 = index2;
-                        }
-                        if (!Arrays.equals(uniformIndex1, index1) || !Arrays.equals(uniformIndex2, index2)) {
-                            Interpolator interpolator = new Interpolator();
-                            float[][] newValues = interpolator.bicubicInterpolate(index1, index2, outAttribute.getValues(), uniformIndex1, uniformIndex2);
-                            outAttribute.setIndex1(uniformIndex1);
-                            outAttribute.setIndex2(uniformIndex2);
-                            outAttribute.setValues(newValues);
-                        }
-                    }
-                }
+                /* no other known multiple value attributes. Can be implemented later */
             }
         }
-        // instantiates the input pin if it is input
-        if (isInput) {
-            ArrayList<InputPower> powers = new ArrayList<InputPower>();
-            for (Attribute attribute : attributes) {
-                if (attribute instanceof InputPower) {
-                    powers.add((InputPower) attribute);
-                }
-            }
-            InputPin parsedPin = new InputPin(name, null, powers);
-            if (hasCapacitance) {
-                parsedPin.setCapacitance(capacitance);
-            }
-            for (Attribute attribute : attributes) {
-                if (attribute instanceof InAttribute) {
-                    ((InAttribute) attribute).setParentInPin(parsedPin);
-                }
-            }
-            return parsedPin;
-        } 
-        // instantiates the output pin if it is output
-        else {
-            ArrayList<OutputPower> powers = new ArrayList<OutputPower>();
-            ArrayList<Timing> timings = new ArrayList<Timing>();
-            for (Attribute attribute : attributes) {
-                if (attribute instanceof OutputPower) {
-                    powers.add((OutputPower) attribute);
-                } else if (attribute instanceof Timing) {
-                    timings.add((Timing) attribute);
-                }
-            }
-            OutputPin parsedPin = new OutputPin(name, null, powers, timings);
-            for (Attribute attribute : attributes) {
-                if (attribute instanceof OutAttribute) {
-                    ((OutAttribute) attribute).setParentOutPin(parsedPin);
-                }
-            }
-            if (hasMinCapacitance && hasCapacitance) {
-                parsedPin.setMaxCapacitance(maxCap);
-                parsedPin.setMinCapacitance(minCap);
-            }
-            if (!function.equals("")) {
-                parsedPin.setOutputFunction(function);
-            }
-            return parsedPin;
-        }
+		return attributes;
     }
 
+    /**
+     * Instantiates an input pin according to it's given parameters
+     * @param attributes the attributes of the inputPin
+     * @param name the name of the pin
+     * @param hasCapacitance whether the input pin has capacitance specified
+     * @param capacitance the capacitance if it is provided
+     * @return the initialised input Pin
+     */
+    private static InputPin parseInputPin(ArrayList<InAttribute> attributes , String name, boolean hasCapacitance, float capacitance) {
+    	// unifies attribute indexes
+        if (attributes.size() != 0) {
+            float[] uniformIndex1 = null;
+            for (Attribute attribute : attributes) {
+                if (attribute instanceof InAttribute) {
+                    InAttribute inAttribute = (InAttribute) attribute;
+                    float[] index1 = inAttribute.getIndex1();
+                    if (uniformIndex1 == null) {
+                        uniformIndex1 = index1;
+                    }
+                    if (!Arrays.equals(index1, uniformIndex1)) {
+                        Interpolator interpolator = new Interpolator();
+                        float[] newValues = interpolator.interpolate(index1, inAttribute.getValues(), uniformIndex1);
+                        inAttribute.setIndex1(uniformIndex1);
+                        inAttribute.setValues(newValues);
+                    }
+                }
+            }
+        }
+    	// instantiates the input pin if it is input
+        ArrayList<InputPower> powers = new ArrayList<InputPower>();
+        for (Attribute attribute : attributes) {
+            if (attribute instanceof InputPower) {
+                powers.add((InputPower) attribute);
+            }
+        }
+        InputPin parsedPin = new InputPin(name, null, powers);
+        if (hasCapacitance) {
+            parsedPin.setCapacitance(capacitance);
+        }
+        for (InAttribute attribute : attributes) {
+        	attribute.setParentInPin(parsedPin);
+        }
+        return parsedPin;
+    }
+    
+    /**
+     * Instantiates an output pin according to it's given parameters
+     * @param attributes the attributes of the inputPin
+     * @param name the name of the pin
+     * @param hasMaxCapacitance whether the input pin has maximal capacitance specified
+     * @param hasMinCapacitance whether the input pin has minimal capacitance specified
+     * @param maxCap the maximal capacitance if it is provided
+     * @param minCap the minimal capacitance if it is provided
+     * @param function the function of the output pin
+     * @return
+     */
+    private static OutputPin parseOutputPin(ArrayList<OutAttribute> attributes, String name,
+    		boolean hasMaxCapacitance, boolean hasMinCapacitance, float maxCap,
+    		float minCap, String function) {
+    	// unifies attribute indexes
+    	float[] uniformIndex1 = null;
+        float[] uniformIndex2 = null;
+        for (Attribute attribute : attributes) {
+            if (attribute instanceof OutAttribute) {
+                OutAttribute outAttribute = (OutAttribute) attribute;
+                float[] index1 = outAttribute.getIndex1();
+                float[] index2 = outAttribute.getIndex2();
+                if (uniformIndex1 == null | uniformIndex2 == null) {
+                    uniformIndex1 = index1;
+                    uniformIndex2 = index2;
+                }
+                if (!Arrays.equals(uniformIndex1, index1) || !Arrays.equals(uniformIndex2, index2)) {
+                    Interpolator interpolator = new Interpolator();
+                    float[][] newValues = interpolator.bicubicInterpolate(index1, index2, outAttribute.getValues(), uniformIndex1, uniformIndex2);
+                    outAttribute.setIndex1(uniformIndex1);
+                    outAttribute.setIndex2(uniformIndex2);
+                    outAttribute.setValues(newValues);
+                }
+            }
+        }
+        // instantiates the output pin
+        ArrayList<OutputPower> powers = new ArrayList<OutputPower>();
+        ArrayList<Timing> timings = new ArrayList<Timing>();
+        for (OutAttribute attribute : attributes) {
+            if (attribute instanceof OutputPower) {
+                powers.add((OutputPower) attribute);
+            } else if (attribute instanceof Timing) {
+                timings.add((Timing) attribute);
+            }
+        }
+        OutputPin parsedPin = new OutputPin(name, null, powers, timings);
+        for (OutAttribute attribute : attributes) {
+            attribute.setParentOutPin(parsedPin);
+        }
+        if (hasMinCapacitance && hasMaxCapacitance) {
+            parsedPin.setMaxCapacitance(maxCap);
+            parsedPin.setMinCapacitance(minCap);
+        }
+        if (!function.equals("")) {
+            parsedPin.setOutputFunction(function);
+        }
+        return parsedPin;
+    }
 
     /**
      * Parses an array that contains Internal Power information on an output Pin to give the
