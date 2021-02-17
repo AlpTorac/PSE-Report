@@ -28,6 +28,7 @@ import gelf.view.components.Panel;
  * SubWindow
  */
 public class SubWindow extends Panel {
+    Outliner outliner;
     Panel bar;
     Button close;
     DropdownSelector dropdown;
@@ -54,13 +55,14 @@ public class SubWindow extends Panel {
     private Visualizer eVisualizer;
     private TextEditor eTextEditor;
 
-    public SubWindow(Element e, Project p, SubWindowArea parent, int width, int height) {
+    public SubWindow(Element e, Project p, Outliner o, SubWindowArea parent, int width, int height) {
         super(width, height);
         this.e = e;
+        this.outliner = o;
         //element manipulators
         this.eVisualizer = new Visualizer(e,this, p, 300, 100);
         this.eVisualizer.setVisible(true);
-        this.eTextEditor = new TextEditor(e, p, 200, 100);
+        this.eTextEditor = new TextEditor(e, p, o, 200, 100);
         this.eTextEditor.setVisible(true);
         this.activeManipulator = eVisualizer;
         // style
@@ -119,6 +121,10 @@ public class SubWindow extends Panel {
     
     public Element getElement() {
     	return e;
+    }
+    
+     public void setPath(String text) {
+    	this.path.setText(text);
     }
 
     public void setManipulatorType(ManipulatorType m) {
