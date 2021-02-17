@@ -60,15 +60,17 @@ public class EventManager {
 		listeners.put(Event.LOADPROJECT, new LoadProjectListener());
 		listeners.put(Event.UNDO, new UndoListener());
 		listeners.put(Event.REDO, new RedoListener());
+		listeners.put(Event.COMPARE, new CompareListener(view.outliner));
 		
 		view.itemOpen.addActionListener((ActionListener) listeners.get(Event.LOAD));
 		view.outliner.tree.addMouseListener((MouseListener) listeners.get(Event.OPEN));
 		view.outliner.itemOpen.addActionListener((ActionListener) listeners.get(Event.OPEN));
-		//
-		//view.outliner
-		//view.outliner
-		//view.outliner
-		//view.outliner
+		
+		view.outliner.itemCopy.addActionListener((ActionListener) listeners.get(Event.COPY));
+		view.outliner.itemPaste.addActionListener((ActionListener) listeners.get(Event.PASTE));
+		view.outliner.itemDelete.addActionListener((ActionListener) listeners.get(Event.DELETE));
+		view.outliner.itemRemove.addActionListener((ActionListener) listeners.get(Event.REMOVE));
+		view.outliner.itemCompare.addActionListener((ActionListener) listeners.get(Event.COMPARE));
 		
 		view.itemUndo.addActionListener((ActionListener) listeners.get(Event.UNDO));
 		view.itemRedo.addActionListener((ActionListener) listeners.get(Event.REDO));
