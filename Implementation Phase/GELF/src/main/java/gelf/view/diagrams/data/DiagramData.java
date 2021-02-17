@@ -148,6 +148,50 @@ public class DiagramData {
 		return minVal;
 	}
 	
+	public float getAverageValue() {
+		float result = 0;
+		int valueCount = 0;
+		
+		for (float[] arr : this.extractValues()) {
+			for (float value : arr) {
+				result += value;
+				valueCount++;
+			}
+		}
+		
+		result = result / ((float) valueCount);
+		return result;
+	}
+	
+	public float getValueMedian() {
+		ArrayList<float[]> values = this.extractValues();
+		int midValueArrayIndex = 0;
+		float median = 0;
+		float[] array;
+		
+		if (values.size() % 2 == 0) {
+			midValueArrayIndex = values.size() / 2;
+			array = values.get(midValueArrayIndex);
+			float[] nextArray = values.get(midValueArrayIndex + 1);
+			median = (array[array.length - 1] + nextArray[0]) / 2.0f;
+		} else {
+			if (values.size() == 1) {
+				midValueArrayIndex = 0;
+			} else {
+				midValueArrayIndex = values.size() / 2 + 1;
+			}
+			
+			array = values.get(midValueArrayIndex);
+			
+			if (array.length % 2 == 0) {
+				median = (array[array.length / 2] + array[array.length / 2 + 1]) / 2.0f;
+			} else {
+				median = array[array.length / 2 + 1];
+			}
+		}
+		return median;
+	}
+	
 	@Override
 	public DiagramData clone() {
 		ArrayList<float[]> indices = this.extractor.extractIndices(this.data);

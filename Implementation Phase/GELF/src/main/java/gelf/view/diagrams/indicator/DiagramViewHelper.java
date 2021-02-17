@@ -18,12 +18,17 @@ public abstract class DiagramViewHelper {
 		this.id = id;
 		
 		this.helperComponents = new ArrayList<ViewHelperComponent>();
-		
-		this.attachToDiagram();
 	}
 	
 	public void attachToDiagram() {
 		this.diagram.addDiagramViewHelper(this);
+		this.attachToDiagramContainingElement();
+	}
+	
+	private void attachToDiagramContainingElement() {
+		for (ViewHelperComponent vhc : this.helperComponents) {
+			vhc.attachToDiagram(diagram);
+		}
 	}
 	
 	public int getLayerNumber() {
@@ -36,11 +41,15 @@ public abstract class DiagramViewHelper {
 	}
 	
 	public void show() {
-		this.diagram.showDiagramViewHelper(this.getID());
+		for (ViewHelperComponent vhc : this.helperComponents) {
+			vhc.show();
+		}
 	}
 	
 	public void hide() {
-		this.diagram.hideDiagramViewHelper(this.getID());
+		for (ViewHelperComponent vhc : this.helperComponents) {
+			vhc.hide();
+		}
 	}
 	
 	public void update() {
@@ -66,4 +75,11 @@ public abstract class DiagramViewHelper {
 	public IndicatorIdentifier getID() {
 		return this.id;
 	}
+	
+	protected void initViewHelperComponents() {
+		this.generateHelperComponents();
+		this.attachToDiagram();
+	}
+	
+	protected abstract void generateHelperComponents();
 }

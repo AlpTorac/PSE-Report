@@ -15,4 +15,10 @@ public class ValueFixColorDisplayer extends HelperComponentDisplayer {
 		this.mapping = mapping;
 	}
 
+	@Override
+	protected void generateHelperComponents() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

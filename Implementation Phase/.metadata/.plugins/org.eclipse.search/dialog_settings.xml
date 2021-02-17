@@ -31,16 +31,16 @@
 	</section>
 	<section name="TextSearchPage">
 		<item key="CASE_SENSITIVE" value="false"/>
-		<item key="REG_EX_SEARCH" value="true"/>
+		<item key="REG_EX_SEARCH" value="false"/>
 		<item key="WHOLE_WORD" value="false"/>
 		<item key="SEARCH_DERIVED" value="false"/>
 		<item key="SEARCH_IN_BINARIES" value="false"/>
-		<item key="HISTORY_SIZE" value="6"/>
+		<item key="HISTORY_SIZE" value="7"/>
 		<section name="HISTORY0">
 			<item key="ignoreCase" value="true"/>
-			<item key="isRegExSearch" value="true"/>
+			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="System.out"/>
+			<item key="textPattern" value="E-"/>
 			<item key="scope" value="1"/>
 			<list key="fileNamePatterns">
 				<item value="*java"/>
@@ -56,7 +56,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="true"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="\n[\s]*"/>
+			<item key="textPattern" value="System.out"/>
 			<item key="scope" value="1"/>
 			<list key="fileNamePatterns">
 				<item value="*java"/>
@@ -68,7 +68,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="true"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="\n[\s]*\}^"/>
+			<item key="textPattern" value="\n[\s]*"/>
 			<item key="scope" value="1"/>
 			<list key="fileNamePatterns">
 				<item value="*java"/>
@@ -80,7 +80,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="true"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="\n[\s]*^}"/>
+			<item key="textPattern" value="\n[\s]*\}^"/>
 			<item key="scope" value="1"/>
 			<list key="fileNamePatterns">
 				<item value="*java"/>
@@ -92,7 +92,7 @@
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="true"/>
 			<item key="isWholeWord" value="false"/>
-			<item key="textPattern" value="^.*$"/>
+			<item key="textPattern" value="\n[\s]*^}"/>
 			<item key="scope" value="1"/>
 			<list key="fileNamePatterns">
 				<item value="*java"/>
@@ -101,6 +101,18 @@
 			</list>
 		</section>
 		<section name="HISTORY5">
+			<item key="ignoreCase" value="true"/>
+			<item key="isRegExSearch" value="true"/>
+			<item key="isWholeWord" value="false"/>
+			<item key="textPattern" value="^.*$"/>
+			<item key="scope" value="1"/>
+			<list key="fileNamePatterns">
+				<item value="*java"/>
+			</list>
+			<list key="workingSets">
+			</list>
+		</section>
+		<section name="HISTORY6">
 			<item key="ignoreCase" value="true"/>
 			<item key="isRegExSearch" value="false"/>
 			<item key="isWholeWord" value="false"/>

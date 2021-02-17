@@ -13,4 +13,9 @@ public class ValueScaleColorDisplayer extends HelperComponentDisplayer {
 		this.colorScale = colorScale;
 	}
 
+	@Override
+	protected void generateHelperComponents() {
+		// TODO Auto-generated method stub
+		
+	}
 }

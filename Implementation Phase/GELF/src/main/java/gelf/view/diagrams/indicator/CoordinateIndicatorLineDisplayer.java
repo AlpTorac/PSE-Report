@@ -5,36 +5,13 @@ import java.awt.Color;
 import gelf.view.diagrams.IDiagram;
 import gelf.view.diagrams.SettingsProvider;
 import gelf.view.diagrams.components.DiagramAxis;
-import gelf.view.diagrams.components.DiagramComponentFactory;
 import gelf.view.diagrams.components.PositionIn2DDiagram;
-import gelf.view.diagrams.components.PositionInFrame;
 
 public abstract class CoordinateIndicatorLineDisplayer extends HelperLineDisplayer {
-	protected static DiagramComponentFactory factory = DiagramComponentFactory.getDiagramComponentFactory();
-	private Color color = SettingsProvider.getInstance().getDiagramCoordinateLineColor();
-	private int thickness;
 	protected DiagramAxis[] axes;
 	
 	protected CoordinateIndicatorLineDisplayer(IDiagram diagram, Color color, int thickness, IndicatorIdentifier id) {
-		super(diagram, SettingsProvider.getInstance().getDiagramViewHelperDisplayLayer(), id);
-		
-		this.setThickness(thickness);
-	}
-
-	public int getThickness() {
-		return this.thickness;
-	}
-
-	public void setThickness(int thickness) {
-		this.thickness = thickness;
-	}
-
-	public Color getColor() {
-		return this.color;
-	}
-
-	public void setColor(Color color) {
-		this.color = color;
+		super(diagram, SettingsProvider.getInstance().getDiagramViewHelperDisplayLayer(), thickness, id);
 	}
 	
 	@Override
@@ -52,7 +29,7 @@ public abstract class CoordinateIndicatorLineDisplayer extends HelperLineDisplay
 			CoordinateIndicatorLine line = new CoordinateIndicatorLine(start.toPositionInFrame(), end.toPositionInFrame(),
 					this.getColor(), this.getThickness());
 			
-			ViewHelperComponent vhc = new ViewHelperComponent(line);
+			ViewHelperComponent vhc = new ViewHelperComponent(line, this);
 			this.addViewHelperComponent(vhc);
 		}
 	}
