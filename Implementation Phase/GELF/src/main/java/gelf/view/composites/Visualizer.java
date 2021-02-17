@@ -16,6 +16,7 @@ import gelf.model.project.Project;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -141,8 +142,8 @@ public class Visualizer extends ElementManipulator {
 		// this.diagram = wiz.makeBarChart(this.diagramPanel, data);
 		// this.diagram.attachToContainer(this.diagramPanel);
 		// this.diagram.refresh();
-		// this.diagramPanel.setVisible(true);
-		// this.lowerPanel.add(this.diagramPanel, BorderLayout.CENTER);
+		this.diagramPanel.setVisible(true);
+		this.lowerPanel.add(this.diagramPanel, BorderLayout.CENTER);
 
 		this.add(this.lowerPanel);
 		this.addComponentListener(this);
@@ -313,7 +314,63 @@ public class Visualizer extends ElementManipulator {
 
 	//update diagram depending on dropdown status
 	private void updateDiagram() {
-
+			
+		if (this.subWindow.getElement().getClass() == Library.class) {
+			Library lib = (Library)this.subWindow.getElement();
+			if (DropdownStatus.attribute == Attribute.INPUT_POWER) {
+				if (DropdownStatus.powerGroup == PowerGroup.FALL_POWER) {
+					ArrayList<float[]> data = new ArrayList<float[]>();
+					Iterator<Cell> cellsIt = lib.getCells().iterator();
+					float[] values = new float[lib.getCells().size()];
+					int i = 0;
+					while(cellsIt.hasNext()) {
+						Cell curCell = cellsIt.next();
+						if (!curCell.getAvailableInputPower().contains(PowerGroup.FALL_POWER)) {
+							values[i] = 0;
+							i++;
+							continue;
+						}
+						curCell.calculateInPow();
+						float value = 
+								curCell.getInPowerStat().get(PowerGroup.FALL_POWER).getAvg();
+						values[i] = value;
+						i++;
+					}
+					data.add(values);
+					DiagramWizard wiz = new DiagramWizard();
+					this.diagram = wiz.makeAndAttachBarChart(this.diagramPanel, data);
+					this.diagram.attachToContainer(this.diagramPanel);
+					this.diagram.refresh();
+				}
+				
+				else if (DropdownStatus.powerGroup == PowerGroup.RISE_POWER) {
+					ArrayList<float[]> data = new ArrayList<float[]>();
+					Iterator<Cell> cellsIt = lib.getCells().iterator();
+					float[] values = new float[lib.getCells().size()];
+					int i = 0;
+					while(cellsIt.hasNext()) {
+						Cell curCell = cellsIt.next();
+						if (!curCell.getAvailableInputPower().contains(PowerGroup.RISE_POWER)) {
+							values[i] = 0;
+							i++;
+							continue;
+						}
+						curCell.calculateInPow();
+						float value = 
+								curCell.getInPowerStat().get(PowerGroup.RISE_POWER).getAvg();
+						values[i] = value;
+						i++;
+					}
+					data.add(values);
+					DiagramWizard wiz = new DiagramWizard();
+					this.diagram = wiz.makeAndAttachBarChart(this.diagramPanel, data);
+					this.diagram.attachToContainer(this.diagramPanel);
+					this.diagram.refresh();
+				}
+			}
+			
+			
+		}
 	}
 
 	@Override
