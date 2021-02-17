@@ -1,7 +1,6 @@
 package gelf.model.commands;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -11,11 +10,9 @@ import gelf.model.elements.Library;
 import gelf.model.project.Model;
 
 public class PasteCommand implements Command {
-	private ArrayList<Cell> pastedCells;
-	private ArrayList<Cell> deletedCells;
-	private ArrayList<Cell> copiedCells;
+	private ArrayList<Cell> pastedCells = new ArrayList<Cell>();
+	private ArrayList<Cell> copiedCells = new ArrayList<Cell>();
 	private Library destinationLibrary;
-	private HashMap<Cell, String> renamedCellsOldNames;
 	private Model currentModel = Model.getInstance();
 	
 	/* If the list of copied cells won't be given as a parameter, then it will
@@ -57,22 +54,19 @@ public class PasteCommand implements Command {
 				new NameConflictResolver(cellsToComp);
 		ArrayList<Cell> cells = conflictResolver.getCells();
 		
-		deletedCells = conflictResolver.getDeletedCells();
+		//deletedCells = conflictResolver.getDeletedCells();
 		
-		renamedCellsOldNames = conflictResolver.getRenamedCells();
+		//renamedCellsOldNames = conflictResolver.getRenamedCells();
 		
 		
 		Iterator<Cell> cellsIt = cells.iterator();
 		while(cellsIt.hasNext()) {
 			boolean exists = false;
 			Cell curCell = cellsIt.next();
-			//System.out.println(curCell.getName());
 			
 			destLibCellsIt = destLibCells.iterator();
 			while(destLibCellsIt.hasNext()) {
 				Cell curDestCell = destLibCellsIt.next();
-				System.out.println(curDestCell);
-				System.out.println(curCell);
 				if(curCell.getName().equals(curDestCell.getName())) {
 					exists = true;
 					break;
@@ -82,6 +76,7 @@ public class PasteCommand implements Command {
 				Cell cloneCell = curCell.clone();
 				destinationLibrary.getCells().add(cloneCell);
 				cloneCell.setParentLibrary(destinationLibrary);
+				pastedCells.add(cloneCell);
 			}
 		}
 		currentModel.getCurrentProject().inform();
@@ -90,7 +85,11 @@ public class PasteCommand implements Command {
 
 	@Override
 	public void undo() {
-		
+		Iterator<Cell> pastedCellsIt = pastedCells.iterator();
+		while(pastedCellsIt.hasNext()) {
+			destinationLibrary.getCells().remove(pastedCellsIt.next());
+			currentModel.getCurrentProject().inform();
+		}
 	}
 
 }

@@ -10,11 +10,12 @@ public class XCoordinateIndicatorLineDisplayer extends CoordinateIndicatorLineDi
 	protected XCoordinateIndicatorLineDisplayer(IDiagram diagram, Color color, int thickness) {
 		super(diagram, color, thickness, IndicatorIdentifier.X_COORDINATE_INDICATOR);
 		this.axes = diagram.getDiagramAxisPrototypes();
+		this.initViewHelperComponents();
 	}
 
 	@Override
 	protected DiagramAxis getAxisToIndicate() {
-		return axes[0];
+		return this.axes[0];
 	}
 
 	@Override
@@ -29,6 +30,6 @@ public class XCoordinateIndicatorLineDisplayer extends CoordinateIndicatorLineDi
 
 	@Override
 	protected DiagramAxis getParallelAxis() {
-		return axes[1];
+		return this.axes[1];
 	}
 }

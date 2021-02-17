@@ -6,7 +6,7 @@ import java.util.Iterator;
 import gelf.model.elements.attributes.InputPower;
 
 public class InputPin extends Pin {
-	private ArrayList<InputPower> inputPowers;
+	private ArrayList<InputPower> inputPowers = new ArrayList<InputPower>();
 	private float capacitance;
 	
     public InputPin(String name, Cell parentCell, ArrayList<InputPower> inputPowers) {

@@ -20,9 +20,14 @@ public class ValueLine extends DiagramLine {
 	}
 	
 	public float getValue() {
-		return value;
+		return this.value;
 	}
 
+	@Override
+	protected void initVisualElement() {
+		this.visualElement = new ValueLineVisual(this);
+	}
+	
 	protected class ValueLineVisual extends LineVisual {
 
 		/**

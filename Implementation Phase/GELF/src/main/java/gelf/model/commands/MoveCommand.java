@@ -10,12 +10,12 @@ import gelf.model.project.Model;
 
 public class MoveCommand implements Command {
 	
-	private HashMap<Cell, Library> initialPositions;
-    private ArrayList<Cell> deletedCells;
-    private HashMap<Cell, String> renamedCellsOldNames;
+	private HashMap<Cell, Library> initialPositions = new HashMap<Cell, Library>();
     private Library destinationLibrary;
-    private ArrayList<Cell> cellsToMove;
+    private ArrayList<Cell> cellsToMove = new ArrayList<Cell>();
+    private ArrayList<Cell> movedCells = new ArrayList<Cell>();
     private Model currentModel = Model.getInstance();
+    private ArrayList<Cell> initialCells;
 	
 	public MoveCommand(ArrayList<Cell> cellsToMove, Library destinationLibrary) {
 		this.destinationLibrary = destinationLibrary;
@@ -23,6 +23,8 @@ public class MoveCommand implements Command {
 	}
 
 	public void execute() {
+		initialCells = new ArrayList<Cell>();
+		initialCells.addAll(cellsToMove);
 		ArrayList<Cell> cellsToComp = new ArrayList<Cell>();
 		Iterator<Cell> movCellIt = cellsToMove.iterator();
 		ArrayList<Cell> destLibCells = destinationLibrary.getCells();
@@ -38,15 +40,15 @@ public class MoveCommand implements Command {
 		NameConflictResolver conflictResolver = 
 				new NameConflictResolver(cellsToComp);
 		ArrayList<Cell> cells = conflictResolver.getCells();
-		deletedCells = conflictResolver.getDeletedCells();
-		renamedCellsOldNames = conflictResolver.getRenamedCells();
+		
 		
 		Iterator<Cell> cellsIt = cells.iterator();
-		boolean exists = false;
-		
 		while(cellsIt.hasNext()) {
+			boolean exists = false;
 			
 			Cell curCell = cellsIt.next();
+			
+			destLibCellsIt = destLibCells.iterator();
 			while(destLibCellsIt.hasNext()) {
 				Cell curLibCell = destLibCellsIt.next();
 				if(curCell.equals(curLibCell)) {
@@ -54,15 +56,20 @@ public class MoveCommand implements Command {
 					break;
 				}
 			}
+			
 			/* Searches, if the cells are available in the destination library,
 			 * if not removes them from their initial library and 
 			 * adds them to the destination library.
 			 */
-			if(exists = false) {
-				initialPositions.get(curCell).getCells().remove(curCell);
-				deletedCells.add(curCell);
-				curCell.setParentLibrary(destinationLibrary);
-				destinationLibrary.getCells().add(curCell);
+			if(exists == false) {
+				Cell clone = curCell.clone();
+				
+				initialPositions.put(curCell, curCell.getParentLibrary());
+				curCell.getParentLibrary().getCells().remove(curCell);
+				
+				destinationLibrary.getCells().add(clone);
+				clone.setParentLibrary(destinationLibrary);
+				movedCells.add(clone);
 			}
 		}
 		currentModel.getCurrentProject().inform();
@@ -70,7 +77,19 @@ public class MoveCommand implements Command {
 	}
 
 	public void undo() {
-		
+		Iterator<Cell> movedCellsIt = movedCells.iterator();
+		while(movedCellsIt.hasNext()) {
+			Cell curCell = movedCellsIt.next();
+			destinationLibrary.getCells().remove(curCell);
+		}
+		Iterator<Cell> initialCellsIt = initialCells.iterator();
+		while(initialCellsIt.hasNext()) {
+			Cell curCell = initialCellsIt.next();
+			Library parent = initialPositions.get(curCell);
+			parent.getCells().add(curCell);
+			curCell.setParentLibrary(parent);
+		}
+		currentModel.getCurrentProject().inform();
 	}
 
 }

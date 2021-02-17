@@ -20,7 +20,7 @@ public class Library extends HigherElement {
     private float[] index2;
     private String path;
     private String libraryContent;
-    private ArrayList<Cell> cells;
+    private ArrayList<Cell> cells = new ArrayList<Cell>();
     private Stat defaultLeakage;
     private File libraryFile;
     
@@ -37,7 +37,6 @@ public class Library extends HigherElement {
     	this.setAvailableTimGr();
     	this.setAvailableTimSen();
     	this.setAvailableTimType();
-    	//calculate();
     }
     
 	@Override

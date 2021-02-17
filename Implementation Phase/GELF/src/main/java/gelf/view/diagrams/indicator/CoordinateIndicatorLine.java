@@ -19,6 +19,11 @@ public class CoordinateIndicatorLine extends DiagramLine {
 		return new CoordinateIndicatorLine(this.getStartInFrame().clone(), this.getEndInFrame().clone(), this.getColor(), this.getThickness());
 	}
 	
+	@Override
+	protected void initVisualElement() {
+		this.visualElement = new CoordinateLineVisual(this);
+	}
+	
 	protected class CoordinateLineVisual extends LineVisual {
 
 		/**

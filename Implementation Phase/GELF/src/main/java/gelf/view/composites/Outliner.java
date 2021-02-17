@@ -37,6 +37,7 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
     public JScrollPane treePane;
     public Menu menuView;
         public MenuItem itemOpen;
+        public MenuItem itemProperties;
 
     // colors
     private Color cBackground = ColorTheme.section;
@@ -64,7 +65,9 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
 
         this.menuView = new Menu("View");
         this.itemOpen = new MenuItem("Open");
+        this.itemProperties = new MenuItem("Properties");
         this.menuView.add(this.itemOpen);
+        this.menuView.add(this.itemProperties);
         this.menuBar.add(menuView);
         this.add(this.menuBar, BorderLayout.PAGE_START);
 
@@ -72,7 +75,7 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
         DefaultTreeModel treeModel = new DefaultTreeModel(root);
         this.tree = new JTree(treeModel);
-        this.tree.setEditable(true);
+        //this.tree.setEditable(true);
         this.tree.setBackground(cTree);
         this.tree.setShowsRootHandles(true);
         this.tree.expandRow(0);

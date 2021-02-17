@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="java.awt.Graphics2D"/>
-    <fullyQualifiedTypeName name="gelf.view.diagrams.indicator.IndicatorIdentifier"/>
-    <fullyQualifiedTypeName name="gelf.view.diagrams.indicator.DiagramViewHelper"/>
-    <fullyQualifiedTypeName name="gelf.view.diagrams.components.PositionInFrame"/>
-    <fullyQualifiedTypeName name="java.lang.Float"/>
     <fullyQualifiedTypeName name="java.util.Map"/>
     <fullyQualifiedTypeName name="java.util.EnumMap"/>
     <fullyQualifiedTypeName name="javax.swing.JPanel"/>
@@ -13,7 +8,6 @@
     <fullyQualifiedTypeName name="javax.swing.border.Border"/>
     <fullyQualifiedTypeName name="javax.swing.Timer"/>
     <fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
-    <fullyQualifiedTypeName name="gelf.view.diagrams.components.DiagramColorScale"/>
     <fullyQualifiedTypeName name="javax.swing.JLayeredPane"/>
     <fullyQualifiedTypeName name="java.awt.Component"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.builder.HeatMapBuilder"/>
@@ -23,27 +17,18 @@
     <fullyQualifiedTypeName name="gelf.view.diagrams.overlayer.BarChartOverlayStrategy"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.overlayer.FunctionGraphOverlayStrategy"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.overlayer.HistogramOverlayStrategy"/>
-    <fullyQualifiedTypeName name="java.util.Collection"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.DiagramDirector"/>
-    <fullyQualifiedTypeName name="gelf.view.diagrams.components.DiagramAxis"/>
-    <fullyQualifiedTypeName name="gelf.view.diagrams.components.DiagramComponent"/>
     <fullyQualifiedTypeName name="java.util.TreeSet"/>
     <fullyQualifiedTypeName name="java.util.Iterator"/>
     <fullyQualifiedTypeName name="java.util.Stack"/>
-    <fullyQualifiedTypeName name="java.util.ArrayList"/>
-    <fullyQualifiedTypeName name="gelf.view.diagrams.components.DiagramComponentFactory"/>
-    <fullyQualifiedTypeName name="java.awt.Container"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.builder.IBarChartBuilder"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.builder.IFunctionGraphBuilder"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.builder.IHistogramBuilder"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.type.FunctionGraph"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.type.HeatMap"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.type.BarChart"/>
-    <fullyQualifiedTypeName name="gelf.view.diagrams.components.PositionIn2DDiagram"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.components.HeatMapLabel"/>
     <fullyQualifiedTypeName name="org.junit.jupiter.api.BeforeAll"/>
-    <fullyQualifiedTypeName name="gelf.view.diagrams.data.DiagramData"/>
-    <fullyQualifiedTypeName name="gelf.view.diagrams.IDiagram"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.builder.BarChartBuilder"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.builder.DiagramBuilder"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.TestCase"/>
@@ -52,12 +37,27 @@
     <fullyQualifiedTypeName name="java.awt.geom.Point2D"/>
     <fullyQualifiedTypeName name="java.awt.Rectangle"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.builder.FunctionGraphBuilder"/>
-    <fullyQualifiedTypeName name="java.awt.Color"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.components.ValueDisplayPoint"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.components.DiagramValueDisplayComponent"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.components.BarChartBar"/>
     <fullyQualifiedTypeName name="org.junit.jupiter.api.Assertions"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.components.HistogramBar"/>
     <fullyQualifiedTypeName name="java.awt.Dimension"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="java.util.Collection"/>
+    <fullyQualifiedTypeName name="java.util.TreeMap"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.components.DiagramColorScale"/>
+    <fullyQualifiedTypeName name="java.awt.Color"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.components.DiagramComponent"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.components.DiagramAxis"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.components.DiagramComponentFactory"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.components.PositionIn2DDiagram"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.components.PositionInFrame"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.data.DiagramData"/>
+    <fullyQualifiedTypeName name="java.util.ArrayList"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.IDiagram"/>
+    <fullyQualifiedTypeName name="org.junit.jupiter.api.AfterAll"/>
+    <fullyQualifiedTypeName name="gelf.model.project.Model"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.SettingsProvider"/>
+    <fullyQualifiedTypeName name="java.awt.Container"/>
 </qualifiedTypeNameHistroy>

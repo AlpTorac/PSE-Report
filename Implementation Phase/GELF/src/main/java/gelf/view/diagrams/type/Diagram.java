@@ -26,6 +26,7 @@ public abstract class Diagram implements IDiagram {
 	public Diagram(DiagramData data, DiagramAxis[] axes,
 			DiagramValueDisplayComponent[] valueDisplayComponents,
 			DiagramComponent[] nonValueDisplayComponents) {
+		this.viewHelpers = new EnumMap<IndicatorIdentifier, DiagramViewHelper>(IndicatorIdentifier.class);
 		this.containingElement = new JLayeredPane();
 		this.containingElement.setLayout(null);
 		
@@ -102,19 +103,21 @@ public abstract class Diagram implements IDiagram {
 	}
 	
 	public boolean addDiagramViewHelper(DiagramViewHelper dvh) {
-		return false;
+		boolean result = (this.viewHelpers.put(dvh.getID(), dvh) != null);
+		
+		return result;
 	}
 	
 	public boolean removeDiagramViewHelper(IndicatorIdentifier id) {
-		return false;
+		return (this.viewHelpers.remove(id) != null);
 	}
 	
-	public boolean showDiagramViewHelper(IndicatorIdentifier id) {
-		return false;
+	public void showDiagramViewHelper(IndicatorIdentifier id) {
+		this.viewHelpers.get(id).show();
 	}
 	
-	public boolean hideDiagramViewHelper(IndicatorIdentifier id) {
-		return false;
+	public void hideDiagramViewHelper(IndicatorIdentifier id) {
+		this.viewHelpers.get(id).hide();
 	}
 	
 	public DiagramComponent[] getNonValueDisplayDiagramComponentPrototype() {

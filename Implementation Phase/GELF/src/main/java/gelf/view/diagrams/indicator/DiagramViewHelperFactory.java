@@ -1,10 +1,11 @@
 package gelf.view.diagrams.indicator;
 
 import gelf.view.diagrams.IDiagram;
-import gelf.view.diagrams.components.DiagramAxis;
+import gelf.view.diagrams.SettingsProvider;
 
 public class DiagramViewHelperFactory {
 	private static DiagramViewHelperFactory instance;
+	private static SettingsProvider sp = SettingsProvider.getInstance();
 	
 	private DiagramViewHelperFactory() {
 		
@@ -22,13 +23,27 @@ public class DiagramViewHelperFactory {
 		return null;
 	}
 	
-	public HelperLineDisplayer createCoordinateGridDisplayer(IDiagram diagram,
-			DiagramAxis axis, IndicatorIdentifier id) {
-		return null;
+	public HelperLineDisplayer createXCoordinateGridDisplayer(IDiagram diagram) {
+		return new XCoordinateIndicatorLineDisplayer(diagram, sp.getAxisColor(), sp.getAxisThickness());
 	}
 	
-	public HelperLineDisplayer createValueLineDisplayer(IDiagram diagram,
-			DiagramAxis axis, IndicatorIdentifier id) {
-		return null;
+	public HelperLineDisplayer createYCoordinateGridDisplayer(IDiagram diagram) {
+		return new YCoordinateIndicatorLineDisplayer(diagram, sp.getAxisColor(), sp.getAxisThickness());
+	}
+	
+	public HelperLineDisplayer createMinLineDisplayer(IDiagram diagram) {
+		return new ValueLineDisplayer(diagram, sp.getAxisThickness(), IndicatorIdentifier.MIN);
+	}
+	
+	public HelperLineDisplayer createMaxLineDisplayer(IDiagram diagram) {
+		return new ValueLineDisplayer(diagram, sp.getAxisThickness(), IndicatorIdentifier.MAX);
+	}
+	
+	public HelperLineDisplayer createAvgLineDisplayer(IDiagram diagram) {
+		return new ValueLineDisplayer(diagram, sp.getAxisThickness(), IndicatorIdentifier.AVG);
+	}
+	
+	public HelperLineDisplayer createMedLineDisplayer(IDiagram diagram) {
+		return new ValueLineDisplayer(diagram, sp.getAxisThickness(), IndicatorIdentifier.MED);
 	}
 }

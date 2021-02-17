@@ -161,12 +161,6 @@ public abstract class DiagramAxis extends DiagramComponent {
 		return bounds;
 	}
 	
-//	@Override
-//	protected void setComponentBounds(Rectangle bounds) {
-//		this.axisLine.setComponentBounds(bounds);
-//		this.visualElement.repaint();
-//	}
-	
 	@Override
 	protected void initVisualElement() {
 		this.visualElement = new AxisVisual(this);
@@ -207,18 +201,13 @@ public abstract class DiagramAxis extends DiagramComponent {
 		
 		protected AxisVisual(DiagramAxis axis) {
 			this.axis = axis;
-//			this.setBounds(new Rectangle(0,0,1000,1000));
 			this.setBounds(this.axis.getFrameBounds());
-//			Border border = BorderFactory.createLineBorder(Color.BLACK, 2);
-//			
-//			this.setBorder(border);
 		}
 		
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Graphics2D graphs = (Graphics2D) g;
-//			this.setBounds(this.axis.getFrameBounds());
 			Rectangle bounds = this.getBounds();
 			
 			int fontSize = this.axis.fontSize;
@@ -253,9 +242,8 @@ public abstract class DiagramAxis extends DiagramComponent {
 				Shape line = new Line2D.Double(x1, y1, x1, y2);
 				graphs.draw(line);
 				if (this.axis.showValues) {
-					graphs.drawString(String.valueOf(SettingsProvider.getInstance().getRoundedValue(currentValue)), (float) x1 - fontSize, stringY);
+					graphs.drawString(SettingsProvider.getInstance().getRoundedValueAsString(currentValue), (float) x1 - fontSize, stringY);
 					currentValue = currentValue + stepLengthInAxis;
-//					System.out.println(x2 + xValueSpace + ", " + y2 + yValueSpace);
 				}
 				x1 = x1 + xStepLengthInFrame;
 			}

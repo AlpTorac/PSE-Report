@@ -9,17 +9,29 @@ import gelf.view.diagrams.type.HeatMap;
 import gelf.view.diagrams.type.Histogram;
 
 public interface IDiagramWizard {
-	public BarChart makeBarChart(Container container, Collection<?> data);
+	public BarChart makeAndAttachBarChart(Container container, Collection<?> data);
 	
-	public HeatMap makeHeatMap(Container container, Collection<?> data);
+	public HeatMap makeAndAttachHeatMap(Container container, Collection<?> data);
 	
-	public Histogram makeHistogram(Container container, Collection<?> data);
+	public Histogram makeAndAttachHistogram(Container container, Collection<?> data);
 	
-	public FunctionGraph makeFunctionGraph(Container container, Collection<?> data);
+	public FunctionGraph makeAndAttachFunctionGraph(Container container, Collection<?> data);
 	
-	public BarChart overlayBarCharts(BarChart[] barCharts);
+	public BarChart overlayAndAttachBarCharts(Container container, BarChart[] barCharts);
 	
-	public FunctionGraph overlayFunctionGraphs(FunctionGraph[] functionGraphs);
+	public FunctionGraph overlayAndAttachFunctionGraphs(Container container, FunctionGraph[] functionGraphs);
 	
-	public Histogram overlayHistograms(Histogram[] histograms);
+	public Histogram overlayAndAttachHistograms(Container container, Histogram[] histograms);
+	
+	public void addMinDisplayer(IDiagram diagram);
+	
+	public void addMaxDisplayer(IDiagram diagram);
+	
+	public void addAvgDisplayer(IDiagram diagram);
+	
+	public void addMedDisplayer(IDiagram diagram);
+	
+	public void xAxisCoordinateDisplayer(IDiagram diagram);
+	
+	public void yAxisCoordinateDisplayer(IDiagram diagram);
 }

@@ -29,15 +29,28 @@ public class HoverLabel implements HasAttachablePart {
 		this.color = new Color(255, 255, 255, sp.getHoverLabelColorAlpha());
 		this.caption = "";
 		this.component = new HoverLabelVisual(this);
-		this.setComponentBounds();
 	}
-
-	private void setComponentBounds() {
+	
+	private Rectangle calculateBounds() {
 		Dimension d = this.component.getPreferredSize();
 		Rectangle bounds = new Rectangle();
 		bounds.setRect(this.getXPos(), this.getYPos() - d.getHeight(), d.getWidth(), d.getHeight());
-		this.component.setBounds(bounds);
+		
+		Component containingElement = this.containingDiagram.getContainingElement();
+		
+		if (bounds.getMaxX() >= containingElement.getWidth()) {
+			bounds.x = (int) (containingElement.getBounds().getMaxX() - d.getWidth());
+		}
+		if (bounds.getMinY() <= 0) {
+			bounds.y = 0;
+		}
+		
+		return bounds;
+	}
+	
+	private void setComponentBounds() {
 		if (this.containingDiagram != null) {
+			this.component.setBounds(this.calculateBounds());
 			this.containingDiagram.getContainingElement().repaint();
 		}
 	}

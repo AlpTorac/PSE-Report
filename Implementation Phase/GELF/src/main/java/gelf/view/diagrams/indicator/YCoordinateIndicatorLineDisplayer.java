@@ -10,6 +10,7 @@ public class YCoordinateIndicatorLineDisplayer extends CoordinateIndicatorLineDi
 	protected YCoordinateIndicatorLineDisplayer(IDiagram diagram, Color color, int thickness) {
 		super(diagram, color, thickness, IndicatorIdentifier.Y_COORDINATE_INDICATOR);
 		this.axes = diagram.getDiagramAxisPrototypes();
+		this.initViewHelperComponents();
 	}
 
 	@Override
@@ -24,7 +25,7 @@ public class YCoordinateIndicatorLineDisplayer extends CoordinateIndicatorLineDi
 
 	@Override
 	protected PositionIn2DDiagram getStartPosForValue(float value) {
-		return factory.makePositionInDiagram(this.getAxisToIndicate(), 0, this.getParallelAxis(), value);
+		return factory.makePositionInDiagram(this.getParallelAxis(), 0, this.getAxisToIndicate(), value);
 	}
 
 	@Override
