@@ -52,7 +52,7 @@ public class EditListener implements ActionListener{
 		DefaultMutableTreeNode root =(DefaultMutableTreeNode) treeModel.getRoot();
 		Element newElement;
 		try {
-			TextEditCommand edit = new TextEditCommand(oldContent, newContent, element, editor);
+			TextEditCommand edit = new TextEditCommand(oldContent, newContent, element);
 			edit.execute();
 		} catch (InvalidFileFormatException exc) {
 			JOptionPane.showMessageDialog(new JFrame(), exc.getLocalizedMessage(), "Error", JOptionPane.ERROR_MESSAGE);
