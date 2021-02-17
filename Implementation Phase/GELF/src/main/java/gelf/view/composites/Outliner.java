@@ -38,6 +38,7 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
     public Menu menuView;
         public MenuItem itemOpen;
         public MenuItem itemCopy;
+        public MenuItem itemPaste;
         public MenuItem itemDelete;
         public MenuItem itemRemove;
         public MenuItem itemCompare;
@@ -70,12 +71,14 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
         this.menuView = new Menu("View");
         this.itemOpen = new MenuItem("Open");
         this.itemCopy = new MenuItem("Copy");
+        this.itemPaste = new MenuItem("Paste");
         this.itemDelete = new MenuItem("Delete");
         this.itemRemove = new MenuItem("Remove");
         this.itemCompare = new MenuItem("Compare");
         this.itemProperties = new MenuItem("Properties");
         this.menuView.add(this.itemOpen);
         this.menuView.add(this.itemCopy);
+        this.menuView.add(this.itemPaste);
         this.menuView.add(this.itemDelete);
         this.menuView.add(this.itemRemove);
         this.menuView.add(this.itemCompare);
