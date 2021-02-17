@@ -72,7 +72,7 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
         DefaultTreeModel treeModel = new DefaultTreeModel(root);
         this.tree = new JTree(treeModel);
-        this.tree.setEditable(true);
+        //this.tree.setEditable(true);
         this.tree.setBackground(cTree);
         this.tree.setShowsRootHandles(true);
         this.tree.expandRow(0);

@@ -24,7 +24,7 @@ public class SettingsProvider {
 	 * brought together.
 	 */
 	private Color[] valueDisplayComponentColors = new Color[] {
-			Color.RED, Color.GREEN
+			new Color(0xdb3939), new Color(0x36ba43)
 	};
 	
 	private int axisThickness = 1;

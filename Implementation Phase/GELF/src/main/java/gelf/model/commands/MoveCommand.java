@@ -10,11 +10,11 @@ import gelf.model.project.Model;
 
 public class MoveCommand implements Command {
 	
-	private HashMap<Cell, Library> initialPositions;
-    private ArrayList<Cell> deletedCells;
-    private HashMap<Cell, String> renamedCellsOldNames;
+	private HashMap<Cell, Library> initialPositions = new HashMap<Cell, Library>();
+    private ArrayList<Cell> deletedCells = new ArrayList<Cell>();
+    private HashMap<Cell, String> renamedCellsOldNames = new HashMap<Cell, String>();
     private Library destinationLibrary;
-    private ArrayList<Cell> cellsToMove;
+    private ArrayList<Cell> cellsToMove = new ArrayList<Cell>();
     private Model currentModel = Model.getInstance();
 	
 	public MoveCommand(ArrayList<Cell> cellsToMove, Library destinationLibrary) {
@@ -41,12 +41,15 @@ public class MoveCommand implements Command {
 		deletedCells = conflictResolver.getDeletedCells();
 		renamedCellsOldNames = conflictResolver.getRenamedCells();
 		
-		Iterator<Cell> cellsIt = cells.iterator();
-		boolean exists = false;
 		
+		
+		Iterator<Cell> cellsIt = cells.iterator();
 		while(cellsIt.hasNext()) {
+			boolean exists = false;
 			
 			Cell curCell = cellsIt.next();
+			
+			destLibCellsIt = destLibCells.iterator();
 			while(destLibCellsIt.hasNext()) {
 				Cell curLibCell = destLibCellsIt.next();
 				if(curCell.equals(curLibCell)) {
@@ -58,8 +61,8 @@ public class MoveCommand implements Command {
 			 * if not removes them from their initial library and 
 			 * adds them to the destination library.
 			 */
-			if(exists = false) {
-				initialPositions.get(curCell).getCells().remove(curCell);
+			if(exists == false) {
+				curCell.getParentLibrary().getCells().remove(curCell);
 				deletedCells.add(curCell);
 				curCell.setParentLibrary(destinationLibrary);
 				destinationLibrary.getCells().add(curCell);

@@ -16,8 +16,10 @@ public class OutputPin extends Pin {
     		new ArrayList<TimingGroup>();
     private ArrayList<TimingType> availableTimType =
     		new ArrayList<TimingType>();
-    private ArrayList<OutputPower> outputPowers;
-    private ArrayList<Timing> timings;
+    private ArrayList<OutputPower> outputPowers = 
+    		new ArrayList<OutputPower>();
+    private ArrayList<Timing> timings = 
+    		new ArrayList<Timing>();
     private float minCapacitance;
     private float maxCapacitance;
     private String outputFunction;	
