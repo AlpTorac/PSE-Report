@@ -28,8 +28,34 @@ public class CompareListener implements ActionListener {
 		for (Element element: outliner.getSelectedElements()) {
 			if (element instanceof Library) {
 				
+				
+				return;
+			}
+			else {
+				
 			}
 		}
+		for (Element element: outliner.getSelectedElements()) {
+			if (element instanceof Library) {
+				
+				
+				return;
+			}
+			else {
+				
+			}
+		}
+		for (Element element: outliner.getSelectedElements()) {
+			if (element instanceof Library) {
+				
+				
+				return;
+			}
+			else {
+				
+			}
+		}
+		
 		
 	}
 

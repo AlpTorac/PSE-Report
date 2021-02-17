@@ -47,11 +47,13 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
     private JScrollPane scrollPane;
     private JPanel imagePanel;
     
-    private HashMap<Pin, Label> buttonMap;
+    public HashMap<Pin, Label> buttonMap;
+    public ArrayList<Label> buttonList;
 	private HashMap<Checkbox, InputPin> checkboxMap;
+	
 	private ArrayList<Checkbox> checkboxes;
-	private Label libButton;
-	private Label cellButton; 
+	public Label libButton;
+	public Label cellButton; 
 	
     private Cell cell;
 	private ArrayList<InputPin> inputPins;
@@ -78,6 +80,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 		super(width, height);
 		this.subwindow = subwindow;
 		this.dataPanel = dataPanel;
+		buttonList = new ArrayList<Label>();
 		lowerPanel = new JPanel();
 		mainPanel = new Panel(width, height);
 		imageGen = new CellImageGenerator();
@@ -144,6 +147,13 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 		imageLabel.setVisible(true);
 		highlightPin(element);
 		
+	}
+	
+	/*
+	 * 
+	 */
+	public Cell getCell() {
+		return cell;
 	}
 	
 	/*
@@ -251,6 +261,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 			for (int i = 0; i < inputPins.size(); i++) {
 				Label cellButton = new Label(inputPins.get(i).getName());
 				buttonMap.put(inputPins.get(i), cellButton);
+				buttonList.add(cellButton);
 				cellButton.setForeground(Color.WHITE);
 				cellButton.addMouseListener(this);
 				leftButtons.add(cellButton);
@@ -339,6 +350,13 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 	 */
 	public ArrayList<OutputPin> getOutputPins() {
 		return outputPins;
+	}
+	
+	/*
+	 *
+	 */
+	public Label getCellButton() {
+		return cellButton;
 	}
 
 	@Override

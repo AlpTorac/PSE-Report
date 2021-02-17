@@ -1,60 +1,49 @@
 package gelf.view.representation;
 
-import gelf.model.elements.*;
-import gelf.view.components.Panel;
-import gelf.view.composites.SubWindow;
-
-import java.awt.Button;
+import java.awt.Checkbox;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Label;
-import java.awt.ScrollPane;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import javax.swing.BoxLayout;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 
-/*
- * Displays all child cells of the selected library.
- */
-public class LibraryPanel extends Panel implements MouseListener{
-   
-    public HashMap<Label, Cell> buttons;
+import gelf.model.elements.Cell;
+import gelf.model.elements.InputPin;
+import gelf.model.elements.Library;
+import gelf.view.components.Label;
+import gelf.view.components.Panel;
+import gelf.view.composites.SubWindow;
+
+public class CellComparePanel extends Panel implements MouseListener {
+	
+	ArrayList<Cell> cells;
+	public HashMap<Label, Cell> buttons;
 	public ArrayList<Label> buttonList;
     private JPanel listPanel;
-    private Library selectedLibrary;
-	private ArrayList<Cell> cells;
+    private ArrayList<Library> libraryList;
 	private SubWindow subwindow;
     private JScrollPane scrollPane;
     
-   
-    /*
-     * Constructor
-     * @param library To be opened library.
-     */
-    public LibraryPanel(int width, int height, Library library, SubWindow subwindow) {
+	public CellComparePanel(int width, int height, SubWindow subwindow, ArrayList<Cell> cells) {
     	super(width, height);
-    	this.setMaximumSize(new Dimension(100, 100));
     	this.subwindow = subwindow;
-    	selectedLibrary = library;
+    	this.cells = cells;
     	buttonList = new ArrayList<Label>();
     	this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     	this.setBorder(new LineBorder(Color.BLACK));
-        cells = selectedLibrary.getCells();
-        buttons = new HashMap<Label,Cell>();
+        buttons = new HashMap<Label, Cell>();
         listPanel = new JPanel(); 
-        listPanel.setLayout(new GridLayout(0,4));
+        listPanel.setLayout(new GridLayout(0,2));
         listPanel.setBackground(new Color(0.3f, 0.3f, 0.3f));
         scrollPane = new JScrollPane(listPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
         		ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -74,34 +63,38 @@ public class LibraryPanel extends Panel implements MouseListener{
         }
         this.setVisible(true);
 
-    }
+	}
+	
+	
     
-    public Library getLibrary() {
-    	return selectedLibrary;
-    }
-    
-    public ArrayList<Cell> getCells() {
-    	return cells;
-    }
-    
-
+  
+		
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		subwindow.setElement(buttons.get(e.getSource()));
-		this.setVisible(false);
-		
+		for (Cell cell: cells) {
+			if (cell.getName() == ((Label)e.getSource()).getText()) {
+				if (((Label)e.getSource()).getBackground().equals(Color.BLUE)) {
+						
+					((Label)e.getSource()).setBackground(new Color(0.2f, 0.2f, 0.2f));
+				}
+				else {
+						
+					((Label)e.getSource()).setBackground(Color.BLUE);
+				}
+				return;
+			}
+		}
 	}
-
+	
 	@Override
-	public void mouseEntered(MouseEvent e) {
-		e.getComponent().setBackground(Color.GREEN);
-		
-	}
+	public void mouseEntered(MouseEvent e) {}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		e.getComponent().setBackground(new Color(0.3f, 0.3f, 0.3f));
-		
+		if (((Label)e.getSource()).getBackground().equals(Color.BLUE)){
+			return;
+		}
+		e.getComponent().setBackground(new Color(0.2f, 0.2f, 0.2f));
 	}
 
 	@Override
@@ -109,4 +102,5 @@ public class LibraryPanel extends Panel implements MouseListener{
 
 	@Override
 	public void mouseReleased(MouseEvent e) {}
+	
 }

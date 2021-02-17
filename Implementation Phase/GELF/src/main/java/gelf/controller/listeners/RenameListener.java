@@ -7,6 +7,7 @@ import gelf.model.elements.Pin;
 import gelf.model.project.Model;
 import gelf.model.commands.RenameCommand;
 import gelf.view.composites.Outliner;
+import gelf.view.composites.SubWindow;
 import gelf.view.composites.SubWindowArea;
 
 import java.awt.event.ActionEvent;
@@ -22,22 +23,24 @@ import javax.swing.tree.DefaultMutableTreeNode;
 /*
  * Listener for renaming a liberty file.
  */
-public class RenameListener implements TreeModelListener {
+public class RenameListener implements ActionListener {
 	
 	private Outliner outliner;
 	private SubWindowArea subwindows;
+	
 	
 	public RenameListener(Outliner outliner, SubWindowArea subwindows) {
 		this.outliner = outliner;
 		this.subwindows = subwindows;
 	}
 	
-
 	@Override
-	public void treeNodesChanged(TreeModelEvent e) {
-		
-		DefaultMutableTreeNode node = (DefaultMutableTreeNode) (e.getTreePath().getLastPathComponent());
-        Element element = (Element) node.getUserObject();
+	public void actionPerformed(ActionEvent e) {
+		if (outliner.getSelectedElements().size() != 1) {
+			JOptionPane.showMessageDialog(new JFrame(), "Please select only one element to rename", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+        Element element = outliner.getSelectedElements().get(0);
         String newName = JOptionPane.showInputDialog(new JFrame(), "New Name: ", "Rename", JOptionPane.OK_CANCEL_OPTION);
         if (newName == "" || newName == null) {
         	JOptionPane.showMessageDialog(new JFrame(), "Not a valid name", "Error", JOptionPane.ERROR_MESSAGE);
@@ -50,7 +53,33 @@ public class RenameListener implements TreeModelListener {
         
 		RenameCommand rename = new RenameCommand(element, newName);
 		rename.execute();
-		
+		/*for (SubWindow subwindow: subwindows.getSubWindows()) {
+			if (element instanceof Library) {
+				
+			}
+			else if (element instanceof Cell) {
+				
+			}
+			else {
+				
+			}
+			
+			
+			
+			if (subwindow.getTextEditor().getElement().equals(element)) {
+				subwindow.setPath(newName);
+				subwindow.getTextEditor().getActualText().replace(element.getName(), newName);
+				if (element instanceof Library) {
+				//	subwindow.getVisualizer().getLibPanel()
+				}
+				else if (element instanceof Cell) {
+					subwindow.getVisualizer().getCellPanel().getCellButton().setText(newName);
+				}
+				else {
+					
+				}
+			}
+		}*/
 	}
 	
 	/*
@@ -99,13 +128,6 @@ public class RenameListener implements TreeModelListener {
 		return false;
 	}
 
-	@Override
-	public void treeNodesInserted(TreeModelEvent e) {}
-
-	@Override
-	public void treeNodesRemoved(TreeModelEvent e) {}
-
-	@Override
-	public void treeStructureChanged(TreeModelEvent e) {}
+	
 
 }
