@@ -32,10 +32,12 @@ import javax.swing.text.Highlighter;
 public class TextEditor extends ElementManipulator implements KeyListener{
 	
 	private JTextField searchBox;
-	private JTextArea textArea;
+	private JTextArea textArea;	
 	private JScrollPane scrollPane;
 	private JPanel lowerPanel;
 	private Button updateButton;
+	private Outliner outliner;
+	private SubWindowArea subwindows;
 	
 	private int trace;
 	
@@ -46,13 +48,21 @@ public class TextEditor extends ElementManipulator implements KeyListener{
 	private final Highlighter hl;
 	private final Highlighter.HighlightPainter painter;
 	
+	private final static Color HOVER_COLOR = Color.GRAY;
+	private final Highlighter hoverhl;
+	private final Highlighter.HighlightPainter hoverPainter;
+	
 	/*
 	 * Constructor
 	 */
-    public TextEditor(Element element, Project p, int width, int height){
+    public TextEditor(Element element, Project p, Outliner o, SubWindowArea subwindows, int width, int height){
         super(element, p, width, height);
         hl = new DefaultHighlighter();
+        this.subwindows = subwindows;
+        this.outliner = o;
         painter = new DefaultHighlighter.DefaultHighlightPainter(HL_COLOR);
+        hoverhl = new DefaultHighlighter();
+        hoverPainter = new DefaultHighlighter.DefaultHighlightPainter(HOVER_COLOR);
         setup();
         this.setElement(element);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -91,7 +101,7 @@ public class TextEditor extends ElementManipulator implements KeyListener{
     	searchBox.addKeyListener(this);
     	this.add(lowerPanel);
     	lowerPanel.add(updateButton);
-    	updateButton.addActionListener(new EditListener(this));
+    	updateButton.addActionListener(new EditListener(this, outliner, subwindows));
     }
     
     /*
@@ -112,16 +122,16 @@ public class TextEditor extends ElementManipulator implements KeyListener{
      * Highlights the given value
      * @param value Value to be highlighted.
      */
-    public void highlightValue(int value) {
+    public void highlightText(int start) {
     	
-    	if (searchBox.getText().equals("")) {
+    	if (searchBox.getText().isEmpty()) {
     		removeHighlights();
     		return;
     	}
-    	removeHighlights();
-		String s = searchBox.getText();
+    	
+    	String s = searchBox.getText();
 		String content = textArea.getText();
-		int index = content.indexOf(s);
+		int index = content.indexOf(s, start);
 		int end = 0;
 		if (index >= 0 && index < content.length()) {  
        
@@ -132,10 +142,13 @@ public class TextEditor extends ElementManipulator implements KeyListener{
 			} catch (BadLocationException e1) {
 				e1.printStackTrace();
 			}
-            textArea.setCaretPosition(end);
+            
             searchBox.setBackground(new Color(0.3f, 0.3f, 0.3f));
-		}
-		
+            if (end < content.length()) {
+            	content = content.substring(end, content.length());
+            	highlightText(end);
+            }
+        }
     }
     
     /*
@@ -143,6 +156,22 @@ public class TextEditor extends ElementManipulator implements KeyListener{
      */
     public void removeHighlights() {
     	hl.removeAllHighlights();
+    }
+    
+    /*
+     * 
+     */
+    public void addHoverHighlights(int value) {
+    	highlightText(0);
+    	jumpToNext(0);
+    	
+    }
+    
+    /*
+     *
+     */
+    public void removeHoverHighlights() {
+    	hoverhl.removeAllHighlights();
     }
     
     /*
@@ -185,13 +214,11 @@ public class TextEditor extends ElementManipulator implements KeyListener{
      * Highlights the searched string on the text field.
      * @param start Starting index of the text.
      */
-    private int searchHighlight(int start) {
+    private int jumpToNext(int start) {
     	
     	if (searchBox.getText().equals("")) {
-    		removeHighlights();
-    		return -1;
+       		return -1;
     	}
-    	removeHighlights();
 		String s = searchBox.getText();
 		String content = textArea.getText();
 		int index = content.indexOf(s, start);
@@ -199,14 +226,12 @@ public class TextEditor extends ElementManipulator implements KeyListener{
 		if (index >= 0 && index < content.length()) {  
        
             end = index + s.length();
-            try {
-				hl.addHighlight(index, end, painter);
-				
-			} catch (BadLocationException e1) {
-				e1.printStackTrace();
-			}
             textArea.setCaretPosition(end);
+            
             searchBox.setBackground(new Color(0.3f, 0.3f, 0.3f));
+            if (index < content.length()) {
+            	content = content.substring(index, content.length());
+            }
             return end;
 		}
 		return -1;
@@ -218,6 +243,15 @@ public class TextEditor extends ElementManipulator implements KeyListener{
      */
     public String getDocument() {
     	return document;
+    }
+    
+    /*
+     * Sets the document.
+     * @param newDocument New text.
+     */
+    public void setDocument(Element element) {
+    	this.textArea.setText(createText(element));
+    	this.document = createText(element);
     }
     
     /*
@@ -238,11 +272,17 @@ public class TextEditor extends ElementManipulator implements KeyListener{
 	@Override
 	public void keyPressed(KeyEvent arg0) {
         if (arg0.getKeyCode() == KeyEvent.VK_ENTER) {
+        	if (searchBox.getText() == "") {
+        		removeHighlights();
+        		return;
+        	}
+        	removeHighlights();
+        	highlightText(0);
 			if (trace == -1) {
 				trace = 0;
-				searchHighlight(0);
+				jumpToNext(0);
 			}
-			trace = searchHighlight(trace);
+			trace = jumpToNext(trace);
 			
 		}
 	}
