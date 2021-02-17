@@ -4,6 +4,7 @@ import gelf.model.exceptions.InvalidFileFormatException;
 
 /**
  * An interface that is implemented by all commands.
+ * @author Xhulio Pernoca
  */
 public interface Command {
 

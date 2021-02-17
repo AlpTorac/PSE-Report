@@ -7,8 +7,8 @@ import gelf.model.elements.Library;
 import gelf.model.project.Model;
 
 /**
- * A command that handles the merging of several libraries
- * 
+ * Handles the merging of several libraries
+ * @author Xhulio Pernoca
  */
 public class MergeCommand implements Command {
     private ArrayList<Library> mergedLibraries;
@@ -16,11 +16,20 @@ public class MergeCommand implements Command {
     private String name;
     private Model currentModel = Model.getInstance();
 
+    /**
+     * Initialises the command
+     * @param name new Library name
+     * @param mergedLibraries the array of the libraries to be merged
+     */
     public MergeCommand(String name, ArrayList<Library> mergedLibraries) {
         this.mergedLibraries = mergedLibraries;
         this.name = name;
     }
 
+    /**
+     * Executes the merging command by also calling the name conflict resolver.
+     * So that everytime the command is redone, so is the conflict resolver
+     */
     public void execute() {
         ArrayList<Cell> cells = new ArrayList<Cell>();
         for (Library library : mergedLibraries) {
@@ -28,13 +37,13 @@ public class MergeCommand implements Command {
                 cells.add(cell);
             }
         }
+        for (int i = 0; i < cells.size(); i++) {
+        	cells.set(i, (Cell) cells.get(i).clone());
+        }
         NameConflictResolver conflictResolver = new NameConflictResolver(cells);
         cells = conflictResolver.getCells();
         if (cells.isEmpty()) {
             return;
-        }
-        for (int i = 0; i < cells.size(); i++) {
-        	cells.set(i, (Cell) cells.get(i).clone());
         }
         Cell firstCell = cells.get(0);
         float[] index1 = firstCell.getIndex1();
@@ -53,6 +62,9 @@ public class MergeCommand implements Command {
         currentModel.getCurrentProject().inform();
     }
 
+    /**
+     * Undoes the command by simply removing the product library
+     */
     public void undo() {
     	currentModel.getCurrentProject().getLibraries().remove(productLibrary);
         currentModel.getCurrentProject().inform();

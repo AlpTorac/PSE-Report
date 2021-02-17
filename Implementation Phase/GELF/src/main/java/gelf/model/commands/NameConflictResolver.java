@@ -8,11 +8,21 @@ import gelf.model.elements.Cell;
 import gelf.model.elements.CompareElementByName;
 import gelf.view.composites.MergeDialog;
 
+/**
+ * A class that resolves naming conflicts between different Cells, so that functionality 
+ * is simplified in MergeCommand, MoveCommand, PasteCommand.
+ * @author Xhulio Pernoca
+ */
 public class NameConflictResolver {
     private ArrayList<Cell> deletedCells = new ArrayList<Cell>();
     private ArrayList<Cell> cells = new ArrayList<Cell>();
     private HashMap<Cell, String> renamedCells = new HashMap<Cell, String>();
 
+    /**
+     * Instantiates the resolver and starts resolving right away so that
+     * the values of it's attributes are valid
+     * @param cells the cells to be resolved
+     */
     public NameConflictResolver(ArrayList<Cell> cells) {
         if (cells.size() <= 1) {
             return;
@@ -38,13 +48,13 @@ public class NameConflictResolver {
                         case RENAMELEFT:
                         Cell renamedLeftCell = cells.get(i-1);
                         String newLeftName = conflictData.getName();
-                        renamedCells.put(renamedLeftCell, newLeftName);
+                        renamedCells.put(renamedLeftCell, renamedLeftCell.getName());
                         renamedLeftCell.setName(newLeftName);
                         break;
                         case RENAMERIGHT:
                         Cell renamedRightCell = cells.get(i);
                         String newRightName = conflictData.getName();
-                        renamedCells.put(renamedRightCell, newRightName);
+                        renamedCells.put(renamedRightCell, renamedRightCell.getName());
                         renamedRightCell.setName(newRightName);
                         break;
                         case CANCEL:
@@ -57,16 +67,30 @@ public class NameConflictResolver {
         this.cells = cells;
     }
 
+    /**
+     * Returns the deleted cells for the commands to keep track and 
+     * use when undoing commands
+     * @return the deleted cells
+     */
     @SuppressWarnings("unchecked")
     public ArrayList<Cell> getDeletedCells() {
         return (ArrayList<Cell>) deletedCells.clone();
     }
 
+    /**
+     * Returns the resolved cells so that the commands can resume functionality
+     * @return the resolved cells
+     */
     @SuppressWarnings("unchecked")
     public ArrayList<Cell> getCells() {
         return (ArrayList<Cell>) cells.clone();
     }
 
+    /**
+     * Returns the renamed cells and their old names so that they can be
+     * used for undoing purposes
+     * @return the renamed cells and their old names
+     */
     @SuppressWarnings("unchecked")
     public HashMap<Cell, String> getRenamedCells() {
         return (HashMap<Cell, String>) renamedCells.clone();

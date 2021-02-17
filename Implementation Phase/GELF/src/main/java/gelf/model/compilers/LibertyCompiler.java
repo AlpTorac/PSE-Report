@@ -43,9 +43,8 @@ public class LibertyCompiler {
         output += "\n";
         for (int i = 0; i < cell.getLeakages().getValues().length; i++) {
             String leakageFunction = "";
-            for (int j = 0; j < inPinNames.length; j++) {
-            	int reversedIndex = inPinNames.length - 1 - j;
-                if ((i & (reversedIndex + 1)) == 0) {
+            for (int j = inPinNames.length - 1; j >= 0; j--) {
+                if ((i & (1 << j)) == 0) {
                     leakageFunction += "!";
                 }
                 leakageFunction += inPinNames[j] + "&";

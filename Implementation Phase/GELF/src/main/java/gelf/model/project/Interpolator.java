@@ -3,11 +3,30 @@ package gelf.model.project;
 import org.apache.commons.math3.analysis.interpolation.NevilleInterpolator;
 import org.apache.commons.math3.analysis.polynomials.PolynomialFunctionLagrangeForm;
 
+/**
+ * Provides interpolating functionality in order to unify pin, cell and library indexes
+ * as well as provide comprehensive visualisation data
+ * @author Xhulio Pernoca
+ * 
+ * Uses code of apache interpolation to fit the purposes of this project
+ * Copyright 2021 [name of copyright owner]
+ * SPDX-License-Identifier: Apache-2.0
+ */
 public class Interpolator {
 
+    /**
+     * Instantiates the interpolator
+     */
     public Interpolator() {
     }
 
+    /**
+     * Interpolates a set of new values (usually for an input attribute)
+     * @param indexes the initial index_1 array
+     * @param values the initial value array
+     * @param newIndexes1 the desired index_1 array
+     * @return the desired value array
+     */
     public float[] interpolate(float[] indexes, float[] values, float[] newIndexes) {
     	if (indexes == null || values == null || newIndexes == null) {
     		return null;
@@ -35,7 +54,15 @@ public class Interpolator {
         return newValues;
     }
 
-
+    /**
+     * Interpolates a set of new values (usually for an output attribute)
+     * @param indexes1 the initial index_1 array
+     * @param indexes2 the initial index_2 array
+     * @param values the initial value array
+     * @param newIndexes1 the desired index_1 array
+     * @param newIndexes2 the desired index_2 array
+     * @return the desired value array
+     */
     public float[][] bicubicInterpolate(float[] indexes1, float[] indexes2,
                      float[][] values, float[] newIndexes1, float[] newIndexes2) {
         if (values == null || values[0] == null || indexes1 == null 
@@ -77,9 +104,10 @@ public class Interpolator {
     }
 
     /**
-     * Should probably not belong here. Even if, should probably switch every float to double.
-     * @param input
-     * @return
+     * Converts an array of floats into one of doubles
+     * Should probably not belong here, but can't find any utility package.
+     * @param input an array of floats
+     * @return an array of doubles
      */
     private static double[] convertFloatsToDoubles(float[] floatArray) {
         if (floatArray == null) {

@@ -44,7 +44,11 @@ public class OpenFileCommand implements Command {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		} catch (InvalidFileFormatException e) {
+            throw new InvalidFileFormatException(e.getMessage());
+        } catch (Exception e) {
+            throw new InvalidFileFormatException("File format is invalid");
+        }
 	}
 	
 	private String readFile(String pathname) throws IOException {

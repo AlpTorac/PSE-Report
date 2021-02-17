@@ -43,6 +43,12 @@ public class Model {
     	}
     }
 
+    /**
+     * Formats a number while setting how many decimals have to be shown
+     * @param number the number to be formatted
+     * @param decimalSpots the number of decimals that are shown
+     * @return the formatted String of the number
+     */
     public static String formatIndex(float number, int decimalSpots) {
         String decimals = "";
         for (int i = 0; i < decimalSpots; i++) {

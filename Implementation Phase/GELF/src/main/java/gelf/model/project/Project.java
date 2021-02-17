@@ -1,13 +1,12 @@
 package gelf.model.project;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 
-import gelf.model.elements.Cell;
+import gelf.model.elements.CompareElementByName;
 import gelf.model.elements.Element;
-import gelf.model.elements.InputPin;
 import gelf.model.elements.Library;
-import gelf.model.elements.OutputPin;
 
 /**
  * Class that keeps track of the current project state.
@@ -113,8 +112,8 @@ public class Project {
      * @param libraries the loaded libraries
      */
     public void setLibraries(ArrayList<Library> libraries) {
+        Collections.sort(libraries, new CompareElementByName());
         this.libraries = libraries;
-        
     }
 
     /**
