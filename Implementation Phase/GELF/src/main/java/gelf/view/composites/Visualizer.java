@@ -85,25 +85,21 @@ public class Visualizer extends ElementManipulator {
         this.subWindow = w;
 		//style
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        //cell display
-        upperPanel = new Panel(width, height);
-        upperPanel.setLayout(new FlowLayout());
-        dataPanel = new DataPanel(100, 100, e);
-        this.add(upperPanel);
-       
-        if (e instanceof Library) {
-        	upperPanel.add(new LibraryPanel(100, 100, (Library)e, w));
-	    }
-	    else {
-	    	upperPanel.add(new CellPanel(150, 150, e, w, dataPanel));    
-	    }
-        upperPanel.add(dataPanel);
-        dataPanel.setAlignmentY(CENTER_ALIGNMENT);
+
         //diagram display panel
 		this.lowerPanel = new Panel(width, height);
 		this.lowerPanel.setLayout(new BorderLayout());
 		this.lowerPanel.setBackground(ColorTheme.subsection);
 		this.lowerPanel.setVisible(true);
+
+		//diagram panel
+		this.diagramPanel = new Panel(500, 500);
+		this.diagramPanel.setBackground(ColorTheme.text);
+		this.diagramPanel.setLayout(null);
+		this.diagramPanel.setOpaque(true);
+		this.diagramPanel.setVisible(true);
+		this.lowerPanel.add(this.diagramPanel, BorderLayout.CENTER);
+		
 		//dropdowns
 		dropdowns = new Panel(width, height);
 		dropdowns.setLayout(new BoxLayout(dropdowns, BoxLayout.X_AXIS));
@@ -111,13 +107,13 @@ public class Visualizer extends ElementManipulator {
 		dropdowns.setVisible(true);
 		initDropdowns();
 		this.lowerPanel.add(dropdowns, BorderLayout.PAGE_START);
-
+		
 		//statistics checkboxes
 		Panel stats = new Panel(width, height);
 		stats.setLayout(new BoxLayout(stats, BoxLayout.X_AXIS));
 		stats.setBackground(ColorTheme.section);
 		stats.setVisible(true);
-
+		
 		Checkbox min = new Checkbox("Minimum");
 		min.setVisible(true);
 		stats.add(min);
@@ -133,27 +129,37 @@ public class Visualizer extends ElementManipulator {
 		this.lowerPanel.add(stats, BorderLayout.PAGE_END);
 		//diagram viewport
 		DiagramWizard wiz = new DiagramWizard();
-
+		
 		// Cell cell = (Cell)e;
 		// float[] leakageValues = cell.getLeakages().getValues();
 		// ArrayList<float[]> data = new ArrayList<float[]>();
 		// data.add(leakageValues);
 		
-		this.diagramPanel = new Panel(500, 500);
-		this.diagramPanel.setBackground(ColorTheme.text);
-		this.diagramPanel.setLayout(null);
-		this.diagramPanel.setOpaque(true);
-
+		
 		updateDiagram();
-		// this.diagram = wiz.makeBarChart(this.diagramPanel, data);
-		// this.diagram.attachToContainer(this.diagramPanel);
-		// this.diagram.refresh();
-		this.diagramPanel.setVisible(true);
-		this.lowerPanel.add(this.diagramPanel, BorderLayout.CENTER);
+		
+		initCellRepresentation(e, w, width, height);
 
 		this.add(this.lowerPanel);
 		this.addComponentListener(this);
-    } 
+    }
+	
+	private void initCellRepresentation(gelf.model.elements.Element e, SubWindow w, int width, int height) {
+		//cell display
+        upperPanel = new Panel(width, height);
+        upperPanel.setLayout(new FlowLayout());
+        dataPanel = new DataPanel(100, 100, e);
+        this.add(upperPanel);
+		
+        if (e instanceof Library) {
+			upperPanel.add(new LibraryPanel(100, 100, (Library)e, w));
+	    }
+	    else {
+	    	upperPanel.add(new CellPanel(150, 150, e, w, dataPanel));    
+	    }
+        upperPanel.add(dataPanel);
+        dataPanel.setAlignmentY(CENTER_ALIGNMENT);
+	} 
     
     public void setElement(Element e) {
     	upperPanel.removeAll();
