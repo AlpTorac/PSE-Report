@@ -38,7 +38,13 @@ public class RemoveListener implements ActionListener {
 		}
 		Model currentModel = Model.getInstance();
 		Project currentProject = currentModel.getCurrentProject();
-		currentProject.getLibraries().removeAll(libraries);
+		ArrayList<Library> newLibraries = new ArrayList<Library>();
+		for (Library library: currentProject.getLibraries()) {
+			if (!libraries.contains(library)) {
+				newLibraries.add(library);
+			}
+		}
+		currentProject.setLibraries(newLibraries);
 		currentProject.inform();
 	}
 
