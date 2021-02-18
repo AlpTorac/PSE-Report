@@ -67,6 +67,7 @@ public class LibraryComparePanel extends Panel implements MouseListener{
         	listPanel.add(label);
         	label.addMouseListener(this);
         	buttons.put(label, libraries.get(i));
+            label.setBackground(Color.BLUE);
         }
         this.setVisible(true);
 

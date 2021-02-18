@@ -49,6 +49,8 @@ public class PinCompareSubPanel extends CellPanel {
 		this.cellButton = super.getCellButton();
 		this.upperPanel = upperPanel;
 		this.openedPins = new ArrayList<Pin>();
+        this.checkboxMap = super.checkboxMap;
+		selectedPins = new ArrayList<InputPin>();
 
 	}
 	
