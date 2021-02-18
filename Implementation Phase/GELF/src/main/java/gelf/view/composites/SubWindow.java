@@ -111,6 +111,41 @@ public class SubWindow extends Panel {
         this.add(this.bar, BorderLayout.PAGE_START);
         this.add(this.eVisualizer, BorderLayout.CENTER);
     }
+    
+    public SubWindow(ArrayList<Element> elements, Project p, Outliner o, SubWindowArea parent, int width, int height) {
+    	super(width, height);
+    	this.elements = elements;
+    	
+    	this.outliner = o;
+        // style
+        this.setLayout(new BorderLayout());
+        this.setBackground(cBackground);
+        Border margin = BorderFactory.createLineBorder(cBorder, 2);
+        this.setBorder(margin);
+        this.setPreferredSize(new Dimension(500, 500));
+        // menu
+        this.bar = new Panel(this.getWidth(), 30);
+        this.bar.setLayout(new BoxLayout(this.bar, BoxLayout.LINE_AXIS));
+        this.bar.setBackground(ColorTheme.subsection);
+        this.bar.setVisible(true);
+        // close button
+        this.close = new Button("Close");
+        this.close.setVisible(true);
+        this.close.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                parent.removeSubWindow(_this);
+            }
+        });
+
+        this.bar.add(this.close);
+        this.bar.add(Box.createHorizontalGlue());
+    	
+        this.add(this.bar, BorderLayout.PAGE_START);
+        this.add(new Comparer(elements, p, this, 300, 100), BorderLayout.CENTER);
+        this.revalidate();
+        this.repaint();
+    }
 
     public void setElement(Element e) {
     	this.e = e;
