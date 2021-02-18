@@ -38,6 +38,9 @@ public interface IDiagram {
 	
 	public Component getContainingElement();
 	
+	public void showAxes();
+	public void hideAxes();
+	
 	public default void show() {
 		this.getContainingElement().setVisible(true);
 	}
