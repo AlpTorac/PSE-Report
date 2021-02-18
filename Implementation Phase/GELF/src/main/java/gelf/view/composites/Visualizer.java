@@ -56,7 +56,8 @@ public class Visualizer extends ElementManipulator {
 	IDiagramViewHelper IDHavg;
 	IDiagramViewHelper IDHmed;
 	IDiagram diagram;
-	private JComboBox<Attribute> libCellDropdown = new JComboBox<Attribute>();
+	private JComboBox<Attribute> libDropdown = new JComboBox<Attribute>();
+	private JComboBox<Attribute> cellDropdown = new JComboBox<Attribute>();
 	private JComboBox<Attribute> outpinDropdown = new JComboBox<Attribute>();
 	private JComboBox<PowerGroup> powerGroupDropdown = new JComboBox<PowerGroup>();
 	private JComboBox<TimingType> timingTypeDropdown = new JComboBox<TimingType>();
@@ -67,7 +68,9 @@ public class Visualizer extends ElementManipulator {
 	public enum Attribute {
 		INPUT_POWER("Input Power"),
 		OUTPUT_POWER("Output Power"),
-		TIMING("Timing");
+		TIMING("Timing"),
+		LEAKAGE("Leakage"),
+		DEFAULT_LEAKAGE("Default Leakage");
 		private String str;
 		private Attribute(String s) {
 			this.str = s;
@@ -203,17 +206,19 @@ public class Visualizer extends ElementManipulator {
 
 	private void initDropdowns() {
 		this.dropdowns.removeAll();
-		libCellDropdown = new JComboBox<Attribute>();
-		outpinDropdown = new JComboBox<Attribute>();
-		powerGroupDropdown = new JComboBox<PowerGroup>();
-		timingTypeDropdown = new JComboBox<TimingType>();
-		timingGroupDropdown = new JComboBox<TimingGroup>();
-		timingSenseDropdown = new JComboBox<TimingSense>();
 
-		libCellDropdown.setVisible(true);
-		libCellDropdown.addItem(Attribute.INPUT_POWER);
-		libCellDropdown.addItem(Attribute.OUTPUT_POWER);
-		libCellDropdown.addItem(Attribute.TIMING);
+		libDropdown.setVisible(true);
+		libDropdown.addItem(Attribute.INPUT_POWER);
+		libDropdown.addItem(Attribute.OUTPUT_POWER);
+		libDropdown.addItem(Attribute.TIMING);
+		libDropdown.addItem(Attribute.LEAKAGE);
+		libDropdown.addItem(Attribute.DEFAULT_LEAKAGE);
+
+		cellDropdown.setVisible(true);
+		cellDropdown.addItem(Attribute.INPUT_POWER);
+		cellDropdown.addItem(Attribute.OUTPUT_POWER);
+		cellDropdown.addItem(Attribute.TIMING);
+		cellDropdown.addItem(Attribute.LEAKAGE);
 		
 		outpinDropdown.setVisible(true);
 		outpinDropdown.addItem(Attribute.OUTPUT_POWER);
@@ -254,7 +259,6 @@ public class Visualizer extends ElementManipulator {
 					dropdowns.remove(timingTypeDropdown);
 					dropdowns.remove(timingGroupDropdown);
 				} else {
-					System.out.println("Attribute selection error(dropdown removal failed)");
 				}
 				//update attribute
 				attribute = (Attribute)e.getItem();
@@ -262,7 +266,8 @@ public class Visualizer extends ElementManipulator {
 				updateDiagram();
 			}
 		};
-		libCellDropdown.addItemListener(updateAttribute);
+		libDropdown.addItemListener(updateAttribute);
+		cellDropdown.addItemListener(updateAttribute);
 		outpinDropdown.addItemListener(updateAttribute);
 		
 		ItemListener updatePowerGroup = new ItemListener(){
@@ -311,22 +316,18 @@ public class Visualizer extends ElementManipulator {
 		
 		
 		if(this.subWindow.getElement().getClass() == Library.class) {
-			Library lib = (Library)this.subWindow.getElement();
-			this.dropdowns.add(libCellDropdown);
+			this.dropdowns.add(libDropdown);
 			//update attribute
-			attribute = (Attribute)libCellDropdown.getSelectedItem();
+			attribute = (Attribute)libDropdown.getSelectedItem();
 			updateAttributeSubDropdowns();
 		} else if(this.subWindow.getElement().getClass() == Cell.class) {
-			Cell cell = (Cell)this.subWindow.getElement();
-			this.dropdowns.add(libCellDropdown);
+			this.dropdowns.add(cellDropdown);
 			//update attribute
-			attribute = (Attribute)libCellDropdown.getSelectedItem();
+			attribute = (Attribute)cellDropdown.getSelectedItem();
 			updateAttributeSubDropdowns();
 		} else if(this.subWindow.getElement().getClass() == InputPin.class) {
-			InputPin inpin = (InputPin)this.subWindow.getElement();
 			this.dropdowns.add(powerGroupDropdown);
 		} else {
-			OutputPin outpin = (OutputPin)this.subWindow.getElement();
 			this.dropdowns.add(outpinDropdown);
 			//update attribute
 			attribute = (Attribute)outpinDropdown.getSelectedItem();
@@ -348,7 +349,6 @@ public class Visualizer extends ElementManipulator {
 			dropdowns.add(timingTypeDropdown);
 			dropdowns.add(timingGroupDropdown);
 		} else {
-			System.out.println("Attribute selection error(dropdown add failed)");
 		}
 		dropdowns.revalidate();
 		dropdowns.repaint();
