@@ -60,7 +60,7 @@ public class EventManager {
 		listeners.put(Event.LOADPROJECT, new LoadProjectListener());
 		listeners.put(Event.UNDO, new UndoListener());
 		listeners.put(Event.REDO, new RedoListener());
-		listeners.put(Event.COMPARE, new CompareListener(view.outliner));
+		listeners.put(Event.COMPARE, new CompareListener(view.outliner, view.subWindowArea));
 		
 		view.itemOpen.addActionListener((ActionListener) listeners.get(Event.LOAD));
 		view.outliner.tree.addMouseListener((MouseListener) listeners.get(Event.OPEN));
