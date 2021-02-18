@@ -458,6 +458,16 @@ public class Visualizer extends ElementManipulator {
 					i++;
 				}
 			}
+			data.add(values);
+			stringData.add(stringAr);
+			IDiagramWizard wiz = new DiagramWizard();
+			if (this.diagramPanel != null) {
+				if (diagram != null) {
+					diagram.removeFromContainer();
+				}
+				this.diagram = wiz.makeAndAttachBarChartWithDescriptions(this.diagramPanel, data, stringData);
+			}
+			updateStatDisplay();
 		}
 		
 		else if (this.subWindow.getElement().getClass() == Cell.class) {
@@ -517,19 +527,46 @@ public class Visualizer extends ElementManipulator {
 				values = cell.getLeakages().getValues();
 				cell.setOutputFunctions();
 				stringAr = cell.getLeakages().getOutputFunctions();
+			}	
+			data.add(values);
+			stringData.add(stringAr);
+			IDiagramWizard wiz = new DiagramWizard();
+			if (this.diagramPanel != null) {
+				if (diagram != null) {
+					diagram.removeFromContainer();
+				}
+				this.diagram = wiz.makeAndAttachBarChartWithDescriptions(this.diagramPanel, data, stringData);
+			}
+			updateStatDisplay();
+		}
+		else if (this.subWindow.getElement().getClass() == InputPin.class) {
+			InputPin inPin = (InputPin)this.subWindow.getElement();
+				
+			if (!inPin.getAvailablePower().contains(powerGroup)) {
+				return;
 			}
 			
-		}
-		data.add(values);
-		stringData.add(stringAr);
-		IDiagramWizard wiz = new DiagramWizard();
-		if (this.diagramPanel != null) {
-			if (diagram != null) {
-				diagram.removeFromContainer();
+			Iterator<InputPower> inPowIt = inPin.getInputPowers().iterator();
+			while (inPowIt.hasNext()) {
+				InputPower curInPow = inPowIt.next();
+				if (curInPow.getPowGroup() == powerGroup) {
+					values = curInPow.getValues();
+					System.out.println("Hello");
+				}
 			}
-			this.diagram = wiz.makeAndAttachBarChartWithDescriptions(this.diagramPanel, data, stringData);
+			System.out.println(values[1]);
+			data.add(values);
+			System.out.println(data.size());
+			IDiagramWizard wiz = new DiagramWizard();
+			if (this.diagramPanel != null) {
+				if (diagram != null) {
+					diagram.removeFromContainer();
+				}
+				this.diagram = wiz.makeAndAttachHistogram(this.diagramPanel, data);
+			}
+			updateStatDisplay();
+			
 		}
-		updateStatDisplay();
 	}
 
 	private void updateStatDisplay() {
