@@ -11,6 +11,7 @@ import org.w3c.dom.Text;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import gelf.controller.listeners.SaveAsListener;
@@ -54,6 +55,7 @@ public class SubWindow extends Panel {
     private ElementManipulator activeManipulator;
     private Visualizer eVisualizer;
     private TextEditor eTextEditor;
+    private ArrayList<Element> elements;
 
     public SubWindow(Element e, Project p, Outliner o, SubWindowArea parent, int width, int height) {
         super(width, height);
