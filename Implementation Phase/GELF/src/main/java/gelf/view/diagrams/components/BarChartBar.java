@@ -22,8 +22,9 @@ public class BarChartBar extends DiagramBar {
 	protected String getRoundedPositionInDiagramString() {
 		String result = "";
 		
-		result += "bar " +
-		String.valueOf((int) this.getBottomRightInDiagram().getXCoordinate());
+		int index = ((int) this.getBottomRightInDiagram().getXCoordinate()) - 1;
+		
+		result += "bar " + this.getBottomRightInDiagram().getAxes()[0].getStepDisplays()[index];
 		
 		return result;
 	}
