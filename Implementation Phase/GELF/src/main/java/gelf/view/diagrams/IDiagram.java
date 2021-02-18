@@ -14,6 +14,8 @@ import gelf.view.diagrams.indicator.IndicatorIdentifier;
 public interface IDiagram {
 	public Collection<?> cloneData();
 	
+	public Collection<?> cloneDescriptions();
+	
 	public DiagramData cloneDiagramData();
 	
 	public void refresh();

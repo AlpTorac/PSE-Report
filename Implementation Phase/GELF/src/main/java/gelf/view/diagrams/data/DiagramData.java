@@ -214,11 +214,24 @@ public class DiagramData {
 		ArrayList<float[]> values = this.extractor.extractValues(this.data);
 		
 		ArrayList<float[]> clonedData = new ArrayList<float[]>();
-		
+
 		clonedData.addAll(indices);
 		clonedData.addAll(values);
 		
-		DiagramData clone = new DiagramData(clonedData, indices.size());
+		DiagramData clone;
+		if (this.descriptions == null) {
+			clone = new DiagramData(clonedData, indices.size());
+		} else {
+			ArrayList<String[]> indexDescs = this.extractIndexDescriptions();
+			ArrayList<String[]> valueDescs = this.extractValueDescriptions();
+			
+			ArrayList<String[]> clonedDescs = new ArrayList<String[]>();
+			
+			clonedDescs.addAll(indexDescs);
+			clonedDescs.addAll(valueDescs);
+			
+			clone = new DiagramData(clonedData, clonedDescs, indices.size());
+		}
 		return clone;
 	}
 	

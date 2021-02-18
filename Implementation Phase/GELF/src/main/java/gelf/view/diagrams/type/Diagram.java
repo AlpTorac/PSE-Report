@@ -2,6 +2,7 @@ package gelf.view.diagrams.type;
 
 import java.awt.Component;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.EnumMap;
 
 import javax.swing.JLayeredPane;
@@ -48,7 +49,7 @@ public abstract class Diagram implements IDiagram {
 		}
 	}
 	
-	public ArrayList<float[]> cloneData() {
+	public Collection<?> cloneData() {
 		ArrayList<float[]> dataClone = new ArrayList<float[]>();
 		
 		ArrayList<float[]> indices = this.data.extractIndices();
@@ -194,5 +195,12 @@ public abstract class Diagram implements IDiagram {
 				axis.hideValues();
 			}
 		}
+	}
+	
+	public Collection<?> cloneDescriptions() {
+		ArrayList<String[]> clonedDescs = this.data.extractIndexDescriptions();
+		clonedDescs.addAll(this.data.extractValueDescriptions());
+		
+		return clonedDescs;
 	}
 }
