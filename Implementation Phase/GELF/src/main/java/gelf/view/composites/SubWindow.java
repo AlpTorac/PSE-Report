@@ -151,7 +151,7 @@ public class SubWindow extends Panel {
 
     public void setElement(Element e) {
     	this.e = e;
-    	this.path.setText(e.getName());
+    	this.path.setText(e.getInnerPath());
         this.eVisualizer.setElement(e);
         this.eTextEditor.setElement(e);
     }

@@ -124,6 +124,10 @@ public class Library extends HigherElement {
 	public void setDefaultLeakage(Stat defaultLeakage) {
 		this.defaultLeakage = defaultLeakage;
 	}
+	
+	public String getInnerPath() {
+		return toString();
+	}
 
 	@Override
 	public void calculate() {
