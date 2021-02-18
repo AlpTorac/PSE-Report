@@ -181,30 +181,24 @@ public class DiagramData {
 	
 	public float getValueMedian() {
 		ArrayList<float[]> values = this.extractValues();
-		int midValueArrayIndex = 0;
-		float median = 0;
-		float[] array;
+		ArrayList<Float> arrayOfValues = new ArrayList<Float>();
 		
-		if (values.size() % 2 == 0) {
-			midValueArrayIndex = values.size() / 2;
-			array = values.get(midValueArrayIndex);
-			float[] nextArray = values.get(midValueArrayIndex + 1);
-			median = (array[array.length - 1] + nextArray[0]) / 2.0f;
-		} else {
-			if (values.size() == 1) {
-				midValueArrayIndex = 0;
-			} else {
-				midValueArrayIndex = values.size() / 2 + 1;
-			}
-			
-			array = values.get(midValueArrayIndex);
-			
-			if (array.length % 2 == 0) {
-				median = (array[array.length / 2 - 1] + array[array.length / 2]) / 2.0f;
-			} else {
-				median = array[(array.length - 1) / 2];
+		for (float[] valueArr : values) {
+			for (float value : valueArr) {
+				arrayOfValues.add(value);
 			}
 		}
+		
+		arrayOfValues.sort(null);
+		
+		int length = arrayOfValues.size();
+		float median;
+		if (length % 2 == 1) {
+			median = arrayOfValues.get(length / 2);
+		} else {
+			median = (arrayOfValues.get(length / 2 - 1) + arrayOfValues.get(length / 2)) / 2f;
+		}
+		
 		return median;
 	}
 	

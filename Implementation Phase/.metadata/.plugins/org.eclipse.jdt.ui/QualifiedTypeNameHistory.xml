@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="javax.swing.Timer"/>
     <fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
     <fullyQualifiedTypeName name="javax.swing.JLayeredPane"/>
     <fullyQualifiedTypeName name="java.awt.Component"/>
@@ -55,9 +54,10 @@
     <fullyQualifiedTypeName name="java.awt.Container"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.indicator.DiagramViewHelperFactory"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.indicator.IndicatorIdentifier"/>
-    <fullyQualifiedTypeName name="gelf.view.diagrams.indicator.DiagramViewHelper"/>
     <fullyQualifiedTypeName name="java.lang.System"/>
-    <fullyQualifiedTypeName name="gelf.view.diagrams.SettingsProvider"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.DiagramWizard"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.IDiagramWizard"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.indicator.DiagramViewHelper"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.IDiagramViewHelper"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.SettingsProvider"/>
 </qualifiedTypeNameHistroy>
