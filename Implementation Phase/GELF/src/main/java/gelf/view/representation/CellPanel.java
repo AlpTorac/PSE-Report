@@ -4,6 +4,8 @@ import gelf.view.composites.SubWindow;
 import gelf.view.components.Label;
 import gelf.view.components.Panel;
 import gelf.model.elements.*;
+import gelf.model.elements.attributes.OutputPower;
+import gelf.model.elements.attributes.Timing;
 
 import java.awt.Button;
 import java.awt.Checkbox;
@@ -108,7 +110,6 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 		selectedPins = new ArrayList<InputPin>();
 		outputPins = cell.getOutPins();
 		maxPins = (inputPins.size() < outputPins.size()) ? outputPins.size() : inputPins.size();
-		System.out.println(cell.getParentLibrary()==null);
 		libButton = new Label(cell.getParentLibrary().getName());
 		cellButton = new Label(cell.getName());
 		
@@ -204,10 +205,6 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 					buttonMap.get(element).setBackground(Color.BLUE);
 				}
 			}
-			for (Checkbox checkbox : checkboxes) {
-				checkbox.setEnabled(false);
-			}
-			
 		}
 		else {
 			for (Checkbox checkbox : checkboxes) {
@@ -372,11 +369,38 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getStateChange() == ItemEvent.SELECTED) {
 			selectedPins.add(checkboxMap.get(e.getSource()));
+			if (pin != null && pin instanceof OutputPin) {
+				for(Checkbox checkbox: checkboxes) {
+					if (!checkbox.equals((Checkbox) e.getSource())) {
+						checkbox.setEnabled(false);
+					}
+				}
+				for(Timing timing: ((OutputPin) pin).getTimings()) {
+					timing.setRelatedPin(checkboxMap.get(e.getSource()));
+				}
+				for(OutputPower outPow: ((OutputPin) pin).getOutputPowers()) {
+					outPow.setRelatedPin(checkboxMap.get(e.getSource()));
+				}
+			}
 		}
 		else {
 			selectedPins.remove(checkboxMap.get(e.getSource()));
+			if (pin != null && pin instanceof OutputPin) {
+				for(Checkbox checkbox: checkboxes) {
+					if (!checkbox.equals((Checkbox) e.getSource())) {
+						checkbox.setEnabled(true);
+					}
+				}
+				for(Timing timing: ((OutputPin) pin).getTimings()) {
+					timing.setRelatedPin(null);
+				}
+				for(OutputPower outPow: ((OutputPin) pin).getOutputPowers()) {
+					outPow.setRelatedPin(null);
+				}
+			}
 		}
 		dataPanel.updateSelectedPins(selectedPins);
+		
 	}
 
 	@Override
@@ -397,9 +421,6 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 				}
 				for (OutputPin output : outputPins) {
 					buttonMap.get(output).setBackground(new Color(0x242424));
-				}
-				for (Checkbox checkbox : checkboxes) {
-					checkbox.setEnabled(true);
 				}
 				return;
 			}

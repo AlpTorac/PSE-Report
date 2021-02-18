@@ -36,6 +36,17 @@ public class BarChartBuilder extends DiagramBuilder implements IBarChartBuilder 
 	}
 
 	@Override
+	protected float getYAxisMinValue() {
+		float minVal = this.getDiagramData().getMinimumValue();
+		
+		if (minVal >= 0) {
+			return 0;
+		} else {
+			return minVal;
+		}
+	}
+	
+	@Override
 	protected int getXAxisSteps() {
 		return (int) this.getXAxisMaxValue();
 	}
@@ -51,17 +62,6 @@ public class BarChartBuilder extends DiagramBuilder implements IBarChartBuilder 
 			return this.getDiagramData().extractValueDescriptions().get(0);
 		} else {
 			return null;
-		}
-	}
-
-	@Override
-	protected float getYAxisMinValue() {
-		float minVal = this.getDiagramData().getMinimumValue();
-		
-		if (minVal >= 0) {
-			return 0;
-		} else {
-			return minVal;
 		}
 	}
 }
