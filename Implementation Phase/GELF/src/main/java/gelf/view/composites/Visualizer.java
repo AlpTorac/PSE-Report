@@ -135,11 +135,14 @@ public class Visualizer extends ElementManipulator {
 		// ArrayList<float[]> data = new ArrayList<float[]>();
 		// data.add(leakageValues);
 		
-		//updateDiagram();
+
 		
 		initCellRepresentation(e, w, width, height);
 
 		this.add(this.lowerPanel);
+		updateDiagram();
+		this.revalidate();
+		this.repaint();
 		this.addComponentListener(this);
     }
 	
@@ -172,7 +175,7 @@ public class Visualizer extends ElementManipulator {
     	upperPanel.add(dataPanel);
 
 		//dropdowns
-		initDropdowns();;
+		initDropdowns();
 
     	this.revalidate();
     	this.repaint();
@@ -220,6 +223,7 @@ public class Visualizer extends ElementManipulator {
 		ItemListener updateAttribute = new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
+				if(DropdownStatus.attribute == (Attribute)e.getItem()) return;
 				//remove old dropdowns
 				if(DropdownStatus.attribute == Attribute.INPUT_POWER) {
 					dropdowns.remove(powerGroupDropdown);
@@ -235,6 +239,7 @@ public class Visualizer extends ElementManipulator {
 				//update attribute
 				DropdownStatus.attribute = (Attribute)e.getItem();
 				updateAttributeSubDropdowns();
+				updateDiagram();
 			}
 		};
 		libCellDropdown.addItemListener(updateAttribute);
@@ -243,7 +248,8 @@ public class Visualizer extends ElementManipulator {
 		ItemListener updatePowerGroup = new ItemListener(){
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				System.out.println((PowerGroup)e.getItem());
+				//dont include changes to the same
+				if(DropdownStatus.powerGroup == (PowerGroup)e.getItem()) return;
 				DropdownStatus.powerGroup = (PowerGroup)e.getItem();
 				updateDiagram();
 			}
@@ -253,6 +259,8 @@ public class Visualizer extends ElementManipulator {
 		ItemListener updateTimingSense = new ItemListener(){
 			@Override
 			public void itemStateChanged(ItemEvent e) {
+				//dont include changes to the same
+				if(DropdownStatus.timingSense == (TimingSense)e.getItem()) return;
 				DropdownStatus.timingSense = (TimingSense)e.getItem();
 				updateDiagram();
 			}
@@ -262,6 +270,8 @@ public class Visualizer extends ElementManipulator {
 		ItemListener updateTimingType = new ItemListener(){
 			@Override
 			public void itemStateChanged(ItemEvent e) {
+				//dont include changes to the same
+				if(DropdownStatus.timingType == (TimingType)e.getItem()) return;
 				DropdownStatus.timingType = (TimingType)e.getItem();
 				updateDiagram();
 			}
@@ -271,6 +281,8 @@ public class Visualizer extends ElementManipulator {
 		ItemListener updateTimingGroup = new ItemListener(){
 			@Override
 			public void itemStateChanged(ItemEvent e) {
+				//dont include changes to the same
+				if(DropdownStatus.timingGroup == (TimingGroup)e.getItem()) return;
 				DropdownStatus.timingGroup = (TimingGroup)e.getItem();
 				updateDiagram();
 			}
@@ -320,7 +332,7 @@ public class Visualizer extends ElementManipulator {
 		}
 		dropdowns.revalidate();
 		dropdowns.repaint();
-		updateDiagram();
+		//updateDiagram();
 	}
 
 
@@ -328,6 +340,7 @@ public class Visualizer extends ElementManipulator {
 	private void updateDiagram() {
 		System.out.println(DropdownStatus.attribute);
 		System.out.println(DropdownStatus.powerGroup);
+		System.out.println("===========================");
 
 		ArrayList<float[]> data = new ArrayList<float[]>();
 		ArrayList<String[]> stringData = new ArrayList<String[]>();
