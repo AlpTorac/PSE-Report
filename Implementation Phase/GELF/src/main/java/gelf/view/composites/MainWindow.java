@@ -56,6 +56,7 @@ public class MainWindow extends Window {
     public MainWindow(String name, int width, int height, Project project) {
         // MainWindow setup
         super(name, width, height);
+        this.setDefaultCloseOperation(Window.EXIT_ON_CLOSE);
         this.setSize(width, height);
         this.getContentPane().setBackground(cBackground);
         this.setBackground(cBackground);

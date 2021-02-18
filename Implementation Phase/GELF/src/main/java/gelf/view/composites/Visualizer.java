@@ -72,13 +72,11 @@ public class Visualizer extends ElementManipulator {
 	}
 
 	//tracks dropdown state
-	private static class DropdownStatus {
-		public static Attribute attribute = Attribute.INPUT_POWER;		//for cell/library									||	output pin
-		public static PowerGroup powerGroup = PowerGroup.FALL_POWER;	//for cell/library if attribute input/output power	||	output if attribute output power	||	input pin
-		public static TimingSense timingSense;	//for cell/library if attribute timing				||	output if attribute timing
-		public static TimingGroup timingGroup;	//for cell/library if attribute timing				||	output if attribute timing
-		public static TimingType timingType;	//for cell/library if attribute timing				||	output if attribute timing
-	}
+	public Attribute attribute = Attribute.INPUT_POWER;		//for cell/library									||	output pin
+	public PowerGroup powerGroup = PowerGroup.FALL_POWER;	//for cell/library if attribute input/output power	||	output if attribute output power	||	input pin
+	public TimingSense timingSense;	//for cell/library if attribute timing				||	output if attribute timing
+	public TimingGroup timingGroup;	//for cell/library if attribute timing				||	output if attribute timing
+	public TimingType timingType;	//for cell/library if attribute timing				||	output if attribute timing
 
     public Visualizer(gelf.model.elements.Element e, SubWindow w, Project p, int width, int height) {
         super(e, p, width, height);
@@ -223,13 +221,13 @@ public class Visualizer extends ElementManipulator {
 		ItemListener updateAttribute = new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				if(DropdownStatus.attribute == (Attribute)e.getItem()) return;
+				if(attribute == (Attribute)e.getItem()) return;
 				//remove old dropdowns
-				if(DropdownStatus.attribute == Attribute.INPUT_POWER) {
+				if(attribute == Attribute.INPUT_POWER) {
 					dropdowns.remove(powerGroupDropdown);
-				} else if(DropdownStatus.attribute == Attribute.OUTPUT_POWER) {
+				} else if(attribute == Attribute.OUTPUT_POWER) {
 					dropdowns.remove(powerGroupDropdown);
-				} else if(DropdownStatus.attribute == Attribute.TIMING) {
+				} else if(attribute == Attribute.TIMING) {
 					dropdowns.remove(timingSenseDropdown);
 					dropdowns.remove(timingTypeDropdown);
 					dropdowns.remove(timingGroupDropdown);
@@ -237,7 +235,7 @@ public class Visualizer extends ElementManipulator {
 					System.out.println("Attribute selection error(dropdown removal failed)");
 				}
 				//update attribute
-				DropdownStatus.attribute = (Attribute)e.getItem();
+				attribute = (Attribute)e.getItem();
 				updateAttributeSubDropdowns();
 				updateDiagram();
 			}
@@ -249,8 +247,8 @@ public class Visualizer extends ElementManipulator {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				//dont include changes to the same
-				if(DropdownStatus.powerGroup == (PowerGroup)e.getItem()) return;
-				DropdownStatus.powerGroup = (PowerGroup)e.getItem();
+				if(powerGroup == (PowerGroup)e.getItem()) return;
+				powerGroup = (PowerGroup)e.getItem();
 				updateDiagram();
 			}
 		};
@@ -260,8 +258,8 @@ public class Visualizer extends ElementManipulator {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				//dont include changes to the same
-				if(DropdownStatus.timingSense == (TimingSense)e.getItem()) return;
-				DropdownStatus.timingSense = (TimingSense)e.getItem();
+				if(timingSense == (TimingSense)e.getItem()) return;
+				timingSense = (TimingSense)e.getItem();
 				updateDiagram();
 			}
 		};
@@ -271,8 +269,8 @@ public class Visualizer extends ElementManipulator {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				//dont include changes to the same
-				if(DropdownStatus.timingType == (TimingType)e.getItem()) return;
-				DropdownStatus.timingType = (TimingType)e.getItem();
+				if(timingType == (TimingType)e.getItem()) return;
+				timingType = (TimingType)e.getItem();
 				updateDiagram();
 			}
 		};
@@ -282,8 +280,8 @@ public class Visualizer extends ElementManipulator {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				//dont include changes to the same
-				if(DropdownStatus.timingGroup == (TimingGroup)e.getItem()) return;
-				DropdownStatus.timingGroup = (TimingGroup)e.getItem();
+				if(timingGroup == (TimingGroup)e.getItem()) return;
+				timingGroup = (TimingGroup)e.getItem();
 				updateDiagram();
 			}
 		};
@@ -294,13 +292,13 @@ public class Visualizer extends ElementManipulator {
 			Library lib = (Library)this.subWindow.getElement();
 			this.dropdowns.add(libCellDropdown);
 			//update attribute
-			DropdownStatus.attribute = (Attribute)libCellDropdown.getSelectedItem();
+			attribute = (Attribute)libCellDropdown.getSelectedItem();
 			updateAttributeSubDropdowns();
 		} else if(this.subWindow.getElement().getClass() == Cell.class) {
 			Cell cell = (Cell)this.subWindow.getElement();
 			this.dropdowns.add(libCellDropdown);
 			//update attribute
-			DropdownStatus.attribute = (Attribute)libCellDropdown.getSelectedItem();
+			attribute = (Attribute)libCellDropdown.getSelectedItem();
 			updateAttributeSubDropdowns();
 		} else if(this.subWindow.getElement().getClass() == InputPin.class) {
 			InputPin inpin = (InputPin)this.subWindow.getElement();
@@ -309,7 +307,7 @@ public class Visualizer extends ElementManipulator {
 			OutputPin outpin = (OutputPin)this.subWindow.getElement();
 			this.dropdowns.add(outpinDropdown);
 			//update attribute
-			DropdownStatus.attribute = (Attribute)outpinDropdown.getSelectedItem();
+			attribute = (Attribute)outpinDropdown.getSelectedItem();
 			updateAttributeSubDropdowns();
 		}
 		this.dropdowns.revalidate();
@@ -319,11 +317,11 @@ public class Visualizer extends ElementManipulator {
 
 	private void updateAttributeSubDropdowns() {
 		//add appropriate dropdowns
-		if(DropdownStatus.attribute == Attribute.INPUT_POWER) {
+		if(attribute == Attribute.INPUT_POWER) {
 			dropdowns.add(powerGroupDropdown);
-		} else if(DropdownStatus.attribute == Attribute.OUTPUT_POWER) {
+		} else if(attribute == Attribute.OUTPUT_POWER) {
 			dropdowns.add(powerGroupDropdown);
-		} else if(DropdownStatus.attribute == Attribute.TIMING) {
+		} else if(attribute == Attribute.TIMING) {
 			dropdowns.add(timingSenseDropdown);
 			dropdowns.add(timingTypeDropdown);
 			dropdowns.add(timingGroupDropdown);
@@ -338,8 +336,8 @@ public class Visualizer extends ElementManipulator {
 
 	//update diagram depending on dropdown status
 	private void updateDiagram() {
-		System.out.println(DropdownStatus.attribute);
-		System.out.println(DropdownStatus.powerGroup);
+		System.out.println(attribute);
+		System.out.println(powerGroup);
 		System.out.println("===========================");
 
 		ArrayList<float[]> data = new ArrayList<float[]>();
@@ -349,7 +347,7 @@ public class Visualizer extends ElementManipulator {
 		
 		if (this.subWindow.getElement().getClass() == Library.class) {
 			Library lib = (Library)this.subWindow.getElement();
-			if (DropdownStatus.attribute == Attribute.INPUT_POWER) {
+			if (attribute == Attribute.INPUT_POWER) {
 				values = new float[lib.getCells().size()];
 				stringAr = new String[lib.getCells().size()];
 				int i = 0;
@@ -357,14 +355,14 @@ public class Visualizer extends ElementManipulator {
 				Iterator<Cell> cellsIt = lib.getCells().iterator();
 				while(cellsIt.hasNext()) {
 					Cell curCell = cellsIt.next();
-					if (!curCell.getAvailableInputPower().contains(DropdownStatus.powerGroup)) {
+					if (!curCell.getAvailableInputPower().contains(powerGroup)) {
 						values[i] = 0;
 						stringAr[i] = curCell.getName();
 					}
 					else {
 						curCell.calculateInPow();
 						float value = 
-								curCell.getInPowerStat().get(DropdownStatus.powerGroup).getAvg();
+								curCell.getInPowerStat().get(powerGroup).getAvg();
 						values[i] = value;
 						stringAr[i] = curCell.getName();
 					}
@@ -372,7 +370,7 @@ public class Visualizer extends ElementManipulator {
 				}
 			}
 			
-			else if (DropdownStatus.attribute == Attribute.OUTPUT_POWER) {
+			else if (attribute == Attribute.OUTPUT_POWER) {
 				values = new float[lib.getCells().size()];
 				stringAr = new String[lib.getCells().size()];
 				int i = 0;
@@ -380,14 +378,14 @@ public class Visualizer extends ElementManipulator {
 				Iterator<Cell> cellsIt = lib.getCells().iterator();
 				while(cellsIt.hasNext()) {
 					Cell curCell = cellsIt.next();
-					if (!curCell.getAvailableOutputPower().contains(DropdownStatus.powerGroup)) {
+					if (!curCell.getAvailableOutputPower().contains(powerGroup)) {
 						values[i] = 0;
 						stringAr[i] = curCell.getName();
 					}
 					else {
 						curCell.calculateOutPow();
 						float value = 
-								curCell.getOutPowerStat().get(DropdownStatus.powerGroup).getAvg();
+								curCell.getOutPowerStat().get(powerGroup).getAvg();
 						values[i] = value;
 						stringAr[i] = curCell.getName();
 					}
@@ -398,14 +396,14 @@ public class Visualizer extends ElementManipulator {
 		
 		else if (this.subWindow.getElement().getClass() == Cell.class) {
 			Cell cell = (Cell)this.subWindow.getElement();
-			if (DropdownStatus.attribute == Attribute.INPUT_POWER) {
+			if (attribute == Attribute.INPUT_POWER) {
 				values = new float[cell.getInPins().size()];
 				int i = 0;
 				
 				Iterator<InputPin> inPinsIt = cell.getInPins().iterator();
 				while(inPinsIt.hasNext()) {
 					InputPin curInPin = inPinsIt.next();
-					if (!curInPin.getAvailablePower().contains(DropdownStatus.powerGroup)) {
+					if (!curInPin.getAvailablePower().contains(powerGroup)) {
 						values[i] = 0;
 					}
 					else {
@@ -414,7 +412,7 @@ public class Visualizer extends ElementManipulator {
 						Iterator<InputPower> inPowIt = inPows.iterator();
 						while (inPowIt.hasNext()) {
 							InputPower curInPow = inPowIt.next();
-							if (curInPow.getPowGroup() == DropdownStatus.powerGroup) {
+							if (curInPow.getPowGroup() == powerGroup) {
 								values[i] = curInPow.getStats().getAvg();
 							}
 						}
@@ -423,14 +421,14 @@ public class Visualizer extends ElementManipulator {
 				}
 			}
 			
-			else if (DropdownStatus.attribute == Attribute.OUTPUT_POWER) {
+			else if (attribute == Attribute.OUTPUT_POWER) {
 				values = new float[cell.getOutPins().size()];
 				int i = 0;
 				
 				Iterator<OutputPin> outPinsIt = cell.getOutPins().iterator();
 				while(outPinsIt.hasNext()) {
 					OutputPin curOutPin = outPinsIt.next();
-					if (!curOutPin.getAvailablePower().contains(DropdownStatus.powerGroup)) {
+					if (!curOutPin.getAvailablePower().contains(powerGroup)) {
 						values[i] = 0;
 					}
 					else {
@@ -439,7 +437,7 @@ public class Visualizer extends ElementManipulator {
 						Iterator<OutputPower> outPowIt = outPows.iterator();
 						while (outPowIt.hasNext()) {
 							OutputPower curOutPow = outPowIt.next();
-							if (curOutPow.getPowGroup() == DropdownStatus.powerGroup) {
+							if (curOutPow.getPowGroup() == powerGroup) {
 								values[i] = curOutPow.getStats().getAvg();
 							}
 						}
@@ -460,15 +458,12 @@ public class Visualizer extends ElementManipulator {
 					data, stringData);		
 		}
 	}
-			
-			
-			
-	
 
 	@Override
 	public void componentResized(ComponentEvent e) {
 		super.componentResized(e);
-		
+
+		updateDiagram();
 		// DiagramWizard wiz = new DiagramWizard();
 		// this.diagram.removeFromContainer();
 		// this.diagram = wiz.makeBarChart(this.diagramPanel, this.diagram.cloneData());
