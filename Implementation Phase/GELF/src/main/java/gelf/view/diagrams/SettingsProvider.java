@@ -48,8 +48,7 @@ public class SettingsProvider {
 	private int heatMapLabelBorderThickness = 1;
 	private int heatMapColorScaleBorderThickness = 1;
 	private Color heatMapColorScaleBorderColor = Color.BLACK;
-	private Color[] heatMapColorScaleColors = new Color[] {Color.RED,
-			Color.BLUE};
+	private Color[] heatMapColorScaleColors = new Color[] {Color.BLUE, Color.RED};
 	
 	/**
 	 * Increase the maximum index by this amount to leave some more space for the final bar.
