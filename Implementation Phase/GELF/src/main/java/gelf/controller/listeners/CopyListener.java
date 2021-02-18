@@ -40,9 +40,7 @@ public class CopyListener implements ActionListener {
 		}
 		Model currentModel = Model.getInstance();
 		Project project = currentModel.getCurrentProject();
-		for (Element element: cells) {
-			project.getCopiedElements().add(element);
-		}
+		project.setCopiedElements(cells);
 	}
 
 }
