@@ -92,6 +92,32 @@ public class Cell extends HigherElement {
 	public void setLeakages(Leakage leakages) {
 		this.leakages = leakages;
 	}
+	
+	public void setOutputFunctions() {
+		String[] binary = new String[(int) Math.pow(2,(this.getInPins().size()))];
+		for (int i = 0; i < binary.length; i++) {
+			binary[i] = Integer.toBinaryString(i);
+			while (binary[i].length() < this.getInPins().size()) {
+				binary[i] = "0" + binary[i];
+			}
+		}
+		String[] outputFunctions = new String[(int) Math.pow(2,(this.getInPins().size()))];
+		for (int i = 0; i < ((int) Math.pow(2,(this.getInPins().size()))); i++) {
+			outputFunctions[i] = "";
+			for (int j = 0; j < this.getInPins().size(); j++) {
+				if (binary[i].charAt(j) == '0') {
+					outputFunctions[i] +=  "!" + this.getInPins().get(j);
+				}
+				else if (binary[i].charAt(j) == '1') {
+					outputFunctions[i] += this.getInPins().get(j);
+				}
+				outputFunctions[i] += "&";
+			}
+			outputFunctions[i] = outputFunctions[i].substring(0, outputFunctions[i].length() - 1);
+		}
+		this.leakages.setOutputFunctions(outputFunctions);
+		
+	}
 
 	public float getDefaultLeakage() {
 		return defaultLeakage;

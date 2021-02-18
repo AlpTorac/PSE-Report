@@ -8,6 +8,7 @@ import gelf.model.elements.Stat;
 public class Leakage extends Attribute {
     private float[] values;
     private Cell parentCell;
+    private String[] outputFunctions;
     
     public Leakage(float[] values) {
     	this.values = values;
@@ -100,5 +101,13 @@ public class Leakage extends Attribute {
 	@Override
 	public Stat getStats() {
 		return super.getStats();
+	}
+
+	public String[] getOutputFunctions() {
+		return outputFunctions;
+	}
+
+	public void setOutputFunctions(String[] outputFunctions) {
+		this.outputFunctions = outputFunctions;
 	}
 }

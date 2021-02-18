@@ -416,6 +416,38 @@ public class Visualizer extends ElementManipulator {
 					i++;
 				}
 			}
+			
+			else if (attribute == Attribute.DEFAULT_LEAKAGE) {
+				values = new float[lib.getCells().size()];
+				stringAr = new String[lib.getCells().size()];
+				int i = 0;
+				
+				Iterator<Cell> cellsIt = lib.getCells().iterator();
+				while(cellsIt.hasNext()) {
+					Cell curCell = cellsIt.next();
+					float value = 
+							curCell.getDefaultLeakage();
+					values[i] = value;
+					stringAr[i] = curCell.getName();
+					i++;
+				}
+			}
+			
+			else if (attribute == Attribute.LEAKAGE) {
+				values = new float[lib.getCells().size()];
+				stringAr = new String[lib.getCells().size()];
+				int i = 0;
+				
+				Iterator<Cell> cellsIt = lib.getCells().iterator();
+				while(cellsIt.hasNext()) {
+					Cell curCell = cellsIt.next();
+					float value = 
+							curCell.getLeakages().getStats().getAvg();
+					values[i] = value;
+					stringAr[i] = curCell.getName();
+					i++;
+				}
+			}
 		}
 		
 		else if (this.subWindow.getElement().getClass() == Cell.class) {
@@ -468,6 +500,13 @@ public class Visualizer extends ElementManipulator {
 					}
 					i++;
 				}
+			}
+			else if (attribute == Attribute.LEAKAGE) {
+				values = new float[(int) Math.pow(2,(cell.getInPins().size()))];
+				stringAr = new String[(int) Math.pow(2,(cell.getInPins().size()))];
+				values = cell.getLeakages().getValues();
+				cell.setOutputFunctions();
+				stringAr = cell.getLeakages().getOutputFunctions();
 			}
 			
 		}
