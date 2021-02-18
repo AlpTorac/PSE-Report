@@ -18,11 +18,6 @@ public class DiagramViewHelperFactory {
 		return instance;
 	}
 	
-	public HelperComponentDisplayer createValueColorDisplayer(IDiagram diagram,
-			IndicatorIdentifier id) {
-		return null;
-	}
-	
 	public HelperLineDisplayer createXCoordinateGridDisplayer(IDiagram diagram) {
 		return new XCoordinateIndicatorLineDisplayer(diagram, sp.getAxisColor(), sp.getAxisThickness());
 	}

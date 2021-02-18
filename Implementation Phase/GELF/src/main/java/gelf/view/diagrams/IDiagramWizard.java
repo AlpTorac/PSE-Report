@@ -25,15 +25,15 @@ public interface IDiagramWizard {
 	
 	public Histogram overlayAndAttachHistograms(Container container, Histogram[] histograms);
 	
-	public void addMinDisplayer(IDiagram diagram);
+	public IDiagramViewHelper addMinDisplayer(IDiagram diagram);
 	
-	public void addMaxDisplayer(IDiagram diagram);
+	public IDiagramViewHelper addMaxDisplayer(IDiagram diagram);
 	
-	public void addAvgDisplayer(IDiagram diagram);
+	public IDiagramViewHelper addAvgDisplayer(IDiagram diagram);
 	
-	public void addMedDisplayer(IDiagram diagram);
+	public IDiagramViewHelper addMedDisplayer(IDiagram diagram);
 	
-	public void xAxisCoordinateDisplayer(IDiagram diagram);
+	public IDiagramViewHelper addXAxisCoordinateDisplayer(IDiagram diagram);
 	
-	public void yAxisCoordinateDisplayer(IDiagram diagram);
+	public IDiagramViewHelper addYAxisCoordinateDisplayer(IDiagram diagram);
 }

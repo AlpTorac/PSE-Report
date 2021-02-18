@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import gelf.view.diagrams.IDiagram;
+import gelf.view.diagrams.IDiagramViewHelper;
 
-public abstract class DiagramViewHelper {
+public abstract class DiagramViewHelper implements IDiagramViewHelper {
 	private int layer;
 	private Collection<ViewHelperComponent> helperComponents;
 	private IndicatorIdentifier id;

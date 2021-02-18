@@ -101,39 +101,45 @@ public class DiagramWizard implements IDiagramWizard {
 	}
 
 	@Override
-	public void addMinDisplayer(IDiagram diagram) {
+	public IDiagramViewHelper addMinDisplayer(IDiagram diagram) {
 		DiagramViewHelper dvh = viewHelperFactory.createMinLineDisplayer(diagram);
 		diagram.addDiagramViewHelper(dvh);
+		return dvh;
 	}
 
 	@Override
-	public void addMaxDisplayer(IDiagram diagram) {
+	public IDiagramViewHelper addMaxDisplayer(IDiagram diagram) {
 		DiagramViewHelper dvh = viewHelperFactory.createMaxLineDisplayer(diagram);
 		diagram.addDiagramViewHelper(dvh);
+		return dvh;
 	}
 
 	@Override
-	public void addAvgDisplayer(IDiagram diagram) {
+	public IDiagramViewHelper addAvgDisplayer(IDiagram diagram) {
 		DiagramViewHelper dvh = viewHelperFactory.createAvgLineDisplayer(diagram);
 		diagram.addDiagramViewHelper(dvh);
+		return dvh;
 	}
 
 	@Override
-	public void addMedDisplayer(IDiagram diagram) {
+	public IDiagramViewHelper addMedDisplayer(IDiagram diagram) {
 		DiagramViewHelper dvh = viewHelperFactory.createMedLineDisplayer(diagram);
 		diagram.addDiagramViewHelper(dvh);
+		return dvh;
 	}
 
 	@Override
-	public void xAxisCoordinateDisplayer(IDiagram diagram) {
+	public IDiagramViewHelper addXAxisCoordinateDisplayer(IDiagram diagram) {
 		DiagramViewHelper dvh = viewHelperFactory.createXCoordinateGridDisplayer(diagram);
 		diagram.addDiagramViewHelper(dvh);
+		return dvh;
 	}
 
 	@Override
-	public void yAxisCoordinateDisplayer(IDiagram diagram) {
+	public IDiagramViewHelper addYAxisCoordinateDisplayer(IDiagram diagram) {
 		DiagramViewHelper dvh = viewHelperFactory.createYCoordinateGridDisplayer(diagram);
 		diagram.addDiagramViewHelper(dvh);
+		return dvh;
 	}
 
 	@Override
