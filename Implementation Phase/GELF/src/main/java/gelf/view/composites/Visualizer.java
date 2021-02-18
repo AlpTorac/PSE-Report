@@ -33,6 +33,7 @@ import gelf.view.components.Checkbox;
 import gelf.view.components.Panel;
 import gelf.view.diagrams.DiagramWizard;
 import gelf.view.diagrams.IDiagram;
+import gelf.view.diagrams.IDiagramViewHelper;
 import gelf.view.representation.CellPanel;
 import gelf.view.representation.DataPanel;
 import gelf.view.representation.LibraryPanel;
@@ -40,7 +41,7 @@ import gelf.view.representation.LibraryPanel;
  * Visualizer
  */
 public class Visualizer extends ElementManipulator {
-
+	Visualizer _this = this;
 	SubWindow subWindow;
 	DataPanel dataPanel;
 	Panel upperPanel;
@@ -48,6 +49,11 @@ public class Visualizer extends ElementManipulator {
 	Panel dropdowns;
 	
 	Panel diagramPanel;
+
+	IDiagramViewHelper IDHmin;
+	IDiagramViewHelper IDHmax;
+	IDiagramViewHelper IDHavg;
+	IDiagramViewHelper IDHmed;
 	IDiagram diagram;
 	private JComboBox<Attribute> libCellDropdown = new JComboBox<Attribute>();
 	private JComboBox<Attribute> outpinDropdown = new JComboBox<Attribute>();
@@ -112,11 +118,43 @@ public class Visualizer extends ElementManipulator {
 		stats.setBackground(ColorTheme.section);
 		stats.setVisible(true);
 		
+		DiagramWizard wiz = new DiagramWizard();
+
 		Checkbox min = new Checkbox("Minimum");
 		min.setVisible(true);
+		min.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if(e.getStateChange() == ItemEvent.SELECTED) {
+					System.out.println("CHECK");
+					_this.IDHmin = wiz.addMinDisplayer(_this.diagram);
+					_this.IDHmin.show();
+				} else {
+					System.out.println("UNCHECK");
+					_this.IDHmin.hide();
+					_this.IDHmin.remove();
+				}
+				_this.diagram.refresh();
+			}
+		});
 		stats.add(min);
 		Checkbox max = new Checkbox("Maximum");
 		max.setVisible(true);
+		max.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if(e.getStateChange() == ItemEvent.SELECTED) {
+					System.out.println("CHECK");
+					_this.IDHmax = wiz.addMaxDisplayer(_this.diagram);
+					_this.IDHmax.show();
+				} else {
+					System.out.println("UNCHECK");
+					_this.IDHmax.hide();
+					_this.IDHmax.remove();
+				}
+				_this.diagram.refresh();
+			}
+		});
 		stats.add(max);
 		Checkbox avg = new Checkbox("Average");
 		avg.setVisible(true);
@@ -126,7 +164,7 @@ public class Visualizer extends ElementManipulator {
 		stats.add(med);
 		this.lowerPanel.add(stats, BorderLayout.PAGE_END);
 		//diagram viewport
-		DiagramWizard wiz = new DiagramWizard();
+		
 		
 		// Cell cell = (Cell)e;
 		// float[] leakageValues = cell.getLeakages().getValues();
@@ -454,8 +492,7 @@ public class Visualizer extends ElementManipulator {
 			if (diagram != null) {
 				diagram.removeFromContainer();
 			}
-			this.diagram = wiz.makeAndAttachBarChartWithDescriptions(this.diagramPanel,
-					data, stringData);		
+			this.diagram = wiz.makeAndAttachBarChartWithDescriptions(this.diagramPanel, data, stringData);
 		}
 	}
 
