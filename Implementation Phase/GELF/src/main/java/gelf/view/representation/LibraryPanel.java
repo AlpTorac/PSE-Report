@@ -25,8 +25,9 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 
-/*
+/**
  * Displays all child cells of the selected library.
+ * @author Ege Uzhan
  */
 public class LibraryPanel extends Panel implements MouseListener{
    
@@ -39,9 +40,12 @@ public class LibraryPanel extends Panel implements MouseListener{
     private JScrollPane scrollPane;
     
    
-    /*
-     * Constructor
+    /**
+     * Instantiates the panel
+     * @param width Width of the panel
+     * @param height  Height of the panel.
      * @param library To be opened library.
+     * @param subwindow Subwindow of the panel.
      */
     public LibraryPanel(int width, int height, Library library, SubWindow subwindow) {
     	super(width, height);
@@ -76,10 +80,18 @@ public class LibraryPanel extends Panel implements MouseListener{
 
     }
     
+    /**
+     * Returns the selected library
+     * @return selected library
+     */
     public Library getLibrary() {
     	return selectedLibrary;
     }
     
+    /**
+     * Returns the cells of the library opened in the panel.
+     * @return list of cells
+     */
     public ArrayList<Cell> getCells() {
     	return cells;
     }

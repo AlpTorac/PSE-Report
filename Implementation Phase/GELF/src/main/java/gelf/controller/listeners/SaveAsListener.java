@@ -21,13 +21,18 @@ import gelf.view.composites.Outliner;
 import gelf.view.composites.SubWindow;
 import gelf.view.composites.TextEditor;
 
-/*
+/**
  * Listener for saving the library as a new file.
+ * @author Ege Uzhan
  */
 public class SaveAsListener implements ActionListener{
 	
 	private Outliner outliner;
 	
+	/** 
+	 * Initializes the listener.
+	 * @param outliner The outliner.
+	 */
 	public SaveAsListener(Outliner outliner) {
 		this.outliner = outliner;
 	}

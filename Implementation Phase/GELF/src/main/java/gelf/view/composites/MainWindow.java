@@ -49,7 +49,7 @@ public class MainWindow extends Window {
     public SubWindowArea subWindowArea;
     // colors/graphics
     Color cBackground = ColorTheme.frame;
-    Image icon = Toolkit.getDefaultToolkit().getImage("/Images/AppIcon.png");
+    Image icon = Toolkit.getDefaultToolkit().getImage("src/main/java/gelf/view/composites/Images/AppIcon.png");
     // other
     String version = "0.0.0";
 

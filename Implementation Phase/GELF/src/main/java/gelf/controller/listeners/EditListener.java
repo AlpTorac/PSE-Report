@@ -25,8 +25,9 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 
-/*
+/**
  * Listener for the text editor.
+ * @author Ege Uzhan
  */
 public class EditListener implements ActionListener{
 	
@@ -34,6 +35,12 @@ public class EditListener implements ActionListener{
 	private Outliner outliner;
 	private SubWindowArea subwindows;
 	
+	/**
+	 * Initializes the listener.
+	 * @param editor The text editor
+	 * @param outliner The outliner.
+	 * @param subwindows The subwindow area
+	 */
 	public EditListener(TextEditor editor, Outliner outliner, SubWindowArea subwindows) {
 		this.editor = editor;
 		this.outliner = outliner;
@@ -61,18 +68,25 @@ public class EditListener implements ActionListener{
 		}
 		
 		
-		//traverseAndExpandTree(tree, root, element);
+		traverseAndExpandTree(tree, root, element);
 		
 	}
 	
-	/*public void traverseAndExpandTree(JTree tree, DefaultMutableTreeNode node, Element element) {
-		if ((node.getUserObject())==element.toString() && !(element instanceof Library)) {
+	/**
+	 * Traverses the tree and expands the path of the edited node.
+	 * @param tree Tree searched
+	 * @param node Start node
+	 * @param element Element to find
+	 */
+	public void traverseAndExpandTree(JTree tree, DefaultMutableTreeNode node, Element element) {
+		if (node.getUserObject().equals(element) && !(element instanceof Library)) {
+			node = (DefaultMutableTreeNode) node.getParent();
 			tree.expandPath(new TreePath(node.getPath()));
 			return;
 		}
 		for (int i = 0; i < node.getChildCount(); i++) {
-			traverseAndExpandTree(tree, (DefaultMutableTreeNode)node.getChildAt(0), element);
+			traverseAndExpandTree(tree, (DefaultMutableTreeNode)node.getChildAt(i), element);
 		}
-	}*/
+	}
 	
 }

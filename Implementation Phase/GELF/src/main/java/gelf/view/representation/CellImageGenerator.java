@@ -6,15 +6,16 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-/*
- *  Creates a representative image of the chosen cell.
+/**
+ * Creates a representative image of the chosen cell.
+ * @author Ege Uzhan
  */
 public class CellImageGenerator implements ICellImageGenerator {
 	
 	BufferedImage cellImage;
 	BufferedImage pinImage;
 	
-	/*
+	/**
 	 * Default constructor.
 	 */
 	public CellImageGenerator() {
@@ -29,7 +30,7 @@ public class CellImageGenerator implements ICellImageGenerator {
 	}
 
 
-	/*
+	/**
 	 * Creates a representative image of the chosen cell.
 	 * @param inputPins Number of input pins.
 	 * @param outputPins Number of output pins.

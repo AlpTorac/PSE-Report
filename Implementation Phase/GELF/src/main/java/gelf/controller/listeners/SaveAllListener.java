@@ -15,6 +15,11 @@ import gelf.model.elements.Pin;
 import gelf.model.project.Model;
 import gelf.model.project.Project;
 
+/**
+ * Listener for the save all button.
+ * @author Ege Uzhan
+ *
+ */
 public class SaveAllListener implements ActionListener {
 
 	@Override

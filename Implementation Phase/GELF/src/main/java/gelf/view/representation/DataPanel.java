@@ -13,8 +13,9 @@ import gelf.model.elements.*;
 import gelf.view.components.Label;
 import gelf.view.components.Panel;
 
-/*
+/**
  * Displays data about opened element.
+ * @author Ege Uzhan
  */
 public class DataPanel extends Panel {
 
@@ -26,7 +27,7 @@ public class DataPanel extends Panel {
 	private String selectedText;
 	private String binary;
 	
-	/*
+	/**
 	 * Constructor for opening an element in the data panel.
 	 * @param library Library element.
 	 */
@@ -56,7 +57,7 @@ public class DataPanel extends Panel {
 	}
 	
 	
-	/*
+	/**
 	 * Changes the text displayed.
 	 * @param text New text to display.
 	 */
@@ -106,7 +107,7 @@ public class DataPanel extends Panel {
 		
 	}
 	
-	/*
+	/**
 	 * Updates the panel with the selected pin values.
 	 * @param selectedPins List of the selected pins in the navigation panel. 
 	 */
@@ -136,10 +137,18 @@ public class DataPanel extends Panel {
 		
 	}
 	
+	/**
+	 * Returns the element set in this panel.
+	 * @return element of the panel
+	 */
 	public Element getElement() {
 		return element;
 	}
 	
+	/**
+	 * Sets the element of the panel.
+	 * @param element New element.
+	 */
 	public void setElement(Element element) {
 		this.element = element;
 	}

@@ -13,19 +13,28 @@ import gelf.model.commands.DeleteCommand;
 import gelf.model.elements.Cell;
 import gelf.model.elements.Element;
 
-/*
+/**
  * Listener for deleting a cell from the library permanently.
+ * @author Ege Uzhan
  */
 public class DeleteCellListener implements ActionListener {
 
 	private Outliner outliner;
 	
+	/**
+	 * Initializes the listener
+	 * @param outliner The outliner.
+	 */
 	public DeleteCellListener(Outliner outliner) {
 		this.outliner = outliner;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if (outliner.getSelectedElements().isEmpty()) {
+			JOptionPane.showMessageDialog(new JFrame(), "Select at least one cell.", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		ArrayList<Cell> cells = new ArrayList<Cell>();
 		for (Element element : outliner.getSelectedElements()) {
 			if (element instanceof Cell) {

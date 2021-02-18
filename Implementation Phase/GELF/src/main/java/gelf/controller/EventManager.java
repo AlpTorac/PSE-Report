@@ -1,6 +1,7 @@
 package gelf.controller;
 
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.util.EventListener;
 import java.util.HashMap;
@@ -13,16 +14,17 @@ import gelf.controller.listeners.*;
 import gelf.model.project.Model;
 import gelf.view.composites.MainWindow;;
 
-/*
+/**
  * Stores and initializes the listeners.
+ * @author Ege Uzhan
  */
 public class EventManager {
 	
 	private MainWindow view;
 	private HashMap<Event, EventListener> listeners;
 	
-	/*
-	 * Constructor
+	/**
+	 * Initializes the manager
 	 * @param view GUI view
 	 * @param model Model class
 	 */
@@ -33,14 +35,15 @@ public class EventManager {
 		initListeners();
 	}
 	
-	/*
+	/**
 	 * Returns a map of listeners.
+	 * @return HashMap of events mapped to listeners.
 	 */
 	public HashMap<Event, EventListener> getListeners(){
 		return listeners;
 	}
 	
-	/*
+	/**
 	 * Initializes the listeners.
 	 */
 	public void initListeners() {
@@ -65,7 +68,6 @@ public class EventManager {
 		view.itemOpen.addActionListener((ActionListener) listeners.get(Event.LOAD));
 		view.outliner.tree.addMouseListener((MouseListener) listeners.get(Event.OPEN));
 		view.outliner.itemOpen.addActionListener((ActionListener) listeners.get(Event.OPEN));
-		
 		view.outliner.itemCopy.addActionListener((ActionListener) listeners.get(Event.COPY));
 		view.outliner.itemPaste.addActionListener((ActionListener) listeners.get(Event.PASTE));
 		view.outliner.itemDelete.addActionListener((ActionListener) listeners.get(Event.DELETE));

@@ -9,8 +9,9 @@ import javax.swing.JOptionPane;
 import gelf.model.exceptions.InvalidFileFormatException;
 import gelf.model.project.Model;
 
-/*
+/**
  * Listener for the redo button.
+ * @author Ege Uzhan
  */
 public class RedoListener implements ActionListener {
 
