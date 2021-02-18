@@ -427,6 +427,43 @@ public class Visualizer extends ElementManipulator {
 				}
 			}
 			
+			else if (attribute == Attribute.TIMING) {
+				values = new float[lib.getCells().size()];
+				stringAr = new String[lib.getCells().size()];
+				int i = 0;
+				
+				Iterator<Cell> cellsIt = lib.getCells().iterator();
+				while(cellsIt.hasNext()) {
+					Cell curCell = cellsIt.next();
+					if (!curCell.getAvailableTimSen().contains(timingSense)) {
+						values[i] = 0;
+						stringAr[i] = curCell.getName();
+					}
+					else if (!curCell.getAvailableTimType().contains(timingType)) {
+						values[i] = 0;
+						stringAr[i] = curCell.getName();
+					}
+					else if (!curCell.getAvailableTimGr().contains(timingGroup)) {
+						values[i] = 0;
+						stringAr[i] = curCell.getName();
+					}
+					
+					else {
+						curCell.calculateTiming();
+						
+						for (Map.Entry<TimingKey, Stat> entry : curCell.getTimingStat().entrySet()) {
+						    TimingKey key = entry.getKey();
+						    if (key.getTimSense() == timingSense && key.getTimType() == timingType
+						    		&& key.getTimGroup() == timingGroup) {
+						    	values[i] = entry.getValue().getAvg();
+						    }   
+						}
+						stringAr[i] = curCell.getName();
+					}
+					i++;
+				}
+			}
+			
 			else if (attribute == Attribute.DEFAULT_LEAKAGE) {
 				values = new float[lib.getCells().size()];
 				stringAr = new String[lib.getCells().size()];
