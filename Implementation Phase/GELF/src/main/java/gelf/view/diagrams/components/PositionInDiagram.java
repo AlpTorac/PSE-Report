@@ -80,4 +80,12 @@ public abstract class PositionInDiagram {
 		
 		return true;
 	}
+	
+	protected double getMinForAxis(int index) {
+		return this.axes[index].getMin();
+	}
+	
+	protected double getMaxForAxis(int index) {
+		return this.axes[index].getMax();
+	}
 }

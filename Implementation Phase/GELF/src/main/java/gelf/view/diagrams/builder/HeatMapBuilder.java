@@ -28,4 +28,9 @@ public class HeatMapBuilder extends DiagramBuilder implements IHeatMapBuilder {
 	protected float getYAxisMaxValue() {
 		return this.getDiagramData().getMaximumIndexAt(1);
 	}
+
+	@Override
+	protected float getYAxisMinValue() {
+		return 0;
+	}
 }

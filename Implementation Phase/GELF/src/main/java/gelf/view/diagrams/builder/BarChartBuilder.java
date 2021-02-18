@@ -3,6 +3,7 @@ package gelf.view.diagrams.builder;
 import java.awt.Container;
 
 import gelf.view.diagrams.IDiagram;
+import gelf.view.diagrams.SettingsProvider;
 import gelf.view.diagrams.components.DiagramAxis;
 import gelf.view.diagrams.components.DiagramComponent;
 import gelf.view.diagrams.components.DiagramValueDisplayComponent;
@@ -25,7 +26,13 @@ public class BarChartBuilder extends DiagramBuilder implements IBarChartBuilder 
 
 	@Override
 	protected float getYAxisMaxValue() {
-		return this.getDiagramData().getMaximumValue();
+		float maxVal = this.getDiagramData().getMaximumValue();
+		
+		if (maxVal <= 0) {
+			return 0;
+		} else {
+			return maxVal;
+		}
 	}
 
 	@Override
@@ -35,7 +42,7 @@ public class BarChartBuilder extends DiagramBuilder implements IBarChartBuilder 
 
 	@Override
 	protected int getYAxisSteps() {
-		return this.getDiagramData().extractValues().get(0).length;
+		return SettingsProvider.getInstance().getStepsInYAxis();
 	}
 	
 	@Override
@@ -44,6 +51,17 @@ public class BarChartBuilder extends DiagramBuilder implements IBarChartBuilder 
 			return this.getDiagramData().extractValueDescriptions().get(0);
 		} else {
 			return null;
+		}
+	}
+
+	@Override
+	protected float getYAxisMinValue() {
+		float minVal = this.getDiagramData().getMinimumValue();
+		
+		if (minVal >= 0) {
+			return 0;
+		} else {
+			return minVal;
 		}
 	}
 }

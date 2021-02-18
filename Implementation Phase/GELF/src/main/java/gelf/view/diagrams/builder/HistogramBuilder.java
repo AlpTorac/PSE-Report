@@ -28,4 +28,15 @@ public class HistogramBuilder extends DiagramBuilder implements IHistogramBuilde
 	protected float getYAxisMaxValue() {
 		return this.getDiagramData().getMaximumValue();
 	}
+
+	@Override
+	protected float getYAxisMinValue() {
+		float minVal = this.getDiagramData().getMinimumValue();
+		
+		if (minVal >= 0) {
+			return 0;
+		} else {
+			return minVal;
+		}
+	}
 }
