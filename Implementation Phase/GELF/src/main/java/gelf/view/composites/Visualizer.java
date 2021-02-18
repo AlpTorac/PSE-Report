@@ -80,7 +80,7 @@ public class Visualizer extends ElementManipulator {
 			return this.str;
 		}
 	}
-
+	
 	//tracks dropdown state
 	public Attribute attribute = Attribute.INPUT_POWER;		//for cell/library									||	output pin
 	public PowerGroup powerGroup = PowerGroup.FALL_POWER;	//for cell/library if attribute input/output power	||	output if attribute output power	||	input pin
@@ -91,13 +91,15 @@ public class Visualizer extends ElementManipulator {
 	private Checkbox max = new Checkbox("Maximum");
 	private Checkbox avg = new Checkbox("Average");
 	private Checkbox med = new Checkbox("Median");
-
+	
     public Visualizer(gelf.model.elements.Element e, SubWindow w, Project p, int width, int height) {
-        super(e, p, width, height);
+		super(e, p, width, height);
         this.subWindow = w;
 		//style
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
+		
+		initCellRepresentation(e, w, width, height);
+		
         //diagram display panel
 		this.lowerPanel = new Panel(width, height);
 		this.lowerPanel.setLayout(new BorderLayout());
@@ -160,7 +162,6 @@ public class Visualizer extends ElementManipulator {
 		
 
 		
-		initCellRepresentation(e, w, width, height);
 
 		this.add(this.lowerPanel);
 		updateDiagram();
@@ -199,6 +200,7 @@ public class Visualizer extends ElementManipulator {
 
 		//dropdowns
 		initDropdowns();
+		updateDiagram();
 
     	this.revalidate();
     	this.repaint();
@@ -206,6 +208,14 @@ public class Visualizer extends ElementManipulator {
 
 	private void initDropdowns() {
 		this.dropdowns.removeAll();
+
+		libDropdown = new JComboBox<Attribute>();
+		cellDropdown = new JComboBox<Attribute>();
+		outpinDropdown = new JComboBox<Attribute>();
+		powerGroupDropdown = new JComboBox<PowerGroup>();
+		timingTypeDropdown = new JComboBox<TimingType>();
+		timingGroupDropdown = new JComboBox<TimingGroup>();
+		timingSenseDropdown = new JComboBox<TimingSense>();
 
 		libDropdown.setVisible(true);
 		libDropdown.addItem(Attribute.INPUT_POWER);
