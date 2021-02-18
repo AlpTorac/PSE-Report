@@ -73,8 +73,8 @@ public class Visualizer extends ElementManipulator {
 
 	//tracks dropdown state
 	private static class DropdownStatus {
-		public static Attribute attribute;		//for cell/library									||	output pin
-		public static PowerGroup powerGroup;	//for cell/library if attribute input/output power	||	output if attribute output power	||	input pin
+		public static Attribute attribute = Attribute.INPUT_POWER;		//for cell/library									||	output pin
+		public static PowerGroup powerGroup = PowerGroup.FALL_POWER;	//for cell/library if attribute input/output power	||	output if attribute output power	||	input pin
 		public static TimingSense timingSense;	//for cell/library if attribute timing				||	output if attribute timing
 		public static TimingGroup timingGroup;	//for cell/library if attribute timing				||	output if attribute timing
 		public static TimingType timingType;	//for cell/library if attribute timing				||	output if attribute timing
@@ -135,7 +135,7 @@ public class Visualizer extends ElementManipulator {
 		// ArrayList<float[]> data = new ArrayList<float[]>();
 		// data.add(leakageValues);
 		
-		updateDiagram();
+		//updateDiagram();
 		
 		initCellRepresentation(e, w, width, height);
 
@@ -217,7 +217,7 @@ public class Visualizer extends ElementManipulator {
 		}
 		
 		//listeners
-		ItemListener updateAttribute = new ItemListener(){
+		ItemListener updateAttribute = new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				//remove old dropdowns
@@ -243,6 +243,7 @@ public class Visualizer extends ElementManipulator {
 		ItemListener updatePowerGroup = new ItemListener(){
 			@Override
 			public void itemStateChanged(ItemEvent e) {
+				System.out.println((PowerGroup)e.getItem());
 				DropdownStatus.powerGroup = (PowerGroup)e.getItem();
 				updateDiagram();
 			}
@@ -325,6 +326,8 @@ public class Visualizer extends ElementManipulator {
 
 	//update diagram depending on dropdown status
 	private void updateDiagram() {
+		System.out.println(DropdownStatus.attribute);
+		System.out.println(DropdownStatus.powerGroup);
 
 		ArrayList<float[]> data = new ArrayList<float[]>();
 		ArrayList<String[]> stringData = new ArrayList<String[]>();
