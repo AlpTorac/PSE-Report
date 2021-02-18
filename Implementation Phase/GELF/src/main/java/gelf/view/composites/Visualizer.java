@@ -126,7 +126,6 @@ public class Visualizer extends ElementManipulator {
 		ItemListener checkboxListener = new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				System.out.println("CHECKBOX LISTENER");
 				updateStatDisplay();
 			}
 		};
@@ -359,9 +358,11 @@ public class Visualizer extends ElementManipulator {
 
 	//update diagram depending on dropdown status
 	private void updateDiagram() {
-		System.out.println(attribute);
-		System.out.println(powerGroup);
-		System.out.println("===========================");
+
+		IDHmin = null;
+		IDHmax = null;
+		IDHavg = null;
+		IDHmed = null;
 
 		ArrayList<float[]> data = new ArrayList<float[]>();
 		ArrayList<String[]> stringData = new ArrayList<String[]>();
@@ -484,31 +485,31 @@ public class Visualizer extends ElementManipulator {
 
 	private void updateStatDisplay() {
 		IDiagramWizard wiz = new DiagramWizard();
-		System.out.println(this.diagram);
-		if(min.isSelected()) {
+
+		if(min.isSelected() && this.IDHmin == null) {
 			this.IDHmin = wiz.addMinDisplayer(this.diagram);
-		} else if(this.IDHmin != null) {
+		} else if(!min.isSelected() && this.IDHmin != null) {
 			this.IDHmin.remove();
 			this.IDHmin = null;
 		}
 
-		if(max.isSelected()) {
+		if(max.isSelected() && this.IDHmax == null) {
 			this.IDHmax = wiz.addMaxDisplayer(this.diagram);
-		} else if(this.IDHmax != null) {
+		} else if(!max.isSelected() && this.IDHmax != null) {
 			this.IDHmax.remove();
 			this.IDHmax = null;
 		}
 
-		if(avg.isSelected()) {
+		if(avg.isSelected() && this.IDHavg == null) {
 			this.IDHavg = wiz.addAvgDisplayer(this.diagram);
-		} else if(this.IDHavg != null) {
+		} else if(!avg.isSelected() && this.IDHavg != null) {
 			this.IDHavg.remove();
 			this.IDHavg = null;
 		}
-		
-		if(med.isSelected()) {
+
+		if(med.isSelected() && this.IDHmed == null) {
 			this.IDHmed = wiz.addMedDisplayer(this.diagram);
-		} else if(this.IDHmed != null) {
+		} else if(!med.isSelected() && this.IDHmed != null) {
 			this.IDHmed.remove();
 			this.IDHmed = null;
 		}
