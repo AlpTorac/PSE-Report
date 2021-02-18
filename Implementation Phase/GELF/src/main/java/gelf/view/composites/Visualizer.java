@@ -472,8 +472,10 @@ public class Visualizer extends ElementManipulator {
 		
 		else if (this.subWindow.getElement().getClass() == Cell.class) {
 			Cell cell = (Cell)this.subWindow.getElement();
+			
 			if (attribute == Attribute.INPUT_POWER) {
 				values = new float[cell.getInPins().size()];
+				stringAr = new String[cell.getInPins().size()];
 				int i = 0;
 				
 				Iterator<InputPin> inPinsIt = cell.getInPins().iterator();
@@ -493,12 +495,14 @@ public class Visualizer extends ElementManipulator {
 							}
 						}
 					}
+					stringAr[i] = curInPin.getName();
 					i++;
 				}
 			}
 			
 			else if (attribute == Attribute.OUTPUT_POWER) {
 				values = new float[cell.getOutPins().size()];
+				stringAr = new String[cell.getOutPins().size()];
 				int i = 0;
 				
 				Iterator<OutputPin> outPinsIt = cell.getOutPins().iterator();
@@ -518,6 +522,7 @@ public class Visualizer extends ElementManipulator {
 							}
 						}
 					}
+					stringAr[i] = curOutPin.getName();
 					i++;
 				}
 			}
@@ -551,12 +556,9 @@ public class Visualizer extends ElementManipulator {
 				InputPower curInPow = inPowIt.next();
 				if (curInPow.getPowGroup() == powerGroup) {
 					values = curInPow.getValues();
-					System.out.println("Hello");
 				}
 			}
-			System.out.println(values[1]);
 			data.add(values);
-			System.out.println(data.size());
 			IDiagramWizard wiz = new DiagramWizard();
 			if (this.diagramPanel != null) {
 				if (diagram != null) {
