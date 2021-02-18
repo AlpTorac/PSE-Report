@@ -66,6 +66,10 @@ public abstract class Pin extends Element {
 	public void setElementContent(String content) {
 		super.setElementContent(content);
 	}
+	
+	public String getInnerPath() {
+		return parentCell.getInnerPath() + "/" + name;
+	}
      
 }
 

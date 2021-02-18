@@ -38,7 +38,7 @@ public class MergeCommand implements Command {
             }
         }
         for (int i = 0; i < cells.size(); i++) {
-        	cells.set(i, (Cell) cells.get(i).clone());
+        	cells.set(i, cells.get(i).clone());
         }
         NameConflictResolver conflictResolver = new NameConflictResolver(cells);
         cells = conflictResolver.getCells();
@@ -55,6 +55,9 @@ public class MergeCommand implements Command {
             }
         }
         productLibrary = new Library(name, index1, index2, null, cells);
+        for (Cell cell: cells) {
+        	cell.setParentLibrary(productLibrary);
+        }
         ArrayList<Library> libraries = currentModel.getCurrentProject().getLibraries();
         libraries.add(productLibrary);
         currentModel.getCurrentProject().setLibraries(libraries);
@@ -66,7 +69,9 @@ public class MergeCommand implements Command {
      * Undoes the command by simply removing the product library
      */
     public void undo() {
-    	currentModel.getCurrentProject().getLibraries().remove(productLibrary);
+    	ArrayList<Library> libraries = currentModel.getCurrentProject().getLibraries();
+    	libraries.remove(productLibrary);
+    	currentModel.getCurrentProject().setLibraries(libraries);
         currentModel.getCurrentProject().inform();
     }
 }

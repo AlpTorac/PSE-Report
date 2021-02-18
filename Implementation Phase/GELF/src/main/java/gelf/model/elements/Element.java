@@ -49,4 +49,9 @@ public abstract class Element {
 	public void setElementContent(String elementContent) {
 		this.elementContent = elementContent;
 	}
+	
+	public abstract String getInnerPath();
+
+	@Override
+	public abstract Element clone();
 }
