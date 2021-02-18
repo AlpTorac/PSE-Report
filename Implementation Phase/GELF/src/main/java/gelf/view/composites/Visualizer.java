@@ -46,7 +46,7 @@ public class Visualizer extends ElementManipulator {
 	Panel upperPanel;
 	Panel lowerPanel;
 	Panel dropdowns;
-
+	
 	Panel diagramPanel;
 	IDiagram diagram;
 	private JComboBox<Attribute> libCellDropdown = new JComboBox<Attribute>();
@@ -143,7 +143,6 @@ public class Visualizer extends ElementManipulator {
 		this.diagramPanel.setBackground(ColorTheme.text);
 		this.diagramPanel.setLayout(null);
 		this.diagramPanel.setOpaque(true);
-
 		updateDiagram();
 		// this.diagram = wiz.makeBarChart(this.diagramPanel, data);
 		// this.diagram.attachToContainer(this.diagramPanel);
@@ -320,14 +319,17 @@ public class Visualizer extends ElementManipulator {
 
 	//update diagram depending on dropdown status
 	private void updateDiagram() {
-		
+
 		ArrayList<float[]> data = new ArrayList<float[]>();
+		ArrayList<String[]> stringData = new ArrayList<String[]>();
 		float[] values = null;
+		String[] stringAr = null;
 		
 		if (this.subWindow.getElement().getClass() == Library.class) {
 			Library lib = (Library)this.subWindow.getElement();
 			if (DropdownStatus.attribute == Attribute.INPUT_POWER) {
 				values = new float[lib.getCells().size()];
+				stringAr = new String[lib.getCells().size()];
 				int i = 0;
 				
 				Iterator<Cell> cellsIt = lib.getCells().iterator();
@@ -335,12 +337,14 @@ public class Visualizer extends ElementManipulator {
 					Cell curCell = cellsIt.next();
 					if (!curCell.getAvailableInputPower().contains(DropdownStatus.powerGroup)) {
 						values[i] = 0;
+						stringAr[i] = curCell.getName();
 					}
 					else {
 						curCell.calculateInPow();
 						float value = 
 								curCell.getInPowerStat().get(DropdownStatus.powerGroup).getAvg();
 						values[i] = value;
+						stringAr[i] = curCell.getName();
 					}
 					i++;
 				}
@@ -348,6 +352,7 @@ public class Visualizer extends ElementManipulator {
 			
 			else if (DropdownStatus.attribute == Attribute.OUTPUT_POWER) {
 				values = new float[lib.getCells().size()];
+				stringAr = new String[lib.getCells().size()];
 				int i = 0;
 				
 				Iterator<Cell> cellsIt = lib.getCells().iterator();
@@ -355,12 +360,14 @@ public class Visualizer extends ElementManipulator {
 					Cell curCell = cellsIt.next();
 					if (!curCell.getAvailableOutputPower().contains(DropdownStatus.powerGroup)) {
 						values[i] = 0;
+						stringAr[i] = curCell.getName();
 					}
 					else {
 						curCell.calculateOutPow();
 						float value = 
 								curCell.getOutPowerStat().get(DropdownStatus.powerGroup).getAvg();
 						values[i] = value;
+						stringAr[i] = curCell.getName();
 					}
 					i++;
 				}
@@ -421,10 +428,15 @@ public class Visualizer extends ElementManipulator {
 			
 		}
 		data.add(values);
+		stringData.add(stringAr);
 		DiagramWizard wiz = new DiagramWizard();
-		this.diagram = wiz.makeAndAttachBarChart(this.diagramPanel, data);
-		this.diagram.attachToContainer(this.diagramPanel);
-		this.diagram.refresh();
+		if (this.diagramPanel != null) {
+			if (diagram != null) {
+				diagram.removeFromContainer();
+			}
+			this.diagram = wiz.makeAndAttachBarChartWithDescriptions(this.diagramPanel,
+					data, stringData);		
+		}
 	}
 			
 			
