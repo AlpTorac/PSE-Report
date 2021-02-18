@@ -200,9 +200,9 @@ public class DiagramData {
 			array = values.get(midValueArrayIndex);
 			
 			if (array.length % 2 == 0) {
-				median = (array[array.length / 2] + array[array.length / 2 + 1]) / 2.0f;
+				median = (array[array.length / 2 - 1] + array[array.length / 2]) / 2.0f;
 			} else {
-				median = array[array.length / 2 + 1];
+				median = array[(array.length - 1) / 2];
 			}
 		}
 		return median;
