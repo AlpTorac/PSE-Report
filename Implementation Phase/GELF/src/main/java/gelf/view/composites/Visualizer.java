@@ -320,11 +320,14 @@ public class Visualizer extends ElementManipulator {
 
 	//update diagram depending on dropdown status
 	private void updateDiagram() {
+		
+		ArrayList<float[]> data = new ArrayList<float[]>();
+		float[] values = null;
+		
 		if (this.subWindow.getElement().getClass() == Library.class) {
 			Library lib = (Library)this.subWindow.getElement();
 			if (DropdownStatus.attribute == Attribute.INPUT_POWER) {
-				ArrayList<float[]> data = new ArrayList<float[]>();
-				float[] values = new float[lib.getCells().size()];
+				values = new float[lib.getCells().size()];
 				int i = 0;
 				
 				Iterator<Cell> cellsIt = lib.getCells().iterator();
@@ -341,16 +344,10 @@ public class Visualizer extends ElementManipulator {
 					}
 					i++;
 				}
-				data.add(values);
-				DiagramWizard wiz = new DiagramWizard();
-				this.diagram = wiz.makeAndAttachBarChart(this.diagramPanel, data);
-				this.diagram.attachToContainer(this.diagramPanel);
-				this.diagram.refresh();
 			}
 			
 			else if (DropdownStatus.attribute == Attribute.OUTPUT_POWER) {
-				ArrayList<float[]> data = new ArrayList<float[]>();
-				float[] values = new float[lib.getCells().size()];
+				values = new float[lib.getCells().size()];
 				int i = 0;
 				
 				Iterator<Cell> cellsIt = lib.getCells().iterator();
@@ -367,19 +364,13 @@ public class Visualizer extends ElementManipulator {
 					}
 					i++;
 				}
-				data.add(values);
-				DiagramWizard wiz = new DiagramWizard();
-				this.diagram = wiz.makeAndAttachBarChart(this.diagramPanel, data);
-				this.diagram.attachToContainer(this.diagramPanel);
-				this.diagram.refresh();
 			}
 		}
 		
 		else if (this.subWindow.getElement().getClass() == Cell.class) {
 			Cell cell = (Cell)this.subWindow.getElement();
 			if (DropdownStatus.attribute == Attribute.INPUT_POWER) {
-				ArrayList<float[]> data = new ArrayList<float[]>();
-				float[] values = new float[cell.getInPins().size()];
+				values = new float[cell.getInPins().size()];
 				int i = 0;
 				
 				Iterator<InputPin> inPinsIt = cell.getInPins().iterator();
@@ -401,15 +392,10 @@ public class Visualizer extends ElementManipulator {
 					}
 					i++;
 				}
-				data.add(values);
-				DiagramWizard wiz = new DiagramWizard();
-				this.diagram = wiz.makeAndAttachBarChart(this.diagramPanel, data);
-				this.diagram.attachToContainer(this.diagramPanel);
-				this.diagram.refresh();
 			}
+			
 			else if (DropdownStatus.attribute == Attribute.OUTPUT_POWER) {
-				ArrayList<float[]> data = new ArrayList<float[]>();
-				float[] values = new float[cell.getOutPins().size()];
+				values = new float[cell.getOutPins().size()];
 				int i = 0;
 				
 				Iterator<OutputPin> outPinsIt = cell.getOutPins().iterator();
@@ -431,13 +417,14 @@ public class Visualizer extends ElementManipulator {
 					}
 					i++;
 				}
-				data.add(values);
-				DiagramWizard wiz = new DiagramWizard();
-				this.diagram = wiz.makeAndAttachBarChart(this.diagramPanel, data);
-				this.diagram.attachToContainer(this.diagramPanel);
-				this.diagram.refresh();
 			}
+			
 		}
+		data.add(values);
+		DiagramWizard wiz = new DiagramWizard();
+		this.diagram = wiz.makeAndAttachBarChart(this.diagramPanel, data);
+		this.diagram.attachToContainer(this.diagramPanel);
+		this.diagram.refresh();
 	}
 			
 			
