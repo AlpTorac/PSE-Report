@@ -179,4 +179,20 @@ public abstract class Diagram implements IDiagram {
 	public JLayeredPane getContainingElement() {
 		return this.containingElement;
 	}
+	
+	public void showAxes() {
+		if (this.axes != null) {
+			for (DiagramAxis axis : this.axes) {
+				axis.showValues();
+			}
+		}
+	}
+	
+	public void hideAxes() {
+		if (this.axes != null) {
+			for (DiagramAxis axis : this.axes) {
+				axis.hideValues();
+			}
+		}
+	}
 }

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="javax.swing.BorderFactory"/>
-    <fullyQualifiedTypeName name="javax.swing.border.Border"/>
     <fullyQualifiedTypeName name="javax.swing.Timer"/>
     <fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
     <fullyQualifiedTypeName name="javax.swing.JLayeredPane"/>
@@ -60,4 +58,6 @@
     <fullyQualifiedTypeName name="gelf.view.diagrams.indicator.DiagramViewHelper"/>
     <fullyQualifiedTypeName name="java.lang.System"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.SettingsProvider"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.DiagramWizard"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.IDiagramWizard"/>
 </qualifiedTypeNameHistroy>

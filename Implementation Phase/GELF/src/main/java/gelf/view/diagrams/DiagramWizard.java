@@ -28,13 +28,18 @@ public class DiagramWizard implements IDiagramWizard {
 		
 	}
 	
+	private void attachAndShowAxes(Container container, IDiagram diagram) {
+		diagram.attachToContainer(container);
+		diagram.showAxes();
+	}
+	
 	@Override
 	public BarChart makeAndAttachBarChart(Container container, Collection<?> data) {
 		DiagramBuilder builder = new BarChartBuilder(container);
 		builder.receiveDiagramData(data, 0);
 		director.setBuilder(builder);
 		BarChart diagram = (BarChart) director.build();
-		diagram.attachToContainer(container);
+		this.attachAndShowAxes(container, diagram);
 		return diagram;
 	}
 
@@ -44,7 +49,7 @@ public class DiagramWizard implements IDiagramWizard {
 		builder.receiveDiagramData(data, 2);
 		director.setBuilder(builder); 
 		HeatMap diagram = (HeatMap) director.build();
-		diagram.attachToContainer(container);
+		this.attachAndShowAxes(container, diagram);
 		return diagram;
 	}
 
@@ -64,7 +69,7 @@ public class DiagramWizard implements IDiagramWizard {
 		builder.receiveDiagramData(data, 1);
 		director.setBuilder(builder);
 		FunctionGraph diagram = (FunctionGraph) director.build();
-		diagram.attachToContainer(container);
+		this.attachAndShowAxes(container, diagram);
 		return diagram;
 	}
 
@@ -73,7 +78,7 @@ public class DiagramWizard implements IDiagramWizard {
 		DiagramOverlayer overlayer = new DiagramOverlayer(barCharts);
 		overlayer.setOverlayStrategy(new BarChartOverlayStrategy());
 		BarChart overlaidDiagram = (BarChart) overlayer.overlay();
-		overlaidDiagram.attachToContainer(container);
+		this.attachAndShowAxes(container, overlaidDiagram);
 		return overlaidDiagram;
 	}
 
@@ -82,7 +87,7 @@ public class DiagramWizard implements IDiagramWizard {
 		DiagramOverlayer overlayer = new DiagramOverlayer(functionGraphs);
 		overlayer.setOverlayStrategy(new FunctionGraphOverlayStrategy());
 		FunctionGraph overlaidDiagram = (FunctionGraph) overlayer.overlay();
-		overlaidDiagram.attachToContainer(container);
+		this.attachAndShowAxes(container, overlaidDiagram);
 		return overlaidDiagram;
 	}
 
@@ -91,7 +96,7 @@ public class DiagramWizard implements IDiagramWizard {
 		DiagramOverlayer overlayer = new DiagramOverlayer(histograms);
 		overlayer.setOverlayStrategy(new HistogramOverlayStrategy());
 		Histogram overlaidDiagram = (Histogram) overlayer.overlay();
-		overlaidDiagram.attachToContainer(container);
+		this.attachAndShowAxes(container, overlaidDiagram);
 		return overlaidDiagram;
 	}
 
@@ -138,7 +143,7 @@ public class DiagramWizard implements IDiagramWizard {
 		builder.receiveDiagramData(data, descriptions, 0);
 		director.setBuilder(builder);
 		BarChart diagram = (BarChart) director.build();
-		diagram.attachToContainer(container);
+		this.attachAndShowAxes(container, diagram);
 		return diagram;
 	}
 }
