@@ -6,9 +6,12 @@ import gelf.model.elements.InputPin;
 import gelf.model.elements.Library;
 import gelf.model.elements.OutputPin;
 import gelf.model.elements.Stat;
+import gelf.model.elements.attributes.InputPower;
+import gelf.model.elements.attributes.OutputPower;
 import gelf.model.elements.attributes.PowerGroup;
 import gelf.model.elements.attributes.Timing;
 import gelf.model.elements.attributes.TimingGroup;
+import gelf.model.elements.attributes.TimingKey;
 import gelf.model.elements.attributes.TimingSense;
 import gelf.model.elements.attributes.TimingType;
 import gelf.model.project.Project;
@@ -16,7 +19,10 @@ import gelf.model.project.Project;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -314,64 +320,129 @@ public class Visualizer extends ElementManipulator {
 
 	//update diagram depending on dropdown status
 	private void updateDiagram() {
-			
 		if (this.subWindow.getElement().getClass() == Library.class) {
 			Library lib = (Library)this.subWindow.getElement();
 			if (DropdownStatus.attribute == Attribute.INPUT_POWER) {
-				if (DropdownStatus.powerGroup == PowerGroup.FALL_POWER) {
-					ArrayList<float[]> data = new ArrayList<float[]>();
-					Iterator<Cell> cellsIt = lib.getCells().iterator();
-					float[] values = new float[lib.getCells().size()];
-					int i = 0;
-					while(cellsIt.hasNext()) {
-						Cell curCell = cellsIt.next();
-						if (!curCell.getAvailableInputPower().contains(PowerGroup.FALL_POWER)) {
-							values[i] = 0;
-							i++;
-							continue;
-						}
-						curCell.calculateInPow();
-						float value = 
-								curCell.getInPowerStat().get(PowerGroup.FALL_POWER).getAvg();
-						values[i] = value;
-						i++;
-					}
-					data.add(values);
-					DiagramWizard wiz = new DiagramWizard();
-					this.diagram = wiz.makeAndAttachBarChart(this.diagramPanel, data);
-					this.diagram.attachToContainer(this.diagramPanel);
-					this.diagram.refresh();
-				}
+				ArrayList<float[]> data = new ArrayList<float[]>();
+				float[] values = new float[lib.getCells().size()];
+				int i = 0;
 				
-				else if (DropdownStatus.powerGroup == PowerGroup.RISE_POWER) {
-					ArrayList<float[]> data = new ArrayList<float[]>();
-					Iterator<Cell> cellsIt = lib.getCells().iterator();
-					float[] values = new float[lib.getCells().size()];
-					int i = 0;
-					while(cellsIt.hasNext()) {
-						Cell curCell = cellsIt.next();
-						if (!curCell.getAvailableInputPower().contains(PowerGroup.RISE_POWER)) {
-							values[i] = 0;
-							i++;
-							continue;
-						}
+				Iterator<Cell> cellsIt = lib.getCells().iterator();
+				while(cellsIt.hasNext()) {
+					Cell curCell = cellsIt.next();
+					if (!curCell.getAvailableInputPower().contains(DropdownStatus.powerGroup)) {
+						values[i] = 0;
+					}
+					else {
 						curCell.calculateInPow();
 						float value = 
-								curCell.getInPowerStat().get(PowerGroup.RISE_POWER).getAvg();
+								curCell.getInPowerStat().get(DropdownStatus.powerGroup).getAvg();
 						values[i] = value;
-						i++;
 					}
-					data.add(values);
-					DiagramWizard wiz = new DiagramWizard();
-					this.diagram = wiz.makeAndAttachBarChart(this.diagramPanel, data);
-					this.diagram.attachToContainer(this.diagramPanel);
-					this.diagram.refresh();
+					i++;
 				}
+				data.add(values);
+				DiagramWizard wiz = new DiagramWizard();
+				this.diagram = wiz.makeAndAttachBarChart(this.diagramPanel, data);
+				this.diagram.attachToContainer(this.diagramPanel);
+				this.diagram.refresh();
 			}
 			
-			
+			else if (DropdownStatus.attribute == Attribute.OUTPUT_POWER) {
+				ArrayList<float[]> data = new ArrayList<float[]>();
+				float[] values = new float[lib.getCells().size()];
+				int i = 0;
+				
+				Iterator<Cell> cellsIt = lib.getCells().iterator();
+				while(cellsIt.hasNext()) {
+					Cell curCell = cellsIt.next();
+					if (!curCell.getAvailableOutputPower().contains(DropdownStatus.powerGroup)) {
+						values[i] = 0;
+					}
+					else {
+						curCell.calculateOutPow();
+						float value = 
+								curCell.getOutPowerStat().get(DropdownStatus.powerGroup).getAvg();
+						values[i] = value;
+					}
+					i++;
+				}
+				data.add(values);
+				DiagramWizard wiz = new DiagramWizard();
+				this.diagram = wiz.makeAndAttachBarChart(this.diagramPanel, data);
+				this.diagram.attachToContainer(this.diagramPanel);
+				this.diagram.refresh();
+			}
+		}
+		
+		else if (this.subWindow.getElement().getClass() == Cell.class) {
+			Cell cell = (Cell)this.subWindow.getElement();
+			if (DropdownStatus.attribute == Attribute.INPUT_POWER) {
+				ArrayList<float[]> data = new ArrayList<float[]>();
+				float[] values = new float[cell.getInPins().size()];
+				int i = 0;
+				
+				Iterator<InputPin> inPinsIt = cell.getInPins().iterator();
+				while(inPinsIt.hasNext()) {
+					InputPin curInPin = inPinsIt.next();
+					if (!curInPin.getAvailablePower().contains(DropdownStatus.powerGroup)) {
+						values[i] = 0;
+					}
+					else {
+						curInPin.calculatePower();
+						ArrayList<InputPower> inPows = curInPin.getInputPowers();
+						Iterator<InputPower> inPowIt = inPows.iterator();
+						while (inPowIt.hasNext()) {
+							InputPower curInPow = inPowIt.next();
+							if (curInPow.getPowGroup() == DropdownStatus.powerGroup) {
+								values[i] = curInPow.getStats().getAvg();
+							}
+						}
+					}
+					i++;
+				}
+				data.add(values);
+				DiagramWizard wiz = new DiagramWizard();
+				this.diagram = wiz.makeAndAttachBarChart(this.diagramPanel, data);
+				this.diagram.attachToContainer(this.diagramPanel);
+				this.diagram.refresh();
+			}
+			else if (DropdownStatus.attribute == Attribute.OUTPUT_POWER) {
+				ArrayList<float[]> data = new ArrayList<float[]>();
+				float[] values = new float[cell.getOutPins().size()];
+				int i = 0;
+				
+				Iterator<OutputPin> outPinsIt = cell.getOutPins().iterator();
+				while(outPinsIt.hasNext()) {
+					OutputPin curOutPin = outPinsIt.next();
+					if (!curOutPin.getAvailablePower().contains(DropdownStatus.powerGroup)) {
+						values[i] = 0;
+					}
+					else {
+						curOutPin.calculatePower();
+						ArrayList<OutputPower> outPows = curOutPin.getOutputPowers();
+						Iterator<OutputPower> outPowIt = outPows.iterator();
+						while (outPowIt.hasNext()) {
+							OutputPower curOutPow = outPowIt.next();
+							if (curOutPow.getPowGroup() == DropdownStatus.powerGroup) {
+								values[i] = curOutPow.getStats().getAvg();
+							}
+						}
+					}
+					i++;
+				}
+				data.add(values);
+				DiagramWizard wiz = new DiagramWizard();
+				this.diagram = wiz.makeAndAttachBarChart(this.diagramPanel, data);
+				this.diagram.attachToContainer(this.diagramPanel);
+				this.diagram.refresh();
+			}
 		}
 	}
+			
+			
+			
+	
 
 	@Override
 	public void componentResized(ComponentEvent e) {
