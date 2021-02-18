@@ -1,7 +1,0 @@
-package gelf.view.diagrams;
-
-import javax.swing.JPanel;
-
-public class TestPanel extends JPanel {
-
-}

@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="overlayAndAttach"/>
+		<item key="selection" value="setShowValuesUnderAxis(false)"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="d"/>
+			<item value="showValuesAboveAxis"/>
+			<item value="showValuesUnderAxis"/>
 			<item value="overlayAndInsert"/>
 			<item value=" overlay"/>
 			<item value="overlay"/>
@@ -20,11 +23,10 @@
 			<item value="dc"/>
 			<item value="point"/>
 			<item value="ValueDisplayPoint"/>
-			<item value="HistogramBar"/>
-			<item value="barCharts"/>
-			<item value="BarChart"/>
 		</list>
 		<list key="replacehistory">
+			<item value="setShowValuesUnderAxis(false)"/>
+			<item value="setShowValuesUnderAxis(true)"/>
 			<item value="overlayAndAttach"/>
 			<item value=" overlayAndInsert"/>
 			<item value="overlayAndInsert"/>
@@ -38,8 +40,6 @@
 			<item value="FunctionGraph"/>
 			<item value="functionGraphs"/>
 			<item value="histograms"/>
-			<item value="Histogram"/>
-			<item value="hsbColor2"/>
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">

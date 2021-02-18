@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="gelf.view.diagrams.TestPanel"/>
     <fullyQualifiedTypeName name="javax.swing.BorderFactory"/>
     <fullyQualifiedTypeName name="javax.swing.border.Border"/>
     <fullyQualifiedTypeName name="javax.swing.Timer"/>
@@ -55,9 +54,10 @@
     <fullyQualifiedTypeName name="gelf.view.diagrams.IDiagram"/>
     <fullyQualifiedTypeName name="org.junit.jupiter.api.AfterAll"/>
     <fullyQualifiedTypeName name="gelf.model.project.Model"/>
-    <fullyQualifiedTypeName name="gelf.view.diagrams.SettingsProvider"/>
     <fullyQualifiedTypeName name="java.awt.Container"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.indicator.DiagramViewHelperFactory"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.indicator.IndicatorIdentifier"/>
     <fullyQualifiedTypeName name="gelf.view.diagrams.indicator.DiagramViewHelper"/>
+    <fullyQualifiedTypeName name="java.lang.System"/>
+    <fullyQualifiedTypeName name="gelf.view.diagrams.SettingsProvider"/>
 </qualifiedTypeNameHistroy>
