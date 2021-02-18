@@ -66,7 +66,9 @@ public class MergeCommand implements Command {
      * Undoes the command by simply removing the product library
      */
     public void undo() {
-    	currentModel.getCurrentProject().getLibraries().remove(productLibrary);
+    	ArrayList<Library> libraries = currentModel.getCurrentProject().getLibraries();
+    	libraries.remove(productLibrary);
+    	currentModel.getCurrentProject().setLibraries(libraries);
         currentModel.getCurrentProject().inform();
     }
 }

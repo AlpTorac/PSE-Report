@@ -38,6 +38,15 @@ public class Library extends HigherElement {
     	this.setAvailableTimType();
     }
     
+    @Override
+    public String toString() {
+    	if (libraryFile != null) {
+    		return libraryFile.getName() + "/" + super.toString();
+    	} else {
+    		return "----/" + super.toString();
+    	}
+    }
+    
 	/**
 	 * Returns a deep copy of the Library object
 	 * @return the deep copy of the Library object
