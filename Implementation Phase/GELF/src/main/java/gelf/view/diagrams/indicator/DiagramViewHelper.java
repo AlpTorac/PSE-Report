@@ -24,6 +24,7 @@ public abstract class DiagramViewHelper implements IDiagramViewHelper {
 	public void attachToDiagram() {
 		this.diagram.addDiagramViewHelper(this);
 		this.attachToDiagramContainingElement();
+		this.diagram.refresh();
 	}
 	
 	private void attachToDiagramContainingElement() {
@@ -37,6 +38,9 @@ public abstract class DiagramViewHelper implements IDiagramViewHelper {
 	}
 	
 	public void remove() {
+		for (ViewHelperComponent vhc : this.helperComponents) {
+			vhc.removeFromDiagram();
+		}
 		this.diagram.removeDiagramViewHelper(this.getID());
 		this.diagram = null;
 	}
