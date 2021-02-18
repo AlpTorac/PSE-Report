@@ -28,7 +28,7 @@ public class CopyListener implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		HashSet<Cell> cells = new HashSet<Cell>();
+            HashSet<Element> cells = new HashSet<Element>();
 		for (Element element: outliner.getSelectedElements()) {
 			if (element instanceof Cell) {
 				cells.add((Cell) element);
