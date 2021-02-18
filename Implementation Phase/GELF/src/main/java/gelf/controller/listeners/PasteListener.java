@@ -9,20 +9,25 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-/*
+/**
  * Listener for pasting action.
+ * @author Ege Uzhan
  */
 public class PasteListener implements ActionListener {
 
 	private Outliner outliner;
 	
+	/**
+	 * Initializes the listener
+	 * @param outliner The outliner.
+	 */
 	public PasteListener(Outliner outliner) {
 		this.outliner = outliner;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (outliner.getSelectedElements().size() != 1) {
+		if (outliner.getSelectedElements().isEmpty() || outliner.getSelectedElements().size() != 1) {
 			JOptionPane.showMessageDialog(new JFrame(), "Select one library for pasting.", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}

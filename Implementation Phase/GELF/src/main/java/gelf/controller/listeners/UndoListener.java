@@ -5,8 +5,9 @@ import java.awt.event.ActionListener;
 
 import gelf.model.project.Model;
 
-/*
+/**
  * Listener for the undo button.
+ * @author Ege Uzhan
  */
 public class UndoListener implements ActionListener {
 

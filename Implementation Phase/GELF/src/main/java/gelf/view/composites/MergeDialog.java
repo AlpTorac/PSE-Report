@@ -26,6 +26,7 @@ import gelf.view.components.Panel;
 
 /**
  * Dialog for the merge conflicts.
+ * @author Ege Uzhan
  */
 public class MergeDialog extends JDialog implements ActionListener, WindowListener{
 	
@@ -42,13 +43,13 @@ public class MergeDialog extends JDialog implements ActionListener, WindowListen
 	private ConflictData conflictData;
 	
 	/*
-	 * Constructor
+	 * Initializes the merge dialog.
 	 */
 	public MergeDialog() {
 		this.setSize(new Dimension(450, 200));
 	}
 	  
-	/*
+	/**
 	 * Creates the dialog 
 	 * @param cell1 Left cell
 	 * @param cell2 Right cell
@@ -168,7 +169,7 @@ public class MergeDialog extends JDialog implements ActionListener, WindowListen
     	
     }
     	
-    /*
+    /**
      * Opens the dialog when a merge conflict emerges.
      * @return Data for resolving the conflict.
      */

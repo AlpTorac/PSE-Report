@@ -18,13 +18,19 @@ import javax.swing.JTextField;
 
 
 
-/*
+/**
  * Listener for scaling values of certain attributes.
+ * @author Ege Uzhan
  */
 public class ScaleListener implements ActionListener {
 	
 	private Visualizer panel;
 	
+	
+	/**
+	 * Initializes the listener
+	 * @param panel Visualizer which the button listened belongs to.
+	 */
 	public ScaleListener(Visualizer panel) {
 	
 		this.panel = panel;

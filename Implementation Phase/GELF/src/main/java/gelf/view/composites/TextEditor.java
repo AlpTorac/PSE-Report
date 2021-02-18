@@ -28,6 +28,7 @@ import javax.swing.text.Highlighter;
 
 /**
  * Displays the liberty text file.
+ * @author Ege Uzhan
  */
 public class TextEditor extends ElementManipulator implements KeyListener{
 	
@@ -52,8 +53,14 @@ public class TextEditor extends ElementManipulator implements KeyListener{
 	private final Highlighter hoverhl;
 	private final Highlighter.HighlightPainter hoverPainter;
 	
-	/*
-	 * Constructor
+	/**
+	 * Initializes the text editor.
+	 * @param element Element opened in the editor
+	 * @param p Opened project
+	 * @param o The outliner
+	 * @param subwindows The subwindow area
+	 * @param width Width of this panel
+	 * @param height Height of this panel
 	 */
     public TextEditor(Element element, Project p, Outliner o, SubWindowArea subwindows, int width, int height){
         super(element, p, width, height);
@@ -70,7 +77,7 @@ public class TextEditor extends ElementManipulator implements KeyListener{
     	    	
     }
     
-    /*
+    /**
      * Sets up the panel.
      */
     private void setup() {
@@ -104,8 +111,9 @@ public class TextEditor extends ElementManipulator implements KeyListener{
     	updateButton.addActionListener(new EditListener(this, outliner, subwindows));
     }
     
-    /*
+    /**
      * Sets the element shown in the editor.
+     * @param element
      */
    
     public void setElement(Element element) {
@@ -118,7 +126,7 @@ public class TextEditor extends ElementManipulator implements KeyListener{
 	
     }
     
-    /*
+    /**
      * Highlights the given value
      * @param value Value to be highlighted.
      */
@@ -151,15 +159,16 @@ public class TextEditor extends ElementManipulator implements KeyListener{
         }
     }
     
-    /*
+    /**
      * Removes all highlights from the text.
      */
     public void removeHighlights() {
     	hl.removeAllHighlights();
     }
     
-    /*
-     * 
+    /**
+     * Adds highlights to the entered values in the text
+     * @param value To be highlighted value
      */
     public void addHoverHighlights(int value) {
     	highlightText(0);
@@ -167,14 +176,14 @@ public class TextEditor extends ElementManipulator implements KeyListener{
     	
     }
     
-    /*
-     *
+    /**
+     * Removes all highlights caused by hover actions.
      */
     public void removeHoverHighlights() {
     	hoverhl.removeAllHighlights();
     }
     
-    /*
+    /**
      * Reverts the changes after a wrong input.
      */
     public void revert() {
@@ -182,8 +191,9 @@ public class TextEditor extends ElementManipulator implements KeyListener{
     	textArea.setText(document);
     }
     
-    /*
+    /**
      * Saves the changes after save button is clicked.
+     * @param newText Saved text
      */
     public void saveChanges(String newText) {
         this.document = newText;
@@ -191,8 +201,9 @@ public class TextEditor extends ElementManipulator implements KeyListener{
     	textArea.setText(document);
     }
     
-    /*
+    /**
      * Creates the text shown through the LibertyCompiler.
+     * @param element Element compiled for the text editor
      */
     private String createText(Element element) {
     	if (element instanceof Library) {
@@ -210,9 +221,10 @@ public class TextEditor extends ElementManipulator implements KeyListener{
     }
     
     
-    /*
+    /**
      * Highlights the searched string on the text field.
      * @param start Starting index of the text.
+     * @return last jumped index
      */
     private int jumpToNext(int start) {
     	
@@ -237,7 +249,7 @@ public class TextEditor extends ElementManipulator implements KeyListener{
 		return -1;
     }
     
-    /*
+    /**
      * Returns the document without the changes made in the editor.
      * @return Document text
      */
@@ -245,7 +257,7 @@ public class TextEditor extends ElementManipulator implements KeyListener{
     	return document;
     }
     
-    /*
+    /**
      * Sets the document.
      * @param newDocument New text.
      */
@@ -254,7 +266,7 @@ public class TextEditor extends ElementManipulator implements KeyListener{
     	this.document = createText(element);
     }
     
-    /*
+    /**
      * Returns the element opened in the editor.
      * @return Element
      */
@@ -262,8 +274,9 @@ public class TextEditor extends ElementManipulator implements KeyListener{
     	return element;
     }
     
-    /*
+    /**
      * Returns the (changed) text.
+     * @return Actual text shown in the editor.
      */
     public String getActualText() {
     	return textArea.getText();

@@ -15,20 +15,29 @@ import javax.swing.JOptionPane;
 import gelf.model.elements.Cell;
 import gelf.model.elements.Element;
 
-/*
+/**
  * Listener for copying a cell to another library.
+ * @author Ege Uzhan
  */
 public class CopyListener implements ActionListener {
 
 	private Outliner outliner;
 	
+	/**
+	 * Initializes the listener
+	 * @param outliner The outliner.
+	 */
 	public CopyListener(Outliner outliner) {
 		this.outliner = outliner;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-            HashSet<Element> cells = new HashSet<Element>();
+		if (outliner.getSelectedElements().isEmpty()) {
+			JOptionPane.showMessageDialog(new JFrame(), "Select at least one cell.", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
+		HashSet<Element> cells = new HashSet<Element>();
 		for (Element element: outliner.getSelectedElements()) {
 			if (element instanceof Cell) {
 				cells.add((Cell) element);

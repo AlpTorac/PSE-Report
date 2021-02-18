@@ -16,11 +16,20 @@ import gelf.view.composites.Outliner;
 import gelf.view.composites.SubWindow;
 import gelf.view.composites.SubWindowArea;
 
+/**
+ * Listener for the compare button.
+ * @author Ege Uzhan
+ */
 public class CompareListener implements ActionListener {
 
 	private Outliner outliner;
 	private SubWindowArea subwindows;
 	
+	/**
+	 * Initializes the listener.
+	 * @param outliner Outliner
+	 * @param subwindows SubWindowArea 
+	 */
 	public CompareListener(Outliner outliner, SubWindowArea subwindows) {
 		this.outliner = outliner;
 		this.subwindows = subwindows;
@@ -28,7 +37,7 @@ public class CompareListener implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (outliner.getSelectedElements().size() <= 1) {
+		if (outliner.getSelectedElements().isEmpty() || outliner.getSelectedElements().size() <= 1) {
 			JOptionPane.showMessageDialog(new JFrame(), "Select at least 2 elements to compare.", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}

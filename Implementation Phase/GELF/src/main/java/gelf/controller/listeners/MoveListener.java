@@ -10,19 +10,25 @@ import gelf.model.project.Model;
 import gelf.model.project.Project;
 import gelf.view.composites.Outliner;
 
-/*
+/**
  * Listener for moving a cell to another library.
+ * @author Ege Uzhan
  */
 public class MoveListener implements ActionListener {
 
 	private Outliner outliner;
 	
+	/**
+	 * Initializes the listener.
+	 * @param outliner The outliner.
+	 */
 	public MoveListener(Outliner outliner) {
 		this.outliner = outliner;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		
 		HashSet<Cell> cells = new HashSet<Cell>();
 		for (Element element: outliner.getSelectedElements()) {
 			if (element instanceof Cell) {
@@ -40,6 +46,5 @@ public class MoveListener implements ActionListener {
 		}
 	}
 
-	
 
 }

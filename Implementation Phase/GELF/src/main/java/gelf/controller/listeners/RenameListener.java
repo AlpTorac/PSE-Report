@@ -20,15 +20,20 @@ import javax.swing.event.TreeModelEvent;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-/*
+/**
  * Listener for renaming a liberty file.
+ * @author Ege Uzhan
  */
 public class RenameListener implements ActionListener {
 	
 	private Outliner outliner;
 	private SubWindowArea subwindows;
 	
-	
+	/**
+	 * Initializes the listener.
+	 * @param outliner The outliner.
+	 * @param subwindows The subwindow area
+	 */
 	public RenameListener(Outliner outliner, SubWindowArea subwindows) {
 		this.outliner = outliner;
 		this.subwindows = subwindows;
@@ -53,39 +58,13 @@ public class RenameListener implements ActionListener {
         
 		RenameCommand rename = new RenameCommand(element, newName);
 		rename.execute();
-		/*for (SubWindow subwindow: subwindows.getSubWindows()) {
-			if (element instanceof Library) {
-				
-			}
-			else if (element instanceof Cell) {
-				
-			}
-			else {
-				
-			}
-			
-			
-			
-			if (subwindow.getTextEditor().getElement().equals(element)) {
-				subwindow.setPath(newName);
-				subwindow.getTextEditor().getActualText().replace(element.getName(), newName);
-				if (element instanceof Library) {
-				//	subwindow.getVisualizer().getLibPanel()
-				}
-				else if (element instanceof Cell) {
-					subwindow.getVisualizer().getCellPanel().getCellButton().setText(newName);
-				}
-				else {
-					
-				}
-			}
-		}*/
+		
 	}
 	
-	/*
+	/**
 	 * Checks if there is an element with the same name.
-	 * @param element
-	 * @param elementName
+	 * @param element Selected Element in the outliner
+	 * @param elementName New name given to the element.
 	 */
 	public boolean checkExistingName(Element element, String elementName) {
 		if (element instanceof Library) {

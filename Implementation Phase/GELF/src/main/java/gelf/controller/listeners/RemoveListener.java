@@ -12,19 +12,28 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-/*
+/**
  * Listener for removing an element from the project.
+ * @author Ege Uzhan
  */
 public class RemoveListener implements ActionListener {
 
 	private Outliner outliner;
 	
+	/**
+	 * Initializes the listener
+	 * @author Ege Uzhan The outliner.
+	 */
 	public RemoveListener(Outliner outliner) {
 		this.outliner = outliner;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if (outliner.getSelectedElements().isEmpty()) {
+			JOptionPane.showMessageDialog(new JFrame(), "Select at least one library.", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		ArrayList<Library> libraries = new ArrayList<Library>();
 		for (Element element: outliner.getSelectedElements()) {
 			if (element instanceof Library) {

@@ -22,24 +22,29 @@ import gelf.model.elements.Library;
 import gelf.view.components.Panel;
 import gelf.view.composites.SubWindow;
 
+/**
+ * Comparison panel for libraries.
+ * @author Ege Uzhan
+ *
+ */
 public class LibraryComparePanel extends Panel implements MouseListener{
 	
 	public HashMap<Label, Library> buttons;
 	public ArrayList<Label> buttonList;
     private JPanel listPanel;
-    private ArrayList<Library> libraryList;
+    private ArrayList<Library> selectedLibraries;
 	private SubWindow subwindow;
     private JScrollPane scrollPane;
     
    
-    /*
-     * Constructor
+    /**
+     * Initializes the panel.
      * @param library To be opened library.
      */
     public LibraryComparePanel(int width, int height, SubWindow subwindow, ArrayList<Library> libraries) {
     	super(width, height);
     	this.subwindow = subwindow;
-    	libraryList = libraries;
+    	selectedLibraries = libraries;
     	buttonList = new ArrayList<Label>();
     	this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     	this.setBorder(new LineBorder(Color.BLACK));
@@ -72,13 +77,14 @@ public class LibraryComparePanel extends Panel implements MouseListener{
 	public void mouseClicked(MouseEvent e) {
 		
 		if (((Label)e.getSource()).getBackground().equals(Color.BLUE)) {
-			
+			selectedLibraries.remove(buttons.get((Label) e.getSource()));
 			
 			((Label)e.getSource()).setBackground(new Color(0.2f, 0.2f, 0.2f));
+			
 		}
 		else {
 			
-			
+			selectedLibraries.add(buttons.get((Label) e.getSource()));
 			((Label)e.getSource()).setBackground(Color.BLUE);
 		}
 		return;

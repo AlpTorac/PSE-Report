@@ -11,20 +11,25 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-/*
+/**
  * Listener for merging libraries.
+ * @author Ege Uzhan
  */
 public class MergeListener implements ActionListener {
 
 	private Outliner outliner;
 	
+	/**
+	 * Initializes the listener
+	 * @param outliner The outliner.
+	 */
 	public MergeListener(Outliner outliner) {
 		this.outliner = outliner;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (outliner.getSelectedElements().size() <= 1) {
+		if (outliner.getSelectedElements().isEmpty() || outliner.getSelectedElements().size() <= 1) {
 			JOptionPane.showMessageDialog(new JFrame(), "Select at least 2 libraries.", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
@@ -38,7 +43,7 @@ public class MergeListener implements ActionListener {
 				return;
 			}
 		}
-		String name = JOptionPane.showInputDialog(new JFrame(), "Please enter a name for the new library", "Hi", JOptionPane.OK_CANCEL_OPTION);
+		String name = JOptionPane.showInputDialog(new JFrame(), "Please enter a name for the new library", "Merge", JOptionPane.OK_CANCEL_OPTION);
 		if (name == null || name == "") {
 			JOptionPane.showMessageDialog(new JFrame(), "Merging cancelled", "Alert", JOptionPane.WARNING_MESSAGE);
 			return;

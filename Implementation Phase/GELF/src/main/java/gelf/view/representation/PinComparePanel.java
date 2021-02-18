@@ -24,16 +24,30 @@ import gelf.model.elements.Pin;
 import gelf.view.components.Panel;
 import gelf.view.composites.SubWindow;
 
+/**
+ * Holds all subpanels for comparison.
+ * @author Ege Uzhan
+ *
+ */
 public class PinComparePanel extends Panel {
 	
 	public ArrayList<Cell> cells;
 	private SubWindow subwindow;
     private JScrollPane scrollPane;
     private JPanel listPanel;
+    private ArrayList<Cell> selectedCells;
 
+    /**
+     * Initializes the panel.
+     * @param width Width of the panel
+     * @param height Height of the panel
+     * @param subwindow The subwindow area
+     * @param elements elements opened in the panel
+     */
 	public PinComparePanel(int width, int height, SubWindow subwindow, ArrayList<Element> elements) {
 		super(width, height);
 		this.subwindow = subwindow;
+		selectedCells = new ArrayList<Cell>();
 		cells = new ArrayList<Cell>();
 		this.setLayout(new FlowLayout());
 		this.setBorder(new LineBorder(Color.BLACK));
@@ -62,7 +76,15 @@ public class PinComparePanel extends Panel {
 	    	}
 	    }
 	    for (Cell cell: cells) {
-	    	listPanel.add(new PinCompareSubPanel(width, height, cell, subwindow));
+	    	listPanel.add(new PinCompareSubPanel(width, height, cell, subwindow, this));
 	    }
+	}
+	
+	/**
+	 * Returns a list of selected cells
+	 * @return selected cells in the subpanels.
+	 */
+	public ArrayList<Cell> getSelectedCells(){
+		return selectedCells;
 	}
 }

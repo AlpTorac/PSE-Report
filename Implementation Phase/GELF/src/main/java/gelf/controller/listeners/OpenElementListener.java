@@ -18,14 +18,20 @@ import javax.swing.tree.TreePath;
 import gelf.model.elements.Element;
 import gelf.model.project.Model;
 
-/*
+/**
  * Listener for opening an element in the working area.
+ * @author Ege Uzhan
  */
 public class OpenElementListener implements ActionListener, MouseListener {
 	
 	private Outliner outliner;
 	private SubWindowArea subwindows; 
 	
+	/**
+	 * Initializes the listener
+	 * @param outliner The outliner.
+	 * @param subwindows The subwindow area
+	 */
 	public OpenElementListener(Outliner outliner, SubWindowArea subwindows) {
 		this.outliner = outliner;
 		this.subwindows = subwindows;
@@ -37,7 +43,7 @@ public class OpenElementListener implements ActionListener, MouseListener {
 			JOptionPane.showMessageDialog(new JFrame(), "No library has been loaded in the application.", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		if (outliner.getSelectedElements().size() != 1) {
+		if (outliner.getSelectedElements().isEmpty() || outliner.getSelectedElements().size() != 1) {
 			JOptionPane.showMessageDialog(new JFrame(), "Select only one element to open in the working area.", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
@@ -52,7 +58,7 @@ public class OpenElementListener implements ActionListener, MouseListener {
 		if (e.getClickCount() == 2) {
 			DefaultMutableTreeNode node = (DefaultMutableTreeNode)
                     outliner.tree.getLastSelectedPathComponent();
-             if (node == null) {
+             if (node == null || node.getUserObject().equals("Root")) {
             	 return;
              }
 			Element element = (Element) node.getUserObject();
