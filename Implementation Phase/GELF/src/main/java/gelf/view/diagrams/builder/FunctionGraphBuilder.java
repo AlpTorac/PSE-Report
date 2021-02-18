@@ -20,22 +20,29 @@ public class FunctionGraphBuilder extends DiagramBuilder implements IFunctionGra
 	}
 
 	@Override
-	protected float getXAxisMinValue() {
-		return 0;
+	protected float getYAxisMaxValue() {
+		float maxVal = this.getDiagramData().getMaximumValue();
+		
+		if (maxVal <= 0) {
+			return 0;
+		} else {
+			return maxVal;
+		}
 	}
 
 	@Override
 	protected float getYAxisMinValue() {
-		return 0;
+		float minVal = this.getDiagramData().getMinimumValue();
+		
+		if (minVal >= 0) {
+			return 0;
+		} else {
+			return minVal;
+		}
 	}
-
+	
 	@Override
 	protected float getXAxisMaxValue() {
 		return this.getDiagramData().getMaximumIndexAt(0);
-	}
-
-	@Override
-	protected float getYAxisMaxValue() {
-		return this.getDiagramData().getMaximumValueAt(0);
 	}
 }
