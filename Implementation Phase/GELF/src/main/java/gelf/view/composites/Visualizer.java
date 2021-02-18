@@ -583,7 +583,7 @@ public class Visualizer extends ElementManipulator {
 		}
 		else if (this.subWindow.getElement().getClass() == InputPin.class) {
 			InputPin inPin = (InputPin)this.subWindow.getElement();
-				
+			float[] index1 = null;	
 			if (!inPin.getAvailablePower().contains(powerGroup)) {
 				return;
 			}
@@ -593,8 +593,10 @@ public class Visualizer extends ElementManipulator {
 				InputPower curInPow = inPowIt.next();
 				if (curInPow.getPowGroup() == powerGroup) {
 					values = curInPow.getValues();
+					index1 = curInPow.getIndex1();
 				}
 			}
+			data.add(index1);
 			data.add(values);
 			IDiagramWizard wiz = new DiagramWizard();
 			if (this.diagramPanel != null) {
