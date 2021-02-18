@@ -563,6 +563,46 @@ public class Visualizer extends ElementManipulator {
 					i++;
 				}
 			}
+			
+			else if (attribute == Attribute.TIMING) {
+				values = new float[cell.getOutPins().size()];
+				stringAr = new String[cell.getOutPins().size()];
+				int i = 0;
+				
+				Iterator<OutputPin> outPinsIt = cell.getOutPins().iterator();
+				while(outPinsIt.hasNext()) {
+					OutputPin curOutPin = outPinsIt.next();
+					if (!curOutPin.getAvailableTimSen().contains(timingSense)) {
+						values[i] = 0;
+						stringAr[i] = curOutPin.getName();
+					}
+					else if (!curOutPin.getAvailableTimType().contains(timingType)) {
+						values[i] = 0;
+						stringAr[i] = curOutPin.getName();
+					}
+					else if (!curOutPin.getAvailableTimGr().contains(timingGroup)) {
+						values[i] = 0;
+						stringAr[i] = curOutPin.getName();
+					}
+					
+					else {
+						curOutPin.calculateTiming();
+						ArrayList<Timing> timings = curOutPin.getTimings();
+						Iterator<Timing> timIt = timings.iterator();
+						while (timIt.hasNext()) {		
+							Timing curTim = timIt.next();
+							if (timingSense == curTim.getTimSense() &&
+									timingType == curTim.getTimType() &&
+									timingGroup == curTim.getTimGroup()) {
+								values[i] = curTim.getStats().getAvg();
+								stringAr[i] = curOutPin.getName();
+							}
+						}
+					}
+					i++;
+				}
+			}
+			
 			else if (attribute == Attribute.LEAKAGE) {
 				values = new float[(int) Math.pow(2,(cell.getInPins().size()))];
 				stringAr = new String[(int) Math.pow(2,(cell.getInPins().size()))];
