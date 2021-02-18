@@ -101,16 +101,19 @@ public abstract class Diagram implements IDiagram {
 		this.refreshAxes();
 		this.refreshValueDisplayComponents();
 		this.refreshNonValueDisplayComponents();
+		this.containingElement.repaint();
 	}
 	
 	public boolean addDiagramViewHelper(DiagramViewHelper dvh) {
 		boolean result = (this.viewHelpers.put(dvh.getID(), dvh) != null);
-		
+		this.containingElement.repaint();
 		return result;
 	}
 	
 	public boolean removeDiagramViewHelper(IndicatorIdentifier id) {
-		return (this.viewHelpers.remove(id) != null);
+		boolean result = (this.viewHelpers.remove(id) != null);
+		this.containingElement.repaint();
+		return result;
 	}
 	
 	public void showDiagramViewHelper(IndicatorIdentifier id) {

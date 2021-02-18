@@ -33,6 +33,8 @@ import gelf.view.components.Checkbox;
 import gelf.view.components.Panel;
 import gelf.view.diagrams.DiagramWizard;
 import gelf.view.diagrams.IDiagram;
+import gelf.view.diagrams.IDiagramViewHelper;
+import gelf.view.diagrams.IDiagramWizard;
 import gelf.view.representation.CellPanel;
 import gelf.view.representation.DataPanel;
 import gelf.view.representation.LibraryPanel;
@@ -40,7 +42,7 @@ import gelf.view.representation.LibraryPanel;
  * Visualizer
  */
 public class Visualizer extends ElementManipulator {
-
+	Visualizer _this = this;
 	SubWindow subWindow;
 	DataPanel dataPanel;
 	Panel upperPanel;
@@ -48,6 +50,11 @@ public class Visualizer extends ElementManipulator {
 	Panel dropdowns;
 	
 	Panel diagramPanel;
+
+	IDiagramViewHelper IDHmin;
+	IDiagramViewHelper IDHmax;
+	IDiagramViewHelper IDHavg;
+	IDiagramViewHelper IDHmed;
 	IDiagram diagram;
 	private JComboBox<Attribute> libCellDropdown = new JComboBox<Attribute>();
 	private JComboBox<Attribute> outpinDropdown = new JComboBox<Attribute>();
@@ -77,6 +84,10 @@ public class Visualizer extends ElementManipulator {
 	public TimingSense timingSense;	//for cell/library if attribute timing				||	output if attribute timing
 	public TimingGroup timingGroup;	//for cell/library if attribute timing				||	output if attribute timing
 	public TimingType timingType;	//for cell/library if attribute timing				||	output if attribute timing
+	private Checkbox min = new Checkbox("Minimum");
+	private Checkbox max = new Checkbox("Maximum");
+	private Checkbox avg = new Checkbox("Average");
+	private Checkbox med = new Checkbox("Median");
 
     public Visualizer(gelf.model.elements.Element e, SubWindow w, Project p, int width, int height) {
         super(e, p, width, height);
@@ -112,21 +123,33 @@ public class Visualizer extends ElementManipulator {
 		stats.setBackground(ColorTheme.section);
 		stats.setVisible(true);
 		
-		Checkbox min = new Checkbox("Minimum");
+		ItemListener checkboxListener = new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				System.out.println("CHECKBOX LISTENER");
+				updateStatDisplay();
+			}
+		};
+
 		min.setVisible(true);
+		min.addItemListener(checkboxListener);
 		stats.add(min);
-		Checkbox max = new Checkbox("Maximum");
+
 		max.setVisible(true);
+		max.addItemListener(checkboxListener);
 		stats.add(max);
-		Checkbox avg = new Checkbox("Average");
+
 		avg.setVisible(true);
+		avg.addItemListener(checkboxListener);
 		stats.add(avg);
-		Checkbox med = new Checkbox("Median");
+
 		med.setVisible(true);
+		med.addItemListener(checkboxListener);
 		stats.add(med);
+
 		this.lowerPanel.add(stats, BorderLayout.PAGE_END);
 		//diagram viewport
-		DiagramWizard wiz = new DiagramWizard();
+		
 		
 		// Cell cell = (Cell)e;
 		// float[] leakageValues = cell.getLeakages().getValues();
@@ -449,13 +472,45 @@ public class Visualizer extends ElementManipulator {
 		}
 		data.add(values);
 		stringData.add(stringAr);
-		DiagramWizard wiz = new DiagramWizard();
+		IDiagramWizard wiz = new DiagramWizard();
 		if (this.diagramPanel != null) {
 			if (diagram != null) {
 				diagram.removeFromContainer();
 			}
-			this.diagram = wiz.makeAndAttachBarChartWithDescriptions(this.diagramPanel,
-					data, stringData);		
+			this.diagram = wiz.makeAndAttachBarChartWithDescriptions(this.diagramPanel, data, stringData);
+		}
+		updateStatDisplay();
+	}
+
+	private void updateStatDisplay() {
+		IDiagramWizard wiz = new DiagramWizard();
+		System.out.println(this.diagram);
+		if(min.isSelected()) {
+			this.IDHmin = wiz.addMinDisplayer(this.diagram);
+		} else if(this.IDHmin != null) {
+			this.IDHmin.remove();
+			this.IDHmin = null;
+		}
+
+		if(max.isSelected()) {
+			this.IDHmax = wiz.addMaxDisplayer(this.diagram);
+		} else if(this.IDHmax != null) {
+			this.IDHmax.remove();
+			this.IDHmax = null;
+		}
+
+		if(avg.isSelected()) {
+			this.IDHavg = wiz.addAvgDisplayer(this.diagram);
+		} else if(this.IDHavg != null) {
+			this.IDHavg.remove();
+			this.IDHavg = null;
+		}
+		
+		if(med.isSelected()) {
+			this.IDHmed = wiz.addMedDisplayer(this.diagram);
+		} else if(this.IDHmed != null) {
+			this.IDHmed.remove();
+			this.IDHmed = null;
 		}
 	}
 

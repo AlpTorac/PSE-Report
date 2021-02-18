@@ -82,7 +82,7 @@ public class Library extends HigherElement {
     	setCells(dataLib.getCells());
         setIndex1(dataLib.getIndex1());
 	    setIndex2(dataLib.getIndex2());
-        setLibraryContent(dataLib.getLibraryContent());
+        setElementContent(dataLib.getElementContent());
 	}
     
 	public float[] getIndex1() {

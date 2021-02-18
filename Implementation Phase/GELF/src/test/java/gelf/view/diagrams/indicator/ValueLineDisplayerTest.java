@@ -55,10 +55,9 @@ class ValueLineDisplayerTest implements TestCase {
 	void maxTest() {
 		DiagramViewHelper max = factory.createMaxLineDisplayer(chart);
 		
-		max.show();
-		
-		chart.refresh();
 		show(frame, TestCase.SHOW_DURATION);
+		
+		max.remove();
 	}
 	
 	@Test
