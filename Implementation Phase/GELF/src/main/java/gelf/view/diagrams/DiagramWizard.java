@@ -59,7 +59,7 @@ public class DiagramWizard implements IDiagramWizard {
 		builder.receiveDiagramData(data, 1);
 		director.setBuilder(builder);
 		Histogram diagram = (Histogram) director.build();
-		diagram.attachToContainer(container);
+		this.attachAndShowAxes(container, diagram);
 		return diagram;
 	}
 
