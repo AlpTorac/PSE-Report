@@ -127,6 +127,10 @@ public class Cell extends HigherElement {
 		this.defaultLeakage = defaultLeakage;
 	}
 	
+	public String getInnerPath() {
+		return parentLibrary.getInnerPath() + "/" + name;
+	}
+	
 	/**
 	 * Returns a deep copy of the Cell object
 	 * @return the deep copy of the Cell object

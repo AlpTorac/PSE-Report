@@ -28,16 +28,12 @@ public abstract class DiagramBuilder implements IDiagramBuilder, ContainerAccess
 		this.data = data;
 	}
 	
-	private PositionInFrame getAxisOriginPosition(int xAxisYpos, int yAxisXpos) {
-		return factory.makePositionInFrame(yAxisXpos, xAxisYpos);
+	private PositionInFrame getXAxisEndPosition(PositionInFrame startX, int topRightXPos) {
+		return factory.makePositionInFrame(topRightXPos, startX.getYPos());
 	}
 	
-	private PositionInFrame getXAxisEndPosition(int containerWidth, int xAxisYpos) {
-		return factory.makePositionInFrame(containerWidth * (1 - settingsProvider.getDiagramRightMariginFactor()), xAxisYpos);
-	}
-	
-	private PositionInFrame getYAxisEndPosition(int containerHeight, int yAxisXpos) {
-		return factory.makePositionInFrame(yAxisXpos, containerHeight * settingsProvider.getDiagramTopMariginFactor());
+	private PositionInFrame getYAxisEndPosition(PositionInFrame startY, int topRightYPos) {
+		return factory.makePositionInFrame(startY.getXPos(), topRightYPos);
 	}
 	
 	private DiagramAxis makeXAxis(PositionInFrame axisOrigin, PositionInFrame endX, float minVal, float maxVal,
@@ -55,9 +51,7 @@ public abstract class DiagramBuilder implements IDiagramBuilder, ContainerAccess
 	protected float getXAxisMinValue() {
 		return 0;
 	}
-	protected float getYAxisMinValue() {
-		return 0;
-	}
+	protected abstract float getYAxisMinValue();
 	protected abstract float getXAxisMaxValue();
 	protected abstract float getYAxisMaxValue();
 	
@@ -79,13 +73,6 @@ public abstract class DiagramBuilder implements IDiagramBuilder, ContainerAccess
 		int containerWidth = this.container.getWidth();
 		int containerHeight = this.container.getHeight();
 		
-		int xAxisYpos = Math.round(containerHeight - settingsProvider.getDiagramBottomMarigin(containerHeight));
-		int yAxisXpos = Math.round(settingsProvider.getDiagramLeftMarigin(containerWidth));
-		
-		PositionInFrame axisOrigin = this.getAxisOriginPosition(xAxisYpos, yAxisXpos);
-		PositionInFrame endX = this.getXAxisEndPosition(containerWidth, xAxisYpos);
-		PositionInFrame endY = this.getYAxisEndPosition(containerHeight, yAxisXpos);
-		
 		int stepsInXAxis = this.getXAxisSteps();
 		int stepsInYAxis = this.getYAxisSteps();
 		
@@ -94,16 +81,48 @@ public abstract class DiagramBuilder implements IDiagramBuilder, ContainerAccess
 		float yAxisMinVal = this.getYAxisMinValue();
 		float yAxisMaxVal = this.getYAxisMaxValue();
 		
+		int bottomLeftYPos = Math.round(containerHeight - settingsProvider.getDiagramBottomMarigin(containerHeight));
+		int bottomLeftXPos = Math.round(settingsProvider.getDiagramLeftMarigin(containerWidth));
+		int topRightYPos = Math.round(settingsProvider.getDiagramTopMarigin(containerHeight));
+		int topRightXPos = Math.round(containerWidth - settingsProvider.getDiagramRightMarigin(containerWidth));
+		
+//		PositionInFrame axisOrigin = this.getAxisOriginPosition(xAxisYpos, yAxisXpos);
+		PositionInFrame startX = this.getXAxisStartPosition(bottomLeftXPos, bottomLeftYPos, yAxisMinVal, yAxisMaxVal, topRightYPos, containerHeight);
+		PositionInFrame startY = this.getYAxisStartPosition(bottomLeftXPos, bottomLeftYPos);
+		PositionInFrame endX = this.getXAxisEndPosition(startX, topRightXPos);
+		PositionInFrame endY = this.getYAxisEndPosition(startY, topRightYPos);
+		
 		Color axisLineColor = settingsProvider.getAxisColor();
 		int thickness = settingsProvider.getAxisThickness();
 		
-		DiagramAxis xAxis = this.makeXAxis(axisOrigin, endX, xAxisMinVal, xAxisMaxVal, stepsInXAxis, axisLineColor, thickness);
+		DiagramAxis xAxis = this.makeXAxis(startX, endX, xAxisMinVal, xAxisMaxVal, stepsInXAxis, axisLineColor, thickness);
 		this.xAxisSpecificVisualEffect(xAxis);
-		DiagramAxis yAxis = this.makeYAxis(axisOrigin, endY, yAxisMinVal, yAxisMaxVal, stepsInYAxis, axisLineColor, thickness);
+		DiagramAxis yAxis = this.makeYAxis(startY, endY, yAxisMinVal, yAxisMaxVal, stepsInYAxis, axisLineColor, thickness);
 		this.yAxisSpecificVisualEffect(yAxis);
 		return new DiagramAxis[] {xAxis, yAxis};
 	}
 	
+	protected double getXAxisYPos(int bottomLeftYPos, float yAxisMinVal, float yAxisMaxVal, int topRightYPos, int containerHeight) {
+		double startY = bottomLeftYPos * Math.abs(yAxisMaxVal) / (Math.abs(yAxisMaxVal) + Math.abs(yAxisMinVal));
+		
+		if (startY <= settingsProvider.getDiagramTopMarigin(containerHeight)) {
+			return settingsProvider.getDiagramTopMarigin(containerHeight);
+		}
+		return startY;
+	}
+	
+	protected double getYAxisXPos(int bottomLeftXPos) {
+		return bottomLeftXPos;
+	}
+	
+	protected PositionInFrame getYAxisStartPosition(int bottomLeftXPos, int bottomLeftYPos) {
+		return factory.makePositionInFrame(this.getYAxisXPos(bottomLeftXPos), bottomLeftYPos);
+	}
+
+	protected PositionInFrame getXAxisStartPosition(int bottomLeftXPos, int bottomLeftYPos, float yAxisMinVal, float yAxisMaxVal, int topRightYPos, int containerHeight) {
+		return factory.makePositionInFrame(bottomLeftXPos, this.getXAxisYPos(bottomLeftYPos, yAxisMinVal, yAxisMaxVal, topRightYPos, containerHeight));
+	}
+
 	protected DiagramComponent[] buildDiagramSpecificComponent() {
 		return this.buildDiagramSpecificComponentForOneDiagram(this.getDiagramData());
 	}

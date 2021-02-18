@@ -64,4 +64,18 @@ public class PositionIn2DDiagram extends PositionInDiagram {
 	public PositionIn2DDiagram clone() {
 		return new PositionIn2DDiagram(this.getAxes()[0], this.getXCoordinate(), this.getAxes()[1], this.getYCoordinate());
 	}
+	
+	public double getXAxisMin() {
+		return this.getAxes()[0].getMin();
+	}
+	public double getYAxisMin() {
+		return this.getAxes()[1].getMin();
+	}
+	public double getXAxisMax() {
+		return this.getAxes()[0].getMax();
+	}
+	public double getYAxisMax() {
+		return this.getAxes()[1].getMax();
+	}
+	
 }

@@ -41,26 +41,19 @@ public class TextEditCommand implements Command {
         try {
             if (element instanceof Library) {
                 newElementClone = LibertyParser.parseLibrary(newContent);
-                oldElementClone = ((Library) element).clone();
             } else if (element instanceof Cell) {
                 newElementClone = LibertyParser.parseCell(newContent, ((Cell) element).getParentLibrary().getName());
-                oldElementClone = ((Cell) element).clone();
             } else {
                 Pin oldPin = (Pin) element;
                 newElementClone = LibertyParser.parsePin(newContent, oldPin.getParent().getInPins(), 
                             oldPin.getParent().getParentLibrary().getName() + "/" + oldPin.getParent().getName());
-                if (oldPin instanceof InputPin) {
-                    oldElementClone = ((InputPin) oldPin).clone();
-                } else {
-                    oldElementClone = ((OutputPin) oldPin).clone();
-                }
             }
+            oldElementClone = element.clone();
         } catch (InvalidFileFormatException e) {
             throw new InvalidFileFormatException(e.getMessage());
         } catch (Exception e) {
             throw new InvalidFileFormatException("File format is invalid");
         }
-        
         if (!oldElementClone.getClass().equals(newElementClone.getClass())) {
             throw new InvalidFileFormatException("Element type change not possible within" +
             "the Element visualiser");
