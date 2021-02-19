@@ -60,7 +60,8 @@ public class Visualizer extends ElementManipulator implements Updatable {
 	private JComboBox<Attribute> libDropdown = new JComboBox<Attribute>();
 	private JComboBox<Attribute> cellDropdown = new JComboBox<Attribute>();
 	private JComboBox<Attribute> outpinDropdown = new JComboBox<Attribute>();
-	private JComboBox<PowerGroup> powerGroupDropdown = new JComboBox<PowerGroup>();
+	private JComboBox<PowerGroup> inputPowerDropdown = new JComboBox<PowerGroup>();
+	private JComboBox<PowerGroup> outputPowerDropdown = new JComboBox<PowerGroup>();
 	private JComboBox<TimingType> timingTypeDropdown = new JComboBox<TimingType>();
 	private JComboBox<TimingGroup> timingGroupDropdown = new JComboBox<TimingGroup>();
 	private JComboBox<TimingSense> timingSenseDropdown = new JComboBox<TimingSense>();
@@ -188,6 +189,8 @@ public class Visualizer extends ElementManipulator implements Updatable {
 	} 
     
     public void setElement(Element e) {
+		this.element = e;
+
     	upperPanel.removeAll();
     	dataPanel = new DataPanel(100, 100, e);
     	if (e instanceof Library ) {
@@ -212,7 +215,8 @@ public class Visualizer extends ElementManipulator implements Updatable {
 		libDropdown = new JComboBox<Attribute>();
 		cellDropdown = new JComboBox<Attribute>();
 		outpinDropdown = new JComboBox<Attribute>();
-		powerGroupDropdown = new JComboBox<PowerGroup>();
+		inputPowerDropdown = new JComboBox<PowerGroup>();
+		outputPowerDropdown = new JComboBox<PowerGroup>();
 		timingTypeDropdown = new JComboBox<TimingType>();
 		timingGroupDropdown = new JComboBox<TimingGroup>();
 		timingSenseDropdown = new JComboBox<TimingSense>();
@@ -234,25 +238,52 @@ public class Visualizer extends ElementManipulator implements Updatable {
 		outpinDropdown.addItem(Attribute.OUTPUT_POWER);
 		outpinDropdown.addItem(Attribute.TIMING);
 		
-		powerGroupDropdown.setVisible(true);
-		for(PowerGroup val : PowerGroup.values()) {
-			powerGroupDropdown.addItem(val);
+		ArrayList<PowerGroup> availInputPower = new ArrayList<PowerGroup>();
+		ArrayList<PowerGroup> availOutputPower = new ArrayList<PowerGroup>();
+		ArrayList<TimingGroup> availTimGr = new ArrayList<TimingGroup>();
+		ArrayList<TimingSense> availTimSen = new ArrayList<TimingSense>();
+		ArrayList<TimingType> availTimType = new ArrayList<TimingType>();
+
+		if(this.element.getClass() == Library.class) {
+			availInputPower = ((Library)element).getAvailableInputPower();
+			availOutputPower = ((Library)element).getAvailableOutputPower();
+			availTimGr = ((Library)element).getAvailableTimGr();
+			availTimSen = ((Library)element).getAvailableTimSen();
+			availTimType = ((Library)element).getAvailableTimType();
+		} else if(this.element.getClass() == Cell.class) {
+			availInputPower = ((Cell)element).getAvailableInputPower();
+			availOutputPower = ((Cell)element).getAvailableOutputPower();
+			availTimGr = ((Cell)element).getAvailableTimGr();
+			availTimSen = ((Cell)element).getAvailableTimSen();
+			availTimType = ((Cell)element).getAvailableTimType();
+		}
+
+		inputPowerDropdown.setVisible(true);
+		for(PowerGroup val : availInputPower) {
+			inputPowerDropdown.addItem(val);
+		}
+		outputPowerDropdown.setVisible(true);
+		for(PowerGroup val : availOutputPower) {
+			outputPowerDropdown.addItem(val);
 		}
 		
 		timingTypeDropdown.setVisible(true);
-		for(TimingType val : TimingType.values()) {
+		for(TimingType val : availTimType) {
 			timingTypeDropdown.addItem(val);
 		}
 		
 		timingGroupDropdown.setVisible(true);
-		for(TimingGroup val : TimingGroup.values()) {
+		for(TimingGroup val : availTimGr) {
 			timingGroupDropdown.addItem(val);
 		}
 		
 		timingSenseDropdown.setVisible(true);
-		for(TimingSense val : TimingSense.values()) {
+		for(TimingSense val : availTimSen) {
 			timingSenseDropdown.addItem(val);
-		}
+		}	
+		timingSense = availTimSen.get(0);
+		timingGroup = availTimGr.get(0);
+		timingType = availTimType.get(0);
 		
 		//listeners
 		ItemListener updateAttribute = new ItemListener() {
@@ -261,9 +292,9 @@ public class Visualizer extends ElementManipulator implements Updatable {
 				if(attribute == (Attribute)e.getItem()) return;
 				//remove old dropdowns
 				if(attribute == Attribute.INPUT_POWER) {
-					dropdowns.remove(powerGroupDropdown);
+					dropdowns.remove(inputPowerDropdown);
 				} else if(attribute == Attribute.OUTPUT_POWER) {
-					dropdowns.remove(powerGroupDropdown);
+					dropdowns.remove(outputPowerDropdown);
 				} else if(attribute == Attribute.TIMING) {
 					dropdowns.remove(timingSenseDropdown);
 					dropdowns.remove(timingTypeDropdown);
@@ -276,6 +307,7 @@ public class Visualizer extends ElementManipulator implements Updatable {
 				updateDiagram();
 			}
 		};
+		//init sub dropdown values
 		libDropdown.addItemListener(updateAttribute);
 		cellDropdown.addItemListener(updateAttribute);
 		outpinDropdown.addItemListener(updateAttribute);
@@ -289,7 +321,8 @@ public class Visualizer extends ElementManipulator implements Updatable {
 				updateDiagram();
 			}
 		};
-		powerGroupDropdown.addItemListener(updatePowerGroup);
+		inputPowerDropdown.addItemListener(updatePowerGroup);
+		outputPowerDropdown.addItemListener(updatePowerGroup);
 		
 		ItemListener updateTimingSense = new ItemListener(){
 			@Override
@@ -324,6 +357,8 @@ public class Visualizer extends ElementManipulator implements Updatable {
 		};
 		timingGroupDropdown.addItemListener(updateTimingGroup);
 		
+
+
 		enableCheckboxes();
 		if(this.subWindow.getElement().getClass() == Library.class) {
 			this.dropdowns.add(libDropdown);
@@ -336,7 +371,7 @@ public class Visualizer extends ElementManipulator implements Updatable {
 			attribute = (Attribute)cellDropdown.getSelectedItem();
 			updateAttributeSubDropdowns();
 		} else if(this.subWindow.getElement().getClass() == InputPin.class) {
-			this.dropdowns.add(powerGroupDropdown);
+			this.dropdowns.add(inputPowerDropdown);
 		} else {
 			this.dropdowns.add(outpinDropdown);
 			//update attribute
@@ -368,9 +403,9 @@ public class Visualizer extends ElementManipulator implements Updatable {
 	private void updateAttributeSubDropdowns() {
 		//add appropriate dropdowns
 		if(attribute == Attribute.INPUT_POWER) {
-			dropdowns.add(powerGroupDropdown);
+			dropdowns.add(inputPowerDropdown);
 		} else if(attribute == Attribute.OUTPUT_POWER) {
-			dropdowns.add(powerGroupDropdown);
+			dropdowns.add(outputPowerDropdown);
 		} else if(attribute == Attribute.TIMING) {
 			dropdowns.add(timingSenseDropdown);
 			dropdowns.add(timingTypeDropdown);

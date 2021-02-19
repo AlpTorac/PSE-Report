@@ -52,13 +52,10 @@ public class EditListener implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		String oldContent = editor.getDocument();
 		String newContent = editor.getActualText();
-		ArrayList<Library> libraries = Model.getInstance().getCurrentProject().getLibraries();
 		Element element = editor.getElement();
-		String name = element.getName();
 		JTree tree = outliner.tree;
 		TreeModel treeModel = tree.getModel();
 		DefaultMutableTreeNode root =(DefaultMutableTreeNode) treeModel.getRoot();
-		Element newElement;
 		try {
 			TextEditCommand edit = new TextEditCommand(oldContent, newContent, element);
 			edit.execute();
