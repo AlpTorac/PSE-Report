@@ -182,7 +182,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 		selectedPins = new ArrayList<InputPin>();
 		outputPins = cell.getOutPins();
 		maxPins = (inputPins.size() < outputPins.size()) ? outputPins.size() : inputPins.size();
-		libButton = new Label(cell.getParentLibrary().getName());
+		libButton = new Label(cell.getParentLibrary().toString());
 		cellButton = new Label(cell.getName());
 		createRepresentation();
 		highlightPin(element);
