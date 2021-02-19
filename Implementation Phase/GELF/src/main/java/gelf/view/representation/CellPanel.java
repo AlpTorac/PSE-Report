@@ -1,6 +1,7 @@
 package gelf.view.representation;
 
 import gelf.view.composites.SubWindow;
+import gelf.view.composites.Visualizer;
 import gelf.view.components.Label;
 import gelf.view.components.Panel;
 import gelf.model.elements.*;
@@ -71,7 +72,8 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 	
 	private SubWindow subwindow;
 	private DataPanel dataPanel;
-
+	private Visualizer visualizer;
+	
 	/**
 	 * Initializes the panel
 	 * @param width Width of the panel
@@ -81,10 +83,11 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 	 * @param dataPanel Data panel opened in the subwindow.
 	 * 
 	 */
-	public CellPanel(int width, int height, Element element, SubWindow subwindow, DataPanel dataPanel) {
+	public CellPanel(int width, int height, Element element, SubWindow subwindow, Visualizer visualizer,  DataPanel dataPanel) {
 		super(width, height);
 		this.subwindow = subwindow;
 		this.dataPanel = dataPanel;
+		this.visualizer = visualizer;
 		buttonList = new ArrayList<Label>();
 		lowerPanel = new JPanel();
 		mainPanel = new Panel(width, height);
@@ -110,6 +113,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 		selectedPins = new ArrayList<InputPin>();
 		outputPins = cell.getOutPins();
 		maxPins = (inputPins.size() < outputPins.size()) ? outputPins.size() : inputPins.size();
+		System.out.println(cell.getParentLibrary()==null);
 		libButton = new Label(cell.getParentLibrary().getName());
 		cellButton = new Label(cell.getName());
 		
@@ -364,6 +368,10 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 	public Label getCellButton() {
 		return cellButton;
 	}
+	
+	public ArrayList<InputPin> getSelectedInPins(){
+		return selectedPins;
+	}
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {
@@ -375,12 +383,8 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 						checkbox.setEnabled(false);
 					}
 				}
-				for(Timing timing: ((OutputPin) pin).getTimings()) {
-					timing.setRelatedPin(checkboxMap.get(e.getSource()));
-				}
-				for(OutputPower outPow: ((OutputPin) pin).getOutputPowers()) {
-					outPow.setRelatedPin(checkboxMap.get(e.getSource()));
-				}
+				visualizer.updateDiagram(selectedPins.get(0));
+				
 			}
 		}
 		else {
@@ -391,12 +395,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 						checkbox.setEnabled(true);
 					}
 				}
-				for(Timing timing: ((OutputPin) pin).getTimings()) {
-					timing.setRelatedPin(null);
-				}
-				for(OutputPower outPow: ((OutputPin) pin).getOutputPowers()) {
-					outPow.setRelatedPin(null);
-				}
+				visualizer.updateDiagram(selectedPins.get(0));
 			}
 		}
 		dataPanel.updateSelectedPins(selectedPins);
