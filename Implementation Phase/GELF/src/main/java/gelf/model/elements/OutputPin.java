@@ -83,11 +83,18 @@ public class OutputPin extends Pin {
 	 * @param dataPin the output pin object with the necessary data
 	 * @author Xhulio Pernoca
 	 */
-	public void replaceData(OutputPin dataPin) {
+	public void replaceData(OutputPin originDataPin) {
+		OutputPin dataPin = originDataPin.clone();
 		setName(dataPin.getName());
 		setSearched(dataPin.getSearched());
 		setOutputPowers(dataPin.getOutputPowers());
 		setTimings(dataPin.getTimings());
+		for (Timing timing: dataPin.getTimings()) {
+			timing.setParentOutPin(this);
+		}
+		for (OutputPower pow: dataPin.getOutputPowers()) {
+			pow.setParentOutPin(this);
+		}
 		setMaxCapacitance(dataPin.getMaxCapacitance());
 		setMinCapacitance(dataPin.getMinCapacitance());
 		setOutputFunction(dataPin.getOutputFunction());

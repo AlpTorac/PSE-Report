@@ -85,11 +85,15 @@ public class Library extends HigherElement {
 	 * @param dataLib the library object with the necessary data
 	 * @author Xhulio Pernoca
 	 */
-	public void replaceData(Library dataLib) {
+	public void replaceData(Library originDataLib) {
+		Library dataLib = originDataLib.clone();
         setName(dataLib.getName());
         setSearched(dataLib.getSearched());
 		setHasShownElements(dataLib.isHasShownElements());
     	setCells(dataLib.getCells());
+		for (Cell cell: dataLib.getCells()) {
+			cell.setParentLibrary(this);
+		}
         setIndex1(dataLib.getIndex1());
 	    setIndex2(dataLib.getIndex2());
         setElementContent(dataLib.getElementContent());
@@ -361,7 +365,8 @@ public class Library extends HigherElement {
 	}
 	
 	public void saveLibraryAs() throws IOException {
-		FileManager.saveFile(LibertyCompiler.compile(this), ".lib");
+		this.libraryFile = FileManager.saveFile(LibertyCompiler.compile(this), ".lib");
+		this.path = libraryFile.getAbsolutePath();
 	}
 
 	@Override

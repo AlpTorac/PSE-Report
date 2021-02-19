@@ -21,8 +21,8 @@ public class CellImageGenerator implements ICellImageGenerator {
 	public CellImageGenerator() {
 		
 		try {
-			cellImage = ImageIO.read(new File("src/main/java/gelf/view/representation/CellImage.png"));
-			pinImage = ImageIO.read(new File("src/main/java/gelf/view/representation/PinImage.png"));
+			cellImage = ImageIO.read(new File("src/main/resources/CellImage.png"));
+			pinImage = ImageIO.read(new File("src/main/resources/PinImage.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
