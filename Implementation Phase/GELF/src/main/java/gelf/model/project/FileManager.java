@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Date;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 @SuppressWarnings("serial")
 public class FileManager extends JFrame{
@@ -50,7 +51,7 @@ public class FileManager extends JFrame{
 	 * @return String array of properties
 	 */
 	@SuppressWarnings("deprecation")
-	public static String[] showProperties(File file) {
+	public static void showProperties(File file) {
 		file.length();
 		file.lastModified();
 		String[] propArray = new String[3];
@@ -58,9 +59,10 @@ public class FileManager extends JFrame{
 		propArray[1] = "Size: " + String.valueOf(file.length()) + " bytes";
 		Date d = new Date(file.lastModified());
 		propArray[2] = "Last modified: " + d.toGMTString();
-		
-		return propArray;
-	}
+		JFrame frame = new JFrame();
+		JOptionPane.showMessageDialog(frame, propArray[0] + "\n" + propArray[1] + "\n" + 
+				propArray[2], "Properties", JOptionPane.PLAIN_MESSAGE);
+		}
 }
 	
  
