@@ -160,9 +160,6 @@ public class Visualizer extends ElementManipulator {
 		// float[] leakageValues = cell.getLeakages().getValues();
 		// ArrayList<float[]> data = new ArrayList<float[]>();
 		// data.add(leakageValues);
-		
-
-		
 
 		this.add(this.lowerPanel);
 		updateDiagram();
@@ -325,7 +322,7 @@ public class Visualizer extends ElementManipulator {
 		};
 		timingGroupDropdown.addItemListener(updateTimingGroup);
 		
-		
+		enableCheckboxes();
 		if(this.subWindow.getElement().getClass() == Library.class) {
 			this.dropdowns.add(libDropdown);
 			//update attribute
@@ -343,11 +340,28 @@ public class Visualizer extends ElementManipulator {
 			//update attribute
 			attribute = (Attribute)outpinDropdown.getSelectedItem();
 			updateAttributeSubDropdowns();
+			disableCheckboxes();
 		}
 		this.dropdowns.revalidate();
 		this.dropdowns.repaint();
 	}
-	
+	private void disableCheckboxes() {
+		min.setSelected(false);
+		max.setSelected(false);
+		avg.setSelected(false);
+		med.setSelected(false);
+		min.setEnabled(false);
+		max.setEnabled(false);
+		avg.setEnabled(false);
+		med.setEnabled(false);
+	}
+
+	private void enableCheckboxes() {
+		min.setEnabled(true);
+		max.setEnabled(true);
+		avg.setEnabled(true);
+		med.setEnabled(true);
+	}
 
 	private void updateAttributeSubDropdowns() {
 		//add appropriate dropdowns
