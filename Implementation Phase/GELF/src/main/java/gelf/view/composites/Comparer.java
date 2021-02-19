@@ -554,7 +554,7 @@ public class Comparer extends ElementManipulator {
 			updateStatDisplay();
 		}
 		
-		else if (elements.get(0) instanceof Library) {
+		else if (elements.get(0) instanceof Cell) {
 			Cell cell = (Cell)elements.get(i);
 			
 			if (attribute == Attribute.INPUT_POWER) {
@@ -790,6 +790,7 @@ public class Comparer extends ElementManipulator {
 		for(int i = 0; i < elements.size(); i++) {
 			barcharts[i] = (BarChart) diagrams[i];
 		}
+		System.out.println(barcharts[0]);
 		this.diagram = wiz.overlayAndAttachBarCharts(this.diagramPanel, barcharts);
     }
 
