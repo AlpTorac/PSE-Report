@@ -15,6 +15,7 @@ import gelf.model.elements.attributes.TimingKey;
 import gelf.model.elements.attributes.TimingSense;
 import gelf.model.elements.attributes.TimingType;
 import gelf.model.project.Project;
+import gelf.model.project.Updatable;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -41,7 +42,7 @@ import gelf.view.representation.LibraryPanel;
 /**
  * Visualizer
  */
-public class Visualizer extends ElementManipulator {
+public class Visualizer extends ElementManipulator implements Updatable {
 	Visualizer _this = this;
 	SubWindow subWindow;
 	DataPanel dataPanel;
@@ -67,11 +68,11 @@ public class Visualizer extends ElementManipulator {
 
 	//attributes enum for dropdowns
 	public enum Attribute {
+		LEAKAGE("Leakage"),
+		DEFAULT_LEAKAGE("Default Leakage"),
 		INPUT_POWER("Input Power"),
 		OUTPUT_POWER("Output Power"),
-		TIMING("Timing"),
-		LEAKAGE("Leakage"),
-		DEFAULT_LEAKAGE("Default Leakage");
+		TIMING("Timing");
 		private String str;
 		private Attribute(String s) {
 			this.str = s;
@@ -83,11 +84,11 @@ public class Visualizer extends ElementManipulator {
 	}
 	
 	//tracks dropdown state
-	public Attribute attribute = Attribute.INPUT_POWER;		//for cell/library									||	output pin
-	public PowerGroup powerGroup = PowerGroup.FALL_POWER;	//for cell/library if attribute input/output power	||	output if attribute output power	||	input pin
-	public TimingSense timingSense;	//for cell/library if attribute timing				||	output if attribute timing
-	public TimingGroup timingGroup;	//for cell/library if attribute timing				||	output if attribute timing
-	public TimingType timingType;	//for cell/library if attribute timing				||	output if attribute timing
+	public Attribute attribute = Attribute.values()[0]; 	//for cell/library									||	output pin
+	public PowerGroup powerGroup = PowerGroup.values()[0];	//for cell/library if attribute input/output power	||	output if attribute output power	||	input pin
+	public TimingSense timingSense = TimingSense.values()[0];	//for cell/library if attribute timing				||	output if attribute timing
+	public TimingGroup timingGroup = TimingGroup.values()[0];	//for cell/library if attribute timing				||	output if attribute timing
+	public TimingType timingType = TimingType.values()[0];	//for cell/library if attribute timing				||	output if attribute timing
 	private Checkbox min = new Checkbox("Minimum");
 	private Checkbox max = new Checkbox("Maximum");
 	private Checkbox avg = new Checkbox("Average");
@@ -98,6 +99,7 @@ public class Visualizer extends ElementManipulator {
         this.subWindow = w;
 		//style
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		p.addUpdatable(this);
 		
 		initCellRepresentation(e, w, width, height);
 		
@@ -160,9 +162,6 @@ public class Visualizer extends ElementManipulator {
 		// float[] leakageValues = cell.getLeakages().getValues();
 		// ArrayList<float[]> data = new ArrayList<float[]>();
 		// data.add(leakageValues);
-		
-
-		
 
 		this.add(this.lowerPanel);
 		updateDiagram();
@@ -219,17 +218,17 @@ public class Visualizer extends ElementManipulator {
 		timingSenseDropdown = new JComboBox<TimingSense>();
 
 		libDropdown.setVisible(true);
+		libDropdown.addItem(Attribute.LEAKAGE);
+		libDropdown.addItem(Attribute.DEFAULT_LEAKAGE);
 		libDropdown.addItem(Attribute.INPUT_POWER);
 		libDropdown.addItem(Attribute.OUTPUT_POWER);
 		libDropdown.addItem(Attribute.TIMING);
-		libDropdown.addItem(Attribute.LEAKAGE);
-		libDropdown.addItem(Attribute.DEFAULT_LEAKAGE);
 
 		cellDropdown.setVisible(true);
+		cellDropdown.addItem(Attribute.LEAKAGE);
 		cellDropdown.addItem(Attribute.INPUT_POWER);
 		cellDropdown.addItem(Attribute.OUTPUT_POWER);
 		cellDropdown.addItem(Attribute.TIMING);
-		cellDropdown.addItem(Attribute.LEAKAGE);
 		
 		outpinDropdown.setVisible(true);
 		outpinDropdown.addItem(Attribute.OUTPUT_POWER);
@@ -325,7 +324,7 @@ public class Visualizer extends ElementManipulator {
 		};
 		timingGroupDropdown.addItemListener(updateTimingGroup);
 		
-		
+		enableCheckboxes();
 		if(this.subWindow.getElement().getClass() == Library.class) {
 			this.dropdowns.add(libDropdown);
 			//update attribute
@@ -343,11 +342,28 @@ public class Visualizer extends ElementManipulator {
 			//update attribute
 			attribute = (Attribute)outpinDropdown.getSelectedItem();
 			updateAttributeSubDropdowns();
+			disableCheckboxes();
 		}
 		this.dropdowns.revalidate();
 		this.dropdowns.repaint();
 	}
-	
+	private void disableCheckboxes() {
+		min.setSelected(false);
+		max.setSelected(false);
+		avg.setSelected(false);
+		med.setSelected(false);
+		min.setEnabled(false);
+		max.setEnabled(false);
+		avg.setEnabled(false);
+		med.setEnabled(false);
+	}
+
+	private void enableCheckboxes() {
+		min.setEnabled(true);
+		max.setEnabled(true);
+		avg.setEnabled(true);
+		med.setEnabled(true);
+	}
 
 	private void updateAttributeSubDropdowns() {
 		//add appropriate dropdowns
@@ -784,5 +800,12 @@ public class Visualizer extends ElementManipulator {
 		// this.diagram = wiz.makeBarChart(this.diagramPanel, this.diagram.cloneData());
 		// this.diagram.attachToContainer(this.diagramPanel);
 		// this.diagram.refresh();
+	}
+
+	@Override
+	public void update() {
+		updateDiagram();
+		this.revalidate();
+		this.repaint();
 	}
 }

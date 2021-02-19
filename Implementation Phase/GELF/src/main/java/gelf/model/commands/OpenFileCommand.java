@@ -42,7 +42,6 @@ public class OpenFileCommand implements Command {
 			currentModel.getCurrentProject().inform();
 			currentModel.getCurrentCommandHistory().addCommand(this);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (InvalidFileFormatException e) {
             throw new InvalidFileFormatException(e.getMessage());

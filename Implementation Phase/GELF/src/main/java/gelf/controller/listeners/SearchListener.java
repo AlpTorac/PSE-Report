@@ -63,7 +63,6 @@ public class SearchListener implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			String name = outliner.searchBox.getText();
-			System.out.println(name);
 			JTree tree = outliner.tree;
 			DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getModel().getRoot();
             if (name.equals("") || name.equals(" ") || name == null) {

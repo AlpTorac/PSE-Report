@@ -96,9 +96,9 @@ public abstract class DiagramBuilder implements IDiagramBuilder, ContainerAccess
 		int thickness = settingsProvider.getAxisThickness();
 		
 		DiagramAxis xAxis = this.makeXAxis(startX, endX, xAxisMinVal, xAxisMaxVal, stepsInXAxis, axisLineColor, thickness);
-		this.xAxisSpecificVisualEffect(xAxis);
+		this.xAxisSpecificVisualEffect(xAxis, yAxisMinVal, yAxisMaxVal);
 		DiagramAxis yAxis = this.makeYAxis(startY, endY, yAxisMinVal, yAxisMaxVal, stepsInYAxis, axisLineColor, thickness);
-		this.yAxisSpecificVisualEffect(yAxis);
+		this.yAxisSpecificVisualEffect(yAxis, xAxisMinVal, xAxisMaxVal);
 		return new DiagramAxis[] {xAxis, yAxis};
 	}
 	
@@ -152,11 +152,19 @@ public abstract class DiagramBuilder implements IDiagramBuilder, ContainerAccess
 		this.setDiagramData(diagramData);
 	}
 	
-	protected void xAxisSpecificVisualEffect(DiagramAxis xAxis) {
-		xAxis.setShowValuesUnderAxis(true);
+	protected void xAxisSpecificVisualEffect(DiagramAxis xAxis, float yMin, float yMax) {
+		if (Math.abs(yMax) / Math.abs(yMax - yMin) >= 0.5d) {
+			xAxis.setShowValuesUnderAxis(true);
+		} else {
+			xAxis.setShowValuesUnderAxis(false);
+		}
 	}
-	protected void yAxisSpecificVisualEffect(DiagramAxis yAxis) {
-		yAxis.setShowValuesUnderAxis(false);
+	protected void yAxisSpecificVisualEffect(DiagramAxis yAxis, float xMin, float xMax) {
+		if (Math.abs(xMax) / Math.abs(xMax - xMin) >= 0.5d) {
+			yAxis.setShowValuesUnderAxis(false);
+		} else {
+			yAxis.setShowValuesUnderAxis(true);
+		}
 	}
 
 	protected DiagramData getDiagramData() {

@@ -42,8 +42,8 @@ public class PinCompareSubPanel extends CellPanel {
 	 * @param cell Cell to be shown on the panel.
 	 * @param subwindow The subwindow where this panel belongs to.
 	 */
-	public PinCompareSubPanel(int width, int height, Cell cell, SubWindow subwindow, Comparer c, PinComparePanel upperPanel) {
-		super(width, height, cell, subwindow, null);
+	public PinCompareSubPanel(int width, int height, Cell cell, SubWindow subwindow, ArrayList<Element> elements, Comparer c, PinComparePanel upperPanel) {
+		super(width, height, cell, subwindow, null, null);
 		this.cell = cell;
 		
 		this.inputPins = super.getInputPins();
@@ -55,6 +55,20 @@ public class PinCompareSubPanel extends CellPanel {
 		this.checkboxMap = super.checkboxMap;
 		selectedPins = new ArrayList<InputPin>();
 		this.c = c;
+		for (InputPin input: cell.getInPins()) {
+			if (elements.contains(input)) {
+				buttonMap.get(input).setBackground(Color.BLUE);
+			}
+		}
+		for (OutputPin output: cell.getOutPins()) {
+			if (elements.contains(output)) {
+				buttonMap.get(output).setBackground(Color.BLUE);
+			}
+		}
+		if (elements.contains(cell)) {
+			cellButton.setBackground(Color.BLUE);
+		}
+		
 	}
 	
 	/**
@@ -87,11 +101,11 @@ public class PinCompareSubPanel extends CellPanel {
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getStateChange() == ItemEvent.SELECTED) {
 			selectedPins.add(checkboxMap.get(e.getSource()));
-			upperPanel.getSelectedPinsByCell().get(cell).add(checkboxMap.get(e.getSource()));
+			c.setSelectedPins(selectedPins);
 		}
 		else {
 			selectedPins.remove(checkboxMap.get(e.getSource()));
-			upperPanel.getSelectedPinsByCell().get(cell).remove(checkboxMap.get(e.getSource()));
+			c.setSelectedPins(selectedPins);
 		}
 		updateSelectedPins(selectedPins);
 	}
@@ -100,43 +114,43 @@ public class PinCompareSubPanel extends CellPanel {
 	public void mouseClicked(MouseEvent e) {
 		if (cell.getName() == ((Label)e.getSource()).getText()) {
 			if (((Label)e.getSource()).getBackground().equals(Color.BLUE)) {
-				upperPanel.getOpenedByCell().get(cell).remove(cell);
+				upperPanel.getOpenedCells().remove(cell);
 				((Label)e.getSource()).setBackground(new Color(0.2f, 0.2f, 0.2f));
-				c.updateDiagram(upperPanel.getOpenedByCell(), upperPanel.getSelectedPinsByCell());
+				c.setCells(upperPanel.getOpenedCells());
 				
 			}
 			else {
-				upperPanel.getOpenedByCell().get(cell).add(cell);
+				upperPanel.getOpenedCells().add(cell);
 				((Label)e.getSource()).setBackground(Color.BLUE);
-				c.updateDiagram(upperPanel.getOpenedByCell(), upperPanel.getSelectedPinsByCell());
+				c.setCells(upperPanel.getOpenedCells());
 			}
 			return;
 		}
 		for (InputPin input : inputPins) {
 			if (input.getName() == (((Label)e.getSource()).getText())) {
 				if (((Label)e.getSource()).getBackground().equals(Color.BLUE)) {
-					upperPanel.getOpenedByCell().get(cell).remove(input);
+					upperPanel.getOpenedInPins().remove(input);
 					((Label)e.getSource()).setBackground(new Color(0.2f, 0.2f, 0.2f));
-					c.updateDiagram(upperPanel.getOpenedByCell(), upperPanel.getSelectedPinsByCell());
+					c.setInputPins(upperPanel.getOpenedInPins());
 				}
 				else {
-					upperPanel.getOpenedByCell().get(cell).add(input);
+					upperPanel.getOpenedInPins().add(input);
 					((Label)e.getSource()).setBackground(Color.BLUE);
-					c.updateDiagram(upperPanel.getOpenedByCell(), upperPanel.getSelectedPinsByCell());
+					c.setInputPins(upperPanel.getOpenedInPins());
 				}
 			}
 		}
 		for (OutputPin output : outputPins) {
             if (output.getName() == (((Label)e.getSource()).getText())) {
             	if (((Label)e.getSource()).getBackground().equals(Color.BLUE)) {
-            		upperPanel.getOpenedByCell().get(cell).remove(output);
+            		upperPanel.getOpenedOutPins().remove(output);
             		((Label)e.getSource()).setBackground(new Color(0.2f, 0.2f, 0.2f));
-            		c.updateDiagram(upperPanel.getOpenedByCell(), upperPanel.getSelectedPinsByCell());
+            		c.setOutputPins(upperPanel.getOpenedOutPins());
     			}
     			else {
-    				upperPanel.getOpenedByCell().get(cell).add(output);
+    				upperPanel.getOpenedOutPins().add(output);
     				((Label)e.getSource()).setBackground(Color.BLUE);
-    				c.updateDiagram(upperPanel.getOpenedByCell(), upperPanel.getSelectedPinsByCell());
+    				c.setOutputPins(upperPanel.getOpenedOutPins());
     			}
 			}
 		}

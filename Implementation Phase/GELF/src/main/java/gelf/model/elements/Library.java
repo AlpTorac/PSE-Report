@@ -211,11 +211,7 @@ public class Library extends HigherElement {
 	
 	public void calculateOutPow() {
 		outPowerStat = new HashMap<PowerGroup, Stat>();
-		Iterator<PowerGroup> avPowGrIt = availableOutputPower.iterator();
-		
-		
-		
-		
+		Iterator<PowerGroup> avPowGrIt = availableOutputPower.iterator();		
 		while(avPowGrIt.hasNext()) {
 			PowerGroup curPowGr = avPowGrIt.next();
 			// ArrayList toCalc to put Stats of the same PowerGroup in the same place
@@ -459,6 +455,10 @@ public class Library extends HigherElement {
 				}
 			}
 		}		
+	}
+	
+	public void showProperties() {
+		FileManager.showProperties(libraryFile);
 	}
 	
 	

@@ -8,6 +8,7 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
@@ -18,10 +19,13 @@ import gelf.model.elements.InputPin;
 import gelf.model.elements.Library;
 import gelf.model.elements.OutputPin;
 import gelf.model.elements.Pin;
+import gelf.model.elements.Stat;
 import gelf.model.elements.attributes.InputPower;
 import gelf.model.elements.attributes.OutputPower;
 import gelf.model.elements.attributes.PowerGroup;
+import gelf.model.elements.attributes.Timing;
 import gelf.model.elements.attributes.TimingGroup;
+import gelf.model.elements.attributes.TimingKey;
 import gelf.model.elements.attributes.TimingSense;
 import gelf.model.elements.attributes.TimingType;
 import gelf.model.project.Project;
@@ -29,8 +33,11 @@ import gelf.view.components.Checkbox;
 import gelf.view.components.Panel;
 import gelf.view.diagrams.DiagramWizard;
 import gelf.view.diagrams.IDiagram;
+import gelf.view.diagrams.IDiagramWizard;
+import gelf.view.diagrams.type.BarChart;
 import gelf.view.representation.LibraryComparePanel;
 import gelf.view.representation.PinComparePanel;
+import gelf.view.diagrams.IDiagramViewHelper;
 
 /**
  * Comparer
@@ -44,7 +51,13 @@ public class Comparer extends ElementManipulator {
 	Panel diagramPanel;
 	IDiagram diagram;
 	
-	private JComboBox<Attribute> libCellDropdown = new JComboBox<Attribute>();
+	IDiagramViewHelper IDHmin;
+	IDiagramViewHelper IDHmax;
+	IDiagramViewHelper IDHavg;
+	IDiagramViewHelper IDHmed;
+	
+	private JComboBox<Attribute> libDropdown = new JComboBox<Attribute>();
+	private JComboBox<Attribute> cellDropdown = new JComboBox<Attribute>();
 	private JComboBox<Attribute> outpinDropdown = new JComboBox<Attribute>();
 	private JComboBox<PowerGroup> powerGroupDropdown = new JComboBox<PowerGroup>();
 	private JComboBox<TimingType> timingTypeDropdown = new JComboBox<TimingType>();
@@ -52,11 +65,17 @@ public class Comparer extends ElementManipulator {
 	private JComboBox<TimingSense> timingSenseDropdown = new JComboBox<TimingSense>();
 	private SubWindow subWindow;
 	private ArrayList<Library> libraries;
-	private HashMap<Cell, ArrayList<Element>> elements;
-	private HashMap<Cell, ArrayList<InputPin>> selectedPins;
+	private ArrayList<Cell> cells;
+	private ArrayList<InputPin> inputPins;
+	private ArrayList<OutputPin> outputPins;
+	private ArrayList<InputPin> selectedInputPins;
+	private ArrayList<Element> elements;
+	
 	
 	//attributes enum for dropdowns
 	public enum Attribute {
+		LEAKAGE("Leakage"),
+		DEFAULT_LEAKAGE("Default Leakage"),
 		INPUT_POWER("Input Power"),
 		OUTPUT_POWER("Output Power"),
 		TIMING("Timing");
@@ -71,20 +90,29 @@ public class Comparer extends ElementManipulator {
 	}
 	
 	//tracks dropdown state
-	private static class DropdownStatus {
-		public static Attribute attribute = Attribute.INPUT_POWER;		//for cell/library									||	output pin
-		public static PowerGroup powerGroup = PowerGroup.FALL_POWER;	//for cell/library if attribute input/output power	||	output if attribute output power	||	input pin
-		public static TimingSense timingSense;	//for cell/library if attribute timing				||	output if attribute timing
-		public static TimingGroup timingGroup;	//for cell/library if attribute timing				||	output if attribute timing
-		public static TimingType timingType;	//for cell/library if attribute timing				||	output if attribute timing
-	}
+	public Attribute attribute = Attribute.values()[0]; 	//for cell/library									||	output pin
+	public PowerGroup powerGroup = PowerGroup.values()[0];	//for cell/library if attribute input/output power	||	output if attribute output power	||	input pin
+	public TimingSense timingSense = TimingSense.values()[0];	//for cell/library if attribute timing				||	output if attribute timing
+	public TimingGroup timingGroup = TimingGroup.values()[0];	//for cell/library if attribute timing				||	output if attribute timing
+	public TimingType timingType = TimingType.values()[0];	//for cell/library if attribute timing				||	output if attribute timing
+	private Checkbox min = new Checkbox("Minimum");
+	private Checkbox max = new Checkbox("Maximum");
+	private Checkbox avg = new Checkbox("Average");
+	private Checkbox med = new Checkbox("Median");
 	
     public Comparer(ArrayList<Element> elements, Project p, SubWindow w,  int width, int height){
         super(elements, p, width, height);
+        this.elements = elements;
         upperPanel = new Panel(width, height);
         this.subWindow = w;
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         
+        libraries = new ArrayList<Library>();
+        cells = new ArrayList<Cell>();
+        inputPins= new ArrayList<InputPin>();
+        outputPins = new ArrayList<OutputPin>();
+        selectedInputPins = new ArrayList<InputPin>();
+       
         initRepresentation();
         
         this.lowerPanel = new Panel(width, height);
@@ -114,43 +142,48 @@ public class Comparer extends ElementManipulator {
 		stats.setBackground(ColorTheme.section);
 		stats.setVisible(true);
 		
-		Checkbox min = new Checkbox("Minimum");
+		ItemListener checkboxListener = new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				updateStatDisplay();
+			}
+		};
+		
 		min.setVisible(true);
+		min.addItemListener(checkboxListener);
 		stats.add(min);
-		Checkbox max = new Checkbox("Maximum");
+
 		max.setVisible(true);
+		max.addItemListener(checkboxListener);
 		stats.add(max);
-		Checkbox avg = new Checkbox("Average");
+
 		avg.setVisible(true);
+		avg.addItemListener(checkboxListener);
 		stats.add(avg);
-		Checkbox med = new Checkbox("Median");
+
 		med.setVisible(true);
+		med.addItemListener(checkboxListener);
 		stats.add(med);
+
 		this.lowerPanel.add(stats, BorderLayout.PAGE_END);
-		//diagram viewport
-		DiagramWizard wiz = new DiagramWizard();
 		
 		// Cell cell = (Cell)e;
 		// float[] leakageValues = cell.getLeakages().getValues();
 		// ArrayList<float[]> data = new ArrayList<float[]>();
 		// data.add(leakageValues);
 		
-		//updateDiagram();
-		
-		//initCellRepresentation(e, w, width, height);
-
 		this.add(this.lowerPanel);
+		updateDiagram();
+		this.revalidate();
+		this.repaint();
 		this.addComponentListener(this);
-        
-        this.setVisible(true);
     }
     
     private void initRepresentation() {
     	 upperPanel.setLayout(new FlowLayout());
          this.add(upperPanel);
          upperPanel.setVisible(true);
-         elements = new HashMap<Cell, ArrayList<Element>>();
-     	 selectedPins = new HashMap<Cell, ArrayList<InputPin>>();
+         
          if (super.elements.get(0) instanceof Library) {
          	ArrayList<Library> libraries = new ArrayList<Library>();
          	for (Element element: super.elements) {
@@ -165,18 +198,28 @@ public class Comparer extends ElementManipulator {
     }
     
     private void initDropdowns() {
-		this.dropdowns.removeAll();
-		libCellDropdown = new JComboBox<Attribute>();
+    	this.dropdowns.removeAll();
+
+		libDropdown = new JComboBox<Attribute>();
+		cellDropdown = new JComboBox<Attribute>();
 		outpinDropdown = new JComboBox<Attribute>();
 		powerGroupDropdown = new JComboBox<PowerGroup>();
 		timingTypeDropdown = new JComboBox<TimingType>();
 		timingGroupDropdown = new JComboBox<TimingGroup>();
 		timingSenseDropdown = new JComboBox<TimingSense>();
 
-		libCellDropdown.setVisible(true);
-		libCellDropdown.addItem(Attribute.INPUT_POWER);
-		libCellDropdown.addItem(Attribute.OUTPUT_POWER);
-		libCellDropdown.addItem(Attribute.TIMING);
+		libDropdown.setVisible(true);
+		libDropdown.addItem(Attribute.LEAKAGE);
+		libDropdown.addItem(Attribute.DEFAULT_LEAKAGE);
+		libDropdown.addItem(Attribute.INPUT_POWER);
+		libDropdown.addItem(Attribute.OUTPUT_POWER);
+		libDropdown.addItem(Attribute.TIMING);
+
+		cellDropdown.setVisible(true);
+		cellDropdown.addItem(Attribute.LEAKAGE);
+		cellDropdown.addItem(Attribute.INPUT_POWER);
+		cellDropdown.addItem(Attribute.OUTPUT_POWER);
+		cellDropdown.addItem(Attribute.TIMING);
 		
 		outpinDropdown.setVisible(true);
 		outpinDropdown.addItem(Attribute.OUTPUT_POWER);
@@ -206,31 +249,34 @@ public class Comparer extends ElementManipulator {
 		ItemListener updateAttribute = new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
+				if(attribute == (Attribute)e.getItem()) return;
 				//remove old dropdowns
-				if(DropdownStatus.attribute == Attribute.INPUT_POWER) {
+				if(attribute == Attribute.INPUT_POWER) {
 					dropdowns.remove(powerGroupDropdown);
-				} else if(DropdownStatus.attribute == Attribute.OUTPUT_POWER) {
+				} else if(attribute == Attribute.OUTPUT_POWER) {
 					dropdowns.remove(powerGroupDropdown);
-				} else if(DropdownStatus.attribute == Attribute.TIMING) {
+				} else if(attribute == Attribute.TIMING) {
 					dropdowns.remove(timingSenseDropdown);
 					dropdowns.remove(timingTypeDropdown);
 					dropdowns.remove(timingGroupDropdown);
 				} else {
-					System.out.println("Attribute selection error(dropdown removal failed)");
 				}
 				//update attribute
-				DropdownStatus.attribute = (Attribute)e.getItem();
+				attribute = (Attribute)e.getItem();
 				updateAttributeSubDropdowns();
+				updateDiagram();
 			}
 		};
-		libCellDropdown.addItemListener(updateAttribute);
+		libDropdown.addItemListener(updateAttribute);
+		cellDropdown.addItemListener(updateAttribute);
 		outpinDropdown.addItemListener(updateAttribute);
 		
 		ItemListener updatePowerGroup = new ItemListener(){
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				System.out.println((PowerGroup)e.getItem());
-				DropdownStatus.powerGroup = (PowerGroup)e.getItem();
+				//dont include changes to the same
+				if(powerGroup == (PowerGroup)e.getItem()) return;
+				powerGroup = (PowerGroup)e.getItem();
 				updateDiagram();
 			}
 		};
@@ -239,7 +285,9 @@ public class Comparer extends ElementManipulator {
 		ItemListener updateTimingSense = new ItemListener(){
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				DropdownStatus.timingSense = (TimingSense)e.getItem();
+				//dont include changes to the same
+				if(timingSense == (TimingSense)e.getItem()) return;
+				timingSense = (TimingSense)e.getItem();
 				updateDiagram();
 			}
 		};
@@ -248,7 +296,9 @@ public class Comparer extends ElementManipulator {
 		ItemListener updateTimingType = new ItemListener(){
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				DropdownStatus.timingType = (TimingType)e.getItem();
+				//dont include changes to the same
+				if(timingType == (TimingType)e.getItem()) return;
+				timingType = (TimingType)e.getItem();
 				updateDiagram();
 			}
 		};
@@ -257,201 +307,540 @@ public class Comparer extends ElementManipulator {
 		ItemListener updateTimingGroup = new ItemListener(){
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				DropdownStatus.timingGroup = (TimingGroup)e.getItem();
+				//dont include changes to the same
+				if(timingGroup == (TimingGroup)e.getItem()) return;
+				timingGroup = (TimingGroup)e.getItem();
 				updateDiagram();
 			}
 		};
 		timingGroupDropdown.addItemListener(updateTimingGroup);
 		
-		
-		/*if(this.subWindow.getElement().getClass() == Library.class) {
-			Library lib = (Library)this.subWindow.getElement();
-			this.dropdowns.add(libCellDropdown);
+		enableCheckboxes();
+		if(elements.get(0) instanceof Library) {
+			this.dropdowns.add(libDropdown);
 			//update attribute
-			DropdownStatus.attribute = (Attribute)libCellDropdown.getSelectedItem();
+			attribute = (Attribute)libDropdown.getSelectedItem();
 			updateAttributeSubDropdowns();
-		} else if(this.subWindow.getElement().getClass() == Cell.class) {
-			Cell cell = (Cell)this.subWindow.getElement();
-			this.dropdowns.add(libCellDropdown);
+		} else if(elements.get(0) instanceof Cell) {
+			this.dropdowns.add(cellDropdown);
 			//update attribute
-			DropdownStatus.attribute = (Attribute)libCellDropdown.getSelectedItem();
+			attribute = (Attribute)cellDropdown.getSelectedItem();
 			updateAttributeSubDropdowns();
-		} else if(this.subWindow.getElement().getClass() == InputPin.class) {
-			InputPin inpin = (InputPin)this.subWindow.getElement();
+		} else if(elements.get(0) instanceof InputPin) {
 			this.dropdowns.add(powerGroupDropdown);
 		} else {
-			OutputPin outpin = (OutputPin)this.subWindow.getElement();
 			this.dropdowns.add(outpinDropdown);
 			//update attribute
-			DropdownStatus.attribute = (Attribute)outpinDropdown.getSelectedItem();
+			attribute = (Attribute)outpinDropdown.getSelectedItem();
 			updateAttributeSubDropdowns();
-		}*/
+			disableCheckboxes();
+		}
 		this.dropdowns.revalidate();
 		this.dropdowns.repaint();
 	}
     
+    private void disableCheckboxes() {
+		min.setSelected(false);
+		max.setSelected(false);
+		avg.setSelected(false);
+		med.setSelected(false);
+		min.setEnabled(false);
+		max.setEnabled(false);
+		avg.setEnabled(false);
+		med.setEnabled(false);
+	}
+
+	private void enableCheckboxes() {
+		min.setEnabled(true);
+		max.setEnabled(true);
+		avg.setEnabled(true);
+		med.setEnabled(true);
+	}
+
+    
     private void updateAttributeSubDropdowns() {
-		//add appropriate dropdowns
-		if(DropdownStatus.attribute == Attribute.INPUT_POWER) {
+    	if(attribute == Attribute.INPUT_POWER) {
 			dropdowns.add(powerGroupDropdown);
-		} else if(DropdownStatus.attribute == Attribute.OUTPUT_POWER) {
+		} else if(attribute == Attribute.OUTPUT_POWER) {
 			dropdowns.add(powerGroupDropdown);
-		} else if(DropdownStatus.attribute == Attribute.TIMING) {
+		} else if(attribute == Attribute.TIMING) {
 			dropdowns.add(timingSenseDropdown);
 			dropdowns.add(timingTypeDropdown);
 			dropdowns.add(timingGroupDropdown);
 		} else {
-			System.out.println("Attribute selection error(dropdown add failed)");
 		}
 		dropdowns.revalidate();
 		dropdowns.repaint();
-		updateDiagram();
+		//updateDiagram();
 	}
     
-    public void updateDiagram(ArrayList<Library> libraries) {
+    public void setLibraries(ArrayList<Library> libraries) {
     	this.libraries = libraries;
     	updateDiagram();
     }
     
-    public void updateDiagram(HashMap<Cell, ArrayList<Element>> openedElements, HashMap<Cell, ArrayList<InputPin>> selectedPins) {
-    	this.selectedPins = selectedPins;
-    	this.elements = openedElements;
+    public void setCells(ArrayList<Cell> cells) {
+    	this.cells = cells;
     	updateDiagram();
     }
     
-  //update diagram depending on dropdown status
-  	private void updateDiagram() {
-  		System.out.println(DropdownStatus.attribute);
-  		System.out.println(DropdownStatus.powerGroup);
+    public void setInputPins(ArrayList<InputPin> inputPins) {
+    	this.inputPins = inputPins;
+    	updateDiagram();
+    }
+    
+    public void setOutputPins(ArrayList<OutputPin> outputPins) {
+    	this.outputPins = outputPins;
+    	updateDiagram();
+    }
+    
+    public void setSelectedPins(ArrayList<InputPin> inputPins) {
+    	this.selectedInputPins = inputPins;
+    	updateDiagram();
+    }
+    /*
+    DiagramWizard wiz = new DiagramWizard();
+		BarChart[] charts = new BarChart[diagrams.size()];
+		
+		for (int i = 0; i < diagrams.size(); i++) {
+			charts[i] = (BarChart) diagrams.get(i);
+		}
+		this.diagram = wiz.overlayAndAttachBarCharts(this.diagramPanel, charts);
+    */
+ 
+    //update diagram depending on dropdown status
+    private void updateDiagram() {
 
-  		ArrayList<float[]> data = new ArrayList<float[]>();
-  		ArrayList<String[]> stringData = new ArrayList<String[]>();
-  		float[] values = null;
-  		String[] stringAr = null;
-  		
-  		if (super.elements.get(0) instanceof Library) {
-  			Library lib = (Library)this.subWindow.getElement();
-  			if (DropdownStatus.attribute == Attribute.INPUT_POWER) {
-  				values = new float[lib.getCells().size()];
-  				stringAr = new String[lib.getCells().size()];
-  				int i = 0;
-  				
-  				Iterator<Cell> cellsIt = lib.getCells().iterator();
-  				while(cellsIt.hasNext()) {
-  					Cell curCell = cellsIt.next();
-  					if (!curCell.getAvailableInputPower().contains(DropdownStatus.powerGroup)) {
-  						values[i] = 0;
-  						stringAr[i] = curCell.getName();
-  					}
-  					else {
-  						curCell.calculateInPow();
-  						float value = 
-  								curCell.getInPowerStat().get(DropdownStatus.powerGroup).getAvg();
-  						values[i] = value;
-  						stringAr[i] = curCell.getName();
-  					}
-  					i++;
-  				}
-  			}
-  			
-  			else if (DropdownStatus.attribute == Attribute.OUTPUT_POWER) {
-  				values = new float[lib.getCells().size()];
-  				stringAr = new String[lib.getCells().size()];
-  				int i = 0;
-  				
-  				Iterator<Cell> cellsIt = lib.getCells().iterator();
-  				while(cellsIt.hasNext()) {
-  					Cell curCell = cellsIt.next();
-  					if (!curCell.getAvailableOutputPower().contains(DropdownStatus.powerGroup)) {
-  						values[i] = 0;
-  						stringAr[i] = curCell.getName();
-  					}
-  					else {
-  						curCell.calculateOutPow();
-  						float value = 
-  								curCell.getOutPowerStat().get(DropdownStatus.powerGroup).getAvg();
-  						values[i] = value;
-  						stringAr[i] = curCell.getName();
-  					}
-  					i++;
-  				}
-  			}
-  		}
-  		
-  		else if (this.subWindow.getElement().getClass() == Cell.class) {
-  			Cell cell = (Cell)this.subWindow.getElement();
-  			if (DropdownStatus.attribute == Attribute.INPUT_POWER) {
-  				values = new float[cell.getInPins().size()];
-  				int i = 0;
-  				
-  				Iterator<InputPin> inPinsIt = cell.getInPins().iterator();
-  				while(inPinsIt.hasNext()) {
-  					InputPin curInPin = inPinsIt.next();
-  					if (!curInPin.getAvailablePower().contains(DropdownStatus.powerGroup)) {
-  						values[i] = 0;
-  					}
-  					else {
-  						curInPin.calculatePower();
-  						ArrayList<InputPower> inPows = curInPin.getInputPowers();
-  						Iterator<InputPower> inPowIt = inPows.iterator();
-  						while (inPowIt.hasNext()) {
-  							InputPower curInPow = inPowIt.next();
-  							if (curInPow.getPowGroup() == DropdownStatus.powerGroup) {
-  								values[i] = curInPow.getStats().getAvg();
-  							}
-  						}
-  					}
-  					i++;
-  				}
-  			}
-  			
-  			else if (DropdownStatus.attribute == Attribute.OUTPUT_POWER) {
-  				values = new float[cell.getOutPins().size()];
-  				int i = 0;
-  				
-  				Iterator<OutputPin> outPinsIt = cell.getOutPins().iterator();
-  				while(outPinsIt.hasNext()) {
-  					OutputPin curOutPin = outPinsIt.next();
-  					if (!curOutPin.getAvailablePower().contains(DropdownStatus.powerGroup)) {
-  						values[i] = 0;
-  					}
-  					else {
-  						curOutPin.calculatePower();
-  						ArrayList<OutputPower> outPows = curOutPin.getOutputPowers();
-  						Iterator<OutputPower> outPowIt = outPows.iterator();
-  						while (outPowIt.hasNext()) {
-  							OutputPower curOutPow = outPowIt.next();
-  							if (curOutPow.getPowGroup() == DropdownStatus.powerGroup) {
-  								values[i] = curOutPow.getStats().getAvg();
-  							}
-  						}
-  					}
-  					i++;
-  				}
-  			}
-  			
-  		}
-  		data.add(values);
-  		stringData.add(stringAr);
-  		DiagramWizard wiz = new DiagramWizard();
-  		if (this.diagramPanel != null) {
-  			if (diagram != null) {
-  				diagram.removeFromContainer();
-  			}
-  			this.diagram = wiz.makeAndAttachBarChartWithDescriptions(this.diagramPanel,
-  					data, stringData);		
-  		}
-  	}
-  	
-  	@Override
+		IDHmin = null;
+		IDHmax = null;
+		IDHavg = null;
+		IDHmed = null;
+		IDiagram[] diagrams = new IDiagram[elements.size()];
+		for(int i = 0; i < elements.size(); i++) {
+			
+		
+		ArrayList<float[]> data = new ArrayList<float[]>();
+		ArrayList<String[]> stringData = new ArrayList<String[]>();
+		float[] values = null;
+		String[] stringAr = null;
+		
+		if (elements.get(0) instanceof Library) {
+			Library lib = (Library)elements.get(i);
+			if (attribute == Attribute.INPUT_POWER) {
+				values = new float[lib.getCells().size()];
+				stringAr = new String[lib.getCells().size()];
+				int j = 0;
+				
+				Iterator<Cell> cellsIt = lib.getCells().iterator();
+				while(cellsIt.hasNext()) {
+					Cell curCell = cellsIt.next();
+					if (!curCell.getAvailableInputPower().contains(powerGroup)) {
+						values[j] = 0;
+						stringAr[j] = curCell.getName();
+					}
+					else {
+						curCell.calculateInPow();
+						float value = 
+								curCell.getInPowerStat().get(powerGroup).getAvg();
+						values[j] = value;
+						stringAr[j] = curCell.getName();
+					}
+					j++;
+				}
+			}
+			
+			else if (attribute == Attribute.OUTPUT_POWER) {
+				values = new float[lib.getCells().size()];
+				stringAr = new String[lib.getCells().size()];
+				int j = 0;
+				
+				Iterator<Cell> cellsIt = lib.getCells().iterator();
+				while(cellsIt.hasNext()) {
+					Cell curCell = cellsIt.next();
+					if (!curCell.getAvailableOutputPower().contains(powerGroup)) {
+						values[j] = 0;
+						stringAr[j] = curCell.getName();
+					}
+					else {
+						curCell.calculateOutPow();
+						float value = 
+								curCell.getOutPowerStat().get(powerGroup).getAvg();
+						values[j] = value;
+						stringAr[j] = curCell.getName();
+					}
+					j++;
+				}
+			}
+			
+			else if (attribute == Attribute.TIMING) {
+				values = new float[lib.getCells().size()];
+				stringAr = new String[lib.getCells().size()];
+				int j = 0;
+				
+				Iterator<Cell> cellsIt = lib.getCells().iterator();
+				while(cellsIt.hasNext()) {
+					Cell curCell = cellsIt.next();
+					if (!curCell.getAvailableTimSen().contains(timingSense)) {
+						values[j] = 0;
+						stringAr[j] = curCell.getName();
+					}
+					else if (!curCell.getAvailableTimType().contains(timingType)) {
+						values[j] = 0;
+						stringAr[j] = curCell.getName();
+					}
+					else if (!curCell.getAvailableTimGr().contains(timingGroup)) {
+						values[j] = 0;
+						stringAr[j] = curCell.getName();
+					}
+					
+					else {
+						curCell.calculateTiming();
+						
+						for (Map.Entry<TimingKey, Stat> entry : curCell.getTimingStat().entrySet()) {
+						    TimingKey key = entry.getKey();
+						    if (key.getTimSense() == timingSense && key.getTimType() == timingType
+						    		&& key.getTimGroup() == timingGroup) {
+						    	values[j] = entry.getValue().getAvg();
+						    }   
+						}
+						stringAr[j] = curCell.getName();
+					}
+					j++;
+				}
+			}
+			
+			else if (attribute == Attribute.DEFAULT_LEAKAGE) {
+				values = new float[lib.getCells().size()];
+				stringAr = new String[lib.getCells().size()];
+				int j = 0;
+				
+				Iterator<Cell> cellsIt = lib.getCells().iterator();
+				while(cellsIt.hasNext()) {
+					Cell curCell = cellsIt.next();
+					float value = 
+							curCell.getDefaultLeakage();
+					values[j] = value;
+					stringAr[j] = curCell.getName();
+					j++;
+				}
+			}
+			
+			else if (attribute == Attribute.LEAKAGE) {
+				values = new float[lib.getCells().size()];
+				stringAr = new String[lib.getCells().size()];
+				int j = 0;
+				
+				Iterator<Cell> cellsIt = lib.getCells().iterator();
+				while(cellsIt.hasNext()) {
+					Cell curCell = cellsIt.next();
+					float value = 
+							curCell.getLeakages().getStats().getAvg();
+					values[j] = value;
+					stringAr[j] = curCell.getName();
+					i++;
+				}
+			}
+			data.add(values);
+			stringData.add(stringAr);
+			IDiagramWizard wiz = new DiagramWizard();
+			if (this.diagramPanel != null) {
+				if (diagram != null) {
+					diagram.removeFromContainer();
+					diagram = null;
+				}
+				this.diagram = wiz.makeAndAttachBarChartWithDescriptions(this.diagramPanel, data, stringData);
+				diagrams[i] = diagram;
+			}
+			updateStatDisplay();
+		}
+		
+		else if (elements.get(0) instanceof Cell) {
+			Cell cell = (Cell)elements.get(i);
+			
+			if (attribute == Attribute.INPUT_POWER) {
+				values = new float[cell.getInPins().size()];
+				stringAr = new String[cell.getInPins().size()];
+				int j = 0;
+				
+				Iterator<InputPin> inPinsIt = cell.getInPins().iterator();
+				while(inPinsIt.hasNext()) {
+					InputPin curInPin = inPinsIt.next();
+					if (!curInPin.getAvailablePower().contains(powerGroup)) {
+						values[j] = 0;
+					}
+					else {
+						curInPin.calculatePower();
+						ArrayList<InputPower> inPows = curInPin.getInputPowers();
+						Iterator<InputPower> inPowIt = inPows.iterator();
+						while (inPowIt.hasNext()) {
+							InputPower curInPow = inPowIt.next();
+							if (curInPow.getPowGroup() == powerGroup) {
+								values[j] = curInPow.getStats().getAvg();
+							}
+						}
+					}
+					stringAr[j] = curInPin.getName();
+					j++;
+				}
+			}
+			
+			else if (attribute == Attribute.OUTPUT_POWER) {
+				values = new float[cell.getOutPins().size()];
+				stringAr = new String[cell.getOutPins().size()];
+				int j = 0;
+				
+				Iterator<OutputPin> outPinsIt = cell.getOutPins().iterator();
+				while(outPinsIt.hasNext()) {
+					OutputPin curOutPin = outPinsIt.next();
+					if (!curOutPin.getAvailablePower().contains(powerGroup)) {
+						values[j] = 0;
+					}
+					else {
+						curOutPin.calculatePower();
+						ArrayList<OutputPower> outPows = curOutPin.getOutputPowers();
+						Iterator<OutputPower> outPowIt = outPows.iterator();
+						while (outPowIt.hasNext()) {
+							OutputPower curOutPow = outPowIt.next();
+							if (curOutPow.getPowGroup() == powerGroup) {
+								values[j] = curOutPow.getStats().getAvg();
+							}
+						}
+					}
+					stringAr[j] = curOutPin.getName();
+					j++;
+				}
+			}
+			
+			else if (attribute == Attribute.TIMING) {
+				values = new float[cell.getOutPins().size()];
+				stringAr = new String[cell.getOutPins().size()];
+				int j = 0;
+				
+				Iterator<OutputPin> outPinsIt = cell.getOutPins().iterator();
+				while(outPinsIt.hasNext()) {
+					OutputPin curOutPin = outPinsIt.next();
+					if (!curOutPin.getAvailableTimSen().contains(timingSense)) {
+						values[j] = 0;
+						stringAr[j] = curOutPin.getName();
+					}
+					else if (!curOutPin.getAvailableTimType().contains(timingType)) {
+						values[j] = 0;
+						stringAr[j] = curOutPin.getName();
+					}
+					else if (!curOutPin.getAvailableTimGr().contains(timingGroup)) {
+						values[j] = 0;
+						stringAr[j] = curOutPin.getName();
+					}
+					
+					else {
+						curOutPin.calculateTiming();
+						ArrayList<Timing> timings = curOutPin.getTimings();
+						Iterator<Timing> timIt = timings.iterator();
+						while (timIt.hasNext()) {		
+							Timing curTim = timIt.next();
+							if (timingSense == curTim.getTimSense() &&
+									timingType == curTim.getTimType() &&
+									timingGroup == curTim.getTimGroup()) {
+								values[j] = curTim.getStats().getAvg();
+								stringAr[j] = curOutPin.getName();
+							}
+						}
+					}
+					j++;
+				}
+			}
+			
+			else if (attribute == Attribute.LEAKAGE) {
+				values = new float[(int) Math.pow(2,(cell.getInPins().size()))];
+				stringAr = new String[(int) Math.pow(2,(cell.getInPins().size()))];
+				values = cell.getLeakages().getValues();
+				cell.setOutputFunctions();
+				stringAr = cell.getLeakages().getOutputFunctions();
+			}	
+			data.add(values);
+			stringData.add(stringAr);
+			IDiagramWizard wiz = new DiagramWizard();
+			if (this.diagramPanel != null) {
+				if (diagram != null) {
+					diagram.removeFromContainer();
+				}
+				this.diagram = wiz.makeAndAttachBarChartWithDescriptions(this.diagramPanel, data, stringData);
+				diagrams[i] = diagram;
+			}
+			updateStatDisplay();
+		}
+		else if (elements.get(0) instanceof InputPin) {
+			InputPin inPin = (InputPin)elements.get(i);
+			float[] index1 = null;	
+			if (!inPin.getAvailablePower().contains(powerGroup)) {
+				return;
+			}
+			
+			Iterator<InputPower> inPowIt = inPin.getInputPowers().iterator();
+			while (inPowIt.hasNext()) {
+				InputPower curInPow = inPowIt.next();
+				if (curInPow.getPowGroup() == powerGroup) {
+					values = curInPow.getValues();
+					index1 = curInPow.getIndex1();
+				}
+			}
+			data.add(index1);
+			data.add(values);
+			IDiagramWizard wiz = new DiagramWizard();
+			if (this.diagramPanel != null) {
+				if (diagram != null) {
+					diagram.removeFromContainer();
+				}
+				this.diagram = wiz.makeAndAttachHistogram(this.diagramPanel, data);
+				diagrams[i] = diagram;
+			}
+			updateStatDisplay();
+			
+		}
+		
+		else if (elements.get(0) instanceof OutputPin) {
+		/*	OutputPin outPin = (OutputPin)this.subWindow.getElement();
+			values = null;
+			float[] index1 = null;
+			float[] index2 = null;
+			
+			if (selectedPin == null) {
+				if (this.diagramPanel != null) {
+					if (diagram != null) {
+						diagram.removeFromContainer();
+						diagram = null;
+					}
+				}
+				return;
+			}
+			if (attribute == Attribute.OUTPUT_POWER) {
+				if (!outPin.getAvailablePower().contains(powerGroup)) {
+					return;
+				}
+				
+				Iterator<OutputPower> outPowIt = outPin.getOutputPowers().iterator();
+				while (outPowIt.hasNext()) {
+					OutputPower curOutPow = outPowIt.next();
+					if (curOutPow.getPowGroup() == powerGroup && 
+							curOutPow.getRelatedPin().getName().equals(this.selectedPin.getName())) {
+						values = new float[curOutPow.getIndex1().length * curOutPow.getIndex2().length];
+					    index1 = curOutPow.getIndex1();
+						index2 = curOutPow.getIndex2();
+						data.add(index1);
+						data.add(index2);
+						for (int i = 0; i < curOutPow.getIndex1().length; i++) {
+							data.add(curOutPow.getValues()[i]);
+						}
+					}
+				}
+				IDiagramWizard wiz = new DiagramWizard();
+				if (this.diagramPanel != null) {
+					if (diagram != null) {
+						diagram.removeFromContainer();
+						diagram = null;
+					}
+					this.diagram = wiz.makeAndAttachHeatMap(this.diagramPanel, data);
+				}
+				updateStatDisplay();
+			}
+			
+			else if (attribute == Attribute.TIMING) {
+				if (!outPin.getAvailableTimSen().contains(timingSense)) {
+					return;
+				}
+				if (!outPin.getAvailableTimType().contains(timingType)) {
+					return;
+				}
+				if (!outPin.getAvailableTimGr().contains(timingGroup)) {
+					return;
+				}
+				
+				Iterator<Timing> timIt = outPin.getTimings().iterator();
+				while (timIt.hasNext()) {
+					Timing curTim = timIt.next();
+					if (curTim.getTimSense() == timingSense && curTim.getTimType() == timingType
+							&& curTim.getTimGroup() == timingGroup && 
+							curTim.getRelatedPin().getName().equals(this.selectedPin.getName())) {
+						values = new float[curTim.getIndex1().length * curTim.getIndex2().length];
+					    index1 = curTim.getIndex1();
+						index2 = curTim.getIndex2();
+						data.add(index1);
+						data.add(index2);
+						for (int i = 0; i < curTim.getIndex1().length; i++) {
+							data.add(curTim.getValues()[i]);
+						}
+					}
+				}
+				IDiagramWizard wiz = new DiagramWizard();
+				if (this.diagramPanel != null) {
+					if (diagram != null) {
+						diagram.removeFromContainer();
+					}
+					this.diagram = wiz.makeAndAttachHeatMap(this.diagramPanel, data);
+				}
+				updateStatDisplay();
+			}
+			
+			*/
+		}
+		
+	}
+		DiagramWizard wiz = new DiagramWizard();
+		BarChart[] barcharts = new BarChart[this.elements.size()];
+		for(int i = 0; i < elements.size(); i++) {
+			barcharts[i] = (BarChart) diagrams[i];
+		}
+		System.out.println(barcharts[0]);
+		this.diagram = wiz.overlayAndAttachBarCharts(this.diagramPanel, barcharts);
+    }
+
+	private void updateStatDisplay() {
+		IDiagramWizard wiz = new DiagramWizard();
+
+		if(min.isSelected() && this.IDHmin == null) {
+			this.IDHmin = wiz.addMinDisplayer(this.diagram);
+		} else if(!min.isSelected() && this.IDHmin != null) {
+			this.IDHmin.remove();
+			this.IDHmin = null;
+		}
+
+		if(max.isSelected() && this.IDHmax == null) {
+			this.IDHmax = wiz.addMaxDisplayer(this.diagram);
+		} else if(!max.isSelected() && this.IDHmax != null) {
+			this.IDHmax.remove();
+			this.IDHmax = null;
+		}
+
+		if(avg.isSelected() && this.IDHavg == null) {
+			this.IDHavg = wiz.addAvgDisplayer(this.diagram);
+		} else if(!avg.isSelected() && this.IDHavg != null) {
+			this.IDHavg.remove();
+			this.IDHavg = null;
+		}
+
+		if(med.isSelected() && this.IDHmed == null) {
+			this.IDHmed = wiz.addMedDisplayer(this.diagram);
+		} else if(!med.isSelected() && this.IDHmed != null) {
+			this.IDHmed.remove();
+			this.IDHmed = null;
+		}
+	}
+
+	@Override
 	public void componentResized(ComponentEvent e) {
 		super.componentResized(e);
-		
+
+		updateDiagram();
 		// DiagramWizard wiz = new DiagramWizard();
 		// this.diagram.removeFromContainer();
 		// this.diagram = wiz.makeBarChart(this.diagramPanel, this.diagram.cloneData());
 		// this.diagram.attachToContainer(this.diagramPanel);
 		// this.diagram.refresh();
 	}
-    
+
+	public void update() {
+		updateDiagram();
+		this.revalidate();
+		this.repaint();
+	}
 }

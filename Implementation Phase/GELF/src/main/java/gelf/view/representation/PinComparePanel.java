@@ -38,9 +38,10 @@ public class PinComparePanel extends Panel {
 	private SubWindow subwindow;
     private JScrollPane scrollPane;
     private JPanel listPanel;
-    private HashMap<Cell, ArrayList<Element>> openedByCell;
-    private HashMap<Cell, ArrayList<InputPin>> selectedPinsByCell;
-    private ArrayList<Element> openedElements;
+    private ArrayList<Cell> openedCells;
+    private ArrayList<InputPin> openedInPins;
+    private ArrayList<OutputPin> openedOutPins;
+    private ArrayList<InputPin> selectedPins;
     private Comparer c;
 
     /**
@@ -54,9 +55,10 @@ public class PinComparePanel extends Panel {
 		super(width, height);
 		this.subwindow = subwindow;
 		this.c = c;
-		openedElements = new ArrayList<Element>();
-		openedByCell = new HashMap<Cell, ArrayList<Element>>();
-		selectedPinsByCell = new HashMap<Cell, ArrayList<InputPin>>();
+		openedCells = new ArrayList<Cell>();
+		openedInPins = new ArrayList<InputPin>();
+		openedOutPins = new ArrayList<OutputPin>();
+		selectedPins = new ArrayList<InputPin>();
 		cells = new ArrayList<Cell>();
 		this.setLayout(new FlowLayout());
 		this.setBorder(new LineBorder(Color.BLACK));
@@ -73,36 +75,43 @@ public class PinComparePanel extends Panel {
 	    this.setVisible(true);
 	    ArrayList<Cell> cells = new ArrayList<Cell>();
 	    for (Element element: elements) {
-	    	if (element instanceof Pin) {
+	    	if (element instanceof InputPin) {
 	    		if (!cells.contains(((Pin)element).getParent())) {
 	    			cells.add(((Pin)element).getParent());
+	    			openedInPins.add((InputPin) element);
+	    		}
+	    	}
+	    	else if (element instanceof OutputPin) {
+	    		if (!cells.contains(((Pin)element).getParent())) {
+	    			cells.add(((Pin)element).getParent());
+	    			openedOutPins.add((OutputPin) element);
 	    		}
 	    	}
 	    	else if (element instanceof Cell) {
 	    		if (!cells.contains((Cell) element)) {
 	    			cells.add((Cell) element);
+	    			openedCells.add((Cell) element);
 	    		}
 	    	}
 	    }
 	    for (Cell cell: cells) {
-	    	openedByCell.put(cell, new ArrayList<Element>());
-	    	listPanel.add(new PinCompareSubPanel(width, height, cell, subwindow, c, this));
+	    	listPanel.add(new PinCompareSubPanel(width, height, cell, subwindow, elements, c, this));
 	    }
 	}
 	
-	/**
-	 * Returns 
-	 * @return 
-	 */
-	public HashMap<Cell, ArrayList<Element>> getOpenedByCell() {
-		return openedByCell;
+	public ArrayList<Cell> getOpenedCells(){
+		return openedCells;
 	}
 	
-	/**
-	 * Returns
-	 * @return
-	 */
-	public HashMap<Cell, ArrayList<InputPin>> getSelectedPinsByCell() {
-		return selectedPinsByCell;
+	public ArrayList<InputPin> getOpenedInPins(){
+		return openedInPins;
+	}
+	
+	public ArrayList<OutputPin> getOpenedOutPins(){
+		return openedOutPins;
+	}
+	
+	public ArrayList<InputPin> getSelectedPins(){
+		return selectedPins;
 	}
 }
