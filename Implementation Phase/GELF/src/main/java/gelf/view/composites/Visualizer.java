@@ -654,44 +654,73 @@ public class Visualizer extends ElementManipulator {
 			values = null;
 			float[] index1 = null;
 			float[] index2 = null;
-			if (!outPin.getAvailablePower().contains(powerGroup)) {
-				return;
-			}
 			
-			Iterator<OutputPower> outPowIt = outPin.getOutputPowers().iterator();
-			while (outPowIt.hasNext()) {
-				OutputPower curOutPow = outPowIt.next();
-				if (curOutPow.getPowGroup() == powerGroup && curOutPow.getRelatedPin().getName().equals("A1")) {
-					values = new float[curOutPow.getIndex1().length * curOutPow.getIndex2().length];
-					
-					/**
-					ArrayList<Float> list = new ArrayList<Float>();
-				    for (int i = 0; i < curOutPow.getValues().length; i++) {
-				        for (int j = 0; j < curOutPow.getValues()[i].length; j++) { 
-				            list.add(curOutPow.getValues()[i][j]); 
-				        }
-				    }
-				    for (int i = 0; i < values.length; i++) {
-				        values[i] = list.get(i);
-				    }
-				    **/
-				    index1 = curOutPow.getIndex1();
-					index2 = curOutPow.getIndex2();
-					data.add(index1);
-					data.add(index2);
-					for (int i = 0; i < curOutPow.getIndex1().length; i++) {
-						data.add(curOutPow.getValues()[i]);
+			if (attribute == Attribute.OUTPUT_POWER) {
+				if (!outPin.getAvailablePower().contains(powerGroup)) {
+					return;
+				}
+				
+				Iterator<OutputPower> outPowIt = outPin.getOutputPowers().iterator();
+				while (outPowIt.hasNext()) {
+					OutputPower curOutPow = outPowIt.next();
+					if (curOutPow.getPowGroup() == powerGroup && curOutPow.getRelatedPin().getName().equals("A1")) {
+						values = new float[curOutPow.getIndex1().length * curOutPow.getIndex2().length];
+					    index1 = curOutPow.getIndex1();
+						index2 = curOutPow.getIndex2();
+						data.add(index1);
+						data.add(index2);
+						for (int i = 0; i < curOutPow.getIndex1().length; i++) {
+							data.add(curOutPow.getValues()[i]);
+						}
 					}
 				}
-			}
-			IDiagramWizard wiz = new DiagramWizard();
-			if (this.diagramPanel != null) {
-				if (diagram != null) {
-					diagram.removeFromContainer();
+				IDiagramWizard wiz = new DiagramWizard();
+				if (this.diagramPanel != null) {
+					if (diagram != null) {
+						diagram.removeFromContainer();
+					}
+					this.diagram = wiz.makeAndAttachHeatMap(this.diagramPanel, data);
 				}
-				this.diagram = wiz.makeAndAttachHeatMap(this.diagramPanel, data);
+				updateStatDisplay();
 			}
-			updateStatDisplay();
+			
+			else if (attribute == Attribute.TIMING) {
+				if (!outPin.getAvailableTimSen().contains(timingSense)) {
+					return;
+				}
+				if (!outPin.getAvailableTimType().contains(timingType)) {
+					return;
+				}
+				if (!outPin.getAvailableTimGr().contains(timingGroup)) {
+					return;
+				}
+				
+				Iterator<Timing> timIt = outPin.getTimings().iterator();
+				while (timIt.hasNext()) {
+					Timing curTim = timIt.next();
+					if (curTim.getTimSense() == timingSense && curTim.getTimType() == timingType
+							&& curTim.getTimGroup() == timingGroup && 
+							curTim.getRelatedPin().getName().equals("A1")) {
+						values = new float[curTim.getIndex1().length * curTim.getIndex2().length];
+					    index1 = curTim.getIndex1();
+						index2 = curTim.getIndex2();
+						data.add(index1);
+						data.add(index2);
+						for (int i = 0; i < curTim.getIndex1().length; i++) {
+							data.add(curTim.getValues()[i]);
+						}
+					}
+				}
+				IDiagramWizard wiz = new DiagramWizard();
+				if (this.diagramPanel != null) {
+					if (diagram != null) {
+						diagram.removeFromContainer();
+					}
+					this.diagram = wiz.makeAndAttachHeatMap(this.diagramPanel, data);
+				}
+				updateStatDisplay();
+			}
+			
 			
 		}
 	}
