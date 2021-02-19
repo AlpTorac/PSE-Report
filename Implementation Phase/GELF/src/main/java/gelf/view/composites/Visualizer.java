@@ -63,6 +63,7 @@ public class Visualizer extends ElementManipulator {
 	private JComboBox<TimingType> timingTypeDropdown = new JComboBox<TimingType>();
 	private JComboBox<TimingGroup> timingGroupDropdown = new JComboBox<TimingGroup>();
 	private JComboBox<TimingSense> timingSenseDropdown = new JComboBox<TimingSense>();
+    private InputPin selectedPin;
 
 	//attributes enum for dropdowns
 	public enum Attribute {
@@ -181,7 +182,7 @@ public class Visualizer extends ElementManipulator {
 			upperPanel.add(new LibraryPanel(100, 100, (Library)e, w));
 	    }
 	    else {
-	    	upperPanel.add(new CellPanel(150, 150, e, w, dataPanel));    
+	    	upperPanel.add(new CellPanel(150, 150, e, w, this, dataPanel));    
 	    }
         upperPanel.add(dataPanel);
         dataPanel.setAlignmentY(CENTER_ALIGNMENT);
@@ -194,7 +195,7 @@ public class Visualizer extends ElementManipulator {
     		upperPanel.add(new LibraryPanel(100, 100, (Library)e, subWindow));
     	}
     	else {
-    		upperPanel.add(new CellPanel(100, 100, e, subWindow, dataPanel)); 
+    		upperPanel.add(new CellPanel(100, 100, e, subWindow, this, dataPanel)); 
     	}
     	upperPanel.add(dataPanel);
 
@@ -364,8 +365,12 @@ public class Visualizer extends ElementManipulator {
 		dropdowns.repaint();
 		//updateDiagram();
 	}
-
-
+    
+    public void updateDiagram(InputPin selectedPin) {
+		this.selectedPin = selectedPin;
+		updateDiagram();
+	}
+    
 	//update diagram depending on dropdown status
 	private void updateDiagram() {
 
