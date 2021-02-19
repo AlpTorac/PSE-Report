@@ -7,7 +7,10 @@ import java.util.Iterator;
 import gelf.model.elements.Cell;
 import gelf.model.elements.Library;
 import gelf.model.project.Model;
-
+/** 
+ * Moves the selected cells to a selected library
+ * @author Kerem Kara
+ */
 public class MoveCommand implements Command {
 	
 	private HashMap<Cell, Library> initialPositions = new HashMap<Cell, Library>();
@@ -16,12 +19,18 @@ public class MoveCommand implements Command {
     private ArrayList<Cell> movedCells = new ArrayList<Cell>();
     private Model currentModel = Model.getInstance();
     private ArrayList<Cell> initialCells;
-	
+	/**
+	 * Initializes the command
+	 * @param cellsToMove The selected cells that are going to be moved
+	 * @param destinationLibrary The selected library, which the cells are going to be moved to
+	 */
 	public MoveCommand(ArrayList<Cell> cellsToMove, Library destinationLibrary) {
 		this.destinationLibrary = destinationLibrary;
 		this.cellsToMove = cellsToMove;
 	}
-
+	/**
+	 * Executes the moving command by also calling the NameConflictResolver
+	 */
 	public void execute() {
 		initialCells = new ArrayList<Cell>();
 		initialCells.addAll(cellsToMove);
@@ -75,7 +84,10 @@ public class MoveCommand implements Command {
 		currentModel.getCurrentProject().inform();
 		currentModel.getCurrentCommandHistory().addCommand(this);
 	}
-
+	/**
+	 * Undoes the command by deleting the cells from the library that they are moved to and
+	 * adds them back to their initial library
+	 */
 	public void undo() {
 		Iterator<Cell> movedCellsIt = movedCells.iterator();
 		while(movedCellsIt.hasNext()) {
