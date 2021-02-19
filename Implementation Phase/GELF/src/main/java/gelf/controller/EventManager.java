@@ -80,18 +80,5 @@ public class EventManager {
 		view.itemSave.addActionListener((ActionListener) listeners.get(Event.SAVE));
 		view.itemSaveAs.addActionListener((ActionListener) listeners.get(Event.SAVEAS));
 		view.itemSaveAll.addActionListener((ActionListener) listeners.get(Event.SAVEALL));
-		
-		
-		
-		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-
 }
