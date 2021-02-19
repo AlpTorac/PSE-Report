@@ -280,7 +280,10 @@ public class Visualizer extends ElementManipulator implements Updatable {
 		timingSenseDropdown.setVisible(true);
 		for(TimingSense val : availTimSen) {
 			timingSenseDropdown.addItem(val);
-		}
+		}	
+		timingSense = availTimSen.get(0);
+		timingGroup = availTimGr.get(0);
+		timingType = availTimType.get(0);
 		
 		//listeners
 		ItemListener updateAttribute = new ItemListener() {
@@ -304,6 +307,7 @@ public class Visualizer extends ElementManipulator implements Updatable {
 				updateDiagram();
 			}
 		};
+		//init sub dropdown values
 		libDropdown.addItemListener(updateAttribute);
 		cellDropdown.addItemListener(updateAttribute);
 		outpinDropdown.addItemListener(updateAttribute);
@@ -353,6 +357,8 @@ public class Visualizer extends ElementManipulator implements Updatable {
 		};
 		timingGroupDropdown.addItemListener(updateTimingGroup);
 		
+
+
 		enableCheckboxes();
 		if(this.subWindow.getElement().getClass() == Library.class) {
 			this.dropdowns.add(libDropdown);
