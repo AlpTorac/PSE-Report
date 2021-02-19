@@ -34,28 +34,15 @@ public class LibertyCompiler {
      */
     public static String compile(Cell cell) {
         String output = "\tcell(" + cell.getName() + ") {\n"; //+ cell.getCellData();
-        output += "\t\tcell_leakage_power : " + Model.formatFloat(cell.getDefaultLeakage()) + ";";
+        output += "\t\tcell_leakage_power : " + Model.formatFloat(cell.getDefaultLeakage()) + ";\n";
         ArrayList<InputPin> inPins = cell.getInPins();
         String[] inPinNames = new String[inPins.size()];
         for (int i = 0; i < inPins.size(); i++) {
             inPinNames[i] = inPins.get(i).getName();
         }
         output += "\n";
-        for (int i = 0; i < cell.getLeakages().getValues().length; i++) {
-            String leakageFunction = "";
-            for (int j = inPinNames.length - 1; j >= 0; j--) {
-                if ((i & (1 << j)) == 0) {
-                    leakageFunction += "!";
-                }
-                leakageFunction += inPinNames[j] + "&";
-            }
-            leakageFunction = leakageFunction.substring(0, leakageFunction.length() - 1);
-            output += "\t\tleakage_power() {\n"
-            + "\t\t\twhen : \"" 
-            + leakageFunction
-            + "\" ;\n"
-            + "\t\t\tvalue : \"" + Model.formatFloat(cell.getLeakages().getValues()[i]) + "\" ;\n" 
-            + "\t\t}\n\n";
+        for (String leakageString: compileLeakage(cell.getLeakages())) {
+            output += leakageString;
         }
         for (InputPin inPin : inPins) {
             output += compile(inPin);
@@ -74,7 +61,7 @@ public class LibertyCompiler {
      */
     public static String compile(InputPin pin) {
         String index1String = "\t\t\t\t\tindex_1(" + compileArray(pin.getParent().getIndex1()) + ");\n";
-        String output = "\n\t\tpin(" + pin.getName() + ") {\n"
+        String output = "\t\tpin(" + pin.getName() + ") {\n"
         + "\t\t\tcapacitance : " + Model.formatFloat(pin.getCapacitance()) + " ;\n"
         + "\t\t\tdirection : input ;\n";
         if (!pin.getInputPowers().isEmpty()){
@@ -173,5 +160,25 @@ public class LibertyCompiler {
         arrayString = arrayString.substring(0,arrayString.length() - 2);
         arrayString += "\"";
         return arrayString;
+    }
+
+    /**
+     * Compiles leakages
+     * @param leakage the leakes to be compiled
+     * @return the string array of compiled leakages
+     */
+    private static String[] compileLeakage(Leakage leakage) {
+        leakage.getParentCell().setOutputFunctions();
+        String[] leakageFunctions = leakage.getOutputFunctions();
+        String[] output = new String[leakage.getValues().length];
+        for (int i = 0; i < leakage.getValues().length; i++) {
+            output[i] = "\t\tleakage_power() {\n"
+            + "\t\t\twhen : \"" 
+            + leakageFunctions[i]
+            + "\" ;\n"
+            + "\t\t\tvalue : \"" + Model.formatFloat(leakage.getValues()[i]) + "\" ;\n" 
+            + "\t\t}\n\n";
+        }
+        return output;
     }
 }

@@ -624,7 +624,7 @@ public class LibertyParser {
      * @throws InvalidFileFormatException if the Format of the Internal Power attribute doesn't fit
      * expected format
      */
-    public static OutputPower parseOutPower(String content, String path) throws InvalidFileFormatException {
+    private static OutputPower parseOutPower(String content, String path) throws InvalidFileFormatException {
         PowerGroup powGroup = null;
         for (PowerGroup powGroupEnum : PowerGroup.values()) {
             if (content.startsWith(powGroupEnum.name().toLowerCase())) {
@@ -655,7 +655,7 @@ public class LibertyParser {
      * @throws InvalidFileFormatException if the Format of the Internal Power attribute doesn't fit
      * expected format
      */
-    public static InputPower parseInPower(String content, String path) throws InvalidFileFormatException {
+    private static InputPower parseInPower(String content, String path) throws InvalidFileFormatException {
         PowerGroup powGroup = null;
         for (PowerGroup powGroupEnum : PowerGroup.values()) {
             if (content.startsWith(powGroupEnum.name().toLowerCase())) {
@@ -686,7 +686,7 @@ public class LibertyParser {
      * @throws InvalidFileFormatException if the Format of the Timing attribute doesn't fit
      * expected format
      */
-    public static Timing parseOutTiming(String content, TimingSense timSense, TimingType timType, String path)
+    private static Timing parseOutTiming(String content, TimingSense timSense, TimingType timType, String path)
             throws InvalidFileFormatException {
         TimingGroup timGroup = null;
         for (TimingGroup timingEnum : TimingGroup.values()) {
@@ -716,7 +716,7 @@ public class LibertyParser {
      * @param arrayName the parameter name
      * @return the array object of the parameter name
      */
-    public static float[] parseArray(String content, String arrayName){
+    private static float[] parseArray(String content, String arrayName){
         int firstIndex = content.indexOf(arrayName) + arrayName.length();
         int lastIndex = content.indexOf(";", firstIndex);
         String arrayString = content.substring(firstIndex + 1, lastIndex - 1);
@@ -733,7 +733,7 @@ public class LibertyParser {
      * @return the array object of the parameter name
      * @throws InvalidFileFormatException
      */
-    public static float[][] parseDoubleArray(String content, String arrayName, String path)
+    private static float[][] parseDoubleArray(String content, String arrayName, String path)
             throws InvalidFileFormatException {
         int firstIndex = content.indexOf(arrayName) + arrayName.length();
         int lastIndex = content.indexOf(";", firstIndex);
@@ -762,7 +762,7 @@ public class LibertyParser {
      * @param content the string containing the array
      * @return the float[] array object
      */
-    public static float[] stringToArray(String content) {
+    private static float[] stringToArray(String content) {
         content = content.replaceAll("(\"|\\\\)", "");
         String[] stringArray = content.split(",");
         float[] floatArray = new float[stringArray.length];
