@@ -13,6 +13,7 @@ import gelf.model.elements.InputPin;
 import gelf.model.elements.OutputPin;
 import gelf.model.elements.Pin;
 import gelf.view.components.Label;
+import gelf.view.composites.Comparer;
 import gelf.view.composites.SubWindow;
 
 /**
@@ -29,8 +30,10 @@ public class PinCompareSubPanel extends CellPanel {
 	private Cell cell;
 	private HashMap<Checkbox, InputPin> checkboxMap;
 	private ArrayList<InputPin> selectedPins;
-	private PinComparePanel upperPanel;
 	private ArrayList<Pin> openedPins;
+	private PinComparePanel upperPanel;
+	
+	private Comparer c;
 	
 	/**
 	 * Instantiates a sub-panel
@@ -39,7 +42,7 @@ public class PinCompareSubPanel extends CellPanel {
 	 * @param cell Cell to be shown on the panel.
 	 * @param subwindow The subwindow where this panel belongs to.
 	 */
-	public PinCompareSubPanel(int width, int height, Cell cell, SubWindow subwindow, PinComparePanel upperPanel) {
+	public PinCompareSubPanel(int width, int height, Cell cell, SubWindow subwindow, Comparer c, PinComparePanel upperPanel) {
 		super(width, height, cell, subwindow, null);
 		this.cell = cell;
 		
@@ -49,9 +52,9 @@ public class PinCompareSubPanel extends CellPanel {
 		this.cellButton = super.getCellButton();
 		this.upperPanel = upperPanel;
 		this.openedPins = new ArrayList<Pin>();
-        this.checkboxMap = super.checkboxMap;
+		this.checkboxMap = super.checkboxMap;
 		selectedPins = new ArrayList<InputPin>();
-
+		this.c = c;
 	}
 	
 	/**
@@ -84,9 +87,11 @@ public class PinCompareSubPanel extends CellPanel {
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getStateChange() == ItemEvent.SELECTED) {
 			selectedPins.add(checkboxMap.get(e.getSource()));
+			upperPanel.getSelectedPinsByCell().get(cell).add(checkboxMap.get(e.getSource()));
 		}
 		else {
 			selectedPins.remove(checkboxMap.get(e.getSource()));
+			upperPanel.getSelectedPinsByCell().get(cell).remove(checkboxMap.get(e.getSource()));
 		}
 		updateSelectedPins(selectedPins);
 	}
@@ -95,37 +100,43 @@ public class PinCompareSubPanel extends CellPanel {
 	public void mouseClicked(MouseEvent e) {
 		if (cell.getName() == ((Label)e.getSource()).getText()) {
 			if (((Label)e.getSource()).getBackground().equals(Color.BLUE)) {
-				upperPanel.getSelectedCells().remove(cell);
+				upperPanel.getOpenedByCell().get(cell).remove(cell);
 				((Label)e.getSource()).setBackground(new Color(0.2f, 0.2f, 0.2f));
+				c.updateDiagram(upperPanel.getOpenedByCell(), upperPanel.getSelectedPinsByCell());
 				
 			}
 			else {
-				upperPanel.getSelectedCells().add(cell);
+				upperPanel.getOpenedByCell().get(cell).add(cell);
 				((Label)e.getSource()).setBackground(Color.BLUE);
+				c.updateDiagram(upperPanel.getOpenedByCell(), upperPanel.getSelectedPinsByCell());
 			}
 			return;
 		}
 		for (InputPin input : inputPins) {
 			if (input.getName() == (((Label)e.getSource()).getText())) {
 				if (((Label)e.getSource()).getBackground().equals(Color.BLUE)) {
-					openedPins.remove(input);
+					upperPanel.getOpenedByCell().get(cell).remove(input);
 					((Label)e.getSource()).setBackground(new Color(0.2f, 0.2f, 0.2f));
+					c.updateDiagram(upperPanel.getOpenedByCell(), upperPanel.getSelectedPinsByCell());
 				}
 				else {
-					openedPins.add(input);
+					upperPanel.getOpenedByCell().get(cell).add(input);
 					((Label)e.getSource()).setBackground(Color.BLUE);
+					c.updateDiagram(upperPanel.getOpenedByCell(), upperPanel.getSelectedPinsByCell());
 				}
 			}
 		}
 		for (OutputPin output : outputPins) {
             if (output.getName() == (((Label)e.getSource()).getText())) {
             	if (((Label)e.getSource()).getBackground().equals(Color.BLUE)) {
-    				openedPins.remove(output);
+            		upperPanel.getOpenedByCell().get(cell).remove(output);
             		((Label)e.getSource()).setBackground(new Color(0.2f, 0.2f, 0.2f));
+            		c.updateDiagram(upperPanel.getOpenedByCell(), upperPanel.getSelectedPinsByCell());
     			}
     			else {
-    				openedPins.add(output);
+    				upperPanel.getOpenedByCell().get(cell).add(output);
     				((Label)e.getSource()).setBackground(Color.BLUE);
+    				c.updateDiagram(upperPanel.getOpenedByCell(), upperPanel.getSelectedPinsByCell());
     			}
 			}
 		}
@@ -138,15 +149,14 @@ public class PinCompareSubPanel extends CellPanel {
 	@Override
 	public void mouseExited(MouseEvent e) {
 		/*
-		   if (e.getSource() instanceof Label) {
+		 	if (e.getSource() instanceof Label) {
 			if (((Label)e.getSource()).getBackground().equals(Color.BLUE)) {
 				return;
 			}
 			e.getComponent().setBackground(new Color(0.2f, 0.2f, 0.2f));
-			
+			*/
 		}
-		*/
-	}
-
+		
+	
 
 }

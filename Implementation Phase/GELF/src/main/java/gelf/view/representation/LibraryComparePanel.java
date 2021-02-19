@@ -20,6 +20,7 @@ import javax.swing.border.LineBorder;
 import gelf.model.elements.Cell;
 import gelf.model.elements.Library;
 import gelf.view.components.Panel;
+import gelf.view.composites.Comparer;
 import gelf.view.composites.SubWindow;
 
 /**
@@ -35,16 +36,18 @@ public class LibraryComparePanel extends Panel implements MouseListener{
     private ArrayList<Library> selectedLibraries;
 	private SubWindow subwindow;
     private JScrollPane scrollPane;
+    private Comparer c;
     
    
     /**
      * Initializes the panel.
      * @param library To be opened library.
      */
-    public LibraryComparePanel(int width, int height, SubWindow subwindow, ArrayList<Library> libraries) {
+    public LibraryComparePanel(int width, int height, SubWindow subwindow, Comparer c, ArrayList<Library> libraries) {
     	super(width, height);
     	this.subwindow = subwindow;
     	selectedLibraries = libraries;
+    	this.c = c;
     	buttonList = new ArrayList<Label>();
     	this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     	this.setBorder(new LineBorder(Color.BLACK));
@@ -67,7 +70,7 @@ public class LibraryComparePanel extends Panel implements MouseListener{
         	listPanel.add(label);
         	label.addMouseListener(this);
         	buttons.put(label, libraries.get(i));
-            label.setBackground(Color.BLUE);
+        	label.setBackground(Color.BLUE);
         }
         this.setVisible(true);
 
@@ -79,13 +82,13 @@ public class LibraryComparePanel extends Panel implements MouseListener{
 		
 		if (((Label)e.getSource()).getBackground().equals(Color.BLUE)) {
 			selectedLibraries.remove(buttons.get((Label) e.getSource()));
-			
+			c.updateDiagram(selectedLibraries);
 			((Label)e.getSource()).setBackground(new Color(0.2f, 0.2f, 0.2f));
 			
 		}
 		else {
-			
 			selectedLibraries.add(buttons.get((Label) e.getSource()));
+			c.updateDiagram(selectedLibraries);
 			((Label)e.getSource()).setBackground(Color.BLUE);
 		}
 		return;

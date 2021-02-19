@@ -19,9 +19,12 @@ import javax.swing.border.LineBorder;
 
 import gelf.model.elements.Cell;
 import gelf.model.elements.Element;
+import gelf.model.elements.InputPin;
 import gelf.model.elements.Library;
+import gelf.model.elements.OutputPin;
 import gelf.model.elements.Pin;
 import gelf.view.components.Panel;
+import gelf.view.composites.Comparer;
 import gelf.view.composites.SubWindow;
 
 /**
@@ -35,7 +38,10 @@ public class PinComparePanel extends Panel {
 	private SubWindow subwindow;
     private JScrollPane scrollPane;
     private JPanel listPanel;
-    private ArrayList<Cell> selectedCells;
+    private HashMap<Cell, ArrayList<Element>> openedByCell;
+    private HashMap<Cell, ArrayList<InputPin>> selectedPinsByCell;
+    private ArrayList<Element> openedElements;
+    private Comparer c;
 
     /**
      * Initializes the panel.
@@ -44,10 +50,13 @@ public class PinComparePanel extends Panel {
      * @param subwindow The subwindow area
      * @param elements elements opened in the panel
      */
-	public PinComparePanel(int width, int height, SubWindow subwindow, ArrayList<Element> elements) {
+	public PinComparePanel(int width, int height, SubWindow subwindow, Comparer c, ArrayList<Element> elements) {
 		super(width, height);
 		this.subwindow = subwindow;
-		selectedCells = new ArrayList<Cell>();
+		this.c = c;
+		openedElements = new ArrayList<Element>();
+		openedByCell = new HashMap<Cell, ArrayList<Element>>();
+		selectedPinsByCell = new HashMap<Cell, ArrayList<InputPin>>();
 		cells = new ArrayList<Cell>();
 		this.setLayout(new FlowLayout());
 		this.setBorder(new LineBorder(Color.BLACK));
@@ -76,15 +85,24 @@ public class PinComparePanel extends Panel {
 	    	}
 	    }
 	    for (Cell cell: cells) {
-	    	listPanel.add(new PinCompareSubPanel(width, height, cell, subwindow, this));
+	    	openedByCell.put(cell, new ArrayList<Element>());
+	    	listPanel.add(new PinCompareSubPanel(width, height, cell, subwindow, c, this));
 	    }
 	}
 	
 	/**
-	 * Returns a list of selected cells
-	 * @return selected cells in the subpanels.
+	 * Returns 
+	 * @return 
 	 */
-	public ArrayList<Cell> getSelectedCells(){
-		return selectedCells;
+	public HashMap<Cell, ArrayList<Element>> getOpenedByCell() {
+		return openedByCell;
+	}
+	
+	/**
+	 * Returns
+	 * @return
+	 */
+	public HashMap<Cell, ArrayList<InputPin>> getSelectedPinsByCell() {
+		return selectedPinsByCell;
 	}
 }
