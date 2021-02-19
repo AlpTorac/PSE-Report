@@ -8,6 +8,7 @@ import gelf.model.elements.Element;
 import gelf.model.elements.Library;
 import gelf.view.composites.Outliner;
 import gelf.view.composites.SubWindow;
+import gelf.view.composites.SubWindow.ManipulatorType;
 import gelf.view.composites.SubWindowArea;
 import gelf.view.composites.TextEditor;
 
@@ -66,7 +67,8 @@ public class EditListener implements ActionListener{
 			editor.revert();
 			return;
 		}
-		
+		editor.getSubWindow().setElement(element);
+		editor.getSubWindow().setManipulatorType(ManipulatorType.TEXT_EDITOR);
 		
 		traverseAndExpandTree(tree, root, element);
 		

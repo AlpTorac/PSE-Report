@@ -35,6 +35,7 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
     public MenuBar menuBar;
     public JTree tree;
     public JScrollPane treePane;
+    public JTextField searchBox;
     public Menu menuView;
         public MenuItem itemOpen;
         public MenuItem itemCopy;
@@ -63,6 +64,7 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
         this.setBorder(margin);
 
         // menu
+        this.searchBox = new JTextField();
         this.menuBar = new MenuBar();
         this.menuBar.setBackground(cBackground);
         this.menuBar.setPreferredSize(new Dimension(this.getWidth(), 30));
@@ -84,6 +86,7 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
         this.menuView.add(this.itemCompare);
         this.menuView.add(this.itemProperties);
         this.menuBar.add(menuView);
+        this.menuBar.add(searchBox);
         this.add(this.menuBar, BorderLayout.PAGE_START);
 
         // tree

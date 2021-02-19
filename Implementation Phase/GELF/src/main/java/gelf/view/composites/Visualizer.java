@@ -63,6 +63,7 @@ public class Visualizer extends ElementManipulator {
 	private JComboBox<TimingType> timingTypeDropdown = new JComboBox<TimingType>();
 	private JComboBox<TimingGroup> timingGroupDropdown = new JComboBox<TimingGroup>();
 	private JComboBox<TimingSense> timingSenseDropdown = new JComboBox<TimingSense>();
+    private InputPin selectedPin;
 
 	//attributes enum for dropdowns
 	public enum Attribute {
@@ -181,7 +182,7 @@ public class Visualizer extends ElementManipulator {
 			upperPanel.add(new LibraryPanel(100, 100, (Library)e, w));
 	    }
 	    else {
-	    	upperPanel.add(new CellPanel(150, 150, e, w, dataPanel));    
+	    	upperPanel.add(new CellPanel(150, 150, e, w, this, dataPanel));    
 	    }
         upperPanel.add(dataPanel);
         dataPanel.setAlignmentY(CENTER_ALIGNMENT);
@@ -194,7 +195,7 @@ public class Visualizer extends ElementManipulator {
     		upperPanel.add(new LibraryPanel(100, 100, (Library)e, subWindow));
     	}
     	else {
-    		upperPanel.add(new CellPanel(100, 100, e, subWindow, dataPanel)); 
+    		upperPanel.add(new CellPanel(100, 100, e, subWindow, this, dataPanel)); 
     	}
     	upperPanel.add(dataPanel);
 
@@ -364,8 +365,12 @@ public class Visualizer extends ElementManipulator {
 		dropdowns.repaint();
 		//updateDiagram();
 	}
-
-
+    
+    public void updateDiagram(InputPin selectedPin) {
+		this.selectedPin = selectedPin;
+		updateDiagram();
+	}
+    
 	//update diagram depending on dropdown status
 	private void updateDiagram() {
 
@@ -501,6 +506,7 @@ public class Visualizer extends ElementManipulator {
 			if (this.diagramPanel != null) {
 				if (diagram != null) {
 					diagram.removeFromContainer();
+					diagram = null;
 				}
 				this.diagram = wiz.makeAndAttachBarChartWithDescriptions(this.diagramPanel, data, stringData);
 			}
@@ -654,44 +660,84 @@ public class Visualizer extends ElementManipulator {
 			values = null;
 			float[] index1 = null;
 			float[] index2 = null;
-			if (!outPin.getAvailablePower().contains(powerGroup)) {
-				return;
-			}
 			
-			Iterator<OutputPower> outPowIt = outPin.getOutputPowers().iterator();
-			while (outPowIt.hasNext()) {
-				OutputPower curOutPow = outPowIt.next();
-				if (curOutPow.getPowGroup() == powerGroup && curOutPow.getRelatedPin().getName().equals("A1")) {
-					values = new float[curOutPow.getIndex1().length * curOutPow.getIndex2().length];
-					
-					/**
-					ArrayList<Float> list = new ArrayList<Float>();
-				    for (int i = 0; i < curOutPow.getValues().length; i++) {
-				        for (int j = 0; j < curOutPow.getValues()[i].length; j++) { 
-				            list.add(curOutPow.getValues()[i][j]); 
-				        }
-				    }
-				    for (int i = 0; i < values.length; i++) {
-				        values[i] = list.get(i);
-				    }
-				    **/
-				    index1 = curOutPow.getIndex1();
-					index2 = curOutPow.getIndex2();
-					data.add(index1);
-					data.add(index2);
-					for (int i = 0; i < curOutPow.getIndex1().length; i++) {
-						data.add(curOutPow.getValues()[i]);
+			if (selectedPin == null) {
+				if (this.diagramPanel != null) {
+					if (diagram != null) {
+						diagram.removeFromContainer();
+						diagram = null;
 					}
 				}
+				return;
 			}
-			IDiagramWizard wiz = new DiagramWizard();
-			if (this.diagramPanel != null) {
-				if (diagram != null) {
-					diagram.removeFromContainer();
+			if (attribute == Attribute.OUTPUT_POWER) {
+				if (!outPin.getAvailablePower().contains(powerGroup)) {
+					return;
 				}
-				this.diagram = wiz.makeAndAttachHeatMap(this.diagramPanel, data);
+				
+				Iterator<OutputPower> outPowIt = outPin.getOutputPowers().iterator();
+				while (outPowIt.hasNext()) {
+					OutputPower curOutPow = outPowIt.next();
+					if (curOutPow.getPowGroup() == powerGroup && 
+							curOutPow.getRelatedPin().getName().equals(this.selectedPin.getName())) {
+						values = new float[curOutPow.getIndex1().length * curOutPow.getIndex2().length];
+					    index1 = curOutPow.getIndex1();
+						index2 = curOutPow.getIndex2();
+						data.add(index1);
+						data.add(index2);
+						for (int i = 0; i < curOutPow.getIndex1().length; i++) {
+							data.add(curOutPow.getValues()[i]);
+						}
+					}
+				}
+				IDiagramWizard wiz = new DiagramWizard();
+				if (this.diagramPanel != null) {
+					if (diagram != null) {
+						diagram.removeFromContainer();
+						diagram = null;
+					}
+					this.diagram = wiz.makeAndAttachHeatMap(this.diagramPanel, data);
+				}
+				updateStatDisplay();
 			}
-			updateStatDisplay();
+			
+			else if (attribute == Attribute.TIMING) {
+				if (!outPin.getAvailableTimSen().contains(timingSense)) {
+					return;
+				}
+				if (!outPin.getAvailableTimType().contains(timingType)) {
+					return;
+				}
+				if (!outPin.getAvailableTimGr().contains(timingGroup)) {
+					return;
+				}
+				
+				Iterator<Timing> timIt = outPin.getTimings().iterator();
+				while (timIt.hasNext()) {
+					Timing curTim = timIt.next();
+					if (curTim.getTimSense() == timingSense && curTim.getTimType() == timingType
+							&& curTim.getTimGroup() == timingGroup && 
+							curTim.getRelatedPin().getName().equals(this.selectedPin.getName())) {
+						values = new float[curTim.getIndex1().length * curTim.getIndex2().length];
+					    index1 = curTim.getIndex1();
+						index2 = curTim.getIndex2();
+						data.add(index1);
+						data.add(index2);
+						for (int i = 0; i < curTim.getIndex1().length; i++) {
+							data.add(curTim.getValues()[i]);
+						}
+					}
+				}
+				IDiagramWizard wiz = new DiagramWizard();
+				if (this.diagramPanel != null) {
+					if (diagram != null) {
+						diagram.removeFromContainer();
+					}
+					this.diagram = wiz.makeAndAttachHeatMap(this.diagramPanel, data);
+				}
+				updateStatDisplay();
+			}
+			
 			
 		}
 	}

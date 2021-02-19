@@ -52,6 +52,7 @@ public class TextEditor extends ElementManipulator implements KeyListener{
 	private final static Color HOVER_COLOR = Color.GRAY;
 	private final Highlighter hoverhl;
 	private final Highlighter.HighlightPainter hoverPainter;
+    private SubWindow subwindow;
 	
 	/**
 	 * Initializes the text editor.
@@ -62,10 +63,11 @@ public class TextEditor extends ElementManipulator implements KeyListener{
 	 * @param width Width of this panel
 	 * @param height Height of this panel
 	 */
-    public TextEditor(Element element, Project p, Outliner o, SubWindowArea subwindows, int width, int height){
+    public TextEditor(Element element, Project p, Outliner o, SubWindow subwindow, SubWindowArea subwindows, int width, int height){
         super(element, p, width, height);
         hl = new DefaultHighlighter();
         this.subwindows = subwindows;
+        this.subwindow = subwindow;
         this.outliner = o;
         painter = new DefaultHighlighter.DefaultHighlightPainter(HL_COLOR);
         hoverhl = new DefaultHighlighter();
@@ -199,6 +201,10 @@ public class TextEditor extends ElementManipulator implements KeyListener{
         this.document = newText;
     	textArea.setText("");
     	textArea.setText(document);
+    }
+    
+    public SubWindow getSubWindow() {
+    	return subwindow;
     }
     
     /**
