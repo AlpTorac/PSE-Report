@@ -7,9 +7,9 @@ import gelf.model.elements.Library;
 import gelf.view.composites.Outliner;
 
 public class PropertiesListener implements ActionListener {
-	
+
 	private Outliner outliner;
-	
+
 	public PropertiesListener(Outliner outliner) {
 		this.outliner = outliner;
 	}
@@ -21,8 +21,8 @@ public class PropertiesListener implements ActionListener {
 				((Library) outliner.getSelectedElements().get(0)).showProperties();;
 			}
 		}
-		
+
 	}
-	
-	
+
+
 }

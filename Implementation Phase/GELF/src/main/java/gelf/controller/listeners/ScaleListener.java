@@ -43,8 +43,8 @@ public class ScaleListener implements ActionListener {
 		
 		try {
 			float value = Float.parseFloat(scaleValue);
-			ScaleCommand scale = new ScaleCommand(attribute, value);
-			scale.execute();
+			//ScaleCommand scale = new ScaleCommand(attribute, value);
+			//scale.execute();
 		} catch (NumberFormatException exc) {
 			JOptionPane.showMessageDialog(new JFrame(), "Please enter a float value.", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
