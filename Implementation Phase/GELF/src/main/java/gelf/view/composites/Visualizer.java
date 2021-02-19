@@ -661,8 +661,10 @@ public class Visualizer extends ElementManipulator {
 			float[] index2 = null;
 			
 			if (selectedPin == null) {
-				if (diagram != null) {
-					diagram.removeFromContainer();
+				if (this.diagramPanel != null) {
+					if (diagram != null) {
+						diagram.removeFromContainer();
+					}
 				}
 				return;
 			}
