@@ -107,6 +107,8 @@ public class MainWindow extends Window {
         
         this.revalidate();
         this.repaint();
+
+        outliner.setSubWindowArea(subWindowArea);
     }
 
     private void setupSubWindowArea(int topSpace, int bottomSpace, int leftSpace) {

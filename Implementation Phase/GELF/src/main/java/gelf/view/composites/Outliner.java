@@ -1,5 +1,28 @@
 package gelf.view.composites;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+
+import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JTree;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreePath;
+import javax.swing.*;
+import javax.swing.tree.*;
+
+import gelf.controller.EventManager;
 import gelf.model.elements.Cell;
 import gelf.model.elements.Element;
 import gelf.model.elements.InputPin;
@@ -7,25 +30,11 @@ import gelf.model.elements.Library;
 import gelf.model.elements.OutputPin;
 import gelf.model.project.Project;
 import gelf.model.project.Updatable;
-import gelf.view.components.Label;
 import gelf.view.components.Menu;
 import gelf.view.components.MenuBar;
 import gelf.view.components.MenuItem;
 import gelf.view.components.Panel;
-import gelf.view.components.Tree;
-
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
-import javax.swing.plaf.basic.BasicBorders;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.DefaultTreeModel;
-import javax.swing.tree.TreePath;
-
-import java.util.ArrayList;
+import gelf.view.components.TreeMouseAdapter;
 
 /**
  * Outliner
@@ -44,6 +53,8 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
         public MenuItem itemRemove;
         public MenuItem itemCompare;
         public MenuItem itemProperties;
+        public EventManager em;
+        private SubWindowArea subWindowArea;
 
     // colors
     private Color cBackground = ColorTheme.section;
@@ -110,6 +121,8 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
         // subscribe to project
         this.project.addUpdatable(this);
         this.update();
+
+		tree.addMouseListener(new TreeMouseAdapter(this, subWindowArea));
     }
 
     @Override
@@ -160,9 +173,14 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
         return result;
     }
 
+    public void setSubWindowArea(SubWindowArea subWindowArea) {
+        this.subWindowArea = subWindowArea;
+    }
+
     //TreeSelectionListener method
     @Override
     public void valueChanged(TreeSelectionEvent e) {
         //TODO
     }
+
 }
