@@ -52,8 +52,11 @@ public class Comparer extends ElementManipulator {
 	private JComboBox<TimingSense> timingSenseDropdown = new JComboBox<TimingSense>();
 	private SubWindow subWindow;
 	private ArrayList<Library> libraries;
-	private HashMap<Cell, ArrayList<Element>> elements;
-	private HashMap<Cell, ArrayList<InputPin>> selectedPins;
+	private ArrayList<Cell> cells;
+	private ArrayList<InputPin> inputPins;
+	private ArrayList<OutputPin> outputPins;
+	private ArrayList<InputPin> selectedInputPins;
+	
 	
 	//attributes enum for dropdowns
 	public enum Attribute {
@@ -149,8 +152,7 @@ public class Comparer extends ElementManipulator {
     	 upperPanel.setLayout(new FlowLayout());
          this.add(upperPanel);
          upperPanel.setVisible(true);
-         elements = new HashMap<Cell, ArrayList<Element>>();
-     	 selectedPins = new HashMap<Cell, ArrayList<InputPin>>();
+         
          if (super.elements.get(0) instanceof Library) {
          	ArrayList<Library> libraries = new ArrayList<Library>();
          	for (Element element: super.elements) {
@@ -264,7 +266,7 @@ public class Comparer extends ElementManipulator {
 		timingGroupDropdown.addItemListener(updateTimingGroup);
 		
 		
-		/*if(this.subWindow.getElement().getClass() == Library.class) {
+		if(this.subWindow.getElement().getClass() == Library.class) {
 			Library lib = (Library)this.subWindow.getElement();
 			this.dropdowns.add(libCellDropdown);
 			//update attribute
@@ -285,7 +287,7 @@ public class Comparer extends ElementManipulator {
 			//update attribute
 			DropdownStatus.attribute = (Attribute)outpinDropdown.getSelectedItem();
 			updateAttributeSubDropdowns();
-		}*/
+		}
 		this.dropdowns.revalidate();
 		this.dropdowns.repaint();
 	}
@@ -308,14 +310,28 @@ public class Comparer extends ElementManipulator {
 		updateDiagram();
 	}
     
-    public void updateDiagram(ArrayList<Library> libraries) {
+    public void setLibraries(ArrayList<Library> libraries) {
     	this.libraries = libraries;
     	updateDiagram();
     }
     
-    public void updateDiagram(HashMap<Cell, ArrayList<Element>> openedElements, HashMap<Cell, ArrayList<InputPin>> selectedPins) {
-    	this.selectedPins = selectedPins;
-    	this.elements = openedElements;
+    public void setCells(ArrayList<Cell> cells) {
+    	this.cells = cells;
+    	updateDiagram();
+    }
+    
+    public void setInputPins(ArrayList<InputPin> inputPins) {
+    	this.inputPins = inputPins;
+    	updateDiagram();
+    }
+    
+    public void setOutputPins(ArrayList<OutputPin> outputPins) {
+    	this.outputPins = outputPins;
+    	updateDiagram();
+    }
+    
+    public void setSelectedPins(ArrayList<InputPin> inputPins) {
+    	this.selectedInputPins = inputPins;
     	updateDiagram();
     }
     
