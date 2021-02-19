@@ -256,6 +256,13 @@ public class Visualizer extends ElementManipulator implements Updatable {
 			availTimGr = ((Cell)element).getAvailableTimGr();
 			availTimSen = ((Cell)element).getAvailableTimSen();
 			availTimType = ((Cell)element).getAvailableTimType();
+		} else if(this.element.getClass() == OutputPin.class) {
+			availOutputPower = ((OutputPin)element).getAvailablePower();
+			availTimGr = ((OutputPin)element).getAvailableTimGr();
+			availTimSen = ((OutputPin)element).getAvailableTimSen();
+			availTimType = ((OutputPin)element).getAvailableTimType();
+		} else if(this.element.getClass() == InputPin.class) {
+			availInputPower = ((InputPin)element).getAvailablePower();
 		}
 
 		inputPowerDropdown.setVisible(true);
@@ -280,11 +287,13 @@ public class Visualizer extends ElementManipulator implements Updatable {
 		timingSenseDropdown.setVisible(true);
 		for(TimingSense val : availTimSen) {
 			timingSenseDropdown.addItem(val);
-		}	
-		timingSense = availTimSen.get(0);
-		timingGroup = availTimGr.get(0);
-		timingType = availTimType.get(0);
-		
+		}
+		if(this.element.getClass() == Library.class || this.element.getClass() == Cell.class || this.element.getClass() == OutputPin.class) {
+			timingSense = availTimSen.get(0);
+			timingGroup = availTimGr.get(0);
+			timingType = availTimType.get(0);
+		}
+
 		//listeners
 		ItemListener updateAttribute = new ItemListener() {
 			@Override
