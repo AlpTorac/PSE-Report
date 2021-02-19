@@ -82,13 +82,13 @@ public class LibraryComparePanel extends Panel implements MouseListener{
 		
 		if (((Label)e.getSource()).getBackground().equals(Color.BLUE)) {
 			selectedLibraries.remove(buttons.get((Label) e.getSource()));
-			c.updateDiagram(selectedLibraries);
+			c.setLibraries(selectedLibraries);
 			((Label)e.getSource()).setBackground(new Color(0.2f, 0.2f, 0.2f));
 			
 		}
 		else {
 			selectedLibraries.add(buttons.get((Label) e.getSource()));
-			c.updateDiagram(selectedLibraries);
+			c.setLibraries(selectedLibraries);
 			((Label)e.getSource()).setBackground(Color.BLUE);
 		}
 		return;
