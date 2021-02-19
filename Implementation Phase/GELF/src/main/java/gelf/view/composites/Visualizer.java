@@ -660,6 +660,12 @@ public class Visualizer extends ElementManipulator {
 			float[] index1 = null;
 			float[] index2 = null;
 			
+			if (selectedPin == null) {
+				if (diagram != null) {
+					diagram.removeFromContainer();
+				}
+				return;
+			}
 			if (attribute == Attribute.OUTPUT_POWER) {
 				if (!outPin.getAvailablePower().contains(powerGroup)) {
 					return;
@@ -668,7 +674,8 @@ public class Visualizer extends ElementManipulator {
 				Iterator<OutputPower> outPowIt = outPin.getOutputPowers().iterator();
 				while (outPowIt.hasNext()) {
 					OutputPower curOutPow = outPowIt.next();
-					if (curOutPow.getPowGroup() == powerGroup && curOutPow.getRelatedPin().getName().equals("A1")) {
+					if (curOutPow.getPowGroup() == powerGroup && 
+							curOutPow.getRelatedPin().getName().equals(this.selectedPin.getName())) {
 						values = new float[curOutPow.getIndex1().length * curOutPow.getIndex2().length];
 					    index1 = curOutPow.getIndex1();
 						index2 = curOutPow.getIndex2();
@@ -705,7 +712,7 @@ public class Visualizer extends ElementManipulator {
 					Timing curTim = timIt.next();
 					if (curTim.getTimSense() == timingSense && curTim.getTimType() == timingType
 							&& curTim.getTimGroup() == timingGroup && 
-							curTim.getRelatedPin().getName().equals("A1")) {
+							curTim.getRelatedPin().getName().equals(this.selectedPin.getName())) {
 						values = new float[curTim.getIndex1().length * curTim.getIndex2().length];
 					    index1 = curTim.getIndex1();
 						index2 = curTim.getIndex2();
