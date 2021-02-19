@@ -34,41 +34,65 @@ public class DiagramWizard implements IDiagramWizard {
 	}
 	
 	@Override
-	public BarChart makeAndAttachBarChart(Container container, Collection<?> data) {
+	public BarChart makeBarChart(Container container, Collection<?> data) {
 		DiagramBuilder builder = new BarChartBuilder(container);
 		builder.receiveDiagramData(data, 0);
 		director.setBuilder(builder);
 		BarChart diagram = (BarChart) director.build();
+		return diagram;
+	}
+
+	@Override
+	public HeatMap makeHeatMap(Container container, Collection<?> data) {
+		DiagramBuilder builder = new HeatMapBuilder(container);
+		builder.receiveDiagramData(data, 2);
+		director.setBuilder(builder); 
+		HeatMap diagram = (HeatMap) director.build();
+		return diagram;
+	}
+
+	@Override
+	public Histogram makeHistogram(Container container, Collection<?> data) {
+		DiagramBuilder builder = new HistogramBuilder(container);
+		builder.receiveDiagramData(data, 1);
+		director.setBuilder(builder);
+		Histogram diagram = (Histogram) director.build();
+		return diagram;
+	}
+
+	@Override
+	public FunctionGraph makeFunctionGraph(Container container, Collection<?> data) {
+		DiagramBuilder builder = new FunctionGraphBuilder(container);
+		builder.receiveDiagramData(data, 1);
+		director.setBuilder(builder);
+		FunctionGraph diagram = (FunctionGraph) director.build();
+		return diagram;
+	}
+	
+	@Override
+	public BarChart makeAndAttachBarChart(Container container, Collection<?> data) {
+		BarChart diagram = this.makeBarChart(container, data);
 		this.attachAndShowAxes(container, diagram);
 		return diagram;
 	}
 
 	@Override
 	public HeatMap makeAndAttachHeatMap(Container container, Collection<?> data) {
-		DiagramBuilder builder = new HeatMapBuilder(container);
-		builder.receiveDiagramData(data, 2);
-		director.setBuilder(builder); 
-		HeatMap diagram = (HeatMap) director.build();
+		HeatMap diagram = this.makeHeatMap(container, data);
 		this.attachAndShowAxes(container, diagram);
 		return diagram;
 	}
 
 	@Override
 	public Histogram makeAndAttachHistogram(Container container, Collection<?> data) {
-		DiagramBuilder builder = new HistogramBuilder(container);
-		builder.receiveDiagramData(data, 1);
-		director.setBuilder(builder);
-		Histogram diagram = (Histogram) director.build();
+		Histogram diagram = this.makeHistogram(container, data);
 		this.attachAndShowAxes(container, diagram);
 		return diagram;
 	}
 
 	@Override
 	public FunctionGraph makeAndAttachFunctionGraph(Container container, Collection<?> data) {
-		DiagramBuilder builder = new FunctionGraphBuilder(container);
-		builder.receiveDiagramData(data, 1);
-		director.setBuilder(builder);
-		FunctionGraph diagram = (FunctionGraph) director.build();
+		FunctionGraph diagram = this.makeFunctionGraph(container, data);
 		this.attachAndShowAxes(container, diagram);
 		return diagram;
 	}
@@ -76,7 +100,7 @@ public class DiagramWizard implements IDiagramWizard {
 	@Override
 	public BarChart overlayAndAttachBarCharts(Container container, BarChart[] barCharts) {
 		DiagramOverlayer overlayer = new DiagramOverlayer(barCharts);
-		overlayer.setOverlayStrategy(new BarChartOverlayStrategy());
+		overlayer.setOverlayStrategy(new BarChartOverlayStrategy(barCharts));
 		BarChart overlaidDiagram = (BarChart) overlayer.overlay();
 		this.attachAndShowAxes(container, overlaidDiagram);
 		return overlaidDiagram;
@@ -143,12 +167,19 @@ public class DiagramWizard implements IDiagramWizard {
 	}
 
 	@Override
-	public BarChart makeAndAttachBarChartWithDescriptions(Container container, Collection<?> data,
+	public BarChart makeBarChartWithDescriptions(Container container, Collection<?> data,
 			Collection<?> descriptions) {
 		DiagramBuilder builder = new BarChartBuilder(container);
 		builder.receiveDiagramData(data, descriptions, 0);
 		director.setBuilder(builder);
 		BarChart diagram = (BarChart) director.build();
+		return diagram;
+	}
+	
+	@Override
+	public BarChart makeAndAttachBarChartWithDescriptions(Container container, Collection<?> data,
+			Collection<?> descriptions) {
+		BarChart diagram = this.makeBarChartWithDescriptions(container, data, descriptions);
 		this.attachAndShowAxes(container, diagram);
 		return diagram;
 	}

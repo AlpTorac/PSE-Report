@@ -72,7 +72,9 @@ public class DiagramOverlayer implements IDiagramOverlayer {
 
 	@Override
 	public IDiagram overlay() {
-		this.overlayStrategy.setDiagrams((IDiagram[]) this.diagrams.toArray());
+		IDiagram[] diagramArray = new IDiagram[this.diagrams.size()];
+		this.diagrams.toArray(diagramArray);
+		this.overlayStrategy.setDiagrams(diagramArray);
 		return this.overlayStrategy.overlay();
 	}
 }
