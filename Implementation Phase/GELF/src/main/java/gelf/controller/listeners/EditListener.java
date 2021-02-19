@@ -66,7 +66,8 @@ public class EditListener implements ActionListener{
 			editor.revert();
 			return;
 		}
-		
+		editor.getSubWindow().setElement(element);
+		editor.getSubWindow().setManipulatorType(ManipulatorType.TEXT_EDITOR);
 		
 		traverseAndExpandTree(tree, root, element);
 		
