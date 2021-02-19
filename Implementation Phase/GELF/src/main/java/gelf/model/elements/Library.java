@@ -361,7 +361,8 @@ public class Library extends HigherElement {
 	}
 	
 	public void saveLibraryAs() throws IOException {
-		FileManager.saveFile(LibertyCompiler.compile(this), ".lib");
+		this.libraryFile = FileManager.saveFile(LibertyCompiler.compile(this), ".lib");
+		this.path = libraryFile.getAbsolutePath();
 	}
 
 	@Override

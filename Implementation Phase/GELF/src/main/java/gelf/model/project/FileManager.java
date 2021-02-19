@@ -21,12 +21,13 @@ public class FileManager extends JFrame{
 		return fc.getSelectedFile();
 	}
 	
-	public static void saveFile(String content, String extension) 
+	public static File saveFile(String content, String extension) 
 			throws IOException {
 		FileChooserSave fc = new FileChooserSave("Save");
 		String path = fc.getSelectedFile().getAbsolutePath() + extension;
 		File file = new File(path);
 		writeStringToFile(file, content);
+		return file;
 	}
 	
 	public static void saveFileToPath(String content, String extension, String path) 
