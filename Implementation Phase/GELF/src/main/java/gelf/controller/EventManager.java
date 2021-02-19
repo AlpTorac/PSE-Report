@@ -73,7 +73,7 @@ public class EventManager {
 		view.outliner.itemDelete.addActionListener((ActionListener) listeners.get(Event.DELETE));
 		view.outliner.itemRemove.addActionListener((ActionListener) listeners.get(Event.REMOVE));
 		view.outliner.itemCompare.addActionListener((ActionListener) listeners.get(Event.COMPARE));
-		
+		view.outliner.searchBox.addKeyListener((KeyListener) listeners.get(Event.SEARCH));
 		view.itemUndo.addActionListener((ActionListener) listeners.get(Event.UNDO));
 		view.itemRedo.addActionListener((ActionListener) listeners.get(Event.REDO));
 		view.itemMergeSelected.addActionListener((ActionListener) listeners.get(Event.MERGE));
