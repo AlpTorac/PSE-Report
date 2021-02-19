@@ -49,10 +49,14 @@ public class InputPin extends Pin {
 	 * @param dataPin the input pin object with the necessary data
 	 * @author Xhulio Pernoca
 	 */
-	public void replaceData(InputPin dataPin) {
+	public void replaceData(InputPin originDataPin) {
+		InputPin dataPin = originDataPin.clone();
 		setName(dataPin.getName());
 		setSearched(dataPin.getSearched());
 		setInputPowers(dataPin.getInputPowers());
+		for (InputPower pow: dataPin.getInputPowers()) {
+			pow.setParentInPin(this);
+		}
 		setCapacitance(dataPin.getCapacitance());
 	}
     
