@@ -199,7 +199,8 @@ public class Cell extends HigherElement {
 	 * @param dataCell the cell object with the necessary data
 	 * @author Xhulio Pernoca
 	 */
-	public void replaceData(Cell dataCell) {
+	public void replaceData(Cell originalDataCell) {
+		Cell dataCell = originalDataCell.clone();
 		setName(dataCell.getName());
 		setLeakages(dataCell.getLeakages());
 		setDefaultLeakage(dataCell.getDefaultLeakage());
@@ -207,6 +208,12 @@ public class Cell extends HigherElement {
 		setHasShownElements(dataCell.isHasShownElements());
 		setInPins(dataCell.getInPins());
 		setOutPins(dataCell.getOutPins());
+		for (InputPin pin: dataCell.getInPins()) {
+			pin.setParent(this);
+		}
+		for (OutputPin pin: dataCell.getOutPins()) {
+			pin.setParent(this);
+		}
 		setIndex1(dataCell.getIndex1());
 		setIndex2(dataCell.getIndex2());
 	}
