@@ -15,6 +15,7 @@ import gelf.model.elements.attributes.TimingKey;
 import gelf.model.elements.attributes.TimingSense;
 import gelf.model.elements.attributes.TimingType;
 import gelf.model.project.Project;
+import gelf.model.project.Updatable;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -41,7 +42,7 @@ import gelf.view.representation.LibraryPanel;
 /**
  * Visualizer
  */
-public class Visualizer extends ElementManipulator {
+public class Visualizer extends ElementManipulator implements Updatable {
 	Visualizer _this = this;
 	SubWindow subWindow;
 	DataPanel dataPanel;
@@ -83,11 +84,11 @@ public class Visualizer extends ElementManipulator {
 	}
 	
 	//tracks dropdown state
-	public Attribute attribute = Attribute.LEAKAGE;		//for cell/library									||	output pin
-	public PowerGroup powerGroup = PowerGroup.FALL_POWER;	//for cell/library if attribute input/output power	||	output if attribute output power	||	input pin
-	public TimingSense timingSense = TimingSense.POSITIVE_UNATE;	//for cell/library if attribute timing				||	output if attribute timing
-	public TimingGroup timingGroup = TimingGroup.CELL_FALL;	//for cell/library if attribute timing				||	output if attribute timing
-	public TimingType timingType = TimingType.COMBINATIONAL;	//for cell/library if attribute timing				||	output if attribute timing
+	public Attribute attribute = Attribute.values()[0]; 	//for cell/library									||	output pin
+	public PowerGroup powerGroup = PowerGroup.values()[0];	//for cell/library if attribute input/output power	||	output if attribute output power	||	input pin
+	public TimingSense timingSense = TimingSense.values()[0];	//for cell/library if attribute timing				||	output if attribute timing
+	public TimingGroup timingGroup = TimingGroup.values()[0];	//for cell/library if attribute timing				||	output if attribute timing
+	public TimingType timingType = TimingType.values()[0];	//for cell/library if attribute timing				||	output if attribute timing
 	private Checkbox min = new Checkbox("Minimum");
 	private Checkbox max = new Checkbox("Maximum");
 	private Checkbox avg = new Checkbox("Average");
@@ -98,6 +99,7 @@ public class Visualizer extends ElementManipulator {
         this.subWindow = w;
 		//style
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		p.addUpdatable(this);
 		
 		initCellRepresentation(e, w, width, height);
 		
@@ -798,5 +800,12 @@ public class Visualizer extends ElementManipulator {
 		// this.diagram = wiz.makeBarChart(this.diagramPanel, this.diagram.cloneData());
 		// this.diagram.attachToContainer(this.diagramPanel);
 		// this.diagram.refresh();
+	}
+
+	@Override
+	public void update() {
+		updateDiagram();
+		this.revalidate();
+		this.repaint();
 	}
 }
