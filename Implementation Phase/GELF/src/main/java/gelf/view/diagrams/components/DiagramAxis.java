@@ -186,17 +186,23 @@ public abstract class DiagramAxis extends DiagramComponent {
 		
 		double lineAngleRadian = this.axisLine.getAngleRadian();
 		
+		int lastStepDisplayLen = this.getStepDisplays().length - 1;
+		
+		if (lastStepDisplayLen < 4) {
+			lastStepDisplayLen = 4;
+		}
+		
 		// By how much the axis' visual part will be larger than that of this.axisLine
-		double absValOfDifference = this.fontSize * 4;
+		double absValOfDifference = this.fontSize * lastStepDisplayLen;
 		
 		// Subtract these from the coordinates to get this.axisLine from the edge to center
-		double centeringX = absValOfDifference / 2d;
-		double centeringY = absValOfDifference / 2d;
+		double centeringX = absValOfDifference / (((double) lastStepDisplayLen) / 2d) + this.fontSize;
+		double centeringY = absValOfDifference / (((double) lastStepDisplayLen) / 2d) + this.fontSize;
 		
-		double topLeftX = bounds.getX() - centeringX - this.fontSize;
-		double topLeftY = bounds.getY() - centeringY - this.fontSize;
-		double width = bounds.getWidth() + absValOfDifference * Math.abs(Math.sin(lineAngleRadian)) + this.fontSize * 4;
-		double height = bounds.getHeight() + absValOfDifference * Math.abs(Math.cos(lineAngleRadian)) + this.fontSize * 4;
+		double topLeftX = bounds.getX() - centeringX;
+		double topLeftY = bounds.getY() - centeringY;
+		double width = bounds.getWidth() + absValOfDifference * Math.abs(Math.sin(lineAngleRadian)) + this.fontSize * lastStepDisplayLen;
+		double height = bounds.getHeight() + absValOfDifference * Math.abs(Math.cos(lineAngleRadian)) + this.fontSize * lastStepDisplayLen;
 		
 		bounds.setRect(topLeftX, topLeftY, width, height);
 		
