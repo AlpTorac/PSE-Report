@@ -85,9 +85,9 @@ public class Visualizer extends ElementManipulator {
 	//tracks dropdown state
 	public Attribute attribute = Attribute.INPUT_POWER;		//for cell/library									||	output pin
 	public PowerGroup powerGroup = PowerGroup.FALL_POWER;	//for cell/library if attribute input/output power	||	output if attribute output power	||	input pin
-	public TimingSense timingSense;	//for cell/library if attribute timing				||	output if attribute timing
-	public TimingGroup timingGroup;	//for cell/library if attribute timing				||	output if attribute timing
-	public TimingType timingType;	//for cell/library if attribute timing				||	output if attribute timing
+	public TimingSense timingSense = TimingSense.POSITIVE_UNATE;	//for cell/library if attribute timing				||	output if attribute timing
+	public TimingGroup timingGroup = TimingGroup.CELL_RISE;	//for cell/library if attribute timing				||	output if attribute timing
+	public TimingType timingType = TimingType.COMBINATIONAL;	//for cell/library if attribute timing				||	output if attribute timing
 	private Checkbox min = new Checkbox("Minimum");
 	private Checkbox max = new Checkbox("Maximum");
 	private Checkbox avg = new Checkbox("Average");

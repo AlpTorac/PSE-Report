@@ -48,7 +48,7 @@ public class SettingsProvider {
 	private int heatMapLabelBorderThickness = 1;
 	private int heatMapColorScaleBorderThickness = 1;
 	private Color heatMapColorScaleBorderColor = Color.BLACK;
-	private Color[] heatMapColorScaleColors = new Color[] {Color.BLUE, Color.RED};
+	private Color[] heatMapColorScaleColors = new Color[] {new Color(0x455bff), new Color(0xff5c5c)};
 	
 	/**
 	 * Increase the maximum index by this amount to leave some more space for the final bar.
@@ -59,7 +59,7 @@ public class SettingsProvider {
 	
 	private int hoverLabelColorAlpha = 150;
 	
-	private Color diagramCoordinateLineColor = Color.BLACK;
+	private Color diagramCoordinateLineColor = new Color(0x3668ff);
 	
 	private static SettingsProvider instance;
 	
