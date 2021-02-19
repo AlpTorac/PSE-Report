@@ -3,7 +3,10 @@ package gelf.model.elements.attributes;
 import java.util.Arrays;
 
 import gelf.model.project.Interpolator;
-
+/**
+ * Keeps and calculates data of Timing.
+ * @author Kerem Kara
+ */
 public class Timing extends OutAttribute{
 	private TimingSense timSense;
 	private TimingType timType;

@@ -6,7 +6,10 @@ import java.util.Arrays;
 import gelf.model.elements.InputPin;
 import gelf.model.elements.OutputPin;
 import gelf.model.elements.Stat;
-
+/**
+ * Keeps and calculates data of output pin attributes.
+ * @author Kerem Kara
+ */
 public abstract class OutAttribute extends Attribute {
 	protected float[] index1;
     protected float[] index2;

@@ -3,7 +3,10 @@ package gelf.model.elements;
 import java.util.ArrayList;
 
 import gelf.model.elements.attributes.PowerGroup;
-
+/**
+ * Keeps common data of Input and Output Pins and provides abstraction. 
+ * @author Kerem Kara
+ */
 public abstract class Pin extends Element {
 	 protected Cell parentCell;
      protected ArrayList<PowerGroup> availablePower 

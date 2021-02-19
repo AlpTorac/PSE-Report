@@ -14,7 +14,10 @@ import gelf.model.elements.attributes.TimingKey;
 import gelf.model.elements.attributes.TimingSense;
 import gelf.model.elements.attributes.TimingType;
 import gelf.model.project.FileManager;
-
+/**
+ * Keeps and calculates data that belongs to a Cell element.
+ * @author Kerem Kara
+ */
 public class Library extends HigherElement {
 	private float[] index1;
     private float[] index2;
@@ -22,7 +25,14 @@ public class Library extends HigherElement {
     private ArrayList<Cell> cells = new ArrayList<Cell>();
     private Stat defaultLeakage;
     private File libraryFile;
-    
+    /**
+     * Initializes the library
+     * @param name Name of the library
+     * @param index1 Index1 of the library
+     * @param index2 Index2 of the library
+     * @param path Path of the library
+     * @param cells Cells of the library
+     */
     public Library(String name, float[] index1, float[] index2, 
     		String path, ArrayList<Cell> cells) {
     	super.setName(name);

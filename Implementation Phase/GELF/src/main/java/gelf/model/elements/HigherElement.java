@@ -9,7 +9,10 @@ import gelf.model.elements.attributes.TimingGroup;
 import gelf.model.elements.attributes.TimingKey;
 import gelf.model.elements.attributes.TimingSense;
 import gelf.model.elements.attributes.TimingType;
-
+/**
+ * Keeps common data of libraries and cells and provides abstraction.
+ * @author Kerem Kara
+ */
 public abstract class HigherElement extends Element {
 	protected ArrayList<TimingSense> availableTimSen = 
 			new ArrayList<TimingSense>();
@@ -60,15 +63,7 @@ public abstract class HigherElement extends Element {
 	}
 	
 	public abstract void setAvailableInputPower();
-/**
-	public Map<TimingSense, Map<TimingGroup, Map<TimingType, Stat>>> getTimingStat() {
-		return timingStat;
-	}
 
-	public void setTimingStat(Map<TimingSense, Map<TimingGroup, Map<TimingType, Stat>>> timingStat) {
-		this.timingStat = timingStat;
-	}
-**/
 	public Map<TimingKey, Stat> getTimingStat() {
 		return timingStat;
 	}
