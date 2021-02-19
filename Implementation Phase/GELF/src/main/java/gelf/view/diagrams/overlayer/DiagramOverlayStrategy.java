@@ -57,7 +57,7 @@ public abstract class DiagramOverlayStrategy {
 		return indexList;
 	}
 	
-	protected DiagramData[] unifyData(DiagramData[] diagramData, ArrayList<TreeSet<Float>> newIndices) {
+	protected ArrayList<float[]> getNewIndexOfData(ArrayList<TreeSet<Float>> newIndices) {
 		ArrayList<float[]> newIndexOfData = new ArrayList<float[]>();
 		for (int i = 0; i < newIndices.size(); i++) {
 			Float[] newIndexObjects = new Float[newIndices.get(i).size()];
@@ -69,6 +69,11 @@ public abstract class DiagramOverlayStrategy {
 			}
 			newIndexOfData.add(newIndexValues);
 		}
+		return newIndexOfData;
+	}
+	
+	protected DiagramData[] unifyData(DiagramData[] diagramData, ArrayList<TreeSet<Float>> newIndices) {
+		ArrayList<float[]> newIndexOfData = this.getNewIndexOfData(newIndices);
 		
 		DiagramData[] unifiedData = new DiagramData[diagramData.length];
 		
@@ -173,11 +178,13 @@ public abstract class DiagramOverlayStrategy {
 		DiagramAxis[] visuallyShortestAxis = new DiagramAxis[axesPerDiagram];
 		DiagramAxis[] axisWithMinimumValue = new DiagramAxis[axesPerDiagram];
 		DiagramAxis[] axisWithMaximumValue = new DiagramAxis[axesPerDiagram];
+		DiagramAxis[] axisWithMaximumSteps = new DiagramAxis[axesPerDiagram];
 		
 		for (int i = 0; i < axesPerDiagram; i++) {
 			visuallyShortestAxis[i] = allAxes[i][0];
 			axisWithMinimumValue[i] = allAxes[i][0];
 			axisWithMaximumValue[i] = allAxes[i][0];
+			axisWithMaximumSteps[i] = allAxes[i][0];
 		}
 		
 		for (int i = 0; i < axesPerDiagram; i++) {
@@ -192,6 +199,9 @@ public abstract class DiagramOverlayStrategy {
 				if (axisWithMaximumValue[i].getMax() < currentAxis.getMax()) {
 					axisWithMaximumValue[i] = currentAxis;
 				}
+				if (axisWithMaximumSteps[i].getSteps() < currentAxis.getSteps()) {
+					axisWithMaximumSteps[i] = currentAxis;
+				}
 			}
 		}
 		
@@ -200,7 +210,7 @@ public abstract class DiagramOverlayStrategy {
 		for (int index = 0; index < axesPerDiagram; index++) {
 			axes[index] = factory.createSolidAxis(visuallyShortestAxis[index].getLineStart(), visuallyShortestAxis[index].getLineEnd(),
 					axisWithMinimumValue[index].getMin(), axisWithMaximumValue[index].getMax(),
-					visuallyShortestAxis[index].getSteps(), visuallyShortestAxis[index].getColor(), visuallyShortestAxis[index].getLineThickness());
+					axisWithMaximumSteps[index].getSteps(), visuallyShortestAxis[index].getColor(), visuallyShortestAxis[index].getLineThickness());
 			axes[index].setShowValuesUnderAxis(visuallyShortestAxis[index].areValuesUnderAxis());
 		}
 		

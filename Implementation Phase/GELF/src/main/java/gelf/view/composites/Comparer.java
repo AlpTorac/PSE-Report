@@ -544,12 +544,7 @@ public class Comparer extends ElementManipulator {
 			stringData.add(stringAr);
 			IDiagramWizard wiz = new DiagramWizard();
 			if (this.diagramPanel != null) {
-				if (diagram != null) {
-					diagram.removeFromContainer();
-					diagram = null;
-				}
-				this.diagram = wiz.makeAndAttachBarChartWithDescriptions(this.diagramPanel, data, stringData);
-				diagrams[i] = diagram;
+				diagrams[i] = wiz.makeBarChartWithDescriptions(this.diagramPanel, data, stringData);
 			}
 			updateStatDisplay();
 		}
@@ -661,11 +656,7 @@ public class Comparer extends ElementManipulator {
 			stringData.add(stringAr);
 			IDiagramWizard wiz = new DiagramWizard();
 			if (this.diagramPanel != null) {
-				if (diagram != null) {
-					diagram.removeFromContainer();
-				}
-				this.diagram = wiz.makeAndAttachBarChartWithDescriptions(this.diagramPanel, data, stringData);
-				diagrams[i] = diagram;
+				diagrams[i] = wiz.makeBarChartWithDescriptions(this.diagramPanel, data, stringData);
 			}
 			updateStatDisplay();
 		}
@@ -688,11 +679,7 @@ public class Comparer extends ElementManipulator {
 			data.add(values);
 			IDiagramWizard wiz = new DiagramWizard();
 			if (this.diagramPanel != null) {
-				if (diagram != null) {
-					diagram.removeFromContainer();
-				}
-				this.diagram = wiz.makeAndAttachHistogram(this.diagramPanel, data);
-				diagrams[i] = diagram;
+				diagrams[i] = wiz.makeHistogram(this.diagramPanel, data);
 			}
 			updateStatDisplay();
 			
@@ -739,7 +726,7 @@ public class Comparer extends ElementManipulator {
 						diagram.removeFromContainer();
 						diagram = null;
 					}
-					this.diagram = wiz.makeAndAttachHeatMap(this.diagramPanel, data);
+					this.diagram = wiz.makeHeatMap(this.diagramPanel, data);
 				}
 				updateStatDisplay();
 			}
@@ -776,7 +763,7 @@ public class Comparer extends ElementManipulator {
 					if (diagram != null) {
 						diagram.removeFromContainer();
 					}
-					this.diagram = wiz.makeAndAttachHeatMap(this.diagramPanel, data);
+					this.diagram = wiz.makeHeatMap(this.diagramPanel, data);
 				}
 				updateStatDisplay();
 			}
@@ -791,6 +778,11 @@ public class Comparer extends ElementManipulator {
 			barcharts[i] = (BarChart) diagrams[i];
 		}
 		System.out.println(barcharts[0]);
+		if (this.diagramPanel != null) {
+			if (this.diagram != null) {
+				this.diagram.removeFromContainer();
+			}
+		}
 		this.diagram = wiz.overlayAndAttachBarCharts(this.diagramPanel, barcharts);
     }
 
