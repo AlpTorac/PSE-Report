@@ -58,7 +58,8 @@ public interface IDiagram {
 	}
 	
 	public default void removeFromContainer() {
-		this.getContainingElement().getParent().remove(this.getContainingElement());
-		this.getContainingElement().getParent().repaint();
+		Container container = this.getContainingElement().getParent();
+		container.remove(this.getContainingElement());
+		container.repaint();
 	}
 }
