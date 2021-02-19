@@ -9,6 +9,14 @@ import gelf.view.diagrams.type.HeatMap;
 import gelf.view.diagrams.type.Histogram;
 
 public interface IDiagramWizard {
+	public BarChart makeBarChart(Container container, Collection<?> data);
+	
+	public HeatMap makeHeatMap(Container container, Collection<?> data);
+	
+	public Histogram makeHistogram(Container container, Collection<?> data);
+	
+	public FunctionGraph makeFunctionGraph(Container container, Collection<?> data);
+	
 	public BarChart makeAndAttachBarChart(Container container, Collection<?> data);
 	
 	public HeatMap makeAndAttachHeatMap(Container container, Collection<?> data);
@@ -16,6 +24,9 @@ public interface IDiagramWizard {
 	public Histogram makeAndAttachHistogram(Container container, Collection<?> data);
 	
 	public FunctionGraph makeAndAttachFunctionGraph(Container container, Collection<?> data);
+	
+	public BarChart makeBarChartWithDescriptions(Container container, Collection<?> data,
+			Collection<?> descriptions);
 	
 	public BarChart makeAndAttachBarChartWithDescriptions(Container container, Collection<?> data, Collection<?> descriptions);
 	
