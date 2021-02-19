@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import gelf.controller.EventManager;
-import gelf.controller.listeners.LoadListener;
 import gelf.model.elements.Cell;
 import gelf.model.elements.Library;
 import gelf.model.project.Model;
@@ -107,8 +106,6 @@ public class MainWindow extends Window {
         
         this.revalidate();
         this.repaint();
-
-        outliner.setSubWindowArea(subWindowArea);
     }
 
     private void setupSubWindowArea(int topSpace, int bottomSpace, int leftSpace) {
@@ -214,9 +211,9 @@ public class MainWindow extends Window {
         return menuItem;
     }
 
-
     public static void main(String[] args) {
         MainWindow mainWindow = new MainWindow("GELF - Graphical Editor for Liberty Files", 1200, 800, Model.getInstance().getCurrentProject());
         EventManager em = new EventManager(mainWindow);
+        mainWindow.outliner.setTreeMouseListener(em);
     }
 }

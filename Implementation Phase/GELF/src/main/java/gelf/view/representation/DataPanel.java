@@ -64,7 +64,7 @@ public class DataPanel extends Panel {
 	public void setText(Element element) {
 		if (element instanceof Library) {
 			Library library = (Library) element;
-			upperLabel.setText("Library Name: " + library.getName());
+			upperLabel.setText("Library Name: " + library.toString());
 			this.remove(when);
 			this.remove(middleLabel);
 			this.remove(lowerLabel);
