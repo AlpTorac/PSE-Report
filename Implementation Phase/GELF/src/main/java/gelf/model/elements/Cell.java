@@ -48,7 +48,10 @@ public class Cell extends HigherElement {
     	this.inPins = inPins;
     	this.outPins = outPins;
     	this.leakages = leakages;
-		leakages.setParentCell(this);
+    	if (leakages != null){ 
+    	
+    		leakages.setParentCell(this);
+    	}
     	this.defaultLeakage = leakage;
     	
     	this.setAvailableTimSen();
