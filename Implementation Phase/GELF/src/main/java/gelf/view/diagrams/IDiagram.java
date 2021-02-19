@@ -54,9 +54,12 @@ public interface IDiagram {
 	public default void attachToContainer(Container container) {
 		container.add(this.getContainingElement());
 		this.getContainingElement().setBounds(0, 0, container.getWidth(), container.getHeight());
+		this.getContainingElement().repaint();
 	}
 	
 	public default void removeFromContainer() {
+		Container container = this.getContainingElement().getParent();
 		this.getContainingElement().getParent().remove(this.getContainingElement());
+		container.repaint();
 	}
 }
