@@ -4,7 +4,11 @@ import java.util.Arrays;
 
 import gelf.model.elements.Cell;
 import gelf.model.elements.Stat;
-
+/**
+ * Keeps and calculates data of leakages
+ * @author Kerem Kara
+ *
+ */
 public class Leakage extends Attribute {
     private float[] values;
     private Cell parentCell;

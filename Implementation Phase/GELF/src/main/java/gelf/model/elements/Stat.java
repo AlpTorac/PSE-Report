@@ -1,5 +1,8 @@
 package gelf.model.elements;
-
+/**
+ * Keeps statistics.
+ * @author Kerem Kara
+ */
 public class Stat {
 	private float min;
 	private float max;

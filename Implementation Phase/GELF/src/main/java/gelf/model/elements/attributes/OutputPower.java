@@ -3,7 +3,10 @@ package gelf.model.elements.attributes;
 import java.util.Arrays;
 
 import gelf.model.project.Interpolator;
-
+/**
+ * Keeps and calculates data of Output Power.
+ * @author Kerem Kara
+ */
 public class OutputPower extends OutAttribute{
 	private PowerGroup powGroup;
 	

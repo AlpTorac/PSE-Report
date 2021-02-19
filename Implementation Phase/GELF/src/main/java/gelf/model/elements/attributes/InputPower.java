@@ -1,5 +1,8 @@
 package gelf.model.elements.attributes;
-
+/**
+ * Keeps data of input internal power.
+ * @author Kerem Kara
+ */
 public class InputPower extends InAttribute {
 	private PowerGroup powGroup;
 	
