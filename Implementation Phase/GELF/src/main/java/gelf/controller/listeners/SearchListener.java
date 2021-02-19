@@ -66,6 +66,9 @@ public class SearchListener implements KeyListener {
 			System.out.println(name);
 			JTree tree = outliner.tree;
 			DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getModel().getRoot();
+            if (name.equals("") || name.equals(" ") || name == null) {
+				tree.collapsePath(new TreePath(root.getPath()));
+			}
 			traverseAndExpandTree(tree, root, name);	
 	
 		}
