@@ -506,6 +506,7 @@ public class Visualizer extends ElementManipulator {
 			if (this.diagramPanel != null) {
 				if (diagram != null) {
 					diagram.removeFromContainer();
+					diagram = null;
 				}
 				this.diagram = wiz.makeAndAttachBarChartWithDescriptions(this.diagramPanel, data, stringData);
 			}
@@ -664,6 +665,7 @@ public class Visualizer extends ElementManipulator {
 				if (this.diagramPanel != null) {
 					if (diagram != null) {
 						diagram.removeFromContainer();
+						diagram = null;
 					}
 				}
 				return;
@@ -692,6 +694,7 @@ public class Visualizer extends ElementManipulator {
 				if (this.diagramPanel != null) {
 					if (diagram != null) {
 						diagram.removeFromContainer();
+						diagram = null;
 					}
 					this.diagram = wiz.makeAndAttachHeatMap(this.diagramPanel, data);
 				}
