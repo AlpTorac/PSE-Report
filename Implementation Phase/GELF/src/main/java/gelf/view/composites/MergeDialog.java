@@ -72,7 +72,7 @@ public class MergeDialog extends JDialog implements ActionListener, WindowListen
 	    	
 	    panel.add(prompt, c);
 	    	
-	    leftCell = new Label(cell1.getParentLibrary().getName() + "//" + cell1.getName());
+	    leftCell = new Label(cell1.getParentLibrary().toString() + "//" + cell1.getName());
 	    c.fill = GridBagConstraints.HORIZONTAL;
 	    leftCell.setForeground(Color.WHITE);
 	    c.weightx = 0.5;
@@ -82,7 +82,7 @@ public class MergeDialog extends JDialog implements ActionListener, WindowListen
 	    c.gridy = 1;
 	    panel.add(leftCell, c);
 	    	
-	    rightCell = new Label(cell1.getParentLibrary().getName() + "//" + cell1.getName());
+	    rightCell = new Label(cell1.getParentLibrary().toString() + "//" + cell1.getName());
 	    rightCell.setForeground(Color.WHITE);
 	    c.weightx = 0.5;
 	    c.weighty = 0.5;

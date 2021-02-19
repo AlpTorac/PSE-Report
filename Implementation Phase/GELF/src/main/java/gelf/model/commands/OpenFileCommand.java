@@ -11,17 +11,21 @@ import gelf.model.parsers.LibertyParser;
 import gelf.model.project.FileManager;
 import gelf.model.project.Model;
 
-
+/**
+ * Opens a selected file, converts it to string and sends it to the parser.
+ * @author Kerem Kara
+ */
 public class OpenFileCommand implements Command {
 	private Library openedLibrary;
 	private File openedFile;
 	private String libraryContent;
 	private Model currentModel = Model.getInstance();
 	
-	public OpenFileCommand() {
-		
+	public OpenFileCommand() {	
 	}
-
+	/**
+	 * Executes the command by calling openFile() from FileManager
+	 */
 	@Override
 	public void execute() throws InvalidFileFormatException {
 		openedFile = FileManager.openFile();
@@ -49,7 +53,12 @@ public class OpenFileCommand implements Command {
             throw new InvalidFileFormatException("File format is invalid");
         }
 	}
-	
+	/**
+	 * Converts the file to a String
+	 * @param pathname Path of the given file
+	 * @return String content of the file
+	 * @throws IOException
+	 */
 	private String readFile(String pathname) throws IOException {
 
 	    File file = new File(pathname);

@@ -8,17 +8,22 @@ import gelf.model.elements.Cell;
 import gelf.model.elements.Element;
 import gelf.model.elements.Library;
 import gelf.model.project.Model;
-
+/**
+ * Pastes the copied elements to the selected library.
+ * @author Kerem Kara
+ */
 public class PasteCommand implements Command {
 	private ArrayList<Cell> pastedCells = new ArrayList<Cell>();
 	private ArrayList<Cell> copiedCells = new ArrayList<Cell>();
 	private Library destinationLibrary;
 	private Model currentModel = Model.getInstance();
 	
-	/* If the list of copied cells won't be given as a parameter, then it will
-	 * be taken from the project
+	/**
+	 * Initializes the command.
+	 * If the list of copied cells won't be given as a parameter, then it will
+	 * be taken from the project.
+	 * @param destinationLibrary Selected library that the copied cells are going to be pasted to.
 	 */
-	
 	public PasteCommand(Library destinationLibrary) {
 		this.destinationLibrary = destinationLibrary;
 		Model currentModel = Model.getInstance();
@@ -31,12 +36,19 @@ public class PasteCommand implements Command {
 		}
 	}
 	
+	/**
+	 * @param destinationLibrary Selected library that the copied cells are going to be pasted to.
+	 * @param copiedCells List of the copied cells.
+	 */
 	public PasteCommand(Library destinationLibrary, 
 			ArrayList<Cell> copiedCells) {
 		this.destinationLibrary = destinationLibrary;
 		this.copiedCells = copiedCells;
 	}
 
+	/** 
+	 * Executes the pasting command by also calling the NameConflictResolver.
+	 */
 	public void execute() {
 		ArrayList<Cell> cellsToComp = new ArrayList<Cell>();
 		Iterator<Cell> copCellIt = copiedCells.iterator();
@@ -53,11 +65,7 @@ public class PasteCommand implements Command {
 		NameConflictResolver conflictResolver = 
 				new NameConflictResolver(cellsToComp);
 		ArrayList<Cell> cells = conflictResolver.getCells();
-		
-		//deletedCells = conflictResolver.getDeletedCells();
-		
-		//renamedCellsOldNames = conflictResolver.getRenamedCells();
-		
+				
 		
 		Iterator<Cell> cellsIt = cells.iterator();
 		while(cellsIt.hasNext()) {
@@ -83,6 +91,9 @@ public class PasteCommand implements Command {
 		currentModel.getCurrentCommandHistory().addCommand(this);
 	}
 
+	/**
+	 * Undoes the pasting command by removing the pasted cells from the destination library.
+	 */
 	@Override
 	public void undo() {
 		Iterator<Cell> pastedCellsIt = pastedCells.iterator();

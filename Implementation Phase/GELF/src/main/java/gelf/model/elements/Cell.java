@@ -15,7 +15,10 @@ import gelf.model.elements.attributes.TimingKey;
 import gelf.model.elements.attributes.TimingSense;
 import gelf.model.elements.attributes.TimingType;
 import gelf.model.project.Interpolator;
-
+/**
+ * Keeps and calculates data that belongs to a Cell element.
+ * @author Kerem Kara
+ */
 public class Cell extends HigherElement {
 	private float[] index1;
     private float[] index2;
@@ -24,7 +27,17 @@ public class Cell extends HigherElement {
     private ArrayList<OutputPin> outPins = new ArrayList<OutputPin>();
     private Leakage leakages;
     private float defaultLeakage;
-    
+    /**
+     * Initializes the Cell
+     * @param name Name of the Cell
+     * @param index1 Index1 of the Cell
+     * @param index2 Index2 of the Cell
+     * @param parentLibrary The library, that the cell belongs to
+     * @param inPins Input Pins of the Cell
+     * @param outPins Output Pins of the Cell
+     * @param leakages Leakages of the Cell
+     * @param leakage Default leakage value of the cell
+     */
     public Cell(String name, float[] index1, float[] index2, Library parentLibrary,
     		ArrayList<InputPin> inPins, ArrayList<OutputPin> outPins,
     		Leakage leakages, float leakage) {
@@ -94,7 +107,9 @@ public class Cell extends HigherElement {
 		this.leakages = leakages;
 		leakages.setParentCell(this);
 	}
-	
+	/**
+	 * Sets the Strings of the output functions based on the number and names of the Input Pins
+	 */
 	public void setOutputFunctions() {
 		String[] binary = new String[(int) Math.pow(2,(this.getInPins().size()))];
 		for (int i = 0; i < binary.length; i++) {
@@ -195,7 +210,11 @@ public class Cell extends HigherElement {
 		setIndex1(dataCell.getIndex1());
 		setIndex2(dataCell.getIndex2());
 	}
-	
+	/**
+	 * Interpolates to unify different indexes in a cell.
+	 * @param index1 First index array
+	 * @param index2 Second index array
+	 */
 	public void interpolate(float[] index1, float[] index2) {
 		Iterator<InputPin> inPinIt = inPins.iterator();
 		
@@ -250,7 +269,9 @@ public class Cell extends HigherElement {
 			}
 		}
 	}
-	
+	/**
+	 * Call all calculate methods.
+	 */
 	@Override
 	public void calculate() {
 		calculateInPow();
@@ -258,7 +279,10 @@ public class Cell extends HigherElement {
 		calculateTiming();
 		calculateLeakage();
 	}
-	
+	/**
+	 * Calculates stats for internal powers of the input pins for the entire cell and puts 
+	 * the stats in a Map.
+	 */
 	public void calculateInPow() {
 		if (inPins == null || availableInputPower == null) {
 			return;
@@ -315,7 +339,10 @@ public class Cell extends HigherElement {
 			inPowerStat.put(curPowGr, stat);
 		}
 	}
-	
+	/**
+	 * Calculates stats for internal powers of the output pins for the entire cell and puts 
+	 * the stats in a Map.
+	 */
 	public void calculateOutPow() {
 		if (outPins == null || availableOutputPower == null) {
 			return;
@@ -373,7 +400,10 @@ public class Cell extends HigherElement {
 			outPowerStat.put(curPowGr, stat);
 		}
 	}
-	
+	/**
+	 * Calculates stats for timings of the output pins for the entire cell and puts 
+	 * the stats in a Map.
+	 */
 	public void calculateTiming() {
 		if (outPins == null || availableTimSen == null || availableTimType == null
 				|| availableTimGr == null) {
@@ -454,7 +484,9 @@ public class Cell extends HigherElement {
 			}
 		}
 	}
-	
+	/**
+	 * Calculates stats for the leakages of the cell.
+	 */
 	public void calculateLeakage() {
 		if (leakages == null) {
 			return;
@@ -462,7 +494,9 @@ public class Cell extends HigherElement {
 		leakages.calculate();
 		leakage = leakages.getStats();
 	}
-
+	/**
+	 * Checks what Timing Senses are available and puts them in a list.
+	 */
 	@Override
 	public void setAvailableTimSen() {
 		if (outPins == null) {
@@ -483,7 +517,9 @@ public class Cell extends HigherElement {
 			}
 		}	
 	}
-
+	/**
+	 * Checks what Timing Groups are available and puts them in a list.
+	 */
 	@Override
 	public void setAvailableTimGr() {
 		if (outPins == null) {
@@ -504,7 +540,9 @@ public class Cell extends HigherElement {
 			}
 		}	
 	}
-
+	/**
+	 * Checks what Timing Types are available and puts them in a list.
+	 */
 	@Override
 	public void setAvailableTimType() {
 		if (outPins == null) {
@@ -525,7 +563,9 @@ public class Cell extends HigherElement {
 			}
 		}		
 	}
-
+	/**
+	 * Checks what Output Powers are available and puts them in a list.
+	 */
 	@Override
 	public void setAvailableOutputPower() {
 		if (outPins == null) {
@@ -546,7 +586,9 @@ public class Cell extends HigherElement {
 			}
 		}
 	}
-
+	/**
+	 * Checks what Input Powers are available and puts them in a list.
+	 */
 	@Override
 	public void setAvailableInputPower() {
 		if (inPins == null) {
