@@ -189,6 +189,8 @@ public class Visualizer extends ElementManipulator implements Updatable {
 	} 
     
     public void setElement(Element e) {
+		this.element = e;
+
     	upperPanel.removeAll();
     	dataPanel = new DataPanel(100, 100, e);
     	if (e instanceof Library ) {
@@ -236,19 +238,19 @@ public class Visualizer extends ElementManipulator implements Updatable {
 		outpinDropdown.addItem(Attribute.OUTPUT_POWER);
 		outpinDropdown.addItem(Attribute.TIMING);
 		
-		ArrayList<PowerGroup> availInputPower = new ArrayList<>();
-		ArrayList<PowerGroup> availOutputPower = new ArrayList<>();
-		ArrayList<TimingGroup> availTimGr = new ArrayList<>();
-		ArrayList<TimingSense> availTimSen = new ArrayList<>();
-		ArrayList<TimingType> availTimType = new ArrayList<>();
+		ArrayList<PowerGroup> availInputPower = new ArrayList<PowerGroup>();
+		ArrayList<PowerGroup> availOutputPower = new ArrayList<PowerGroup>();
+		ArrayList<TimingGroup> availTimGr = new ArrayList<TimingGroup>();
+		ArrayList<TimingSense> availTimSen = new ArrayList<TimingSense>();
+		ArrayList<TimingType> availTimType = new ArrayList<TimingType>();
 
-		if(element.getClass() == Library.class) {
+		if(this.element.getClass() == Library.class) {
 			availInputPower = ((Library)element).getAvailableInputPower();
 			availOutputPower = ((Library)element).getAvailableOutputPower();
 			availTimGr = ((Library)element).getAvailableTimGr();
 			availTimSen = ((Library)element).getAvailableTimSen();
 			availTimType = ((Library)element).getAvailableTimType();
-		} else if(element.getClass() == Cell.class) {
+		} else if(this.element.getClass() == Cell.class) {
 			availInputPower = ((Cell)element).getAvailableInputPower();
 			availOutputPower = ((Cell)element).getAvailableOutputPower();
 			availTimGr = ((Cell)element).getAvailableTimGr();
