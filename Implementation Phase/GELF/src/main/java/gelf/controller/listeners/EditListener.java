@@ -8,6 +8,7 @@ import gelf.model.elements.Element;
 import gelf.model.elements.Library;
 import gelf.view.composites.Outliner;
 import gelf.view.composites.SubWindow;
+import gelf.view.composites.SubWindow.ManipulatorType;
 import gelf.view.composites.SubWindowArea;
 import gelf.view.composites.TextEditor;
 
