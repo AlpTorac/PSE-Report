@@ -394,7 +394,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 						checkbox.setEnabled(true);
 					}
 				}
-				visualizer.updateDiagram(selectedPins.get(0));
+				visualizer.updateDiagram(null);
 			}
 		}
 		dataPanel.updateSelectedPins(selectedPins);
