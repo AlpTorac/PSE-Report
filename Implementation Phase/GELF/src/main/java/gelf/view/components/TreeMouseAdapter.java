@@ -94,6 +94,9 @@ public class TreeMouseAdapter extends MouseAdapter{
             final JMenuItem paste = new JMenuItem("Paste");
             paste.addActionListener((ActionListener) listeners.get(Event.PASTE));
             popup.add(paste);
+            final JMenuItem properties = new JMenuItem("Properties");
+            properties.addActionListener((ActionListener) listeners.get(Event.PROPERTIES));
+            popup.add(properties);
         } else if (rightClickedNode.getUserObject() instanceof Cell) {
             final JMenuItem delete = new JMenuItem("Delete");
             delete.addActionListener((ActionListener) listeners.get(Event.DELETE));
