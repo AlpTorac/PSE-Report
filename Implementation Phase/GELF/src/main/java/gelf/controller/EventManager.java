@@ -15,6 +15,7 @@ import gelf.controller.listeners.MergeListener;
 import gelf.controller.listeners.MoveListener;
 import gelf.controller.listeners.OpenElementListener;
 import gelf.controller.listeners.PasteListener;
+import gelf.controller.listeners.PropertiesListener;
 import gelf.controller.listeners.RedoListener;
 import gelf.controller.listeners.RemoveListener;
 import gelf.controller.listeners.RenameListener;

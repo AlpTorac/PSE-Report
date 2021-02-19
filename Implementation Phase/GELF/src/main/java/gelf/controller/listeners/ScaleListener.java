@@ -38,7 +38,7 @@ public class ScaleListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Attribute attribute;
+		Attribute attribute = null;
 		String scaleValue = JOptionPane.showInputDialog(new JFrame(),"Enter the scale value.", "Scale", JOptionPane.OK_CANCEL_OPTION);
 		
 		try {
