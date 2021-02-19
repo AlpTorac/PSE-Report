@@ -837,7 +837,6 @@ public class Comparer extends ElementManipulator {
 		// this.diagram.refresh();
 	}
 
-	@Override
 	public void update() {
 		updateDiagram();
 		this.revalidate();
