@@ -777,7 +777,6 @@ public class Comparer extends ElementManipulator {
 		for(int i = 0; i < elements.size(); i++) {
 			barcharts[i] = (BarChart) diagrams[i];
 		}
-		System.out.println(barcharts[0]);
 		if (this.diagramPanel != null) {
 			if (this.diagram != null) {
 				this.diagram.removeFromContainer();
