@@ -537,7 +537,7 @@ public class Comparer extends ElementManipulator {
 							curCell.getLeakages().getStats().getAvg();
 					values[j] = value;
 					stringAr[j] = curCell.getName();
-					i++;
+					j++;
 				}
 			}
 			data.add(values);
