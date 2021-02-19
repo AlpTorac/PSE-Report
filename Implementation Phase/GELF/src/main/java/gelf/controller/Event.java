@@ -101,8 +101,11 @@ public enum Event {
     /*
      *
      */
-    COMPARE;
+    COMPARE,
 	
-	
+	/*
+	 * 
+	 */
+	PROPERTIES;
 
 }

@@ -8,7 +8,10 @@ import gelf.model.elements.attributes.Timing;
 import gelf.model.elements.attributes.TimingGroup;
 import gelf.model.elements.attributes.TimingSense;
 import gelf.model.elements.attributes.TimingType;
-
+/**
+ * Keeps and calculates data of output pins.
+ * @author Kerem Kara
+ */
 public class OutputPin extends Pin {
 	private ArrayList<TimingSense> availableTimSen = 
 			new ArrayList<TimingSense>();

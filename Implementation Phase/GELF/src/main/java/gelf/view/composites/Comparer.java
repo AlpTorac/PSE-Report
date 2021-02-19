@@ -537,7 +537,7 @@ public class Comparer extends ElementManipulator {
 							curCell.getLeakages().getStats().getAvg();
 					values[j] = value;
 					stringAr[j] = curCell.getName();
-					i++;
+					j++;
 				}
 			}
 			data.add(values);
@@ -685,8 +685,8 @@ public class Comparer extends ElementManipulator {
 			
 		}
 		
-		/*else if (elements.get(0) instanceof OutputPin) {
-			OutputPin outPin = (OutputPin)this.subWindow.getElement();
+		else if (elements.get(0) instanceof OutputPin) {
+		/*	OutputPin outPin = (OutputPin)this.subWindow.getElement();
 			values = null;
 			float[] index1 = null;
 			float[] index2 = null;
@@ -768,8 +768,8 @@ public class Comparer extends ElementManipulator {
 				updateStatDisplay();
 			}
 			
-			
-		}*/
+			*/
+		}
 		
 	}
 		DiagramWizard wiz = new DiagramWizard();

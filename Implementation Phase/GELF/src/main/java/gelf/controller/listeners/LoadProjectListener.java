@@ -14,7 +14,7 @@ public class LoadProjectListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Model currentModel = Model.getInstance();
-		currentModel.loadProject();
+		//currentModel.loadProject();
 	}
 
 }

@@ -1,5 +1,8 @@
 package gelf.model.elements.attributes;
-
+/**
+ * Used as a key for the timing statistic maps.
+ * @author Kerem Kara
+ */
 public class TimingKey {
 	// this class is to use one key for the timingStat map instead of nesting maps
 	private TimingSense timSense;

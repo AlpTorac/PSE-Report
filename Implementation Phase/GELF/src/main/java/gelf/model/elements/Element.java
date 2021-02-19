@@ -1,5 +1,8 @@
 package gelf.model.elements;
-
+/**
+ * Keeps common data of the libraries, cells, pins and provides abstraction.
+ * @author Kerem Kara
+ */
 public abstract class Element {
 	protected boolean filtered;
 	protected boolean searched;

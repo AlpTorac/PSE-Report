@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import gelf.model.elements.attributes.InputPower;
-
+/**
+ * Keeps and calculates data of Input Pins.
+ * @author Kerem Kara
+ */
 public class InputPin extends Pin {
 	private ArrayList<InputPower> inputPowers = new ArrayList<InputPower>();
 	private float capacitance;

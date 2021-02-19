@@ -4,7 +4,10 @@ import java.util.Arrays;
 
 import gelf.model.elements.InputPin;
 import gelf.model.elements.Stat;
-
+/**
+ * Keeps and calculates data for Input Pin attributes.
+ * @author Kerem Kara
+ */
 public abstract class InAttribute extends Attribute {
 	protected float[] index1;
 	protected float[] values;

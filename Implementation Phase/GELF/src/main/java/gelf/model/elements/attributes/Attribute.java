@@ -1,7 +1,11 @@
 package gelf.model.elements.attributes;
 
 import gelf.model.elements.Stat;
-
+/**
+ * Provides abstraction for all attributes.
+ * @author Kerem Kara
+ *
+ */
 public abstract class Attribute {
 	protected Stat stats;
 	
