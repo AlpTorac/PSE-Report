@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import gelf.controller.EventManager;
-import gelf.controller.listeners.LoadListener;
 import gelf.model.elements.Cell;
 import gelf.model.elements.Library;
 import gelf.model.project.Model;

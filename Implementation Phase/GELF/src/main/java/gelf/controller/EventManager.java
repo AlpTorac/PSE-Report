@@ -5,13 +5,24 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.util.EventListener;
 import java.util.HashMap;
-import java.util.Map;
 
-import javax.swing.event.TreeModelListener;
-import javax.swing.tree.DefaultTreeModel;
-
-import gelf.controller.listeners.*;
-import gelf.model.project.Model;
+import gelf.controller.listeners.CompareListener;
+import gelf.controller.listeners.CopyListener;
+import gelf.controller.listeners.DeleteCellListener;
+import gelf.controller.listeners.LoadListener;
+import gelf.controller.listeners.LoadProjectListener;
+import gelf.controller.listeners.MergeListener;
+import gelf.controller.listeners.MoveListener;
+import gelf.controller.listeners.OpenElementListener;
+import gelf.controller.listeners.PasteListener;
+import gelf.controller.listeners.RedoListener;
+import gelf.controller.listeners.RemoveListener;
+import gelf.controller.listeners.RenameListener;
+import gelf.controller.listeners.SaveAllListener;
+import gelf.controller.listeners.SaveAsListener;
+import gelf.controller.listeners.SaveListener;
+import gelf.controller.listeners.SearchListener;
+import gelf.controller.listeners.UndoListener;
 import gelf.view.composites.MainWindow;;
 
 /**

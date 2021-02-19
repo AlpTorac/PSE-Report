@@ -14,41 +14,43 @@ import javax.swing.tree.TreePath;
 
 import gelf.controller.Event;
 import gelf.controller.EventManager;
-import gelf.controller.listeners.CompareListener;
-import gelf.controller.listeners.CopyListener;
-import gelf.controller.listeners.DeleteCellListener;
-import gelf.controller.listeners.MergeListener;
-import gelf.controller.listeners.OpenElementListener;
-import gelf.controller.listeners.PasteListener;
-import gelf.controller.listeners.RemoveListener;
-import gelf.controller.listeners.RenameListener;
-import gelf.controller.listeners.SaveAsListener;
-import gelf.controller.listeners.SaveListener;
 import gelf.model.elements.Cell;
+import gelf.model.elements.Element;
 import gelf.model.elements.Library;
-import gelf.view.composites.Outliner;
-import gelf.view.composites.SubWindowArea;
 
+/**
+ * Class providing right clicking functionality on the JTree component
+ * @author Xhulio Pernoca
+ */
 public class TreeMouseAdapter extends MouseAdapter{
     HashMap<Event, EventListener> listeners;
 
+    /**
+     * Constructor for the Adapter
+     * @param em the EventManager instance
+     */
     public TreeMouseAdapter(EventManager em) {
         this.listeners = em.getListeners();
     }
 
-    private void myPopupEvent(MouseEvent e) {
-        int x = e.getX();
-        int y = e.getY();
+    /**
+     * Event once a tree node is right clicked
+     * @param e the mouse event
+     */
+    private void treeRightClickEvent(MouseEvent e) {
+        // gets the path where the right click event has been called
         JTree tree = (JTree) e.getSource();
-        TreePath path = tree.getPathForLocation(x, y);
+        int xCoordinate = e.getX();
+        int yCoordinate = e.getY();
+        TreePath path = tree.getPathForLocation(xCoordinate, yCoordinate);
         if (path == null)
           return;
     
-        DefaultMutableTreeNode rightClickedNode = (DefaultMutableTreeNode) path
-            .getLastPathComponent();
+        // gets the node that has been right clicked
+        DefaultMutableTreeNode rightClickedNode = (DefaultMutableTreeNode) path.getLastPathComponent();
     
+        //gets the selected paths and checks whether what was right clicked is selected
         TreePath[] selectionPaths = tree.getSelectionPaths();
-    
         boolean isSelected = false;
         if (selectionPaths != null) {
           for (TreePath selectionPath : selectionPaths) {
@@ -57,9 +59,15 @@ public class TreeMouseAdapter extends MouseAdapter{
             }
           }
         }
+        //if it isn't selected, selects only it
         if (!isSelected) {
             tree.setSelectionPath(path);
         }
+        // if root is selected, simply returns
+        if (!(rightClickedNode.getUserObject() instanceof Element)) {
+            return;
+        }
+        // creates the popup with the desired elements linked to their listeners
         JPopupMenu popup = new JPopupMenu();
         final JMenuItem open = new JMenuItem("Open");
         open.addActionListener((ActionListener) listeners.get(Event.OPEN));
@@ -94,16 +102,22 @@ public class TreeMouseAdapter extends MouseAdapter{
             copy.addActionListener((ActionListener) listeners.get(Event.COPY));
             popup.add(copy);
         }
-        popup.show(tree, x, y);
+        popup.show(tree, xCoordinate, yCoordinate);
       }
     
+      /**
+       * Invokes the method treeRightClickEvent when invoked by a right click
+       */
       public void mousePressed(MouseEvent e) {
         if (e.isPopupTrigger())
-          myPopupEvent(e);
+          treeRightClickEvent(e);
       }
     
+      /**
+       * Checked for cross-platform functionality, same functionality as mousePressed().
+       */
       public void mouseReleased(MouseEvent e) {
         if (e.isPopupTrigger())
-          myPopupEvent(e);
+          treeRightClickEvent(e);
       }
 }

@@ -343,7 +343,11 @@ public class Library extends HigherElement {
 	}
 	
 	public void saveLibrary() throws IOException {
-		FileManager.saveFileToPath(LibertyCompiler.compile(this), ".lib", path);
+		if (path != null) {
+			FileManager.saveFileToPath(LibertyCompiler.compile(this), "", path);
+		} else {
+			saveLibraryAs();
+		}
 	}
 	
 	public void saveLibraryAs() throws IOException {
