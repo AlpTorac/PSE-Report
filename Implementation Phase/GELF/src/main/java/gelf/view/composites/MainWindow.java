@@ -107,8 +107,6 @@ public class MainWindow extends Window {
         
         this.revalidate();
         this.repaint();
-
-        outliner.setSubWindowArea(subWindowArea);
     }
 
     private void setupSubWindowArea(int topSpace, int bottomSpace, int leftSpace) {
@@ -214,9 +212,9 @@ public class MainWindow extends Window {
         return menuItem;
     }
 
-
     public static void main(String[] args) {
         MainWindow mainWindow = new MainWindow("GELF - Graphical Editor for Liberty Files", 1200, 800, Model.getInstance().getCurrentProject());
         EventManager em = new EventManager(mainWindow);
+        mainWindow.outliner.setTreeMouseListener(em);
     }
 }

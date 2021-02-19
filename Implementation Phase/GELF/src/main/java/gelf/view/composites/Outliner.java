@@ -54,8 +54,6 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
         public MenuItem itemCompare;
         public MenuItem itemProperties;
         public EventManager em;
-        private SubWindowArea subWindowArea;
-
     // colors
     private Color cBackground = ColorTheme.section;
     private Color cBorder = ColorTheme.frame;
@@ -122,7 +120,6 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
         this.project.addUpdatable(this);
         this.update();
 
-		tree.addMouseListener(new TreeMouseAdapter(this, subWindowArea));
     }
 
     @Override
@@ -173,8 +170,8 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
         return result;
     }
 
-    public void setSubWindowArea(SubWindowArea subWindowArea) {
-        this.subWindowArea = subWindowArea;
+    public void setTreeMouseListener(EventManager em) {
+		tree.addMouseListener(new TreeMouseAdapter(em));
     }
 
     //TreeSelectionListener method
