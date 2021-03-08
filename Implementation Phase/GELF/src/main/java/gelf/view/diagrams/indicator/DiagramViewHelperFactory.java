@@ -18,14 +18,6 @@ public class DiagramViewHelperFactory {
 		return instance;
 	}
 	
-	public HelperLineDisplayer createXCoordinateGridDisplayer(IDiagram diagram) {
-		return new XCoordinateIndicatorLineDisplayer(diagram, sp.getAxisColor(), sp.getAxisThickness());
-	}
-	
-	public HelperLineDisplayer createYCoordinateGridDisplayer(IDiagram diagram) {
-		return new YCoordinateIndicatorLineDisplayer(diagram, sp.getAxisColor(), sp.getAxisThickness());
-	}
-	
 	public HelperLineDisplayer createMinLineDisplayer(IDiagram diagram) {
 		return new ValueLineDisplayer(diagram, sp.getAxisThickness(), IndicatorIdentifier.MIN);
 	}

@@ -30,7 +30,7 @@ class DiagramComponentFactoryTest implements TestCase {
 	
 	private static DiagramColorScale cs = f.createBiColorScale(posFrameStart, posFrameEnd, c, 0, 20, minValColor, maxValColor, 1);
 	
-	private static DiagramComponent[] diagramComponents = new DiagramComponent[8];
+	private static DiagramComponent[] diagramComponents = new DiagramComponent[7];
 	
 	@BeforeAll
 	static void addPreMadesToDiagramComponents() {
@@ -61,11 +61,6 @@ class DiagramComponentFactoryTest implements TestCase {
 	@Test
 	void createSolidLineTest() {
 		diagramComponents[6] = f.createSolidLine(posFrameStart, posFrameEnd, c, 1);
-	}
-	
-	@Test
-	void createValueDisplayPointTest() {
-		diagramComponents[7] = f.createValueDisplayPoint(c, 2, 1, startPosInAxis);
 	}
 
 	@AfterAll
