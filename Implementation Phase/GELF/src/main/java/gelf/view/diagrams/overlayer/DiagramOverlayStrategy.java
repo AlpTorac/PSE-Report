@@ -265,7 +265,7 @@ public abstract class DiagramOverlayStrategy {
 			for (;i < dvdcArray.length - 1; i++) {
 				DiagramValueDisplayComponent currentDvdc = dvdcArray[i][j];
 				
-				for (int k = i + 1; k < dvdcArray.length; k++) {
+				for (int k = i + 1; k < dvdcArray.length && j < dvdcArray[k].length; k++) {
 					DiagramValueDisplayComponent dvdcToCompareTo = dvdcArray[k][j];
 					this.overlapCovered(currentDvdc, dvdcToCompareTo);
 				}
