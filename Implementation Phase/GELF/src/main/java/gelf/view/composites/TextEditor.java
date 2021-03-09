@@ -89,12 +89,16 @@ public class TextEditor extends ElementManipulator implements KeyListener{
     	searchBox.setForeground(Color.WHITE);
     	searchBox.setBorder(new LineBorder(Color.BLACK, 5, true));
     	searchBox.setSize(this.getWidth(), 120);
+		searchBox.setSelectionColor(ColorTheme.active);
+		searchBox.setCaretColor(ColorTheme.liberty);
     	
     	textArea = new JTextArea(300,300);
     	textArea.setEditable(true);
     	textArea.setBackground(new Color(0.2f, 0.2f, 0.2f));
     	textArea.setForeground(Color.WHITE);
     	textArea.setTabSize(3);
+		textArea.setSelectionColor(ColorTheme.active);
+		textArea.setCaretColor(ColorTheme.liberty);
     	scrollPane = new JScrollPane(textArea, 
     			 ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     	
