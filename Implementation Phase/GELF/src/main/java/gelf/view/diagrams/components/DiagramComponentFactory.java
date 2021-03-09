@@ -37,9 +37,6 @@ public class DiagramComponentFactory {
 			float minVal, float maxVal, Color minValColor, Color maxValColor, int borderThickness) {
 		return new BiColorScale(topLeft, bottomRight, borderColor, minVal, maxVal, minValColor, maxValColor, borderThickness);
 	}
-	public ValueDisplayPoint createValueDisplayPoint(Color color, float value, float size, PositionIn2DDiagram position) {
-		return new ValueDisplayPoint(color, value, size, position);
-	}
 	public HistogramBar createHistogramBar(Color color, float value, PositionIn2DDiagram topLeft, PositionIn2DDiagram bottomRight,
 			int borderThickness) {
 		return new HistogramBar(color, value, topLeft, bottomRight, borderThickness);
