@@ -1,28 +1,22 @@
 package gelf.view.composites;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.border.Border;
-import javax.swing.plaf.DimensionUIResource;
 
-import org.w3c.dom.Text;
-
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import gelf.controller.listeners.SaveAsListener;
-import gelf.controller.listeners.SaveListener;
 import gelf.model.elements.Element;
 import gelf.model.project.Project;
-import gelf.model.project.Updatable;
 import gelf.view.components.Button;
 import gelf.view.components.DropdownSelector;
 import gelf.view.components.Label;
-import gelf.view.components.MenuBar;
 import gelf.view.components.Panel;
 
 /**
@@ -101,7 +95,7 @@ public class SubWindow extends Panel {
             }
         });
         //path/name label
-        this.path = new Label(e.toString());
+        this.path = new Label(e.getInnerPath());
         path.setForeground(ColorTheme.active);
         this.path.setVisible(true);
 
@@ -151,7 +145,7 @@ public class SubWindow extends Panel {
 
     public void setElement(Element e) {
     	this.e = e;
-    	this.path.setText(e.getName());
+    	this.path.setText(e.getInnerPath());
         this.eVisualizer.setElement(e);
         this.eTextEditor.setElement(e);
     }
