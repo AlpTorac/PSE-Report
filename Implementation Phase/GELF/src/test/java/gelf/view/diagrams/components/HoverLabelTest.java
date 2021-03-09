@@ -48,30 +48,6 @@ class HoverLabelTest implements TestCase {
 	}
 	
 	@Test
-	void setSizeTest() {
-		label.attachToDiagram(diagram);
-		
-		double oldWidth = label.getWidth();
-		double oldHeight = label.getHeight();
-		
-		double newWidth = 500;
-		double newHeight = 700;
-		
-		label.setWidth(newWidth);
-		label.setHeight(newHeight);
-		
-		Assertions.assertEquals(newWidth, label.getWidth());
-		Assertions.assertEquals(newHeight, label.getHeight());
-		
-		initAndShow();
-		
-		label.setWidth(oldWidth);
-		label.setHeight(oldHeight);
-		
-		label.removeFromDiagram();
-	}
-	
-	@Test
 	void setColorTest() {
 		label.attachToDiagram(diagram);
 		

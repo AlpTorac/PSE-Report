@@ -17,8 +17,6 @@ public class HoverLabel implements HasAttachablePart {
 	private String caption;
 	private Color color;
 	private PositionInFrame position;
-	private double width;
-	private double height;
 	private IDiagram containingDiagram;
 	private Component component;
 	private static HoverLabel hoverLabel;
@@ -109,24 +107,6 @@ public class HoverLabel implements HasAttachablePart {
 		this.setComponentBounds();
 	}
 
-	public double getWidth() {
-		return this.width;
-	}
-
-	public void setWidth(double width) {
-		this.width = width;
-		this.setComponentBounds();
-	}
-
-	public double getHeight() {
-		return this.height;
-	}
-
-	public void setHeight(double height) {
-		this.height = height;
-		this.setComponentBounds();
-	}
-
 	public void show() {
 		this.component.setVisible(true);
 	}
@@ -153,9 +133,11 @@ public class HoverLabel implements HasAttachablePart {
 			this.containingDiagram.getContainingElement().repaint();
 			this.containingDiagram = null;
 			this.hide();
-			this.setXPos(0);
-			this.setYPos(0);
 		}
+	}
+	
+	public IDiagram getAttachedDiagram() {
+		return this.containingDiagram;
 	}
 	
 	public static HoverLabel getHoverLabel() {
