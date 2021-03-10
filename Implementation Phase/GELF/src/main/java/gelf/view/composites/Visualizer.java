@@ -849,6 +849,7 @@ public class Visualizer extends ElementManipulator implements Updatable {
 	@Override
 	public void update() {
 		updateDiagram();
+        this.setElement(this.element);
 		this.revalidate();
 		this.repaint();
 	}
