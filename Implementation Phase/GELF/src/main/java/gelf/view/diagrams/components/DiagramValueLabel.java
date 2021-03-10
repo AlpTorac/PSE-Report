@@ -23,7 +23,7 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 		this.bottomRight = bottomRight;
 		this.topLeft = topLeft;
 		this.borderThickness = borderThickness;
-		this.caption = String.valueOf(value);
+		this.caption = this.getRoundedString(this.getValue());
 		
 		this.initHoverableVisualElement();
 	}
@@ -75,7 +75,7 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 	
 	@Override
 	public void refreshValueRelevantAttributes() {
-		this.setCaption(String.valueOf(this.getValue()));
+		this.setCaption(this.getRoundedString(this.getValue()));
 	}
 	
 	@Override

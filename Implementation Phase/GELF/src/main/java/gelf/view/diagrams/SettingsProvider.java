@@ -2,10 +2,8 @@ package gelf.view.diagrams;
 
 import java.awt.Color;
 
-import gelf.model.project.Model;
-
 public class SettingsProvider {
-	private final static int LOWEST_DIGIT = 5;
+	private final static int LOWEST_DIGIT = 1;
 	private final static double TOLERANCE = Double.valueOf("1E-" + LOWEST_DIGIT);
 	
 	private int diagramValueDisplayLayer = 1;
@@ -43,8 +41,6 @@ public class SettingsProvider {
 	
 	private int barBorderThickness = 1;
 	
-	private int functionGraphPointSize = 5;
-	
 	private int heatMapLabelBorderThickness = 1;
 	private int heatMapColorScaleBorderThickness = 1;
 	private Color heatMapColorScaleBorderColor = Color.BLACK;
@@ -56,8 +52,6 @@ public class SettingsProvider {
 	private float histogramIndexEndIndexFactor = 1.1f;
 	
 	private double barChartBarWidthInSteps = 0.5d;
-	
-	private int hoverLabelColorAlpha = 150;
 	
 	private Color diagramCoordinateLineColor = new Color(0x3668ff);
 	
@@ -99,10 +93,6 @@ public class SettingsProvider {
 		return heatMapColorScaleColors;
 	}
 
-	public int getFunctionGraphPointSize() {
-		return functionGraphPointSize;
-	}
-
 	public void setAxisThickness(int axisThickness) {
 		this.axisThickness = axisThickness;
 	}
@@ -129,10 +119,6 @@ public class SettingsProvider {
 
 	public void setHeatMapColorScaleColors(Color[] heatMapColorScaleColors) {
 		this.heatMapColorScaleColors = heatMapColorScaleColors;
-	}
-
-	public void setFunctionGraphPointSize(int functionGraphPointSize) {
-		this.functionGraphPointSize = functionGraphPointSize;
 	}
 
 	public int getStepsInYAxis() {
@@ -295,12 +281,45 @@ public class SettingsProvider {
 		this.diagramBottomMariginFactor = diagramBottomMariginFactor;
 	}
 	
+	private String roundValue(double value) {
+		boolean isNegative = value < 0;
+		double absVal = Math.abs(value);
+		int exp = 0;
+		// -1 < value < 1
+		if (absVal == 0d) {
+			return "0";
+		} else if (absVal < 1) {
+			while (absVal < 1) {
+				absVal = absVal * 10d;
+				exp++;
+			}
+		} else if (absVal >= 10) {
+			while (absVal >= 10) {
+				absVal = absVal / 10d;
+				exp--;
+			}
+		}
+		double scientificValue = ((double) Math.round(absVal * Math.pow(10, LOWEST_DIGIT))) / Math.pow(10, LOWEST_DIGIT);
+		if (scientificValue >= 10) {
+			scientificValue = ((double) Math.round(scientificValue * Math.pow(10, LOWEST_DIGIT - 1))) / Math.pow(10, LOWEST_DIGIT);
+			exp--;
+		}
+		String result = String.valueOf(scientificValue);
+		// Replace trailing zeroes and the decimal point, if unnecessary
+		result = result.contains(".") ? result.replaceAll("0*$","").replaceAll("\\.$","") : result;
+		result = isNegative ? "-" + result : result;
+		if (exp != 0) {
+			result += "e" + (-exp);
+		}
+		return result;
+	}
+	
 	public String getRoundedValueAsString(float value) {
-		return Model.formatIndex((float) value, LOWEST_DIGIT);
+		return this.roundValue(value);
 	}
 	
 	public String getRoundedValueAsString(double value) {
-		return Model.formatIndex((float) value, LOWEST_DIGIT);
+		return this.roundValue(value);
 	}
 
 	public Color getValueDisplayComponentColorAt(int index) {
@@ -327,14 +346,6 @@ public class SettingsProvider {
 		Color mixedColor = new Color(mixedColorBits);
 		
 		return mixedColor;
-	}
-
-	public int getHoverLabelColorAlpha() {
-		return hoverLabelColorAlpha;
-	}
-
-	public void setHoverLabelColorAlpha(int hoverLabelColorAlpha) {
-		this.hoverLabelColorAlpha = hoverLabelColorAlpha;
 	}
 
 	public Color getDiagramCoordinateLineColor() {

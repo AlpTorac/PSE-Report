@@ -42,7 +42,7 @@ public abstract class DiagramValueDisplayComponent extends DiagramComponent impl
 	protected abstract String getRoundedPositionInDiagramString();
 	
 	protected String getRoundedString(double number) {
-		return String.valueOf(SettingsProvider.getInstance().getRoundedValueAsString(number));
+		return SettingsProvider.getInstance().getRoundedValueAsString(number);
 	}
 	
 	@Override

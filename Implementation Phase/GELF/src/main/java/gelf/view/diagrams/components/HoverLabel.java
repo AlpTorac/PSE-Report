@@ -24,7 +24,7 @@ public class HoverLabel implements HasAttachablePart {
 	
 	private HoverLabel() {
 		this.position = new PositionInFrame(0, 0);
-		this.color = new Color(255, 255, 255, sp.getHoverLabelColorAlpha());
+		this.color = Color.WHITE;
 		this.caption = "";
 		this.component = new HoverLabelVisual(this);
 	}
@@ -51,12 +51,6 @@ public class HoverLabel implements HasAttachablePart {
 			this.component.setBounds(this.calculateBounds());
 			this.containingDiagram.getContainingElement().repaint();
 		}
-	}
-
-	private void setComponentColor() {
-		this.color = new Color(this.color.getRed(), this.color.getGreen(),
-				this.color.getBlue(), sp.getHoverLabelColorAlpha());
-		this.component.repaint();
 	}
 
 	private void setComponentCaption() {
@@ -86,7 +80,7 @@ public class HoverLabel implements HasAttachablePart {
 
 	public void setColor(Color color) {
 		this.color = color;
-		this.setComponentColor();
+		this.component.repaint();
 	}
 
 	public double getXPos() {
@@ -121,7 +115,7 @@ public class HoverLabel implements HasAttachablePart {
 			this.removeFromDiagram();
 		}
 			this.containingDiagram = diagram;
-			this.containingDiagram.addComponent(this.component, SettingsProvider.getInstance().getDiagramHoverLabelLayer());
+			this.containingDiagram.addComponent(this.component, sp.getDiagramHoverLabelLayer());
 			this.setComponentBounds();
 			this.containingDiagram.getContainingElement().repaint();
 			this.show();
@@ -172,6 +166,7 @@ public class HoverLabel implements HasAttachablePart {
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
+			this.setBackground(this.label.getColor());
 			this.setText(this.label.getCaptionForComponent());
 			this.setHorizontalAlignment(CENTER);
 			this.setVerticalAlignment(CENTER);
