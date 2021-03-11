@@ -44,124 +44,105 @@ public class DiagramData {
 		return this.extractor.extractIndexDescriptions(this.descriptions);
 	}
 	
-	public float getMaximumValue() {
+	private float getMinOfArrays(float[][] arrays) {
+		float minVal = Float.MAX_VALUE;
+		
+		for (float[] values : arrays) {
+			float currentMinCandidate = this.getMinOfArray(values);
+			if (minVal > currentMinCandidate) {
+				minVal = currentMinCandidate;
+			}
+		}
+		
+		return minVal;
+	}
+	
+	private float getMinOfArray(float[] array) {
+		float minVal = Float.MAX_VALUE;
+		
+		for (int i = 0; i < array.length; i++) {
+			float currentMinCandidate = array[i];
+			if (minVal > currentMinCandidate) {
+				minVal = currentMinCandidate;
+			}
+		}
+		
+		return minVal;
+	}
+	private float getMaxOfArrays(float[][] arrays) {
 		float maxVal = Float.MIN_VALUE;
 		
-		for (float[] values : this.extractor.extractValues(this.data)) {
-			for (int i = 0; i < values.length; i++) {
-				float currentMaxCandidate = values[i];
-				if (maxVal < currentMaxCandidate) {
-					maxVal = currentMaxCandidate;
-				}
+		for (float[] values : arrays) {
+			float currentMaxCandidate = this.getMaxOfArray(values);
+			if (maxVal < currentMaxCandidate) {
+				maxVal = currentMaxCandidate;
 			}
 		}
 		
 		return maxVal;
+	}
+	
+	private float getMaxOfArray(float[] array) {
+		float maxVal = Float.MIN_VALUE;
+		
+		for (int i = 0; i < array.length; i++) {
+			float currentMaxCandidate = array[i];
+			if (maxVal < currentMaxCandidate) {
+				maxVal = currentMaxCandidate;
+			}
+		}
+		
+		return maxVal;
+	}
+	
+	public float getMaximumValue() {
+		ArrayList<float[]> valueList = this.extractValues();
+		
+		float[][] indices = new float[valueList.size()][valueList.get(0).length];
+		valueList.toArray(indices);
+		
+		return this.getMaxOfArrays(indices);
 	}
 	
 	public float getMinimumValue() {
-		float minVal = Float.MAX_VALUE;
+		ArrayList<float[]> valueList = this.extractValues();
 		
-		for (float[] values : this.extractor.extractValues(this.data)) {
-			for (int i = 0; i < values.length; i++) {
-				float currentMinCandidate = values[i];
-				if (minVal > currentMinCandidate) {
-					minVal = currentMinCandidate;
-				}
-			}
-		}
+		float[][] indices = new float[valueList.size()][valueList.get(0).length];
+		valueList.toArray(indices);
 		
-		return minVal;
-	}
-	
-	public float getMaximumValueAt(int index) {
-		float maxVal = Float.MIN_VALUE;
-		
-		float[] values = this.extractor.extractValues(this.data).get(index);
-		
-		for (int i = 0; i < values.length; i++) {
-			float currentMaxCandidate = values[i];
-			if (maxVal < currentMaxCandidate) {
-				maxVal = currentMaxCandidate;
-			}
-		}
-		
-		return maxVal;
-	}
-	
-	public float getMinimumValueAt(int index) {
-		float minVal = Float.MAX_VALUE;
-		
-		float[] values = this.extractor.extractValues(this.data).get(index);
-		
-		for (int i = 0; i < values.length; i++) {
-			float currentMinCandidate = values[i];
-			if (minVal > currentMinCandidate) {
-				minVal = currentMinCandidate;
-			}
-		}
-		
-		return minVal;
+		return this.getMinOfArrays(indices);
 	}
 	
 	public float getMaximumIndex() {
-		float maxVal = Float.MIN_VALUE;
+		ArrayList<float[]> indexList = this.extractIndices();
 		
-		for (float[] values : this.extractor.extractIndices(this.data)) {
-			for (int i = 0; i < values.length; i++) {
-				float currentMaxCandidate = values[i];
-				if (maxVal < currentMaxCandidate) {
-					maxVal = currentMaxCandidate;
-				}
-			}
-		}
+		float[][] indices = new float[indexList.size()][indexList.get(0).length];
+		indexList.toArray(indices);
 		
-		return maxVal;
+		return this.getMaxOfArrays(indices);
 	}
 	
 	public float getMinimumIndex() {
-		float minVal = Float.MAX_VALUE;
+		ArrayList<float[]> indexList = this.extractIndices();
 		
-		for (float[] values : this.extractor.extractIndices(this.data)) {
-			for (int i = 0; i < values.length; i++) {
-				float currentMinCandidate = values[i];
-				if (minVal > currentMinCandidate) {
-					minVal = currentMinCandidate;
-				}
-			}
-		}
+		float[][] indices = new float[indexList.size()][indexList.get(0).length];
+		indexList.toArray(indices);
 		
-		return minVal;
+		return this.getMinOfArrays(indices);
 	}
 	
+	public float getMaximumValueAt(int index) {
+		return this.getMaxOfArray(this.extractValues().get(index));
+	}
+	
+	public float getMinimumValueAt(int index) {
+		return this.getMinOfArray(this.extractValues().get(index));
+	}
 	public float getMaximumIndexAt(int index) {
-		float maxVal = Float.MIN_VALUE;
-		
-		float[] indices = this.extractor.extractIndices(this.data).get(index);
-		
-		for (int i = 0; i < indices.length; i++) {
-			float currentMaxCandidate = indices[i];
-			if (maxVal < currentMaxCandidate) {
-				maxVal = currentMaxCandidate;
-			}
-		}
-		
-		return maxVal;
+		return this.getMaxOfArray(this.extractIndices().get(index));
 	}
-	
 	public float getMinimumIndexAt(int index) {
-		float minVal = Float.MAX_VALUE;
-		
-		float[] indices = this.extractor.extractIndices(this.data).get(index);
-		
-		for (int i = 0; i < indices.length; i++) {
-			float currentMinCandidate = indices[i];
-			if (minVal > currentMinCandidate) {
-				minVal = currentMinCandidate;
-			}
-		}
-		
-		return minVal;
+		return this.getMinOfArray(this.extractIndices().get(index));
 	}
 	
 	public float getAverageValue() {
