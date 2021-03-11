@@ -241,7 +241,7 @@ class LibraryTest {
     	
     	cell1.calculateLeakage();
     	cell2.calculateLeakage();
-    	
+    	library.calculate();
     	library.calculateLeakage();
 		Stat stats = library.leakage;
 		float min = 0.00291f;
@@ -310,5 +310,67 @@ class LibraryTest {
     			get(0).getMaxCapacitance());
     	Assertions.assertEquals(library.getDefaultLeakage(), library.clone().getDefaultLeakage());
     	
-    }    	 
+    }    	
+    
+    @Test
+    void replaceDataTest() {
+    	inPowList.add(inPow1);
+		inPowList.add(inPow2);
+			
+		InputPin inPin1 = new InputPin("name1", null, inPowList);
+		InputPin inPin2 = new InputPin("name2", null, inPowList);
+			
+		inPinList.add(inPin1);
+		inPinList.add(inPin2);
+			
+		float[] index1 = {0.0004f, 0.009027f, 0.03931f, 0.09714f, 0.1872f, 0.3137f, 0.48f};
+	    float[] index2 = {0.0004f, 0.002192f, 0.008481f, 0.02049f, 0.0392f, 0.06545f, 0.1f};
+	    outPow1.setIndex1(index1);
+	    outPow1.setIndex2(index2);
+	    outPow2.setIndex1(index1);
+	    outPow2.setIndex2(index2);
+	    	
+	    outPow1.setRelatedPin(inPin1);
+	   	outPow2.setRelatedPin(inPin2);
+	   	outPowList.add(outPow1);
+		outPowList.add(outPow2);
+		
+		timing1.setIndex1(index1);
+	    timing1.setIndex2(index2);
+	   	timing2.setIndex1(index1);
+	   	timing2.setIndex2(index2);
+	    	
+	   	timing1.setRelatedPin(inPin1);
+	   	timing2.setRelatedPin(inPin2);
+    	timingList.add(timing1);
+    	timingList.add(timing2);
+			
+		OutputPin outPin1 = new OutputPin("name1", null, outPowList, timingList);
+		OutputPin outPin2 = new OutputPin("name2", null, outPowList, timingList);			outPinList.add(outPin1);
+		outPinList.add(outPin2);
+			
+    	float[] values = {0.00291f, 0.003117f, 0.003117f, 0.005393f, 
+    			0.003113f, 0.005081f, 0.004988f, 0.01069f};
+    	Leakage leakage = new Leakage(values);
+	    	
+    	Cell cell1 = new Cell("cell1", null, null, null, inPinList, outPinList, leakage, 0);
+    	Cell cell2 = new Cell("cell2", null, null, null, inPinList, outPinList, leakage, 0);
+    	
+    	cellList.add(cell1);
+    	cellList.add(cell2);
+    	
+    	Library library1 = new Library("library1", null, null, null, null);
+    	Library library2 = new Library("library2", null, null, null, cellList);
+    	
+    	library1.replaceData(library2);
+    	Assertions.assertEquals(library1.name, "library2");
+    	Assertions.assertEquals(library1.getCells().get(0).getName(), "cell1");
+    }
+    
+    @Test
+    void toStringTest() {
+    	Library library1 = new Library("library1", null, null, null, null);
+    	library1.setLibraryFile(null);
+    	Assertions.assertEquals("----/library1", library1.toString());
+    }
 }

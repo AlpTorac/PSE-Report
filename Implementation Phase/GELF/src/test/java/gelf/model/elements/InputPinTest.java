@@ -40,7 +40,7 @@ class InputPinTest {
     }
 
 	@Test
-	void calculatePowertest() {
+	void calculatePowerTest() {
 		inPowList.add(inPow1);
 		inPowList.add(inPow2);
 		InputPin inPin = new InputPin(null, null, inPowList);
@@ -55,5 +55,16 @@ class InputPinTest {
 		Assertions.assertEquals(max, inPow2.getStats().getMax());
 		Assertions.assertEquals(avg, inPow2.getStats().getAvg());
 		Assertions.assertEquals(med, inPow2.getStats().getMed());
+	}
+	
+	@Test
+	void replaceDataTest() {
+		inPowList.add(inPow1);
+		inPowList.add(inPow2);
+		InputPin inPin1 = new InputPin("InPin1", null, null);
+		InputPin inPin2 = new InputPin("InPin2", null, inPowList);
+		inPin1.replaceData(inPin2);
+		Assertions.assertEquals("InPin2", inPin1.name);
+		Assertions.assertEquals(values1, inPin1.getInputPowers().get(0).getValues());
 	}
 }

@@ -135,6 +135,22 @@ class OutputPinTest {
 		Assertions.assertEquals(timavg, timing2.getStats().getAvg());
 		Assertions.assertEquals(timmed, timing2.getStats().getMed());
 	}
+	
+	@Test
+	void replaceDataTest() {
+		float[] index1 = {0.0004f, 0.009027f, 0.03931f, 0.09714f, 0.1872f, 0.3137f, 0.48f};
+		float[] index2 = {0.0004f, 0.002192f, 0.008481f, 0.02049f, 0.0392f, 0.06545f, 0.1f};
+		timing1.setIndex1(index1);
+		timing1.setIndex2(index2);
+		timing2.setIndex1(index1);
+		timing2.setIndex2(index2);
+		timingList.add(timing1);
+		timingList.add(timing2);
+		OutputPin outPin1 = new OutputPin("OutPin1", null, null, null);
+		OutputPin outPin2 = new OutputPin("OutPin2", null, outPowList, timingList);
+		outPin1.replaceData(outPin2);
+		Assertions.assertEquals("OutPin2", outPin1.getTimings().get(0).getParentOutPin().getName());
+	}
 
   
   }
