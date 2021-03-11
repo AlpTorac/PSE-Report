@@ -57,6 +57,7 @@ class CellTest {
     ArrayList<Timing> timingList = new ArrayList<Timing>();
     
     ArrayList<InputPin> inPinList = new ArrayList<InputPin>();
+    ArrayList<InputPin> inPinList2 = new ArrayList<InputPin>();
     ArrayList<OutputPin> outPinList = new ArrayList<OutputPin>();
        
     
@@ -246,4 +247,113 @@ class CellTest {
     	Assertions.assertNotSame(cell.getOutPins().get(0), clone.getOutPins().get(0));
     	Assertions.assertNotSame(cell.getLeakage(), clone.getLeakage());
     }
+    
+    @Test
+    void replaceDataTest() {
+    	inPowList.add(inPow1);
+		inPowList.add(inPow2);
+		
+		InputPin inPin1 = new InputPin("name1", null, inPowList);
+		InputPin inPin2 = new InputPin("name2", null, inPowList);
+		
+		inPinList.add(inPin1);
+		inPinList.add(inPin2);
+		inPinList2.add(inPin1);
+		
+		float[] index1 = {0.0004f, 0.009027f, 0.03931f, 0.09714f, 0.1872f, 0.3137f, 0.48f};
+    	float[] index2 = {0.0004f, 0.002192f, 0.008481f, 0.02049f, 0.0392f, 0.06545f, 0.1f};
+    	outPow1.setIndex1(index1);
+    	outPow1.setIndex2(index2);
+    	outPow2.setIndex1(index1);
+    	outPow2.setIndex2(index2);
+    	
+    	outPow1.setRelatedPin(inPin1);
+    	outPow2.setRelatedPin(inPin2);
+    	outPowList.add(outPow1);
+		outPowList.add(outPow2);
+		
+    	timing1.setIndex1(index1);
+    	timing1.setIndex2(index2);
+    	timing2.setIndex1(index1);
+    	timing2.setIndex2(index2);
+    	
+    	timing1.setRelatedPin(inPin1);
+    	timing2.setRelatedPin(inPin2);
+    	timingList.add(timing1);
+		timingList.add(timing2);
+		
+		OutputPin outPin1 = new OutputPin("name1", null, outPowList, timingList);
+		OutputPin outPin2 = new OutputPin("name2", null, outPowList, timingList);
+		outPinList.add(outPin1);
+		outPinList.add(outPin2);
+		
+    	float[] values = {0.00291f, 0.003117f, 0.003117f, 0.005393f, 
+    			0.003113f, 0.005081f, 0.004988f, 0.01069f};
+    	Leakage leakage = new Leakage(values);
+    	
+    	Cell cell1 = new Cell("cell1", null, null, null, inPinList, outPinList, leakage, 0);
+    	Cell cell2 = new Cell("cell2", null, null, null, inPinList2, outPinList, leakage, 0);
+    	
+    	cell1.replaceData(cell2);
+    	Assertions.assertEquals(1, cell1.getInPins().size());
+    	Assertions.assertEquals("cell2", cell1.getName());
+    }
+    
+    @Test
+    void interpolateTest() {
+    	inPowList.add(inPow1);
+		inPowList.add(inPow2);
+		
+		InputPin inPin1 = new InputPin("name1", null, inPowList);
+		InputPin inPin2 = new InputPin("name2", null, inPowList);
+		
+		inPinList.add(inPin1);
+		inPinList.add(inPin2);
+		inPinList2.add(inPin1);
+		
+		float[] index1 = {0.0004f, 0.009027f, 0.03931f, 0.09714f, 0.1872f, 0.3137f, 0.48f};
+    	float[] index2 = {0.0004f, 0.002192f, 0.008481f, 0.02049f, 0.0392f, 0.06545f, 0.1f};
+    	outPow1.setIndex1(index1);
+    	outPow1.setIndex2(index2);
+    	outPow2.setIndex1(index1);
+    	outPow2.setIndex2(index2);
+    	
+    	outPow1.setRelatedPin(inPin1);
+    	outPow2.setRelatedPin(inPin2);
+    	outPowList.add(outPow1);
+		outPowList.add(outPow2);
+		
+    	timing1.setIndex1(index1);
+    	timing1.setIndex2(index2);
+    	timing2.setIndex1(index1);
+    	timing2.setIndex2(index2);
+    	
+    	timing1.setRelatedPin(inPin1);
+    	timing2.setRelatedPin(inPin2);
+    	timingList.add(timing1);
+		timingList.add(timing2);
+		
+		OutputPin outPin1 = new OutputPin("name1", null, outPowList, timingList);
+		OutputPin outPin2 = new OutputPin("name2", null, outPowList, timingList);
+		outPinList.add(outPin1);
+		outPinList.add(outPin2);
+		
+    	float[] values = {0.00291f, 0.003117f, 0.003117f, 0.005393f, 
+    			0.003113f, 0.005081f, 0.004988f, 0.01069f};
+    	Leakage leakage = new Leakage(values);
+    	
+    	Cell cell1 = new Cell("cell1", index1, index2, null, inPinList, outPinList, leakage, 0);
+    	
+    	float[] index3 = {0.0005f, 0.009028f, 0.04f, 0.097f, 0.19f, 0.31f, 0.48f};
+    	float[] index4 = {0.0005f, 0.002193f, 0.008f, 0.025f, 0.039f, 0.066f, 0.1f};
+    	cell1.interpolate(index3, index4);
+    	Assertions.assertEquals(index3, cell1.getIndex1());
+    	Assertions.assertEquals(index4, cell1.getIndex2());
+    	Assertions.assertEquals(cell1.getInPins().get(0).getInputPowers().size(), 2);
+    	Assertions.assertEquals(cell1.getInPins().get(0).getInputPowers().get(1).getIndex1(), 
+    			index3);
+    	Assertions.assertEquals(cell1.getOutPins().get(0).getOutputPowers().get(0).getIndex2(), 
+    			index4);
+    }
+    
 }

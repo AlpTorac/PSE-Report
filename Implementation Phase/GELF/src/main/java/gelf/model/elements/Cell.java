@@ -278,6 +278,8 @@ public class Cell extends HigherElement {
 				curTiming.setValues(newValues);
 			}
 		}
+		this.setIndex1(index1);
+		this.setIndex2(index2);
 	}
 	/**
 	 * Call all calculate methods.
