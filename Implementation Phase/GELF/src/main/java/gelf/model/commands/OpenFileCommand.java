@@ -74,7 +74,11 @@ public class OpenFileCommand implements Command {
 
 	@Override
 	public void undo() {
-		
+		ArrayList<Library> libraries = currentModel.getCurrentProject().getLibraries();
+		libraries.remove(openedLibrary);
+		currentModel.getCurrentProject().setLibraries(libraries);
+
+		currentModel.getCurrentProject().inform();
 	}
 
 }
