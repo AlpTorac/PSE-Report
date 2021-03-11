@@ -21,7 +21,7 @@ public class HistogramBuilder extends DiagramBuilder implements IHistogramBuilde
 
 	@Override
 	protected float getXAxisMaxValue() {
-		return this.getDiagramData().getMaximumIndex() * settingsProvider.getHistogramIndexEndIndexFactor();
+		return this.getDiagramData().getMaximumIndex();
 	}
 
 	@Override

@@ -156,8 +156,6 @@ public class HoverLabel implements HasAttachablePart {
 			this.setBorder(b);
 			
 			this.setText(this.label.getCaptionForComponent());
-			this.setHorizontalAlignment(CENTER);
-			this.setVerticalAlignment(CENTER);
 			this.setPreferredSize(null);
 			
 			this.setOpaque(true);
@@ -168,8 +166,6 @@ public class HoverLabel implements HasAttachablePart {
 			super.paintComponent(g);
 			this.setBackground(this.label.getColor());
 			this.setText(this.label.getCaptionForComponent());
-			this.setHorizontalAlignment(CENTER);
-			this.setVerticalAlignment(CENTER);
 		}
 	}
 }

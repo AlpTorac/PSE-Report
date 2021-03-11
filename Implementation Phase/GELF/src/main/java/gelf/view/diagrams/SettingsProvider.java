@@ -4,7 +4,8 @@ import java.awt.Color;
 
 public class SettingsProvider {
 	private final static int LOWEST_DIGIT = 1;
-	private final static double TOLERANCE = Double.valueOf("1E-" + LOWEST_DIGIT);
+	//Double.valueOf("1E-" + LOWEST_DIGIT);
+	private final static double TOLERANCE = 1E-7;
 	
 	private int diagramValueDisplayLayer = 1;
 	private int diagramAxisLayer = 2;
@@ -45,11 +46,6 @@ public class SettingsProvider {
 	private int heatMapColorScaleBorderThickness = 1;
 	private Color heatMapColorScaleBorderColor = Color.BLACK;
 	private Color[] heatMapColorScaleColors = new Color[] {new Color(0x455bff), new Color(0xff5c5c)};
-	
-	/**
-	 * Increase the maximum index by this amount to leave some more space for the final bar.
-	 */
-	private float histogramIndexEndIndexFactor = 1.1f;
 	
 	private double barChartBarWidthInSteps = 0.5d;
 	
@@ -159,14 +155,6 @@ public class SettingsProvider {
 
 	public void setHeatMapColorScaleBorderThickness(int heatMapColorScaleBorderThickness) {
 		this.heatMapColorScaleBorderThickness = heatMapColorScaleBorderThickness;
-	}
-
-	public float getHistogramIndexEndIndexFactor() {
-		return histogramIndexEndIndexFactor;
-	}
-
-	public void setHistogramIndexEndIndexFactor(float histogramIndexEndIndexFactor) {
-		this.histogramIndexEndIndexFactor = histogramIndexEndIndexFactor;
 	}
 
 	public String getAxisFontType() {
@@ -305,8 +293,6 @@ public class SettingsProvider {
 			exp--;
 		}
 		String result = String.valueOf(scientificValue);
-		// Replace trailing zeroes and the decimal point, if unnecessary
-		result = result.contains(".") ? result.replaceAll("0*$","").replaceAll("\\.$","") : result;
 		result = isNegative ? "-" + result : result;
 		if (exp != 0) {
 			result += "e" + (-exp);

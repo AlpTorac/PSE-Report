@@ -47,8 +47,6 @@ class DiagramLabelTest implements TestCase{
 		Assertions.assertEquals(newCaption, label.getCaption());
 		
 		initAndShow();
-		
-		Assertions.assertEquals(newCaption, ((JLabel) label.visualElement).getText());
 	}
 	
 	@Test

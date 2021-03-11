@@ -22,15 +22,11 @@ public interface IHistogramBuilder extends IDiagramBuilder {
 		Color barColor = this.getColorForDiagram(orderInSameDiagram);
 		int thickness = this.getSettingsProvider().getBarBorderThickness();
 		
-		dvdc[0] = this.makeFirstHistogramBar(axes, indices, values, barColor, thickness);
+		dvdc[0] = this.makeFirstHistogramBar(axes, indices[0], values[0], barColor, thickness);
 		
-		for (int i = 1; i < indices.length - 1; i++) {
-			dvdc[i] = this.makeHistogramBar(axes, indices, values, i, barColor, thickness);
+		for (int i = 1; i < indices.length; i++) {
+			dvdc[i] = this.makeHistogramBar(axes, indices[i-1], indices[i], values[i], barColor, thickness);
 		}
-		
-		float additionalMaxIndex = indices[indices.length - 1] * this.getSettingsProvider().getHistogramIndexEndIndexFactor();
-
-		dvdc[indices.length - 1] = this.makeLastHistogramBar(axes, indices, values, additionalMaxIndex, barColor, thickness);
 		
 		return dvdc;
 	}
@@ -40,29 +36,18 @@ public interface IHistogramBuilder extends IDiagramBuilder {
 		return null;
 	}
 	
-	default HistogramBar makeFirstHistogramBar(DiagramAxis[] axes, float[] indices, float[] values, Color barColor, int thickness) {
-		PositionIn2DDiagram topLeft = this.getDiagramComponentFactory().makePositionInDiagram(axes[0], 0, axes[1], values[0]);
+	default HistogramBar makeFirstHistogramBar(DiagramAxis[] axes, float endIndex, float value, Color barColor, int thickness) {
+		PositionIn2DDiagram topLeft = this.getDiagramComponentFactory().makePositionInDiagram(axes[0], 0, axes[1], value);
 		
-		PositionIn2DDiagram bottomRight = this.getDiagramComponentFactory().makePositionInDiagram(axes[0], this.getBarWidth(indices, 0), axes[1], 0);
+		PositionIn2DDiagram bottomRight = this.getDiagramComponentFactory().makePositionInDiagram(axes[0], endIndex, axes[1], 0);
 		
-		return this.getDiagramComponentFactory().createHistogramBar(barColor, values[0], topLeft, bottomRight, thickness);
+		return this.getDiagramComponentFactory().createHistogramBar(barColor, value, topLeft, bottomRight, thickness);
 	}
 	
-	default HistogramBar makeHistogramBar(DiagramAxis[] axes, float[] indices, float[] values, int i, Color barColor, int thickness) {
-		PositionIn2DDiagram topLeft = this.getDiagramComponentFactory().makePositionInDiagram(axes[0], this.getBarWidth(indices, i - 1), axes[1], values[i]);
-		PositionIn2DDiagram bottomRight = this.getDiagramComponentFactory().makePositionInDiagram(axes[0], this.getBarWidth(indices, i), axes[1], 0);
+	default HistogramBar makeHistogramBar(DiagramAxis[] axes, float startIndex, float endIndex, float value, Color barColor, int thickness) {
+		PositionIn2DDiagram topLeft = this.getDiagramComponentFactory().makePositionInDiagram(axes[0], startIndex, axes[1], value);
+		PositionIn2DDiagram bottomRight = this.getDiagramComponentFactory().makePositionInDiagram(axes[0], endIndex, axes[1], 0);
 		
-		return this.getDiagramComponentFactory().createHistogramBar(barColor, values[i], topLeft, bottomRight, thickness);
-	}
-	
-	default HistogramBar makeLastHistogramBar(DiagramAxis[] axes, float[] indices, float[] values, double lastBottomRightX, Color barColor, int thickness) {
-		PositionIn2DDiagram topLeft = this.getDiagramComponentFactory().makePositionInDiagram(axes[0], this.getBarWidth(indices, indices.length - 2), axes[1], values[indices.length - 1]);
-		PositionIn2DDiagram bottomRight = this.getDiagramComponentFactory().makePositionInDiagram(axes[0], lastBottomRightX, axes[1], 0);
-		
-		return this.getDiagramComponentFactory().createHistogramBar(barColor, values[indices.length - 1], topLeft, bottomRight, thickness);
-	}
-	
-	default float getBarWidth(float[] indices, int index) {
-		return (indices[index] + indices[index + 1]) / 2f;
+		return this.getDiagramComponentFactory().createHistogramBar(barColor, value, topLeft, bottomRight, thickness);
 	}
 }

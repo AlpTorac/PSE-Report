@@ -43,7 +43,7 @@ class HistogramBuilderTest implements TestCase {
 		DiagramValueDisplayComponent[] bars = diagram.getDiagramValueDisplayComponentPrototypes();
 		int barCount = bars.length;
 		
-		float[] indices = new float[] {0f, 0.175f, 0.375f, 0.55f, 0.7f, 0.9f, 1.5f, diagram.getDiagramAxisPrototypes()[0].getMax()};
+		float[] indices = new float[] {0f, 0.1f, 0.25f, 0.5f, 0.6f, 0.8f, 1f, 2f};
 		float[] values = data.get(1);
 		
 		Assertions.assertEquals(indices.length - 1, barCount);

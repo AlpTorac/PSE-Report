@@ -97,11 +97,15 @@ public abstract class DiagramOverlayStrategy {
 	
 	private float[] fillEmptyValues(float[] newIndices, float[] oldIndices, float[] oldValues) {
 		float[] newValues = new float[newIndices.length];
+		int newLength = newValues.length;
+		int oldLength = oldIndices.length;
 		
-		for (int i = 0, j = 0; j < oldIndices.length; i++) {
-			if (Math.abs(newIndices[i] - oldIndices[j]) <= SettingsProvider.getTolerance()) {
+		for (int i = 0, j = 0; i < newLength; i++) {
+			if (j < oldLength && (Math.abs(newIndices[i] - oldIndices[j]) <= SettingsProvider.getTolerance())) {
 				newValues[i] = oldValues[j];
 				j++;
+			} else if (j >= oldLength) {
+				newValues[i] = oldValues[oldLength - 1];
 			} else {
 				newValues[i] = oldValues[j];
 			}
@@ -110,46 +114,46 @@ public abstract class DiagramOverlayStrategy {
 		return newValues;
 	}
 	
-	protected DiagramData getAverage(DiagramData[] diagramData) {
-		ArrayList<float[]> values = diagramData[0].extractValues();
-		
-		float[][] allValues = new float[values.size()][];
-		values.toArray(allValues);
-		
-		for (int i = 1; i < diagramData.length; i++) {
-			ArrayList<float[]> iteratorValues = diagramData[i].extractValues();
-			
-			float[][] currentValues = new float[iteratorValues.size()][];
-			iteratorValues.toArray(currentValues);
-			
-			for (int j = 0; j < allValues.length; j++) {
-				float[] currentValueRow = currentValues[j];
-				
-				for (int k = 0; k < allValues[0].length; k++) {
-					allValues[j][k] += currentValueRow[k];
-				}
-			}
-		}
-		
-		ArrayList<float[]> averageValues = new ArrayList<float[]>();
-		
-		for (int j = 0; j < allValues.length; j++) {
-			for (int k = 0; k < allValues.length; k++) {
-				allValues[j][k] = allValues[j][k] / ((float) diagramData.length);
-			}
-			averageValues.add(allValues[j]);
-		}
-		
-		ArrayList<float[]> indices = diagramData[0].extractIndices();
-		
-		ArrayList<float[]> averageDataCollection = new ArrayList<float[]>();
-		
-		averageDataCollection.addAll(indices);
-		averageDataCollection.addAll(averageValues);
-		
-		DiagramData averageData = new DiagramData(averageDataCollection, diagramData[0].getNumberOfIndices());
-		return averageData;
-	}
+//	protected DiagramData getAverage(DiagramData[] diagramData) {
+//		ArrayList<float[]> values = diagramData[0].extractValues();
+//		
+//		float[][] allValues = new float[values.size()][];
+//		values.toArray(allValues);
+//		
+//		for (int i = 1; i < diagramData.length; i++) {
+//			ArrayList<float[]> iteratorValues = diagramData[i].extractValues();
+//			
+//			float[][] currentValues = new float[iteratorValues.size()][];
+//			iteratorValues.toArray(currentValues);
+//			
+//			for (int j = 0; j < allValues.length; j++) {
+//				float[] currentValueRow = currentValues[j];
+//				
+//				for (int k = 0; k < allValues[0].length; k++) {
+//					allValues[j][k] += currentValueRow[k];
+//				}
+//			}
+//		}
+//		
+//		ArrayList<float[]> averageValues = new ArrayList<float[]>();
+//		
+//		for (int j = 0; j < allValues.length; j++) {
+//			for (int k = 0; k < allValues.length; k++) {
+//				allValues[j][k] = allValues[j][k] / ((float) diagramData.length);
+//			}
+//			averageValues.add(allValues[j]);
+//		}
+//		
+//		ArrayList<float[]> indices = diagramData[0].extractIndices();
+//		
+//		ArrayList<float[]> averageDataCollection = new ArrayList<float[]>();
+//		
+//		averageDataCollection.addAll(indices);
+//		averageDataCollection.addAll(averageValues);
+//		
+//		DiagramData averageData = new DiagramData(averageDataCollection, diagramData[0].getNumberOfIndices());
+//		return averageData;
+//	}
 	
 	protected abstract IDiagram[] getAllDiagrams();
 	
