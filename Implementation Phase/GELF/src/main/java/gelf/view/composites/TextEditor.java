@@ -8,6 +8,7 @@ import gelf.model.elements.InputPin;
 import gelf.model.elements.Library;
 import gelf.model.elements.OutputPin;
 import gelf.model.project.Project;
+import gelf.model.project.Updatable;
 import gelf.view.components.Button;
 
 import java.awt.Color;
@@ -30,7 +31,7 @@ import javax.swing.text.Highlighter;
  * Displays the liberty text file.
  * @author Ege Uzhan
  */
-public class TextEditor extends ElementManipulator implements KeyListener{
+public class TextEditor extends ElementManipulator implements KeyListener, Updatable{
 	
 	private JTextField searchBox;
 	private JTextArea textArea;	
@@ -66,6 +67,7 @@ public class TextEditor extends ElementManipulator implements KeyListener{
     public TextEditor(Element element, Project p, Outliner o, SubWindow subwindow, SubWindowArea subwindows, int width, int height){
         super(element, p, width, height);
         hl = new DefaultHighlighter();
+        p.addUpdatable(this);
         this.subwindows = subwindows;
         this.subwindow = subwindow;
         this.outliner = o;
@@ -315,5 +317,13 @@ public class TextEditor extends ElementManipulator implements KeyListener{
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {}
+
+	@Override
+	public void update() {
+		this.setElement(this.element);
+		textArea.setText(createText(element));
+		textArea.setCaretPosition(0);
+		
+	}
     
 }

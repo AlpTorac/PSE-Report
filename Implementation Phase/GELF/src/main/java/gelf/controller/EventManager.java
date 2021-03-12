@@ -61,8 +61,8 @@ public class EventManager {
 	public void initListeners() {
 		listeners.put(Event.LOAD, new LoadListener());
 		listeners.put(Event.OPEN, new OpenElementListener(view.outliner, view.subWindowArea));
-		listeners.put(Event.DELETE, new DeleteCellListener(view.outliner));
-		listeners.put(Event.REMOVE, new RemoveListener(view.outliner));
+		listeners.put(Event.DELETE, new DeleteCellListener(view.outliner, view.subWindowArea));
+		listeners.put(Event.REMOVE, new RemoveListener(view.outliner, view.subWindowArea));
 		listeners.put(Event.COPY, new CopyListener(view.outliner));
 		listeners.put(Event.PASTE, new PasteListener(view.outliner));
 		listeners.put(Event.MOVE, new MoveListener(view.outliner));

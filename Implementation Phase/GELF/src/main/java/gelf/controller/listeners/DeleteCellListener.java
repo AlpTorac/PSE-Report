@@ -1,9 +1,13 @@
 package gelf.controller.listeners;
 
 import gelf.view.composites.Outliner;
+import gelf.view.composites.SubWindow;
+import gelf.view.composites.SubWindowArea;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -20,13 +24,15 @@ import gelf.model.elements.Element;
 public class DeleteCellListener implements ActionListener {
 
 	private Outliner outliner;
+	private SubWindowArea subwindows;
 	
 	/**
 	 * Initializes the listener
 	 * @param outliner The outliner.
 	 */
-	public DeleteCellListener(Outliner outliner) {
+	public DeleteCellListener(Outliner outliner, SubWindowArea subwindows) {
 		this.outliner = outliner;
+		this.subwindows = subwindows;
 	}
 	
 	@Override
@@ -48,6 +54,21 @@ public class DeleteCellListener implements ActionListener {
 		}
 		DeleteCommand delete = new DeleteCommand(cells);
 		delete.execute();
+		ArrayList<SubWindow> toRemove = new ArrayList<SubWindow>();
+		for (SubWindow str : subwindows.subWindows) {
+		    if (cells.contains(str.getElement())) {
+		        toRemove.add(str);
+		    }
+		 /*   else if () {
+		    	
+		    }
+		    else if () {
+		    	
+		    }*/
+		}
+		for (SubWindow str: toRemove) {
+			subwindows.removeSubWindow(str);
+		}
 		
 	}
 

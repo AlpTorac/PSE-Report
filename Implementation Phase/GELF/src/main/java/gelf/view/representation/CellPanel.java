@@ -74,6 +74,8 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 	private DataPanel dataPanel;
 	private Visualizer visualizer;
 	
+	private Element element;
+	
 	/**
 	 * Initializes the panel
 	 * @param width Width of the panel
@@ -85,6 +87,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 	 */
 	public CellPanel(int width, int height, Element element, SubWindow subwindow, Visualizer visualizer,  DataPanel dataPanel) {
 		super(width, height);
+		this.element = element;
 		this.subwindow = subwindow;
 		this.dataPanel = dataPanel;
 		this.visualizer = visualizer;
@@ -150,10 +153,9 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 		mainPanel.setBackground(new Color(0.3f, 0.3f, 0.3f));
 		lowerPanel.setBackground(new Color(0.3f, 0.3f, 0.3f));
 		imagePanel.setBackground(new Color(0.3f, 0.3f, 0.3f));
-		
 		createRepresentation();
 		imageLabel.setVisible(true);
-		highlightPin(element);
+		highlightPin(this.element);
 		
 	}
 	
@@ -165,31 +167,6 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 		return cell;
 	}
 	
-	/**
-	 * Sets the main element which will be shown in the panel.
-	 * @param element Element to be set in the panel.
-	 */
-	public void setElement(Element element) {
-		if (element instanceof Cell) {
-			this.cell = (Cell) element;
-			pinTag = false;
-		}
-		else if (element instanceof Pin) {
-			Pin newPin = (Pin) element;
-			this.pin = newPin;
-			pinTag = true;
-			this.cell = pin.getParent();
-			
-		}
-		inputPins = cell.getInPins();
-		selectedPins = new ArrayList<InputPin>();
-		outputPins = cell.getOutPins();
-		maxPins = (inputPins.size() < outputPins.size()) ? outputPins.size() : inputPins.size();
-		libButton = new Label(cell.getParentLibrary().toString());
-		cellButton = new Label(cell.getName());
-		createRepresentation();
-		highlightPin(element);
-	}
 	
 	
 	/**
@@ -205,6 +182,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 			}
 			for (OutputPin output : outputPins) {
 				if (output.getName().equals(element.getName())) {
+					
 					buttonMap.get(element).setBackground(Color.BLUE);
 				}
 			}
@@ -371,7 +349,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 	public ArrayList<InputPin> getSelectedInPins(){
 		return selectedPins;
 	}
-
+	
 	@Override
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getStateChange() == ItemEvent.SELECTED) {

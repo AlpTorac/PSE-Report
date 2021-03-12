@@ -39,6 +39,10 @@ public class SaveAsListener implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if (outliner.getSelectedElements().isEmpty()) {
+			JOptionPane.showMessageDialog(new JFrame(), "No library has been selected.", "Error", JOptionPane.ERROR_MESSAGE);
+			return;		
+		}
 		if (Model.getInstance().getCurrentProject().getLibraries().isEmpty()) {
 			JOptionPane.showMessageDialog(new JFrame(), "No library has been loaded in the application.", "Error", JOptionPane.ERROR_MESSAGE);
 			return;

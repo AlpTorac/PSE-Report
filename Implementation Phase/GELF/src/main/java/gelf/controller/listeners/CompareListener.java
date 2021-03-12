@@ -9,7 +9,9 @@ import javax.swing.JOptionPane;
 
 import gelf.model.elements.Cell;
 import gelf.model.elements.Element;
+import gelf.model.elements.InputPin;
 import gelf.model.elements.Library;
+import gelf.model.elements.OutputPin;
 import gelf.model.elements.Pin;
 import gelf.model.project.Model;
 import gelf.view.composites.Outliner;
@@ -41,32 +43,42 @@ public class CompareListener implements ActionListener {
 			JOptionPane.showMessageDialog(new JFrame(), "Select at least 2 elements to compare.", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		ArrayList<Library> libraries = new ArrayList<Library>();
-		ArrayList<Element> elements = new ArrayList<Element>();
+		ArrayList<Element> libraries = new ArrayList<Element>();
+		ArrayList<Element> cells = new ArrayList<Element>();
+		ArrayList<Element> inputPins = new ArrayList<Element>();
+		ArrayList<Element> outputPins = new ArrayList<Element>();
 		for (Element element: outliner.getSelectedElements()) {
 			if (element instanceof Library) {
-				libraries.add((Library) element);
+				libraries.add(element);
+			}
+			else if (element instanceof Cell) {
+				cells.add(element);
+			}
+			else if (element instanceof InputPin) {
+				inputPins.add(element);
 			}
 			else {
-				elements.add(element);
+				outputPins.add(element); 
 			}
 			
 		}
-		if (libraries.size() >= 1 && elements.size() >= 1) {
-			JOptionPane.showMessageDialog(new JFrame(), "Choose either multiple libraries or multiple cells & pins.", "Error", JOptionPane.ERROR_MESSAGE);
+		
+		if (outliner.getSelectedElements().size() == cells.size()) {
+			subwindows.addSubWindow(new SubWindow(cells, Model.getInstance().getCurrentProject(), outliner, subwindows, 200, 200));
+		}
+		else if (outliner.getSelectedElements().size() == inputPins.size()) {
+			subwindows.addSubWindow(new SubWindow(inputPins, Model.getInstance().getCurrentProject(), outliner, subwindows, 200, 200));
+		}
+		else if (outliner.getSelectedElements().size() == outputPins.size()) {
+			subwindows.addSubWindow(new SubWindow(outputPins, Model.getInstance().getCurrentProject(), outliner, subwindows, 200, 200));
+		}
+		else if (outliner.getSelectedElements().size() == libraries.size()) {
+			subwindows.addSubWindow(new SubWindow(libraries, Model.getInstance().getCurrentProject(), outliner, subwindows, 200, 200));
+		}
+		else {
+			JOptionPane.showMessageDialog(new JFrame(), "Choose multiple elements of the same type.", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
-		if (libraries.isEmpty()) {
-			subwindows.addSubWindow(new SubWindow(elements, Model.getInstance().getCurrentProject(), outliner, subwindows, 200, 200));
-		}
-		else if (elements.isEmpty()) {
-			ArrayList<Element> libraryList = new ArrayList<Element>();
-			for (Library library: libraries) {
-				libraryList.add(library);
-			}
-			subwindows.addSubWindow(new SubWindow(libraryList, Model.getInstance().getCurrentProject(), outliner, subwindows, 200, 200));
-		}
-		
 		
 	}
 

@@ -6,6 +6,7 @@ import gelf.model.commands.TextEditCommand;
 import gelf.model.elements.Cell;
 import gelf.model.elements.Element;
 import gelf.model.elements.Library;
+import gelf.model.elements.Pin;
 import gelf.view.composites.Outliner;
 import gelf.view.composites.SubWindow;
 import gelf.view.composites.SubWindow.ManipulatorType;
@@ -64,6 +65,9 @@ public class EditListener implements ActionListener{
 			editor.revert();
 			return;
 		}
+		
+		
+
 		editor.getSubWindow().setElement(element);
 		editor.getSubWindow().setManipulatorType(ManipulatorType.TEXT_EDITOR);
 		

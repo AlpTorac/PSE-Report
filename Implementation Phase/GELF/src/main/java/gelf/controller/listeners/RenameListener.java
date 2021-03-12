@@ -46,8 +46,9 @@ public class RenameListener implements ActionListener {
 			return;
 		}
         Element element = outliner.getSelectedElements().get(0);
+        
         String newName = JOptionPane.showInputDialog(new JFrame(), "New Name: ", "Rename", JOptionPane.OK_CANCEL_OPTION);
-        if (newName == "" || newName == null) {
+        if (!newName.matches("\\w+")) {
         	JOptionPane.showMessageDialog(new JFrame(), "Not a valid name", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
         	
@@ -58,6 +59,9 @@ public class RenameListener implements ActionListener {
         
 		RenameCommand rename = new RenameCommand(element, newName);
 		rename.execute();
+		
+		for (SubWindow subwindow: subwindows.subWindows) {
+		}
 		
 	}
 	

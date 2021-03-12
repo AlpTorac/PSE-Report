@@ -5,6 +5,9 @@ import gelf.model.elements.Library;
 import gelf.model.project.Model;
 import gelf.model.project.Project;
 import gelf.view.composites.Outliner;
+import gelf.view.composites.SubWindow;
+import gelf.view.composites.SubWindowArea;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -19,13 +22,15 @@ import javax.swing.JOptionPane;
 public class RemoveListener implements ActionListener {
 
 	private Outliner outliner;
+	private SubWindowArea subwindows;
 	
 	/**
 	 * Initializes the listener
 	 * @author Ege Uzhan The outliner.
 	 */
-	public RemoveListener(Outliner outliner) {
+	public RemoveListener(Outliner outliner, SubWindowArea subwindows) {
 		this.outliner = outliner;
+		this.subwindows = subwindows;
 	}
 	
 	@Override
@@ -55,6 +60,22 @@ public class RemoveListener implements ActionListener {
 		}
 		currentProject.setLibraries(newLibraries);
 		currentProject.inform();
+		
+		ArrayList<SubWindow> toRemove = new ArrayList<SubWindow>();
+		for (SubWindow str : subwindows.subWindows) {
+		    if (libraries.contains(str.getElement())) {
+		        toRemove.add(str);
+		    }
+		    /*else if () {
+		    	
+		    }
+		    else if () {
+		    	
+		    }*/
+		}
+		for (SubWindow str: toRemove) {
+			subwindows.removeSubWindow(str);
+		}
 	}
 
 }

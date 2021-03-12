@@ -29,7 +29,7 @@ public class DataPanel extends Panel {
 	
 	/**
 	 * Constructor for opening an element in the data panel.
-	 * @param library Library element.
+	 * @param element Library element.
 	 */
 	public DataPanel(int width, int height, Element element) {
 		super(width, height);
