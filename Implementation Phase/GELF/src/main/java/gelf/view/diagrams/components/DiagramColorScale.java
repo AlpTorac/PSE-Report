@@ -8,6 +8,7 @@ import java.awt.Rectangle;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
+import gelf.view.diagrams.IDiagram;
 import gelf.view.diagrams.SettingsProvider;
 
 public abstract class DiagramColorScale extends DiagramComponent {
@@ -16,19 +17,42 @@ public abstract class DiagramColorScale extends DiagramComponent {
 	private int borderThickness;
 	private float[] values;
 	private Color[] valueColors;
+	private DiagramAxis valueDisplay;
 
+	private static SettingsProvider sp = SettingsProvider.getInstance();
+	
 	protected DiagramColorScale(PositionInFrame topLeft, PositionInFrame bottomRight, Color borderColor,
 			float[] values, Color[] valueColors, int borderThickness) {
-		super(borderColor, SettingsProvider.getInstance().getDiagramNonValueDisplayLayer());
+		super(borderColor, sp.getDiagramNonValueDisplayLayer());
 
 		this.topLeft = topLeft;
 		this.bottomRight = bottomRight;
 		this.borderThickness = borderThickness;
 		this.values = values;
 		this.valueColors = valueColors;
+		this.valueDisplay = this.makeValueDisplay(topLeft, bottomRight, values, borderThickness);
+		this.valueDisplay.show();
+		this.valueDisplay.showValues();
+		this.valueDisplay.setShowValuesUnderAxis(false);
 		this.initVisualElement();
 	}
 
+	private DiagramAxis makeValueDisplay(PositionInFrame topLeft, PositionInFrame bottomRight, float[] values, int borderThickness) {
+		DiagramComponentFactory factory = DiagramComponentFactory.getDiagramComponentFactory();
+		PositionInFrame end = factory.makePositionInFrame(bottomRight.getXPos(), topLeft.getYPos());
+		DiagramAxis valueDisplay = factory.createSolidAxis(topLeft, end, values[0], values[values.length - 1],
+				sp.getColorScaleValueDisplaySteps(), this.getColor(), borderThickness);
+		return valueDisplay;
+	}
+	
+	private void updateValueDisplay() {
+		this.valueDisplay.setMin(this.values[0]);
+		this.valueDisplay.setMax(this.values[this.values.length - 1]);
+		this.valueDisplay.setLineThickness(this.getBorderThickness());
+		this.valueDisplay.setColor(this.getColor());
+		this.valueDisplay.setLineByPos(this.topLeft.getXPos(), this.topLeft.getYPos(), this.bottomRight.getXPos(), this.topLeft.getYPos());
+	}
+	
 	private int getRangeMinIndex(float value) {
 		
 		int index = 0;
@@ -92,7 +116,7 @@ public abstract class DiagramColorScale extends DiagramComponent {
 	public void setTopLeftInFrame(double x1, double y1) {
 		this.topLeft.setXPos(x1);
 		this.topLeft.setYPos(y1);
-		
+		this.updateValueDisplay();
 		this.setComponentBounds(this.getFrameBounds());
 	}
 
@@ -103,7 +127,7 @@ public abstract class DiagramColorScale extends DiagramComponent {
 	public void setBottomRightInFrame(double x2, double y2) {
 		this.bottomRight.setXPos(x2);
 		this.bottomRight.setYPos(y2);
-		
+		this.updateValueDisplay();
 		this.setComponentBounds(this.getFrameBounds());
 	}
 
@@ -113,6 +137,7 @@ public abstract class DiagramColorScale extends DiagramComponent {
 
 	public void setBorderThickness(int borderThickness) {
 		this.borderThickness = borderThickness;
+		this.updateValueDisplay();
 		this.visualElement.repaint();
 	}
 	
@@ -126,11 +151,13 @@ public abstract class DiagramColorScale extends DiagramComponent {
 
 	public void setValues(float[] values) {
 		this.values = values;
+		this.updateValueDisplay();
 		this.visualElement.repaint();
 	}
 	
 	public void setValue(int index, float value) {
 		this.values[index] = value;
+		this.updateValueDisplay();
 	}
 
 	public Color[] getValueColors() {
@@ -159,6 +186,12 @@ public abstract class DiagramColorScale extends DiagramComponent {
 		this.visualElement = new ScalePanel(this);
 	}
 	
+	@Override
+	public void attachToDiagram(IDiagram diagram) {
+		super.attachToDiagram(diagram);
+		this.valueDisplay.attachToDiagram(diagram);
+	}
+	
 	protected class ScalePanel extends JPanel {
 
 		/**
@@ -170,8 +203,13 @@ public abstract class DiagramColorScale extends DiagramComponent {
 		protected ScalePanel(DiagramColorScale colorScale) {
 			this.colorScale = colorScale;
 			this.setBounds(this.colorScale.getFrameBounds());
-			this.setBorder(BorderFactory.createLineBorder(this.colorScale.getColor(), this.colorScale.getBorderThickness()));
 			this.setOpaque(true);
+		}
+		
+		@Override
+		protected void paintBorder(Graphics g) {
+			super.paintBorder(g);
+			this.setBorder(BorderFactory.createLineBorder(this.colorScale.getColor(), this.colorScale.getBorderThickness()));
 		}
 		
 		@Override

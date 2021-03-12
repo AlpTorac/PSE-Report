@@ -38,7 +38,7 @@ public abstract class DiagramLine extends DiagramComponent {
 		return this.start;
 	}
 
-	public void setStartInFrame(float x1, float y1) {
+	public void setStartInFrame(double x1, double y1) {
 		this.start.setXPos(x1);
 		this.start.setYPos(y1);
 		
@@ -49,7 +49,7 @@ public abstract class DiagramLine extends DiagramComponent {
 		return this.end;
 	}
 
-	public void setEndInFrame(float x2, float y2) {
+	public void setEndInFrame(double x2, double y2) {
 		this.end.setXPos(x2);
 		this.end.setYPos(y2);
 		

@@ -15,8 +15,8 @@ public class SettingsProvider {
 	
 	private float diagramLeftMariginFactor = 1f / 20f;
 	private float diagramRightMariginFactor = 1f / 20f;
-	private float diagramTopMariginFactor = 2f / 20f;
-	private float diagramBottomMariginFactor = 2f / 20f;
+	private float diagramTopMariginFactor = 1f / 20f;
+	private float diagramBottomMariginFactor = 3f / 20f;
 	
 	/**
 	 * The colors to be used, when diagrams are being overlaid or
@@ -44,8 +44,12 @@ public class SettingsProvider {
 	
 	private int heatMapLabelBorderThickness = 1;
 	private int heatMapColorScaleBorderThickness = 1;
+	private float heatMapColorScaleLeftMariginFactor = 1f / 20f;
+	private float heatMapColorScaleRightMariginFactor = 1f / 20f;
 	private Color heatMapColorScaleBorderColor = Color.BLACK;
 	private Color[] heatMapColorScaleColors = new Color[] {new Color(0x455bff), new Color(0xff5c5c)};
+	
+	private int colorScaleValueDisplaySteps = 10;
 	
 	private double barChartBarWidthInSteps = 0.5d;
 	
@@ -352,6 +356,30 @@ public class SettingsProvider {
 
 	public void setBarChartBarWidthInSteps(double barChartBarWidthInSteps) {
 		this.barChartBarWidthInSteps = barChartBarWidthInSteps;
+	}
+
+	public int getColorScaleValueDisplaySteps() {
+		return colorScaleValueDisplaySteps;
+	}
+
+	public void setColorScaleValueDisplaySteps(int colorScaleValueDisplaySteps) {
+		this.colorScaleValueDisplaySteps = colorScaleValueDisplaySteps;
+	}
+
+	public float getHeatMapColorScaleLeftMariginFactor() {
+		return heatMapColorScaleLeftMariginFactor;
+	}
+
+	public void setHeatMapColorScaleLeftMariginFactor(float heatMapColorScaleLeftMariginFactor) {
+		this.heatMapColorScaleLeftMariginFactor = heatMapColorScaleLeftMariginFactor;
+	}
+
+	public float getHeatMapColorScaleRightMariginFactor() {
+		return heatMapColorScaleRightMariginFactor;
+	}
+
+	public void setHeatMapColorScaleRightMariginFactor(float heatMapColorScaleRightMariginFactor) {
+		this.heatMapColorScaleRightMariginFactor = heatMapColorScaleRightMariginFactor;
 	}
 	
 }

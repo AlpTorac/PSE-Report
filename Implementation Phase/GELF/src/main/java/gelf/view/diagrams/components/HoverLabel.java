@@ -162,6 +162,13 @@ public class HoverLabel implements HasAttachablePart {
 		}
 		
 		@Override
+		protected void paintBorder(Graphics g) {
+			super.paintBorder(g);
+			Border b = BorderFactory.createLineBorder(Color.BLACK, 1);
+			this.setBorder(b);
+		}
+		
+		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			this.setBackground(this.label.getColor());

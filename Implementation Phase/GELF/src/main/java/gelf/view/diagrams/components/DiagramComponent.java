@@ -49,8 +49,8 @@ public abstract class DiagramComponent implements HasAttachablePart {
 	
 	@Override
 	public void attachToDiagram(IDiagram diagram) {
-		if (diagram != null) {
-			this.removeFromDiagramOnly();
+		if (this.diagram != null) {
+			this.diagram.removeComponent(this.getVisualElement());
 		}
 			this.diagram = diagram;
 			diagram.addComponent(this.getVisualElement(), this.layer);
@@ -59,25 +59,10 @@ public abstract class DiagramComponent implements HasAttachablePart {
 	
 	@Override
 	public void removeFromDiagram() {
-		this.removeFromDiagramOnly();
-		this.cleanDiagramReference();
-	}
-
-	private void removeFromDiagramOnly() {
 		if (this.diagram != null) {
 			this.diagram.removeComponent(this.getVisualElement());
 		}
-	}
-	
-	private void cleanDiagramReference() {
 		this.diagram = null;
-	}
-	
-	private void deAndReAttachToDiagram() {
-		if (this.diagram != null) {
-			this.removeFromDiagramOnly();
-			this.attachToDiagram(this.diagram);
-		}
 	}
 	
 	public int getLayer() {
@@ -86,7 +71,11 @@ public abstract class DiagramComponent implements HasAttachablePart {
 
 	public void setLayer(int layer) {
 		this.layer = layer;
-		this.deAndReAttachToDiagram();
+		if (this.diagram != null) {
+			this.diagram.removeComponent(this.getVisualElement());
+			this.diagram.addComponent(this.getVisualElement(), this.layer);
+			this.setComponentBounds(this.getFrameBounds());
+		}
 	}
 	
 	public void incrementLayer() {

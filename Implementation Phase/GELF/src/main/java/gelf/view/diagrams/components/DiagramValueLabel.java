@@ -120,19 +120,22 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 		protected ValueLabelVisual(DiagramValueLabel label) {
 			this.label = label;
 			this.setBounds(this.label.getFrameBounds());
-			this.setBorder(BorderFactory.createLineBorder(borderColor, this.label.getBorderThickness()));
 			this.setHorizontalAlignment(CENTER);
 			this.setVerticalAlignment(CENTER);
-			this.setForeground(borderColor);
+			this.setForeground(this.label.borderColor);
 			this.setText(this.label.getCaption());
 			this.setOpaque(true);
 		}
 		
 		@Override
+		protected void paintBorder(Graphics g) {
+			super.paintBorder(g);
+			this.setBorder(BorderFactory.createLineBorder(this.label.borderColor, this.label.getBorderThickness()));
+		}
+		
+		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			this.setHorizontalAlignment(CENTER);
-			this.setVerticalAlignment(CENTER);
 			this.setForeground(borderColor);
 			this.setText(this.label.getCaption());
 		}

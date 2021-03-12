@@ -1,6 +1,7 @@
 package gelf.view.diagrams.components;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Rectangle;
 
 import javax.swing.BorderFactory;
@@ -120,12 +121,16 @@ public abstract class DiagramBar extends DiagramValueDisplayComponent {
 			this.bar = bar;
 			
 			this.setBounds(this.bar.getFrameBounds());
+			this.setBackground(this.bar.getColor());
+			this.setOpaque(true);
+		}
+		
+		@Override
+		protected void paintBorder(Graphics g) {
+			super.paintBorder(g);
 			Border border = BorderFactory.createLineBorder(borderColor, this.bar.borderThickness);
 			
 			this.setBorder(border);
-			
-			this.setBackground(this.bar.getColor());
-			this.setOpaque(true);
 		}
 	}
 }

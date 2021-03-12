@@ -58,25 +58,20 @@ public abstract class DiagramAxis extends DiagramComponent {
 
 	private String[] fillNullsWithEmptyString(String[] stepDisplays, int steps) {
 		String[] result;
-
-		if (stepDisplays.length < steps) {
-			result = new String[steps];
-			
-			int i = 0;
-			for (; i < stepDisplays.length; i++) {
-				result[i] = stepDisplays[i];
-			}
+		int displaysNewLength = steps + 1;
+		
+		result = new String[displaysNewLength];
+		result[0] = "";
+		
+		int i = 1;
+		for (; i < stepDisplays.length; i++) {
+			result[i] = stepDisplays[i - 1];
+		}
+		if (stepDisplays.length < displaysNewLength) {
+			result[i] = stepDisplays[stepDisplays.length - 1];
+			i++;
 			for (; i < result.length; i++) {
 				result[i] = "";
-			}
-		} else {
-			result = stepDisplays.clone();
-			for (int i = 0; i < result.length; i++) {
-				if (i < stepDisplays.length && stepDisplays[i] != null) {
-					result[i] = stepDisplays[i];
-				} else {
-					result[i] = "";
-				}
 			}
 		}
 		
@@ -149,7 +144,7 @@ public abstract class DiagramAxis extends DiagramComponent {
 		return new PositionInFrame(frameXPos, frameYPos);
 	}
 
-	public void setLineByPos(float minValXPos, float minValYPos, float maxValXPos, float maxValYPos) {
+	public void setLineByPos(double minValXPos, double minValYPos, double maxValXPos, double maxValYPos) {
 		this.axisLine.setStartInFrame(minValXPos, minValYPos);
 		this.axisLine.setEndInFrame(maxValXPos, maxValYPos);
 		this.visualElement.repaint();
@@ -248,11 +243,11 @@ public abstract class DiagramAxis extends DiagramComponent {
 	}
 	
 	protected void setStepDisplays() {
-		int displayCount = this.getSteps();
+		int displayCount = this.getSteps() + 1;
 		String[] stepDisplays = new String[displayCount];
 		
 		float stepLengthInAxis = (this.getMax() - this.getMin()) / ((float) this.getSteps());
-		float currentValue = this.getMin() + stepLengthInAxis;
+		float currentValue = this.getMin();
 		
 		for (int i = 0; i < displayCount; i++) {
 			stepDisplays[i] = SettingsProvider.getInstance().getRoundedValueAsString(currentValue);
@@ -275,6 +270,7 @@ public abstract class DiagramAxis extends DiagramComponent {
 		
 		@Override
 		protected void paintComponent(Graphics g) {
+			this.setBounds(this.axis.getFrameBounds());
 			super.paintComponent(g);
 			Graphics2D graphs = (Graphics2D) g;
 			Rectangle bounds = this.getBounds();
@@ -302,9 +298,9 @@ public abstract class DiagramAxis extends DiagramComponent {
 			
 			String[] displays = this.axis.getStepDisplays();
 			
-			for (int i = 1; i <= this.axis.getSteps(); i++) {
+			for (int i = 0; i <= this.axis.getSteps(); i++) {
+				this.drawStepDisplay(graphs, displays[i], fontSize, x1, y1, y2);
 				x1 += xStepLengthInFrame;
-				this.drawStepDisplay(graphs, displays[i - 1], fontSize, x1, y1, y2);
 			}
 		}
 		

@@ -48,6 +48,7 @@ public interface Hoverable {
 			public void mouseExited(MouseEvent e) {
 				hideHoverLabel();
 				HoverLabel.getHoverLabel().removeFromDiagram();
+				HoverLabel.getHoverLabel().setCaption("");
 			}
 		};
 		

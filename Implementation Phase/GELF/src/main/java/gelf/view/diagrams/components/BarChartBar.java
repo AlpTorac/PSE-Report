@@ -20,11 +20,15 @@ public class BarChartBar extends DiagramBar {
 	
 	@Override
 	protected String getRoundedPositionInDiagramString() {
-		String result = "";
+		String result = "bar ";
 		
-		int index = ((int) this.getBottomRightInDiagram().getXCoordinate()) - 1;
+		int index = ((int) this.getBottomRightInDiagram().getXCoordinate());
 		
-		result += "bar " + this.getBottomRightInDiagram().getAxes()[0].getStepDisplays()[index];
+		String[] xAxisDisplays = this.getBottomRightInDiagram().getAxes()[0].getStepDisplays();
+		
+		if (index < xAxisDisplays.length) {
+			result += this.getBottomRightInDiagram().getAxes()[0].getStepDisplays()[index];
+		}
 		
 		return result;
 	}

@@ -98,23 +98,26 @@ public abstract class DiagramLabel extends DiagramComponent {
 			this.label = label;
 			this.setBounds(this.label.getFrameBounds());
 			this.setBackground(this.label.getColor());
-			this.setBorder(BorderFactory.createLineBorder(borderColor, this.label.getBorderThickness()));
 			this.setHorizontalAlignment(CENTER);
 			this.setVerticalAlignment(CENTER);
-			this.setForeground(foreground);
+			this.setForeground(this.label.foreground);
 			this.setText(this.label.getCaption());
 			this.setOpaque(true);
+		}
+		
+		@Override
+		protected void paintBorder(Graphics g) {
+			super.paintBorder(g);
+			this.setBorder(BorderFactory.createLineBorder(this.label.borderColor, this.label.getBorderThickness()));
 		}
 		
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			this.setBackground(this.label.getColor());
-			this.setHorizontalAlignment(CENTER);
-			this.setVerticalAlignment(CENTER);
-			this.setForeground(foreground);
+			this.setForeground(this.label.foreground);
 			this.setText(this.label.getCaption());
-			this.setBorder(BorderFactory.createLineBorder(borderColor, this.label.getBorderThickness()));
+			this.setBorder(BorderFactory.createLineBorder(this.label.borderColor, this.label.getBorderThickness()));
 		}
 	}
 }

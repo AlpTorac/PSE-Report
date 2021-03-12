@@ -106,8 +106,10 @@ public interface IHeatMapBuilder extends IDiagramBuilder, ContainerAccessPoint {
 	public default DiagramComponent[] buildDiagramSpecificComponentForOneDiagram(DiagramData data) {
 		int containerHeight = this.getContainer().getHeight();
 		
-		PositionInFrame topLeft = this.getDiagramComponentFactory().makePositionInFrame(0, this.getContainer().getHeight() + containerHeight / 20 - containerHeight / 10);
-		PositionInFrame bottomRight = this.getDiagramComponentFactory().makePositionInFrame(this.getContainer().getWidth(), this.getContainer().getHeight());
+		PositionInFrame topLeft = this.getDiagramComponentFactory().makePositionInFrame(this.getContainer().getWidth() * this.getSettingsProvider().getHeatMapColorScaleLeftMariginFactor(),
+				this.getContainer().getHeight() + containerHeight / 20 - containerHeight / 10);
+		PositionInFrame bottomRight = this.getDiagramComponentFactory().makePositionInFrame(this.getContainer().getWidth() * (1 - this.getSettingsProvider().getHeatMapColorScaleRightMariginFactor()),
+				this.getContainer().getHeight());
 		Color borderColor = this.getSettingsProvider().getHeatMapColorScaleBorderColor();
 		int borderThickness = this.getSettingsProvider().getHeatMapColorScaleBorderThickness();
 		Color[] colors = this.getSettingsProvider().getHeatMapColorScaleColors();
