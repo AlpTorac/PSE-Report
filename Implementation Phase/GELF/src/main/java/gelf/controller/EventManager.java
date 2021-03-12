@@ -12,7 +12,6 @@ import gelf.controller.listeners.DeleteCellListener;
 import gelf.controller.listeners.LoadListener;
 import gelf.controller.listeners.LoadProjectListener;
 import gelf.controller.listeners.MergeListener;
-import gelf.controller.listeners.MoveListener;
 import gelf.controller.listeners.OpenElementListener;
 import gelf.controller.listeners.PasteListener;
 import gelf.controller.listeners.PropertiesListener;
