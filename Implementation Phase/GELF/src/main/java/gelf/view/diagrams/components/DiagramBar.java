@@ -28,7 +28,7 @@ public abstract class DiagramBar extends DiagramValueDisplayComponent {
 	}
 
 	public double getHeight() {
-		return this.getValue();
+		return Math.abs(this.getValue());
 	}
 
 	public double getWidth() {
