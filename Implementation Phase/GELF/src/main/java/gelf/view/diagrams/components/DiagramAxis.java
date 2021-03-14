@@ -235,14 +235,21 @@ public abstract class DiagramAxis extends DiagramComponent {
 		this.axisLine.removeFromDiagram();
 	}
 	
-	protected String[] getStepDisplays() {
+	public String[] getStepDisplays() {
 		if (this.stepDisplays == null) {
 			this.setStepDisplays();
 		}
 		return this.stepDisplays.clone();
 	}
 	
-	protected void setStepDisplays() {
+	public void setStepDisplays(String[] stepDisplays) {
+		if (stepDisplays.length < this.getSteps() + 1) {
+			throw new IllegalArgumentException("Given step display array is too short.");
+		}
+		this.stepDisplays = stepDisplays;
+	}
+	
+	public void setStepDisplays() {
 		int displayCount = this.getSteps() + 1;
 		String[] stepDisplays = new String[displayCount];
 		
