@@ -95,6 +95,79 @@ public abstract class DiagramOverlayStrategy {
 		return unifiedData;
 	}
 	
+	protected ArrayList<float[]> combineValues(DiagramData[] diagramData) {
+		ArrayList<float[]> allValues = new ArrayList<float[]>();
+		
+		for (DiagramData data : diagramData) {
+			ArrayList<float[]> values = data.extractValues();
+			allValues.addAll(values);
+		}
+		
+		return allValues;
+	}
+	
+	protected ArrayList<String[]> combineDescs(DiagramData[] diagramData) {
+		ArrayList<float[]> indices = diagramData[0].extractIndices();
+		ArrayList<String[]> indexDescs = new ArrayList<String[]>();
+		
+		for (int i = 0; i < indices.size(); i++) {
+			float[] currentIndices = indices.get(i);
+			String[] currentIndexDescs = new String[currentIndices.length];
+			for (int j = 0; j < currentIndices.length; j++) {
+				
+				String currentDesc = "";
+
+				for (int k = 0; k < diagramData.length; k++) {
+					ArrayList<String[]> indexDescList = diagramData[k].extractIndexDescriptions();
+					if (indexDescList != null && indexDescList.get(i)[j] != null &&
+							currentDesc.length() < indexDescList.get(i)[j].length()) {
+						currentDesc = indexDescList.get(i)[j];
+					}
+				}
+				
+				currentIndexDescs[j] = currentDesc;
+			}
+			indexDescs.add(currentIndexDescs);
+		}
+		
+		return indexDescs;
+	}
+	
+	/**
+	 * Combines the values of the given data. The data must have the same indices.
+	 * Only index descriptions are combined.
+	 * 
+	 * @param diagramData : Data to combine
+	 * @return The combined {@link DiagramData}.
+	 */
+	protected DiagramData combineData(DiagramData[] diagramData) {
+		ArrayList<float[]> indices = diagramData[0].extractIndices();
+		ArrayList<float[]> dataArrays = new ArrayList<float[]>();
+		if (indices != null) {
+			dataArrays.addAll(indices);
+		}
+		dataArrays.addAll(this.combineValues(diagramData));
+		
+		if (this.containsDescriptions(diagramData)) {
+			return new DiagramData(dataArrays, this.combineDescs(diagramData), diagramData[0].getNumberOfIndices());
+		} else {
+			return new DiagramData(dataArrays, diagramData[0].getNumberOfIndices());
+		}
+	}
+	
+	private boolean containsDescriptions(DiagramData[] diagramData) {
+		boolean containsDescs = false;
+		
+		int k = 0;
+		while (!containsDescs && k < diagramData.length) {
+			containsDescs = containsDescs || (diagramData[k].extractIndexDescriptions() != null)
+					|| (diagramData[k].extractValueDescriptions() != null);
+			k++;
+		}
+		
+		return containsDescs;
+	}
+	
 	private float[] fillEmptyValues(float[] newIndices, float[] oldIndices, float[] oldValues) {
 		float[] newValues = new float[newIndices.length];
 		int newLength = newValues.length;
@@ -287,16 +360,14 @@ public abstract class DiagramOverlayStrategy {
 	public IDiagram overlay() {
 		DiagramData[] clonedData = this.cloneData();
 		
-		DiagramData data = clonedData[0];
-		
 		DiagramAxis[] axes = this.unifyAxes(this.getAllAxes());
-		if (clonedData[0].extractIndices().size() > 0) {
+		if (clonedData[0].getNumberOfIndices() > 0) {
 			clonedData = this.unifyData(clonedData, this.unifyIndices(clonedData));
 		}
 		
 		DiagramComponent[] dcs = this.makeDiagramSpecificComponents(clonedData);
 		DiagramValueDisplayComponent[] dvdcs = this.makeValueDisplayComponents(axes, dcs, clonedData);
 		
-		return this.buildDiagram(data, axes, dvdcs, dcs);
+		return this.buildDiagram(this.combineData(clonedData), axes, dvdcs, dcs);
 	}
 }

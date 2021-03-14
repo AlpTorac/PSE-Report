@@ -70,7 +70,7 @@ public class DiagramData {
 		return minVal;
 	}
 	private float getMaxOfArrays(float[][] arrays) {
-		float maxVal = Float.MIN_VALUE;
+		float maxVal = -Float.MAX_VALUE;
 		
 		for (float[] values : arrays) {
 			float currentMaxCandidate = this.getMaxOfArray(values);
@@ -83,7 +83,7 @@ public class DiagramData {
 	}
 	
 	private float getMaxOfArray(float[] array) {
-		float maxVal = Float.MIN_VALUE;
+		float maxVal = -Float.MAX_VALUE;
 		
 		for (int i = 0; i < array.length; i++) {
 			float currentMaxCandidate = array[i];
@@ -189,23 +189,31 @@ public class DiagramData {
 		ArrayList<float[]> values = this.extractor.extractValues(this.data);
 		
 		ArrayList<float[]> clonedData = new ArrayList<float[]>();
-
-		clonedData.addAll(indices);
-		clonedData.addAll(values);
+		
+		if (indices != null) {
+			clonedData.addAll(indices);
+		}
+		if (values != null) {
+			clonedData.addAll(values);
+		}
 		
 		DiagramData clone;
 		if (this.descriptions == null) {
-			clone = new DiagramData(clonedData, indices.size());
+			clone = new DiagramData(clonedData, this.getNumberOfIndices());
 		} else {
 			ArrayList<String[]> indexDescs = this.extractIndexDescriptions();
 			ArrayList<String[]> valueDescs = this.extractValueDescriptions();
 			
 			ArrayList<String[]> clonedDescs = new ArrayList<String[]>();
 			
-			clonedDescs.addAll(indexDescs);
-			clonedDescs.addAll(valueDescs);
+			if (indexDescs != null) {
+				clonedDescs.addAll(indexDescs);
+			}
+			if (valueDescs != null) {
+				clonedDescs.addAll(valueDescs);
+			}
 			
-			clone = new DiagramData(clonedData, clonedDescs, indices.size());
+			clone = new DiagramData(clonedData, clonedDescs, this.getNumberOfIndices());
 		}
 		return clone;
 	}
