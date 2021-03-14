@@ -7,19 +7,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import gelf.view.diagrams.TestCase;
-
-class DiagramDataTwoIndexTest implements TestCase {
+class DiagramDataNoIndexTest {
 	
-	private static final float[] arr1 = new float[] {0, 1, 2, 3};
-	private static final float[] arr2 = new float[] {10, 11, 12, 13};
 	private static final float[] arr3 = new float[] {100, 101, 102, 103};
 	private static final float[] arr4 = new float[] {110, 111, 112, 113};
 	private static final float[] arr5 = new float[] {120, 121, 122, 123};
 	private static final float[] arr6 = new float[] {130, 131, 132, 133};
 	
-	private static final String[] dArr1 = new String[] {"i1","i2","i3","i4"};
-	private static final String[] dArr2 = new String[] {"j1","j2","j3","j4"};
 	private static final String[] dArr3 = new String[] {"1,1","1,2","1,3","1,4"};
 	private static final String[] dArr4 = new String[] {"2,1","2,2","2,3","2,4"};
 	private static final String[] dArr5 = new String[] {"3,1","3,2","3,3","3,4"};
@@ -37,21 +31,17 @@ class DiagramDataTwoIndexTest implements TestCase {
 		dataArrays.clear();
 		descArrays.clear();
 		
-		dataArrays.add(arr1);
-		dataArrays.add(arr2);
 		dataArrays.add(arr3);
 		dataArrays.add(arr4);
 		dataArrays.add(arr5);
 		dataArrays.add(arr6);
 		
-		descArrays.add(dArr1);
-		descArrays.add(dArr2);
 		descArrays.add(dArr3);
 		descArrays.add(dArr4);
 		descArrays.add(dArr5);
 		descArrays.add(dArr6);
 		
-		indexCount = 2;
+		indexCount = 0;
 		data = new DiagramData(dataArrays, descArrays, indexCount);
 	}
 	
@@ -109,11 +99,11 @@ class DiagramDataTwoIndexTest implements TestCase {
 	}
 	@Test
 	void minimumIndexTest() {
-		Assertions.assertEquals(0, data.getMinimumIndex());
+		Assertions.assertThrows(NullPointerException.class, () -> data.getMinimumIndex());
 	}
 	@Test
 	void maximumIndexTest() {
-		Assertions.assertEquals(13, data.getMaximumIndex());
+		Assertions.assertThrows(NullPointerException.class, () -> data.getMaximumIndex());
 	}
 	@Test
 	void minimumValueAtTest() {
@@ -131,13 +121,13 @@ class DiagramDataTwoIndexTest implements TestCase {
 	}
 	@Test
 	void minimumIndexAtTest() {
-		Assertions.assertEquals(0, data.getMinimumIndexAt(0));
-		Assertions.assertEquals(10, data.getMinimumIndexAt(1));
+		Assertions.assertThrows(NullPointerException.class, () -> data.getMinimumIndexAt(0));
+		Assertions.assertThrows(NullPointerException.class, () -> data.getMinimumIndexAt(1));
 	}
 	@Test
 	void maximumIndexAtTest() {
-		Assertions.assertEquals(3, data.getMaximumIndexAt(0));
-		Assertions.assertEquals(13, data.getMaximumIndexAt(1));
+		Assertions.assertThrows(NullPointerException.class, () -> data.getMaximumIndexAt(0));
+		Assertions.assertThrows(NullPointerException.class, () -> data.getMaximumIndexAt(1));
 	}
 	@Test
 	void averageValueTest() {
@@ -158,8 +148,7 @@ class DiagramDataTwoIndexTest implements TestCase {
 	@Test
 	void indexDescriptionsTest() {
 		ArrayList<String[]> indexDescs = data.extractIndexDescriptions();
-		Assertions.assertArrayEquals(dArr1, indexDescs.get(0));
-		Assertions.assertArrayEquals(dArr2, indexDescs.get(1));
+		Assertions.assertNull(indexDescs);
 	}
 	@Test
 	void cloneTest() {
@@ -170,20 +159,14 @@ class DiagramDataTwoIndexTest implements TestCase {
 		ArrayList<String[]> valueDescs = clone.extractValueDescriptions();
 		ArrayList<String[]> indexDescs = clone.extractIndexDescriptions();
 		
-		ArrayList<float[]> Ovalues = clone.extractValues();
-		ArrayList<float[]> Oindices = clone.extractIndices();
-		ArrayList<String[]> OvalueDescs = clone.extractValueDescriptions();
-		ArrayList<String[]> OindexDescs = clone.extractIndexDescriptions();
+		ArrayList<float[]> Ovalues = data.extractValues();
+		ArrayList<float[]> Oindices = data.extractIndices();
+		ArrayList<String[]> OvalueDescs = data.extractValueDescriptions();
+		ArrayList<String[]> OindexDescs = data.extractIndexDescriptions();
 		
 		for (int i = 0; i < values.size(); i++) {
 			for (int j = 0; j < values.get(i).length; j++) {
 				Assertions.assertArrayEquals(Ovalues.get(i), values.get(i));
-			}
-		}
-		
-		for (int i = 0; i < indices.size(); i++) {
-			for (int j = 0; j < indices.get(i).length; j++) {
-				Assertions.assertArrayEquals(Oindices.get(i), indices.get(i));
 			}
 		}
 		
@@ -193,11 +176,10 @@ class DiagramDataTwoIndexTest implements TestCase {
 			}
 		}
 		
-		for (int i = 0; i < indexDescs.size(); i++) {
-			for (int j = 0; j < indexDescs.get(i).length; j++) {
-				Assertions.assertArrayEquals(OindexDescs.get(i), indexDescs.get(i));
-			}
-		}
+		Assertions.assertNull(indices);
+		Assertions.assertNull(Oindices);
+		Assertions.assertNull(indexDescs);
+		Assertions.assertNull(OindexDescs);
 	}
 	@Test
 	void indexCountTest() {
