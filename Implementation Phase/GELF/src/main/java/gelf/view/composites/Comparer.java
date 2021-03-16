@@ -409,9 +409,9 @@ public class Comparer extends ElementManipulator {
 		IDHavg = null;
 		IDHmed = null;
 		IDiagram[] diagrams = new IDiagram[elements.size()];
-		ArrayList<ArrayList<float[]>> datas = new ArrayList<ArrayList<float[]>>();
+		
 		for(int i = 0; i < elements.size(); i++) {
-			
+			ArrayList<ArrayList<float[]>> datas = new ArrayList<ArrayList<float[]>>();
 		ArrayList<float[]> data = new ArrayList<float[]>();
 		ArrayList<String[]> stringData = new ArrayList<String[]>();
 		float[] values = null;
@@ -858,4 +858,3 @@ public class Comparer extends ElementManipulator {
 		this.repaint();
 	}
 }
-
