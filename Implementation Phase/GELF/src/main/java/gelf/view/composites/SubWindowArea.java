@@ -65,4 +65,11 @@ public class SubWindowArea extends Panel {
             //TODO error handling
         }
     }
+     public void highlightTextEditors(Element element, float value) {
+    	for (SubWindow subwindow: this.subWindows) {
+    		if (subwindow.getElement().equals(element)) {
+    			subwindow.getEditor().addHoverHighlights(value);
+    		}
+    	}
+    }
 }
