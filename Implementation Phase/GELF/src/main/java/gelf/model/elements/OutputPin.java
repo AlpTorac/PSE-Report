@@ -3,7 +3,6 @@ package gelf.model.elements;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import gelf.model.elements.attributes.InputPower;
 import gelf.model.elements.attributes.OutputPower;
 import gelf.model.elements.attributes.Timing;
 import gelf.model.elements.attributes.TimingGroup;
