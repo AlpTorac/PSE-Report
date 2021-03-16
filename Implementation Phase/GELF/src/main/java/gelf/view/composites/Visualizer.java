@@ -440,7 +440,7 @@ public class Visualizer extends ElementManipulator implements Updatable {
 	}
     
 	//update diagram depending on dropdown status
-	private void updateDiagram() {
+	public void updateDiagram() {
 
 		IDHmin = null;
 		IDHmax = null;
@@ -545,6 +545,7 @@ public class Visualizer extends ElementManipulator implements Updatable {
 				Iterator<Cell> cellsIt = lib.getCells().iterator();
 				while(cellsIt.hasNext()) {
 					Cell curCell = cellsIt.next();
+					curCell.calculate();
 					float value = 
 							curCell.getDefaultLeakage();
 					values[i] = value;
@@ -557,10 +558,11 @@ public class Visualizer extends ElementManipulator implements Updatable {
 				values = new float[lib.getCells().size()];
 				stringAr = new String[lib.getCells().size()];
 				int i = 0;
-				if (isScaled) lib.scaleLeakages(scaleValue); isScaled = false;
+				if (isScaled) {lib.scaleLeakages(scaleValue); isScaled = false;}
 				Iterator<Cell> cellsIt = lib.getCells().iterator();
 				while(cellsIt.hasNext()) {
 					Cell curCell = cellsIt.next();
+					curCell.calculate();
 					float value = 
 							curCell.getLeakages().getStats().getAvg();
 					values[i] = value;

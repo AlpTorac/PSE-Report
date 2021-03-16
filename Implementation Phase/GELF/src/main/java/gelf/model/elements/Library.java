@@ -484,25 +484,30 @@ public class Library extends HigherElement {
     	for (Cell i : cells) {
     		i.scaleInputPower(scaleValue);
     	}
+    	calculate();
     }
 	public void scaleOutputPower(float scaleValue) {
     	for (Cell i : cells) {
     		i.scaleOutputPower(scaleValue);
     	}
+    	calculate();
     }
 	public void scaleTiming(float scaleValue) {
     	for (Cell i : cells) {
     		i.scaleTiming(scaleValue);
     	}
+    	calculate();
     }
 	public void scaleLeakages(float scaleValue) {
     	for (Cell i : cells) {
-    		i.getLeakages().scale(scaleValue);;
+    		i.getLeakages().scale(scaleValue);
     	}
+    	calculate();
 	}
 	public void scaleDefaultLeakage(float scaleValue) {
     	for (Cell i : cells) {
     		i.setDefaultLeakage(i.getDefaultLeakage() * scaleValue);
     	}
+    	calculate();
 	}
 }

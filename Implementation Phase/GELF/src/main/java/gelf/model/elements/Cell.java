@@ -625,16 +625,19 @@ public class Cell extends HigherElement {
     	for (InputPin i : inPins) {
     		i.scale(scaleValue);
     	}
+    	calculate();
     }
 	public void scaleOutputPower(float scaleValue) {
     	for (OutputPin i : outPins) {
     		i.scaleOutputPower(scaleValue);
     	}
+    	calculate();
     }
 	public void scaleTiming(float scaleValue) {
     	for (OutputPin i : outPins) {
     		i.scaleTiming(scaleValue);
     	}
+    	calculate();
     }
 	
 

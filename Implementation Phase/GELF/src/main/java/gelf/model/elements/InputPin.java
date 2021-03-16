@@ -94,6 +94,7 @@ public class InputPin extends Pin {
     	for (InputPower i : inputPowers) {
     		i.scale(scaleValue);
     	}
+    	calculate();
     }
 
 	@Override

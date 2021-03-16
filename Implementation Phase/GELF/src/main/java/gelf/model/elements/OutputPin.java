@@ -223,12 +223,14 @@ public class OutputPin extends Pin {
     	for (OutputPower i : outputPowers) {
     		i.scale(scaleValue);
     	}
+    	calculate();
     }
 	
 	public void scaleTiming(float scaleValue) {
     	for (Timing i : timings) {
     		i.scale(scaleValue);
     	}
+    	calculate();
     }
 
 	@Override
