@@ -1,7 +1,9 @@
 package gelf.controller.listeners;
 
+import gelf.model.elements.Cell;
 import gelf.model.elements.Element;
 import gelf.model.elements.Library;
+import gelf.model.elements.Pin;
 import gelf.model.project.Model;
 import gelf.model.project.Project;
 import gelf.view.composites.Outliner;
