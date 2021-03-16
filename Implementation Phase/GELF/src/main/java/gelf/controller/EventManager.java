@@ -10,7 +10,6 @@ import gelf.controller.listeners.CompareListener;
 import gelf.controller.listeners.CopyListener;
 import gelf.controller.listeners.DeleteCellListener;
 import gelf.controller.listeners.LoadListener;
-import gelf.controller.listeners.LoadProjectListener;
 import gelf.controller.listeners.MergeListener;
 import gelf.controller.listeners.OpenElementListener;
 import gelf.controller.listeners.PasteListener;
@@ -70,7 +69,6 @@ public class EventManager {
 		listeners.put(Event.SAVE, new SaveListener(view.outliner));
 		listeners.put(Event.SAVEAS, new SaveAsListener(view.outliner));
 		listeners.put(Event.SAVEALL, new SaveAllListener());
-		listeners.put(Event.LOADPROJECT, new LoadProjectListener());
 		listeners.put(Event.UNDO, new UndoListener());
 		listeners.put(Event.REDO, new RedoListener());
 		listeners.put(Event.COMPARE, new CompareListener(view.outliner, view.subWindowArea));
