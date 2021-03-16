@@ -32,7 +32,13 @@ public class CommandHistory {
         if (commands.size() > 5) {
         	commands.remove(0);
         }
-        resetUndoneCommands();
+        if (undoneCommands.isEmpty()) {
+            return;
+        } else if (undoneCommands.peek() == command) {
+            undoneCommands.pop();
+        } else {
+            resetUndoneCommands();
+        }
     }
     
     /**
@@ -70,7 +76,6 @@ public class CommandHistory {
     	if (!commands.isEmpty()) {
         	commands.pop();
     	}
-    	
     }
     
     /**
@@ -96,7 +101,6 @@ public class CommandHistory {
     	if (!undoneCommands.isEmpty()) {
     		Command latestUndoneCommand = undoneCommands.lastElement();
     		latestUndoneCommand.execute();
-    		undoneCommands.pop();
     	}
     }
 
@@ -105,6 +109,9 @@ public class CommandHistory {
      * @return the latest command
      */
     public Command getLatestCommand() {
+        if (commands.isEmpty()) {
+            return null;
+        }
         return commands.lastElement();
     }
     
