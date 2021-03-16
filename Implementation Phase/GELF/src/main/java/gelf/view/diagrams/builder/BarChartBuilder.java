@@ -3,7 +3,6 @@ package gelf.view.diagrams.builder;
 import java.awt.Container;
 
 import gelf.view.diagrams.IDiagram;
-import gelf.view.diagrams.SettingsProvider;
 import gelf.view.diagrams.components.DiagramAxis;
 import gelf.view.diagrams.components.DiagramComponent;
 import gelf.view.diagrams.components.DiagramValueDisplayComponent;
@@ -18,14 +17,14 @@ public class BarChartBuilder extends DiagramBuilder implements IBarChartBuilder 
 			DiagramComponent[] diagramSpecificComponent) {
 		return new BarChart(this.getDiagramData(), axes, valueDisplayComponents, diagramSpecificComponent);
 	}
-
+	
 	@Override
-	protected float getXAxisMaxValue() {
+	public float getXAxisMaxValue() {
 		return this.getDiagramData().extractValues().get(0).length + 1;
 	}
 
 	@Override
-	protected float getYAxisMaxValue() {
+	public float getYAxisMaxValue() {
 		float maxVal = this.getDiagramData().getMaximumValue();
 		
 		if (maxVal <= 0) {
@@ -36,7 +35,7 @@ public class BarChartBuilder extends DiagramBuilder implements IBarChartBuilder 
 	}
 
 	@Override
-	protected float getYAxisMinValue() {
+	public float getYAxisMinValue() {
 		float minVal = this.getDiagramData().getMinimumValue();
 		
 		if (minVal >= 0) {
@@ -47,17 +46,7 @@ public class BarChartBuilder extends DiagramBuilder implements IBarChartBuilder 
 	}
 	
 	@Override
-	protected int getXAxisSteps() {
-		return (int) this.getXAxisMaxValue();
-	}
-
-	@Override
-	protected int getYAxisSteps() {
-		return SettingsProvider.getInstance().getStepsInYAxis();
-	}
-	
-	@Override
-	protected String[] getXAxisDescriptions() {
+	public String[] getXAxisDescriptions() {
 		if (this.getDiagramData().extractValueDescriptions() != null) {
 			return this.getDiagramData().extractValueDescriptions().get(0);
 		} else {

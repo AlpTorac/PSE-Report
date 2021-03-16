@@ -1,5 +1,7 @@
 package gelf.view.diagrams.overlayer;
 
+import java.awt.Container;
+
 import gelf.view.diagrams.IDiagram;
 import gelf.view.diagrams.builder.IHistogramBuilder;
 import gelf.view.diagrams.components.DiagramAxis;
@@ -11,13 +13,15 @@ import gelf.view.diagrams.type.Histogram;
 
 public class HistogramOverlayStrategy extends DiagramOverlayStrategy implements IHistogramBuilder {
 
+	private Container container;
 	private Histogram[] histograms;
 	
-	public HistogramOverlayStrategy() {
-		
+	public HistogramOverlayStrategy(Container container) {
+		this.container = container;
 	}
 	
-	public HistogramOverlayStrategy(Histogram[] histograms) {
+	public HistogramOverlayStrategy(Container container, Histogram[] histograms) {
+		this.container = container;
 		this.histograms = histograms;
 	}
 
@@ -60,13 +64,18 @@ public class HistogramOverlayStrategy extends DiagramOverlayStrategy implements 
 		HistogramBar nDvdc = (HistogramBar) dvdcToCompareTo;
 		
 		double minXCurrent = cDvdc.getTopLeftInDiagram().getXCoordinate();
-		float valueCurrent = cDvdc.getValue();
+		double valueCurrent = cDvdc.getHeight();
 		double maxYCurrent = cDvdc.getBottomRightInDiagram().getYCoordinate();
 		
 		double minXNext = nDvdc.getTopLeftInDiagram().getXCoordinate();
-		float valueNext = nDvdc.getValue();
+		double valueNext = nDvdc.getHeight();
 		double maxYNext = nDvdc.getBottomRightInDiagram().getYCoordinate();
 		
 		return (minXCurrent <= minXNext) && (valueCurrent >= valueNext) && (maxYCurrent >= maxYNext);
+	}
+	
+	@Override
+	public Container getContainer() {
+		return this.container;
 	}
 }
