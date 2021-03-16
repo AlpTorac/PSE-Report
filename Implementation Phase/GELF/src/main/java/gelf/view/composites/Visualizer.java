@@ -1,5 +1,6 @@
 package gelf.view.composites;
 
+import gelf.controller.listeners.ScaleListener;
 import gelf.model.elements.Cell;
 import gelf.model.elements.Element;
 import gelf.model.elements.InputPin;
@@ -94,6 +95,7 @@ public class Visualizer extends ElementManipulator implements Updatable {
 	private Checkbox max = new Checkbox("Maximum");
 	private Checkbox avg = new Checkbox("Average");
 	private Checkbox med = new Checkbox("Median");
+    private Button scaleButton = new Button("Scale");
 	
     public Visualizer(gelf.model.elements.Element e, SubWindow w, Project p, int width, int height) {
 		super(e, p, width, height);
@@ -154,6 +156,10 @@ public class Visualizer extends ElementManipulator implements Updatable {
 		med.setVisible(true);
 		med.addItemListener(checkboxListener);
 		stats.add(med);
+        
+        scaleButton.setVisible(true);
+		scaleButton.addActionListener(new ScaleListener(this));
+		stats.add(scaleButton);
 
 		this.lowerPanel.add(stats, BorderLayout.PAGE_END);
 		//diagram viewport
