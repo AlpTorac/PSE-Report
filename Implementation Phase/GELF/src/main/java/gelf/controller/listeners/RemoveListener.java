@@ -62,16 +62,16 @@ public class RemoveListener implements ActionListener {
 		currentProject.inform();
 		
 		ArrayList<SubWindow> toRemove = new ArrayList<SubWindow>();
-		for (SubWindow str : subwindows.subWindows) {
-		    if (libraries.contains(str.getElement())) {
-		        toRemove.add(str);
+		for (SubWindow window : subwindows.subWindows) {
+		    if (libraries.contains(window.getElement())) {
+		        toRemove.add(window);
 		    }
-		    /*else if () {
-		    	
+		    else if (window.getElement() instanceof Cell && libraries.contains(((Cell) window.getElement()).getParentLibrary())) {
+		    	toRemove.add(window);
 		    }
-		    else if () {
-		    	
-		    }*/
+		    else if (window.getElement() instanceof Pin && libraries.contains(((Pin) window.getElement()).getParent().getParentLibrary())) {
+		    	toRemove.add(window);
+		    }
 		}
 		for (SubWindow str: toRemove) {
 			subwindows.removeSubWindow(str);
