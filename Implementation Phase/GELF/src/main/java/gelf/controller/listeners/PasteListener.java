@@ -2,6 +2,7 @@ package gelf.controller.listeners;
 
 import gelf.model.commands.PasteCommand;
 import gelf.model.elements.Library;
+import gelf.model.project.Model;
 import gelf.view.composites.Outliner;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,6 +28,10 @@ public class PasteListener implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if (Model.getInstance().getCurrentProject().getLibraries().isEmpty()) {
+			JOptionPane.showMessageDialog(new JFrame(), "No library has been loaded in the application.", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		if (outliner.getSelectedElements().isEmpty() || outliner.getSelectedElements().size() != 1) {
 			JOptionPane.showMessageDialog(new JFrame(), "Select one library for pasting.", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
