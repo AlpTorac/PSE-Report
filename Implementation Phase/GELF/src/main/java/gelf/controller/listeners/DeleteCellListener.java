@@ -1,5 +1,6 @@
 package gelf.controller.listeners;
 
+import gelf.model.elements.Pin; 
 import gelf.view.composites.Outliner;
 import gelf.view.composites.SubWindow;
 import gelf.view.composites.SubWindowArea;
