@@ -1,5 +1,4 @@
 package gelf.view.representation;
-import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.Test;
 
 import java.awt.event.ActionEvent;
