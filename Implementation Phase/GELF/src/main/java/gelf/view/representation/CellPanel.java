@@ -55,7 +55,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
     public ArrayList<Label> buttonList;
 	public HashMap<Checkbox, InputPin> checkboxMap;
 	
-	private ArrayList<Checkbox> checkboxes;
+	public ArrayList<Checkbox> checkboxes;
 	public Label libButton;
 	public Label cellButton; 
 	
