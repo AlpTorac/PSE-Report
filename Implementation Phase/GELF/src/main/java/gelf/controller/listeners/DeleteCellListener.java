@@ -55,16 +55,14 @@ public class DeleteCellListener implements ActionListener {
 		DeleteCommand delete = new DeleteCommand(cells);
 		delete.execute();
 		ArrayList<SubWindow> toRemove = new ArrayList<SubWindow>();
-		for (SubWindow str : subwindows.subWindows) {
-		    if (cells.contains(str.getElement())) {
-		        toRemove.add(str);
+		for (SubWindow window : subwindows.subWindows) {
+		    if (cells.contains(window.getElement())) {
+		        toRemove.add(window);
 		    }
-		 /*   else if () {
-		    	
+		    else if (window.getElement() instanceof Pin && cells.contains(((Pin) window.getElement()).getParent())) {
+		    	toRemove.add(window);
 		    }
-		    else if () {
-		    	
-		    }*/
+		    
 		}
 		for (SubWindow str: toRemove) {
 			subwindows.removeSubWindow(str);
