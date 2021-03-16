@@ -89,6 +89,12 @@ public class InputPin extends Pin {
     public void setInputPowers(ArrayList<InputPower> inputPowers) {
     	this.inputPowers = inputPowers;
     }
+    
+    public void scale(float scaleValue) {
+    	for (InputPower i : inputPowers) {
+    		i.scale(scaleValue);
+    	}
+    }
 
 	@Override
 	public void setAvailablePower() {

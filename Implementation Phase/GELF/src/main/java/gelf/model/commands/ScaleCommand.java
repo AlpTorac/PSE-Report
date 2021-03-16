@@ -6,7 +6,7 @@ import gelf.view.composites.Visualizer;
 
 /**
  * Scales an attribute to a given scale
- * @author Xhulio Pernoca
+ * @author Xhulio Pernoca, Kerem Kara
  */
 public class ScaleCommand implements Command {
     private float scaleValue;

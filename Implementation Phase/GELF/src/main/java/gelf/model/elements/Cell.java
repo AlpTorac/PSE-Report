@@ -621,5 +621,21 @@ public class Cell extends HigherElement {
 			}
 		}
 	}
+	public void scaleInputPower(float scaleValue) {
+    	for (InputPin i : inPins) {
+    		i.scale(scaleValue);
+    	}
+    }
+	public void scaleOutputPower(float scaleValue) {
+    	for (OutputPin i : outPins) {
+    		i.scaleOutputPower(scaleValue);
+    	}
+    }
+	public void scaleTiming(float scaleValue) {
+    	for (OutputPin i : outPins) {
+    		i.scaleTiming(scaleValue);
+    	}
+    }
+	
 
 }

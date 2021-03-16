@@ -680,6 +680,7 @@ public class Visualizer extends ElementManipulator implements Updatable {
 			else if (attribute == Attribute.LEAKAGE) {
 				values = new float[(int) Math.pow(2,(cell.getInPins().size()))];
 				stringAr = new String[(int) Math.pow(2,(cell.getInPins().size()))];
+				if (isScaled) cell.getLeakages().scale(scaleValue); isScaled = false;
 				values = cell.getLeakages().getValues();
 				cell.setOutputFunctions();
 				stringAr = cell.getLeakages().getOutputFunctions();
@@ -749,6 +750,7 @@ public class Visualizer extends ElementManipulator implements Updatable {
 					OutputPower curOutPow = outPowIt.next();
 					if (curOutPow.getPowGroup() == powerGroup && 
 							curOutPow.getRelatedPin().getName().equals(this.selectedPin.getName())) {
+						if (isScaled) curOutPow.scale(scaleValue); isScaled = false;
 						values = new float[curOutPow.getIndex1().length * curOutPow.getIndex2().length];
 					    index1 = curOutPow.getIndex1();
 						index2 = curOutPow.getIndex2();
@@ -787,6 +789,7 @@ public class Visualizer extends ElementManipulator implements Updatable {
 					if (curTim.getTimSense() == timingSense && curTim.getTimType() == timingType
 							&& curTim.getTimGroup() == timingGroup && 
 							curTim.getRelatedPin().getName().equals(this.selectedPin.getName())) {
+						if (isScaled) curTim.scale(scaleValue); isScaled = false;
 						values = new float[curTim.getIndex1().length * curTim.getIndex2().length];
 					    index1 = curTim.getIndex1();
 						index2 = curTim.getIndex2();

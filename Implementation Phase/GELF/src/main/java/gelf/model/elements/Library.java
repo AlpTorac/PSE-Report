@@ -480,5 +480,25 @@ public class Library extends HigherElement {
 		FileManager.showProperties(libraryFile);
 	}
 	
+	public void scaleInputPower(float scaleValue) {
+    	for (Cell i : cells) {
+    		i.scaleInputPower(scaleValue);
+    	}
+    }
+	public void scaleOutputPower(float scaleValue) {
+    	for (Cell i : cells) {
+    		i.scaleOutputPower(scaleValue);
+    	}
+    }
+	public void scaleTiming(float scaleValue) {
+    	for (Cell i : cells) {
+    		i.scaleTiming(scaleValue);
+    	}
+    }
+	public void scaleLeakages(float scaleValue) {
+    	for (Cell i : cells) {
+    		i.getLeakages().scale(scaleValue);;
+    	}
+	}
 	
 }

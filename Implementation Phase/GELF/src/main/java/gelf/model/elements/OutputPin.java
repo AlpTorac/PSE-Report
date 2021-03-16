@@ -3,6 +3,7 @@ package gelf.model.elements;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import gelf.model.elements.attributes.InputPower;
 import gelf.model.elements.attributes.OutputPower;
 import gelf.model.elements.attributes.Timing;
 import gelf.model.elements.attributes.TimingGroup;
@@ -217,6 +218,18 @@ public class OutputPin extends Pin {
 	public void setMaxCapacitance(float maxCapacitance) {
 		this.maxCapacitance = maxCapacitance;
 	}
+	
+	public void scaleOutputPower(float scaleValue) {
+    	for (OutputPower i : outputPowers) {
+    		i.scale(scaleValue);
+    	}
+    }
+	
+	public void scaleTiming(float scaleValue) {
+    	for (Timing i : timings) {
+    		i.scale(scaleValue);
+    	}
+    }
 
 	@Override
 	public void setAvailablePower() {
