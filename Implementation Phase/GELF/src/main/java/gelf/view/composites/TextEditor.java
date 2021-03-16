@@ -33,7 +33,7 @@ import javax.swing.text.Highlighter;
  */
 public class TextEditor extends ElementManipulator implements KeyListener, Updatable{
 	
-	private JTextField searchBox;
+	public JTextField searchBox;
 	private JTextArea textArea;	
 	private JScrollPane scrollPane;
 	private JPanel lowerPanel;
