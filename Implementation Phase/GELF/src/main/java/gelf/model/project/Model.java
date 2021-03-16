@@ -5,6 +5,7 @@ import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 import gelf.model.commands.CommandHistory;
+import gelf.model.parsers.LibertyParser;
 
 /**
  * Keeps track of the component classes the whole model as well as instantiating them
@@ -27,6 +28,7 @@ public class Model {
     private Model() {
         currentProject = new Project();
         currentCommandHistory = new CommandHistory();
+        LibertyParser.setUp();
     }
     
     /**
