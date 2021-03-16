@@ -26,7 +26,7 @@ public class PinCompareSubPanel extends CellPanel {
 	private ArrayList<InputPin> inputPins;
 	private ArrayList<OutputPin> outputPins;
 	private HashMap<Pin, Label> buttonMap;
-	private Label cellButton;
+	public Label cellButton;
 	private Cell cell;
 	private HashMap<Checkbox, InputPin> checkboxMap;
 	private ArrayList<InputPin> selectedPins;
