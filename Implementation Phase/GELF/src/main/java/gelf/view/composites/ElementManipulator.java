@@ -3,6 +3,7 @@ package gelf.view.composites;
 import gelf.model.elements.*;
 import gelf.model.project.Project;
 
+import java.awt.event.*;
 import java.awt.*;
 import java.util.ArrayList;
 

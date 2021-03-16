@@ -42,7 +42,7 @@ import gelf.view.representation.LibraryPanel;
 /**
  * Visualizer
  */
-public class Visualizer extends ElementManipulator implements Updatable {
+public class Visualizer extends ElementManipulator implements Updatable, ComponentListener {
 	Visualizer _this = this;
 	SubWindow subWindow;
 	DataPanel dataPanel;
@@ -834,10 +834,17 @@ public class Visualizer extends ElementManipulator implements Updatable {
 		}
 	}
 
+	
+	@Override
+	public void update() {
+		updateDiagram();
+        this.setElement(this.element);
+		this.revalidate();
+		this.repaint();
+	}
+
 	@Override
 	public void componentResized(ComponentEvent e) {
-		super.componentResized(e);
-
 		updateDiagram();
 		// DiagramWizard wiz = new DiagramWizard();
 		// this.diagram.removeFromContainer();
@@ -845,12 +852,16 @@ public class Visualizer extends ElementManipulator implements Updatable {
 		// this.diagram.attachToContainer(this.diagramPanel);
 		// this.diagram.refresh();
 	}
+	
+	@Override
+	public void componentMoved(ComponentEvent e) {
+	}
 
 	@Override
-	public void update() {
-		updateDiagram();
-        this.setElement(this.element);
-		this.revalidate();
-		this.repaint();
+	public void componentShown(ComponentEvent e) {
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {
 	}
 }
