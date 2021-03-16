@@ -2,31 +2,32 @@ package gelf.model.commands;
 
 import gelf.model.elements.attributes.Attribute;
 import gelf.model.project.Model;
+import gelf.view.composites.Visualizer;
 
 /**
  * Scales an attribute to a given scale
  * @author Xhulio Pernoca
  */
 public class ScaleCommand implements Command {
-    private Attribute attribute;
-    private float scale;
+    private float scaleValue;
     private Model currentModel = Model.getInstance(); 
-
+    private Visualizer vis;
     /**
      * Instantiates a command
      * @param attribute the attribute to be scaled
      * @param scale the scaling value
      */
-    public ScaleCommand(Attribute attribute, float scale) {
-        this.attribute = attribute;
-        this.scale = scale;
+    public ScaleCommand(float scaleValue, Visualizer vis) {
+        this.scaleValue = scaleValue;
+        this.vis = vis;
     }
 
     /**
      * Executes the scaling
      */
     public void execute() {
-        attribute.scale(scale);
+    	vis.setScaleValue(scaleValue);
+    	vis.update();
         currentModel.getCurrentCommandHistory().addCommand(this);
 		currentModel.getCurrentProject().inform();
     }
@@ -35,7 +36,8 @@ public class ScaleCommand implements Command {
      * Undoes the scaling 
      */
     public void undo() {
-    	attribute.scale(1 / scale);
+    	scaleValue = 1 / scaleValue;
+    	vis.update();
 		currentModel.getCurrentProject().inform();
     }
 }
