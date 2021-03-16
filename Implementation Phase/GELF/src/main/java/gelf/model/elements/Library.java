@@ -500,5 +500,9 @@ public class Library extends HigherElement {
     		i.getLeakages().scale(scaleValue);;
     	}
 	}
-	
+	public void scaleDefaultLeakage(float scaleValue) {
+    	for (Cell i : cells) {
+    		i.setDefaultLeakage(i.getDefaultLeakage() * scaleValue);
+    	}
+	}
 }

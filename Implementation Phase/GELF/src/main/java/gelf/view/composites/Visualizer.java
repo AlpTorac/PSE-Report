@@ -458,7 +458,7 @@ public class Visualizer extends ElementManipulator implements Updatable {
 				values = new float[lib.getCells().size()];
 				stringAr = new String[lib.getCells().size()];
 				int i = 0;
-				
+				if (isScaled) lib.scaleInputPower(scaleValue); isScaled = false;
 				Iterator<Cell> cellsIt = lib.getCells().iterator();
 				while(cellsIt.hasNext()) {
 					Cell curCell = cellsIt.next();
@@ -481,7 +481,7 @@ public class Visualizer extends ElementManipulator implements Updatable {
 				values = new float[lib.getCells().size()];
 				stringAr = new String[lib.getCells().size()];
 				int i = 0;
-				
+				if (isScaled) lib.scaleOutputPower(scaleValue); isScaled = false;
 				Iterator<Cell> cellsIt = lib.getCells().iterator();
 				while(cellsIt.hasNext()) {
 					Cell curCell = cellsIt.next();
@@ -504,7 +504,7 @@ public class Visualizer extends ElementManipulator implements Updatable {
 				values = new float[lib.getCells().size()];
 				stringAr = new String[lib.getCells().size()];
 				int i = 0;
-				
+				if (isScaled) lib.scaleTiming(scaleValue); isScaled = false;
 				Iterator<Cell> cellsIt = lib.getCells().iterator();
 				while(cellsIt.hasNext()) {
 					Cell curCell = cellsIt.next();
@@ -541,7 +541,7 @@ public class Visualizer extends ElementManipulator implements Updatable {
 				values = new float[lib.getCells().size()];
 				stringAr = new String[lib.getCells().size()];
 				int i = 0;
-				
+				if (isScaled) lib.scaleDefaultLeakage(scaleValue); isScaled = false;
 				Iterator<Cell> cellsIt = lib.getCells().iterator();
 				while(cellsIt.hasNext()) {
 					Cell curCell = cellsIt.next();
@@ -557,7 +557,7 @@ public class Visualizer extends ElementManipulator implements Updatable {
 				values = new float[lib.getCells().size()];
 				stringAr = new String[lib.getCells().size()];
 				int i = 0;
-				
+				if (isScaled) lib.scaleLeakages(scaleValue); isScaled = false;
 				Iterator<Cell> cellsIt = lib.getCells().iterator();
 				while(cellsIt.hasNext()) {
 					Cell curCell = cellsIt.next();
@@ -588,7 +588,7 @@ public class Visualizer extends ElementManipulator implements Updatable {
 				values = new float[cell.getInPins().size()];
 				stringAr = new String[cell.getInPins().size()];
 				int i = 0;
-				
+				if (isScaled) cell.scaleInputPower(scaleValue); isScaled = false;
 				Iterator<InputPin> inPinsIt = cell.getInPins().iterator();
 				while(inPinsIt.hasNext()) {
 					InputPin curInPin = inPinsIt.next();
@@ -615,7 +615,7 @@ public class Visualizer extends ElementManipulator implements Updatable {
 				values = new float[cell.getOutPins().size()];
 				stringAr = new String[cell.getOutPins().size()];
 				int i = 0;
-				
+				if (isScaled) cell.scaleOutputPower(scaleValue); isScaled = false;
 				Iterator<OutputPin> outPinsIt = cell.getOutPins().iterator();
 				while(outPinsIt.hasNext()) {
 					OutputPin curOutPin = outPinsIt.next();
@@ -642,7 +642,7 @@ public class Visualizer extends ElementManipulator implements Updatable {
 				values = new float[cell.getOutPins().size()];
 				stringAr = new String[cell.getOutPins().size()];
 				int i = 0;
-				
+				if (isScaled) cell.scaleTiming(scaleValue); isScaled = false;
 				Iterator<OutputPin> outPinsIt = cell.getOutPins().iterator();
 				while(outPinsIt.hasNext()) {
 					OutputPin curOutPin = outPinsIt.next();
