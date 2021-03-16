@@ -860,6 +860,25 @@ public class Visualizer extends ElementManipulator implements Updatable {
 
 	@Override
 	public void update() {
+		if (subWindow.getElement() instanceof Cell) {
+			if (!((Cell)subWindow.getElement()).getParentLibrary().getCells().contains(((Cell)subWindow.getElement()))){
+				subWindow.parent.removeSubWindow(subWindow);
+				return;
+			}
+		}
+		else if (subWindow.getElement() instanceof InputPin) {
+			if (!((InputPin)subWindow.getElement()).getParent().getInPins().contains(((InputPin)subWindow.getElement()))){
+				subWindow.parent.removeSubWindow(subWindow);
+				return;
+			}
+		}
+		else if (subWindow.getElement() instanceof OutputPin) {
+			if (!((OutputPin)subWindow.getElement()).getParent().getOutPins().contains(((OutputPin)subWindow.getElement()))){
+				subWindow.parent.removeSubWindow(subWindow);
+				return;
+			}
+		}
+		
 		updateDiagram();
         this.setElement(this.element);
 		this.revalidate();

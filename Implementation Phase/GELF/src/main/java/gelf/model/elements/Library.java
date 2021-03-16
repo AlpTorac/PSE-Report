@@ -15,7 +15,6 @@ import gelf.model.elements.attributes.TimingKey;
 import gelf.model.elements.attributes.TimingSense;
 import gelf.model.elements.attributes.TimingType;
 import gelf.model.project.FileManager;
-import jdk.javadoc.internal.doclets.toolkit.util.UncheckedDocletException;
 /**
  * Keeps and calculates data that belongs to a Cell element.
  * @author Kerem Kara
