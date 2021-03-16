@@ -39,8 +39,8 @@ public class CompareListener implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (outliner.getSelectedElements().isEmpty() || outliner.getSelectedElements().size() <= 1) {
-			JOptionPane.showMessageDialog(new JFrame(), "Select at least 2 elements to compare.", "Error", JOptionPane.ERROR_MESSAGE);
+		if (outliner.getSelectedElements().isEmpty() || outliner.getSelectedElements().size() <= 1 || outliner.getSelectedElements().size() > 2) {
+			JOptionPane.showMessageDialog(new JFrame(), "Select 2 elements to compare.", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		ArrayList<Element> libraries = new ArrayList<Element>();
