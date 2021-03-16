@@ -144,6 +144,10 @@ public class SubWindow extends Panel {
         this.revalidate();
         this.repaint();
     }
+    
+     public TextEditor getEditor() {
+		return eTextEditor;
+    }
 
     public void setElement(Element e) {
     	this.e = e;
