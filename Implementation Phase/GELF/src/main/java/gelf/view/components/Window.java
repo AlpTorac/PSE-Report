@@ -7,7 +7,7 @@ import javax.swing.JFrame;
  */
 public class Window extends JFrame {
     // constructor
-    public Window(String name, int width, int height){
+    public Window(String name, int width, int height) {
         super(name);
         this.setSize(width, height);
         this.setLayout(null);

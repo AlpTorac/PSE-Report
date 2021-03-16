@@ -41,14 +41,14 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
     public JScrollPane treePane;
     public JTextField searchBox;
     public Menu menuView;
-        public MenuItem itemOpen;
-        public MenuItem itemCopy;
-        public MenuItem itemPaste;
-        public MenuItem itemDelete;
-        public MenuItem itemRemove;
-        public MenuItem itemCompare;
-        public MenuItem itemProperties;
-        public EventManager em;
+    public MenuItem itemOpen;
+    public MenuItem itemCopy;
+    public MenuItem itemPaste;
+    public MenuItem itemDelete;
+    public MenuItem itemRemove;
+    public MenuItem itemCompare;
+    public MenuItem itemProperties;
+    public EventManager em;
     // colors
     private Color cBackground = ColorTheme.section;
     private Color cBorder = ColorTheme.frame;
@@ -97,11 +97,11 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
         DefaultTreeModel treeModel = new DefaultTreeModel(root);
         this.tree = new JTree(treeModel);
-        //this.tree.setEditable(true);
+        // this.tree.setEditable(true);
         this.tree.setBackground(cTree);
         this.tree.setShowsRootHandles(true);
         this.tree.expandRow(0);
-        this.tree.addTreeSelectionListener(this);   //respond to selection
+        this.tree.addTreeSelectionListener(this); // respond to selection
         // this.tree.setRootVisible(false);
 
         // scroll pane
@@ -153,26 +153,28 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
         this.revalidate();
         this.repaint();
     }
-    //get list of all selected elements
+
+    // get list of all selected elements
     public ArrayList<Element> getSelectedElements() {
         ArrayList<Element> result = new ArrayList<Element>();
         TreePath[] paths = this.tree.getSelectionPaths();
-        for(TreePath path : paths) {
-            if(Element.class.isAssignableFrom(((DefaultMutableTreeNode)path.getLastPathComponent()).getUserObject().getClass())) {
-                result.add((Element)((DefaultMutableTreeNode)path.getLastPathComponent()).getUserObject());
+        for (TreePath path : paths) {
+            if (Element.class.isAssignableFrom(
+                    ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject().getClass())) {
+                result.add((Element) ((DefaultMutableTreeNode) path.getLastPathComponent()).getUserObject());
             }
         }
         return result;
     }
 
     public void setTreeMouseListener(EventManager em) {
-		tree.addMouseListener(new TreeMouseAdapter(em));
+        tree.addMouseListener(new TreeMouseAdapter(em));
     }
 
-    //TreeSelectionListener method
+    // TreeSelectionListener method
     @Override
     public void valueChanged(TreeSelectionEvent e) {
-        //TODO
+        // TODO
     }
 
 }

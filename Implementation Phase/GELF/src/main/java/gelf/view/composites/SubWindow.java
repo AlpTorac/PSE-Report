@@ -31,12 +31,14 @@ public class SubWindow extends Panel {
     private Color cBackground = ColorTheme.subsection;
     private Color cBorder = ColorTheme.frame;
     SubWindow _this = this;
-    //element manipulators
+
+    // element manipulators
     public enum ManipulatorType {
-        VISUALIZER("Visualizer"),
-        TEXT_EDITOR("Text Editor");
+        VISUALIZER("Visualizer"), TEXT_EDITOR("Text Editor");
+
         private String str;
-        private ManipulatorType(String s){
+
+        private ManipulatorType(String s) {
             this.str = s;
         }
 
@@ -45,6 +47,7 @@ public class SubWindow extends Panel {
             return this.str;
         }
     }
+
     private Element e;
     private ElementManipulator activeManipulator;
     private Visualizer eVisualizer;
@@ -55,8 +58,8 @@ public class SubWindow extends Panel {
         super(width, height);
         this.e = e;
         this.outliner = o;
-        //element manipulators
-        this.eVisualizer = new Visualizer(e,this, p, 300, 100);
+        // element manipulators
+        this.eVisualizer = new Visualizer(e, this, p, 300, 100);
         this.eVisualizer.setVisible(true);
         this.eTextEditor = new TextEditor(e, p, o, this, parent, 200, 100);
         this.eTextEditor.setVisible(true);
@@ -81,20 +84,20 @@ public class SubWindow extends Panel {
                 parent.removeSubWindow(_this);
             }
         });
-        //dropdown element manipulator type
-        ManipulatorType[] options = {ManipulatorType.VISUALIZER, ManipulatorType.TEXT_EDITOR};
-        this.dropdown  = new DropdownSelector(options);
+        // dropdown element manipulator type
+        ManipulatorType[] options = { ManipulatorType.VISUALIZER, ManipulatorType.TEXT_EDITOR };
+        this.dropdown = new DropdownSelector(options);
         this.dropdown.setPreferredSize(new Dimension(10, 10));
         this.dropdown.setVisible(true);
         this.dropdown.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                DropdownSelector src = (DropdownSelector)e.getSource();
-                ManipulatorType manip = (ManipulatorType)src.getSelectedItem();
+                DropdownSelector src = (DropdownSelector) e.getSource();
+                ManipulatorType manip = (ManipulatorType) src.getSelectedItem();
                 _this.setManipulatorType(manip);
             }
         });
-        //path/name label
+        // path/name label
         this.path = new Label(e.getInnerPath());
         path.setForeground(ColorTheme.active);
         this.path.setVisible(true);
@@ -107,12 +110,12 @@ public class SubWindow extends Panel {
         this.add(this.bar, BorderLayout.PAGE_START);
         this.add(this.eVisualizer, BorderLayout.CENTER);
     }
-    
+
     public SubWindow(ArrayList<Element> elements, Project p, Outliner o, SubWindowArea parent, int width, int height) {
-    	super(width, height);
-    	this.elements = elements;
-    	
-    	this.outliner = o;
+        super(width, height);
+        this.elements = elements;
+
+        this.outliner = o;
         // style
         this.setLayout(new BorderLayout());
         this.setBackground(cBackground);
@@ -136,7 +139,7 @@ public class SubWindow extends Panel {
 
         this.bar.add(this.close);
         this.bar.add(Box.createHorizontalGlue());
-    	
+
         this.add(this.bar, BorderLayout.PAGE_START);
         this.add(new Comparer(elements, p, this, 300, 100), BorderLayout.CENTER);
         this.revalidate();
@@ -144,33 +147,33 @@ public class SubWindow extends Panel {
     }
 
     public void setElement(Element e) {
-    	this.e = e;
-    	this.path.setText(e.getInnerPath());
+        this.e = e;
+        this.path.setText(e.getInnerPath());
         this.eVisualizer.setElement(e);
         this.eTextEditor.setElement(e);
     }
-    
+
     public Element getElement() {
-    	return e;
+        return e;
     }
-    
-     public void setPath(String text) {
-    	this.path.setText(text);
+
+    public void setPath(String text) {
+        this.path.setText(text);
     }
 
     public void setManipulatorType(ManipulatorType m) {
         this.remove(this.activeManipulator);
-        switch(m) {
-            case VISUALIZER:
-                this.add(this.eVisualizer, BorderLayout.CENTER);
-                this.activeManipulator = this.eVisualizer;
+        switch (m) {
+        case VISUALIZER:
+            this.add(this.eVisualizer, BorderLayout.CENTER);
+            this.activeManipulator = this.eVisualizer;
             break;
-            case TEXT_EDITOR:
-                this.add(this.eTextEditor, BorderLayout.CENTER);
-                this.activeManipulator = this.eTextEditor;
+        case TEXT_EDITOR:
+            this.add(this.eTextEditor, BorderLayout.CENTER);
+            this.activeManipulator = this.eTextEditor;
             break;
-            default:
-                System.out.println("ERROR: Unimplemented Element Manipulator");
+        default:
+            System.out.println("ERROR: Unimplemented Element Manipulator");
             break;
         }
         this.revalidate();

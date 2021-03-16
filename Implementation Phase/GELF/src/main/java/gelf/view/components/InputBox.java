@@ -7,5 +7,4 @@ import javax.swing.JTextField;
  */
 public class InputBox extends JTextField {
 
-    
 }

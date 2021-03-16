@@ -1,13 +1,15 @@
 package gelf.view.components;
 
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import javax.swing.JButton;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import gelf.view.composites.ColorTheme;
-
-import java.awt.*;
-import java.awt.event.*;
 
 public class Button extends JButton implements MouseListener {
     Color cBackground = ColorTheme.interactable;
@@ -15,16 +17,17 @@ public class Button extends JButton implements MouseListener {
     Color cHover = ColorTheme.hover;
     Color cClick = ColorTheme.active;
 
-    public Button(){
+    public Button() {
         super();
         this.setup();
     }
-    public Button(String s){
+
+    public Button(String s) {
         super(s);
         this.setup();
     }
 
-    private void setup(){
+    private void setup() {
         this.setFocusPainted(false);
         this.setContentAreaFilled(false);
         Border margin = new EmptyBorder(5, 7, 5, 7);
@@ -48,28 +51,28 @@ public class Button extends JButton implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if(e.getSource() == this) {
+        if (e.getSource() == this) {
             this.setBackground(this.cClick);
         }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if(e.getSource() == this) {
+        if (e.getSource() == this) {
             this.setBackground(this.cHover);
         }
     }
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        if(e.getSource() == this) {
+        if (e.getSource() == this) {
             this.setBackground(this.cHover);
         }
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
-        if(e.getSource() == this) {
+        if (e.getSource() == this) {
             this.setBackground(this.cBackground);
         }
     }

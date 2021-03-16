@@ -1,13 +1,14 @@
 package gelf.view.components;
 
+import java.awt.Color;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import javax.swing.JMenu;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
 import gelf.view.composites.ColorTheme;
-
-import java.awt.*;
-import java.awt.event.*;
 
 public class Menu extends JMenu implements MouseListener, MenuListener {
     Color cBackground = new Color(0.2f, 0.2f, 0.2f);
@@ -71,7 +72,7 @@ public class Menu extends JMenu implements MouseListener, MenuListener {
 
     @Override
     public void menuSelected(MenuEvent e) {
-        if(e.getSource() == this) {
+        if (e.getSource() == this) {
             this.setBackground(this.cClick);
         }
     }
