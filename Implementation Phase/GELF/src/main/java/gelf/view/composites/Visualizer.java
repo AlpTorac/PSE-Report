@@ -98,6 +98,8 @@ public class Visualizer extends ElementManipulator implements Updatable {
 	private float scaleValue;
 	private boolean isScaled;
     private Button scaleButton = new Button("Scale");
+    private Label yAxisLabel = new Label();
+    private Label xAxisLabel = new Label();
 	
     public Visualizer(gelf.model.elements.Element e, SubWindow w, Project p, int width, int height) {
 		super(e, p, width, height);
@@ -161,7 +163,17 @@ public class Visualizer extends ElementManipulator implements Updatable {
         
         scaleButton.setVisible(true);
 		scaleButton.addActionListener(new ScaleListener(this));
+		scaleButton.setBackground(new Color(0.2f, 0.2f, 0.2f));
+		scaleButton.setForeground(Color.WHITE);
 		stats.add(scaleButton);
+		
+		yAxisLabel.setVisible(true);
+		yAxisLabel.setForeground(Color.WHITE);
+		stats.add(yAxisLabel);
+		
+		xAxisLabel.setVisible(true);
+		xAxisLabel.setForeground(Color.WHITE);
+		stats.add(xAxisLabel);
 
 		this.lowerPanel.add(stats, BorderLayout.PAGE_END);
 		//diagram viewport
@@ -812,6 +824,9 @@ public class Visualizer extends ElementManipulator implements Updatable {
 			
 			
 		}
+		
+		yAxisLabel.setText("y-Axis: ");
+		xAxisLabel.setText("x_Axis: ");
 	}
 
 	private void updateStatDisplay() {
