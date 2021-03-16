@@ -865,6 +865,10 @@ public class Visualizer extends ElementManipulator implements Updatable {
 		this.revalidate();
 		this.repaint();
 	}
+    
+    public void receiveHoveredElementInfo(int[] indexPositions) {
+		this.subWindow.parent.highlightTextEditors(null, 0.0f);
+	}
 
 	public void setScaleValue(float scaleValue) {
 		this.scaleValue = scaleValue;
