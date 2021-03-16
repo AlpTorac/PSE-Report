@@ -50,11 +50,13 @@ public class SubWindow extends Panel {
     private Visualizer eVisualizer;
     private TextEditor eTextEditor;
     private ArrayList<Element> elements;
+    SubWindowArea parent;
 
     public SubWindow(Element e, Project p, Outliner o, SubWindowArea parent, int width, int height) {
         super(width, height);
         this.e = e;
         this.outliner = o;
+        this.parent = parent;
         //element manipulators
         this.eVisualizer = new Visualizer(e,this, p, 300, 100);
         this.eVisualizer.setVisible(true);
