@@ -37,6 +37,7 @@ public class ScaleCommand implements Command {
      */
     public void undo() {
     	scaleValue = 1 / scaleValue;
+    	vis.setScaleValue(scaleValue);
     	vis.update();
 		currentModel.getCurrentProject().inform();
     }

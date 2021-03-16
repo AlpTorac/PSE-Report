@@ -96,6 +96,7 @@ public class Visualizer extends ElementManipulator implements Updatable {
 	private Checkbox avg = new Checkbox("Average");
 	private Checkbox med = new Checkbox("Median");
 	private float scaleValue;
+	private boolean isScaled;
     private Button scaleButton = new Button("Scale");
 	
     public Visualizer(gelf.model.elements.Element e, SubWindow w, Project p, int width, int height) {
@@ -705,7 +706,7 @@ public class Visualizer extends ElementManipulator implements Updatable {
 			while (inPowIt.hasNext()) {
 				InputPower curInPow = inPowIt.next();
 				if (curInPow.getPowGroup() == powerGroup) {
-					if (scaleValue != 0) curInPow.scale(scaleValue); scaleValue = 0;
+					if (isScaled) curInPow.scale(scaleValue); isScaled = false;
 					values = curInPow.getValues();
 					index1 = curInPow.getIndex1();
 				}
@@ -864,5 +865,6 @@ public class Visualizer extends ElementManipulator implements Updatable {
 
 	public void setScaleValue(float scaleValue) {
 		this.scaleValue = scaleValue;
+		this.isScaled = true;
 	}
 }
