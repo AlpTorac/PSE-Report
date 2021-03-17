@@ -38,8 +38,11 @@ public class ScaleListener implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		String scaleValue = JOptionPane.showInputDialog(new JFrame(),"Enter the scale value.", "Scale", JOptionPane.OK_CANCEL_OPTION);
-		
+		String scaleValue = JOptionPane.showInputDialog(new JFrame(),"Enter the scale value.", "Scale", JOptionPane.OK_OPTION);
+		if (scaleValue == null) {
+			JOptionPane.showMessageDialog(new JFrame(), "Cancelled", "Scale", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		try {
 			float value = Float.parseFloat(scaleValue);
 			ScaleCommand scale = new ScaleCommand(value, panel);

@@ -81,7 +81,7 @@ public class DiagramWizard implements IDiagramWizard {
 	@Override
 	public BarChart overlayAndAttachBarCharts(Container container, BarChart[] barCharts) {
 		DiagramOverlayer overlayer = new DiagramOverlayer(barCharts);
-		overlayer.setOverlayStrategy(new BarChartOverlayStrategy(barCharts));
+		overlayer.setOverlayStrategy(new BarChartOverlayStrategy(container, barCharts));
 		BarChart overlaidDiagram = (BarChart) overlayer.overlay();
 		this.attachAndShowAxes(container, overlaidDiagram);
 		return overlaidDiagram;
@@ -90,7 +90,7 @@ public class DiagramWizard implements IDiagramWizard {
 	@Override
 	public Histogram overlayAndAttachHistograms(Container container, Histogram[] histograms) {
 		DiagramOverlayer overlayer = new DiagramOverlayer(histograms);
-		overlayer.setOverlayStrategy(new HistogramOverlayStrategy());
+		overlayer.setOverlayStrategy(new HistogramOverlayStrategy(container, histograms));
 		Histogram overlaidDiagram = (Histogram) overlayer.overlay();
 		this.attachAndShowAxes(container, overlaidDiagram);
 		return overlaidDiagram;

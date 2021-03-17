@@ -37,13 +37,14 @@ import gelf.view.diagrams.DiagramWizard;
 import gelf.view.diagrams.IDiagram;
 import gelf.view.diagrams.IDiagramViewHelper;
 import gelf.view.diagrams.IDiagramWizard;
+import gelf.view.diagrams.IHighlightableElementContainer;
 import gelf.view.representation.CellPanel;
 import gelf.view.representation.DataPanel;
 import gelf.view.representation.LibraryPanel;
 /**
  * Visualizer
  */
-public class Visualizer extends ElementManipulator implements Updatable {
+public class Visualizer extends ElementManipulator implements Updatable, IHighlightableElementContainer {
 	Visualizer _this = this;
 	SubWindow subWindow;
 	DataPanel dataPanel;
@@ -98,6 +99,8 @@ public class Visualizer extends ElementManipulator implements Updatable {
 	private float scaleValue;
 	private boolean isScaled;
     private Button scaleButton = new Button("Scale");
+    private Label yAxisLabel = new Label();
+    private Label xAxisLabel = new Label();
 	
     public Visualizer(gelf.model.elements.Element e, SubWindow w, Project p, int width, int height) {
 		super(e, p, width, height);
@@ -161,7 +164,17 @@ public class Visualizer extends ElementManipulator implements Updatable {
         
         scaleButton.setVisible(true);
 		scaleButton.addActionListener(new ScaleListener(this));
+		scaleButton.setBackground(new Color(0.2f, 0.2f, 0.2f));
+		scaleButton.setForeground(Color.WHITE);
 		stats.add(scaleButton);
+		
+		yAxisLabel.setVisible(true);
+		yAxisLabel.setForeground(Color.WHITE);
+		stats.add(yAxisLabel);
+		
+		xAxisLabel.setVisible(true);
+		xAxisLabel.setForeground(Color.WHITE);
+		stats.add(xAxisLabel);
 
 		this.lowerPanel.add(stats, BorderLayout.PAGE_END);
 		//diagram viewport
@@ -814,6 +827,9 @@ public class Visualizer extends ElementManipulator implements Updatable {
 			
 			
 		}
+		
+		yAxisLabel.setText("y-Axis: ");
+		xAxisLabel.setText("x_Axis: ");
 	}
 
 	private void updateStatDisplay() {
@@ -862,14 +878,50 @@ public class Visualizer extends ElementManipulator implements Updatable {
 
 	@Override
 	public void update() {
+		if (subWindow.getElement() instanceof Cell) {
+			if (!((Cell)subWindow.getElement()).getParentLibrary().getCells().contains(((Cell)subWindow.getElement()))){
+				subWindow.parent.removeSubWindow(subWindow);
+				return;
+			}
+		}
+		else if (subWindow.getElement() instanceof InputPin) {
+			if (!((InputPin)subWindow.getElement()).getParent().getInPins().contains(((InputPin)subWindow.getElement()))){
+				subWindow.parent.removeSubWindow(subWindow);
+				return;
+			}
+		}
+		else if (subWindow.getElement() instanceof OutputPin) {
+			if (!((OutputPin)subWindow.getElement()).getParent().getOutPins().contains(((OutputPin)subWindow.getElement()))){
+				subWindow.parent.removeSubWindow(subWindow);
+				return;
+			}
+		}
+		
 		updateDiagram();
         this.setElement(this.element);
 		this.revalidate();
 		this.repaint();
 	}
+    
+	@Override
+    public void receiveHoveredElementInfo(int[] indexPositions) {
+//		The commented out part is for testing only
+//		
+//    	System.out.print("Indices received: ");
+//    	for (int indexPosition : indexPositions) {
+//    		System.out.print(indexPosition + " ");
+//    	}
+//    	System.out.print("\n");
+		this.subWindow.parent.highlightTextEditors(null, 0.0f);
+	}
 
 	public void setScaleValue(float scaleValue) {
 		this.scaleValue = scaleValue;
 		this.isScaled = true;
+	}
+
+	@Override
+	public void stopHighlighting() {
+		// TODO Auto-generated method stub
 	}
 }

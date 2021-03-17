@@ -38,7 +38,7 @@ class HistogramOverlayStrategyTest implements TestCase {
 		data2.add(new float[] {0.2f, 0.3f, 0.5f, 0.55f, 0.75f, 0.99f, 2.01f});
 		data2.add(new float[] {7, 0, 2, 10, 3.01f, 4, 10});
 		
-		overlayer.setOverlayStrategy(new HistogramOverlayStrategy());
+		overlayer.setOverlayStrategy(new HistogramOverlayStrategy(container));
 	}
 	
 	@Test

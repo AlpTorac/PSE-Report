@@ -62,4 +62,6 @@ public interface IDiagram {
 		container.remove(this.getContainingElement());
 		container.repaint();
 	}
+	
+	public int[] getIndexPositionsOfComponent(DiagramValueDisplayComponent dvdc);
 }

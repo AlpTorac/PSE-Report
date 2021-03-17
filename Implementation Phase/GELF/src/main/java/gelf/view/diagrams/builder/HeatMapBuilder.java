@@ -20,17 +20,17 @@ public class HeatMapBuilder extends DiagramBuilder implements IHeatMapBuilder {
 	}
 
 	@Override
-	protected float getXAxisMaxValue() {
+	public float getXAxisMaxValue() {
 		return this.getDiagramData().getMaximumIndexAt(0);
 	}
 
 	@Override
-	protected float getYAxisMaxValue() {
+	public float getYAxisMaxValue() {
 		return this.getDiagramData().getMaximumIndexAt(1);
 	}
 
 	@Override
-	protected float getYAxisMinValue() {
+	public float getYAxisMinValue() {
 		return 0;
 	}
 }

@@ -35,6 +35,8 @@ import gelf.view.diagrams.DiagramWizard;
 import gelf.view.diagrams.IDiagram;
 import gelf.view.diagrams.IDiagramWizard;
 import gelf.view.diagrams.type.BarChart;
+import gelf.view.diagrams.type.HeatMap;
+import gelf.view.diagrams.type.Histogram;
 import gelf.view.representation.LibraryComparePanel;
 import gelf.view.representation.PinComparePanel;
 import gelf.view.diagrams.IDiagramViewHelper;
@@ -70,7 +72,6 @@ public class Comparer extends ElementManipulator {
 	private ArrayList<OutputPin> outputPins;
 	private ArrayList<InputPin> selectedInputPins;
 	private ArrayList<Element> elements;
-	
 	
 	//attributes enum for dropdowns
 	public enum Attribute {
@@ -398,15 +399,11 @@ public class Comparer extends ElementManipulator {
     	this.selectedInputPins = inputPins;
     	updateDiagram();
     }
-    /*
-    DiagramWizard wiz = new DiagramWizard();
-		BarChart[] charts = new BarChart[diagrams.size()];
-		
-		for (int i = 0; i < diagrams.size(); i++) {
-			charts[i] = (BarChart) diagrams.get(i);
-		}
-		this.diagram = wiz.overlayAndAttachBarCharts(this.diagramPanel, charts);
-    */
+    
+    public ArrayList<InputPin> getSelectedPins() {
+    	return selectedInputPins;
+    }
+  
  
     //update diagram depending on dropdown status
     private void updateDiagram() {
@@ -416,9 +413,9 @@ public class Comparer extends ElementManipulator {
 		IDHavg = null;
 		IDHmed = null;
 		IDiagram[] diagrams = new IDiagram[elements.size()];
+		ArrayList<ArrayList<float[]>> datas = new ArrayList<ArrayList<float[]>>();
 		for(int i = 0; i < elements.size(); i++) {
 			
-		
 		ArrayList<float[]> data = new ArrayList<float[]>();
 		ArrayList<String[]> stringData = new ArrayList<String[]>();
 		float[] values = null;
@@ -685,13 +682,13 @@ public class Comparer extends ElementManipulator {
 			
 		}
 		
-		else if (elements.get(0) instanceof OutputPin) {
-		/*	OutputPin outPin = (OutputPin)this.subWindow.getElement();
+		else if (elements.get(0) instanceof OutputPin && selectedInputPins.size() % 2 == 0) {
+			OutputPin outPin = (OutputPin)elements.get(i);
 			values = null;
 			float[] index1 = null;
 			float[] index2 = null;
 			
-			if (selectedPin == null) {
+			if (selectedInputPins.isEmpty()) {
 				if (this.diagramPanel != null) {
 					if (diagram != null) {
 						diagram.removeFromContainer();
@@ -709,24 +706,25 @@ public class Comparer extends ElementManipulator {
 				while (outPowIt.hasNext()) {
 					OutputPower curOutPow = outPowIt.next();
 					if (curOutPow.getPowGroup() == powerGroup && 
-							curOutPow.getRelatedPin().getName().equals(this.selectedPin.getName())) {
+							selectedInputPins.contains(curOutPow.getRelatedPin())) {
 						values = new float[curOutPow.getIndex1().length * curOutPow.getIndex2().length];
 					    index1 = curOutPow.getIndex1();
 						index2 = curOutPow.getIndex2();
 						data.add(index1);
 						data.add(index2);
-						for (int i = 0; i < curOutPow.getIndex1().length; i++) {
-							data.add(curOutPow.getValues()[i]);
+						for (int j = 0; j < curOutPow.getIndex1().length; j++) {
+							data.add(curOutPow.getValues()[j]);
 						}
 					}
 				}
+				datas.add(data);
 				IDiagramWizard wiz = new DiagramWizard();
 				if (this.diagramPanel != null) {
 					if (diagram != null) {
 						diagram.removeFromContainer();
 						diagram = null;
 					}
-					this.diagram = wiz.makeHeatMap(this.diagramPanel, data);
+					
 				}
 				updateStatDisplay();
 			}
@@ -747,42 +745,76 @@ public class Comparer extends ElementManipulator {
 					Timing curTim = timIt.next();
 					if (curTim.getTimSense() == timingSense && curTim.getTimType() == timingType
 							&& curTim.getTimGroup() == timingGroup && 
-							curTim.getRelatedPin().getName().equals(this.selectedPin.getName())) {
+									selectedInputPins.contains(curTim.getRelatedPin())) {
 						values = new float[curTim.getIndex1().length * curTim.getIndex2().length];
 					    index1 = curTim.getIndex1();
 						index2 = curTim.getIndex2();
 						data.add(index1);
 						data.add(index2);
-						for (int i = 0; i < curTim.getIndex1().length; i++) {
-							data.add(curTim.getValues()[i]);
+						for (int j = 0; j < curTim.getIndex1().length; j++) {
+							data.add(curTim.getValues()[j]);
 						}
 					}
 				}
+				datas.add(data);
 				IDiagramWizard wiz = new DiagramWizard();
 				if (this.diagramPanel != null) {
 					if (diagram != null) {
 						diagram.removeFromContainer();
 					}
-					this.diagram = wiz.makeHeatMap(this.diagramPanel, data);
+					
 				}
 				updateStatDisplay();
 			}
 			
-			*/
+			
 		}
 		
 	}
 		DiagramWizard wiz = new DiagramWizard();
-		BarChart[] barcharts = new BarChart[this.elements.size()];
-		for(int i = 0; i < elements.size(); i++) {
-			barcharts[i] = (BarChart) diagrams[i];
-		}
-		if (this.diagramPanel != null) {
-			if (this.diagram != null) {
-				this.diagram.removeFromContainer();
+		if (diagrams[0] instanceof BarChart) {
+			BarChart[] barcharts = new BarChart[this.elements.size()];
+			for(int i = 0; i < elements.size(); i++) {
+				barcharts[i] = (BarChart) diagrams[i];
 			}
+			if (this.diagramPanel != null) {
+				if (this.diagram != null) {
+					this.diagram.removeFromContainer();
+				}
+			}
+			this.diagram = wiz.overlayAndAttachBarCharts(this.diagramPanel, barcharts);
 		}
-		this.diagram = wiz.overlayAndAttachBarCharts(this.diagramPanel, barcharts);
+		
+		else if (diagrams[0] instanceof Histogram) {
+			Histogram[] histograms = new Histogram[this.elements.size()];
+			for(int i = 0; i < elements.size(); i++) {
+				histograms[i] = (Histogram) diagrams[i];
+			}
+			if (this.diagramPanel != null) {
+				if (this.diagram != null) {
+					this.diagram.removeFromContainer();
+				}
+			}
+			this.diagram = wiz.overlayAndAttachHistograms(this.diagramPanel, histograms);
+		}
+		
+		else if (elements.get(0) instanceof OutputPin && selectedInputPins.size() % 2 == 0){
+			ArrayList<float[]> newData = new ArrayList<float[]>();
+			for (ArrayList<float[]> data: datas) {
+				for (int j = 2; j < data.size() - 1; j++) {
+					float[] newValues = new float[data.get(0).length];
+					for (int i = 0; i < data.get(0).length; i++) {
+						newValues[i] = data.get(j)[i] - data.get(j + 1)[i] ;				
+					}
+					newData.add(newValues);
+				}
+				
+			}
+			this.diagram = wiz.makeAndAttachHeatMap(this.diagramPanel, newData);
+			
+			
+		}
+		
     }
 
 	private void updateStatDisplay() {

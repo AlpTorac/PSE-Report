@@ -44,7 +44,7 @@ class BarChartOverlayerStrategyTest implements TestCase {
 		container = panel;
 		builder = new BarChartBuilder(container);
 		
-		overlayer.setOverlayStrategy(new BarChartOverlayStrategy());
+		overlayer.setOverlayStrategy(new BarChartOverlayStrategy(container));
 	}
 	
 	@Test

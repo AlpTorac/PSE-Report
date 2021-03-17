@@ -2,6 +2,7 @@ package gelf.view.diagrams.builder;
 
 import java.awt.Color;
 
+import gelf.view.diagrams.SettingsProvider;
 import gelf.view.diagrams.components.DiagramAxis;
 import gelf.view.diagrams.components.DiagramComponent;
 import gelf.view.diagrams.components.DiagramValueDisplayComponent;
@@ -30,6 +31,16 @@ public interface IBarChartBuilder extends IDiagramBuilder {
 		}
 		
 		return dvdc;
+	}
+	
+	@Override
+	public default int getXAxisSteps() {
+		return (int) this.getXAxisMaxValue();
+	}
+
+	@Override
+	public default int getYAxisSteps() {
+		return SettingsProvider.getInstance().getStepsInYAxis();
 	}
 	
 	public default double getBarWidth() {
