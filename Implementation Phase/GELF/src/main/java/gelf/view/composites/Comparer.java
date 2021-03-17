@@ -399,6 +399,10 @@ public class Comparer extends ElementManipulator {
     	this.selectedInputPins = inputPins;
     	updateDiagram();
     }
+    
+    public ArrayList<InputPin> getSelectedPins() {
+    	return selectedInputPins;
+    }
   
  
     //update diagram depending on dropdown status
@@ -409,9 +413,9 @@ public class Comparer extends ElementManipulator {
 		IDHavg = null;
 		IDHmed = null;
 		IDiagram[] diagrams = new IDiagram[elements.size()];
-		
+		ArrayList<ArrayList<float[]>> datas = new ArrayList<ArrayList<float[]>>();
 		for(int i = 0; i < elements.size(); i++) {
-			ArrayList<ArrayList<float[]>> datas = new ArrayList<ArrayList<float[]>>();
+			
 		ArrayList<float[]> data = new ArrayList<float[]>();
 		ArrayList<String[]> stringData = new ArrayList<String[]>();
 		float[] values = null;
@@ -678,7 +682,7 @@ public class Comparer extends ElementManipulator {
 			
 		}
 		
-		else if (elements.get(0) instanceof OutputPin) {
+		else if (elements.get(0) instanceof OutputPin && selectedInputPins.size() % 2 == 0) {
 			OutputPin outPin = (OutputPin)elements.get(i);
 			values = null;
 			float[] index1 = null;
@@ -794,13 +798,18 @@ public class Comparer extends ElementManipulator {
 			this.diagram = wiz.overlayAndAttachHistograms(this.diagramPanel, histograms);
 		}
 		
-		else if (elements.get(0) instanceof OutputPin){
+		else if (elements.get(0) instanceof OutputPin && selectedInputPins.size() % 2 == 0){
 			ArrayList<float[]> newData = new ArrayList<float[]>();
-			
-			/*for () {
+			for (ArrayList<float[]> data: datas) {
+				for (int j = 2; j < data.size() - 1; j++) {
+					float[] newValues = new float[data.get(0).length];
+					for (int i = 0; i < data.get(0).length; i++) {
+						newValues[i] = data.get(j)[i] - data.get(j + 1)[i] ;				
+					}
+					newData.add(newValues);
+				}
 				
-				
-			}*/
+			}
 			this.diagram = wiz.makeAndAttachHeatMap(this.diagramPanel, newData);
 			
 			

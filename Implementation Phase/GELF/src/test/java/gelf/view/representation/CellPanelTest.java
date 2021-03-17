@@ -219,9 +219,9 @@ public class CellPanelTest {
 		frame.setLayout(null);
 		
 		Project p = Model.getInstance().getCurrentProject();
-		SubWindow s = new SubWindow(cell, p, null, null, 0, 0);
-		Visualizer v = new Visualizer(cell, s, p, 0, 0);
-		CellPanel panel = new CellPanel(100, 100, cell, s, null, null);
+		//SubWindow s = new SubWindow(cell, p, null, null, 0, 0);
+		//Visualizer v = new Visualizer(cell, s, p, 0, 0);
+		CellPanel panel = new CellPanel(100, 100, cell, null, null, null);
 		frame.add(panel);
 	}
 	
@@ -268,9 +268,9 @@ public class CellPanelTest {
 		
 		
 		Project p = Model.getInstance().getCurrentProject();
-		SubWindow s = new SubWindow(cell, p, null, null, 0, 0);
-		Visualizer v = new Visualizer(cell, s, p, 0, 0);
-		CellPanel panel = new CellPanel(100, 100, cell, s, null, null);
+		//SubWindow s = new SubWindow(cell, p, null, null, 0, 0);
+		//Visualizer v = new Visualizer(cell, s, p, 0, 0);
+		CellPanel panel = new CellPanel(100, 100, cell, null, null, null);
 		frame.add(panel);
 	}
 	
