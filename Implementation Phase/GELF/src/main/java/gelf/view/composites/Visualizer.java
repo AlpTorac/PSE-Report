@@ -37,13 +37,14 @@ import gelf.view.diagrams.DiagramWizard;
 import gelf.view.diagrams.IDiagram;
 import gelf.view.diagrams.IDiagramViewHelper;
 import gelf.view.diagrams.IDiagramWizard;
+import gelf.view.diagrams.IHighlightableElementContainer;
 import gelf.view.representation.CellPanel;
 import gelf.view.representation.DataPanel;
 import gelf.view.representation.LibraryPanel;
 /**
  * Visualizer
  */
-public class Visualizer extends ElementManipulator implements Updatable {
+public class Visualizer extends ElementManipulator implements Updatable, IHighlightableElementContainer {
 	Visualizer _this = this;
 	SubWindow subWindow;
 	DataPanel dataPanel;
@@ -900,12 +901,25 @@ public class Visualizer extends ElementManipulator implements Updatable {
 		this.repaint();
 	}
     
+	@Override
     public void receiveHoveredElementInfo(int[] indexPositions) {
+//		The commented out part is for testing only
+//		
+//    	System.out.print("Indices received: ");
+//    	for (int indexPosition : indexPositions) {
+//    		System.out.print(indexPosition + " ");
+//    	}
+//    	System.out.print("\n");
 		this.subWindow.parent.highlightTextEditors(null, 0.0f);
 	}
 
 	public void setScaleValue(float scaleValue) {
 		this.scaleValue = scaleValue;
 		this.isScaled = true;
+	}
+
+	@Override
+	public void stopHighlighting() {
+		// TODO Auto-generated method stub
 	}
 }

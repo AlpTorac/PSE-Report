@@ -206,4 +206,21 @@ public abstract class Diagram implements IDiagram {
 		
 		return clonedDescs;
 	}
+	
+	public int[] getIndexPositionsOfComponent(DiagramValueDisplayComponent dvdc) {
+		for (int i = 0; i < this.valueDisplayComponents.length; i++) {
+			if (dvdc == this.valueDisplayComponents[i]) {
+				return new int[] {i};
+			}
+		}
+		return new int[] {-1};
+	}
+	
+	protected DiagramData getDiagramData() {
+		return this.data;
+	}
+	
+	protected DiagramValueDisplayComponent[] getValueDisplayComponents() {
+		return this.valueDisplayComponents;
+	}
 }
