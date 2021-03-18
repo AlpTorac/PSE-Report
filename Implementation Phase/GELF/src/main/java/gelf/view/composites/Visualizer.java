@@ -1,5 +1,20 @@
 package gelf.view.composites;
 
+import java.awt.BorderLayout;
+import java.awt.Button;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.Label;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
+
+import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
+
 import gelf.controller.listeners.ScaleListener;
 import gelf.model.elements.Cell;
 import gelf.model.elements.Element;
@@ -17,19 +32,6 @@ import gelf.model.elements.attributes.TimingSense;
 import gelf.model.elements.attributes.TimingType;
 import gelf.model.project.Project;
 import gelf.model.project.Updatable;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JComboBox;
-
 import gelf.view.components.Checkbox;
 //import gelf.view.components.DropdownSelector;
 import gelf.view.components.Panel;
@@ -102,7 +104,7 @@ public class Visualizer extends ElementManipulator implements Updatable, IHighli
     private Label yAxisLabel = new Label();
     private Label xAxisLabel = new Label();
 	
-    public Visualizer(gelf.model.elements.Element e, SubWindow w, Project p, int width, int height) {
+    public Visualizer(Element e, SubWindow w, Project p, int width, int height) {
 		super(e, p, width, height);
         this.subWindow = w;
 		//style
@@ -192,21 +194,23 @@ public class Visualizer extends ElementManipulator implements Updatable, IHighli
 		this.addComponentListener(this);
     }
 	
-	private void initCellRepresentation(gelf.model.elements.Element e, SubWindow w, int width, int height) {
+	private void initCellRepresentation(Element e, SubWindow w, int width, int height) {
 		//cell display
         upperPanel = new Panel(width, height);
         upperPanel.setLayout(new FlowLayout());
+
         dataPanel = new DataPanel(100, 100, e);
-        this.add(upperPanel);
+		dataPanel.setAlignmentY(CENTER_ALIGNMENT);
 		
         if (e instanceof Library) {
 			upperPanel.add(new LibraryPanel(100, 100, (Library)e, w));
 	    }
 	    else {
-	    	upperPanel.add(new CellPanel(150, 150, e, w, this, dataPanel));    
+			upperPanel.add(new CellPanel(150, 150, e, w, this, dataPanel));    
 	    }
-        upperPanel.add(dataPanel);
-        dataPanel.setAlignmentY(CENTER_ALIGNMENT);
+		
+		upperPanel.add(dataPanel);
+		this.add(upperPanel);
 	} 
     
     public void setElement(Element e) {
