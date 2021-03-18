@@ -26,6 +26,7 @@ public class Library extends HigherElement {
     private ArrayList<Cell> cells = new ArrayList<Cell>();
     private Stat defaultLeakage;
     private File libraryFile;
+    
     /**
      * Initializes the library
      * @param name Name of the library
@@ -41,7 +42,6 @@ public class Library extends HigherElement {
     	this.index2 = index2;
     	this.path = path;
     	this.cells = cells;
-		Collections.sort(cells, new CompareElementByName());
 
     	this.setAvailableInputPower();
     	this.setAvailableOutputPower();
@@ -111,7 +111,6 @@ public class Library extends HigherElement {
 				cell2.setParentLibrary(this);
 			}
 		}
-		Collections.sort(cells, new CompareElementByName());
         setIndex1(dataLib.getIndex1());
 	    setIndex2(dataLib.getIndex2());
         setElementContent(dataLib.getElementContent());
