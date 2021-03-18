@@ -1,21 +1,61 @@
 package gelf.view.diagrams;
 
 import java.awt.Color;
-
+/**
+ * The singleton class, which is responsible for containing and providing access to the
+ * default values and settings relevant to diagrams.
+ * @author Alp Torac Genc
+ *
+ */
 public class SettingsProvider {
+	/**
+	 * The amount of post comma digits to be shown.
+	 */
 	private final static int LOWEST_DIGIT = 1;
-	//Double.valueOf("1E-" + LOWEST_DIGIT);
+	/**
+	 * The tolerance value to be used, when comparing floating point numbers.
+	 */
 	private final static double TOLERANCE = 1E-7;
-	
+	/**
+	 * The layer value of {@link gelf.view.diagrams.components.DiagramValueDisplayComponent DiagramValueDisplayComponent}.
+	 */
 	private int diagramValueDisplayLayer = 1;
+	/**
+	 * The layer value of {@link gelf.view.diagrams.components.DiagramAxis DiagramAxis}.
+	 */
 	private int diagramAxisLayer = 2;
+	/**
+	 * The layer value of {@link gelf.view.diagrams.components.DiagramComponent DiagramComponent} subclasses that
+	 * do not implement {@link gelf.view.diagrams.components.DiagramValueDisplayComponent DiagramValueDisplayComponent} and
+	 * that are not {@link gelf.view.diagrams.components.DiagramAxis DiagramAxis}.
+	 * <p>
+	 * Such components are diagram specific components.
+	 */
 	private int diagramNonValueDisplayLayer = 1;
+	/**
+	 * The layer value of {@link gelf.view.diagrams.indicator.DiagramViewHelper DiagramViewHelper}.
+	 */
 	private int diagramViewHelperDisplayLayer = 2;
+	/**
+	 * The layer value of {@link gelf.view.diagrams.components.HoverLabel HoverLabel}.
+	 */
 	private int diagramHoverLabelLayer = 3;
 	
+	/**
+	 * The proportion of the left margin of the diagram to the width of the diagram.
+	 */
 	private float diagramLeftMariginFactor = 1f / 20f;
+	/**
+	 * The proportion of the right margin of the diagram to the width of the diagram.
+	 */
 	private float diagramRightMariginFactor = 1f / 20f;
+	/**
+	 * The proportion of the top margin of the diagram to the height of the diagram.
+	 */
 	private float diagramTopMariginFactor = 1f / 20f;
+	/**
+	 * The proportion of the bottom margin of the diagram to the height of the diagram.
+	 */
 	private float diagramBottomMariginFactor = 3f / 20f;
 	
 	/**
@@ -26,33 +66,101 @@ public class SettingsProvider {
 			new Color(0xdb3939), new Color(0x36ba43)
 	};
 	
+	/**
+	 * The default thickness of the {@link gelf.view.diagrams.components.DiagramAxis DiagramAxis}.
+	 */
 	private int axisThickness = 1;
+	/**
+	 * The default color of the {@link gelf.view.diagrams.components.DiagramAxis DiagramAxis}.
+	 */
 	private Color axisColor = Color.BLACK;
+	/**
+	 * The default font size of the {@link gelf.view.diagrams.components.DiagramAxis DiagramAxis}.
+	 */
 	private int axisValueFontSize = 10;
+	/**
+	 * The default font type of the {@link gelf.view.diagrams.components.DiagramAxis DiagramAxis}.
+	 */
 	private String axisFontType = "TimesRoman";
+	/**
+	 * Whether the values of a {@link gelf.view.diagrams.components.DiagramAxis DiagramAxis} will be
+	 * shown as default.
+	 */
 	private boolean showAxisValues = true;
+	/**
+	 * Additional space left for the values displayed in {@link gelf.view.diagrams.components.DiagramAxis DiagramAxis}.
+	 */
 	private int additionalSpaceForAxisValues = 5;
+	/**
+	 * The amount of steps in a {@link gelf.view.diagrams.components.DiagramAxis DiagramAxis} dedicated to be an x-axis.
+	 */
 	private int stepsInXAxis = 10;
+	/**
+	 * The amount of steps in a {@link gelf.view.diagrams.components.DiagramAxis DiagramAxis} dedicated to be an y-axis.
+	 */
 	private int stepsInYAxis = 10;
 	
+	/**
+	 * The absolute minimum left margin of a diagram.
+	 */
 	private int diagramMinimumLeftMarigin = axisValueFontSize * 3;
+	/**
+	 * The absolute minimum right margin of a diagram.
+	 */
 	private int diagramMinimumRightMarigin = axisValueFontSize * 3;
+	/**
+	 * The absolute minimum bottom margin of a diagram.
+	 */
 	private int diagramMinimumBottomMarigin = axisValueFontSize * 3;
+	/**
+	 * The absolute minimum top margin of a diagram.
+	 */
 	private int diagramMinimumTopMarigin = axisValueFontSize * 3;
 	
+	/**
+	 * The default thickness of the borders of {@link gelf.view.diagrams.components.DiagramBar}.
+	 */
 	private int barBorderThickness = 1;
 	
+	/**
+	 * The default thickness of the borders of {@link gelf.view.diagrams.components.HeatMapLabel}.
+	 */
 	private int heatMapLabelBorderThickness = 1;
+	/**
+	 * The default thickness of the borders of {@link gelf.view.diagrams.components.DiagramColorScale}.
+	 */
 	private int heatMapColorScaleBorderThickness = 1;
+	/**
+	 * The left margin of {@link gelf.view.diagrams.components.DiagramColorScale}.
+	 */
 	private float heatMapColorScaleLeftMariginFactor = 1f / 20f;
+	/**
+	 * The right margin of {@link gelf.view.diagrams.components.DiagramColorScale}.
+	 */
 	private float heatMapColorScaleRightMariginFactor = 1f / 20f;
+	/**
+	 * The default border color of {@link gelf.view.diagrams.components.HeatMapLabel}.
+	 */
 	private Color heatMapColorScaleBorderColor = Color.BLACK;
+	/**
+	 * The default colors of {@link gelf.view.diagrams.components.DiagramColorScale}.
+	 */
 	private Color[] heatMapColorScaleColors = new Color[] {new Color(0x455bff), new Color(0xff5c5c)};
 	
+	/**
+	 * The amount of value intervals to be displayed of a {@link gelf.view.diagrams.components.DiagramColorScale}.
+	 */
 	private int colorScaleValueDisplaySteps = 10;
 	
+	/**
+	 * The proportion of half of the width of a {@link gelf.view.diagrams.components.BarChartBar} to the step length of the
+	 * x-axis of its diagram.
+	 */
 	private double barChartBarWidthInSteps = 0.5d;
 	
+	/**
+	 * The default color of {@link gelf.view.diagrams.indicator.DiagramViewHelper DiagramViewHelper}.
+	 */
 	private Color diagramCoordinateLineColor = new Color(0x3668ff);
 	
 	private static SettingsProvider instance;
@@ -273,6 +381,14 @@ public class SettingsProvider {
 		this.diagramBottomMariginFactor = diagramBottomMariginFactor;
 	}
 	
+	/**
+	 * Rounds and returns the String version of the given value in a scientific format.
+	 * <p>
+	 * Always {@link #LOWEST_DIGIT} amount of post comma digits will be shown (even if it ends up
+	 * including trailing zeroes). 
+	 * @param value a given value.
+	 * @return The String value of the rounded version of the given value.
+	 */
 	private String roundValue(double value) {
 		boolean isNegative = value < 0;
 		double absVal = Math.abs(value);
@@ -304,10 +420,19 @@ public class SettingsProvider {
 		return result;
 	}
 	
+	/**
+	 * Stores the formating algorithm to be used for displaying values.
+	 * @param value a given value.
+	 * @return The said algorithm used on the given value.
+	 */
 	public String getRoundedValueAsString(float value) {
 		return this.roundValue(value);
 	}
-	
+	/**
+	 * Stores the formating algorithm to be used for displaying values.
+	 * @param value a given value.
+	 * @return The said algorithm used on the given value.
+	 */
 	public String getRoundedValueAsString(double value) {
 		return this.roundValue(value);
 	}
@@ -320,6 +445,11 @@ public class SettingsProvider {
 		this.valueDisplayComponentColors[index] = valueDisplayComponentColor;
 	}
 	
+	/**
+	 * @param color1 a given color.
+	 * @param color2 another given color.
+	 * @return The mixture of the given colors.
+	 */
 	public static Color getMixedColor(Color color1, Color color2) {
 		float[] hsbColor1 = new float[3];
 		Color.RGBtoHSB(color1.getRed(), color1.getGreen(), color1.getBlue(), hsbColor1);
