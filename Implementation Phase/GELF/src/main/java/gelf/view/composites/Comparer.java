@@ -688,7 +688,7 @@ public class Comparer extends ElementManipulator {
 			float[] index1 = null;
 			float[] index2 = null;
 			
-			if (selectedInputPins.isEmpty()) {
+			if (selectedInputPins.isEmpty() || selectedInputPins.size() == 1) {
 				if (this.diagramPanel != null) {
 					if (diagram != null) {
 						diagram.removeFromContainer();
@@ -800,11 +800,13 @@ public class Comparer extends ElementManipulator {
 		
 		else if (elements.get(0) instanceof OutputPin && selectedInputPins.size() % 2 == 0){
 			ArrayList<float[]> newData = new ArrayList<float[]>();
-			for (ArrayList<float[]> data: datas) {
-				for (int j = 2; j < data.size() - 1; j++) {
-					float[] newValues = new float[data.get(0).length];
-					for (int i = 0; i < data.get(0).length; i++) {
-						newValues[i] = data.get(j)[i] - data.get(j + 1)[i] ;				
+			newData.add(datas.get(0).get(0));
+			newData.add(datas.get(0).get(1));
+			for (int k = 0; k < datas.size() - 1; k++) {
+				for (int j = 2; j < datas.get(0).size() - 1; j++) {
+					float[] newValues = new float[datas.get(0).get(0).length];
+					for (int i = 0; i < datas.get(0).get(0).length; i++) {
+						newValues[i] = datas.get(k).get(j)[i] - datas.get(k + 1).get(j)[i] ;				
 					}
 					newData.add(newValues);
 				}
