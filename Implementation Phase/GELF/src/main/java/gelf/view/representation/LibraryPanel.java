@@ -102,7 +102,7 @@ public class LibraryPanel extends Panel implements MouseListener{
     
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
+	public void mousePressed(MouseEvent e) {
 		subwindow.setElement(buttons.get(e.getSource()));
 	}
 
@@ -118,7 +118,7 @@ public class LibraryPanel extends Panel implements MouseListener{
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {}
+	public void mouseClicked(MouseEvent e) {}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {}
