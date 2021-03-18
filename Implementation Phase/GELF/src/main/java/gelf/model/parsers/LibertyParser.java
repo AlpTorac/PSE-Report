@@ -1,10 +1,7 @@
 package gelf.model.parsers;
 
-import java.text.CharacterIterator;
-import java.text.StringCharacterIterator;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Stack;
 
 import gelf.model.elements.Cell;
 import gelf.model.elements.InputPin;
@@ -23,7 +20,6 @@ import gelf.model.elements.attributes.TimingGroup;
 import gelf.model.elements.attributes.TimingSense;
 import gelf.model.elements.attributes.TimingType;
 import gelf.model.exceptions.InvalidFileFormatException;
-import gelf.model.project.Interpolator;
 
 /**
  * Parses the Liberty Files to their corresponding data objects so that

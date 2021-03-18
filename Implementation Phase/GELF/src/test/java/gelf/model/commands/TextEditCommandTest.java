@@ -590,7 +590,7 @@ class TextEditCommandTest {
 	}
 	
 	@Test
-	void TextEditCommandUndo() throws InvalidFileFormatException {
+	void TextEditCommandTestUndo() throws InvalidFileFormatException {
 		Library library = LibertyParser.parseLibrary(libraryExample);
 		TextEditCommand command = new TextEditCommand(libraryExample, libraryExample2, library);
 		command.execute();

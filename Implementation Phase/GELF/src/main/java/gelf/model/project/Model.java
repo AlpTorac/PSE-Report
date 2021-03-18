@@ -46,25 +46,6 @@ public class Model {
     }
 
     /**
-     * Formats a number while setting how many decimals have to be shown
-     * @param number the number to be formatted
-     * @param decimalSpots the number of decimals that are shown
-     * @return the formatted String of the number
-     */
-    public static String formatIndex(float number, int decimalSpots) {
-        String decimals = "";
-        for (int i = 0; i < decimalSpots; i++) {
-            decimals += "#";
-        }
-        DecimalFormat indexFormat = new DecimalFormat("#." + decimals, formatSymbols);
-        if ((number < 0.0001 || number > 1000000) && number != 0) {
-            return scFormat.format(number).toLowerCase();
-    	} else {
-    		return indexFormat.format(number);
-    	}
-    }
-
-    /**
      * Gets the instance of the model
      * @return the instance of the model
      */
