@@ -380,7 +380,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
+	public void mousePressed(MouseEvent e) {
 		if (((Label) e.getSource()).equals(libButton)) {
 			subwindow.setElement(cell.getParentLibrary());
 			this.setVisible(false);
@@ -444,7 +444,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 	}
 
 	@Override
-	public void mousePressed(MouseEvent arg0) {}
+	public void mouseClicked(MouseEvent arg0) {}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {}
