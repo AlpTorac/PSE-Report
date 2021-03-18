@@ -803,7 +803,7 @@ public class Comparer extends ElementManipulator {
 			newData.add(datas.get(0).get(0));
 			newData.add(datas.get(0).get(1));
 			for (int k = 0; k < datas.size() - 1; k++) {
-				for (int j = 2; j < datas.get(0).size() - 1; j++) {
+				for (int j = 2; j < datas.get(0).size(); j++) {
 					float[] newValues = new float[datas.get(0).get(0).length];
 					for (int i = 0; i < datas.get(0).get(0).length; i++) {
 						newValues[i] = datas.get(k).get(j)[i] - datas.get(k + 1).get(j)[i] ;				
