@@ -164,40 +164,7 @@ class DiagramDataTwoIndexTest implements TestCase {
 	@Test
 	void cloneTest() {
 		DiagramData clone = data.clone();
-		
-		ArrayList<float[]> values = clone.extractValues();
-		ArrayList<float[]> indices = clone.extractIndices();
-		ArrayList<String[]> valueDescs = clone.extractValueDescriptions();
-		ArrayList<String[]> indexDescs = clone.extractIndexDescriptions();
-		
-		ArrayList<float[]> Ovalues = clone.extractValues();
-		ArrayList<float[]> Oindices = clone.extractIndices();
-		ArrayList<String[]> OvalueDescs = clone.extractValueDescriptions();
-		ArrayList<String[]> OindexDescs = clone.extractIndexDescriptions();
-		
-		for (int i = 0; i < values.size(); i++) {
-			for (int j = 0; j < values.get(i).length; j++) {
-				Assertions.assertArrayEquals(Ovalues.get(i), values.get(i));
-			}
-		}
-		
-		for (int i = 0; i < indices.size(); i++) {
-			for (int j = 0; j < indices.get(i).length; j++) {
-				Assertions.assertArrayEquals(Oindices.get(i), indices.get(i));
-			}
-		}
-		
-		for (int i = 0; i < valueDescs.size(); i++) {
-			for (int j = 0; j < valueDescs.get(i).length; j++) {
-				Assertions.assertArrayEquals(OvalueDescs.get(i), valueDescs.get(i));
-			}
-		}
-		
-		for (int i = 0; i < indexDescs.size(); i++) {
-			for (int j = 0; j < indexDescs.get(i).length; j++) {
-				Assertions.assertArrayEquals(OindexDescs.get(i), indexDescs.get(i));
-			}
-		}
+		Assertions.assertTrue(data.equals(clone));
 	}
 	@Test
 	void indexCountTest() {
