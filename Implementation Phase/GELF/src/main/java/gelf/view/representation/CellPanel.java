@@ -7,6 +7,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
@@ -29,8 +31,8 @@ import gelf.model.elements.Element;
 import gelf.model.elements.InputPin;
 import gelf.model.elements.OutputPin;
 import gelf.model.elements.Pin;
-import gelf.view.components.Label;
 import gelf.view.components.Button;
+import gelf.view.components.Label;
 import gelf.view.components.Panel;
 import gelf.view.composites.ColorTheme;
 import gelf.view.composites.SubWindow;
@@ -40,7 +42,7 @@ import gelf.view.composites.Visualizer;
  * Displays the selected cell on the navigation panel.
  * @author Ege Uzhan
  */
-public class CellPanel extends Panel implements MouseListener, ItemListener{
+public class CellPanel extends Panel implements MouseListener, ItemListener, ActionListener {
 
     private Label imageLabel;
     private Panel mainPanel;
@@ -125,9 +127,11 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 		this.add(scrollPane);
 		
 		libButton.addMouseListener(this);
+		libButton.addActionListener(this);
 		libButton.setSize(25, 20);
 		
 		cellButton.addMouseListener(this);
+		cellButton.addActionListener(this);
 		cellButton.setSize(35, 20);
 		//this.setBorder(new LineBorder(Color.BLACK));
 		
@@ -244,6 +248,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 				buttonList.add(cellButton);
 				cellButton.setForeground(Color.WHITE);
 				cellButton.addMouseListener(this);
+				cellButton.addActionListener(this);
 				leftButtons.add(cellButton);
 				lowerPanel.add(Box.createVerticalStrut(2));
 				if (!pinTag || pin instanceof OutputPin) {
@@ -264,6 +269,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 				Button cellButton = new Button(outputPins.get(i).getName());
 				cellButton.setForeground(Color.WHITE);
 				cellButton.addMouseListener(this);
+				cellButton.addActionListener(this);
 				buttonMap.put( outputPins.get(i), cellButton);
 				cellButton.setVisible(true);
 				cellButton.setFont(new Font("Arial", Font.PLAIN, 10));
@@ -276,6 +282,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 				Button cellButton = new Button(inputPins.get(i).getName());
 				cellButton.setForeground(Color.WHITE);
 				cellButton.addMouseListener(this);
+				cellButton.addActionListener(this);
 				leftButtons.add(cellButton);
 				buttonMap.put( inputPins.get(i), cellButton);
 				lowerPanel.add(Box.createVerticalStrut(2));
@@ -299,6 +306,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 				Button cellButton = new Button(outputPins.get(i).getName());
 				cellButton.setForeground(Color.WHITE);
 				cellButton.addMouseListener(this);
+				cellButton.addActionListener(this);
 				buttonMap.put( outputPins.get(i), cellButton);
 			    cellButton.setFont(new Font("Arial", Font.PLAIN, 10));
 			    rightButtons.add(cellButton);
@@ -376,8 +384,12 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 		
 	}
 
+	
 	@Override
-	public void mousePressed(MouseEvent e) {
+	public void mousePressed(MouseEvent e) {}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
 		if (((Button) e.getSource()).equals(libButton)) {
 			subwindow.setElement(cell.getParentLibrary());
 			this.setVisible(false);
