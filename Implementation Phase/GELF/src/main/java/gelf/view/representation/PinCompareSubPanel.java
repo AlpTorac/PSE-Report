@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import gelf.view.components.Button;
 import gelf.model.elements.Cell;
 import gelf.model.elements.Element;
 import gelf.model.elements.InputPin;
@@ -25,8 +26,8 @@ public class PinCompareSubPanel extends CellPanel {
 	
 	private ArrayList<InputPin> inputPins;
 	private ArrayList<OutputPin> outputPins;
-	private HashMap<Pin, Label> buttonMap;
-	public Label cellButton;
+	private HashMap<Pin, Button> buttonMap;
+	public Button cellButton;
 	private Cell cell;
 	private HashMap<Checkbox, InputPin> checkboxMap;
 	private ArrayList<InputPin> selectedPins;
