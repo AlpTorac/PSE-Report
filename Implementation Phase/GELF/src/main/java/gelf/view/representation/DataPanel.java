@@ -12,6 +12,7 @@ import javax.swing.border.LineBorder;
 import gelf.model.elements.*;
 import gelf.view.components.Label;
 import gelf.view.components.Panel;
+import gelf.view.composites.ColorTheme;
 
 /**
  * Displays data about opened element.
@@ -34,17 +35,17 @@ public class DataPanel extends Panel {
 	public DataPanel(int width, int height, Element element) {
 		super(width, height);
 		//this.setPreferredSize(new Dimension(300, 200));
-		this.setBackground(new Color(0.3f, 0.3f, 0.3f));
+		this.setBackground(ColorTheme.subsubsection);
 		this.element = element;
 		upperLabel = new Label();
 		when = new Label();
 		middleLabel = new Label();
 		lowerLabel = new Label();
-		this.setBorder(new LineBorder(Color.WHITE));
-		upperLabel.setForeground(Color.WHITE);
-		when.setForeground(Color.WHITE);
-		middleLabel.setForeground(Color.WHITE);
-		lowerLabel.setForeground(Color.WHITE);
+		this.setBorder(new LineBorder(ColorTheme.frame, 3));
+		upperLabel.setForeground(ColorTheme.text);
+		when.setForeground(ColorTheme.text);
+		middleLabel.setForeground(ColorTheme.text);
+		lowerLabel.setForeground(ColorTheme.text);
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.add(upperLabel);
 		if (element instanceof Cell) {

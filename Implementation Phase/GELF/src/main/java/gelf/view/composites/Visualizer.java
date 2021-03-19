@@ -198,6 +198,7 @@ public class Visualizer extends ElementManipulator implements Updatable, IHighli
 	private void initCellRepresentation(Element e, SubWindow w, int width, int height) {
 		//cell display
         upperPanel = new Panel(width, height);
+		upperPanel.setBackground(ColorTheme.subsubsection);
         upperPanel.setLayout(new FlowLayout());
 
         dataPanel = new DataPanel(100, 100, e);
