@@ -921,6 +921,6 @@ public class Visualizer extends ElementManipulator implements Updatable, IHighli
 
 	@Override
 	public void stopHighlighting() {
-		//this.subWindow.parent.stopHighlighting();
+		this.subWindow.parent.stopHighlighting();
 	}
 }
