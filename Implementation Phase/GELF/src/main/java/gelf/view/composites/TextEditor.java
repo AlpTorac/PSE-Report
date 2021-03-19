@@ -60,7 +60,6 @@ public class TextEditor extends ElementManipulator implements KeyListener, Updat
 	private final Highlighter.HighlightPainter painter;
 	
 	private final static Color HOVER_COLOR = Color.GRAY;
-	private final Highlighter hoverhl;
 	private final Highlighter.HighlightPainter hoverPainter;
     private SubWindow subwindow;
 	
@@ -75,13 +74,12 @@ public class TextEditor extends ElementManipulator implements KeyListener, Updat
 	 */
     public TextEditor(Element element, Project p, Outliner o, SubWindow subwindow, SubWindowArea subwindows, int width, int height){
         super(element, p, width, height);
-        hl = new DefaultHighlighter();
+        hl = new DefaultHighlighter(); 
         p.addUpdatable(this);
         this.subwindows = subwindows;
         this.subwindow = subwindow;
         this.outliner = o;
         painter = new DefaultHighlighter.DefaultHighlightPainter(HL_COLOR);
-        hoverhl = new DefaultHighlighter();
         hoverPainter = new DefaultHighlighter.DefaultHighlightPainter(HOVER_COLOR);
         setup();
         this.setElement(element);
@@ -248,13 +246,16 @@ public class TextEditor extends ElementManipulator implements KeyListener, Updat
     	        
     	}
 
+    	
+    	
+    	
     }
     
     /**
      * Removes all highlights caused by hover actions.
      */
     public void removeHoverHighlights() {
-    	hoverhl.removeAllHighlights();
+    	hl.removeAllHighlights();
     }
     
     /**
