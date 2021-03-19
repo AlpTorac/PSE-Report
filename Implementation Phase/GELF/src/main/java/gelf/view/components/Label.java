@@ -1,7 +1,7 @@
 package gelf.view.components;
 
 import java.awt.Color;
-import java.awt.*;
+import java.awt.Graphics;
 
 import javax.swing.JLabel;
 import javax.swing.border.Border;
@@ -18,12 +18,12 @@ public class Label extends JLabel {
         setup();
     }
 
-    public Label(String text){
+    public Label(String text) {
         super(text);
         setup();
     }
 
-    private void setup(){
+    private void setup() {
         Border margin = new EmptyBorder(5, 7, 5, 7);
         this.setBorder(margin);
         this.setForeground(this.cText);

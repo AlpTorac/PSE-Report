@@ -1,5 +1,6 @@
 package gelf.view.composites;
 
+import java.awt.event.*;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ComponentEvent;
@@ -44,7 +45,7 @@ import gelf.view.diagrams.IDiagramViewHelper;
 /**
  * Comparer
  */
-public class Comparer extends ElementManipulator {
+public class Comparer extends ElementManipulator implements ComponentListener {
 	
 	Panel upperPanel;
 	Panel lowerPanel;
@@ -851,10 +852,15 @@ public class Comparer extends ElementManipulator {
 		}
 	}
 
+	
+	public void update() {
+		updateDiagram();
+		this.revalidate();
+		this.repaint();
+	}
+	
 	@Override
 	public void componentResized(ComponentEvent e) {
-		super.componentResized(e);
-
 		updateDiagram();
 		// DiagramWizard wiz = new DiagramWizard();
 		// this.diagram.removeFromContainer();
@@ -863,9 +869,21 @@ public class Comparer extends ElementManipulator {
 		// this.diagram.refresh();
 	}
 
-	public void update() {
-		updateDiagram();
-		this.revalidate();
-		this.repaint();
+	@Override
+	public void componentMoved(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

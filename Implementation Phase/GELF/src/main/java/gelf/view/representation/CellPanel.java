@@ -1,14 +1,5 @@
 package gelf.view.representation;
 
-import gelf.view.composites.SubWindow;
-import gelf.view.composites.Visualizer;
-import gelf.view.components.Label;
-import gelf.view.components.Panel;
-import gelf.model.elements.*;
-import gelf.model.elements.attributes.OutputPower;
-import gelf.model.elements.attributes.Timing;
-
-import java.awt.Button;
 import java.awt.Checkbox;
 import java.awt.Color;
 import java.awt.Component;
@@ -16,8 +7,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
@@ -25,19 +14,27 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.OverlayLayout;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
+
+import gelf.model.elements.Cell;
+import gelf.model.elements.Element;
+import gelf.model.elements.InputPin;
+import gelf.model.elements.OutputPin;
+import gelf.model.elements.Pin;
+import gelf.view.components.Label;
+import gelf.view.components.Button;
+import gelf.view.components.Panel;
+import gelf.view.composites.ColorTheme;
+import gelf.view.composites.SubWindow;
+import gelf.view.composites.Visualizer;
 
 /**
  * Displays the selected cell on the navigation panel.
@@ -51,13 +48,13 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
     private JScrollPane scrollPane;
     private JPanel imagePanel;
     
-    public HashMap<Pin, Label> buttonMap;
-    public ArrayList<Label> buttonList;
+    public HashMap<Pin, Button> buttonMap;
+    public ArrayList<Button> buttonList;
 	public HashMap<Checkbox, InputPin> checkboxMap;
 	
 	public ArrayList<Checkbox> checkboxes;
-	public Label libButton;
-	public Label cellButton; 
+	public Button libButton;
+	public Button cellButton; 
 	
     private Cell cell;
 	private ArrayList<InputPin> inputPins;
@@ -91,14 +88,14 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 		this.subwindow = subwindow;
 		this.dataPanel = dataPanel;
 		this.visualizer = visualizer;
-		buttonList = new ArrayList<Label>();
+		buttonList = new ArrayList<Button>();
 		lowerPanel = new JPanel();
 		mainPanel = new Panel(width, height);
 		imageGen = new CellImageGenerator();
 		imageLabel = new Label();
 		imagePanel = new JPanel();
 		imageLabel.setSize(150, 75);
-		buttonMap = new HashMap<Pin, Label>();
+		buttonMap = new HashMap<Pin, Button>();
 		checkboxMap = new HashMap<Checkbox, InputPin>();
 		checkboxes = new ArrayList<Checkbox>();
 		if (element instanceof Cell) {
@@ -116,13 +113,13 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 		selectedPins = new ArrayList<InputPin>();
 		outputPins = cell.getOutPins();
 		maxPins = (inputPins.size() < outputPins.size()) ? outputPins.size() : inputPins.size();
-		libButton = new Label(cell.getParentLibrary().toString());
-		cellButton = new Label(cell.getName());
+		libButton = new Button(cell.getParentLibrary().toString());
+		cellButton = new Button(cell.getName());
 		
 		
 		scrollPane = new JScrollPane(mainPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		
+		scrollPane.setBorder(new LineBorder(ColorTheme.frame, 3));
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		this.setAlignmentX(Component.CENTER_ALIGNMENT);
 		this.add(scrollPane);
@@ -242,7 +239,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 			imagePanel.add(cellButton, Component.CENTER_ALIGNMENT);//
 			imagePanel.add(imageLabel, Component.CENTER_ALIGNMENT);//
 			for (int i = 0; i < inputPins.size(); i++) {
-				Label cellButton = new Label(inputPins.get(i).getName());
+				Button cellButton = new Button(inputPins.get(i).getName());
 				buttonMap.put(inputPins.get(i), cellButton);
 				buttonList.add(cellButton);
 				cellButton.setForeground(Color.WHITE);
@@ -264,7 +261,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 		    }
 			imageLabel.setIcon(new ImageIcon(scaledImage));
 			for(int i= 0; i < outputPins.size(); i++) {
-				Label cellButton = new Label(outputPins.get(i).getName());
+				Button cellButton = new Button(outputPins.get(i).getName());
 				cellButton.setForeground(Color.WHITE);
 				cellButton.addMouseListener(this);
 				buttonMap.put( outputPins.get(i), cellButton);
@@ -276,7 +273,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 		}
 		else {
 		    for(int i= 0; i < inputPins.size(); i++) {
-				Label cellButton = new Label(inputPins.get(i).getName());
+				Button cellButton = new Button(inputPins.get(i).getName());
 				cellButton.setForeground(Color.WHITE);
 				cellButton.addMouseListener(this);
 				leftButtons.add(cellButton);
@@ -299,7 +296,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 		    }
 			imageLabel.setIcon(new ImageIcon(cellImage)); 
 			for(int i= 0; i < outputPins.size(); i++) {
-				Label cellButton = new Label(outputPins.get(i).getName());
+				Button cellButton = new Button(outputPins.get(i).getName());
 				cellButton.setForeground(Color.WHITE);
 				cellButton.addMouseListener(this);
 				buttonMap.put( outputPins.get(i), cellButton);
@@ -318,7 +315,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 	 * Returns the map of buttons.
 	 * @return map
 	 */
-	public HashMap<Pin, Label> getButtonMap() {
+	public HashMap<Pin, Button> getButtonMap() {
 		return buttonMap;
 	}
 	
@@ -342,7 +339,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 	 * Returns the cell button
 	 * @return cell button
 	 */
-	public Label getCellButton() {
+	public Button getCellButton() {
 		return cellButton;
 	}
 	
@@ -381,13 +378,13 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if (((Label) e.getSource()).equals(libButton)) {
+		if (((Button) e.getSource()).equals(libButton)) {
 			subwindow.setElement(cell.getParentLibrary());
 			this.setVisible(false);
 			return;
 			
 		}
-		else if (((Label) e.getSource()).equals(cellButton)){
+		else if (((Button) e.getSource()).equals(cellButton)){
 			if (pinTag = true) {
 				subwindow.setElement(cell);
 				
@@ -407,18 +404,18 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 			
 		}
 		for (InputPin input : inputPins) {
-			if (input.getName() == (((Label)e.getSource()).getText())) {
+			if (input.getName() == (((Button)e.getSource()).getText())) {
 				pinTag = true;
 				subwindow.setElement(input);
-				((Label)e.getSource()).setBackground(new Color(0x242424));
+				((Button)e.getSource()).setBackground(new Color(0x242424));
 				
 			}
 		}
 		for (OutputPin output : outputPins) {
-            if (output.getName() == (((Label)e.getSource()).getText())) {
+            if (output.getName() == (((Button)e.getSource()).getText())) {
             	pinTag = true;
 				subwindow.setElement(output);
-				((Label)e.getSource()).setBackground(new Color(0x242424));
+				((Button)e.getSource()).setBackground(new Color(0x242424));
 			}
 		}
 		
@@ -426,7 +423,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		if (e.getSource() instanceof Label) {
+		if (e.getSource() instanceof Button) {
 			e.getComponent().setBackground(Color.YELLOW);
 		}
 		
@@ -434,7 +431,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener{
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		if (e.getSource() instanceof Label) {
+		if (e.getSource() instanceof Button) {
 			e.getComponent().setBackground(new Color(0x242424));
 			if (pinTag) {
 				buttonMap.get(pin).setBackground(Color.BLUE);

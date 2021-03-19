@@ -7,6 +7,7 @@ public class ColorTheme {
     public static Color frame = new Color(0x151515);
     public static Color section = new Color(0x242424);
     public static Color subsection = new Color(0x2E2E2E);
+    public static Color subsubsection = new Color(0x424242);
 
     public static Color inputfield = new Color(242424);
     public static Color interactable = new Color(0x242424);

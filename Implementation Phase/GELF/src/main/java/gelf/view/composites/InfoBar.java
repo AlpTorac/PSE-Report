@@ -1,18 +1,15 @@
 package gelf.view.composites;
 
+import java.awt.Color;
+import java.awt.Dimension;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.JPanel;
-import javax.swing.GroupLayout.Alignment;
-import java.awt.*;
 
 import gelf.view.components.Label;
 import gelf.view.components.Panel;
-import gelf.view.components.ResizeMode;
-import gelf.view.components.Resizer;
 
 /**
  * InfoBar
@@ -20,28 +17,28 @@ import gelf.view.components.Resizer;
 public class InfoBar extends Panel {
     private Map<InfoBarID, Label> labels = new HashMap<>();
     private Map<InfoBarID, String> labelPrefix = new HashMap<>();
-    //colors
+    // colors
     private Color textColor = ColorTheme.text;
     private Color backgroundColor = ColorTheme.section;
 
-    //Create new InfoBar with corresponding labels
+    // Create new InfoBar with corresponding labels
     public InfoBar(int width, int height) {
         super(width, height);
-        //set layout
+        // set layout
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
         this.revalidate();
-        //set the style
+        // set the style
         this.setBackground(backgroundColor);
 
-        //label type names
+        // label type names
         labelPrefix.put(InfoBarID.VERSION, "Version");
         labelPrefix.put(InfoBarID.ERROR, "Error");
         labelPrefix.put(InfoBarID.SELECTED, "Selected");
         labelPrefix.put(InfoBarID.LASTACTION, "Last Action");
 
-        //add the labels
-        for(InfoBarID id : InfoBarID.values()) {
-            //generate label
+        // add the labels
+        for (InfoBarID id : InfoBarID.values()) {
+            // generate label
             Label label = new Label("");
             label.setForeground(textColor);
             label.setVisible(true);
@@ -49,26 +46,26 @@ public class InfoBar extends Panel {
             label.setMinimumSize(new Dimension(50, this.getHeight()));
             labels.put(id, label);
             this.setText(id, "");
-            //add label and spacing
+            // add label and spacing
             this.add(Box.createRigidArea(new Dimension(5, 0)));
             this.add(label);
         }
-        //add spacing to end, update
+        // add spacing to end, update
         this.add(Box.createHorizontalGlue());
         this.revalidate();
         this.repaint();
     }
-    
-    //Set text of specified label withing the InfoBar
+
+    // Set text of specified label withing the InfoBar
     public void setText(InfoBarID id, String text) {
-        //generate final label text
+        // generate final label text
         String finalText = labelPrefix.get(id) + ": ";
-        if(!text.equals("")){
+        if (!text.equals("")) {
             finalText += text;
         } else {
             finalText += "none";
         }
-        //set label text
+        // set label text
         labels.get(id).setText(finalText);
         this.repaint();
     }

@@ -7,5 +7,4 @@ import javax.swing.JTree;
  */
 public class Tree extends JTree {
 
-    
 }
