@@ -909,12 +909,10 @@ public class Visualizer extends ElementManipulator implements Updatable, IHighli
     
 	@Override
     public void receiveHoveredElementInfo(int[] indexPositions) {
-		String attrStr = "";
-		//TODO
 		
-		
-		this.subWindow.parent.highlightTextEditors(this.element, attrStr);
+	   this.subWindow.parent.highlightTextEditors(this.element, indexPositions, attribute, selectedPin, powerGroup, timingSense, timingGroup, timingType);
 	}
+
 
 	public void setScaleValue(float scaleValue) {
 		this.scaleValue = scaleValue;
@@ -923,6 +921,6 @@ public class Visualizer extends ElementManipulator implements Updatable, IHighli
 
 	@Override
 	public void stopHighlighting() {
-		this.subWindow.parent.stopHighlighting();
+		//this.subWindow.parent.stopHighlighting();
 	}
 }

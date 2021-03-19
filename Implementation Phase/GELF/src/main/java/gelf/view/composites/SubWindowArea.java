@@ -11,7 +11,13 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import gelf.model.elements.Element;
+import gelf.model.elements.InputPin;
+import gelf.model.elements.attributes.PowerGroup;
+import gelf.model.elements.attributes.TimingGroup;
+import gelf.model.elements.attributes.TimingSense;
+import gelf.model.elements.attributes.TimingType;
 import gelf.view.components.Panel;
+import gelf.view.composites.Visualizer.Attribute;
 
 /**
  * SubWindowArea
@@ -67,10 +73,10 @@ public class SubWindowArea extends Panel {
             //TODO error handling
         }
     }
-    public void highlightTextEditors(Element element, String attrStr) {
+    public void highlightTextEditors(Element element, int[] indexPositions, Attribute attribute , InputPin selectedPin, PowerGroup powerGroup, TimingSense timingSense, TimingGroup timingGroup, TimingType timingType) {
     	for (SubWindow subwindow: this.subWindows) {
     		if (subwindow.getElement().equals(element)) {
-    			subwindow.getEditor().addHoverHighlights(attrStr);
+    			subwindow.getEditor().addHoverHighlights(indexPositions, attribute , selectedPin, powerGroup, timingSense, timingGroup, timingType);
     		}
     	}
     }

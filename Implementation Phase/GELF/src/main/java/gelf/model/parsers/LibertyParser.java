@@ -37,7 +37,7 @@ public class LibertyParser {
     private static final String FUNCTIONFORMAT = "([a-zA-Z]|_|-|\\^|\\||\\(|\\)|&|\\!|[0-9])+";
     
     // The format of a float value
-    private static final String FLOATFORMAT = "[-+]?[0-9]*(\\.)?[0-9]+([eE][-+]?[0-9]+)?";
+    public static final String FLOATFORMAT = "[-+]?[0-9]*(\\.)?[0-9]+([eE][-+]?[0-9]+)?";
 
     // The format of a parameter, not implemented because of runtime
     /* private static final String PARAMFORMAT = ATTRNAMEFORMAT + "\\:(\"\\(" + FUNCTIONFORMAT 
