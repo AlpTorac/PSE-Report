@@ -179,9 +179,10 @@ public class TextEditor extends ElementManipulator implements KeyListener, Updat
      * Adds highlights to the entered values in the text
      * @param value To be highlighted value
      */
-    public void addHoverHighlights(float value) {
-    	highlightText(0, hoverPainter);
-    	jumpToNext(0);
+    public void addHoverHighlights(String attrStr) {
+    	
+    	
+    	hl.addHighlight(start, end, hoverPainter);
     	
     }
     
