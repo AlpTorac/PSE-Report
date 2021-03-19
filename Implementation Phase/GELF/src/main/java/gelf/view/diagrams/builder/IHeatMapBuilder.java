@@ -12,7 +12,12 @@ import gelf.view.diagrams.components.PositionIn2DDiagram;
 import gelf.view.diagrams.components.PositionInFrame;
 import gelf.view.diagrams.data.DiagramData;
 
-public interface IHeatMapBuilder extends IDiagramBuilder, ContainerAccessPoint {
+/**
+ * An interface implemented by the classes responsible for building {@link gelf.view.diagrams.type.HeatMap HeatMap}.
+ * @author Alp Torac Genc
+ *
+ */
+public interface IHeatMapBuilder extends IDiagramBuilder {
 //	@Override
 //	public default DiagramValueDisplayComponent[] buildValueDisplayComponentsForOneDiagram(DiagramData data, DiagramAxis[] axes,
 //			DiagramComponent[] diagramSpecificComponent) {
@@ -142,11 +147,22 @@ public interface IHeatMapBuilder extends IDiagramBuilder, ContainerAccessPoint {
 //				(DiagramColorScale) diagramSpecificComponent[0],
 //				values[i][j], thickness);
 //	}
+	/**
+	 * @param axes the axes, which stand for index1 and index2
+	 * @param value the value associated with the component
+	 * @param index1Start the minimum index1 covered by the component
+	 * @param index1End the maximum index1 covered by the component
+	 * @param index2Start the minimum index2 covered by the component
+	 * @param index2End the maximum index2 covered by the component
+	 * @param diagramSpecificComponent the component created in {@link #buildDiagramSpecificComponentForOneDiagram(DiagramData) buildDiagramSpecificComponentForOneDiagram}
+	 * @param thickness the thickness of the border of the component
+	 * @return The heat map label specified in the parameters.
+	 */
 	default HeatMapLabel makeLabel(DiagramAxis[] axes, float value, float index1Start,
 			float index1End, float index2Start, float index2End, DiagramComponent[] diagramSpecificComponent,
 			int thickness) {
-		PositionIn2DDiagram topLeft = this.getDiagramComponentFactory().makePositionInDiagram(axes[0], index1Start, axes[1], index2Start);
-		PositionIn2DDiagram bottomRight = this.getDiagramComponentFactory().makePositionInDiagram(axes[0], index1End, axes[1], index2End);
+		PositionIn2DDiagram topLeft = this.getDiagramComponentFactory().makePositionInDiagram(axes[0], index1Start, axes[1], index2End);
+		PositionIn2DDiagram bottomRight = this.getDiagramComponentFactory().makePositionInDiagram(axes[0], index1End, axes[1], index2Start);
 		
 		return this.getDiagramComponentFactory().createHeatMapLabel(topLeft, bottomRight,
 				(DiagramColorScale) diagramSpecificComponent[0],
@@ -155,10 +171,8 @@ public interface IHeatMapBuilder extends IDiagramBuilder, ContainerAccessPoint {
 	
 	@Override
 	public default DiagramComponent[] buildDiagramSpecificComponentForOneDiagram(DiagramData data) {
-		int containerHeight = this.getContainer().getHeight();
-		
 		PositionInFrame topLeft = this.getDiagramComponentFactory().makePositionInFrame(this.getContainer().getWidth() * this.getSettingsProvider().getHeatMapColorScaleLeftMariginFactor(),
-				this.getContainer().getHeight() + containerHeight / 20 - containerHeight / 10);
+				this.getContainer().getHeight() * (1 - this.getSettingsProvider().getHeatMapColorScaleHeightInContainer()));
 		PositionInFrame bottomRight = this.getDiagramComponentFactory().makePositionInFrame(this.getContainer().getWidth() * (1 - this.getSettingsProvider().getHeatMapColorScaleRightMariginFactor()),
 				this.getContainer().getHeight());
 		Color borderColor = this.getSettingsProvider().getHeatMapColorScaleBorderColor();

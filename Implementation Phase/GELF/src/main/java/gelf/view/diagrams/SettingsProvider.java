@@ -139,6 +139,11 @@ public class SettingsProvider {
 	 */
 	private float heatMapColorScaleRightMariginFactor = 1f / 20f;
 	/**
+	 * The proportion of the height of {@link gelf.view.diagrams.components.DiagramColorScale}
+	 * to the height of its container.
+	 */
+	private float heatMapColorScaleHeightInContainer = 1f / 20f;
+	/**
 	 * The default border color of {@link gelf.view.diagrams.components.HeatMapLabel}.
 	 */
 	private Color heatMapColorScaleBorderColor = Color.BLACK;
@@ -510,6 +515,14 @@ public class SettingsProvider {
 
 	public void setHeatMapColorScaleRightMariginFactor(float heatMapColorScaleRightMariginFactor) {
 		this.heatMapColorScaleRightMariginFactor = heatMapColorScaleRightMariginFactor;
+	}
+
+	public float getHeatMapColorScaleHeightInContainer() {
+		return heatMapColorScaleHeightInContainer;
+	}
+
+	public void setHeatMapColorScaleHeightInContainer(float heatMapColorScaleHeightInContainer) {
+		this.heatMapColorScaleHeightInContainer = heatMapColorScaleHeightInContainer;
 	}
 	
 }
