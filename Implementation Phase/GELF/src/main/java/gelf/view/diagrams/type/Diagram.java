@@ -2,7 +2,6 @@ package gelf.view.diagrams.type;
 
 import java.awt.Component;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.EnumMap;
 
 import javax.swing.JLayeredPane;
@@ -49,17 +48,17 @@ public abstract class Diagram implements IDiagram {
 		}
 	}
 	
-	public Collection<?> cloneData() {
+	public ArrayList<float[]> cloneData() {
 		ArrayList<float[]> dataClone = new ArrayList<float[]>();
 		
 		ArrayList<float[]> indices = this.data.extractIndices();
 		ArrayList<float[]> values = this.data.extractValues();
 		
-		for (float[] indexArr : indices) {
-			dataClone.add(indexArr);
+		if (indices != null) {
+			dataClone.addAll(indices);
 		}
-		for (float[] valueArr : values) {
-			dataClone.add(valueArr);
+		if (values != null) {
+			dataClone.addAll(values);
 		}
 		
 		return dataClone;
@@ -200,10 +199,36 @@ public abstract class Diagram implements IDiagram {
 		}
 	}
 	
-	public Collection<?> cloneDescriptions() {
-		ArrayList<String[]> clonedDescs = this.data.extractIndexDescriptions();
-		clonedDescs.addAll(this.data.extractValueDescriptions());
+	public ArrayList<String[]> cloneDescriptions() {
+		ArrayList<String[]> clonedDescs = new ArrayList<String[]>();
+		
+		ArrayList<String[]> indexDescs = this.data.extractIndexDescriptions();
+		ArrayList<String[]> valueDescs = this.data.extractValueDescriptions();
+		
+		if (indexDescs != null) {
+			clonedDescs.addAll(indexDescs);
+		}
+		if (valueDescs != null) {
+			clonedDescs.addAll(valueDescs);
+		}
 		
 		return clonedDescs;
+	}
+	
+	public int[] getIndexPositionsOfComponent(DiagramValueDisplayComponent dvdc) {
+		for (int i = 0; i < this.valueDisplayComponents.length; i++) {
+			if (dvdc == this.valueDisplayComponents[i]) {
+				return new int[] {i};
+			}
+		}
+		return new int[] {-1};
+	}
+	
+	protected DiagramData getDiagramData() {
+		return this.data;
+	}
+	
+	protected DiagramValueDisplayComponent[] getValueDisplayComponents() {
+		return this.valueDisplayComponents;
 	}
 }

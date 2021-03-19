@@ -1,7 +1,9 @@
 package gelf.controller.listeners;
 
+import gelf.model.elements.Cell;
 import gelf.model.elements.Element;
 import gelf.model.elements.Library;
+import gelf.model.elements.Pin;
 import gelf.model.project.Model;
 import gelf.model.project.Project;
 import gelf.view.composites.Outliner;
@@ -35,6 +37,10 @@ public class RemoveListener implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if (Model.getInstance().getCurrentProject().getLibraries().isEmpty()) {
+			JOptionPane.showMessageDialog(new JFrame(), "No library has been loaded in the application.", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		if (outliner.getSelectedElements().isEmpty()) {
 			JOptionPane.showMessageDialog(new JFrame(), "Select at least one library.", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
@@ -62,16 +68,16 @@ public class RemoveListener implements ActionListener {
 		currentProject.inform();
 		
 		ArrayList<SubWindow> toRemove = new ArrayList<SubWindow>();
-		for (SubWindow str : subwindows.subWindows) {
-		    if (libraries.contains(str.getElement())) {
-		        toRemove.add(str);
+		for (SubWindow window : subwindows.subWindows) {
+		    if (libraries.contains(window.getElement())) {
+		        toRemove.add(window);
 		    }
-		    /*else if () {
-		    	
+		    else if (window.getElement() instanceof Cell && libraries.contains(((Cell) window.getElement()).getParentLibrary())) {
+		    	toRemove.add(window);
 		    }
-		    else if () {
-		    	
-		    }*/
+		    else if (window.getElement() instanceof Pin && libraries.contains(((Pin) window.getElement()).getParent().getParentLibrary())) {
+		    	toRemove.add(window);
+		    }
 		}
 		for (SubWindow str: toRemove) {
 			subwindows.removeSubWindow(str);

@@ -78,8 +78,7 @@ public class RenameListener implements ActionListener {
 					return true;
 				}
 			}
-		}
-		if (element instanceof Cell) {
+		} else if (element instanceof Cell) {
 			Cell cell = (Cell) element;
 			Library parent = cell.getParentLibrary();
 			for (Cell cells: parent.getCells()) {
@@ -89,8 +88,7 @@ public class RenameListener implements ActionListener {
 					return true;
 				}
 			}
-		}
-		else {
+		} else {
 			Pin pin = (Pin) element;
 			Cell parent = pin.getParent();
 			for (Pin pins: parent.getInPins()) {

@@ -7,7 +7,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import gelf.view.diagrams.DiagramWizard;
 import gelf.view.diagrams.IDiagram;
+import gelf.view.diagrams.IDiagramWizard;
 import gelf.view.diagrams.TestCase;
 import gelf.view.diagrams.TestFrame;
 import gelf.view.diagrams.TestPanel;
@@ -70,6 +72,53 @@ class HeatMapBuilderTest implements TestCase {
 		
 		diagram.refresh();
 		show(frame, TestCase.SHOW_DURATION);
+		diagram.removeFromContainer();
+	}
+	
+	@Test
+	void buildWithWizardTest() {
+		IDiagramWizard wiz = new DiagramWizard();
+		
+		data = new ArrayList<float[]>();
+		
+		data.add(new float[] {0.3f, 0.34f, 0.7f});
+		data.add(new float[] {0.1f, 0.43f, 0.65f});
+		data.add(new float[] {11f, 8f, 19f});
+		data.add(new float[] {7f, 20f, 17f});
+		data.add(new float[] {3f, 4f, 13f});
+		
+		IDiagram diagram = wiz.makeAndAttachHeatMap(container, data);
+		
+		DiagramValueDisplayComponent[] labels = diagram.getDiagramValueDisplayComponentPrototypes();
+		int labelCount = labels.length;
+		
+		float[] indices1 = data.get(0);
+		float[] indices2 = data.get(1);
+		
+		int index1Length = indices1.length;
+		int index2Length = indices2.length;
+		
+		float[] values = new float[index1Length * index2Length];
+		
+		for (int row = 2; row < data.size(); row++) {
+			for (int col = 0; col < data.get(row).length; col++) {
+				values[(row - 2) * index2Length + col] = data.get(row)[col];
+			}
+		}
+		
+		int indexCount = indices1.length * indices2.length;
+		
+		Assertions.assertEquals(indexCount, labelCount);
+		
+		this.assertionsForOriginLabel(labels, indices1, indices2, values);
+		this.assertionsForIndex1Null(labels, index1Length, index2Length, indices1, indices2, values);
+		this.assertionsForIndex2Null(labels, index2Length, indices1, indices2, values);
+		this.assertionsForLabel(labels, index1Length, index2Length, indices1, indices2, values);
+		
+		diagram.refresh();
+		show(frame, TestCase.SHOW_DURATION);
+		diagram.removeFromContainer();
+		container.repaint();
 	}
 	
 	private void assertionsForOriginLabel(DiagramValueDisplayComponent[] labels, float[] indices1, float[] indices2, float[] values) {

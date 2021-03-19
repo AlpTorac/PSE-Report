@@ -33,7 +33,7 @@ import javax.swing.text.Highlighter;
  */
 public class TextEditor extends ElementManipulator implements KeyListener, Updatable{
 	
-	private JTextField searchBox;
+	public JTextField searchBox;
 	private JTextArea textArea;	
 	private JScrollPane scrollPane;
 	private JPanel lowerPanel;
@@ -125,11 +125,12 @@ public class TextEditor extends ElementManipulator implements KeyListener, Updat
      */
    
     public void setElement(Element element) {
+    	int position = textArea.getCaretPosition();
     	this.element = element;
     	this.textArea.setText("");
     
 		textArea.setText(createText(element));
-		textArea.setCaretPosition(0);
+		textArea.setCaretPosition(position);
 		document = textArea.getText();
 	
     }
@@ -138,7 +139,7 @@ public class TextEditor extends ElementManipulator implements KeyListener, Updat
      * Highlights the given value
      * @param value Value to be highlighted.
      */
-    public void highlightText(int start) {
+    public void highlightText(int start, Highlighter.HighlightPainter painter) {
     	
     	if (searchBox.getText().isEmpty()) {
     		removeHighlights();
@@ -162,7 +163,7 @@ public class TextEditor extends ElementManipulator implements KeyListener, Updat
             searchBox.setBackground(new Color(0.3f, 0.3f, 0.3f));
             if (end < content.length()) {
             	content = content.substring(end, content.length());
-            	highlightText(end);
+            	highlightText(end, painter);
             }
         }
     }
@@ -178,8 +179,8 @@ public class TextEditor extends ElementManipulator implements KeyListener, Updat
      * Adds highlights to the entered values in the text
      * @param value To be highlighted value
      */
-    public void addHoverHighlights(int value) {
-    	highlightText(0);
+    public void addHoverHighlights(float value) {
+    	highlightText(0, hoverPainter);
     	jumpToNext(0);
     	
     }
@@ -195,8 +196,10 @@ public class TextEditor extends ElementManipulator implements KeyListener, Updat
      * Reverts the changes after a wrong input.
      */
     public void revert() {
+    	int position = textArea.getCaretPosition();
     	textArea.setText("");
     	textArea.setText(document);
+    	textArea.setCaretPosition(position);
     }
     
     /**
@@ -270,15 +273,6 @@ public class TextEditor extends ElementManipulator implements KeyListener, Updat
     }
     
     /**
-     * Sets the document.
-     * @param newDocument New text.
-     */
-    public void setDocument(Element element) {
-    	this.textArea.setText(createText(element));
-    	this.document = createText(element);
-    }
-    
-    /**
      * Returns the element opened in the editor.
      * @return Element
      */
@@ -302,7 +296,7 @@ public class TextEditor extends ElementManipulator implements KeyListener, Updat
         		return;
         	}
         	removeHighlights();
-        	highlightText(0);
+        	highlightText(0, painter);
 			if (trace == -1) {
 				trace = 0;
 				jumpToNext(0);
@@ -320,9 +314,10 @@ public class TextEditor extends ElementManipulator implements KeyListener, Updat
 
 	@Override
 	public void update() {
+		int position = textArea.getCaretPosition();
 		this.setElement(this.element);
 		textArea.setText(createText(element));
-		textArea.setCaretPosition(0);
+		textArea.setCaretPosition(position);
 		
 	}
     

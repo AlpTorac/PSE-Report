@@ -55,7 +55,7 @@ public class TextEditCommand implements Command {
             throw new InvalidFileFormatException("File format is invalid");
         }
         if (!oldElementClone.getClass().equals(newElementClone.getClass())) {
-            throw new InvalidFileFormatException("Element type change not possible within" +
+            throw new InvalidFileFormatException("Element type change not possible within " +
             "the Element visualiser");
         }
     }
@@ -96,7 +96,7 @@ public class TextEditCommand implements Command {
             InputPin pin = (InputPin) element;
             InputPin dataPin = (InputPin) dataElement;
             pin.replaceData(dataPin);
-        } else if (element instanceof OutputPin) {
+        } else {
             OutputPin pin = (OutputPin) element;
             OutputPin dataPin = (OutputPin) dataElement;
             pin.replaceData(dataPin);

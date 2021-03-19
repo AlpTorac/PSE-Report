@@ -1,4 +1,6 @@
 package gelf.model.elements;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Assertions;
@@ -59,8 +61,7 @@ class LibraryTest {
     ArrayList<InputPin> inPinList = new ArrayList<InputPin>();
     ArrayList<OutputPin> outPinList = new ArrayList<OutputPin>();
     ArrayList<Cell> cellList = new ArrayList<Cell>();
-       
-    
+    ArrayList<Cell> cellList2 = new ArrayList<Cell>();
     
     
     
@@ -296,11 +297,13 @@ class LibraryTest {
     			0.003113f, 0.005081f, 0.004988f, 0.01069f};
     	Leakage leakage = new Leakage(values);
 	    	
-    	Cell cell1 = new Cell(null, null, null, null, inPinList, outPinList, leakage, 0);
-    	Cell cell2 = new Cell(null, null, null, null, inPinList, outPinList, leakage, 0);
+    	Cell cell1 = new Cell("C1", null, null, null, inPinList, outPinList, leakage, 0);
+    	Cell cell2 = new Cell("C2", null, null, null, inPinList, outPinList, leakage, 0);
+    	
     	
     	cellList.add(cell1);
     	cellList.add(cell2);
+    	
     	
     	Library library = new Library("libraryCell", null, null, null, cellList);
     	Assertions.assertEquals(library.getCells().get(0).getInPins().get(0).name, 
@@ -346,7 +349,8 @@ class LibraryTest {
     	timingList.add(timing2);
 			
 		OutputPin outPin1 = new OutputPin("name1", null, outPowList, timingList);
-		OutputPin outPin2 = new OutputPin("name2", null, outPowList, timingList);			outPinList.add(outPin1);
+		OutputPin outPin2 = new OutputPin("name2", null, outPowList, timingList);			
+		outPinList.add(outPin1);
 		outPinList.add(outPin2);
 			
     	float[] values = {0.00291f, 0.003117f, 0.003117f, 0.005393f, 
@@ -355,16 +359,21 @@ class LibraryTest {
 	    	
     	Cell cell1 = new Cell("cell1", null, null, null, inPinList, outPinList, leakage, 0);
     	Cell cell2 = new Cell("cell2", null, null, null, inPinList, outPinList, leakage, 0);
+    	Cell cell3 = new Cell("cell3", null, null, null, inPinList, outPinList, leakage, 0);
     	
     	cellList.add(cell1);
     	cellList.add(cell2);
+    	cellList2.add(cell3);
+    	cellList2.add(cell2);
     	
-    	Library library1 = new Library("library1", null, null, null, null);
-    	Library library2 = new Library("library2", null, null, null, cellList);
+    	Library library1 = new Library("library1", null, null, null, cellList);
+    	Library library2 = new Library("library2", null, null, null, cellList2);
     	
     	library1.replaceData(library2);
     	Assertions.assertEquals(library1.name, "library2");
-    	Assertions.assertEquals(library1.getCells().get(0).getName(), "cell1");
+    	Assertions.assertEquals(library1.getCells().get(0).getName(), "cell3");
+    	assertTrue(!library1.getCells().contains(cell1));
+    	assertTrue(library1.getCells().contains(cell2));
     }
     
     @Test

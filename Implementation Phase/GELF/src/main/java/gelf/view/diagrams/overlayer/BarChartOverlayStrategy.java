@@ -1,5 +1,6 @@
 package gelf.view.diagrams.overlayer;
 
+import java.awt.Container;
 import java.util.ArrayList;
 
 import gelf.view.diagrams.IDiagram;
@@ -13,12 +14,14 @@ import gelf.view.diagrams.type.BarChart;
 public class BarChartOverlayStrategy extends DiagramOverlayStrategy implements IBarChartBuilder {
 
 	private BarChart[] barCharts;
+	private Container container;
 	
-	public BarChartOverlayStrategy() {
-		
+	public BarChartOverlayStrategy(Container container) {
+		this.container = container;
 	}
 	
-	public BarChartOverlayStrategy(BarChart[] barCharts) {
+	public BarChartOverlayStrategy(Container container, BarChart[] barCharts) {
+		this.container = container;
 		this.barCharts = barCharts;
 	}
 
@@ -103,5 +106,10 @@ public class BarChartOverlayStrategy extends DiagramOverlayStrategy implements I
 		descs.add(descArr);
 
 		return descs;
+	}
+
+	@Override
+	public Container getContainer() {
+		return this.container;
 	}
 }

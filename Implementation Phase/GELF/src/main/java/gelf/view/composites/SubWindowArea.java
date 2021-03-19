@@ -1,5 +1,6 @@
 package gelf.view.composites;
 
+
 import java.awt.Color;
 import java.util.ArrayList;
 
@@ -9,6 +10,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
+import gelf.model.elements.Element;
 import gelf.view.components.Panel;
 
 /**
@@ -65,5 +67,12 @@ public class SubWindowArea extends Panel {
         } else {
             // TODO error handling
         }
+    }
+     public void highlightTextEditors(Element element, float value) {
+    	for (SubWindow subwindow: this.subWindows) {
+    		if (subwindow.getElement().equals(element)) {
+    			subwindow.getEditor().addHoverHighlights(value);
+    		}
+    	}
     }
 }

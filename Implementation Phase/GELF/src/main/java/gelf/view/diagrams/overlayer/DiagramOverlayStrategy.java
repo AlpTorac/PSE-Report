@@ -5,13 +5,14 @@ import java.util.TreeSet;
 
 import gelf.view.diagrams.IDiagram;
 import gelf.view.diagrams.SettingsProvider;
+import gelf.view.diagrams.builder.IDiagramBuilder;
 import gelf.view.diagrams.components.DiagramAxis;
 import gelf.view.diagrams.components.DiagramComponent;
 import gelf.view.diagrams.components.DiagramComponentFactory;
 import gelf.view.diagrams.components.DiagramValueDisplayComponent;
 import gelf.view.diagrams.data.DiagramData;
 
-public abstract class DiagramOverlayStrategy {
+public abstract class DiagramOverlayStrategy implements IDiagramBuilder {
 	protected static DiagramComponentFactory factory = DiagramComponentFactory.getDiagramComponentFactory();
 	protected static SettingsProvider settingsProvider = SettingsProvider.getInstance();
 	
@@ -248,52 +249,6 @@ public abstract class DiagramOverlayStrategy {
 		return allAxes;
 	}
 	
-	protected DiagramAxis[] unifyAxes(DiagramAxis[][] allAxes) {
-		int axesPerDiagram = allAxes.length;
-		int diagramCount = allAxes[0].length;
-		
-		DiagramAxis[] visuallyShortestAxis = new DiagramAxis[axesPerDiagram];
-		DiagramAxis[] axisWithMinimumValue = new DiagramAxis[axesPerDiagram];
-		DiagramAxis[] axisWithMaximumValue = new DiagramAxis[axesPerDiagram];
-		DiagramAxis[] axisWithMaximumSteps = new DiagramAxis[axesPerDiagram];
-		
-		for (int i = 0; i < axesPerDiagram; i++) {
-			visuallyShortestAxis[i] = allAxes[i][0];
-			axisWithMinimumValue[i] = allAxes[i][0];
-			axisWithMaximumValue[i] = allAxes[i][0];
-			axisWithMaximumSteps[i] = allAxes[i][0];
-		}
-		
-		for (int i = 0; i < axesPerDiagram; i++) {
-			for (int j = 0; j < diagramCount; j++) {
-				DiagramAxis currentAxis = allAxes[i][j];
-				if (visuallyShortestAxis[i].getLineLength() > currentAxis.getLineLength()) {
-					visuallyShortestAxis[i] = currentAxis;
-				}
-				if (axisWithMinimumValue[i].getMin() > currentAxis.getMin()) {
-					axisWithMinimumValue[i] = currentAxis;
-				}
-				if (axisWithMaximumValue[i].getMax() < currentAxis.getMax()) {
-					axisWithMaximumValue[i] = currentAxis;
-				}
-				if (axisWithMaximumSteps[i].getSteps() < currentAxis.getSteps()) {
-					axisWithMaximumSteps[i] = currentAxis;
-				}
-			}
-		}
-		
-		DiagramAxis[] axes = new DiagramAxis[axesPerDiagram];
-		
-		for (int index = 0; index < axesPerDiagram; index++) {
-			axes[index] = factory.createSolidAxis(visuallyShortestAxis[index].getLineStart(), visuallyShortestAxis[index].getLineEnd(),
-					axisWithMinimumValue[index].getMin(), axisWithMaximumValue[index].getMax(),
-					axisWithMaximumSteps[index].getSteps(), visuallyShortestAxis[index].getColor(), visuallyShortestAxis[index].getLineThickness());
-			axes[index].setShowValuesUnderAxis(visuallyShortestAxis[index].areValuesUnderAxis());
-		}
-		
-		return axes;
-	}
-	
 	protected abstract DiagramValueDisplayComponent[] makeValueDisplayComponentsForOneDiagram(DiagramData diagramData, int orderInSameDiagram, DiagramAxis[] axes, DiagramComponent[] nonValueDisplayComponents);
 	
 	protected DiagramValueDisplayComponent[] makeValueDisplayComponents(DiagramAxis[] axes, DiagramComponent[] nonValueDisplayComponents, DiagramData[] diagramData) {
@@ -360,7 +315,7 @@ public abstract class DiagramOverlayStrategy {
 	public IDiagram overlay() {
 		DiagramData[] clonedData = this.cloneData();
 		
-		DiagramAxis[] axes = this.unifyAxes(this.getAllAxes());
+		DiagramAxis[] axes = this.buildAxes();
 		if (clonedData[0].getNumberOfIndices() > 0) {
 			clonedData = this.unifyData(clonedData, this.unifyIndices(clonedData));
 		}
@@ -369,5 +324,53 @@ public abstract class DiagramOverlayStrategy {
 		DiagramValueDisplayComponent[] dvdcs = this.makeValueDisplayComponents(axes, dcs, clonedData);
 		
 		return this.buildDiagram(this.combineData(clonedData), axes, dvdcs, dcs);
+	}
+	
+	@Override
+	public float getYAxisMinValue() {
+		float minVal = Float.MAX_VALUE;
+		
+		DiagramAxis[][] axes = this.getAllAxes();
+		
+		for (int i = 0; i < axes[1].length; i++) {
+			float currentMinCandidate = axes[1][i].getMin();
+			if (minVal > currentMinCandidate) {
+				minVal = currentMinCandidate;
+			}
+		}
+		
+		return minVal;
+	}
+
+	@Override
+	public float getXAxisMaxValue() {
+		float maxVal = -Float.MAX_VALUE;
+		
+		DiagramAxis[][] axes = this.getAllAxes();
+		
+		for (int i = 0; i < axes[0].length; i++) {
+			float currentMaxCandidate = axes[0][i].getMax();
+			if (maxVal < currentMaxCandidate) {
+				maxVal = currentMaxCandidate;
+			}
+		}
+		
+		return maxVal;
+	}
+
+	@Override
+	public float getYAxisMaxValue() {
+		float maxVal = -Float.MAX_VALUE;
+		
+		DiagramAxis[][] axes = this.getAllAxes();
+		
+		for (int i = 0; i < axes[1].length; i++) {
+			float currentMaxCandidate = axes[1][i].getMax();
+			if (maxVal < currentMaxCandidate) {
+				maxVal = currentMaxCandidate;
+			}
+		}
+		
+		return maxVal;
 	}
 }

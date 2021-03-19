@@ -217,6 +217,20 @@ public class OutputPin extends Pin {
 	public void setMaxCapacitance(float maxCapacitance) {
 		this.maxCapacitance = maxCapacitance;
 	}
+	
+	public void scaleOutputPower(float scaleValue) {
+    	for (OutputPower i : outputPowers) {
+    		i.scale(scaleValue);
+    	}
+    	calculate();
+    }
+	
+	public void scaleTiming(float scaleValue) {
+    	for (Timing i : timings) {
+    		i.scale(scaleValue);
+    	}
+    	calculate();
+    }
 
 	@Override
 	public void setAvailablePower() {

@@ -3,6 +3,7 @@ package gelf.controller.listeners;
 import gelf.model.commands.MergeCommand;
 import gelf.model.elements.Element;
 import gelf.model.elements.Library;
+import gelf.model.project.Model;
 import gelf.view.composites.Outliner;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,6 +30,10 @@ public class MergeListener implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if (Model.getInstance().getCurrentProject().getLibraries().isEmpty()) {
+			JOptionPane.showMessageDialog(new JFrame(), "No library has been loaded in the application.", "Error", JOptionPane.ERROR_MESSAGE);
+			return;
+		}
 		if (outliner.getSelectedElements().isEmpty() || outliner.getSelectedElements().size() <= 1) {
 			JOptionPane.showMessageDialog(new JFrame(), "Select at least 2 libraries.", "Error", JOptionPane.ERROR_MESSAGE);
 			return;

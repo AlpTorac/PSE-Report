@@ -3,6 +3,7 @@ package gelf.model.elements;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -25,6 +26,7 @@ public class Library extends HigherElement {
     private ArrayList<Cell> cells = new ArrayList<Cell>();
     private Stat defaultLeakage;
     private File libraryFile;
+    
     /**
      * Initializes the library
      * @param name Name of the library
@@ -40,7 +42,7 @@ public class Library extends HigherElement {
     	this.index2 = index2;
     	this.path = path;
     	this.cells = cells;
-    	
+
     	this.setAvailableInputPower();
     	this.setAvailableOutputPower();
     	this.setAvailableTimGr();
@@ -85,14 +87,29 @@ public class Library extends HigherElement {
 	 * @param dataLib the library object with the necessary data
 	 * @author Xhulio Pernoca
 	 */
+	@SuppressWarnings("unchecked")
 	public void replaceData(Library originDataLib) {
 		Library dataLib = originDataLib.clone();
         setName(dataLib.getName());
         setSearched(dataLib.getSearched());
 		setHasShownElements(dataLib.isHasShownElements());
-    	setCells(dataLib.getCells());
-		for (Cell cell: dataLib.getCells()) {
-			cell.setParentLibrary(this);
+		ArrayList<Cell> ownCells = cells;
+		cells = new ArrayList<Cell>();
+		for (Cell cell2: dataLib.getCells()) {
+			boolean isReplaced = false;
+			for (Cell cell1: ownCells) {
+				if (cell1.getName().equals(cell2.getName())) {
+					cell1.replaceData(cell2);
+					cells.add(cell1);
+					ownCells.remove(cell1);
+					isReplaced = true;
+					break;
+				}
+			}
+			if (!isReplaced) {
+				cells.add(cell2);
+				cell2.setParentLibrary(this);
+			}
 		}
         setIndex1(dataLib.getIndex1());
 	    setIndex2(dataLib.getIndex2());
@@ -129,6 +146,7 @@ public class Library extends HigherElement {
 	
 	public void setCells(ArrayList<Cell> cells) {
 		this.cells = cells;
+		Collections.sort(cells, new CompareElementByName());
 	}
 	
 	public Stat getDefaultLeakage() {
@@ -480,5 +498,34 @@ public class Library extends HigherElement {
 		FileManager.showProperties(libraryFile);
 	}
 	
-	
+	public void scaleInputPower(float scaleValue) {
+    	for (Cell i : cells) {
+    		i.scaleInputPower(scaleValue);
+    	}
+    	calculate();
+    }
+	public void scaleOutputPower(float scaleValue) {
+    	for (Cell i : cells) {
+    		i.scaleOutputPower(scaleValue);
+    	}
+    	calculate();
+    }
+	public void scaleTiming(float scaleValue) {
+    	for (Cell i : cells) {
+    		i.scaleTiming(scaleValue);
+    	}
+    	calculate();
+    }
+	public void scaleLeakages(float scaleValue) {
+    	for (Cell i : cells) {
+    		i.getLeakages().scale(scaleValue);
+    	}
+    	calculate();
+	}
+	public void scaleDefaultLeakage(float scaleValue) {
+    	for (Cell i : cells) {
+    		i.setDefaultLeakage(i.getDefaultLeakage() * scaleValue);
+    	}
+    	calculate();
+	}
 }

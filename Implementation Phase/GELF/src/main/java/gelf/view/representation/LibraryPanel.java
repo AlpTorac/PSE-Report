@@ -1,7 +1,9 @@
 package gelf.view.representation;
 
 import gelf.model.elements.*;
+import gelf.view.components.Label;
 import gelf.view.components.Panel;
+import gelf.view.composites.ColorTheme;
 import gelf.view.composites.SubWindow;
 
 import java.awt.Button;
@@ -10,7 +12,6 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Label;
 import java.awt.ScrollPane;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -58,6 +59,19 @@ public class LibraryPanel extends Panel implements MouseListener{
         cells = selectedLibrary.getCells();
         buttons = new HashMap<Label,Cell>();
         listPanel = new JPanel(); 
+
+		for (int i = 0; i < cells.size(); i++) {
+			Label label = new Label();
+			label.setText(cells.get(i).getName());
+			label.setFont(new Font("Arial", Font.PLAIN, 12));
+			label.setForeground(Color.WHITE);
+			label.addMouseListener(this);
+			
+			listPanel.add(label);
+			buttonList.add(label);
+			buttons.put(label, cells.get(i));
+		}
+
         listPanel.setLayout(new GridLayout(0,4));
         listPanel.setBackground(new Color(0.3f, 0.3f, 0.3f));
         scrollPane = new JScrollPane(listPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
@@ -66,16 +80,6 @@ public class LibraryPanel extends Panel implements MouseListener{
         scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
         listPanel.setSize(width, height);
          
-        for (int i = 0; i < cells.size(); i++) {
-        	Label label = new Label();
-        	label.setText(cells.get(i).getName());
-        	label.setFont(new Font("Arial", Font.PLAIN, 12));
-        	buttonList.add(label);
-        	label.setForeground(Color.WHITE);
-        	listPanel.add(label);
-        	label.addMouseListener(this);
-        	buttons.put(label, cells.get(i));
-        }
         this.setVisible(true);
 
     }
@@ -98,26 +102,23 @@ public class LibraryPanel extends Panel implements MouseListener{
     
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
+	public void mousePressed(MouseEvent e) {
 		subwindow.setElement(buttons.get(e.getSource()));
-		this.setVisible(false);
-		
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		e.getComponent().setBackground(Color.GREEN);
+		e.getComponent().setBackground(ColorTheme.active);
 		
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		e.getComponent().setBackground(new Color(0.3f, 0.3f, 0.3f));
-		
+		e.getComponent().setBackground(ColorTheme.interactable);
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {}
+	public void mouseClicked(MouseEvent e) {}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {}

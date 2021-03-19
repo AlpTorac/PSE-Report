@@ -33,14 +33,13 @@ public class LibertyCompiler {
      * @return the String in Liberty File Format
      */
     public static String compile(Cell cell) {
-        String output = "\tcell(" + cell.getName() + ") {\n"; //+ cell.getCellData();
+        String output = "\n\tcell(" + cell.getName() + ") {\n"; //+ cell.getCellData();
         output += "\t\tcell_leakage_power : " + Model.formatFloat(cell.getDefaultLeakage()) + ";\n";
         ArrayList<InputPin> inPins = cell.getInPins();
         String[] inPinNames = new String[inPins.size()];
         for (int i = 0; i < inPins.size(); i++) {
             inPinNames[i] = inPins.get(i).getName();
         }
-        output += "\n";
         for (String leakageString: compileLeakage(cell.getLeakages())) {
             output += leakageString;
         }
@@ -50,7 +49,7 @@ public class LibertyCompiler {
         for (OutputPin outPin : cell.getOutPins()) {
             output += compile(outPin);
         }
-        output += "\n\t}";
+        output += "\n\t}\n";
         return output;
     }
 
@@ -61,7 +60,7 @@ public class LibertyCompiler {
      */
     public static String compile(InputPin pin) {
         String index1String = "\t\t\t\t\tindex_1(" + compileArray(pin.getParent().getIndex1()) + ");\n";
-        String output = "\t\tpin(" + pin.getName() + ") {\n"
+        String output = "\n\t\tpin(" + pin.getName() + ") {\n"
         + "\t\t\tcapacitance : " + Model.formatFloat(pin.getCapacitance()) + " ;\n"
         + "\t\t\tdirection : input ;\n";
         if (!pin.getInputPowers().isEmpty()){

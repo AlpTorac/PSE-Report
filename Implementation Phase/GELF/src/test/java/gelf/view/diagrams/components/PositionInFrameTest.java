@@ -51,5 +51,7 @@ class PositionInFrameTest implements TestCase {
 		
 		Assertions.assertEquals(pos.getXPos(), posClone.getXPos());
 		Assertions.assertEquals(pos.getYPos(), posClone.getYPos());
+		
+		Assertions.assertTrue(pos.equals(posClone));
 	}
 }

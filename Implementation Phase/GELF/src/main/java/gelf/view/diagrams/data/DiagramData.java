@@ -3,6 +3,8 @@ package gelf.view.diagrams.data;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import gelf.view.diagrams.SettingsProvider;
+
 public class DiagramData {
 	private Collection<?> data;
 	private Collection<?> descriptions;
@@ -216,6 +218,121 @@ public class DiagramData {
 			clone = new DiagramData(clonedData, clonedDescs, this.getNumberOfIndices());
 		}
 		return clone;
+	}
+	
+	public boolean areValuesSame(DiagramData data) {
+		ArrayList<float[]> values = this.extractValues();
+		ArrayList<float[]> dataValues = data.extractValues();
+		
+		if (values != null && dataValues != null) {
+			for (int i = 0; i < values.size(); i++) {
+				
+				if (values.get(i).length != dataValues.get(i).length) {
+					return false;
+				}
+				
+				for (int j = 0; j < values.get(i).length; j++) {
+					if (Math.abs(dataValues.get(i)[j] - values.get(i)[j]) > SettingsProvider.getTolerance()) {
+						return false;
+					}
+				}
+			}
+			return true;
+		} else if (values == null && dataValues == null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean areIndicesSame(DiagramData data) {
+		ArrayList<float[]> indices = this.extractIndices();
+		ArrayList<float[]> dataIndices = data.extractIndices();
+		
+		if (indices != null && dataIndices != null) {
+			for (int i = 0; i < indices.size(); i++) {
+				
+				if (indices.get(i).length != dataIndices.get(i).length) {
+					return false;
+				}
+				
+				for (int j = 0; j < indices.get(i).length; j++) {
+					if (Math.abs(dataIndices.get(i)[j] - indices.get(i)[j]) > SettingsProvider.getTolerance()) {
+						return false;
+					}
+				}
+			}
+			
+			return true;
+		} else if (indices == null && dataIndices == null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean areValueDescriptionsSame(DiagramData data) {
+		ArrayList<String[]> valueDescs = this.extractValueDescriptions();
+		ArrayList<String[]> dataValueDescs = data.extractValueDescriptions();
+		
+		if (valueDescs != null && dataValueDescs != null) {
+			for (int i = 0; i < valueDescs.size(); i++) {
+				
+				if (valueDescs.get(i).length != dataValueDescs.get(i).length) {
+					return false;
+				}
+				
+				for (int j = 0; j < valueDescs.get(i).length; j++) {
+					if (!dataValueDescs.get(i)[j].equals(valueDescs.get(i)[j])) {
+						return false;
+					}
+				}
+			}
+			
+			return true;
+		} else if (valueDescs == null && dataValueDescs == null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean areIndexDescriptionsSame(DiagramData data) {
+		ArrayList<String[]> indexDescs = this.extractIndexDescriptions();
+		ArrayList<String[]> dataIndexDescs = data.extractIndexDescriptions();
+		
+		if (indexDescs != null && dataIndexDescs != null) {
+			for (int i = 0; i < indexDescs.size(); i++) {
+				
+				if (indexDescs.get(i).length != dataIndexDescs.get(i).length) {
+					return false;
+				}
+				
+				for (int j = 0; j < indexDescs.get(i).length; j++) {
+					if (!dataIndexDescs.get(i)[j].equals(indexDescs.get(i)[j])) {
+						return false;
+					}
+				}
+			}
+			
+			return true;
+		} else if (indexDescs == null && dataIndexDescs == null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	@Override
+	public boolean equals(Object object) {
+		if (object == null || !(object instanceof DiagramData)) {
+			return false;
+		}
+		
+		DiagramData data = (DiagramData) object;
+
+		return this.areValuesSame(data) && this.areIndicesSame(data) &&
+				this.areValueDescriptionsSame(data) && this.areIndexDescriptionsSame(data);
 	}
 	
 	public int getNumberOfIndices() {

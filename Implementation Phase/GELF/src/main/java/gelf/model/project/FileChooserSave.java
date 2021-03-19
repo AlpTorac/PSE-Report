@@ -56,21 +56,15 @@ public class FileChooserSave extends JFrame {
             }
             break;
 
-         case JFileChooser.CANCEL_OPTION:
-            JOptionPane.showMessageDialog(FileChooserSave.this, "Cancelled",
-                                          "FileChooserOpen",
-                                          JOptionPane.OK_OPTION);
-            break;
-      
          case JFileChooser.ERROR_OPTION:
             JOptionPane.showMessageDialog(FileChooserSave.this, "Error",
-                                          "FileChooserOpen",
+                                          "FileChooserSave",
                                           JOptionPane.OK_OPTION);
       }        
    }
    public void showCancel() {
 	   JOptionPane.showMessageDialog(FileChooserSave.this, "Cancelled",
-               "FileChooserOpen",
+               "FileChooserSave",
                JOptionPane.OK_OPTION);
    }
    

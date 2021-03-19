@@ -5,6 +5,7 @@ import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
 import gelf.model.commands.CommandHistory;
+import gelf.model.parsers.LibertyParser;
 
 /**
  * Keeps track of the component classes the whole model as well as instantiating them
@@ -27,6 +28,7 @@ public class Model {
     private Model() {
         currentProject = new Project();
         currentCommandHistory = new CommandHistory();
+        LibertyParser.setUp();
     }
     
     /**
@@ -40,25 +42,6 @@ public class Model {
             return scFormat.format(number).toLowerCase();
     	} else {
     		return format.format(number);
-    	}
-    }
-
-    /**
-     * Formats a number while setting how many decimals have to be shown
-     * @param number the number to be formatted
-     * @param decimalSpots the number of decimals that are shown
-     * @return the formatted String of the number
-     */
-    public static String formatIndex(float number, int decimalSpots) {
-        String decimals = "";
-        for (int i = 0; i < decimalSpots; i++) {
-            decimals += "#";
-        }
-        DecimalFormat indexFormat = new DecimalFormat("#." + decimals, formatSymbols);
-        if ((number < 0.0001 || number > 1000000) && number != 0) {
-            return scFormat.format(number).toLowerCase();
-    	} else {
-    		return indexFormat.format(number);
     	}
     }
 

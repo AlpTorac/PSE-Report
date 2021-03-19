@@ -20,12 +20,12 @@ public class HistogramBuilder extends DiagramBuilder implements IHistogramBuilde
 	}
 
 	@Override
-	protected float getXAxisMaxValue() {
+	public float getXAxisMaxValue() {
 		return this.getDiagramData().getMaximumIndex();
 	}
 
 	@Override
-	protected float getYAxisMinValue() {
+	public float getYAxisMinValue() {
 		float minVal = this.getDiagramData().getMinimumValue();
 		
 		if (minVal >= 0) {
@@ -36,7 +36,7 @@ public class HistogramBuilder extends DiagramBuilder implements IHistogramBuilde
 	}
 	
 	@Override
-	protected float getYAxisMaxValue() {
+	public float getYAxisMaxValue() {
 		float maxVal = this.getDiagramData().getMaximumValue();
 		
 		if (maxVal <= 0) {

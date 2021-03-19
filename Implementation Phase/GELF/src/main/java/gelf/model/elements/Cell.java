@@ -209,17 +209,46 @@ public class Cell extends HigherElement {
 		setDefaultLeakage(dataCell.getDefaultLeakage());
 		setSearched(dataCell.getSearched());
 		setHasShownElements(dataCell.isHasShownElements());
-		setInPins(dataCell.getInPins());
-		setOutPins(dataCell.getOutPins());
-		for (InputPin pin: dataCell.getInPins()) {
-			pin.setParent(this);
+		ArrayList<InputPin> ownInPins = inPins;
+		ArrayList<OutputPin> ownOutPins = outPins;
+		inPins = new ArrayList<InputPin>();
+		outPins = new ArrayList<OutputPin>();
+		for (InputPin pin2: dataCell.getInPins()) {
+			boolean isReplaced = false;
+			for (InputPin pin1: ownInPins) {
+				if (pin1.getName().equals(pin2.getName())) {
+					pin1.replaceData(pin2);
+					inPins.add(pin1);
+					ownInPins.remove(pin1);
+					isReplaced = true;
+					break;
+				}
+			}
+			if (!isReplaced) {
+				inPins.add(pin2);
+				pin2.setParent(this);
+			}
 		}
-		for (OutputPin pin: dataCell.getOutPins()) {
-			pin.setParent(this);
+		for (OutputPin pin2: dataCell.getOutPins()) {
+			boolean isReplaced = false;
+			for (OutputPin pin1: ownOutPins) {
+				if (pin1.getName().equals(pin2.getName())) {
+					pin1.replaceData(pin2);
+					outPins.add(pin1);
+					ownOutPins.remove(pin1);
+					isReplaced = true;
+					break;
+				}
+			}
+			if (!isReplaced) {
+				outPins.add(pin2);
+				pin2.setParent(this);
+			}
 		}
 		setIndex1(dataCell.getIndex1());
 		setIndex2(dataCell.getIndex2());
 	}
+
 	/**
 	 * Interpolates to unify different indexes in a cell.
 	 * @param index1 First index array
@@ -621,5 +650,24 @@ public class Cell extends HigherElement {
 			}
 		}
 	}
+	public void scaleInputPower(float scaleValue) {
+    	for (InputPin i : inPins) {
+    		i.scale(scaleValue);
+    	}
+    	calculate();
+    }
+	public void scaleOutputPower(float scaleValue) {
+    	for (OutputPin i : outPins) {
+    		i.scaleOutputPower(scaleValue);
+    	}
+    	calculate();
+    }
+	public void scaleTiming(float scaleValue) {
+    	for (OutputPin i : outPins) {
+    		i.scaleTiming(scaleValue);
+    	}
+    	calculate();
+    }
+	
 
 }

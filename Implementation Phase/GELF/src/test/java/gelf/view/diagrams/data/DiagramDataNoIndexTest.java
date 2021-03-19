@@ -153,33 +153,7 @@ class DiagramDataNoIndexTest {
 	@Test
 	void cloneTest() {
 		DiagramData clone = data.clone();
-		
-		ArrayList<float[]> values = clone.extractValues();
-		ArrayList<float[]> indices = clone.extractIndices();
-		ArrayList<String[]> valueDescs = clone.extractValueDescriptions();
-		ArrayList<String[]> indexDescs = clone.extractIndexDescriptions();
-		
-		ArrayList<float[]> Ovalues = data.extractValues();
-		ArrayList<float[]> Oindices = data.extractIndices();
-		ArrayList<String[]> OvalueDescs = data.extractValueDescriptions();
-		ArrayList<String[]> OindexDescs = data.extractIndexDescriptions();
-		
-		for (int i = 0; i < values.size(); i++) {
-			for (int j = 0; j < values.get(i).length; j++) {
-				Assertions.assertArrayEquals(Ovalues.get(i), values.get(i));
-			}
-		}
-		
-		for (int i = 0; i < valueDescs.size(); i++) {
-			for (int j = 0; j < valueDescs.get(i).length; j++) {
-				Assertions.assertArrayEquals(OvalueDescs.get(i), valueDescs.get(i));
-			}
-		}
-		
-		Assertions.assertNull(indices);
-		Assertions.assertNull(Oindices);
-		Assertions.assertNull(indexDescs);
-		Assertions.assertNull(OindexDescs);
+		Assertions.assertTrue(data.equals(clone));
 	}
 	@Test
 	void indexCountTest() {

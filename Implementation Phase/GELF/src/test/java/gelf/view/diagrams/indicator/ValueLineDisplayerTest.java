@@ -3,11 +3,12 @@ package gelf.view.diagrams.indicator;
 import java.awt.Container;
 import java.util.ArrayList;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import gelf.view.diagrams.DiagramWizard;
 import gelf.view.diagrams.IDiagram;
+import gelf.view.diagrams.IDiagramWizard;
 import gelf.view.diagrams.TestCase;
 import gelf.view.diagrams.TestFrame;
 import gelf.view.diagrams.TestPanel;
@@ -23,6 +24,7 @@ class ValueLineDisplayerTest implements TestCase {
 	
 	private static HistogramBuilder builder = new HistogramBuilder(container);
 	
+	private static IDiagramWizard wiz = new DiagramWizard();
 	private static IDiagram chart;
 	
 	@BeforeAll
@@ -48,14 +50,19 @@ class ValueLineDisplayerTest implements TestCase {
 		min.show();
 		
 		chart.refresh();
-		show(frame, TestCase.SHOW_DURATION);
+		show(frame, TestCase.FAST_SHOW_DURATION);
+		
+		min.remove();
 	}
 	
 	@Test
 	void maxTest() {
 		DiagramViewHelper max = factory.createMaxLineDisplayer(chart);
 		
-		show(frame, TestCase.SHOW_DURATION);
+		max.show();
+		
+		chart.refresh();
+		show(frame, TestCase.FAST_SHOW_DURATION);
 		
 		max.remove();
 	}
@@ -67,7 +74,9 @@ class ValueLineDisplayerTest implements TestCase {
 		avg.show();
 		
 		chart.refresh();
-		show(frame, TestCase.SHOW_DURATION);
+		show(frame, TestCase.FAST_SHOW_DURATION);
+		
+		avg.remove();
 	}
 	
 	@Test
@@ -77,13 +86,92 @@ class ValueLineDisplayerTest implements TestCase {
 		med.show();
 		
 		chart.refresh();
-		show(frame, TestCase.SHOW_DURATION);
-	}
-
-	@AfterAll
-	private static void showAllTogether() {
-		chart.refresh();
-		TestCase.showStatic(frame, TestCase.SHOW_DURATION);
+		show(frame, TestCase.FAST_SHOW_DURATION);
+		
+		med.remove();
 	}
 	
+	@Test
+	void minWithWizardTest() {
+		wiz.addMinDisplayer(chart);
+		
+		chart.refresh();
+		show(frame, TestCase.FAST_SHOW_DURATION);
+		
+		chart.hideDiagramViewHelper(IndicatorIdentifier.MIN);
+		
+		chart.refresh();
+		show(frame, TestCase.FAST_SHOW_DURATION);
+		
+		chart.showDiagramViewHelper(IndicatorIdentifier.MIN);
+		
+		chart.refresh();
+		show(frame, TestCase.FAST_SHOW_DURATION);
+		
+		chart.hideDiagramViewHelper(IndicatorIdentifier.MIN);
+		chart.removeDiagramViewHelper(IndicatorIdentifier.MIN);
+	}
+	
+	@Test
+	void maxWithWizardTest() {
+		wiz.addMaxDisplayer(chart);
+		
+		chart.refresh();
+		show(frame, TestCase.FAST_SHOW_DURATION);
+		
+		chart.hideDiagramViewHelper(IndicatorIdentifier.MAX);
+		
+		chart.refresh();
+		show(frame, TestCase.FAST_SHOW_DURATION);
+		
+		chart.showDiagramViewHelper(IndicatorIdentifier.MAX);
+		
+		chart.refresh();
+		show(frame, TestCase.FAST_SHOW_DURATION);
+		
+		chart.hideDiagramViewHelper(IndicatorIdentifier.MAX);
+		chart.removeDiagramViewHelper(IndicatorIdentifier.MAX);
+	}
+	
+	@Test
+	void avgWithWizardTest() {
+		wiz.addAvgDisplayer(chart);
+		
+		chart.refresh();
+		show(frame, TestCase.FAST_SHOW_DURATION);
+		
+		chart.hideDiagramViewHelper(IndicatorIdentifier.AVG);
+		
+		chart.refresh();
+		show(frame, TestCase.FAST_SHOW_DURATION);
+		
+		chart.showDiagramViewHelper(IndicatorIdentifier.AVG);
+		
+		chart.refresh();
+		show(frame, TestCase.FAST_SHOW_DURATION);
+		
+		chart.hideDiagramViewHelper(IndicatorIdentifier.AVG);
+		chart.removeDiagramViewHelper(IndicatorIdentifier.AVG);
+	}
+	
+	@Test
+	void medWithWizardTest() {
+		wiz.addMedDisplayer(chart);
+		
+		chart.refresh();
+		show(frame, TestCase.FAST_SHOW_DURATION);
+		
+		chart.hideDiagramViewHelper(IndicatorIdentifier.MED);
+		
+		chart.refresh();
+		show(frame, TestCase.FAST_SHOW_DURATION);
+		
+		chart.showDiagramViewHelper(IndicatorIdentifier.MED);
+		
+		chart.refresh();
+		show(frame, TestCase.FAST_SHOW_DURATION);
+		
+		chart.hideDiagramViewHelper(IndicatorIdentifier.MED);
+		chart.removeDiagramViewHelper(IndicatorIdentifier.MED);
+	}
 }

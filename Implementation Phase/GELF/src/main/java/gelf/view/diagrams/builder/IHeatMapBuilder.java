@@ -20,15 +20,16 @@ public interface IHeatMapBuilder extends IDiagramBuilder, ContainerAccessPoint {
 		ArrayList<float[]> indexList = data.extractIndices();
 		ArrayList<float[]> valueList = data.extractValues();
 		
-		float[][] indices = new float[indexList.size()][indexList.get(0).length];
+		float[][] indices = new float[indexList.size()][];
 		indexList.toArray(indices);
 		
-		float[][] values = new float[valueList.size()][valueList.get(0).length];
+		float[][] values = new float[valueList.size()][];
 		valueList.toArray(values);
 		
-		int indexCount = values.length;
+		int index1Count = indexList.get(0).length;
+		int index2Count = indexList.get(1).length;
 		
-		int dvdcCount = indexCount * indexCount;
+		int dvdcCount = index1Count * index2Count;
 		
 		DiagramValueDisplayComponent[] dvdc = new DiagramValueDisplayComponent[dvdcCount];
 		
@@ -36,17 +37,17 @@ public interface IHeatMapBuilder extends IDiagramBuilder, ContainerAccessPoint {
 		
 		dvdc[0] = makeOriginLabel(axes, indices, values, diagramSpecificComponent, thickness);
 		
-		for (int i = 1; i < indexCount; i++) {
-			dvdc[i * indexCount] = makeNullIndex1Label(axes, indices, values, i, diagramSpecificComponent, thickness);
+		for (int i = 1; i < index1Count; i++) {
+			dvdc[i * index2Count] = makeNullIndex1Label(axes, indices, values, i, diagramSpecificComponent, thickness);
 		}
 		
-		for (int j = 1; j < indexCount; j++) {
+		for (int j = 1; j < index2Count; j++) {
 			dvdc[j] = makeNullIndex2Label(axes, indices, values, j, diagramSpecificComponent, thickness);
 		}
 		
-		for (int i = 1; i < indexCount; i++) {
-			for (int j = 1; j < indexCount; j++) {
-				dvdc[i * indexCount + j] = makeLabel(axes, indices, values, i, j, diagramSpecificComponent, thickness);
+		for (int i = 1; i < index1Count; i++) {
+			for (int j = 1; j < index2Count; j++) {
+				dvdc[i * index2Count + j] = makeLabel(axes, indices, values, i, j, diagramSpecificComponent, thickness);
 			}
 		}
 		

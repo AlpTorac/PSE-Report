@@ -52,27 +52,13 @@ public class FileChooserOpen extends JFrame {
             if(option == JOptionPane.YES_OPTION){
             	selectedFile = fc.getSelectedFile();
             }
-            else if(option == JOptionPane.NO_OPTION){
-            	showCancel();
-            }
             break;
 
-         case JFileChooser.CANCEL_OPTION:
-            JOptionPane.showMessageDialog(FileChooserOpen.this, "Cancelled",
-                                          "FileChooserOpen",
-                                          JOptionPane.OK_OPTION);
-            break;
-      
          case JFileChooser.ERROR_OPTION:
             JOptionPane.showMessageDialog(FileChooserOpen.this, "Error",
                                           "FileChooserOpen",
                                           JOptionPane.OK_OPTION);
       }        
-   }
-   public void showCancel() {
-	   JOptionPane.showMessageDialog(FileChooserOpen.this, "Cancelled",
-               "FileChooserOpen",
-               JOptionPane.OK_OPTION);
    }
    
    public File getSelectedFile() {

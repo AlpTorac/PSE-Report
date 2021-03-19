@@ -61,6 +61,8 @@ class PositionsIn2DDiagramTest implements TestCase {
 		
 		Assertions.assertEquals(pos.getXCoordinate(), posClone.getXCoordinate());
 		Assertions.assertEquals(pos.getYCoordinate(), posClone.getYCoordinate());
+		
+		Assertions.assertTrue(pos.equals(posClone));
 	}
 	
 	@Test
