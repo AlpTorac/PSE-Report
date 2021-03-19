@@ -909,14 +909,11 @@ public class Visualizer extends ElementManipulator implements Updatable, IHighli
     
 	@Override
     public void receiveHoveredElementInfo(int[] indexPositions) {
-//		The commented out part is for testing only
-//		
-//    	System.out.print("Indices received: ");
-//    	for (int indexPosition : indexPositions) {
-//    		System.out.print(indexPosition + " ");
-//    	}
-//    	System.out.print("\n");
-		this.subWindow.parent.highlightTextEditors(null, 0.0f);
+		String attrStr = "";
+		//TODO
+		
+		
+		this.subWindow.parent.highlightTextEditors(this.element, attrStr);
 	}
 
 	public void setScaleValue(float scaleValue) {
@@ -926,6 +923,6 @@ public class Visualizer extends ElementManipulator implements Updatable, IHighli
 
 	@Override
 	public void stopHighlighting() {
-		// TODO Auto-generated method stub
+		this.subWindow.parent.stopHighlighting();
 	}
 }
