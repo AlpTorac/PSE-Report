@@ -3,7 +3,6 @@ package gelf.view.diagrams.components;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
