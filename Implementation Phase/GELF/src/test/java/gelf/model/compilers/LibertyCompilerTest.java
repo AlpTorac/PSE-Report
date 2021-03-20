@@ -382,17 +382,19 @@ class LibertyCompilerTest {
 	static void createLib() throws IOException, InvalidFileFormatException {
 		/*String content;
 		content = new String(Files.readAllBytes(Paths.get("resources.baseline.txt")));*/
+		LibertyParser.setUp();
 		exampleLibrary = LibertyParser.parseLibrary(exampleString);
 	}
 	
 	@Test
 	void compileLibraryTest() throws InvalidFileFormatException {
 		String compiledString = LibertyCompiler.compile(exampleLibrary);
-		Library resLibrary = LibertyParser.parseLibrary(compiledString.replaceAll("\\s+", ""));
+		Library resLibrary = LibertyParser.parseLibrary(compiledString);
 		assertEquals(exampleLibrary.getName(), resLibrary.getName());
 		for (int i = 0; i < exampleLibrary.getCells().size(); i++) {
 			assertEquals(exampleLibrary.getCells().get(i).getName(), resLibrary.getCells().get(i).getName());
 		}
+		assertArrayEquals(exampleLibrary.getUnits(), resLibrary.getUnits());
 	}
 	
 	@Test

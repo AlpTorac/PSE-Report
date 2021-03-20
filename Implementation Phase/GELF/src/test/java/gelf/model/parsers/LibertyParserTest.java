@@ -1190,7 +1190,11 @@ class LibertyParserTest {
 			"  delay_model : table_lookup ; \r\n" + 
 			"  library_features(report_delay_calculation, report_power_calculation);\r\n" + 
 			"  time_unit : 1ns ; \r\n" + 
-			"  voltage_unit : 1V ; \r\n"+
+			"  voltage_unit : 1V ; \r\n" + 
+			"  current_unit : 1mA ; \r\n" + 
+			"  capacitive_load_unit(1, pf);\r\n" + 
+			"  pulling_resistance_unit : 1ohm ; \r\n" + 
+			"  leakage_power_unit : 1uW ; " +
 			"  input_voltage(default) { \r\n" + 
 			"    vil : 0 ; \r\n" + 
 			"    vih : 0.6 ; \r\n" + 
@@ -1707,8 +1711,10 @@ class LibertyParserTest {
 		Cell cell1 = library.getCells().get(0);
 		assertEquals("AND2_X1", cell1.getName());
 		assertEquals(library, cell1.getParentLibrary());
+		assertArrayEquals(new String[] {"1ns", "1V", "1mA", "(1, pf)", "1ohm", "1uW"}, library.getUnits());
 	}
-	
+
+	  
 	@Test
 	void parseLibraryTestEmpty() throws InvalidFileFormatException {
 		InvalidFileFormatException thrown = assertThrows(
