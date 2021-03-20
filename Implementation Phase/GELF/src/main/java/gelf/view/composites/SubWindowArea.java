@@ -27,7 +27,7 @@ public class SubWindowArea extends Panel {
     private Panel windowPanel;
     private int maxSubWindows = 10;
     public ArrayList<SubWindow> subWindows = new ArrayList<>();
-    //colors
+    // colors
     private Color cBackground = ColorTheme.frame;
 
     public SubWindowArea(int width, int height) {
@@ -36,24 +36,25 @@ public class SubWindowArea extends Panel {
         this.setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
         Border margin = new EmptyBorder(3, 5, 3, 3);
         this.setBorder(margin);
-        //window panel
+        // window panel
         this.windowPanel = new Panel(100, 100);
         this.windowPanel.setBackground(cBackground);
         this.windowPanel.setLayout(new BoxLayout(this.windowPanel, BoxLayout.LINE_AXIS));
         this.windowPanel.setVisible(true);
-        //pane
-        this.pane = new JScrollPane(this.windowPanel, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        // pane
+        this.pane = new JScrollPane(this.windowPanel, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         this.pane.setBorder(null);
         this.pane.setBackground(cBackground);
         this.pane.setVisible(true);
         this.add(pane);
-        //SWA
+        // SWA
         this.revalidate();
         this.repaint();
     }
-    
+
     public void addSubWindow(SubWindow window) {
-        if(subWindows.size() < maxSubWindows) {
+        if (subWindows.size() < maxSubWindows) {
             subWindows.add(window);
             this.windowPanel.add(window);
             this.revalidate();
@@ -64,13 +65,13 @@ public class SubWindowArea extends Panel {
     }
 
     public void removeSubWindow(SubWindow window) {
-        if(subWindows.contains(window)) {
+        if (subWindows.contains(window)) {
             subWindows.remove(window);
             this.windowPanel.remove(window);
             this.revalidate();
             this.repaint();
         } else {
-            //TODO error handling
+            // TODO error handling
         }
     }
     public void highlightTextEditors(Element element, int[] indexPositions, Attribute attribute , InputPin selectedPin, PowerGroup powerGroup, TimingSense timingSense, TimingGroup timingGroup, TimingType timingType) {

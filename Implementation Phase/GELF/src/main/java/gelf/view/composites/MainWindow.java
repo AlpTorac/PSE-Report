@@ -1,5 +1,6 @@
 package gelf.view.composites;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -15,8 +16,6 @@ import gelf.model.project.Project;
 import gelf.view.components.Menu;
 import gelf.view.components.MenuBar;
 import gelf.view.components.MenuItem;
-import gelf.view.components.ResizeMode;
-import gelf.view.components.Resizer;
 import gelf.view.components.Window;
 
 /**
@@ -61,6 +60,7 @@ public class MainWindow extends Window {
         this.setBackground(cBackground);
         this.setIconImage(icon);
         this.setVisible(true);
+        this.setLayout(new BorderLayout());
 
         // InfoBar setup
         setupInfoBar(this.getContentPane().getWidth(), 30);
@@ -70,7 +70,7 @@ public class MainWindow extends Window {
 
         // Model stub
         Project testProject = new Project();
-        float index[] = {1f,2f};
+        float index[] = { 1f, 2f };
         ArrayList<Cell> cells = new ArrayList<Cell>();
         Library lib1 = new Library("Library 1", index, index, "Path", cells);
         Library lib2 = new Library("Library 2", index, index, "Path", cells);
@@ -80,13 +80,10 @@ public class MainWindow extends Window {
         testProject.setLibraries(libraries);
 
         // Outliner setup
-        this.outliner = new Outliner(350, this.getContentPane().getHeight() - this.mainMenu.getHeight() - this.infoBar.getHeight(), project);
-        this.outliner.setLocation(0, this.mainMenu.getHeight());
+        this.outliner = new Outliner(350,
+                this.getContentPane().getHeight() - this.mainMenu.getHeight() - this.infoBar.getHeight(), project);
         this.outliner.setVisible(true);
-        this.add(this.outliner);
-        Resizer outlinerResizer = new Resizer(ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_TOP_LEFT,
-                ResizeMode.ABSOLUTE_BOTTOM_RIGHT, ResizeMode.ABSOLUTE_TOP_LEFT);
-        this.setResizer(outliner, outlinerResizer);
+        this.add(this.outliner, BorderLayout.LINE_START);
 
         // SubWindowArea setup
         setupSubWindowArea(this.mainMenu.getHeight(), this.infoBar.getHeight(), this.outliner.getWidth());
@@ -103,75 +100,63 @@ public class MainWindow extends Window {
         // sub3.setBackground(new Color(.4f, .2f, .2f));
         // sub3.setVisible(true);
         // subWindowArea.addSubWindow(sub3);
-        
+
         this.revalidate();
         this.repaint();
     }
 
     private void setupSubWindowArea(int topSpace, int bottomSpace, int leftSpace) {
-        Resizer subWindowAreaResizer = new Resizer(ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_TOP_LEFT,
-                ResizeMode.ABSOLUTE_BOTTOM_RIGHT, ResizeMode.ABSOLUTE_BOTTOM_RIGHT);
         this.subWindowArea = new SubWindowArea(this.getContentPane().getWidth() - leftSpace,
                 this.getContentPane().getHeight() - topSpace - bottomSpace);
-        this.subWindowArea.setLocation(leftSpace, topSpace);
         this.subWindowArea.setVisible(true);
-        this.add(subWindowArea);
-        this.setResizer(subWindowArea, subWindowAreaResizer);
+        this.add(subWindowArea, BorderLayout.CENTER);
     }
 
     private void setupInfoBar(int width, int height) {
         infoBar = new InfoBar(width, height);
-        infoBar.setLocation(0, this.getContentPane().getHeight() - infoBar.getHeight());
         infoBar.setVisible(true);
         infoBar.setText(InfoBarID.VERSION, version);
-        this.add(infoBar);
-        Resizer infoBarResizer = new Resizer(ResizeMode.ABSOLUTE_BOTTOM_RIGHT, ResizeMode.ABSOLUTE_TOP_LEFT,
-                ResizeMode.ABSOLUTE_BOTTOM_RIGHT, ResizeMode.ABSOLUTE_BOTTOM_RIGHT);
-        this.setResizer(infoBar, infoBarResizer);
+        this.add(infoBar, BorderLayout.PAGE_END);
     }
 
     private void setupMainMenu(int width, int height) {
         // make menu bar
         mainMenu = new MenuBar();
-        mainMenu.setBounds(0, 0, width, height);
+        mainMenu.setSize(width, height);
         mainMenu.setBackground(ColorTheme.section);
         mainMenu.setVisible(true);
-        // set resize bahaviour
-        Resizer mainMenuResizer = new Resizer(ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_TOP_LEFT,
-                ResizeMode.ABSOLUTE_TOP_LEFT, ResizeMode.ABSOLUTE_BOTTOM_RIGHT);
-        this.setResizer(mainMenu, mainMenuResizer);
 
-        // initialize menu items 
-        //stub for items with no implemented action
+        // initialize menu items
+        // stub for items with no implemented action
         ActionListener noAction = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//does nothing
-			}
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // does nothing
+            }
         };
 
-        //file menu items
+        // file menu items
         this.itemNew = initMenuItem("New", noAction);
         this.itemOpen = initMenuItem("Open", noAction);
         this.itemSave = initMenuItem("Save", noAction);
         this.itemSaveAll = initMenuItem("Save All", noAction);
         this.itemSaveAs = initMenuItem("Save As", noAction);
         this.itemClose = initMenuItem("Close", noAction);
-        
-        //edit menu items
+
+        // edit menu items
         this.itemUndo = initMenuItem("Undo", noAction);
         this.itemRedo = initMenuItem("Redo", noAction);
         this.itemMergeSelected = initMenuItem("Merge Selected", noAction);
         this.itemMerge = initMenuItem("Merge", noAction);
         this.itemSettings = initMenuItem("Settings", noAction);
-        
-        //info menu items
+
+        // info menu items
         this.itemManual = initMenuItem("Manual", noAction);
         this.itemGithub = initMenuItem("Github", noAction);
         this.itemVersion = initMenuItem("Version", noAction);
 
-        //initialize menus
-        //file menu
+        // initialize menus
+        // file menu
         this.menuFile = new Menu("File");
         this.menuFile.add(this.itemNew);
         this.menuFile.add(this.itemOpen);
@@ -181,7 +166,7 @@ public class MainWindow extends Window {
         this.menuFile.add(this.itemClose);
         this.menuFile.setVisible(true);
         this.mainMenu.add(menuFile);
-        //edit menu
+        // edit menu
         this.menuEdit = new Menu("Edit");
         this.menuEdit.add(this.itemUndo);
         this.menuEdit.add(this.itemRedo);
@@ -190,18 +175,18 @@ public class MainWindow extends Window {
         this.menuEdit.add(this.itemSettings);
         this.menuEdit.setVisible(true);
         this.mainMenu.add(menuEdit);
-        //info menu
+        // info menu
         this.menuInfo = new Menu("Info");
         this.menuInfo.add(this.itemManual);
         this.menuInfo.add(this.itemGithub);
         this.menuInfo.add(this.itemVersion);
         this.menuInfo.setVisible(true);
         this.mainMenu.add(menuInfo);
-        
-        //make swing update and add to window
+
+        // make swing update and add to window
         mainMenu.revalidate();
         mainMenu.repaint();
-        this.add(mainMenu);
+        this.add(mainMenu, BorderLayout.PAGE_START);
     }
 
     private MenuItem initMenuItem(String name, ActionListener action) {
@@ -212,7 +197,8 @@ public class MainWindow extends Window {
     }
 
     public static void main(String[] args) {
-        MainWindow mainWindow = new MainWindow("GELF - Graphical Editor for Liberty Files", 1200, 800, Model.getInstance().getCurrentProject());
+        MainWindow mainWindow = new MainWindow("GELF - Graphical Editor for Liberty Files", 1200, 800,
+                Model.getInstance().getCurrentProject());
         EventManager em = new EventManager(mainWindow);
         mainWindow.outliner.setTreeMouseListener(em);
     }

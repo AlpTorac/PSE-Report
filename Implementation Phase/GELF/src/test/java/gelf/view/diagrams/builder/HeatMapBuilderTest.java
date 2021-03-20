@@ -65,10 +65,10 @@ class HeatMapBuilderTest implements TestCase {
 		
 		Assertions.assertEquals(indexCount, labelCount);
 		
-		this.assertionsForOriginLabel(labels, indices1, indices2, values);
-		this.assertionsForIndex1Null(labels, index1Length, index2Length, indices1, indices2, values);
-		this.assertionsForIndex2Null(labels, index2Length, indices1, indices2, values);
-		this.assertionsForLabel(labels, index1Length, index2Length, indices1, indices2, values);
+		this.assertionsForOriginLabel(labels, index1Length, index2Length, indices1[indices1.length - 1], indices2[indices2.length - 1], values);
+		this.assertionsForIndex1Null(labels, index1Length, index2Length, indices1[indices1.length - 1], indices2[indices2.length - 1], values);
+		this.assertionsForIndex2Null(labels, index1Length, index2Length, indices1[indices1.length - 1], indices2[indices2.length - 1], values);
+		this.assertionsForLabel(labels, index1Length, index2Length, indices1[indices1.length - 1], indices2[indices2.length - 1], values);
 		
 		diagram.refresh();
 		show(frame, TestCase.SHOW_DURATION);
@@ -110,10 +110,10 @@ class HeatMapBuilderTest implements TestCase {
 		
 		Assertions.assertEquals(indexCount, labelCount);
 		
-		this.assertionsForOriginLabel(labels, indices1, indices2, values);
-		this.assertionsForIndex1Null(labels, index1Length, index2Length, indices1, indices2, values);
-		this.assertionsForIndex2Null(labels, index2Length, indices1, indices2, values);
-		this.assertionsForLabel(labels, index1Length, index2Length, indices1, indices2, values);
+		this.assertionsForOriginLabel(labels, index1Length, index2Length, indices1[indices1.length - 1], indices2[indices2.length - 1], values);
+		this.assertionsForIndex1Null(labels, index1Length, index2Length, indices1[indices1.length - 1], indices2[indices2.length - 1], values);
+		this.assertionsForIndex2Null(labels, index1Length, index2Length, indices1[indices1.length - 1], indices2[indices2.length - 1], values);
+		this.assertionsForLabel(labels, index1Length, index2Length, indices1[indices1.length - 1], indices2[indices2.length - 1], values);
 		
 		diagram.refresh();
 		show(frame, TestCase.SHOW_DURATION);
@@ -121,7 +121,7 @@ class HeatMapBuilderTest implements TestCase {
 		container.repaint();
 	}
 	
-	private void assertionsForOriginLabel(DiagramValueDisplayComponent[] labels, float[] indices1, float[] indices2, float[] values) {
+	private void assertionsForOriginLabel(DiagramValueDisplayComponent[] labels, int index1Length, int index2Length, float index1Max, float index2Max, float[] values) {
 		HeatMapLabel label = (HeatMapLabel) labels[0];
 		
 		Assertions.assertEquals(values[0], label.getValue());
@@ -129,13 +129,13 @@ class HeatMapBuilderTest implements TestCase {
 		PositionIn2DDiagram topLeft = label.getTopLeftInDiagram();
 		PositionIn2DDiagram bottomRight = label.getBottomRightInDiagram();
 		
-		Assertions.assertEquals(indices2[0], topLeft.getYCoordinate());
+		Assertions.assertEquals(index2Max / ((float) index2Length), topLeft.getYCoordinate(), 1E-3);
 		Assertions.assertEquals(0, topLeft.getXCoordinate());
 		Assertions.assertEquals(0, bottomRight.getYCoordinate());
-		Assertions.assertEquals(indices1[0], bottomRight.getXCoordinate());
+		Assertions.assertEquals(index1Max / ((float) index1Length), bottomRight.getXCoordinate(), 1E-3);
 	}
 	
-	private void assertionsForIndex1Null(DiagramValueDisplayComponent[] labels, int index1Length, int index2Length, float[] indices1, float[] indices2, float[] values) {
+	private void assertionsForIndex1Null(DiagramValueDisplayComponent[] labels, int index1Length, int index2Length, float index1Max, float index2Max, float[] values) {
 		for (int i = 1; i < index1Length; i++) {
 				int currentIndex = i * index2Length;
 				HeatMapLabel label = (HeatMapLabel) labels[currentIndex];
@@ -145,14 +145,14 @@ class HeatMapBuilderTest implements TestCase {
 				PositionIn2DDiagram topLeft = label.getTopLeftInDiagram();
 				PositionIn2DDiagram bottomRight = label.getBottomRightInDiagram();
 				
-				Assertions.assertEquals(indices2[0], topLeft.getYCoordinate());
-				Assertions.assertEquals(indices1[i - 1], topLeft.getXCoordinate());
+				Assertions.assertEquals(index2Max / ((float) index2Length), topLeft.getYCoordinate(), 1E-3);
+				Assertions.assertEquals(i * index1Max / ((float) index1Length), topLeft.getXCoordinate());
 				Assertions.assertEquals(0, bottomRight.getYCoordinate());
-				Assertions.assertEquals(indices1[i], bottomRight.getXCoordinate());
+				Assertions.assertEquals((i + 1) * index1Max / ((float) index1Length), bottomRight.getXCoordinate(), 1E-3);
 		}
 	}
 	
-	private void assertionsForIndex2Null(DiagramValueDisplayComponent[] labels, int index2Length, float[] indices1, float[] indices2, float[] values) {
+	private void assertionsForIndex2Null(DiagramValueDisplayComponent[] labels, int index1Length, int index2Length, float index1Max, float index2Max, float[] values) {
 		for (int j = 1; j < index2Length; j++) {
 			HeatMapLabel label = (HeatMapLabel) labels[j];
 			
@@ -161,14 +161,14 @@ class HeatMapBuilderTest implements TestCase {
 			PositionIn2DDiagram topLeft = label.getTopLeftInDiagram();
 			PositionIn2DDiagram bottomRight = label.getBottomRightInDiagram();
 			
-			Assertions.assertEquals(indices2[j], topLeft.getYCoordinate());
+			Assertions.assertEquals((j + 1) * index2Max / ((float) index2Length), topLeft.getYCoordinate(), 1E-3);
 			Assertions.assertEquals(0, topLeft.getXCoordinate());
-			Assertions.assertEquals(indices2[j - 1], bottomRight.getYCoordinate());
-			Assertions.assertEquals(indices1[0], bottomRight.getXCoordinate());
+			Assertions.assertEquals(j * index2Max / ((float) index2Length), bottomRight.getYCoordinate());
+			Assertions.assertEquals(index1Max / ((float) index1Length), bottomRight.getXCoordinate(), 1E-3);
 		}
 	}
 	
-	private void assertionsForLabel(DiagramValueDisplayComponent[] labels, int index1Length, int index2Length, float[] indices1, float[] indices2, float[] values) {
+	private void assertionsForLabel(DiagramValueDisplayComponent[] labels, int index1Length, int index2Length, float index1Max, float index2Max, float[] values) {
 		for (int i = 1; i < index1Length; i++) {
 			for (int j = 1; j < index2Length; j++) {
 				int currentIndex = i * index2Length + j;
@@ -179,10 +179,10 @@ class HeatMapBuilderTest implements TestCase {
 				PositionIn2DDiagram topLeft = label.getTopLeftInDiagram();
 				PositionIn2DDiagram bottomRight = label.getBottomRightInDiagram();
 				
-				Assertions.assertEquals(indices2[j], topLeft.getYCoordinate());
-				Assertions.assertEquals(indices1[i - 1], topLeft.getXCoordinate());
-				Assertions.assertEquals(indices2[j - 1], bottomRight.getYCoordinate());
-				Assertions.assertEquals(indices1[i], bottomRight.getXCoordinate());
+				Assertions.assertEquals((j + 1) * index2Max / ((float) index2Length), topLeft.getYCoordinate(), 1E-3);
+				Assertions.assertEquals(i * index1Max / ((float) index1Length), topLeft.getXCoordinate());
+				Assertions.assertEquals(j * index2Max / ((float) index2Length), bottomRight.getYCoordinate());
+				Assertions.assertEquals((i + 1) * index1Max / ((float) index1Length), bottomRight.getXCoordinate(), 1E-3);
 			}
 		}
 	}

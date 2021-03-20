@@ -3,6 +3,7 @@ package gelf.view.diagrams.components;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -98,14 +99,16 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 	
 	@Override
 	protected String getRoundedPositionInDiagramString() {
-		String result = "";
-		
-		result += "index1: " +
-		String.valueOf(this.getRoundedString(this.getTopLeftInDiagram().getXCoordinate())) + " - " +
-		String.valueOf(this.getRoundedString(this.getBottomRightInDiagram().getXCoordinate())) + "\n" +
+		int[] indexPositions = this.diagram.getIndexPositionsOfComponent(this);
+		ArrayList<float[]> indices = this.diagram.cloneDiagramData().extractIndices();
+		float beginIndex1 = (indexPositions[0] - 1 >= 0) ? indices.get(0)[indexPositions[0] - 1] : 0;
+		float beginIndex2 = (indexPositions[1] - 1 >= 0) ? indices.get(1)[indexPositions[1] - 1] : 0;
+		String result = "index1: " +
+		String.valueOf(beginIndex1) + " - " +
+		String.valueOf(indices.get(0)[indexPositions[0]]) + "\n" +
 		"index2: " +
-		String.valueOf(this.getRoundedString(this.getBottomRightInDiagram().getYCoordinate())) + " - " +
-		String.valueOf(this.getRoundedString(this.getTopLeftInDiagram().getYCoordinate()));
+		String.valueOf(beginIndex2) + " - " +
+		String.valueOf(indices.get(1)[indexPositions[1]]);
 		
 		return result;
 	}

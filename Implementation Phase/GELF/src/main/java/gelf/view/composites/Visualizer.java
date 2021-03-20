@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Label;
 import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ import gelf.view.representation.LibraryPanel;
 /**
  * Visualizer
  */
-public class Visualizer extends ElementManipulator implements Updatable, IHighlightableElementContainer {
+public class Visualizer extends ElementManipulator implements Updatable, IHighlightableElementContainer, ComponentListener {
 	Visualizer _this = this;
 	SubWindow subWindow;
 	DataPanel dataPanel;
@@ -197,6 +198,7 @@ public class Visualizer extends ElementManipulator implements Updatable, IHighli
 	private void initCellRepresentation(Element e, SubWindow w, int width, int height) {
 		//cell display
         upperPanel = new Panel(width, height);
+		upperPanel.setBackground(ColorTheme.subsubsection);
         upperPanel.setLayout(new FlowLayout());
 
         dataPanel = new DataPanel(100, 100, e);
@@ -870,8 +872,6 @@ public class Visualizer extends ElementManipulator implements Updatable, IHighli
 
 	@Override
 	public void componentResized(ComponentEvent e) {
-		super.componentResized(e);
-
 		updateDiagram();
 		// DiagramWizard wiz = new DiagramWizard();
 		// this.diagram.removeFromContainer();
@@ -879,7 +879,18 @@ public class Visualizer extends ElementManipulator implements Updatable, IHighli
 		// this.diagram.attachToContainer(this.diagramPanel);
 		// this.diagram.refresh();
 	}
+	
+	@Override
+	public void componentMoved(ComponentEvent e) {
+	}
 
+	@Override
+	public void componentShown(ComponentEvent e) {
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {
+	}
 	@Override
 	public void update() {
 		if (subWindow.getElement() instanceof Cell) {

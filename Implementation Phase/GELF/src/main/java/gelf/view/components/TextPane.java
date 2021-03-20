@@ -7,5 +7,4 @@ import javax.swing.JTextPane;
  */
 public class TextPane extends JTextPane {
 
-    
 }
