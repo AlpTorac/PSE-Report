@@ -2,6 +2,11 @@ package gelf.view.diagrams.components;
 
 import java.awt.Color;
 
+/**
+ * The singleton facade class that manages access to methods, which create {@link DiagramComponent},
+ * {@link PositionInFrame} and {@link PositionInDiagram}.
+ * @author Alp Torac Genc
+ */
 public class DiagramComponentFactory {
 	private static DiagramComponentFactory instance = new DiagramComponentFactory();
 
@@ -57,9 +62,4 @@ public class DiagramComponentFactory {
 			int borderThickness) {
 		return new HeatMapLabel(topLeft, bottomRight, colorScale, value, borderThickness);
 	}
-	public DescriptionLabel createDescriptionLabel(PositionInFrame topLeft, PositionInFrame bottomRight, Color color, String caption,
-			int borderThickness) {
-		return new DescriptionLabel(topLeft, bottomRight, color, caption, borderThickness);
-	}
-	
 }

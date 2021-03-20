@@ -8,6 +8,10 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.border.Border;
 
+/**
+ * The super class to the classes, which represent bars in a {@link gelf.view.diagrams.type.Diagram Diagram}.
+ * @author Alp Torac Genc
+ */
 public abstract class DiagramBar extends DiagramValueDisplayComponent {
 	private static final Color DEFAULT_BORDER_COLOR = Color.BLACK;
 	
@@ -110,6 +114,11 @@ public abstract class DiagramBar extends DiagramValueDisplayComponent {
 		return result;
 	}
 	
+	/**
+	 * The class that encapsulates the visuals of {@link DiagramBar}.
+	 * @author Alp Torac Genc
+	 *
+	 */
 	protected class Bar extends JLabel {
 		
 		/**

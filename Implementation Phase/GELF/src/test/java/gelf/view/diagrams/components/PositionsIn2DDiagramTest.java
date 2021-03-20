@@ -46,12 +46,13 @@ class PositionsIn2DDiagramTest implements TestCase {
 	
 	@Test
 	void settingXYTest() {
-		PositionInDiagram pos = new PositionIn2DDiagram(xAxis, 2, yAxis, 3);
+		PositionIn2DDiagram pos = new PositionIn2DDiagram(xAxis, 2, yAxis, 3);
 		
-		pos.setAxisCoordinates(new double[] {5, 8});
+		pos.setXCoordinate(5);
+		pos.setYCoordinate(8);
 		
-		Assertions.assertEquals(pos.getAxisPos(0), 5);
-		Assertions.assertEquals(pos.getAxisPos(1), 8);
+		Assertions.assertEquals(pos.getXCoordinate(), 5);
+		Assertions.assertEquals(pos.getYCoordinate(), 8);
 	}
 
 	@Test

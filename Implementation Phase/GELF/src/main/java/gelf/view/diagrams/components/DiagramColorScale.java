@@ -11,6 +11,18 @@ import javax.swing.JPanel;
 import gelf.view.diagrams.IDiagram;
 import gelf.view.diagrams.SettingsProvider;
 
+/**
+ * The super class to classes, which represent color scales in {@link gelf.view.diagrams.type.Diagram Diagram}.
+ * <p>
+ * A color scale has an array of {@link #values} and {@link #valueColors} that each belong to their (index-wise)
+ * corresponding value. These arrays must have the same size. For every value, which is not explicitly given in
+ * the values array, a corresponding color will be calculated via a weighted sum of their HSL values.
+ * <p>
+ * Each color scale has a {@link DiagramAxis} with it to display the meanings of some colors. Change
+ * {@link gelf.view.diagrams.SettingsProvider#colorScaleValueDisplaySteps colorScaleValueDisplaySteps}
+ * to increase/decrease the frequency, at which the meanings of colors will be displayed.
+ * @author Alp Torac Genc
+ */
 public abstract class DiagramColorScale extends DiagramComponent {
 	private PositionInFrame topLeft;
 	private PositionInFrame bottomRight;
@@ -36,7 +48,6 @@ public abstract class DiagramColorScale extends DiagramComponent {
 		this.valueDisplay.setShowValuesUnderAxis(false);
 		this.initVisualElement();
 	}
-
 	private DiagramAxis makeValueDisplay(PositionInFrame topLeft, PositionInFrame bottomRight, float[] values, int borderThickness) {
 		DiagramComponentFactory factory = DiagramComponentFactory.getDiagramComponentFactory();
 		PositionInFrame end = factory.makePositionInFrame(bottomRight.getXPos(), topLeft.getYPos());
@@ -44,7 +55,6 @@ public abstract class DiagramColorScale extends DiagramComponent {
 				sp.getColorScaleValueDisplaySteps(), this.getColor(), borderThickness);
 		return valueDisplay;
 	}
-	
 	private void updateValueDisplay() {
 		this.valueDisplay.setMin(this.values[0]);
 		this.valueDisplay.setMax(this.values[this.values.length - 1]);
@@ -52,18 +62,18 @@ public abstract class DiagramColorScale extends DiagramComponent {
 		this.valueDisplay.setColor(this.getColor());
 		this.valueDisplay.setLineByPos(this.topLeft.getXPos(), this.topLeft.getYPos(), this.bottomRight.getXPos(), this.topLeft.getYPos());
 	}
-	
+	/**
+	 * @param value a given value
+	 * @return The minimum value of the interval of {@link #values}, between which the given
+	 * value is.
+	 */
 	private int getRangeMinIndex(float value) {
-		
 		int index = 0;
-		
 		while (index < this.values.length - 1 && this.values[index] <= value) {
 			index++;
 		}
-		
 		return (index - 1);
 	}
-	
 	@Override
 	protected Rectangle getFrameBounds() {
 		Rectangle bounds = new Rectangle();
@@ -75,7 +85,16 @@ public abstract class DiagramColorScale extends DiagramComponent {
 		
 		return bounds;
 	}
-	
+	/**
+	 * Computes a weighted sum of the HSL values of the colors at {@code valueColors[rangeMinIndex]}
+	 * and {@code valueColors[rangeMaxIndex]}
+	 * @param value a given value
+	 * @param rangeMinIndex the index of the minimum value in the interval, in which the value
+	 * is.
+	 * @param rangeMaxIndex the index of the maximum value in the interval, in which the value
+	 * is.
+	 * @return The color that corresponds to the given value.
+	 */
 	protected Color getMixedColor(float value, int rangeMinIndex, int rangeMaxIndex) {
 		float minValue = this.values[rangeMinIndex];
 		float maxValue = this.values[rangeMaxIndex];
@@ -101,97 +120,86 @@ public abstract class DiagramColorScale extends DiagramComponent {
 		
 		return mixedColor;
 	}
-	
+	/**
+	 * @param value a given value
+	 * @return The color that corresponds to the given value.
+	 */
 	public Color valueToColor(float value) {
 		int rangeMinIndex = this.getRangeMinIndex(value);
 		int rangeMaxIndex = rangeMinIndex + 1;
 		
 		return this.getMixedColor(value, rangeMinIndex, rangeMaxIndex);
 	}
-
 	public PositionInFrame getTopLeftInFrame() {
 		return this.topLeft;
 	}
-
 	public void setTopLeftInFrame(double x1, double y1) {
 		this.topLeft.setXPos(x1);
 		this.topLeft.setYPos(y1);
 		this.updateValueDisplay();
 		this.setComponentBounds(this.getFrameBounds());
 	}
-
 	public PositionInFrame getBottomRightInFrame() {
 		return this.bottomRight;
 	}
-
 	public void setBottomRightInFrame(double x2, double y2) {
 		this.bottomRight.setXPos(x2);
 		this.bottomRight.setYPos(y2);
 		this.updateValueDisplay();
 		this.setComponentBounds(this.getFrameBounds());
 	}
-
 	public int getBorderThickness() {
 		return this.borderThickness;
 	}
-
 	public void setBorderThickness(int borderThickness) {
 		this.borderThickness = borderThickness;
 		this.updateValueDisplay();
 		this.visualElement.repaint();
 	}
-	
 	public float[] getValues() {
 		return this.values;
 	}
-	
 	public float getValue(int index) {
 		return this.values[index];
 	}
-
 	public void setValues(float[] values) {
 		this.values = values;
 		this.updateValueDisplay();
 		this.visualElement.repaint();
 	}
-	
 	public void setValue(int index, float value) {
 		this.values[index] = value;
 		this.updateValueDisplay();
 	}
-
 	public Color[] getValueColors() {
 		return this.valueColors;
 	}
-	
 	public Color getValueColor(int index) {
 		return this.valueColors[index];
 	}
-
 	public void setValueColors(Color[] valueColors) {
 		this.valueColors = valueColors;
 	}
-	
 	public void setValueColor(int index, Color color) {
 		this.valueColors[index] = color;
 	}
-	
 	@Override
 	protected void setComponentBounds(Rectangle bounds) {		
 		this.visualElement.setBounds(bounds);
 	}
-	
 	@Override
 	protected void initVisualElement() {
 		this.visualElement = new ScalePanel(this);
 	}
-	
 	@Override
 	public void attachToDiagram(IDiagram diagram) {
 		super.attachToDiagram(diagram);
 		this.valueDisplay.attachToDiagram(diagram);
 	}
-	
+	/**
+	 * The class that encapsulates the visuals of {@link DiagramColorScale}.
+	 * @author Alp Torac Genc
+	 */
 	protected class ScalePanel extends JPanel {
 
 		/**

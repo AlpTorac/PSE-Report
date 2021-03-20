@@ -1,5 +1,11 @@
 package gelf.view.diagrams.components;
 
+/**
+ * The class that represents a label in a {@link gelf.view.diagrams.type.HeatMap HeatMap}.
+ * <p>
+ * This component changes its color based on its value and {@link #colorScale}.
+ * @author Alp Torac Genc
+ */
 public class HeatMapLabel extends DiagramValueLabel {
 
 	private DiagramColorScale colorScale;

@@ -30,7 +30,7 @@ class DiagramComponentFactoryTest implements TestCase {
 	
 	private static DiagramColorScale cs = f.createBiColorScale(posFrameStart, posFrameEnd, c, 0, 20, minValColor, maxValColor, 1);
 	
-	private static DiagramComponent[] diagramComponents = new DiagramComponent[7];
+	private static DiagramComponent[] diagramComponents = new DiagramComponent[6];
 	
 	@BeforeAll
 	static void addPreMadesToDiagramComponents() {
@@ -44,23 +44,18 @@ class DiagramComponentFactoryTest implements TestCase {
 	}
 	
 	@Test
-	void createDescriptionLabelTest() {
-		diagramComponents[3] = f.createDescriptionLabel(posFrameStart, posFrameEnd, c, "Testing DescriptionLabel", 1);
-	}
-	
-	@Test
 	void createHeatMapLabelTest() {
-		diagramComponents[4] = f.createHeatMapLabel(startPosInAxis, endPosInAxis, cs, 10, 1);
+		diagramComponents[3] = f.createHeatMapLabel(startPosInAxis, endPosInAxis, cs, 10, 1);
 	}
 	
 	@Test
 	void createHistogramBarTest() {
-		diagramComponents[5] = f.createHistogramBar(c, 2, startPosInAxis, endPosInAxis, 1);
+		diagramComponents[4] = f.createHistogramBar(c, 2, startPosInAxis, endPosInAxis, 1);
 	}
 	
 	@Test
 	void createSolidLineTest() {
-		diagramComponents[6] = f.createSolidLine(posFrameStart, posFrameEnd, c, 1);
+		diagramComponents[5] = f.createSolidLine(posFrameStart, posFrameEnd, c, 1);
 	}
 
 	@AfterAll

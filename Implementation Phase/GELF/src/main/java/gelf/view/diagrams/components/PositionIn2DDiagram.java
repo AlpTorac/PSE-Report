@@ -1,81 +1,76 @@
 package gelf.view.diagrams.components;
 
-public class PositionIn2DDiagram extends PositionInDiagram {
+import gelf.view.diagrams.SettingsProvider;
 
-	private static final double[][] TO_2D_MATRIX = { { 1, 0 }, { 0, 1 } };
+/**
+ * The class that represents a point (x, y) in a two dimensional {@link gelf.view.diagrams.type.Diagram Diagram}.
+ * @author Alp Torac Genc
+ *
+ */
+public class PositionIn2DDiagram {
+	private DiagramAxis xAxis;
+	private double xCoordinate;
+	private DiagramAxis yAxis;
+	private double yCoordinate;
 
 	protected PositionIn2DDiagram(DiagramAxis xAxis, double xCoordinate, DiagramAxis yAxis, double yCoordinate) {
-		super(new DiagramAxis[] { xAxis, yAxis }, new double[] { xCoordinate, yCoordinate });
+		this.xAxis = xAxis;
+		this.yAxis = yAxis;
+		this.xCoordinate = xCoordinate;
+		this.yCoordinate = yCoordinate;
+	}
+	/**
+	 * Constructs an instance by adding the vector specified in x and y coordinates to reference point's coordinates.
+	 */
+	protected PositionIn2DDiagram(PositionIn2DDiagram referencePoint, double xCoordinate, double yCoordinate) {
+		this.xAxis = referencePoint.xAxis;
+		this.yAxis = referencePoint.yAxis;
+		this.xCoordinate = referencePoint.xCoordinate + xCoordinate;
+		this.yCoordinate = referencePoint.yCoordinate + yCoordinate;
 	}
 	
-	protected PositionIn2DDiagram(PositionIn2DDiagram referencePoint, double xCoordinate, double yCoordinate) {
-		super(referencePoint, new double[] {xCoordinate, yCoordinate});
-	}
-
 	public void setXCoordinate(double xCoordinate) {
-		this.setAxisCoordinate(0, xCoordinate);
+		this.xCoordinate = xCoordinate;
 	}
 
 	public double getXCoordinate() {
-		return this.getAxisPos(0);
+		return this.xCoordinate;
 	}
 
 	public void setYCoordinate(double yCoordinate) {
-		this.setAxisCoordinate(1, yCoordinate);
+		this.yCoordinate = yCoordinate;
 	}
 
 	public double getYCoordinate() {
-		return this.getAxisPos(1);
-	}
-
-	/**
-	 * Converts each axis coordinate to 2D coordinates (x, y) using
-	 * {@link #TO_2D_MATRIX}.
-	 * 
-	 * @return The converted coordinates
-	 */
-	@Override
-	protected double[] to2D() {
-		double xCoordinate = this.to2DCoordinate(0);
-		double yCoordinate = this.to2DCoordinate(1);
-
-		return new double[] { xCoordinate, yCoordinate };
-	}
-
-	/**
-	 * Converts each axis coordinate to one of the 2D coordinates (x, y) using
-	 * {@link #TO_2D_MATRIX}.
-	 * 
-	 * @return The converted coordinates
-	 */
-	@Override
-	protected double to2DCoordinate(int index) {
-		double coordinate = 0;
-
-		double[][] tMatrix = TO_2D_MATRIX;
-
-		coordinate += tMatrix[index][0] * this.getXCoordinate();
-		coordinate += tMatrix[index][1] * this.getYCoordinate();
-
-		return coordinate;
+		return this.yCoordinate;
 	}
 
 	@Override
 	public PositionIn2DDiagram clone() {
-		return new PositionIn2DDiagram(this.getAxes()[0], this.getXCoordinate(), this.getAxes()[1], this.getYCoordinate());
+		return new PositionIn2DDiagram(this.xAxis, this.getXCoordinate(), this.yAxis, this.getYCoordinate());
 	}
-	
-	public double getXAxisMin() {
-		return this.getAxes()[0].getMin();
+
+	public PositionInFrame toPositionInFrame() {
+		PositionInFrame xPosInFrame = this.xAxis.valueToCoordinate(this.getXCoordinate());
+		PositionInFrame yPosInFrame = this.yAxis.valueToCoordinate(this.getYCoordinate());
+		return new PositionInFrame(xPosInFrame.getXPos(), yPosInFrame.getYPos());
 	}
-	public double getYAxisMin() {
-		return this.getAxes()[1].getMin();
+
+	@Override
+	public boolean equals(Object pos) {
+		if (pos == null || !(pos instanceof PositionIn2DDiagram)) {
+			return false;
+		}
+		
+		PositionIn2DDiagram otherPos = (PositionIn2DDiagram) pos;
+		
+		if (!((Math.abs(this.xCoordinate - otherPos.xCoordinate) <= SettingsProvider.getTolerance()) && (this.xAxis.equals(otherPos.xAxis)))) {
+			return false;
+		}
+		if (!((Math.abs(this.yCoordinate - otherPos.yCoordinate) <= SettingsProvider.getTolerance()) && (this.yAxis.equals(otherPos.yAxis)))) {
+			return false;
+		}
+		
+		return true;
 	}
-	public double getXAxisMax() {
-		return this.getAxes()[0].getMax();
-	}
-	public double getYAxisMax() {
-		return this.getAxes()[1].getMax();
-	}
-	
 }

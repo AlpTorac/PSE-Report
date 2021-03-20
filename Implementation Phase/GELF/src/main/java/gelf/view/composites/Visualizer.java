@@ -40,14 +40,13 @@ import gelf.view.diagrams.DiagramWizard;
 import gelf.view.diagrams.IDiagram;
 import gelf.view.diagrams.IDiagramViewHelper;
 import gelf.view.diagrams.IDiagramWizard;
-import gelf.view.diagrams.IHighlightableElementContainer;
 import gelf.view.representation.CellPanel;
 import gelf.view.representation.DataPanel;
 import gelf.view.representation.LibraryPanel;
 /**
  * Visualizer
  */
-public class Visualizer extends ElementManipulator implements Updatable, IHighlightableElementContainer, ComponentListener {
+public class Visualizer extends ElementManipulator implements Updatable, ComponentListener {
 	Visualizer _this = this;
 	SubWindow subWindow;
 	DataPanel dataPanel;
@@ -917,21 +916,8 @@ public class Visualizer extends ElementManipulator implements Updatable, IHighli
 		this.revalidate();
 		this.repaint();
 	}
-    
-	@Override
-    public void receiveHoveredElementInfo(int[] indexPositions) {
-		
-	   this.subWindow.parent.highlightTextEditors(this.element, indexPositions, attribute, selectedPin, powerGroup, timingSense, timingGroup, timingType);
-	}
-
-
 	public void setScaleValue(float scaleValue) {
 		this.scaleValue = scaleValue;
 		this.isScaled = true;
-	}
-
-	@Override
-	public void stopHighlighting() {
-		this.subWindow.parent.stopHighlighting();
 	}
 }

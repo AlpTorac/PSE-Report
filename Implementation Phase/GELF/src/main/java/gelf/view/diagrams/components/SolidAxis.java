@@ -1,5 +1,9 @@
 package gelf.view.diagrams.components;
 
+/**
+ * The class that represents an axis with a solid {@link #axisLine} in a {@link gelf.view.diagrams.type.Diagram Diagram}.
+ * @author Alp Torac Genc
+ */
 public class SolidAxis extends DiagramAxis {
 
 	protected SolidAxis(SolidLine axisLine, float min, float max, int steps) {
