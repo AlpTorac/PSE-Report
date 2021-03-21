@@ -14,7 +14,6 @@ import gelf.model.elements.Element;
 import gelf.model.elements.InputPin;
 import gelf.model.elements.OutputPin;
 import gelf.model.elements.Pin;
-import gelf.view.components.Label;
 import gelf.view.composites.Comparer;
 import gelf.view.composites.SubWindow;
 
@@ -25,15 +24,13 @@ import gelf.view.composites.SubWindow;
  */
 public class PinCompareSubPanel extends CellPanel {
 	
-	private ArrayList<InputPin> inputPins;
-	private ArrayList<OutputPin> outputPins;
+
 	private HashMap<Pin, Button> buttonMap;
 	public Button cellButton;
 	private Cell cell;
 	private HashMap<Checkbox, InputPin> checkboxMap;
 	private ArrayList<InputPin> selectedPins;
 	private ArrayList<Pin> openedPins;
-	private PinComparePanel upperPanel;
 	
 	
 	private Comparer c;
@@ -49,11 +46,9 @@ public class PinCompareSubPanel extends CellPanel {
 		super(width, height, cell, subwindow, null, null);
 		this.cell = cell;
 		
-		this.inputPins = super.getInputPins();
-		this.outputPins = super.getOutputPins();
+		
 		this.buttonMap = super.getButtonMap();
 		this.cellButton = super.getCellButton();
-		this.upperPanel = upperPanel;
 		this.openedPins = new ArrayList<Pin>();
 		this.checkboxMap = super.checkboxMap;
 		selectedPins = new ArrayList<InputPin>();
@@ -194,7 +189,6 @@ public class PinCompareSubPanel extends CellPanel {
 	
 	@Override
 	public void mouseEntered(MouseEvent e) {}
-		
 
 	@Override
 	public void mouseExited(MouseEvent e) {}

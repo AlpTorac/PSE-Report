@@ -1,22 +1,14 @@
 package gelf.controller.listeners;
 
 import gelf.model.commands.ScaleCommand;
-import gelf.model.elements.attributes.Attribute;
-import gelf.view.components.Panel;
 import gelf.view.composites.Visualizer;
 
-import java.awt.TextComponent;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.TextEvent;
-import java.awt.event.TextListener;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-
-
 
 /**
  * Listener for scaling values of certain attributes.

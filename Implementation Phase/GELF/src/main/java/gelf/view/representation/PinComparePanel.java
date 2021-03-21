@@ -2,16 +2,9 @@ package gelf.view.representation;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.Label;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 
-import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -20,7 +13,6 @@ import javax.swing.border.LineBorder;
 import gelf.model.elements.Cell;
 import gelf.model.elements.Element;
 import gelf.model.elements.InputPin;
-import gelf.model.elements.Library;
 import gelf.model.elements.OutputPin;
 import gelf.model.elements.Pin;
 import gelf.view.components.Panel;

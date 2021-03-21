@@ -7,23 +7,14 @@ import gelf.model.elements.Element;
 import gelf.model.elements.InputPin;
 import gelf.model.elements.Library;
 import gelf.model.elements.OutputPin;
-import gelf.model.elements.Pin;
-import gelf.model.elements.attributes.PowerGroup;
-import gelf.model.elements.attributes.TimingGroup;
-import gelf.model.elements.attributes.TimingSense;
-import gelf.model.elements.attributes.TimingType;
-import gelf.model.parsers.LibertyParser;
 import gelf.model.project.Project;
 import gelf.model.project.Updatable;
 import gelf.view.components.Button;
-import gelf.view.composites.Visualizer.Attribute;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -59,8 +50,6 @@ public class TextEditor extends ElementManipulator implements KeyListener, Updat
 	private final Highlighter hl;
 	private final Highlighter.HighlightPainter painter;
 	
-	private final static Color HOVER_COLOR = Color.GRAY;
-	private final Highlighter.HighlightPainter hoverPainter;
     private SubWindow subwindow;
 	
 	/**
@@ -80,7 +69,6 @@ public class TextEditor extends ElementManipulator implements KeyListener, Updat
         this.subwindow = subwindow;
         this.outliner = o;
         painter = new DefaultHighlighter.DefaultHighlightPainter(HL_COLOR);
-        hoverPainter = new DefaultHighlighter.DefaultHighlightPainter(HOVER_COLOR);
         setup();
         this.setElement(element);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));

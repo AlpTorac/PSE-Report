@@ -9,12 +9,10 @@ import gelf.view.composites.SubWindowArea;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import gelf.model.commands.Command;
 import gelf.model.commands.DeleteCommand;
 import gelf.model.elements.Cell;
 import gelf.model.elements.Element;

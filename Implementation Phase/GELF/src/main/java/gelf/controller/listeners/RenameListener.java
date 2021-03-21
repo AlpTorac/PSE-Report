@@ -12,13 +12,9 @@ import gelf.view.composites.SubWindowArea;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.event.TreeModelEvent;
-import javax.swing.event.TreeModelListener;
-import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
  * Listener for renaming a liberty file.
@@ -59,9 +55,6 @@ public class RenameListener implements ActionListener {
         
 		RenameCommand rename = new RenameCommand(element, newName);
 		rename.execute();
-		
-		for (SubWindow subwindow: subwindows.subWindows) {
-		}
 		
 	}
 	

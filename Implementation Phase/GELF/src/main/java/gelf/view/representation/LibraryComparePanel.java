@@ -2,7 +2,6 @@ package gelf.view.representation;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Label;
@@ -17,7 +16,6 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 
-import gelf.model.elements.Cell;
 import gelf.model.elements.Library;
 import gelf.view.components.Panel;
 import gelf.view.composites.Comparer;
@@ -89,7 +87,6 @@ public class LibraryComparePanel extends Panel implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		
 		if (((Label)e.getSource()).getBackground().equals(Color.BLUE)) {
 			selectedLibraries.remove(buttons.get((Label) e.getSource()));
 			c.setLibraries(selectedLibraries);
