@@ -74,16 +74,5 @@ public class SubWindowArea extends Panel {
             // TODO error handling
         }
     }
-    public void highlightTextEditors(Element element, int[] indexPositions, Attribute attribute , InputPin selectedPin, PowerGroup powerGroup, TimingSense timingSense, TimingGroup timingGroup, TimingType timingType) {
-    	for (SubWindow subwindow: this.subWindows) {
-    		if (subwindow.getElement().equals(element)) {
-    			subwindow.getEditor().addHoverHighlights(indexPositions, attribute , selectedPin, powerGroup, timingSense, timingGroup, timingType);
-    		}
-    	}
-    }
-    public void stopHighlighting() {
-    	for (SubWindow subwindow: this.subWindows) {
-    		subwindow.getEditor().removeHoverHighlights();
-    	}
-    }
+    
 }
