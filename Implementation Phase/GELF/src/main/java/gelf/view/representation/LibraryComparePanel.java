@@ -22,6 +22,7 @@ import gelf.model.elements.Library;
 import gelf.view.components.Panel;
 import gelf.view.composites.Comparer;
 import gelf.view.composites.SubWindow;
+import gelf.view.diagrams.SettingsProvider;
 
 /**
  * Comparison panel for libraries.
@@ -60,6 +61,9 @@ public class LibraryComparePanel extends Panel implements MouseListener{
         this.add(scrollPane);
         scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
         listPanel.setSize(width, height);
+        boolean painted = false;
+        Color color1 = SettingsProvider.getInstance().getValueDisplayComponentColorAt(1);
+    	Color color2 = SettingsProvider.getInstance().getValueDisplayComponentColorAt(0);
          
         for (int i = 0; i < libraries.size(); i++) {
         	Label label = new Label();
@@ -70,7 +74,13 @@ public class LibraryComparePanel extends Panel implements MouseListener{
         	listPanel.add(label);
         	label.addMouseListener(this);
         	buttons.put(label, libraries.get(i));
-        	label.setBackground(Color.BLUE);
+        	
+        	if (!painted) {
+				buttonList.get(i).setBackground(color1);
+				painted = true;
+			} else {
+				buttonList.get(i).setBackground(color2);
+			}
         }
         this.setVisible(true);
 

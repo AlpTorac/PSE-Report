@@ -2,6 +2,7 @@ package gelf.view.representation;
 
 import java.awt.Checkbox;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -44,7 +45,7 @@ public class PinCompareSubPanel extends CellPanel {
 	 * @param cell Cell to be shown on the panel.
 	 * @param subwindow The subwindow where this panel belongs to.
 	 */
-	public PinCompareSubPanel(int width, int height, Cell cell, SubWindow subwindow, ArrayList<Element> elements, Comparer c, PinComparePanel upperPanel) {
+	public PinCompareSubPanel(int width, int height, Cell cell, SubWindow subwindow, ArrayList<Element> elements, Comparer c, PinComparePanel upperPanel, Color color1, Color color2) {
 		super(width, height, cell, subwindow, null, null);
 		this.cell = cell;
 		
@@ -57,9 +58,15 @@ public class PinCompareSubPanel extends CellPanel {
 		this.checkboxMap = super.checkboxMap;
 		selectedPins = new ArrayList<InputPin>();
 		this.c = c;
+		boolean painted = false;
 		for (InputPin input: cell.getInPins()) {
 			if (elements.contains(input)) {
-				buttonMap.get(input).setBackground(Color.BLUE);
+				if (!painted) {
+					buttonMap.get(input).setBackground(color1);
+					painted = true;
+				} else {
+					buttonMap.get(input).setBackground(color2);
+				}
 				for (Checkbox checkbox: super.checkboxes) {
 					checkbox.setEnabled(false);
 				}
@@ -68,12 +75,19 @@ public class PinCompareSubPanel extends CellPanel {
 		}
 		for (OutputPin output: cell.getOutPins()) {
 			if (elements.contains(output)) {
-				buttonMap.get(output).setBackground(Color.BLUE);
-				openedPins.add(output);
+				if (elements.contains(output)) {
+					if (!painted) {
+						buttonMap.get(output).setBackground(color1);
+						painted = true;
+					} else {
+						buttonMap.get(output).setBackground(color2);
+					}
+					openedPins.add(output);
+				}
 			}
 		}
 		if (elements.contains(cell)) {
-			cellButton.setBackground(Color.BLUE);
+			cellButton.setBackground(color1);
 		}
 		
 	}
@@ -185,6 +199,7 @@ public class PinCompareSubPanel extends CellPanel {
 	@Override
 	public void mouseExited(MouseEvent e) {}
 		
-	
+	@Override
+	public void actionPerformed(ActionEvent e) {}
 
 }
