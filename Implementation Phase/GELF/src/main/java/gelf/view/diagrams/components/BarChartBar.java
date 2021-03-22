@@ -30,14 +30,6 @@ public class BarChartBar extends DiagramBar {
 				String.valueOf(this.diagram.getIndexPositionsOfComponent(this)[0]);
 		String result = "bar " + description;
 		
-//		int index = ((int) this.getBottomRightInDiagram().getXCoordinate());
-//		
-//		String[] xAxisDisplays = this.getBottomRightInDiagram().getAxes()[0].getStepDisplays();
-//		
-//		if (index < xAxisDisplays.length) {
-//			result += this.getBottomRightInDiagram().getAxes()[0].getStepDisplays()[index];
-//		}
-		
 		return result;
 	}
 }

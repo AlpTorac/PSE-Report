@@ -11,28 +11,16 @@ import gelf.view.diagrams.components.DiagramValueDisplayComponent;
 import gelf.view.diagrams.data.DiagramData;
 import gelf.view.diagrams.type.BarChart;
 
+/**
+ * The implementation of the strategy responsible for overlaying {@link gelf.view.diagrams.type.BarChart BarChart}.
+ * @author Alp Torac Genc
+ */
 public class BarChartOverlayStrategy extends DiagramOverlayStrategy implements IBarChartBuilder {
-
 	private BarChart[] barCharts;
 	private Container container;
 	
-	public BarChartOverlayStrategy(Container container) {
-		this.container = container;
-	}
-	
 	public BarChartOverlayStrategy(Container container, BarChart[] barCharts) {
 		this.container = container;
-		this.barCharts = barCharts;
-	}
-
-	@Override
-	public void setDiagrams(IDiagram[] diagrams) {
-		BarChart[] barCharts = new BarChart[diagrams.length];
-		
-		for (int i = 0; i < barCharts.length; i++) {
-			barCharts[i] = (BarChart) diagrams[i];
-		}
-		
 		this.barCharts = barCharts;
 	}
 

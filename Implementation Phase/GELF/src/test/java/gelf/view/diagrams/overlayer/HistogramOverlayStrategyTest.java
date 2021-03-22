@@ -26,7 +26,7 @@ class HistogramOverlayStrategyTest implements TestCase {
 	private static ArrayList<float[]> data1;
 	private static ArrayList<float[]> data2;
 	
-	private static DiagramOverlayer overlayer = new DiagramOverlayer();
+	private static DiagramOverlayer overlayer;
 	private static HistogramBuilder builder = new HistogramBuilder(container);
 	
 	@BeforeAll
@@ -44,23 +44,22 @@ class HistogramOverlayStrategyTest implements TestCase {
 		data2.add(new float[] {0.2f, 0.3f, 0.5f, 0.55f, 0.75f, 0.99f, 2.01f});
 		data2.add(new float[] {7, 0, 2, 10, 3.01f, 4, 10});
 		
-		overlayer.setOverlayStrategy(new HistogramOverlayStrategy(container));
-		
 		builder.receiveDiagramData(data1, 1);
-		IDiagram diagram1 = builder.buildDiagram();
+		Histogram diagram1 = (Histogram) builder.buildDiagram();
 
 //		diagram1.attachToContainer(container);
 //		show(frame, TestCase.SHOW_DURATION);
 //		diagram1.removeFromContainer();
 		
 		builder.receiveDiagramData(data2, 1);
-		IDiagram diagram2 = builder.buildDiagram();
+		Histogram diagram2 = (Histogram) builder.buildDiagram();
 		
 //		diagram2.attachToContainer(container);
 //		show(frame, TestCase.SHOW_DURATION);
 //		diagram2.removeFromContainer();
-		
-		IDiagram overlayDiagram = overlayer.overlay(new IDiagram[] {diagram1, diagram2});
+		overlayer = new DiagramOverlayer();
+		overlayer.setOverlayStrategy(new HistogramOverlayStrategy(container, new Histogram[] {diagram1, diagram2}));
+		IDiagram overlayDiagram = overlayer.overlay();
 		overlayDiagram.attachToContainer(container);
 		
 		DiagramValueDisplayComponent[] dvdcs = overlayDiagram.getDiagramValueDisplayComponentPrototypes();
@@ -101,7 +100,7 @@ class HistogramOverlayStrategyTest implements TestCase {
 		data2.add(new float[] {0.2f, 0.3f, 0.5f, 0.55f, 0.75f, 0.99f, 2.01f});
 		data2.add(new float[] {7, 0, 2, 10, 3.01f, 4, 10});
 		
-		overlayer.setOverlayStrategy(new HistogramOverlayStrategy(container));
+
 		
 		builder.receiveDiagramData(data1, 1);
 		Histogram diagram1 = (Histogram) builder.buildDiagram();

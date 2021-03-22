@@ -3,6 +3,11 @@ package gelf.view.diagrams.indicator;
 import gelf.view.diagrams.IDiagram;
 import gelf.view.diagrams.SettingsProvider;
 
+/**
+ * The singleton facade class that manages the access to the creation of {@link DiagramViewHelper}.
+ * @author Alp Torac Genc
+ *
+ */
 public class DiagramViewHelperFactory {
 	private static DiagramViewHelperFactory instance;
 	private static SettingsProvider sp = SettingsProvider.getInstance();

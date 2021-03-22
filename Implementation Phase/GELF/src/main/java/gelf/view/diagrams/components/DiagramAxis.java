@@ -314,7 +314,7 @@ public abstract class DiagramAxis extends DiagramComponent {
 			Graphics2D graphs = (Graphics2D) g;
 			Rectangle bounds = this.getBounds();
 			
-			int fontSize = this.axis.fontSize;
+			int fontSize = this.axis.getFontSize();
 			
 			graphs.setColor(this.axis.getColor());
 			graphs.setStroke(new BasicStroke(this.axis.getLineThickness()));

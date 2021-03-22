@@ -10,9 +10,7 @@ import java.awt.Color;
 public class DiagramComponentFactory {
 	private static DiagramComponentFactory instance = new DiagramComponentFactory();
 
-	private DiagramComponentFactory() {
-
-	}
+	private DiagramComponentFactory() {}
 
 	public static DiagramComponentFactory getDiagramComponentFactory() {
 		return DiagramComponentFactory.instance;

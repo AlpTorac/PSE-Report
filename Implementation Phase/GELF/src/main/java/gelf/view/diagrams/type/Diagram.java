@@ -14,13 +14,40 @@ import gelf.view.diagrams.data.DiagramData;
 import gelf.view.diagrams.indicator.DiagramViewHelper;
 import gelf.view.diagrams.indicator.IndicatorIdentifier;
 
+/**
+ * The super class of classes that represent a diagram.
+ * @author Alp Torac Genc
+ */
 public abstract class Diagram implements IDiagram {
+	/**
+	 * The data that is visualized through the diagram.
+	 */
 	private DiagramData data;
+	/**
+	 * The axes of the diagram.
+	 */
 	private DiagramAxis[] axes;
+	/**
+	 * The components of the diagram, which are responsible for displaying
+	 * individual values.
+	 */
 	private DiagramValueDisplayComponent[] valueDisplayComponents;
+	/**
+	 * The components of the diagram, which do not fall under
+	 * {@link #axes} or {@link #valueDisplayComponents}.
+	 */
 	private DiagramComponent[] nonValueDisplayComponents;
+	/**
+	 * A map that contains the {@link gelf.view.diagrams.indicator.DiagramViewHelper DiagramViewHelpers} along with
+	 * their unique identifier.
+	 */
 	private EnumMap<IndicatorIdentifier, DiagramViewHelper> viewHelpers;
-	
+	/**
+	 * The Container, which holds all the visual parts of all components of the diagram.
+	 * <p>
+	 * Uses a layering system to decide the depth of each component. The lower the layer,
+	 * the more likely the component to be seen on the screen, when overlapped by other components.
+	 */
 	private JLayeredPane containingElement;
 
 	public Diagram(DiagramData data, DiagramAxis[] axes,
