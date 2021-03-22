@@ -25,9 +25,17 @@ public class BarChartBar extends DiagramBar {
 	@Override
 	protected String getRoundedPositionInDiagramString() {
 		ArrayList<String[]> descs = this.diagram.cloneDiagramData().extractValueDescriptions();
+		int indexPosition = this.diagram.getIndexPositionsOfComponent(this)[0];
+		int i = 0;
+		while (i < descs.size() && descs.get(i) != null &&
+				descs.get(i).length <= indexPosition) {
+			indexPosition -= descs.get(i).length;
+			i++;
+		}
+		
 		String description = (descs != null) ? 
-				descs.get(0)[this.diagram.getIndexPositionsOfComponent(this)[0]]:
-				String.valueOf(this.diagram.getIndexPositionsOfComponent(this)[0]);
+				descs.get(i)[indexPosition]:
+				String.valueOf(indexPosition);
 		String result = "bar " + description;
 		
 		return result;

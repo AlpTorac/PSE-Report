@@ -16,6 +16,11 @@ import gelf.view.diagrams.indicator.IndicatorIdentifier;
 
 /**
  * The super class of classes that represent a diagram.
+ * <p>
+ * If a diagram is the result of overlaying multiple diagrams,
+ * it still has the same amount of index arrays but the value
+ * arrays of the diagrams that are compared are added to {@link #data},
+ * along with their descriptions.
  * @author Alp Torac Genc
  */
 public abstract class Diagram implements IDiagram {

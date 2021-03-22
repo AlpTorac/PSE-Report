@@ -7,6 +7,9 @@ import gelf.view.diagrams.data.DiagramData;
 
 /**
  * The class that represents a histogram.
+ * <p>
+ * A histogram's {@link Diagram#data data} has one array of indices and
+ * one array of values on its own.
  * @author Alp Torac Genc
  */
 public class Histogram extends Diagram {

@@ -28,10 +28,19 @@ public class BarChartOverlayStrategy extends DiagramOverlayStrategy implements I
 	public BarChart buildDiagram(DiagramData data, DiagramAxis[] axes, DiagramValueDisplayComponent[] valueDisplayComponents,
 			DiagramComponent[] nonValueDisplayComponents) {
 		if (data.extractValueDescriptions() != null) {
-			String[] descs = data.extractValueDescriptions().get(0);
+			int j = 0;
+			int stepDisplayLength = axes[0].getStepDisplays().length;
+			int descLength = stepDisplayLength - 2;
+			ArrayList<String[]> descriptions = data.extractValueDescriptions();
+			while (j < descriptions.size() && descriptions.get(j) != null &&
+					(descriptions.get(j).length < descLength)) {
+				j++;
+			}
+			String[] descs = descriptions.get(j);
+			
 			
 			//Add empty description to the start and end
-			String[] adaptedDescs = new String[descs.length + 2];
+			String[] adaptedDescs = new String[stepDisplayLength];
 			adaptedDescs[0] = "";
 			adaptedDescs[adaptedDescs.length - 1] = "";
 			
@@ -65,33 +74,12 @@ public class BarChartOverlayStrategy extends DiagramOverlayStrategy implements I
 	
 	@Override
 	protected ArrayList<String[]> combineDescs(DiagramData[] diagramData) {
-		float[] longestValArr = new float[0];
-
-		for (DiagramData data : diagramData) {
-			float[] longestValArrCandidate = data.extractValues().get(0);
-			if (longestValArr.length < longestValArrCandidate.length) {
-				longestValArr = longestValArrCandidate;
-			}
-		}
-
 		ArrayList<String[]> descs = new ArrayList<String[]>();
-		String[] descArr = new String[longestValArr.length];
 
-		for (int j = 0; j < longestValArr.length; j++) {
-			String currentDesc = "";
-
-			for (int k = 0; k < diagramData.length; k++) {
-				String[] currentDescs = diagramData[k].extractValueDescriptions().get(0);
-				if (currentDescs != null && j < currentDescs.length && currentDescs[j] != null &&
-						currentDesc.length() < currentDescs[j].length()) {
-					currentDesc = currentDescs[j];
-				}
-			}
-
-			descArr[j] = currentDesc;
+		for (int k = 0; k < diagramData.length; k++) {
+			String[] currentDescs = diagramData[k].extractValueDescriptions().get(0);
+			descs.add(currentDescs);
 		}
-
-		descs.add(descArr);
 
 		return descs;
 	}

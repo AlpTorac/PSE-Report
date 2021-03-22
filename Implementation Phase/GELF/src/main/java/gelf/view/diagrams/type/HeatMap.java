@@ -9,6 +9,9 @@ import gelf.view.diagrams.data.DiagramData;
 
 /**
  * The class that represents a heat map.
+ * <p>
+ * A heat map's {@link Diagram#data data} has two arrays of indices and
+ * {@code index1.length} arrays of values on its own.
  * @author Alp Torac Genc
  */
 public class HeatMap extends Diagram {
