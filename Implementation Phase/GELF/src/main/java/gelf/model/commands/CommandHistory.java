@@ -3,6 +3,7 @@ package gelf.model.commands;
 import java.util.Stack;
 
 import gelf.model.exceptions.InvalidFileFormatException;
+import gelf.model.project.Model;
 
 /**
  * Keeps track of the commands and provides undoing and redoing functionality
@@ -42,10 +43,10 @@ public class CommandHistory {
     }
     
     /**
-     * sets the number of possible undo operations
+     * sets the number of possible undo operations. Not implemented yet
      * @param count the number of possible undo operations
      */
-    public void setUndoCount(int count) {
+    /*public void setUndoCount(int count) {
     	undoCount = count;
     	while (commands.size() > undoCount) {
         	commands.remove(0);
@@ -53,7 +54,7 @@ public class CommandHistory {
     	while (undoneCommands.size() > undoCount) {
     		undoneCommands.remove(0);
     	}
-    }
+    }*/
     
     /**
      * Removes all the commands in the history
@@ -90,6 +91,7 @@ public class CommandHistory {
     			undoneCommands.remove(0);
     		}
     	}
+        Model.getInstance().getCurrentProject().inform();
     }
     
     /**

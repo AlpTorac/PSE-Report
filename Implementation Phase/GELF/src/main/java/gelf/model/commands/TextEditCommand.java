@@ -11,9 +11,6 @@ import gelf.model.exceptions.InvalidFileFormatException;
  * @author Xhulio Pernoca
  */
 public class TextEditCommand implements Command {
-    //Useful depending on how the undo functionality is implemented for TextEdit
-    private String oldContent;
-    private String newContent;
 
     //clones of the new and old elements so that the state of the element can be reverted
     private Element newElementClone;
@@ -30,13 +27,10 @@ public class TextEditCommand implements Command {
      * Instantiates the Command and parses the required content to come up with the newElement
      * so that work can be avoided when command is redone
      * @param oldContent the old String content
-     * @param newContent the new String content
      * @param element the element in question
      * @throws InvalidFileFormatException if the new String Content doesn't fit Liberty File format
      */
-    public TextEditCommand(String oldContent, String newContent, Element element) throws InvalidFileFormatException {
-        this.oldContent = oldContent;
-        this.newContent = newContent;
+    public TextEditCommand(String newContent, Element element) throws InvalidFileFormatException {
         this.element = element;
         try {
             if (element instanceof Library) {

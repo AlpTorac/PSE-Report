@@ -515,7 +515,7 @@ class TextEditCommandTest {
 		InputPin inPin = (InputPin) LibertyParser.parsePin(inputPinExample, new ArrayList<InputPin>(), "library/cell");
 		Library library = LibertyParser.parseLibrary(libraryExample);
 		inPin.setParent(library.getCells().get(0));
-		TextEditCommand command = new TextEditCommand(inputPinExample, inputPinExample2, inPin);
+		TextEditCommand command = new TextEditCommand(inputPinExample2, inPin);
 		command.execute();
 		assertEquals(0.004f, inPin.getInputPowers().get(0).getValues()[2]);
 		assertEquals(-0.022075f, inPin.getInputPowers().get(1).getValues()[2]);
@@ -526,7 +526,7 @@ class TextEditCommandTest {
 		Library library = LibertyParser.parseLibrary(libraryExample);
 		OutputPin outPin = (OutputPin) LibertyParser.parsePin(outputPinExample, library.getCells().get(0).getInPins(), "library/cell");
 		outPin.setParent(library.getCells().get(0));
-		TextEditCommand command = new TextEditCommand(outputPinExample, outputPinExample2, outPin);
+		TextEditCommand command = new TextEditCommand(outputPinExample2, outPin);
 		command.execute();
 		assertEquals(1f, outPin.getMaxCapacitance());
 		assertEquals(TimingSense.NEGATIVE_UNATE, outPin.getTimings().get(0).getTimSense());
@@ -539,7 +539,7 @@ class TextEditCommandTest {
 		outPin.setParent(library.getCells().get(0));
 		InvalidFileFormatException thrown = assertThrows(
 				InvalidFileFormatException.class,
-		           () -> new TextEditCommand(outputPinExample, inputPinExample, outPin)
+		           () -> new TextEditCommand(inputPinExample, outPin)
 		    );
 		assertEquals("Element type change not possible within the Element visualiser", thrown.getMessage());
 	}
@@ -551,7 +551,7 @@ class TextEditCommandTest {
 		outPin.setParent(library.getCells().get(0));
 		InvalidFileFormatException thrown = assertThrows(
 				InvalidFileFormatException.class,
-		           () -> new TextEditCommand(outputPinExample, "", outPin)
+		           () -> new TextEditCommand("", outPin)
 		    );
 		assertEquals("File format is invalid", thrown.getMessage());
 	}
@@ -563,7 +563,7 @@ class TextEditCommandTest {
 		outPin.setParent(library.getCells().get(0));
 		InvalidFileFormatException thrown = assertThrows(
 				InvalidFileFormatException.class,
-		           () -> new TextEditCommand(outputPinExample, outputPinExample3, outPin)
+		           () -> new TextEditCommand(outputPinExample3, outPin)
 		    );
 		assertEquals("Direction \"throughput\" in pin \"typical/AND2_X1/Z\" not supported" + 
 				"", thrown.getMessage());
@@ -574,7 +574,7 @@ class TextEditCommandTest {
 		Library library = LibertyParser.parseLibrary(libraryExample);
 		Cell cell = LibertyParser.parseCell(cellExample, "library");
 		cell.setParentLibrary(library);
-		TextEditCommand command = new TextEditCommand(cellExample, cellExample2, cell);
+		TextEditCommand command = new TextEditCommand(cellExample2, cell);
 		command.execute();
 		assertEquals(7f, cell.getOutPins().get(0).getTimings().get(0).getValues()[2][3]);
 		assertEquals(0.6f, cell.getLeakages().getValues()[0]);
@@ -583,7 +583,7 @@ class TextEditCommandTest {
 	@Test
 	void TextEditCommandTestLibrary() throws InvalidFileFormatException {
 		Library library = LibertyParser.parseLibrary(libraryExample);
-		TextEditCommand command = new TextEditCommand(libraryExample, libraryExample2, library);
+		TextEditCommand command = new TextEditCommand(libraryExample2, library);
 		command.execute();
 		assertEquals(library.getCells().get(0).getInPins().get(1), library.getCells().get(0).getOutPins().get(0).getOutputPowers().get(0).getRelatedPin());
 		assertEquals("AND8_X1", library.getCells().get(0).getName());
@@ -592,7 +592,7 @@ class TextEditCommandTest {
 	@Test
 	void TextEditCommandTestUndo() throws InvalidFileFormatException {
 		Library library = LibertyParser.parseLibrary(libraryExample);
-		TextEditCommand command = new TextEditCommand(libraryExample, libraryExample2, library);
+		TextEditCommand command = new TextEditCommand(libraryExample2, library);
 		command.execute();
 		assertEquals(library.getCells().get(0).getInPins().get(1), library.getCells().get(0).getOutPins().get(0).getOutputPowers().get(0).getRelatedPin());
 		assertEquals("AND8_X1", library.getCells().get(0).getName());
