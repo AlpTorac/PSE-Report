@@ -58,7 +58,7 @@ public class Button extends JButton implements MouseListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (e.getSource() == this) {
+        if (e.getSource() == this && this.contains(e.getPoint())) {
             this.setBackground(this.cHover);
         }
     }
