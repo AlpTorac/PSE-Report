@@ -152,7 +152,7 @@ public class LibertyParser {
         	cell.setParentLibrary(productLibrary);
         }
         String[] libParameters = libData[1].split(";");
-        ArrayList<String> unsupportedData = new ArrayList<String>();
+        String unsupportedData = "";
         // parses all known library parameters
         String[] units = new String[] {"N/A", "N/A", "N/A", "N/A", "N/A", "N/A"}; 
         for (int i = 0; i < libParameters.length; i++) {
@@ -177,10 +177,12 @@ public class LibertyParser {
                 if (paramParts[0].replaceAll("\\s+", "").startsWith("capacitive_load_unit")) {
                     units[3] = paramParts[0].substring(paramParts[0].indexOf("("), paramParts[0].indexOf(")")) + ")";
                 } else {
-                    unsupportedData.add(libParameters[i] + ";");
+                    unsupportedData += libParameters[i] + ";";
+                    unsupportedData = unsupportedData.substring(0, unsupportedData.length() - 1);
                 }
         	}
         }
+        productLibrary.setUnsupportedData(unsupportedData);
         productLibrary.setUnits(units);
         return productLibrary;
     }
@@ -217,18 +219,13 @@ public class LibertyParser {
         //splits the cell parameters
         String[] cellParameters = cellData[1].split(";");
         float defaultLeakage = 0f;
-        boolean hasDefaultLeakage = false;
-        ArrayList<String> unsupportedData = new ArrayList<String>();
         // parses all known cell parameters
         for (int i = 0; i < cellParameters.length; i++) {
         	String[] paramParts = cellParameters[i].split(":");
         	switch (paramParts[0]) {
         	case "cell_leakage_power":
-        		hasDefaultLeakage = true;
         		defaultLeakage = Float.parseFloat(paramParts[1]);
         		break;
-        	default:
-        		unsupportedData.add(cellParameters[i].replace(":", " : ") + " ;");
         	}
         }
         Leakage leakages = new Leakage(leakagesValues);
@@ -299,10 +296,10 @@ public class LibertyParser {
         float capacitance = 0;
         float maxCap = 0;
         float minCap = 0;
-        ArrayList<String> leftOverData = new ArrayList<String>();
         // searches attribute group parameters
         String[] singleValueAttributes = pinData[1].split(";");
         // parses all known pin parameters
+        String unsupportedData = "";
         for (int i = 0; i < singleValueAttributes.length; i++) {
             String attributeData = singleValueAttributes[i]; 
             String[] attributeParts = attributeData.split(":", 2);
@@ -365,7 +362,7 @@ public class LibertyParser {
                     capacitance =  Float.parseFloat(attrValue);
                     break;
                 default:
-                    leftOverData.add(attributeData);
+        		    unsupportedData += singleValueAttributes[i].replace(":", " : ") + " ;\n";
             }
         }
         // throws exceptions for invalid pin direction
@@ -377,11 +374,11 @@ public class LibertyParser {
         }
         if (isInput) {
         	ArrayList<InAttribute> attributes = parseInAttributes(attributeStrings, path);
-        	return parseInputPin(attributes, name, hasCapacitance, capacitance);
+        	return parseInputPin(attributes, name, hasCapacitance, capacitance, unsupportedData);
         } else {
         	ArrayList<OutAttribute> attributes = parseOutAttributes(attributeStrings, relatedPins, path);
         	return parseOutputPin(attributes, name, hasCapacitance, hasMinCapacitance,
-        			maxCap, minCap, function);
+        			maxCap, minCap, function, unsupportedData);
         }
     }
     
@@ -544,9 +541,10 @@ public class LibertyParser {
      * @param name the name of the pin
      * @param hasCapacitance whether the input pin has capacitance specified
      * @param capacitance the capacitance if it is provided
+     * @param unsupportedData file data that hierarchically belong to a pin that the program does not support
      * @return the initialised input Pin
      */
-    private static InputPin parseInputPin(ArrayList<InAttribute> attributes , String name, boolean hasCapacitance, float capacitance) {
+    private static InputPin parseInputPin(ArrayList<InAttribute> attributes , String name, boolean hasCapacitance, float capacitance, String unsupportedData) {
     	/* deprecated unless errors noticed
     	// unifies attribute indexes
     	/
@@ -582,6 +580,7 @@ public class LibertyParser {
         for (InAttribute attribute : attributes) {
         	attribute.setParentInPin(parsedPin);
         }
+        parsedPin.setUnsupportedData(unsupportedData);
         return parsedPin;
     }
     
@@ -594,12 +593,13 @@ public class LibertyParser {
      * @param maxCap the maximal capacitance if it is provided
      * @param minCap the minimal capacitance if it is provided
      * @param function the function of the output pin
+     * @param unsupportedData file data that hierarchically belong to a pin that the program does not support
      * @return
      */
     private static OutputPin parseOutputPin(ArrayList<OutAttribute> attributes, String name,
     		boolean hasMaxCapacitance, boolean hasMinCapacitance, float maxCap,
-    		float minCap, String function) {
-    	/*deprecated unless errors pop up
+    		float minCap, String function, String unsupportedData) {
+    	/*deprecated unless errors pop up in the future
     	// unifies attribute indexes
     	float[] uniformIndex1 = null;
         float[] uniformIndex2 = null;
@@ -642,6 +642,7 @@ public class LibertyParser {
         if (!function.equals("")) {
             parsedPin.setOutputFunction(function);
         }
+        parsedPin.setUnsupportedData(unsupportedData);
         return parsedPin;
     }
 

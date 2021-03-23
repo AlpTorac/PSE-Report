@@ -1,11 +1,13 @@
 package gelf.model.parsers;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +15,6 @@ import gelf.model.elements.Cell;
 import gelf.model.elements.InputPin;
 import gelf.model.elements.Library;
 import gelf.model.elements.OutputPin;
-import gelf.model.elements.Pin;
 import gelf.model.elements.attributes.InputPower;
 import gelf.model.elements.attributes.OutputPower;
 import gelf.model.elements.attributes.PowerGroup;
