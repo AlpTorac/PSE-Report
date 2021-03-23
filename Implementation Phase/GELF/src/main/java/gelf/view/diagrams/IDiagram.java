@@ -69,16 +69,22 @@ public interface IDiagram {
 	 */
 	public void hideDiagramViewHelper(IndicatorIdentifier id);
 	/**
+	 * Note: Methods connected to {@link gelf.view.diagrams.components.DiagramComponent#diagram diagram}
+	 * will not work for the prototypes till they are attached to a diagram.
 	 * @return An array of deep copied components of the implementing class, which
 	 * are not the {@link DiagramAxis} and not responsible for displaying values.
 	 */
 	public DiagramComponent[] getNonValueDisplayDiagramComponentPrototype();
 	/**
+	 * Note: Methods connected to {@link gelf.view.diagrams.components.DiagramComponent#diagram diagram}
+	 * will not work for the prototypes till they are attached to a diagram.
 	 * @return An array of deep copied components of the implementing class, which
 	 * are responsible for displaying values and not {@link DiagramAxis}.
 	 */
 	public DiagramValueDisplayComponent[] getDiagramValueDisplayComponentPrototypes();
 	/**
+	 * Note: Methods connected to {@link gelf.view.diagrams.components.DiagramComponent#diagram diagram}
+	 * will not work for the prototypes till they are attached to a diagram.
 	 * @return An array of deep copied {@link DiagramAxis} of the implementing class.
 	 */
 	public DiagramAxis[] getDiagramAxisPrototypes();

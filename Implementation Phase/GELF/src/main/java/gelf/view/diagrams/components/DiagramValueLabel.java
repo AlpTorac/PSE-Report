@@ -105,18 +105,22 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 	
 	@Override
 	protected String getRoundedPositionInDiagramString() {
-		int[] indexPositions = this.diagram.getIndexPositionsOfComponent(this);
-		ArrayList<float[]> indices = this.diagram.cloneDiagramData().extractIndices();
-		float beginIndex1 = (indexPositions[0] - 1 >= 0) ? indices.get(0)[indexPositions[0] - 1] : 0;
-		float beginIndex2 = (indexPositions[1] - 1 >= 0) ? indices.get(1)[indexPositions[1] - 1] : 0;
-		String result = "index1: " +
-		String.valueOf(beginIndex1) + " - " +
-		String.valueOf(indices.get(0)[indexPositions[0]]) + "\n" +
-		"index2: " +
-		String.valueOf(beginIndex2) + " - " +
-		String.valueOf(indices.get(1)[indexPositions[1]]);
-		
-		return result;
+		if (this.diagram != null) {
+			int[] indexPositions = this.diagram.getIndexPositionsOfComponent(this);
+			ArrayList<float[]> indices = this.diagram.cloneDiagramData().extractIndices();
+			float beginIndex1 = (indexPositions[0] - 1 >= 0) ? indices.get(0)[indexPositions[0] - 1] : 0;
+			float beginIndex2 = (indexPositions[1] - 1 >= 0) ? indices.get(1)[indexPositions[1] - 1] : 0;
+			String result = "index1: " +
+			String.valueOf(beginIndex1) + " - " +
+			String.valueOf(indices.get(0)[indexPositions[0]]) + "\n" +
+			"index2: " +
+			String.valueOf(beginIndex2) + " - " +
+			String.valueOf(indices.get(1)[indexPositions[1]]);
+			
+			return result;
+		} else {
+			return "";
+		}
 	}
 	/**
 	 * The class that encapsulates the visuals of {@link DiagramValueLabel}.
