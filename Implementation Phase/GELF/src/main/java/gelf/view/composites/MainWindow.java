@@ -15,6 +15,7 @@ import gelf.model.elements.Library;
 import gelf.model.project.Model;
 import gelf.model.project.Project;
 import gelf.model.project.Updatable;
+import gelf.model.elements.*;
 import gelf.view.components.Menu;
 import gelf.view.components.MenuBar;
 import gelf.view.components.MenuItem;
@@ -209,11 +210,18 @@ public class MainWindow extends Window implements Updatable {
 
     @Override
     public void update() {
+        //latest command
         Command latest = Model.getInstance().getCurrentCommandHistory().getLatestCommand();
         if(latest != null)
             infoBar.setText(InfoBarID.LASTACTION, latest.toString());
         else
             infoBar.setText(InfoBarID.LASTACTION, "none");
-        System.out.println("Updated");      
+        //selected
+        // ArrayList<Element> selected = outliner.getSelectedElements();
+        // if(selected.size() == 0)
+        //     infoBar.setText(InfoBarID.SELECTED, "none");
+        // else {
+        //     infoBar.setText(InfoBarID.SELECTED, selected.get(selected.size()-1).toString());
+        // }
     }
 }
