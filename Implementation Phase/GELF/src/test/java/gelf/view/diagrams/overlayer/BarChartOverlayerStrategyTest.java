@@ -15,7 +15,6 @@ import gelf.view.diagrams.TestCase;
 import gelf.view.diagrams.TestFrame;
 import gelf.view.diagrams.TestPanel;
 import gelf.view.diagrams.builder.BarChartBuilder;
-import gelf.view.diagrams.builder.DiagramBuilder;
 import gelf.view.diagrams.components.BarChartBar;
 import gelf.view.diagrams.components.DiagramValueDisplayComponent;
 import gelf.view.diagrams.type.BarChart;
@@ -29,8 +28,8 @@ class BarChartOverlayerStrategyTest implements TestCase {
 	private static ArrayList<float[]> data1;
 	private static ArrayList<float[]> data2;
 	
-	private static DiagramOverlayer overlayer = new DiagramOverlayer();
-	private static DiagramBuilder builder;
+	private static DiagramOverlayer overlayer;
+	private static BarChartBuilder builder;
 	
 	@BeforeAll
 	private static void init() {
@@ -38,8 +37,6 @@ class BarChartOverlayerStrategyTest implements TestCase {
 		frame.add(panel);
 		container = panel;
 		builder = new BarChartBuilder(container);
-		
-		overlayer.setOverlayStrategy(new BarChartOverlayStrategy(container));
 	}
 	
 	@Test
@@ -53,12 +50,13 @@ class BarChartOverlayerStrategyTest implements TestCase {
 		data2.add(values2);
 		
 		builder.receiveDiagramData(data1, 0);
-		IDiagram diagram1 = builder.buildDiagram();
+		BarChart diagram1 = (BarChart) builder.buildDiagram();
 		
 		builder.receiveDiagramData(data2, 0);
-		IDiagram diagram2 = builder.buildDiagram();
-		
-		IDiagram overlaidCharts = overlayer.overlay(new IDiagram[] {diagram1, diagram2});
+		BarChart diagram2 = (BarChart) builder.buildDiagram();
+		overlayer = new DiagramOverlayer();
+		overlayer.setOverlayStrategy(new BarChartOverlayStrategy(container, new BarChart[] {diagram1, diagram2}));
+		IDiagram overlaidCharts = overlayer.overlay();
 		overlaidCharts.attachToContainer(container);
 		
 		DiagramValueDisplayComponent[] dvdcs = overlaidCharts.getDiagramValueDisplayComponentPrototypes();

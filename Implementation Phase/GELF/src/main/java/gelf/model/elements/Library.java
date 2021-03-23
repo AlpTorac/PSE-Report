@@ -26,6 +26,7 @@ public class Library extends HigherElement {
     private ArrayList<Cell> cells = new ArrayList<Cell>();
     private Stat defaultLeakage;
     private File libraryFile;
+	private String[] units;
     
     /**
      * Initializes the library
@@ -87,7 +88,6 @@ public class Library extends HigherElement {
 	 * @param dataLib the library object with the necessary data
 	 * @author Xhulio Pernoca
 	 */
-	@SuppressWarnings("unchecked")
 	public void replaceData(Library originDataLib) {
 		Library dataLib = originDataLib.clone();
         setName(dataLib.getName());
@@ -159,6 +159,34 @@ public class Library extends HigherElement {
 	
 	public String getInnerPath() {
 		return toString();
+	}
+
+	/**
+	 * Returns the units on this library
+	 * Index 0: time_unit
+	 * Index 1: voltage_unit
+	 * Index 2: current_unit
+	 * Index 3: capacitive_load_unit
+	 * Index 4: pulling_resistance_unit
+	 * Index 5: leakage_power_unit
+	 * @return Array of the strings of all the units, containing "N/A" if unit was not specified
+	 */
+	public String[] getUnits() {
+		return units;
+	}
+
+	/**
+	 * Sets the units on this library
+	 * Index 0: time_unit
+	 * Index 1: voltage_unit
+	 * Index 2: current_unit
+	 * Index 3: capacitive_load_unit
+	 * Index 4: pulling_resistance_unit
+	 * Index 5: leakage_power_unit
+	 * @param units Array of the strings of all the units
+	 */
+	public void setUnits(String[] units) {
+		this.units = units;
 	}
 
 	@Override

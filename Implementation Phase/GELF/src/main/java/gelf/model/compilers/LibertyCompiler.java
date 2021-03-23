@@ -19,6 +19,13 @@ public class LibertyCompiler {
      */
     public static String compile(Library library) {
         String output = "library(" + library.getName() + ") {\n"; //+ library.getFileData()[0];
+        String[] units = library.getUnits();
+        output += "\ttime_unit : " + units[0] + " ;\n" +
+        "\tvoltage_unit : " + units[1] + " ;\n" +
+        "\tcurrent_unit : " + units[2] + " ;\n" +
+        "\tcapacitive_load_unit" + units[3] + ";\n" +
+        "\tpulling_resistance_unit : " + units[4] + " ;\n" +
+        "\tleakage_power_unit : " + units[5] + " ;\n";
         for (Cell cell : library.getCells()) {
             output += compile(cell);
         }

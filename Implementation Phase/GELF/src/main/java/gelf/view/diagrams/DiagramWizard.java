@@ -32,9 +32,6 @@ public class DiagramWizard implements IDiagramWizard {
 	 */
 	private DiagramViewHelperFactory viewHelperFactory = DiagramViewHelperFactory.getInstance();
 	
-	public DiagramWizard() {
-		
-	}
 	/**Attaches the given diagram to the given container.
 	 * 
 	 * @param container the container, to which the given diagram will be attached.
@@ -130,7 +127,7 @@ public class DiagramWizard implements IDiagramWizard {
 	 */
 	@Override
 	public BarChart overlayAndAttachBarCharts(Container container, BarChart[] barCharts) {
-		DiagramOverlayer overlayer = new DiagramOverlayer(barCharts);
+		DiagramOverlayer overlayer = new DiagramOverlayer();
 		overlayer.setOverlayStrategy(new BarChartOverlayStrategy(container, barCharts));
 		BarChart overlaidDiagram = (BarChart) overlayer.overlay();
 		this.attachAndShowAxes(container, overlaidDiagram);
@@ -144,7 +141,7 @@ public class DiagramWizard implements IDiagramWizard {
 	 */
 	@Override
 	public Histogram overlayAndAttachHistograms(Container container, Histogram[] histograms) {
-		DiagramOverlayer overlayer = new DiagramOverlayer(histograms);
+		DiagramOverlayer overlayer = new DiagramOverlayer();
 		overlayer.setOverlayStrategy(new HistogramOverlayStrategy(container, histograms));
 		Histogram overlaidDiagram = (Histogram) overlayer.overlay();
 		this.attachAndShowAxes(container, overlaidDiagram);

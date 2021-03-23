@@ -10,29 +10,17 @@ import gelf.view.diagrams.components.DiagramValueDisplayComponent;
 import gelf.view.diagrams.components.HistogramBar;
 import gelf.view.diagrams.data.DiagramData;
 import gelf.view.diagrams.type.Histogram;
-
+/**
+ * The implementation of the strategy responsible for overlaying {@link gelf.view.diagrams.type.Histogram Histograms}.
+ * @author Alp Torac Genc
+ */
 public class HistogramOverlayStrategy extends DiagramOverlayStrategy implements IHistogramBuilder {
 
 	private Container container;
 	private Histogram[] histograms;
 	
-	public HistogramOverlayStrategy(Container container) {
-		this.container = container;
-	}
-	
 	public HistogramOverlayStrategy(Container container, Histogram[] histograms) {
 		this.container = container;
-		this.histograms = histograms;
-	}
-
-	@Override
-	public void setDiagrams(IDiagram[] diagrams) {
-		Histogram[] histograms = new Histogram[diagrams.length];
-		
-		for (int i = 0; i < histograms.length; i++) {
-			histograms[i] = (Histogram) diagrams[i];
-		}
-		
 		this.histograms = histograms;
 	}
 

@@ -129,7 +129,6 @@ public class LibertyParser {
         // Finds library name
         String[] libData = cellStrings[0].split("\\{", 2);
         String name = libData[0].substring(libData[0].indexOf("(") + 1, libData[0].indexOf(")"));
-        String unsupportedData = libData[1];
         // parses Cells
         ArrayList<Cell> childCells = new ArrayList<Cell>();
         for (int i = 1; i < cellStrings.length; i++) {
@@ -152,6 +151,37 @@ public class LibertyParser {
         for (Cell cell : childCells) {
         	cell.setParentLibrary(productLibrary);
         }
+        String[] libParameters = libData[1].split(";");
+        ArrayList<String> unsupportedData = new ArrayList<String>();
+        // parses all known library parameters
+        String[] units = new String[] {"N/A", "N/A", "N/A", "N/A", "N/A", "N/A"}; 
+        for (int i = 0; i < libParameters.length; i++) {
+        	String[] paramParts = libParameters[i].split(":", 2);
+        	switch (paramParts[0].replaceAll("\\s+", "")) {
+        	case "time_unit":
+        		units[0] = paramParts[1].replaceAll("\\s+", "");
+        		break;
+            case "voltage_unit":
+        		units[1] = paramParts[1].replaceAll("\\s+", "");
+        		break;
+            case "current_unit":
+        		units[2] = paramParts[1].replaceAll("\\s+", "");
+        		break;
+            case "pulling_resistance_unit":
+        		units[4] = paramParts[1].replaceAll("\\s+", "");
+        		break;
+            case "leakage_power_unit":
+        		units[5] = paramParts[1].replaceAll("\\s+", "");
+        		break;
+        	default:
+                if (paramParts[0].replaceAll("\\s+", "").startsWith("capacitive_load_unit")) {
+                    units[3] = paramParts[0].substring(paramParts[0].indexOf("("), paramParts[0].indexOf(")")) + ")";
+                } else {
+                    unsupportedData.add(libParameters[i] + ";");
+                }
+        	}
+        }
+        productLibrary.setUnits(units);
         return productLibrary;
     }
 

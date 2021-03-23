@@ -2,6 +2,10 @@ package gelf.view.diagrams.components;
 
 import java.awt.Color;
 
+/**
+ * The class that represents a solid line in a {@link gelf.view.diagrams.type.Diagram Diagram}.
+ * @author Alp Torac Genc
+ */
 public class SolidLine extends DiagramLine {
 	protected SolidLine(PositionInFrame start, PositionInFrame end, Color color, int thickness) {
 		super(start, end, color, thickness);

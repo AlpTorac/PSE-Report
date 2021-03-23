@@ -2,6 +2,12 @@ package gelf.view.diagrams.components;
 
 import java.awt.Color;
 
+/**
+ * The class that represents a color scale, which has two main colors, one being for the
+ * minimum value and the other one for the maximum value. For the values in between, the
+ * HSL of both colors will be mixed, using a weighted sum.
+ * @author Alp Torac Genc
+ */
 public class BiColorScale extends DiagramColorScale {
 
 	protected BiColorScale(PositionInFrame topLeft, PositionInFrame bottomRight, Color borderColor, float minVal,
@@ -9,7 +15,7 @@ public class BiColorScale extends DiagramColorScale {
 		super(topLeft, bottomRight, borderColor, new float[] {minVal, maxVal},
 				new Color[] {minValColor, maxValColor}, borderThickness);
 	}
-
+	
 	public Color getMinValueColor() {
 		return super.getValueColor(0);
 	}

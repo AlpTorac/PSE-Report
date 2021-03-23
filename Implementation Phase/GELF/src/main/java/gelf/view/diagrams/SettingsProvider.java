@@ -83,15 +83,6 @@ public class SettingsProvider {
 	 */
 	private String axisFontType = "TimesRoman";
 	/**
-	 * Whether the values of a {@link gelf.view.diagrams.components.DiagramAxis DiagramAxis} will be
-	 * shown as default.
-	 */
-	private boolean showAxisValues = true;
-	/**
-	 * Additional space left for the values displayed in {@link gelf.view.diagrams.components.DiagramAxis DiagramAxis}.
-	 */
-	private int additionalSpaceForAxisValues = 5;
-	/**
 	 * The amount of steps in a {@link gelf.view.diagrams.components.DiagramAxis DiagramAxis} dedicated to be an x-axis.
 	 */
 	private int stepsInXAxis = 10;
@@ -139,6 +130,11 @@ public class SettingsProvider {
 	 */
 	private float heatMapColorScaleRightMariginFactor = 1f / 20f;
 	/**
+	 * The proportion of the height of {@link gelf.view.diagrams.components.DiagramColorScale}
+	 * to the height of its container.
+	 */
+	private float heatMapColorScaleHeightInContainer = 1f / 20f;
+	/**
 	 * The default border color of {@link gelf.view.diagrams.components.HeatMapLabel}.
 	 */
 	private Color heatMapColorScaleBorderColor = Color.BLACK;
@@ -165,6 +161,8 @@ public class SettingsProvider {
 	
 	private static SettingsProvider instance;
 	
+	private SettingsProvider() {};
+	
 	public static SettingsProvider getInstance() {
 		if (instance == null) {
 			instance = new SettingsProvider();
@@ -185,14 +183,6 @@ public class SettingsProvider {
 		return axisValueFontSize;
 	}
 
-	public boolean isShowAxisValues() {
-		return showAxisValues;
-	}
-
-	public int getAdditionalSpaceForAxisValues() {
-		return additionalSpaceForAxisValues;
-	}
-
 	public int getBarBorderThickness() {
 		return barBorderThickness;
 	}
@@ -201,128 +191,52 @@ public class SettingsProvider {
 		return heatMapColorScaleColors;
 	}
 
-	public void setAxisThickness(int axisThickness) {
-		this.axisThickness = axisThickness;
-	}
-
-	public void setAxisColor(Color axisColor) {
-		this.axisColor = axisColor;
-	}
-
-	public void setAxisValueFontSize(int axisValueFontSize) {
-		this.axisValueFontSize = axisValueFontSize;
-	}
-
-	public void setShowAxisValues(boolean showAxisValues) {
-		this.showAxisValues = showAxisValues;
-	}
-
-	public void setAdditionalSpaceForAxisValues(int additionalSpaceForAxisValues) {
-		this.additionalSpaceForAxisValues = additionalSpaceForAxisValues;
-	}
-
-	public void setBarBorderThickness(int barBorderThickness) {
-		this.barBorderThickness = barBorderThickness;
-	}
-
-	public void setHeatMapColorScaleColors(Color[] heatMapColorScaleColors) {
-		this.heatMapColorScaleColors = heatMapColorScaleColors;
-	}
-
 	public int getStepsInYAxis() {
 		return stepsInYAxis;
-	}
-
-	public void setStepsInYAxis(int stepsInYAxis) {
-		this.stepsInYAxis = stepsInYAxis;
 	}
 
 	public int getStepsInXAxis() {
 		return stepsInXAxis;
 	}
 
-	public void setStepsInXAxis(int stepsInXAxis) {
-		this.stepsInXAxis = stepsInXAxis;
-	}
-
 	public int getHeatMapLabelBorderThickness() {
 		return heatMapLabelBorderThickness;
-	}
-
-	public void setHeatMapLabelBorderThickness(int heatMapLabelBorderThickness) {
-		this.heatMapLabelBorderThickness = heatMapLabelBorderThickness;
 	}
 
 	public Color getHeatMapColorScaleBorderColor() {
 		return heatMapColorScaleBorderColor;
 	}
 
-	public void setHeatMapColorScaleBorderColor(Color heatMapColorScaleBorderColor) {
-		this.heatMapColorScaleBorderColor = heatMapColorScaleBorderColor;
-	}
-
 	public int getHeatMapColorScaleBorderThickness() {
 		return heatMapColorScaleBorderThickness;
-	}
-
-	public void setHeatMapColorScaleBorderThickness(int heatMapColorScaleBorderThickness) {
-		this.heatMapColorScaleBorderThickness = heatMapColorScaleBorderThickness;
 	}
 
 	public String getAxisFontType() {
 		return axisFontType;
 	}
 
-	public void setAxisFontType(String axisFontType) {
-		this.axisFontType = axisFontType;
-	}
-	
 	public int getDiagramValueDisplayLayer() {
 		return diagramValueDisplayLayer;
-	}
-
-	public void setDiagramValueDisplayLayer(int diagramValueDisplayLayer) {
-		this.diagramValueDisplayLayer = diagramValueDisplayLayer;
 	}
 
 	public int getDiagramAxisLayer() {
 		return diagramAxisLayer;
 	}
 
-	public void setDiagramAxisLayer(int diagramAxisLayer) {
-		this.diagramAxisLayer = diagramAxisLayer;
-	}
-
 	public int getDiagramNonValueDisplayLayer() {
 		return diagramNonValueDisplayLayer;
-	}
-
-	public void setDiagramNonValueDisplayLayer(int diagramNonValueDisplayLayer) {
-		this.diagramNonValueDisplayLayer = diagramNonValueDisplayLayer;
 	}
 
 	public int getDiagramViewHelperDisplayLayer() {
 		return diagramViewHelperDisplayLayer;
 	}
 
-	public void setDiagramViewHelperDisplayLayer(int diagramViewHelperDisplayLayer) {
-		this.diagramViewHelperDisplayLayer = diagramViewHelperDisplayLayer;
-	}
-
 	public int getDiagramHoverLabelLayer() {
 		return diagramHoverLabelLayer;
 	}
 
-	public void setDiagramHoverLabelLayer(int diagramHoverLabelLayer) {
-		this.diagramHoverLabelLayer = diagramHoverLabelLayer;
-	}
-
 	public float getDiagramLeftMariginFactor() {
 		return diagramLeftMariginFactor;
-	}
-
-	public void setDiagramLeftMariginFactor(float diagramLeftMariginFactor) {
-		this.diagramLeftMariginFactor = diagramLeftMariginFactor;
 	}
 	
 	public float getDiagramLeftMarigin(int containerWidth) {
@@ -361,24 +275,12 @@ public class SettingsProvider {
 		return diagramRightMariginFactor;
 	}
 
-	public void setDiagramRightMariginFactor(float diagramRightMariginFactor) {
-		this.diagramRightMariginFactor = diagramRightMariginFactor;
-	}
-
 	public float getDiagramTopMariginFactor() {
 		return diagramTopMariginFactor;
 	}
 
-	public void setDiagramTopMariginFactor(float diagramTopMariginFactor) {
-		this.diagramTopMariginFactor = diagramTopMariginFactor;
-	}
-
 	public float getDiagramBottomMariginFactor() {
 		return diagramBottomMariginFactor;
-	}
-
-	public void setDiagramBottomMariginFactor(float diagramBottomMariginFactor) {
-		this.diagramBottomMariginFactor = diagramBottomMariginFactor;
 	}
 	
 	/**
@@ -440,10 +342,6 @@ public class SettingsProvider {
 	public Color getValueDisplayComponentColorAt(int index) {
 		return this.valueDisplayComponentColors[index];
 	}
-
-	public void setValueDisplayComponentColorAt(Color valueDisplayComponentColor, int index) {
-		this.valueDisplayComponentColors[index] = valueDisplayComponentColor;
-	}
 	
 	/**
 	 * @param color1 a given color.
@@ -472,10 +370,6 @@ public class SettingsProvider {
 		return diagramCoordinateLineColor;
 	}
 
-	public void setDiagramCoordinateLineColor(Color diagramCoordinateLineColor) {
-		this.diagramCoordinateLineColor = diagramCoordinateLineColor;
-	}
-
 	public static double getTolerance() {
 		return TOLERANCE;
 	}
@@ -484,32 +378,19 @@ public class SettingsProvider {
 		return barChartBarWidthInSteps;
 	}
 
-	public void setBarChartBarWidthInSteps(double barChartBarWidthInSteps) {
-		this.barChartBarWidthInSteps = barChartBarWidthInSteps;
-	}
-
 	public int getColorScaleValueDisplaySteps() {
 		return colorScaleValueDisplaySteps;
-	}
-
-	public void setColorScaleValueDisplaySteps(int colorScaleValueDisplaySteps) {
-		this.colorScaleValueDisplaySteps = colorScaleValueDisplaySteps;
 	}
 
 	public float getHeatMapColorScaleLeftMariginFactor() {
 		return heatMapColorScaleLeftMariginFactor;
 	}
 
-	public void setHeatMapColorScaleLeftMariginFactor(float heatMapColorScaleLeftMariginFactor) {
-		this.heatMapColorScaleLeftMariginFactor = heatMapColorScaleLeftMariginFactor;
-	}
-
 	public float getHeatMapColorScaleRightMariginFactor() {
 		return heatMapColorScaleRightMariginFactor;
 	}
 
-	public void setHeatMapColorScaleRightMariginFactor(float heatMapColorScaleRightMariginFactor) {
-		this.heatMapColorScaleRightMariginFactor = heatMapColorScaleRightMariginFactor;
+	public float getHeatMapColorScaleHeightInContainer() {
+		return heatMapColorScaleHeightInContainer;
 	}
-	
 }

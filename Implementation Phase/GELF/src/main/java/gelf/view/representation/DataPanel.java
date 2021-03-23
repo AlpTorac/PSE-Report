@@ -1,12 +1,8 @@
 package gelf.view.representation;
 
-import java.awt.Color;
-import java.awt.Dimension;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 
 import gelf.model.elements.*;

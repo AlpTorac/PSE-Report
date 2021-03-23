@@ -2,25 +2,17 @@ package gelf.controller.listeners;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import gelf.model.elements.Cell;
 import gelf.model.elements.Element;
-import gelf.model.elements.InputPin;
 import gelf.model.elements.Library;
-import gelf.model.elements.OutputPin;
 import gelf.model.elements.Pin;
 import gelf.model.project.Model;
-import gelf.model.project.Project;
 import gelf.view.composites.Outliner;
-import gelf.view.composites.SubWindow;
 import gelf.view.composites.SubWindowArea;
 
 /**
@@ -30,7 +22,6 @@ import gelf.view.composites.SubWindowArea;
 public class SaveListener implements ActionListener{
 	
 	private Outliner outliner;
-	private SubWindowArea subwindows;
 	
 	/**
 	 * Initializes the listener

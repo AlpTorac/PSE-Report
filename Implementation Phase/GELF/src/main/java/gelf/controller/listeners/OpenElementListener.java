@@ -3,7 +3,6 @@ package gelf.controller.listeners;
 import gelf.view.composites.Outliner;
 import gelf.view.composites.SubWindow;
 import gelf.view.composites.SubWindowArea;
-import gelf.view.composites.Visualizer;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,7 +12,6 @@ import java.awt.event.MouseListener;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
 
 import gelf.model.elements.Element;
 import gelf.model.project.Model;

@@ -7,6 +7,11 @@ import gelf.view.diagrams.components.DiagramComponent;
 import gelf.view.diagrams.components.DiagramLine;
 import gelf.view.diagrams.components.PositionInFrame;
 
+/**
+ * The class that represents a line, which represents a certain value in an
+ * {@link gelf.view.diagrams.IDiagram IDiagram}.
+ * @author Alp Torac Genc
+ */
 public class ValueLine extends DiagramLine {
 	private float value;
 	
@@ -28,6 +33,10 @@ public class ValueLine extends DiagramLine {
 		this.visualElement = new ValueLineVisual(this);
 	}
 	
+	/**
+	 * The class that represents the visuals of a {@link ValueLine}.
+	 * @author Alp Torac Genc
+	 */
 	protected class ValueLineVisual extends LineVisual {
 
 		/**

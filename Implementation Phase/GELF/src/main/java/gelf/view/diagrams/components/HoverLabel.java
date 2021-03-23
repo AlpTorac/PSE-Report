@@ -13,6 +13,17 @@ import javax.swing.border.Border;
 import gelf.view.diagrams.IDiagram;
 import gelf.view.diagrams.SettingsProvider;
 
+/**
+ * The singleton class, which represents the label that is shown to give the user a summary
+ * of the information a {@link Hoverable} holds, when it is hovered.
+ * <p>
+ * The label represented and encapsulated by this class follows the mouse pointer, where
+ * the bottom left corner of the label is on top of the mouse pointer.
+ * <p>
+ * The label resizes automatically to the smallest possible dimensions, so that it is
+ * as small as possible while fully displaying its {@link #caption}.
+ * @author Alp Torac Genc
+ */
 public class HoverLabel implements HasAttachablePart {
 	private String caption;
 	private Color color;
@@ -29,6 +40,12 @@ public class HoverLabel implements HasAttachablePart {
 		this.component = new HoverLabelVisual(this);
 	}
 	
+	/**
+	 * Calculates the new bounds for {@link #component} in a manner that it does not
+	 * get cut off the screen, allowing the {@link #caption} to be fully visible and
+	 * readable, while allowing the mouse pointer to move on its borders.
+	 * @return The specified dimensions of {@link #component}
+	 */
 	private Rectangle calculateBounds() {
 		Dimension d = this.component.getPreferredSize();
 		Rectangle bounds = new Rectangle();
@@ -57,7 +74,10 @@ public class HoverLabel implements HasAttachablePart {
 		this.setComponentBounds();
 		this.component.repaint();
 	}
-	
+	/**
+	 * @return The {@link #caption} translated to html format,
+	 * which will be displayed by {@link #component}.
+	 */
 	private String getCaptionForComponent() {
 		String result = this.caption;
 		result = "<html>" + result + "</html>";
@@ -140,7 +160,10 @@ public class HoverLabel implements HasAttachablePart {
 		}
 		return hoverLabel;
 	}
-	
+	/**
+	 * The class that encapsulates the visuals of {@link HoverLabel}.
+	 * @author Alp Torac Genc
+	 */
 	private class HoverLabelVisual extends JLabel {
 		/**
 		 * Generated serial version ID.

@@ -5,10 +5,34 @@ import java.util.Collection;
 
 import gelf.view.diagrams.SettingsProvider;
 
+/**
+ * The adapter class responsible for containing {@link #data} needed to build a {@link gelf.view.diagrams.type.Diagram Diagram}
+ * along with (optional) {@link #descriptions} for values and indices.
+ * <p>
+ * See {@link DiagramDataExtractionStrategy} and its sub-classes for conversions for constructor parameter format.
+ * In general, the data and its descriptions are assumed to have the same format, even though they potentially have different types.
+ * <p>
+ * Note: The indices do not have to have the same distance from each other.
+ * @author Alp Torac Genc
+ */
 public class DiagramData {
+	/**
+	 * A collection made of values their corresponding indices.
+	 */
 	private Collection<?> data;
+	/**
+	 * A collection made of descriptions for {@link #data}.
+	 */
 	private Collection<?> descriptions;
+	/**
+	 * The strategy used to interpret and access the information stored in
+	 * {@link #data} and {@link #descriptions}.
+	 */
 	private DiagramDataExtractionStrategy extractor;
+	/**
+	 * The dimension given by the indices. Used to determine how many entries for
+	 * indices there are in {@link #data} and {@link #descriptions} (if not null).
+	 */
 	private int numberOfIndices;
 
 	public DiagramData(Collection<?> data, int numberOfIndices) {
@@ -23,25 +47,36 @@ public class DiagramData {
 		this.numberOfIndices = numberOfIndices;
 		this.setExtractor(this.numberOfIndices);
 	}
-	
+	/**
+	 * Determines and sets {@link #extractor} with the befitting extraction strategy for the given {@link #data}.
+	 * @param numberOfIndices {@link #numberOfIndices}
+	 */
 	private void setExtractor(int numberOfIndices) {
 		if (this.data.iterator().next() instanceof float[]) {
 			this.extractor = new ValueIndexExtractor(numberOfIndices);
 		}
 	}
-	
+	/**
+	 * @return The values stored in {@link #data}.
+	 */
 	public ArrayList<float[]> extractValues() {
 		return this.extractor.extractValues(this.data);
 	}
-	
+	/**
+	 * @return The indices stored in {@link #data}.
+	 */
 	public ArrayList<float[]> extractIndices() {
 		return this.extractor.extractIndices(this.data);
 	}
-	
+	/**
+	 * @return The value descriptions stored in {@link #descriptions}.
+	 */
 	public ArrayList<String[]> extractValueDescriptions() {
 		return this.extractor.extractValueDescriptions(this.descriptions);
 	}
-	
+	/**
+	 * @return The index descriptions stored in {@link #descriptions}.
+	 */
 	public ArrayList<String[]> extractIndexDescriptions() {
 		return this.extractor.extractIndexDescriptions(this.descriptions);
 	}
