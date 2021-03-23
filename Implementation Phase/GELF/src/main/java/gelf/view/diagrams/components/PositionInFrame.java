@@ -2,6 +2,11 @@ package gelf.view.diagrams.components;
 
 import gelf.view.diagrams.SettingsProvider;
 
+/**
+ * The class that represents a point (x, y) in a {@link java.awt.Container Container}.
+ * @author Alp Torac Genc
+ *
+ */
 public class PositionInFrame {
 	private double xPos;
 	private double yPos;
@@ -10,7 +15,9 @@ public class PositionInFrame {
 		this.xPos = xPos;
 		this.yPos = yPos;
 	}
-	
+	/**
+	 * Constructs an instance by adding the vector specified in x and y coordinates to reference point's coordinates.
+	 */
 	protected PositionInFrame(PositionInFrame referencePosition, double xPosDifference, double yPosDifference) {
 		this.xPos = referencePosition.getXPos() + xPosDifference;
 		this.yPos = referencePosition.getYPos() + yPosDifference;

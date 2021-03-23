@@ -18,8 +18,4 @@ public interface IDiagramViewHelper {
 	 * Hides the visuals of the view helper.
 	 */
 	public void hide();
-	/**
-	 * Updates the visuals of the view helper.
-	 */
-	public void update();
 }

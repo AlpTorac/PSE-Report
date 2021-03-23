@@ -61,7 +61,6 @@ public class CellPanel extends Panel implements MouseListener, ItemListener, Act
     private Cell cell;
 	private ArrayList<InputPin> inputPins;
 	private ArrayList<OutputPin> outputPins;
-	private int maxPins;
 	private boolean pinTag;
 	private Pin pin;
 	private ArrayList<InputPin> selectedPins;
@@ -114,7 +113,6 @@ public class CellPanel extends Panel implements MouseListener, ItemListener, Act
 		inputPins = cell.getInPins();
 		selectedPins = new ArrayList<InputPin>();
 		outputPins = cell.getOutPins();
-		maxPins = (inputPins.size() < outputPins.size()) ? outputPins.size() : inputPins.size();
 		libButton = new Button(cell.getParentLibrary().toString());
 		cellButton = new Button(cell.getName());
 		

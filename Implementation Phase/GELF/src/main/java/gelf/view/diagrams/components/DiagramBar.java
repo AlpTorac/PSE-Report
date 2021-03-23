@@ -3,11 +3,16 @@ package gelf.view.diagrams.components;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.border.Border;
 
+/**
+ * The super class to the classes, which represent bars in a {@link gelf.view.diagrams.type.Diagram Diagram}.
+ * @author Alp Torac Genc
+ */
 public abstract class DiagramBar extends DiagramValueDisplayComponent {
 	private static final Color DEFAULT_BORDER_COLOR = Color.BLACK;
 	
@@ -100,8 +105,8 @@ public abstract class DiagramBar extends DiagramValueDisplayComponent {
 
 	@Override
 	protected String getRoundedPositionInDiagramString() {
-		int indexPosition = this.diagram.getIndexPositionsOfComponent(this)[0];
 		float[] indices = this.diagram.cloneDiagramData().extractIndices().get(0);
+		int indexPosition = this.diagram.getIndexPositionsOfComponent(this)[0] % indices.length;
 		float beginIndex = (indexPosition - 1 >= 0) ? indices[indexPosition - 1] : 0;
 		String result = "index1: " +
 		String.valueOf(beginIndex) + " - " +
@@ -110,6 +115,11 @@ public abstract class DiagramBar extends DiagramValueDisplayComponent {
 		return result;
 	}
 	
+	/**
+	 * The class that encapsulates the visuals of {@link DiagramBar}.
+	 * @author Alp Torac Genc
+	 *
+	 */
 	protected class Bar extends JLabel {
 		
 		/**

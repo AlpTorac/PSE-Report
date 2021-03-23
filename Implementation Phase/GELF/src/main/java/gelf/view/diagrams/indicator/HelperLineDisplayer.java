@@ -6,6 +6,10 @@ import gelf.view.diagrams.IDiagram;
 import gelf.view.diagrams.SettingsProvider;
 import gelf.view.diagrams.components.DiagramComponentFactory;
 
+/**
+ * The super class of classes, which are responsible for displaying lines on an {@link gelf.view.diagrams.IDiagram IDiagram}.
+ * @author Alp Torac Genc
+ */
 public abstract class HelperLineDisplayer extends DiagramViewHelper {
 	protected static DiagramComponentFactory factory = DiagramComponentFactory.getDiagramComponentFactory();
 	private Color color = SettingsProvider.getInstance().getDiagramCoordinateLineColor();

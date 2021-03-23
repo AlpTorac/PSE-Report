@@ -8,6 +8,12 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
+/**
+ * The super class of classes, which represent labels that are responsible for
+ * displaying values in a {@link gelf.view.diagrams.type.Diagram Diagram}.
+ * @author Alp Torac Genc
+ *
+ */
 public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 	private static final Color DEFAULT_BORDER_COLOR = Color.BLACK;
 	
@@ -112,7 +118,10 @@ public abstract class DiagramValueLabel extends DiagramValueDisplayComponent {
 		
 		return result;
 	}
-	
+	/**
+	 * The class that encapsulates the visuals of {@link DiagramValueLabel}.
+	 * @author Alp Torac Genc
+	 */
 	protected class ValueLabelVisual extends JLabel {
 		/**
 		 * Generated serial version ID.

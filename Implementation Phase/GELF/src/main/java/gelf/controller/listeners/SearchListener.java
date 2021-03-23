@@ -1,20 +1,13 @@
 package gelf.controller.listeners;
 
 import gelf.model.elements.Element;
-import gelf.model.elements.Library;
-import gelf.view.components.Panel;
 import gelf.view.composites.Outliner;
 
-import java.awt.TextComponent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.event.TextEvent;
-import java.awt.event.TextListener;
 import java.util.ArrayList;
 
 import javax.swing.JTree;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 

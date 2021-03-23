@@ -6,36 +6,21 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import gelf.view.diagrams.IDiagram;
-import gelf.view.diagrams.IHighlightableElementContainer;
 
+/**
+ * An interface implemented by the {@link DiagramValueDisplayComponent} sub-classes that
+ * utilize {@link HoverLabel} to increase the visibility of the values and indices
+ * they represent by providing a summary of this information.
+ * @author Alp Torac Genc
+ */
 public interface Hoverable {
+	/**
+	 * The action to be performed, when the visuals of the component
+	 * are being hovered.
+	 * @param dvdc the component implementing this interface
+	 */
 	public default void hoverAction(DiagramValueDisplayComponent dvdc) {
 		HoverLabel.getHoverLabel().setCaption(dvdc.toString());
-	}
-
-	public default IHighlightableElementContainer getHighlightTargetContainer(DiagramValueDisplayComponent dvdc) {
-		Component container = dvdc.diagram.getContainingElement();
-		while (container.getParent() != null && !(container instanceof IHighlightableElementContainer)) {
-			container = container.getParent();
-		}
-		if (container.getParent() == null && !(container instanceof IHighlightableElementContainer)) {
-			return null;
-		}
-		return (IHighlightableElementContainer) container;
-	}
-
-	public default void notifyHighlighter(DiagramValueDisplayComponent dvdc) {
-		IHighlightableElementContainer highlightTargetContainer = this.getHighlightTargetContainer(dvdc);
-		if (highlightTargetContainer != null) {
-			highlightTargetContainer.receiveHoveredElementInfo(dvdc.diagram.getIndexPositionsOfComponent(dvdc));
-		}
-	}
-	
-	public default void stopHighlighting(DiagramValueDisplayComponent dvdc) {
-		IHighlightableElementContainer highlightTargetContainer = this.getHighlightTargetContainer(dvdc);
-		if (highlightTargetContainer != null) {
-			highlightTargetContainer.stopHighlighting();
-		}
 	}
 
 	public default void repositionHoverLabel(double x, double y) {
@@ -51,15 +36,18 @@ public interface Hoverable {
 	public default void hideHoverLabel() {
 		HoverLabel.getHoverLabel().hide();
 	}
-
+	/**
+	 * Creates and adds listeners to the component, which listen for hover events.
+	 * @param dvdc the component implementing this interface
+	 * @param component {@link DiagramValueDisplayComponent#visualElement visualElement} of dvdc
+	 * @param diagram {@link DiagramValueDisplayComponent#diagram diagram} of dvdc
+	 */
 	public default void addHoverListener(DiagramValueDisplayComponent dvdc, Component component, IDiagram diagram) {
-
 		MouseAdapter listener = new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				HoverLabel.getHoverLabel().attachToDiagram(diagram);
 				showHoverLabel();
-				notifyHighlighter(dvdc);
 			}
 
 			@Override
@@ -76,14 +64,18 @@ public interface Hoverable {
 				hideHoverLabel();
 				HoverLabel.getHoverLabel().removeFromDiagram();
 				HoverLabel.getHoverLabel().setCaption("");
-				stopHighlighting(dvdc);
 			}
 		};
-
 		component.addMouseListener(listener);
 		component.addMouseMotionListener(listener);
 	}
-
+	/**
+	 * {@link #addHoverListener} for dvdcs that have multiple such components.
+	 * @param dvdc the component implementing this interface
+	 * @param components parts of dvdc that serve the same purpose as
+	 * {@link DiagramValueDisplayComponent#visualElement visualElement}
+	 * @param diagram {@link DiagramValueDisplayComponent#diagram diagram} of dvdc
+	 */
 	public default void addHoverListeners(DiagramValueDisplayComponent dvdc, Component[] components, IDiagram diagram) {
 		for (Component c : components) {
 			this.addHoverListener(dvdc, c, diagram);

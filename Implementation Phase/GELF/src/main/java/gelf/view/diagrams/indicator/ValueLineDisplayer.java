@@ -6,6 +6,11 @@ import gelf.view.diagrams.components.DiagramAxis;
 import gelf.view.diagrams.components.PositionIn2DDiagram;
 import gelf.view.diagrams.data.DiagramData;
 
+/**
+ * The class responsible for displaying a line, which represents a certain value in an
+ * {@link gelf.view.diagrams.IDiagram IDiagram}.
+ * @author Alp Torac Genc
+ */
 public class ValueLineDisplayer extends HelperLineDisplayer {
 	private DiagramAxis[] axes;
 	private float value;
@@ -17,6 +22,9 @@ public class ValueLineDisplayer extends HelperLineDisplayer {
 		this.initViewHelperComponents();
 	}
 	
+	/** Determines the value to be displayed.
+	 * @return The value to be displayed in form of a line.
+	 */
 	private float getValueToDisplay() {
 		DiagramData data = diagram.cloneDiagramData();
 		

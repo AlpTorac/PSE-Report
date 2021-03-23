@@ -7,23 +7,14 @@ import gelf.model.elements.Element;
 import gelf.model.elements.InputPin;
 import gelf.model.elements.Library;
 import gelf.model.elements.OutputPin;
-import gelf.model.elements.Pin;
-import gelf.model.elements.attributes.PowerGroup;
-import gelf.model.elements.attributes.TimingGroup;
-import gelf.model.elements.attributes.TimingSense;
-import gelf.model.elements.attributes.TimingType;
-import gelf.model.parsers.LibertyParser;
 import gelf.model.project.Project;
 import gelf.model.project.Updatable;
 import gelf.view.components.Button;
-import gelf.view.composites.Visualizer.Attribute;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
@@ -59,8 +50,6 @@ public class TextEditor extends ElementManipulator implements KeyListener, Updat
 	private final Highlighter hl;
 	private final Highlighter.HighlightPainter painter;
 	
-	private final static Color HOVER_COLOR = Color.GRAY;
-	private final Highlighter.HighlightPainter hoverPainter;
     private SubWindow subwindow;
 	
 	/**
@@ -80,7 +69,6 @@ public class TextEditor extends ElementManipulator implements KeyListener, Updat
         this.subwindow = subwindow;
         this.outliner = o;
         painter = new DefaultHighlighter.DefaultHighlightPainter(HL_COLOR);
-        hoverPainter = new DefaultHighlighter.DefaultHighlightPainter(HOVER_COLOR);
         setup();
         this.setElement(element);
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -182,81 +170,6 @@ public class TextEditor extends ElementManipulator implements KeyListener, Updat
     	hl.removeAllHighlights();
     }
     
-    /**
-     * Adds highlights to the entered values in the text
-     * @param value To be highlighted value
-     */
-    public void addHoverHighlights(int[] indexPositions, Attribute attribute , InputPin selectedPin, PowerGroup powerGroup, TimingSense timingSense, TimingGroup timingGroup, TimingType timingType) {
-    	String attrStr = "";
-    	String text = textArea.getText();
-    	String group = ""; 
-    	int[] indexes = new int[2];
-    	indexes[0] = indexPositions[0];
-    	
-    	if (attribute == Attribute.INPUT_POWER) {
-    		indexes[1] = 0;
-    	}
-    	
-    	else {
-    		indexes[1] = indexPositions[1];
-    	}
-    	
-    	if (attribute == Attribute.OUTPUT_POWER) {
-    		attrStr += "\n\t\t\tinternal_power() {\n" 
-                    + "\t\t\t\trelated_pin : " + selectedPin.getName() + " ;\n";
-    		group = powerGroup.name();
-    		
-        } else if (attribute == Attribute.INPUT_POWER) {
-        	attrStr += "\n\t\t\tinternal_power() {\n";
-        	group = powerGroup.name();
-        } else if (attribute == Attribute.TIMING) {
-        	attrStr += "\n\t\t\ttiming() {\n" 
-                    + "\t\t\t\trelated_pin : " + selectedPin.getName() + " ;\n"
-                    + "\t\t\t\ttiming_sense : " + timingSense.name().toLowerCase() + " ;\n"
-                    + "\t\t\t\ttiming_type : " + timingType.name().toLowerCase() + " ;\n";
-        	group = timingGroup.name();
-        }
-    	if (element instanceof Library) {
-  
-    	
-    	} else if (element instanceof Cell) {
-    		
-    		//int indexOnCellLibrary = text.indexOf("values", text.indexOf(group, text.indexOf(attrStr, text.indexOf("pin\\(" + pin, text.indexOf("cell\\(" + cell)))));
-    		
-    	} else {
-    		
-    		 int indexOnPin = text.indexOf("values", text.indexOf(group, text.indexOf(attrStr, text.indexOf("pin(" + element.getName()))));
-    	
-    		 int iteration = indexPositions[0] * ((Pin) element).getParent().getIndex2().length + indexes[1];
-
-
-    	        Pattern pattern = Pattern.compile(LibertyParser.FLOATFORMAT);
-    	        Matcher matcher = pattern.matcher(text);
-
-    	        matcher.find(indexOnPin);
-    	        for (; iteration > 0; iteration--) {
-    	            matcher.find();
-    	        }
-
-    	        try {
-					hl.addHighlight(matcher.start(),  matcher.end(), hoverPainter);
-				} catch (BadLocationException e) {
-					System.out.println("bad");
-				}
-    	        
-    	}
-
-    	
-    	
-    	
-    }
-    
-    /**
-     * Removes all highlights caused by hover actions.
-     */
-    public void removeHoverHighlights() {
-    	hl.removeAllHighlights();
-    }
     
     /**
      * Reverts the changes after a wrong input.

@@ -2,16 +2,9 @@ package gelf.view.representation;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.Label;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 
-import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -20,12 +13,12 @@ import javax.swing.border.LineBorder;
 import gelf.model.elements.Cell;
 import gelf.model.elements.Element;
 import gelf.model.elements.InputPin;
-import gelf.model.elements.Library;
 import gelf.model.elements.OutputPin;
 import gelf.model.elements.Pin;
 import gelf.view.components.Panel;
 import gelf.view.composites.Comparer;
 import gelf.view.composites.SubWindow;
+import gelf.view.diagrams.SettingsProvider;
 
 /**
  * Holds all subpanels for comparison.
@@ -94,8 +87,19 @@ public class PinComparePanel extends Panel {
 	    		}
 	    	}
 	    }
-	    for (Cell cell: cells) {
-	    	listPanel.add(new PinCompareSubPanel(width, height, cell, subwindow, elements, c, this));
+	    if (cells.size() == 1) {
+	    	for (int i = 0; i < cells.size(); i++) {
+		    	Color color1 = SettingsProvider.getInstance().getValueDisplayComponentColorAt(1);
+		    	Color color2 = SettingsProvider.getInstance().getValueDisplayComponentColorAt(0);
+		    	listPanel.add(new PinCompareSubPanel(width, height, cells.get(i), subwindow, elements, c, this, color1, color2));
+		    	
+		    }
+	    } else {
+		    for (int i = 0; i < cells.size(); i++) {
+		    	Color color = SettingsProvider.getInstance().getValueDisplayComponentColorAt(i);
+		    	listPanel.add(new PinCompareSubPanel(width, height, cells.get(i), subwindow, elements, c, this, color, null));
+		    	
+		    }
 	    }
 	}
 	
