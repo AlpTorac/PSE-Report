@@ -8,6 +8,7 @@ public abstract class Element {
 	protected boolean searched;
 	protected String name;
 	protected String elementContent;
+	private String unsupportedData = "";
 	
 	public Element() {}
 
@@ -51,6 +52,15 @@ public abstract class Element {
 
 	public void setElementContent(String elementContent) {
 		this.elementContent = elementContent;
+	}
+
+	
+	public String getUnsupportedData() {
+		return unsupportedData;
+	}
+
+	public void setUnsupportedData(String unsupportedData) {
+		this.unsupportedData = unsupportedData;
 	}
 	
 	public abstract String getInnerPath();

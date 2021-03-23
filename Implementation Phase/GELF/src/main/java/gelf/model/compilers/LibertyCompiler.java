@@ -25,7 +25,8 @@ public class LibertyCompiler {
         "\tcurrent_unit : " + units[2] + " ;\n" +
         "\tcapacitive_load_unit" + units[3] + ";\n" +
         "\tpulling_resistance_unit : " + units[4] + " ;\n" +
-        "\tleakage_power_unit : " + units[5] + " ;\n";
+        "\tleakage_power_unit : " + units[5] + " ;\n"
+        + library.getUnsupportedData().replaceAll("\n  ", "\n\t");
         for (Cell cell : library.getCells()) {
             output += compile(cell);
         }
@@ -69,7 +70,8 @@ public class LibertyCompiler {
         String index1String = "\t\t\t\t\tindex_1(" + compileArray(pin.getParent().getIndex1()) + ");\n";
         String output = "\n\t\tpin(" + pin.getName() + ") {\n"
         + "\t\t\tcapacitance : " + Model.formatFloat(pin.getCapacitance()) + " ;\n"
-        + "\t\t\tdirection : input ;\n";
+        + "\t\t\tdirection : input ;\n"
+        + "\t\t\t" + pin.getUnsupportedData().replaceAll("\n", "\n\t\t\t");
         if (!pin.getInputPowers().isEmpty()){
             output += "\n\t\t\tinternal_power() {\n";
             for (InputPower inputPower : pin.getInputPowers()) {
