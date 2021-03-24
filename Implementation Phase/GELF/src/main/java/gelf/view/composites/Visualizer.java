@@ -70,7 +70,9 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 	private JComboBox<TimingGroup> timingGroupDropdown = new JComboBox<TimingGroup>();
 	private JComboBox<TimingSense> timingSenseDropdown = new JComboBox<TimingSense>();
     private InputPin selectedPin;
-
+    public Timing selectedTim;
+    public OutputPower selectedOutPow;
+    public InputPower selectedInPow;
 	//attributes enum for dropdowns
 	public enum Attribute {
 		LEAKAGE("Leakage"),
@@ -98,11 +100,13 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 	private Checkbox max = new Checkbox("Maximum");
 	private Checkbox avg = new Checkbox("Average");
 	private Checkbox med = new Checkbox("Median");
+	private String[] units = new String[] {"N/A", "N/A", "N/A", "N/A", "N/A", "N/A"};
 	private float scaleValue;
 	private boolean isScaled;
     private Button scaleButton = new Button("Scale");
-    private Label yAxisLabel = new Label();
     private Label xAxisLabel = new Label();
+    private Label yAxisLabel = new Label();
+    private Label zAxisLabel = new Label();
 	
     public Visualizer(Element e, SubWindow w, Project p, int width, int height) {
 		super(e, p, width, height);
@@ -170,13 +174,17 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 		scaleButton.setForeground(Color.WHITE);
 		stats.add(scaleButton);
 		
-		yAxisLabel.setVisible(true);
-		yAxisLabel.setForeground(Color.WHITE);
-		stats.add(yAxisLabel);
-		
 		xAxisLabel.setVisible(true);
 		xAxisLabel.setForeground(Color.WHITE);
 		stats.add(xAxisLabel);
+		
+		yAxisLabel.setVisible(true);
+		yAxisLabel.setForeground(Color.WHITE);
+		stats.add(yAxisLabel);
+
+		zAxisLabel.setVisible(true);
+		zAxisLabel.setForeground(Color.WHITE);
+		stats.add(zAxisLabel);
 
 		this.lowerPanel.add(stats, BorderLayout.PAGE_END);
 		//diagram viewport
@@ -213,7 +221,9 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 		upperPanel.add(dataPanel);
 		this.add(upperPanel);
 	} 
-    
+    public Element getElement() {
+    	return this.element;
+    }
     public void setElement(Element e) {
 		this.element = e;
 
@@ -276,19 +286,23 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 			availTimGr = ((Library)element).getAvailableTimGr();
 			availTimSen = ((Library)element).getAvailableTimSen();
 			availTimType = ((Library)element).getAvailableTimType();
+			units = ((Library)element).getUnits();
 		} else if(this.element.getClass() == Cell.class) {
 			availInputPower = ((Cell)element).getAvailableInputPower();
 			availOutputPower = ((Cell)element).getAvailableOutputPower();
 			availTimGr = ((Cell)element).getAvailableTimGr();
 			availTimSen = ((Cell)element).getAvailableTimSen();
 			availTimType = ((Cell)element).getAvailableTimType();
+			units = ((Cell)element).getParentLibrary().getUnits();
 		} else if(this.element.getClass() == OutputPin.class) {
 			availOutputPower = ((OutputPin)element).getAvailablePower();
 			availTimGr = ((OutputPin)element).getAvailableTimGr();
 			availTimSen = ((OutputPin)element).getAvailableTimSen();
 			availTimType = ((OutputPin)element).getAvailableTimType();
+			units = ((OutputPin)element).getParent().getParentLibrary().getUnits();
 		} else if(this.element.getClass() == InputPin.class) {
 			availInputPower = ((InputPin)element).getAvailablePower();
+			units = ((InputPin)element).getParent().getParentLibrary().getUnits();
 		}
 
 		inputPowerDropdown.setVisible(true);
@@ -476,7 +490,7 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 				values = new float[lib.getCells().size()];
 				stringAr = new String[lib.getCells().size()];
 				int i = 0;
-				if (isScaled) lib.scaleInputPower(scaleValue); isScaled = false;
+				//if (isScaled) lib.scaleInputPower(scaleValue); isScaled = false;
 				Iterator<Cell> cellsIt = lib.getCells().iterator();
 				while(cellsIt.hasNext()) {
 					Cell curCell = cellsIt.next();
@@ -493,13 +507,16 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 					}
 					i++;
 				}
+				xAxisLabel.setText("x_Axis: cells");
+				yAxisLabel.setText("y-Axis: " + units[1]);
+				zAxisLabel.setText("");
 			}
 			
 			else if (attribute == Attribute.OUTPUT_POWER) {
 				values = new float[lib.getCells().size()];
 				stringAr = new String[lib.getCells().size()];
 				int i = 0;
-				if (isScaled) lib.scaleOutputPower(scaleValue); isScaled = false;
+				//if (isScaled) lib.scaleOutputPower(scaleValue); isScaled = false;
 				Iterator<Cell> cellsIt = lib.getCells().iterator();
 				while(cellsIt.hasNext()) {
 					Cell curCell = cellsIt.next();
@@ -516,13 +533,16 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 					}
 					i++;
 				}
+				xAxisLabel.setText("x_Axis: cells");
+				yAxisLabel.setText("y-Axis: " + units[1]);
+				zAxisLabel.setText("");
 			}
 			
 			else if (attribute == Attribute.TIMING) {
 				values = new float[lib.getCells().size()];
 				stringAr = new String[lib.getCells().size()];
 				int i = 0;
-				if (isScaled) lib.scaleTiming(scaleValue); isScaled = false;
+				//if (isScaled) lib.scaleTiming(scaleValue); isScaled = false;
 				Iterator<Cell> cellsIt = lib.getCells().iterator();
 				while(cellsIt.hasNext()) {
 					Cell curCell = cellsIt.next();
@@ -553,13 +573,16 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 					}
 					i++;
 				}
+				xAxisLabel.setText("x_Axis: cells");
+				yAxisLabel.setText("y-Axis: " + units[0]);
+				zAxisLabel.setText("");
 			}
 			
 			else if (attribute == Attribute.DEFAULT_LEAKAGE) {
 				values = new float[lib.getCells().size()];
 				stringAr = new String[lib.getCells().size()];
 				int i = 0;
-				if (isScaled) lib.scaleDefaultLeakage(scaleValue); isScaled = false;
+				//if (isScaled) lib.scaleDefaultLeakage(scaleValue); isScaled = false;
 				Iterator<Cell> cellsIt = lib.getCells().iterator();
 				while(cellsIt.hasNext()) {
 					Cell curCell = cellsIt.next();
@@ -576,7 +599,7 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 				values = new float[lib.getCells().size()];
 				stringAr = new String[lib.getCells().size()];
 				int i = 0;
-				if (isScaled) {lib.scaleLeakages(scaleValue); isScaled = false;}
+				//if (isScaled) {lib.scaleLeakages(scaleValue); isScaled = false;}
 				Iterator<Cell> cellsIt = lib.getCells().iterator();
 				while(cellsIt.hasNext()) {
 					Cell curCell = cellsIt.next();
@@ -587,6 +610,9 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 					stringAr[i] = curCell.getName();
 					i++;
 				}
+				xAxisLabel.setText("x_Axis: cells");
+				yAxisLabel.setText("y-Axis: " + units[5]);
+				zAxisLabel.setText("");
 			}
 			data.add(values);
 			stringData.add(stringAr);
@@ -608,7 +634,7 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 				values = new float[cell.getInPins().size()];
 				stringAr = new String[cell.getInPins().size()];
 				int i = 0;
-				if (isScaled) cell.scaleInputPower(scaleValue); isScaled = false;
+				//if (isScaled) cell.scaleInputPower(scaleValue); isScaled = false;
 				Iterator<InputPin> inPinsIt = cell.getInPins().iterator();
 				while(inPinsIt.hasNext()) {
 					InputPin curInPin = inPinsIt.next();
@@ -629,13 +655,16 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 					stringAr[i] = curInPin.getName();
 					i++;
 				}
+				xAxisLabel.setText("x_Axis: pins");
+				yAxisLabel.setText("y-Axis: " + units[1]);
+				zAxisLabel.setText("");
 			}
 			
 			else if (attribute == Attribute.OUTPUT_POWER) {
 				values = new float[cell.getOutPins().size()];
 				stringAr = new String[cell.getOutPins().size()];
 				int i = 0;
-				if (isScaled) cell.scaleOutputPower(scaleValue); isScaled = false;
+				//if (isScaled) cell.scaleOutputPower(scaleValue); isScaled = false;
 				Iterator<OutputPin> outPinsIt = cell.getOutPins().iterator();
 				while(outPinsIt.hasNext()) {
 					OutputPin curOutPin = outPinsIt.next();
@@ -656,13 +685,16 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 					stringAr[i] = curOutPin.getName();
 					i++;
 				}
+				xAxisLabel.setText("x_Axis: pins");
+				yAxisLabel.setText("y-Axis: " + units[1]);
+				zAxisLabel.setText("");
 			}
 			
 			else if (attribute == Attribute.TIMING) {
 				values = new float[cell.getOutPins().size()];
 				stringAr = new String[cell.getOutPins().size()];
 				int i = 0;
-				if (isScaled) cell.scaleTiming(scaleValue); isScaled = false;
+				//if (isScaled) cell.scaleTiming(scaleValue); isScaled = false;
 				Iterator<OutputPin> outPinsIt = cell.getOutPins().iterator();
 				while(outPinsIt.hasNext()) {
 					OutputPin curOutPin = outPinsIt.next();
@@ -695,15 +727,23 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 					}
 					i++;
 				}
+				xAxisLabel.setText("x_Axis: pins");
+				yAxisLabel.setText("y-Axis: " + units[0]);
+				zAxisLabel.setText("");
 			}
 			
 			else if (attribute == Attribute.LEAKAGE) {
 				values = new float[(int) Math.pow(2,(cell.getInPins().size()))];
 				stringAr = new String[(int) Math.pow(2,(cell.getInPins().size()))];
-				if (isScaled) cell.getLeakages().scale(scaleValue); isScaled = false;
+				//if (isScaled) cell.getLeakages().scale(scaleValue); isScaled = false;
 				values = cell.getLeakages().getValues();
 				cell.setOutputFunctions();
 				stringAr = cell.getLeakages().getOutputFunctions();
+				if (xAxisLabel != null && yAxisLabel != null && zAxisLabel != null && units != null) {
+				xAxisLabel.setText("x_Axis: input state power");
+				yAxisLabel.setText("y-Axis: " + units[5]);
+				zAxisLabel.setText("");
+				}
 			}	
 			data.add(values);
 			stringData.add(stringAr);
@@ -727,7 +767,8 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 			while (inPowIt.hasNext()) {
 				InputPower curInPow = inPowIt.next();
 				if (curInPow.getPowGroup() == powerGroup) {
-					if (isScaled) curInPow.scale(scaleValue); isScaled = false;
+					//if (isScaled) curInPow.scale(scaleValue); isScaled = false;
+					selectedInPow = curInPow;
 					values = curInPow.getValues();
 					index1 = curInPow.getIndex1();
 				}
@@ -741,8 +782,10 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 				}
 				this.diagram = wiz.makeAndAttachHistogram(this.diagramPanel, data);
 			}
+			xAxisLabel.setText("x_Axis: input transition");
+			yAxisLabel.setText("y-Axis: " + units[1]);
+			zAxisLabel.setText("");
 			updateStatDisplay();
-			
 		}
 		
 		else if (this.subWindow.getElement().getClass() == OutputPin.class) {
@@ -770,7 +813,8 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 					OutputPower curOutPow = outPowIt.next();
 					if (curOutPow.getPowGroup() == powerGroup && 
 							curOutPow.getRelatedPin().getName().equals(this.selectedPin.getName())) {
-						if (isScaled) curOutPow.scale(scaleValue); isScaled = false;
+						//if (isScaled) curOutPow.scale(scaleValue); isScaled = false;
+						selectedOutPow = curOutPow;
 						values = new float[curOutPow.getIndex1().length * curOutPow.getIndex2().length];
 					    index1 = curOutPow.getIndex1();
 						index2 = curOutPow.getIndex2();
@@ -789,6 +833,9 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 					}
 					this.diagram = wiz.makeAndAttachHeatMap(this.diagramPanel, data);
 				}
+				xAxisLabel.setText("x_Axis: input transition");
+				yAxisLabel.setText("y-Axis: output capacitance");
+				zAxisLabel.setText("z-Axis: " + units[1]);
 				updateStatDisplay();
 			}
 			
@@ -809,7 +856,8 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 					if (curTim.getTimSense() == timingSense && curTim.getTimType() == timingType
 							&& curTim.getTimGroup() == timingGroup && 
 							curTim.getRelatedPin().getName().equals(this.selectedPin.getName())) {
-						if (isScaled) curTim.scale(scaleValue); isScaled = false;
+						//if (isScaled) curTim.scale(scaleValue); isScaled = false;
+						selectedTim = curTim;
 						values = new float[curTim.getIndex1().length * curTim.getIndex2().length];
 					    index1 = curTim.getIndex1();
 						index2 = curTim.getIndex2();
@@ -827,14 +875,13 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 					}
 					this.diagram = wiz.makeAndAttachHeatMap(this.diagramPanel, data);
 				}
+				xAxisLabel.setText("x_Axis: input transition");
+				yAxisLabel.setText("y-Axis: output capacitance");
+				zAxisLabel.setText("z-Axis: " + units[0]);
 				updateStatDisplay();
 			}
-			
-			
 		}
 		
-		yAxisLabel.setText("y-Axis: ");
-		xAxisLabel.setText("x_Axis: ");
 	}
 
 	private void updateStatDisplay() {
@@ -915,9 +962,5 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
         this.setElement(this.element);
 		this.revalidate();
 		this.repaint();
-	}
-	public void setScaleValue(float scaleValue) {
-		this.scaleValue = scaleValue;
-		this.isScaled = true;
 	}
 }

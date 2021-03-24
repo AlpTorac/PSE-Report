@@ -178,11 +178,10 @@ public class LibertyParser {
                     units[3] = paramParts[0].substring(paramParts[0].indexOf("("), paramParts[0].indexOf(")")) + ")";
                 } else {
                     unsupportedData += libParameters[i] + ";";
-                    unsupportedData = unsupportedData.substring(0, unsupportedData.length() - 1);
                 }
         	}
         }
-        productLibrary.setUnsupportedData(unsupportedData);
+        productLibrary.setUnsupportedData(unsupportedData.substring(0, unsupportedData.length() - 1));
         productLibrary.setUnits(units);
         return productLibrary;
     }

@@ -246,36 +246,61 @@ public class Comparer extends ElementManipulator implements ComponentListener {
 			}
 		}
 		inputPowerDropdown.setVisible(true);
+		HashSet<PowerGroup> groupSet = new HashSet<PowerGroup>();
 		for (ArrayList<PowerGroup> list: availInputPower) {
+			
 			for(PowerGroup val : list) {
-				inputPowerDropdown.addItem(val);
+				if (!groupSet.contains(val)) {
+					inputPowerDropdown.addItem(val);
+				}
+				groupSet.add(val);
 			}
 		}
 		outputPowerDropdown.setVisible(true);
+		HashSet<PowerGroup> groupSet2 = new HashSet<PowerGroup>();
 		for (ArrayList<PowerGroup> list: availOutputPower) {
+			
 			for(PowerGroup val : list) {
-				outputPowerDropdown.addItem(val);
+				if (!groupSet2.contains(val)) {
+					outputPowerDropdown.addItem(val);
+				}
+				groupSet2.add(val);
 			}
 		}
 		
 		timingTypeDropdown.setVisible(true);
+		HashSet<TimingType> typeSet = new HashSet<TimingType>();
 		for (ArrayList<TimingType> list: availTimType) {
+			
 			for(TimingType val : list) {
-				timingTypeDropdown.addItem(val);
+				if (!typeSet.contains(val)) {
+					timingTypeDropdown.addItem(val);
+				}
+				typeSet.add(val);
 			}
 		}
 		
 		timingGroupDropdown.setVisible(true);
+		HashSet<TimingGroup> groupTimingSet = new HashSet<TimingGroup>();
 		for (ArrayList<TimingGroup> list: availTimGr) {
+			
 			for(TimingGroup val : list) {
-				timingGroupDropdown.addItem(val);
+				if (!groupTimingSet.contains(val)) {
+					timingGroupDropdown.addItem(val);
+				}
+				groupTimingSet.add(val);
 			}
 		}
 			
 		timingSenseDropdown.setVisible(true);
+		HashSet<TimingSense> senseSet = new HashSet<TimingSense>();
 		for (ArrayList<TimingSense> list: availTimSen) {
 			for(TimingSense val : list) {
-				timingSenseDropdown.addItem(val);
+				if (!senseSet.contains(val)) {
+					timingSenseDropdown.addItem(val);
+				}
+				senseSet.add(val);
+				
 			}
 		}
 		
@@ -487,7 +512,6 @@ public class Comparer extends ElementManipulator implements ComponentListener {
 				values = new float[lib.getCells().size()];
 				stringAr = new String[lib.getCells().size()];
 				int j = 0;
-				
 				Iterator<Cell> cellsIt = lib.getCells().iterator();
 				while(cellsIt.hasNext()) {
 					Cell curCell = cellsIt.next();
@@ -495,16 +519,14 @@ public class Comparer extends ElementManipulator implements ComponentListener {
 						values[j] = 0;
 						stringAr[j] = curCell.getName();
 					}
-					else if (!curCell.getAvailableTimType().contains(timingType)) {
+					if (!curCell.getAvailableTimType().contains(timingType)) {
 						values[j] = 0;
 						stringAr[j] = curCell.getName();
 					}
-					else if (!curCell.getAvailableTimGr().contains(timingGroup)) {
+					if (!curCell.getAvailableTimGr().contains(timingGroup)) {
 						values[j] = 0;
 						stringAr[j] = curCell.getName();
 					}
-					
-					else {
 						curCell.calculateTiming();
 						
 						for (Map.Entry<TimingKey, Stat> entry : curCell.getTimingStat().entrySet()) {
@@ -515,7 +537,7 @@ public class Comparer extends ElementManipulator implements ComponentListener {
 						    }   
 						}
 						stringAr[j] = curCell.getName();
-					}
+					
 					j++;
 				}
 			}
@@ -625,21 +647,20 @@ public class Comparer extends ElementManipulator implements ComponentListener {
 				Iterator<OutputPin> outPinsIt = cell.getOutPins().iterator();
 				while(outPinsIt.hasNext()) {
 					OutputPin curOutPin = outPinsIt.next();
-					if (!curOutPin.getAvailableTimSen().contains(timingSense)) {
+					
+					values[j] = 0;
+					stringAr[j] = curOutPin.getName();
+					
+					if (!curOutPin.getAvailableTimType().contains(timingType)) {
 						values[j] = 0;
 						stringAr[j] = curOutPin.getName();
 					}
-					else if (!curOutPin.getAvailableTimType().contains(timingType)) {
-						values[j] = 0;
-						stringAr[j] = curOutPin.getName();
-					}
-					else if (!curOutPin.getAvailableTimGr().contains(timingGroup)) {
+					if (!curOutPin.getAvailableTimGr().contains(timingGroup)) {
 						values[j] = 0;
 						stringAr[j] = curOutPin.getName();
 					}
 					
-					else {
-						curOutPin.calculateTiming();
+					curOutPin.calculateTiming();
 						ArrayList<Timing> timings = curOutPin.getTimings();
 						Iterator<Timing> timIt = timings.iterator();
 						while (timIt.hasNext()) {		
@@ -651,7 +672,7 @@ public class Comparer extends ElementManipulator implements ComponentListener {
 								stringAr[j] = curOutPin.getName();
 							}
 						}
-					}
+					
 					j++;
 				}
 			}
@@ -737,9 +758,7 @@ public class Comparer extends ElementManipulator implements ComponentListener {
 			}
 			
 			else if (attribute == Attribute.TIMING) {
-				if (!outPin.getAvailableTimSen().contains(timingSense)) {
-					return;
-				}
+				
 				if (!outPin.getAvailableTimType().contains(timingType)) {
 					return;
 				}
@@ -749,8 +768,9 @@ public class Comparer extends ElementManipulator implements ComponentListener {
 				
 				Iterator<Timing> timIt = outPin.getTimings().iterator();
 				while (timIt.hasNext()) {
+					
 					Timing curTim = timIt.next();
-					if (curTim.getTimSense() == timingSense && curTim.getTimType() == timingType
+					if (curTim.getTimType() == timingType
 							&& curTim.getTimGroup() == timingGroup && 
 									selectedInputPins.contains(curTim.getRelatedPin())) {
 						values = new float[curTim.getIndex1().length * curTim.getIndex2().length];
@@ -768,9 +788,9 @@ public class Comparer extends ElementManipulator implements ComponentListener {
 				updateStatDisplay();
 			}
 			
-		}
+			}
 		
-	}
+		}
 		IDiagramWizard wiz = new DiagramWizard();
 		if (diagrams[0] instanceof BarChart) {
 			BarChart[] barcharts = new BarChart[this.elements.size()];
@@ -806,7 +826,12 @@ public class Comparer extends ElementManipulator implements ComponentListener {
 				for (int j = 2; j < datas.get(0).size(); j++) {
 					float[] newValues = new float[datas.get(0).get(0).length];
 					for (int i = 0; i < datas.get(0).get(0).length; i++) {
-						newValues[i] = datas.get(k).get(j)[i] - datas.get(k + 1).get(j)[i] ;				
+						try {
+						newValues[i] = datas.get(k).get(j)[i] - datas.get(k + 1).get(j)[i] ;	
+						}
+						catch (IndexOutOfBoundsException e) {
+							
+						}
 					}
 					newData.add(newValues);
 				}

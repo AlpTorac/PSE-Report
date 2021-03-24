@@ -213,7 +213,7 @@ public class MainWindow extends Window implements Updatable {
         //latest command
         Command latest = Model.getInstance().getCurrentCommandHistory().getLatestCommand();
         if(latest != null)
-            infoBar.setText(InfoBarID.LASTACTION, latest.toString());
+            infoBar.setText(InfoBarID.LASTACTION, latest.getClass().getSimpleName());
         else
             infoBar.setText(InfoBarID.LASTACTION, "none");
         //selected
