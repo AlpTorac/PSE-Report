@@ -1,10 +1,8 @@
 package gelf.view.composites;
 
 import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.Label;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.ItemEvent;
@@ -33,7 +31,9 @@ import gelf.model.elements.attributes.TimingSense;
 import gelf.model.elements.attributes.TimingType;
 import gelf.model.project.Project;
 import gelf.model.project.Updatable;
+import gelf.view.components.Button;
 import gelf.view.components.Checkbox;
+import gelf.view.components.Label;
 //import gelf.view.components.DropdownSelector;
 import gelf.view.components.Panel;
 import gelf.view.diagrams.DiagramWizard;
