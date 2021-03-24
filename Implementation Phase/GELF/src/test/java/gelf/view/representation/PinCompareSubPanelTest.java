@@ -128,7 +128,7 @@ ArrayList<Cell> cells = new ArrayList<Cell>();
 		elements.add(cell);
 		SubWindow s = new SubWindow(elements, p, null, null, 0, 0);
 		Comparer c = new Comparer(elements, p, s, 0, 0);
-		PinCompareSubPanel panel = new PinCompareSubPanel(100, 100, cell, s, elements, c, new PinComparePanel(100, 100, s, c, elements));
+		/*PinCompareSubPanel panel = new PinCompareSubPanel(100, 100, cell, s, elements, c, new PinComparePanel(100, 100, s, c, elements));
 		frame.add(panel);
 		panel.updateSelectedPins(inPins);
 		panel.mouseClicked(new MouseEvent(panel.getButtonMap().get(inPin), 0, 0, 0, 0, 0, 1, false));
@@ -139,7 +139,7 @@ ArrayList<Cell> cells = new ArrayList<Cell>();
 		panel.mouseClicked(new MouseEvent(panel.libButton, 0, 0, 0, 0, 0, 1, false));
 		panel.mouseClicked(new MouseEvent(panel.cellButton, 0, 0, 0, 0, 0, 1, false));
 		panel.mouseClicked(new MouseEvent(panel.cellButton, 0, 0, 0, 0, 0, 1, false));
-		
+		*/
 	}
 
 }
