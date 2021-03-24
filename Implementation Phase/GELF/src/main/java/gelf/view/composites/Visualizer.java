@@ -98,11 +98,13 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 	private Checkbox max = new Checkbox("Maximum");
 	private Checkbox avg = new Checkbox("Average");
 	private Checkbox med = new Checkbox("Median");
+	private String[] units = new String[] {"N/A", "N/A", "N/A", "N/A", "N/A", "N/A"};
 	private float scaleValue;
 	private boolean isScaled;
     private Button scaleButton = new Button("Scale");
     private Label yAxisLabel = new Label();
     private Label xAxisLabel = new Label();
+    private Label zAxisLabel = new Label();
 	
     public Visualizer(Element e, SubWindow w, Project p, int width, int height) {
 		super(e, p, width, height);
@@ -177,6 +179,10 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 		xAxisLabel.setVisible(true);
 		xAxisLabel.setForeground(Color.WHITE);
 		stats.add(xAxisLabel);
+
+		zAxisLabel.setVisible(true);
+		zAxisLabel.setForeground(Color.WHITE);
+		stats.add(zAxisLabel);
 
 		this.lowerPanel.add(stats, BorderLayout.PAGE_END);
 		//diagram viewport
@@ -276,19 +282,23 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 			availTimGr = ((Library)element).getAvailableTimGr();
 			availTimSen = ((Library)element).getAvailableTimSen();
 			availTimType = ((Library)element).getAvailableTimType();
+			units = ((Library)element).getUnits();
 		} else if(this.element.getClass() == Cell.class) {
 			availInputPower = ((Cell)element).getAvailableInputPower();
 			availOutputPower = ((Cell)element).getAvailableOutputPower();
 			availTimGr = ((Cell)element).getAvailableTimGr();
 			availTimSen = ((Cell)element).getAvailableTimSen();
 			availTimType = ((Cell)element).getAvailableTimType();
+			units = ((Cell)element).getParentLibrary().getUnits();
 		} else if(this.element.getClass() == OutputPin.class) {
 			availOutputPower = ((OutputPin)element).getAvailablePower();
 			availTimGr = ((OutputPin)element).getAvailableTimGr();
 			availTimSen = ((OutputPin)element).getAvailableTimSen();
 			availTimType = ((OutputPin)element).getAvailableTimType();
+			units = ((OutputPin)element).getParent().getParentLibrary().getUnits();
 		} else if(this.element.getClass() == InputPin.class) {
 			availInputPower = ((InputPin)element).getAvailablePower();
+			units = ((InputPin)element).getParent().getParentLibrary().getUnits();
 		}
 
 		inputPowerDropdown.setVisible(true);
@@ -493,6 +503,9 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 					}
 					i++;
 				}
+				xAxisLabel.setText("x_Axis: cells");
+				yAxisLabel.setText("y-Axis: " + units[1]);
+				zAxisLabel.setText("");
 			}
 			
 			else if (attribute == Attribute.OUTPUT_POWER) {
@@ -516,6 +529,9 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 					}
 					i++;
 				}
+				xAxisLabel.setText("x_Axis: cells");
+				yAxisLabel.setText("y-Axis: " + units[1]);
+				zAxisLabel.setText("");
 			}
 			
 			else if (attribute == Attribute.TIMING) {
@@ -553,6 +569,9 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 					}
 					i++;
 				}
+				xAxisLabel.setText("x_Axis: cells");
+				yAxisLabel.setText("y-Axis: " + units[0]);
+				zAxisLabel.setText("");
 			}
 			
 			else if (attribute == Attribute.DEFAULT_LEAKAGE) {
@@ -587,6 +606,9 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 					stringAr[i] = curCell.getName();
 					i++;
 				}
+				xAxisLabel.setText("x_Axis: cells");
+				yAxisLabel.setText("y-Axis: " + units[5]);
+				zAxisLabel.setText("");
 			}
 			data.add(values);
 			stringData.add(stringAr);
@@ -629,6 +651,9 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 					stringAr[i] = curInPin.getName();
 					i++;
 				}
+				xAxisLabel.setText("x_Axis: pins");
+				yAxisLabel.setText("y-Axis: " + units[1]);
+				zAxisLabel.setText("");
 			}
 			
 			else if (attribute == Attribute.OUTPUT_POWER) {
@@ -656,6 +681,9 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 					stringAr[i] = curOutPin.getName();
 					i++;
 				}
+				xAxisLabel.setText("x_Axis: pins");
+				yAxisLabel.setText("y-Axis: " + units[1]);
+				zAxisLabel.setText("");
 			}
 			
 			else if (attribute == Attribute.TIMING) {
@@ -695,6 +723,9 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 					}
 					i++;
 				}
+				xAxisLabel.setText("x_Axis: pins");
+				yAxisLabel.setText("y-Axis: " + units[0]);
+				zAxisLabel.setText("");
 			}
 			
 			else if (attribute == Attribute.LEAKAGE) {
@@ -704,6 +735,9 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 				values = cell.getLeakages().getValues();
 				cell.setOutputFunctions();
 				stringAr = cell.getLeakages().getOutputFunctions();
+				xAxisLabel.setText("x_Axis: input state power");
+				yAxisLabel.setText("y-Axis: " + units[5]);
+				zAxisLabel.setText("");
 			}	
 			data.add(values);
 			stringData.add(stringAr);
@@ -741,8 +775,10 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 				}
 				this.diagram = wiz.makeAndAttachHistogram(this.diagramPanel, data);
 			}
+			xAxisLabel.setText("x_Axis: input transition");
+			yAxisLabel.setText("y-Axis: " + units[1]);
+			zAxisLabel.setText("");
 			updateStatDisplay();
-			
 		}
 		
 		else if (this.subWindow.getElement().getClass() == OutputPin.class) {
@@ -789,6 +825,9 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 					}
 					this.diagram = wiz.makeAndAttachHeatMap(this.diagramPanel, data);
 				}
+				xAxisLabel.setText("x_Axis: input transition");
+				yAxisLabel.setText("y-Axis: output capacitance");
+				zAxisLabel.setText("z-Axis: " + units[1]);
 				updateStatDisplay();
 			}
 			
@@ -827,14 +866,13 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 					}
 					this.diagram = wiz.makeAndAttachHeatMap(this.diagramPanel, data);
 				}
+				xAxisLabel.setText("x_Axis: input transition");
+				yAxisLabel.setText("y-Axis: output capacitance");
+				zAxisLabel.setText("z-Axis: " + units[0]);
 				updateStatDisplay();
 			}
-			
-			
 		}
 		
-		yAxisLabel.setText("y-Axis: ");
-		xAxisLabel.setText("x_Axis: ");
 	}
 
 	private void updateStatDisplay() {
