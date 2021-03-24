@@ -56,7 +56,7 @@ public class MergeDialog extends JDialog implements ActionListener, WindowListen
 	 * @param cell1 Left cell
 	 * @param cell2 Right cell
 	 */
-	private void setup(Cell cell1, Cell cell2) {
+	public void setup(Cell cell1, Cell cell2) {
 		this.setModal(true);
 		panel = new Panel(this.getWidth(), this.getWidth());
 		panel.setLayout(new GridBagLayout());
