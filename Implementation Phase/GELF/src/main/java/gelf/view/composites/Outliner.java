@@ -129,6 +129,7 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener,
         treeModel.nodeStructureChanged(root);
 
         ArrayList<DefaultMutableTreeNode> ls = new ArrayList<DefaultMutableTreeNode>();
+        ls.add(root);
 
         // generate library level
         ArrayList<Library> libraries = this.project.getLibraries();
