@@ -176,13 +176,13 @@ public class CellPanel extends Panel implements MouseListener, ItemListener, Act
 		if (element instanceof Pin) {
 			for (InputPin input : inputPins) {
 				if (input.getName().equals(element.getName())) {
-					buttonMap.get(element).setBackground(Color.BLUE);
+					buttonMap.get(element).setBackground(ColorTheme.highlight);
 				}
 			}
 			for (OutputPin output : outputPins) {
 				if (output.getName().equals(element.getName())) {
 					
-					buttonMap.get(element).setBackground(Color.BLUE);
+					buttonMap.get(element).setBackground(ColorTheme.highlight);
 				}
 			}
 		}
@@ -400,10 +400,10 @@ public class CellPanel extends Panel implements MouseListener, ItemListener, Act
 				
 				pinTag = false;
 				for (InputPin input : inputPins) {
-					buttonMap.get(input).setBackground(new Color(0x242424));
+					buttonMap.get(input).setBackground(ColorTheme.interactable);
 				}
 				for (OutputPin output : outputPins) {
-					buttonMap.get(output).setBackground(new Color(0x242424));
+					buttonMap.get(output).setBackground(ColorTheme.interactable);
 				}
 				return;
 			}
@@ -417,7 +417,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener, Act
 			if (input.getName() == (((Button)e.getSource()).getText())) {
 				pinTag = true;
 				subwindow.setElement(input);
-				((Button)e.getSource()).setBackground(new Color(0x242424));
+				((Button)e.getSource()).setBackground(ColorTheme.interactable);
 				
 			}
 		}
@@ -425,7 +425,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener, Act
             if (output.getName() == (((Button)e.getSource()).getText())) {
             	pinTag = true;
 				subwindow.setElement(output);
-				((Button)e.getSource()).setBackground(new Color(0x242424));
+				((Button)e.getSource()).setBackground(ColorTheme.interactable);
 			}
 		}
 		
@@ -434,7 +434,7 @@ public class CellPanel extends Panel implements MouseListener, ItemListener, Act
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		if (e.getSource() instanceof Button) {
-			e.getComponent().setBackground(Color.YELLOW);
+			e.getComponent().setBackground(ColorTheme.hover);
 		}
 		
 	}
@@ -442,9 +442,9 @@ public class CellPanel extends Panel implements MouseListener, ItemListener, Act
 	@Override
 	public void mouseExited(MouseEvent e) {
 		if (e.getSource() instanceof Button) {
-			e.getComponent().setBackground(new Color(0x242424));
+			e.getComponent().setBackground(ColorTheme.interactable);
 			if (pinTag) {
-				buttonMap.get(pin).setBackground(Color.BLUE);
+				buttonMap.get(pin).setBackground(ColorTheme.highlight);
 			}
 		}
 		
