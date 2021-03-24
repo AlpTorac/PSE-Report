@@ -7,6 +7,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -217,55 +218,65 @@ public class Comparer extends ElementManipulator implements ComponentListener {
 		outpinDropdown.addItem(Attribute.OUTPUT_POWER);
 		outpinDropdown.addItem(Attribute.TIMING);
 		
-		ArrayList<PowerGroup> availInputPower = new ArrayList<PowerGroup>();
-		ArrayList<PowerGroup> availOutputPower = new ArrayList<PowerGroup>();
-		ArrayList<TimingGroup> availTimGr = new ArrayList<TimingGroup>();
-		ArrayList<TimingSense> availTimSen = new ArrayList<TimingSense>();
-		ArrayList<TimingType> availTimType = new ArrayList<TimingType>();
-		
-		if(this.elements.get(0).getClass() == Library.class) {
-			availInputPower = ((Library)elements.get(0)).getAvailableInputPower();
-			availOutputPower = ((Library)elements.get(0)).getAvailableOutputPower();
-			availTimGr = ((Library)elements.get(0)).getAvailableTimGr();
-			availTimSen = ((Library)elements.get(0)).getAvailableTimSen();
-			availTimType = ((Library)elements.get(0)).getAvailableTimType();
-		} else if(this.elements.get(0).getClass() == Cell.class) {
-			availInputPower = ((Cell)elements.get(0)).getAvailableInputPower();
-			availOutputPower = ((Cell)elements.get(0)).getAvailableOutputPower();
-			availTimGr = ((Cell)elements.get(0)).getAvailableTimGr();
-			availTimSen = ((Cell)elements.get(0)).getAvailableTimSen();
-			availTimType = ((Cell)elements.get(0)).getAvailableTimType();
-		} else if(this.elements.get(0).getClass() == OutputPin.class) {
-			availOutputPower = ((OutputPin)elements.get(0)).getAvailablePower();
-			availTimGr = ((OutputPin)elements.get(0)).getAvailableTimGr();
-			availTimSen = ((OutputPin)elements.get(0)).getAvailableTimSen();
-			availTimType = ((OutputPin)elements.get(0)).getAvailableTimType();
-		} else if(this.elements.get(0).getClass() == InputPin.class) {
-			availInputPower = ((InputPin)elements.get(0)).getAvailablePower();
+		HashSet<ArrayList<PowerGroup>> availInputPower = new HashSet<ArrayList<PowerGroup>>();
+		HashSet<ArrayList<PowerGroup>> availOutputPower = new HashSet<ArrayList<PowerGroup>>();
+		HashSet<ArrayList<TimingGroup>> availTimGr = new HashSet<ArrayList<TimingGroup>>();
+		HashSet<ArrayList<TimingSense>> availTimSen = new HashSet<ArrayList<TimingSense>>();
+		HashSet<ArrayList<TimingType>> availTimType = new HashSet<ArrayList<TimingType>>();
+		for (Element element: this.elements) {
+			if(element.getClass() == Library.class) {
+				availInputPower.add(((Library)element).getAvailableInputPower());
+				availOutputPower.add(((Library)element).getAvailableOutputPower());
+				availTimGr.add(((Library)element).getAvailableTimGr());
+				availTimSen.add(((Library)element).getAvailableTimSen());
+				availTimType.add(((Library)element).getAvailableTimType());
+			} else if(element.getClass() == Cell.class) {
+				availInputPower.add(((Cell)element).getAvailableInputPower());
+				availOutputPower.add(((Cell)element).getAvailableOutputPower());
+				availTimGr.add(((Cell)element).getAvailableTimGr());
+				availTimSen.add(((Cell)element).getAvailableTimSen());
+				availTimType.add(((Cell)element).getAvailableTimType());
+			} else if(element.getClass() == OutputPin.class) {
+				availOutputPower.add(((OutputPin)element).getAvailablePower());
+				availTimGr.add(((OutputPin)element).getAvailableTimGr());
+				availTimSen.add(((OutputPin)element).getAvailableTimSen());
+				availTimType.add(((OutputPin)element).getAvailableTimType());
+			} else if(element.getClass() == InputPin.class) {
+				availInputPower.add(((InputPin)element).getAvailablePower());
+			}
 		}
-		
 		inputPowerDropdown.setVisible(true);
-		for(PowerGroup val : availInputPower) {
-			inputPowerDropdown.addItem(val);
+		for (ArrayList<PowerGroup> list: availInputPower) {
+			for(PowerGroup val : list) {
+				inputPowerDropdown.addItem(val);
+			}
 		}
 		outputPowerDropdown.setVisible(true);
-		for(PowerGroup val : availOutputPower) {
-			outputPowerDropdown.addItem(val);
+		for (ArrayList<PowerGroup> list: availOutputPower) {
+			for(PowerGroup val : list) {
+				outputPowerDropdown.addItem(val);
+			}
 		}
 		
 		timingTypeDropdown.setVisible(true);
-		for(TimingType val : availTimType) {
-			timingTypeDropdown.addItem(val);
+		for (ArrayList<TimingType> list: availTimType) {
+			for(TimingType val : list) {
+				timingTypeDropdown.addItem(val);
+			}
 		}
 		
 		timingGroupDropdown.setVisible(true);
-		for(TimingGroup val : availTimGr) {
-			timingGroupDropdown.addItem(val);
+		for (ArrayList<TimingGroup> list: availTimGr) {
+			for(TimingGroup val : list) {
+				timingGroupDropdown.addItem(val);
+			}
 		}
-		
+			
 		timingSenseDropdown.setVisible(true);
-		for(TimingSense val : availTimSen) {
-			timingSenseDropdown.addItem(val);
+		for (ArrayList<TimingSense> list: availTimSen) {
+			for(TimingSense val : list) {
+				timingSenseDropdown.addItem(val);
+			}
 		}
 		
 		//listeners
