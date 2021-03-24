@@ -32,7 +32,7 @@ class MergeDialogTest {
 	@Test
 	void initTest() {
 		MergeDialog dialog = new MergeDialog();
-		dialog.open(cell, cell);
+		dialog.setup(cell, cell);
 		
 	}
 
