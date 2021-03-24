@@ -154,7 +154,7 @@ public class LibertyParser {
         String[] libParameters = libData[1].split(";");
         String unsupportedData = "";
         // parses all known library parameters
-        String[] units = new String[] {"N/A", "N/A", "N/A", "N/A", "N/A", "N/A"}; 
+        String[] units = new String[] {"N/A", "N/A", "N/A", "(N/A)", "N/A", "N/A"}; 
         for (int i = 0; i < libParameters.length; i++) {
         	String[] paramParts = libParameters[i].split(":", 2);
         	switch (paramParts[0].replaceAll("\\s+", "")) {
