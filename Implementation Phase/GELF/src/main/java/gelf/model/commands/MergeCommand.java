@@ -8,6 +8,7 @@ import gelf.model.project.Model;
 
 /**
  * Handles the merging of several libraries
+ * 
  * @author Xhulio Pernoca
  */
 public class MergeCommand implements Command {
@@ -18,7 +19,8 @@ public class MergeCommand implements Command {
 
     /**
      * Initialises the command
-     * @param name new Library name
+     * 
+     * @param name            new Library name
      * @param mergedLibraries the array of the libraries to be merged
      */
     public MergeCommand(String name, ArrayList<Library> mergedLibraries) {
@@ -27,8 +29,8 @@ public class MergeCommand implements Command {
     }
 
     /**
-     * Executes the merging command by also calling the name conflict resolver.
-     * So that everytime the command is redone, so is the conflict resolver
+     * Executes the merging command by also calling the name conflict resolver. So
+     * that everytime the command is redone, so is the conflict resolver
      */
     public void execute() {
         ArrayList<Cell> cells = new ArrayList<Cell>();
@@ -38,7 +40,7 @@ public class MergeCommand implements Command {
             }
         }
         for (int i = 0; i < cells.size(); i++) {
-        	cells.set(i, cells.get(i).clone());
+            cells.set(i, cells.get(i).clone());
         }
         NameConflictResolver conflictResolver = new NameConflictResolver(cells);
         cells = conflictResolver.getCells();
@@ -55,8 +57,8 @@ public class MergeCommand implements Command {
             }
         }
         productLibrary = new Library(name, index1, index2, null, cells);
-        for (Cell cell: cells) {
-        	cell.setParentLibrary(productLibrary);
+        for (Cell cell : cells) {
+            cell.setParentLibrary(productLibrary);
         }
         ArrayList<Library> libraries = currentModel.getCurrentProject().getLibraries();
         libraries.add(productLibrary);
@@ -69,9 +71,9 @@ public class MergeCommand implements Command {
      * Undoes the command by simply removing the product library
      */
     public void undo() {
-    	ArrayList<Library> libraries = currentModel.getCurrentProject().getLibraries();
-    	libraries.remove(productLibrary);
-    	currentModel.getCurrentProject().setLibraries(libraries);
+        ArrayList<Library> libraries = currentModel.getCurrentProject().getLibraries();
+        libraries.remove(productLibrary);
+        currentModel.getCurrentProject().setLibraries(libraries);
         currentModel.getCurrentProject().inform();
     }
 }
