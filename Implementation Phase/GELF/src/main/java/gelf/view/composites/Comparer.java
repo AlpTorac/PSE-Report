@@ -7,7 +7,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -19,7 +19,6 @@ import gelf.model.elements.Element;
 import gelf.model.elements.InputPin;
 import gelf.model.elements.Library;
 import gelf.model.elements.OutputPin;
-import gelf.model.elements.Pin;
 import gelf.model.elements.Stat;
 import gelf.model.elements.attributes.InputPower;
 import gelf.model.elements.attributes.OutputPower;
@@ -36,7 +35,6 @@ import gelf.view.diagrams.DiagramWizard;
 import gelf.view.diagrams.IDiagram;
 import gelf.view.diagrams.IDiagramWizard;
 import gelf.view.diagrams.type.BarChart;
-import gelf.view.diagrams.type.HeatMap;
 import gelf.view.diagrams.type.Histogram;
 import gelf.view.representation.LibraryComparePanel;
 import gelf.view.representation.PinComparePanel;
@@ -62,15 +60,12 @@ public class Comparer extends ElementManipulator implements ComponentListener {
 	private JComboBox<Attribute> libDropdown = new JComboBox<Attribute>();
 	private JComboBox<Attribute> cellDropdown = new JComboBox<Attribute>();
 	private JComboBox<Attribute> outpinDropdown = new JComboBox<Attribute>();
-	private JComboBox<PowerGroup> powerGroupDropdown = new JComboBox<PowerGroup>();
+	private JComboBox<PowerGroup> inputPowerDropdown = new JComboBox<PowerGroup>();
+	private JComboBox<PowerGroup> outputPowerDropdown = new JComboBox<PowerGroup>();
 	private JComboBox<TimingType> timingTypeDropdown = new JComboBox<TimingType>();
 	private JComboBox<TimingGroup> timingGroupDropdown = new JComboBox<TimingGroup>();
 	private JComboBox<TimingSense> timingSenseDropdown = new JComboBox<TimingSense>();
 	private SubWindow subWindow;
-	private ArrayList<Library> libraries;
-	private ArrayList<Cell> cells;
-	private ArrayList<InputPin> inputPins;
-	private ArrayList<OutputPin> outputPins;
 	private ArrayList<InputPin> selectedInputPins;
 	private ArrayList<Element> elements;
 	
@@ -108,11 +103,6 @@ public class Comparer extends ElementManipulator implements ComponentListener {
         upperPanel = new Panel(width, height);
         this.subWindow = w;
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        
-        libraries = new ArrayList<Library>();
-        cells = new ArrayList<Cell>();
-        inputPins= new ArrayList<InputPin>();
-        outputPins = new ArrayList<OutputPin>();
         selectedInputPins = new ArrayList<InputPin>();
        
         initRepresentation();
@@ -205,7 +195,8 @@ public class Comparer extends ElementManipulator implements ComponentListener {
 		libDropdown = new JComboBox<Attribute>();
 		cellDropdown = new JComboBox<Attribute>();
 		outpinDropdown = new JComboBox<Attribute>();
-		powerGroupDropdown = new JComboBox<PowerGroup>();
+		inputPowerDropdown = new JComboBox<PowerGroup>();
+		outputPowerDropdown = new JComboBox<PowerGroup>();
 		timingTypeDropdown = new JComboBox<TimingType>();
 		timingGroupDropdown = new JComboBox<TimingGroup>();
 		timingSenseDropdown = new JComboBox<TimingSense>();
@@ -227,24 +218,65 @@ public class Comparer extends ElementManipulator implements ComponentListener {
 		outpinDropdown.addItem(Attribute.OUTPUT_POWER);
 		outpinDropdown.addItem(Attribute.TIMING);
 		
-		powerGroupDropdown.setVisible(true);
-		for(PowerGroup val : PowerGroup.values()) {
-			powerGroupDropdown.addItem(val);
+		HashSet<ArrayList<PowerGroup>> availInputPower = new HashSet<ArrayList<PowerGroup>>();
+		HashSet<ArrayList<PowerGroup>> availOutputPower = new HashSet<ArrayList<PowerGroup>>();
+		HashSet<ArrayList<TimingGroup>> availTimGr = new HashSet<ArrayList<TimingGroup>>();
+		HashSet<ArrayList<TimingSense>> availTimSen = new HashSet<ArrayList<TimingSense>>();
+		HashSet<ArrayList<TimingType>> availTimType = new HashSet<ArrayList<TimingType>>();
+		for (Element element: this.elements) {
+			if(element.getClass() == Library.class) {
+				availInputPower.add(((Library)element).getAvailableInputPower());
+				availOutputPower.add(((Library)element).getAvailableOutputPower());
+				availTimGr.add(((Library)element).getAvailableTimGr());
+				availTimSen.add(((Library)element).getAvailableTimSen());
+				availTimType.add(((Library)element).getAvailableTimType());
+			} else if(element.getClass() == Cell.class) {
+				availInputPower.add(((Cell)element).getAvailableInputPower());
+				availOutputPower.add(((Cell)element).getAvailableOutputPower());
+				availTimGr.add(((Cell)element).getAvailableTimGr());
+				availTimSen.add(((Cell)element).getAvailableTimSen());
+				availTimType.add(((Cell)element).getAvailableTimType());
+			} else if(element.getClass() == OutputPin.class) {
+				availOutputPower.add(((OutputPin)element).getAvailablePower());
+				availTimGr.add(((OutputPin)element).getAvailableTimGr());
+				availTimSen.add(((OutputPin)element).getAvailableTimSen());
+				availTimType.add(((OutputPin)element).getAvailableTimType());
+			} else if(element.getClass() == InputPin.class) {
+				availInputPower.add(((InputPin)element).getAvailablePower());
+			}
+		}
+		inputPowerDropdown.setVisible(true);
+		for (ArrayList<PowerGroup> list: availInputPower) {
+			for(PowerGroup val : list) {
+				inputPowerDropdown.addItem(val);
+			}
+		}
+		outputPowerDropdown.setVisible(true);
+		for (ArrayList<PowerGroup> list: availOutputPower) {
+			for(PowerGroup val : list) {
+				outputPowerDropdown.addItem(val);
+			}
 		}
 		
 		timingTypeDropdown.setVisible(true);
-		for(TimingType val : TimingType.values()) {
-			timingTypeDropdown.addItem(val);
+		for (ArrayList<TimingType> list: availTimType) {
+			for(TimingType val : list) {
+				timingTypeDropdown.addItem(val);
+			}
 		}
 		
 		timingGroupDropdown.setVisible(true);
-		for(TimingGroup val : TimingGroup.values()) {
-			timingGroupDropdown.addItem(val);
+		for (ArrayList<TimingGroup> list: availTimGr) {
+			for(TimingGroup val : list) {
+				timingGroupDropdown.addItem(val);
+			}
 		}
-		
+			
 		timingSenseDropdown.setVisible(true);
-		for(TimingSense val : TimingSense.values()) {
-			timingSenseDropdown.addItem(val);
+		for (ArrayList<TimingSense> list: availTimSen) {
+			for(TimingSense val : list) {
+				timingSenseDropdown.addItem(val);
+			}
 		}
 		
 		//listeners
@@ -254,9 +286,9 @@ public class Comparer extends ElementManipulator implements ComponentListener {
 				if(attribute == (Attribute)e.getItem()) return;
 				//remove old dropdowns
 				if(attribute == Attribute.INPUT_POWER) {
-					dropdowns.remove(powerGroupDropdown);
+					dropdowns.remove(inputPowerDropdown);
 				} else if(attribute == Attribute.OUTPUT_POWER) {
-					dropdowns.remove(powerGroupDropdown);
+					dropdowns.remove(outputPowerDropdown);
 				} else if(attribute == Attribute.TIMING) {
 					dropdowns.remove(timingSenseDropdown);
 					dropdowns.remove(timingTypeDropdown);
@@ -282,7 +314,8 @@ public class Comparer extends ElementManipulator implements ComponentListener {
 				updateDiagram();
 			}
 		};
-		powerGroupDropdown.addItemListener(updatePowerGroup);
+		inputPowerDropdown.addItemListener(updatePowerGroup);
+		outputPowerDropdown.addItemListener(updatePowerGroup);
 		
 		ItemListener updateTimingSense = new ItemListener(){
 			@Override
@@ -329,7 +362,7 @@ public class Comparer extends ElementManipulator implements ComponentListener {
 			attribute = (Attribute)cellDropdown.getSelectedItem();
 			updateAttributeSubDropdowns();
 		} else if(elements.get(0) instanceof InputPin) {
-			this.dropdowns.add(powerGroupDropdown);
+			this.dropdowns.add(inputPowerDropdown);
 		} else {
 			this.dropdowns.add(outpinDropdown);
 			//update attribute
@@ -362,9 +395,9 @@ public class Comparer extends ElementManipulator implements ComponentListener {
     
     private void updateAttributeSubDropdowns() {
     	if(attribute == Attribute.INPUT_POWER) {
-			dropdowns.add(powerGroupDropdown);
+			dropdowns.add(inputPowerDropdown);
 		} else if(attribute == Attribute.OUTPUT_POWER) {
-			dropdowns.add(powerGroupDropdown);
+			dropdowns.add(outputPowerDropdown);
 		} else if(attribute == Attribute.TIMING) {
 			dropdowns.add(timingSenseDropdown);
 			dropdowns.add(timingTypeDropdown);
@@ -375,26 +408,6 @@ public class Comparer extends ElementManipulator implements ComponentListener {
 		dropdowns.repaint();
 		//updateDiagram();
 	}
-    
-    public void setLibraries(ArrayList<Library> libraries) {
-    	this.libraries = libraries;
-    	updateDiagram();
-    }
-    
-    public void setCells(ArrayList<Cell> cells) {
-    	this.cells = cells;
-    	updateDiagram();
-    }
-    
-    public void setInputPins(ArrayList<InputPin> inputPins) {
-    	this.inputPins = inputPins;
-    	updateDiagram();
-    }
-    
-    public void setOutputPins(ArrayList<OutputPin> outputPins) {
-    	this.outputPins = outputPins;
-    	updateDiagram();
-    }
     
     public void setSelectedPins(ArrayList<InputPin> inputPins) {
     	this.selectedInputPins = inputPins;
@@ -719,14 +732,7 @@ public class Comparer extends ElementManipulator implements ComponentListener {
 					}
 				}
 				datas.add(data);
-				IDiagramWizard wiz = new DiagramWizard();
-				if (this.diagramPanel != null) {
-					if (diagram != null) {
-						diagram.removeFromContainer();
-						diagram = null;
-					}
-					
-				}
+				
 				updateStatDisplay();
 			}
 			
@@ -758,21 +764,14 @@ public class Comparer extends ElementManipulator implements ComponentListener {
 					}
 				}
 				datas.add(data);
-				IDiagramWizard wiz = new DiagramWizard();
-				if (this.diagramPanel != null) {
-					if (diagram != null) {
-						diagram.removeFromContainer();
-					}
-					
-				}
+				
 				updateStatDisplay();
 			}
-			
 			
 		}
 		
 	}
-		DiagramWizard wiz = new DiagramWizard();
+		IDiagramWizard wiz = new DiagramWizard();
 		if (diagrams[0] instanceof BarChart) {
 			BarChart[] barcharts = new BarChart[this.elements.size()];
 			for(int i = 0; i < elements.size(); i++) {
@@ -810,6 +809,13 @@ public class Comparer extends ElementManipulator implements ComponentListener {
 						newValues[i] = datas.get(k).get(j)[i] - datas.get(k + 1).get(j)[i] ;				
 					}
 					newData.add(newValues);
+				}
+				
+			}
+			
+			if (this.diagramPanel != null) {
+				if (diagram != null) {
+					diagram.removeFromContainer();
 				}
 				
 			}

@@ -37,6 +37,10 @@ public abstract class DiagramComponent implements HasAttachablePart {
 		this.color = color;
 		this.layer = layer;
 	}
+	/**
+	 * Note: Methods connected to {@link gelf.view.diagrams.components.DiagramComponent#diagram diagram}
+	 * will not work for the clones till they are attached to a diagram.
+	 */
 	@Override
 	public abstract DiagramComponent clone();
 	/**

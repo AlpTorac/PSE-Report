@@ -9,10 +9,13 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import gelf.controller.EventManager;
+import gelf.model.commands.Command;
 import gelf.model.elements.Cell;
 import gelf.model.elements.Library;
 import gelf.model.project.Model;
 import gelf.model.project.Project;
+import gelf.model.project.Updatable;
+import gelf.model.elements.*;
 import gelf.view.components.Menu;
 import gelf.view.components.MenuBar;
 import gelf.view.components.MenuItem;
@@ -21,7 +24,7 @@ import gelf.view.components.Window;
 /**
  * MainWindow
  */
-public class MainWindow extends Window {
+public class MainWindow extends Window implements Updatable {
     // GUI subparts
     public MenuBar mainMenu;
     public Menu menuFile;
@@ -61,6 +64,8 @@ public class MainWindow extends Window {
         this.setIconImage(icon);
         this.setVisible(true);
         this.setLayout(new BorderLayout());
+
+        project.addUpdatable(this);
 
         // InfoBar setup
         setupInfoBar(this.getContentPane().getWidth(), 30);
@@ -201,5 +206,22 @@ public class MainWindow extends Window {
                 Model.getInstance().getCurrentProject());
         EventManager em = new EventManager(mainWindow);
         mainWindow.outliner.setTreeMouseListener(em);
+    }
+
+    @Override
+    public void update() {
+        //latest command
+        Command latest = Model.getInstance().getCurrentCommandHistory().getLatestCommand();
+        if(latest != null)
+            infoBar.setText(InfoBarID.LASTACTION, latest.toString());
+        else
+            infoBar.setText(InfoBarID.LASTACTION, "none");
+        //selected
+        // ArrayList<Element> selected = outliner.getSelectedElements();
+        // if(selected.size() == 0)
+        //     infoBar.setText(InfoBarID.SELECTED, "none");
+        // else {
+        //     infoBar.setText(InfoBarID.SELECTED, selected.get(selected.size()-1).toString());
+        // }
     }
 }

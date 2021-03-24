@@ -62,6 +62,10 @@ public abstract class DiagramValueDisplayComponent extends DiagramComponent impl
 		return SettingsProvider.getInstance().getRoundedValueAsString(number);
 	}
 	
+	/**
+	 * Provides information about {@link #value} and its associated indices.
+	 * @return Information about the component.
+	 */
 	@Override
 	public String toString() {
 		return this.getRoundedPositionInDiagramString() + "\n\n" + "value: " + this.value;

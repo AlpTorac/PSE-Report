@@ -17,6 +17,9 @@ public interface Hoverable {
 	/**
 	 * The action to be performed, when the visuals of the component
 	 * are being hovered.
+	 * <p>
+	 * Uses the {@link DiagramValueDisplayComponent#toString toString} method
+	 * to get information from the parameter.
 	 * @param dvdc the component implementing this interface
 	 */
 	public default void hoverAction(DiagramValueDisplayComponent dvdc) {

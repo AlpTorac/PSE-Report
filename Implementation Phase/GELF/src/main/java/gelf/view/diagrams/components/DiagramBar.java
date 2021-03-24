@@ -3,7 +3,6 @@ package gelf.view.diagrams.components;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -105,14 +104,18 @@ public abstract class DiagramBar extends DiagramValueDisplayComponent {
 
 	@Override
 	protected String getRoundedPositionInDiagramString() {
-		float[] indices = this.diagram.cloneDiagramData().extractIndices().get(0);
-		int indexPosition = this.diagram.getIndexPositionsOfComponent(this)[0] % indices.length;
-		float beginIndex = (indexPosition - 1 >= 0) ? indices[indexPosition - 1] : 0;
-		String result = "index1: " +
-		String.valueOf(beginIndex) + " - " +
-		String.valueOf(indices[indexPosition]);
-		
-		return result;
+		if (this.diagram != null) {
+			float[] indices = this.diagram.cloneDiagramData().extractIndices().get(0);
+			int indexPosition = this.diagram.getIndexPositionsOfComponent(this)[0] % indices.length;
+			float beginIndex = (indexPosition - 1 >= 0) ? indices[indexPosition - 1] : 0;
+			String result = "index1: " +
+			String.valueOf(beginIndex) + " - " +
+			String.valueOf(indices[indexPosition]);
+			
+			return result;
+		} else {
+			return "";
+		}
 	}
 	
 	/**

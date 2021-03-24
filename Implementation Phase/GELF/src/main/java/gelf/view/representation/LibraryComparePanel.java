@@ -17,6 +17,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.border.LineBorder;
 
 import gelf.model.elements.Library;
+import gelf.view.components.Button;
 import gelf.view.components.Panel;
 import gelf.view.composites.Comparer;
 import gelf.view.composites.SubWindow;
@@ -29,14 +30,14 @@ import gelf.view.diagrams.SettingsProvider;
  */
 public class LibraryComparePanel extends Panel implements MouseListener{
 	
-	public HashMap<Label, Library> buttons;
-	public ArrayList<Label> buttonList;
+	public HashMap<Button, Library> buttons;
+	public ArrayList<Button> buttonList;
     private JPanel listPanel;
     private ArrayList<Library> selectedLibraries;
 	private SubWindow subwindow;
     private JScrollPane scrollPane;
     private Comparer c;
-    
+    private HashMap<Button, Color> colorMap;
    
     /**
      * Initializes the panel.
@@ -47,10 +48,11 @@ public class LibraryComparePanel extends Panel implements MouseListener{
     	this.subwindow = subwindow;
     	selectedLibraries = libraries;
     	this.c = c;
-    	buttonList = new ArrayList<Label>();
+    	this.colorMap = new HashMap<Button, Color>();
+    	buttonList = new ArrayList<Button>();
     	this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     	this.setBorder(new LineBorder(Color.BLACK));
-        buttons = new HashMap<Label,Library>();
+        buttons = new HashMap<Button,Library>();
         listPanel = new JPanel(); 
         listPanel.setLayout(new GridLayout(0,2));
         listPanel.setBackground(new Color(0.3f, 0.3f, 0.3f));
@@ -60,11 +62,11 @@ public class LibraryComparePanel extends Panel implements MouseListener{
         scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
         listPanel.setSize(width, height);
         boolean painted = false;
-        Color color1 = SettingsProvider.getInstance().getValueDisplayComponentColorAt(1);
-    	Color color2 = SettingsProvider.getInstance().getValueDisplayComponentColorAt(0);
+        Color color1 = SettingsProvider.getInstance().getValueDisplayComponentColorAt(0);
+    	Color color2 = SettingsProvider.getInstance().getValueDisplayComponentColorAt(1);
          
         for (int i = 0; i < libraries.size(); i++) {
-        	Label label = new Label();
+        	Button label = new Button();
         	label.setText(libraries.get(i).getName());
         	label.setFont(new Font("Arial", Font.PLAIN, 12));
         	buttonList.add(label);
@@ -76,8 +78,10 @@ public class LibraryComparePanel extends Panel implements MouseListener{
         	if (!painted) {
 				buttonList.get(i).setBackground(color1);
 				painted = true;
+				colorMap.put(buttonList.get(i), color1);
 			} else {
 				buttonList.get(i).setBackground(color2);
+				colorMap.put(buttonList.get(i), color2);
 			}
         }
         this.setVisible(true);
@@ -86,32 +90,16 @@ public class LibraryComparePanel extends Panel implements MouseListener{
     
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		if (((Label)e.getSource()).getBackground().equals(Color.BLUE)) {
-			selectedLibraries.remove(buttons.get((Label) e.getSource()));
-			c.setLibraries(selectedLibraries);
-			((Label)e.getSource()).setBackground(new Color(0.2f, 0.2f, 0.2f));
-			
-		}
-		else {
-			selectedLibraries.add(buttons.get((Label) e.getSource()));
-			c.setLibraries(selectedLibraries);
-			((Label)e.getSource()).setBackground(Color.BLUE);
-		}
-		return;
-		
-	}
+	public void mouseClicked(MouseEvent e) {}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		if (((Label)e.getSource()).getBackground().equals(Color.BLUE)) {
-			
-			return;
+		if (colorMap.containsKey((Button) e.getSource()))  {
+			((Button) e.getSource()).setBackground(colorMap.get(((Button) e.getSource())));
 		}
-		e.getComponent().setBackground(new Color(0.2f, 0.2f, 0.2f));
 		
 	}
 
