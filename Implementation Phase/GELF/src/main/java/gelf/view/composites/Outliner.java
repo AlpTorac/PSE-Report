@@ -11,6 +11,8 @@ import javax.swing.JTextField;
 import javax.swing.JTree;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeExpansionListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -20,6 +22,7 @@ import javax.swing.tree.TreePath;
 import gelf.controller.EventManager;
 import gelf.model.elements.Cell;
 import gelf.model.elements.Element;
+import gelf.model.elements.HigherElement;
 import gelf.model.elements.InputPin;
 import gelf.model.elements.Library;
 import gelf.model.elements.OutputPin;
@@ -34,7 +37,7 @@ import gelf.view.components.TreeMouseAdapter;
 /**
  * Outliner
  */
-public class Outliner extends Panel implements Updatable, TreeSelectionListener {
+public class Outliner extends Panel implements Updatable, TreeSelectionListener, TreeExpansionListener {
     public Project project;
     public MenuBar menuBar;
     public JTree tree;
@@ -102,6 +105,7 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
         this.tree.setShowsRootHandles(true);
         this.tree.expandRow(0);
         this.tree.addTreeSelectionListener(this); // respond to selection
+        this.tree.addTreeExpansionListener(this);
         // this.tree.setRootVisible(false);
 
         // scroll pane
@@ -123,18 +127,25 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
         root.removeAllChildren();
         DefaultTreeModel treeModel = (DefaultTreeModel) this.tree.getModel();
         treeModel.nodeStructureChanged(root);
-
+        ArrayList<DefaultMutableTreeNode> ls = new ArrayList<DefaultMutableTreeNode>();
+        ls.add(root);
+        
         // generate library level
         ArrayList<Library> libraries = this.project.getLibraries();
         for (Library lib : libraries) {
             DefaultMutableTreeNode libNode = new DefaultMutableTreeNode(lib);
             treeModel.insertNodeInto(libNode, root, root.getChildCount());
-
+            if (lib.isExpanded()) {
+                ls.add(libNode);
+            }
             // generate cell levels
             ArrayList<Cell> cells = lib.getCells();
             for (Cell cell : cells) {
                 DefaultMutableTreeNode cellNode = new DefaultMutableTreeNode(cell);
                 treeModel.insertNodeInto(cellNode, libNode, libNode.getChildCount());
+                if (cell.isExpanded()) {
+                    ls.add(cellNode);
+                }
                 // generate in/out pin levels
                 ArrayList<InputPin> pinsIn = cell.getInPins();
                 ArrayList<OutputPin> pinsOut = cell.getOutPins();
@@ -152,6 +163,11 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
         }
         this.revalidate();
         this.repaint();
+        tree.setRootVisible(false);
+        
+        for (DefaultMutableTreeNode element: ls) {
+            tree.expandPath(new TreePath(element.getPath()));
+        }
     }
 
     // get list of all selected elements
@@ -173,8 +189,22 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener 
 
     // TreeSelectionListener method
     @Override
-    public void valueChanged(TreeSelectionEvent e) {
-        // TODO
+    public void valueChanged(TreeSelectionEvent e) {}
+
+    @Override
+    public void treeExpanded(TreeExpansionEvent event) {
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) event.getPath().getLastPathComponent();
+        if (node.getUserObject() instanceof HigherElement) {
+            ((HigherElement) node.getUserObject()).setExpanded(true);
+        }
+    }
+
+    @Override
+    public void treeCollapsed(TreeExpansionEvent event) {
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) event.getPath().getLastPathComponent();
+        if (node.getUserObject() instanceof HigherElement) {
+            ((HigherElement) node.getUserObject()).setExpanded(false);
+        }
     }
 
 }

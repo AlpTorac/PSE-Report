@@ -33,6 +33,7 @@ public abstract class HigherElement extends Element {
     		new HashMap<PowerGroup, Stat>();
     protected boolean hasShownElements;
     protected Stat leakage;
+	protected boolean expanded = false;
     
 	public ArrayList<TimingSense> getAvailableTimSen() {
 		return availableTimSen;
@@ -147,5 +148,13 @@ public abstract class HigherElement extends Element {
 	@Override
 	public int compareTo(Element element) {
 		return super.compareTo(element);
+	}
+
+	public boolean isExpanded() {
+		return expanded;
+	}
+
+	public void setExpanded(boolean expanded) {
+		this.expanded = expanded;
 	}
 }
