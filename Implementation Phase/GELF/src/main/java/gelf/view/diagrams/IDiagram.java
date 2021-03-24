@@ -127,8 +127,10 @@ public interface IDiagram {
 	 */
 	public default void removeFromContainer() {
 		Container container = this.getContainingElement().getParent();
-		container.remove(this.getContainingElement());
-		container.repaint();
+		if (container != null) {
+			container.remove(this.getContainingElement());
+			container.repaint();
+		}
 	}
 	/**
 	 * @param dvdc a given component stored in the implementing class, which is responsible
