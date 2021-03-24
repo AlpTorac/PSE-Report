@@ -7,7 +7,6 @@ import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.JTree;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
@@ -15,7 +14,6 @@ import gelf.model.elements.Cell;
 import gelf.model.elements.InputPin;
 import gelf.model.elements.Library;
 import gelf.model.elements.OutputPin;
-import gelf.model.elements.Pin;
 
 public class HierarchyRenderer extends DefaultTreeCellRenderer {
     private static final String SPAN_FORMAT = "<span style='color:%s;'><b>%s</b></span>";
@@ -50,11 +48,11 @@ public class HierarchyRenderer extends DefaultTreeCellRenderer {
             text = String.format(SPAN_FORMAT, "#D3D3D3", cell.toString());
             this.setIcon(cellIcon);
         } else if (userObject instanceof InputPin) {
-            Pin pin = (Pin) userObject;
+            InputPin pin = (InputPin) userObject;
             text = String.format(SPAN_FORMAT, "#D3D3D3", pin.toString());
             this.setIcon(inPinIcon);
         } else if (userObject instanceof OutputPin) {
-            Pin pin = (Pin) userObject;
+            OutputPin pin = (OutputPin) userObject;
             text = String.format(SPAN_FORMAT, "#D3D3D3", pin.toString());
             this.setIcon(outPinIcon);
         }else {
