@@ -102,8 +102,8 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 	private float scaleValue;
 	private boolean isScaled;
     private Button scaleButton = new Button("Scale");
-    private Label yAxisLabel = new Label();
     private Label xAxisLabel = new Label();
+    private Label yAxisLabel = new Label();
     private Label zAxisLabel = new Label();
 	
     public Visualizer(Element e, SubWindow w, Project p, int width, int height) {
@@ -172,13 +172,13 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 		scaleButton.setForeground(Color.WHITE);
 		stats.add(scaleButton);
 		
-		yAxisLabel.setVisible(true);
-		yAxisLabel.setForeground(Color.WHITE);
-		stats.add(yAxisLabel);
-		
 		xAxisLabel.setVisible(true);
 		xAxisLabel.setForeground(Color.WHITE);
 		stats.add(xAxisLabel);
+		
+		yAxisLabel.setVisible(true);
+		yAxisLabel.setForeground(Color.WHITE);
+		stats.add(yAxisLabel);
 
 		zAxisLabel.setVisible(true);
 		zAxisLabel.setForeground(Color.WHITE);
