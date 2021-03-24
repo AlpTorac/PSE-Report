@@ -79,6 +79,7 @@ public class Library extends HigherElement {
 			Cell curCell = cellsIt.next();
 			curCell.setParentLibrary(clonedLibrary);
 		}
+		clonedLibrary.setUnits(units);
     	return clonedLibrary;
     }
 
@@ -111,6 +112,7 @@ public class Library extends HigherElement {
 				cell2.setParentLibrary(this);
 			}
 		}
+		setUnits(dataLib.getUnits());
         setIndex1(dataLib.getIndex1());
 	    setIndex2(dataLib.getIndex2());
         setElementContent(dataLib.getElementContent());
