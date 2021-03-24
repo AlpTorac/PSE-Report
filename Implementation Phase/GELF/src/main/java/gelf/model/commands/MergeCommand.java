@@ -60,6 +60,7 @@ public class MergeCommand implements Command {
         for (Cell cell : cells) {
             cell.setParentLibrary(productLibrary);
         }
+        productLibrary.setUnits(mergedLibraries.get(0).getUnits());
         ArrayList<Library> libraries = currentModel.getCurrentProject().getLibraries();
         libraries.add(productLibrary);
         currentModel.getCurrentProject().setLibraries(libraries);
