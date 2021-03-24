@@ -85,7 +85,7 @@ public class MainWindow extends Window implements Updatable {
         testProject.setLibraries(libraries);
 
         // Outliner setup
-        this.outliner = new Outliner(350,
+        this.outliner = new Outliner(300,
                 this.getContentPane().getHeight() - this.mainMenu.getHeight() - this.infoBar.getHeight(), project);
         this.outliner.setVisible(true);
         this.add(this.outliner, BorderLayout.LINE_START);
