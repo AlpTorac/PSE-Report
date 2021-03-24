@@ -31,6 +31,7 @@ public class PinCompareSubPanel extends CellPanel {
 	private HashMap<Checkbox, InputPin> checkboxMap;
 	private ArrayList<InputPin> selectedPins;
 	private ArrayList<Pin> openedPins;
+	private HashMap<Button, Color> colorMap;
 	
 	
 	private Comparer c;
@@ -46,7 +47,7 @@ public class PinCompareSubPanel extends CellPanel {
 		super(width, height, cell, subwindow, null, null);
 		this.cell = cell;
 		
-		
+		this.colorMap = new HashMap<Button, Color>();
 		this.buttonMap = super.getButtonMap();
 		this.cellButton = super.getCellButton();
 		this.openedPins = new ArrayList<Pin>();
@@ -56,11 +57,16 @@ public class PinCompareSubPanel extends CellPanel {
 		boolean painted = false;
 		for (InputPin input: cell.getInPins()) {
 			if (elements.contains(input)) {
+				for (Checkbox checkbox: super.checkboxes) {
+					checkbox.setEnabled(false);
+				}
 				if (!painted) {
 					buttonMap.get(input).setBackground(color1);
 					painted = true;
+					colorMap.put(buttonMap.get(input), color1);
 				} else {
 					buttonMap.get(input).setBackground(color2);
+					colorMap.put(buttonMap.get(input), color2);
 				}
 				for (Checkbox checkbox: super.checkboxes) {
 					checkbox.setEnabled(false);
@@ -74,15 +80,21 @@ public class PinCompareSubPanel extends CellPanel {
 					if (!painted) {
 						buttonMap.get(output).setBackground(color1);
 						painted = true;
+						colorMap.put(buttonMap.get(output), color1);
 					} else {
 						buttonMap.get(output).setBackground(color2);
+						colorMap.put(buttonMap.get(output), color1);
 					}
 					openedPins.add(output);
 				}
 			}
 		}
 		if (elements.contains(cell)) {
+			for (Checkbox checkbox: super.checkboxes) {
+				checkbox.setEnabled(false);
+			}
 			cellButton.setBackground(color1);
+			colorMap.put(cellButton, color1);
 		}
 		
 	}
@@ -116,7 +128,7 @@ public class PinCompareSubPanel extends CellPanel {
 	@Override
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getStateChange() == ItemEvent.SELECTED) {
-			if (openedPins.get(0) instanceof OutputPin) {
+			if (!openedPins.isEmpty() && openedPins.get(0) instanceof OutputPin) {
 				selectedPins.add(checkboxMap.get(e.getSource()));
 				ArrayList<InputPin> newList = c.getSelectedPins();
 				newList.add(checkboxMap.get(e.getSource()));
@@ -142,56 +154,17 @@ public class PinCompareSubPanel extends CellPanel {
 	}
 	
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		/*if (cell.getName() == ((Label)e.getSource()).getText()) {
-			if (((Label)e.getSource()).getBackground().equals(Color.BLUE)) {
-				upperPanel.getOpenedCells().remove(cell);
-				((Label)e.getSource()).setBackground(new Color(0.2f, 0.2f, 0.2f));
-				c.setCells(upperPanel.getOpenedCells());
-				
-			}
-			else {
-				upperPanel.getOpenedCells().add(cell);
-				((Label)e.getSource()).setBackground(Color.BLUE);
-				c.setCells(upperPanel.getOpenedCells());
-			}
-			return;
-		}
-		for (InputPin input : inputPins) {
-			if (input.getName() == (((Label)e.getSource()).getText())) {
-				if (((Label)e.getSource()).getBackground().equals(Color.BLUE)) {
-					upperPanel.getOpenedInPins().remove(input);
-					((Label)e.getSource()).setBackground(new Color(0.2f, 0.2f, 0.2f));
-					c.setInputPins(upperPanel.getOpenedInPins());
-				}
-				else {
-					upperPanel.getOpenedInPins().add(input);
-					((Label)e.getSource()).setBackground(Color.BLUE);
-					c.setInputPins(upperPanel.getOpenedInPins());
-				}
-			}
-		}
-		for (OutputPin output : outputPins) {
-            if (output.getName() == (((Label)e.getSource()).getText())) {
-            	if (((Label)e.getSource()).getBackground().equals(Color.BLUE)) {
-            		upperPanel.getOpenedOutPins().remove(output);
-            		((Label)e.getSource()).setBackground(new Color(0.2f, 0.2f, 0.2f));
-            		c.setOutputPins(upperPanel.getOpenedOutPins());
-    			}
-    			else {
-    				upperPanel.getOpenedOutPins().add(output);
-    				((Label)e.getSource()).setBackground(Color.BLUE);
-    				c.setOutputPins(upperPanel.getOpenedOutPins());
-    			}
-			}
-		}*/
-	}
+	public void mouseClicked(MouseEvent e) {}
 	
 	@Override
 	public void mouseEntered(MouseEvent e) {}
 
 	@Override
-	public void mouseExited(MouseEvent e) {}
+	public void mouseExited(MouseEvent e) {
+		if (colorMap.containsKey((Button) e.getSource()))  {
+			((Button) e.getSource()).setBackground(colorMap.get(((Button) e.getSource())));
+		}
+	}
 		
 	@Override
 	public void actionPerformed(ActionEvent e) {}
