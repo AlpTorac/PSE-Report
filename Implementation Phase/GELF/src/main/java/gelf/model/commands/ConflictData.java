@@ -2,6 +2,7 @@ package gelf.model.commands;
 
 /**
  * Holds data about a naming conflict resolution
+ * 
  * @author Xhulio Pernoca
  */
 public class ConflictData {
@@ -10,9 +11,10 @@ public class ConflictData {
 
     /**
      * Initialises the conflict data
+     * 
      * @param resolutionMethod the chosen resolution method
-     * @param name the name of the renaming action, if it happens to be the chosen 
-     * resolution method
+     * @param name             the name of the renaming action, if it happens to be
+     *                         the chosen resolution method
      */
     public ConflictData(ResolutionMethod resolutionMethod, String name) {
         this.resolutionMethod = resolutionMethod;
@@ -21,6 +23,7 @@ public class ConflictData {
 
     /**
      * Returns the resolution method
+     * 
      * @return the resolution method
      */
     public ResolutionMethod getResolutionMethod() {
@@ -29,6 +32,7 @@ public class ConflictData {
 
     /**
      * returns the given name string
+     * 
      * @return the given name string
      */
     public String getName() {

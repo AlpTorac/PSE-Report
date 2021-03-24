@@ -53,7 +53,7 @@ public class MainWindow extends Window implements Updatable {
     private MainWindow _this = this;
     // colors/graphics
     Color cBackground = ColorTheme.frame;
-    Image icon = Toolkit.getDefaultToolkit().getImage("src/main/java/gelf/view/composites/Images/AppIcon.png");
+    Image icon = Toolkit.getDefaultToolkit().getImage("src/main/resources/AppIcon.png");
     // other
     String version = "0.0.0";
 

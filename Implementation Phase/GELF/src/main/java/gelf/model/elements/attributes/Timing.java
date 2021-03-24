@@ -3,17 +3,18 @@ package gelf.model.elements.attributes;
 import java.util.Arrays;
 
 import gelf.model.project.Interpolator;
+
 /**
  * Keeps and calculates data of Timing.
+ * 
  * @author Kerem Kara
  */
-public class Timing extends OutAttribute{
+public class Timing extends OutAttribute {
 	private TimingSense timSense;
 	private TimingType timType;
 	private TimingGroup timGroup;
-	
-	public Timing(TimingSense timSense, TimingType timType, 
-			TimingGroup timGroup, float[][] values) {
+
+	public Timing(TimingSense timSense, TimingType timType, TimingGroup timGroup, float[][] values) {
 		setTimingSense(timSense);
 		setTimType(timType);
 		setTimGroup(timGroup);
@@ -43,7 +44,7 @@ public class Timing extends OutAttribute{
 	public void setTimGroup(TimingGroup timGroup) {
 		this.timGroup = timGroup;
 	}
-	
+
 	@Override
 	public Timing clone() {
 		Timing clonedTiming = new Timing(timSense, timType, timGroup, values);
@@ -55,20 +56,17 @@ public class Timing extends OutAttribute{
 	}
 
 	public Timing createComparedAttribute(Timing attribute) {
-		if (Arrays.equals(this.index1, attribute.index1) && 
-				Arrays.equals(this.index2, attribute.index2 )) {
+		if (Arrays.equals(this.index1, attribute.index1) && Arrays.equals(this.index2, attribute.index2)) {
 			return attribute;
 		}
 		Interpolator interpolator = new Interpolator();
-		float[][] newValues = interpolator.bicubicInterpolate(attribute.index1, attribute.index2, 
-				attribute.values, this.index1, this.index2);
-		Timing newAttr = new Timing(attribute.getTimSense(), attribute.getTimType(),
-				attribute.getTimGroup(), newValues);
+		float[][] newValues = interpolator.bicubicInterpolate(attribute.index1, attribute.index2, attribute.values,
+				this.index1, this.index2);
+		Timing newAttr = new Timing(attribute.getTimSense(), attribute.getTimType(), attribute.getTimGroup(),
+				newValues);
 		newAttr.setIndex1(this.index1);
 		newAttr.setIndex2(this.index2);
 		return newAttr;
 	}
-	
-	
 
 }

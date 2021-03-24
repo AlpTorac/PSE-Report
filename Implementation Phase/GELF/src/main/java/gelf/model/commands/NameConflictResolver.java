@@ -9,8 +9,9 @@ import gelf.model.elements.CompareElementByName;
 import gelf.view.composites.MergeDialog;
 
 /**
- * A class that resolves naming conflicts between different Cells, so that functionality 
- * is simplified in MergeCommand, MoveCommand, PasteCommand.
+ * A class that resolves naming conflicts between different Cells, so that
+ * functionality is simplified in MergeCommand, MoveCommand, PasteCommand.
+ * 
  * @author Xhulio Pernoca
  */
 public class NameConflictResolver {
@@ -19,8 +20,9 @@ public class NameConflictResolver {
     private HashMap<Cell, String> renamedCells = new HashMap<Cell, String>();
 
     /**
-     * Instantiates the resolver and starts resolving right away so that
-     * the values of it's attributes are valid
+     * Instantiates the resolver and starts resolving right away so that the values
+     * of it's attributes are valid
+     * 
      * @param cells the cells to be resolved
      */
     public NameConflictResolver(ArrayList<Cell> cells) {
@@ -32,32 +34,32 @@ public class NameConflictResolver {
             hasConflict = false;
             Collections.sort(cells, new CompareElementByName());
             for (int i = 1; i < cells.size(); i++) {
-                if (cells.get(i-1).getName().equals(cells.get(i).getName())) {
+                if (cells.get(i - 1).getName().equals(cells.get(i).getName())) {
                     hasConflict = true;
-                    MergeDialog mergeDialog = new MergeDialog(); 
-                    ConflictData conflictData = mergeDialog.open(cells.get(i-1), cells.get(i));
-                    switch (conflictData.getResolutionMethod()){
-                        case KEEPLEFT:
+                    MergeDialog mergeDialog = new MergeDialog();
+                    ConflictData conflictData = mergeDialog.open(cells.get(i - 1), cells.get(i));
+                    switch (conflictData.getResolutionMethod()) {
+                    case KEEPLEFT:
                         deletedCells.add(cells.get(i));
                         cells.remove(i);
                         break;
-                        case KEEPRIGHT:
-                        deletedCells.add(cells.get(i-1));
-                        cells.remove(i-1);
+                    case KEEPRIGHT:
+                        deletedCells.add(cells.get(i - 1));
+                        cells.remove(i - 1);
                         break;
-                        case RENAMELEFT:
-                        Cell renamedLeftCell = cells.get(i-1);
+                    case RENAMELEFT:
+                        Cell renamedLeftCell = cells.get(i - 1);
                         String newLeftName = conflictData.getName();
                         renamedCells.put(renamedLeftCell, renamedLeftCell.getName());
                         renamedLeftCell.setName(newLeftName);
                         break;
-                        case RENAMERIGHT:
+                    case RENAMERIGHT:
                         Cell renamedRightCell = cells.get(i);
                         String newRightName = conflictData.getName();
                         renamedCells.put(renamedRightCell, renamedRightCell.getName());
                         renamedRightCell.setName(newRightName);
                         break;
-                        case CANCEL:
+                    case CANCEL:
                         this.cells = new ArrayList<Cell>();
                         return;
                     }
@@ -68,8 +70,9 @@ public class NameConflictResolver {
     }
 
     /**
-     * Returns the deleted cells for the commands to keep track and 
-     * use when undoing commands
+     * Returns the deleted cells for the commands to keep track and use when undoing
+     * commands
+     * 
      * @return the deleted cells
      */
     @SuppressWarnings("unchecked")
@@ -79,6 +82,7 @@ public class NameConflictResolver {
 
     /**
      * Returns the resolved cells so that the commands can resume functionality
+     * 
      * @return the resolved cells
      */
     @SuppressWarnings("unchecked")
@@ -87,8 +91,9 @@ public class NameConflictResolver {
     }
 
     /**
-     * Returns the renamed cells and their old names so that they can be
-     * used for undoing purposes
+     * Returns the renamed cells and their old names so that they can be used for
+     * undoing purposes
+     * 
      * @return the renamed cells and their old names
      */
     @SuppressWarnings("unchecked")

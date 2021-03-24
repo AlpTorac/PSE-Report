@@ -7,25 +7,27 @@ import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.JTree;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import gelf.model.elements.Cell;
+import gelf.model.elements.InputPin;
 import gelf.model.elements.Library;
-import gelf.model.elements.Pin;
+import gelf.model.elements.OutputPin;
 
 public class HierarchyRenderer extends DefaultTreeCellRenderer {
     private static final String SPAN_FORMAT = "<span style='color:%s;'><b>%s</b></span>";
     private ImageIcon libraryIcon;
     private ImageIcon cellIcon;
-    private ImageIcon pinIcon;
+    private ImageIcon outPinIcon;
+    private ImageIcon inPinIcon;
 
     public HierarchyRenderer() {
         try{
-            libraryIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage("src/main/java/gelf/view/composites/Images/LibraryIcon.png"));
-            cellIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage("src/main/java/gelf/view/composites/Images/CellIcon.png"));
-            pinIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage("src/main/java/gelf/view/composites/Images/PinIcon.png"));
+            libraryIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage("src/main/resources/LibraryIcon.png"));
+            cellIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage("src/main/resources/CellIcon.png"));
+            outPinIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage("src/main/resources/OutPinIcon.png"));
+            inPinIcon = new ImageIcon(Toolkit.getDefaultToolkit().getImage("src/main/resources/inPinIcon.png"));
         } catch (Exception e) {
             System.out.println("Icon not loaded "+ e.getClass());
         }
@@ -45,11 +47,15 @@ public class HierarchyRenderer extends DefaultTreeCellRenderer {
             Cell cell = (Cell) userObject;
             text = String.format(SPAN_FORMAT, "#D3D3D3", cell.toString());
             this.setIcon(cellIcon);
-        } else if (userObject instanceof Pin) {
-            Pin pin = (Pin) userObject;
+        } else if (userObject instanceof InputPin) {
+            InputPin pin = (InputPin) userObject;
             text = String.format(SPAN_FORMAT, "#D3D3D3", pin.toString());
-            this.setIcon(pinIcon);
-        } else {
+            this.setIcon(inPinIcon);
+        } else if (userObject instanceof OutputPin) {
+            OutputPin pin = (OutputPin) userObject;
+            text = String.format(SPAN_FORMAT, "#D3D3D3", pin.toString());
+            this.setIcon(outPinIcon);
+        }else {
             text = String.format(SPAN_FORMAT, "yellow", userObject);
         }
         this.setText("<html>" + text + "</html>");
