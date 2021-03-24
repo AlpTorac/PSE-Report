@@ -56,7 +56,7 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener,
     private Color cBackground = ColorTheme.section;
     private Color cBorder = ColorTheme.frame;
 
-    private Color cTree = new Color(0.2f, 0.2f, 0.2f);
+    private Color cTree = ColorTheme.section;
     private Color CNode = new Color(0.3f, 0.3f, 0.3f);
     private Color cText = new Color(0.8f, 0.8f, 0.8f);
 
@@ -100,6 +100,7 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener,
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
         DefaultTreeModel treeModel = new DefaultTreeModel(root);
         this.tree = new JTree(treeModel);
+        this.tree.setCellRenderer(new HierarchyRenderer());
         // this.tree.setEditable(true);
         this.tree.setBackground(cTree);
         this.tree.setShowsRootHandles(true);
@@ -129,7 +130,7 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener,
         treeModel.nodeStructureChanged(root);
         ArrayList<DefaultMutableTreeNode> ls = new ArrayList<DefaultMutableTreeNode>();
         ls.add(root);
-        
+
         // generate library level
         ArrayList<Library> libraries = this.project.getLibraries();
         for (Library lib : libraries) {
