@@ -739,9 +739,11 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 				values = cell.getLeakages().getValues();
 				cell.setOutputFunctions();
 				stringAr = cell.getLeakages().getOutputFunctions();
+				if (xAxisLabel != null && yAxisLabel != null && zAxisLabel != null && units != null) {
 				xAxisLabel.setText("x_Axis: input state power");
 				yAxisLabel.setText("y-Axis: " + units[5]);
 				zAxisLabel.setText("");
+				}
 			}	
 			data.add(values);
 			stringData.add(stringAr);

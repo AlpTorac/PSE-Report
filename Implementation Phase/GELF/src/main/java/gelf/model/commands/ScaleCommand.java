@@ -8,7 +8,6 @@ import gelf.model.elements.OutputPin;
 import gelf.model.elements.attributes.InputPower;
 import gelf.model.elements.attributes.OutputPower;
 import gelf.model.elements.attributes.Timing;
-import gelf.model.exceptions.InvalidFileFormatException;
 import gelf.model.project.Model;
 
 /**
@@ -44,9 +43,9 @@ public class ScaleCommand implements Command {
      * Executes the scaling
      */
     public void execute() {
-    	oldEl = element.clone();
     	if (element.getClass() == Library.class) {
     		Library lib = (Library) element;
+    		oldEl = lib.clone();
     		if (attr.equals("Timing")) lib.scaleTiming(scaleValue);
     		else if (attr.equals("Default Leakage")) lib.scaleDefaultLeakage(scaleValue);
     		else if (attr.equals("Leakage")) lib.scaleLeakages(scaleValue); 
@@ -55,6 +54,7 @@ public class ScaleCommand implements Command {
     	}
     	else if (element.getClass() == Cell.class) {
     		Cell cell = (Cell) element;
+    		oldEl = cell.clone();
     		if (attr.equals("Timing")) cell.scaleTiming(scaleValue);
     		else if (attr.equals("Output Power")) cell.scaleOutputPower(scaleValue);
     		else if (attr.equals("Input Power")) cell.scaleInputPower(scaleValue);
