@@ -508,7 +508,7 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 					i++;
 				}
 				xAxisLabel.setText("x_Axis: cells");
-				yAxisLabel.setText("y-Axis: " + units[1]);
+				yAxisLabel.setText("y-Axis: " + units[1] + "x" + units[2]);
 				zAxisLabel.setText("");
 			}
 			
@@ -534,7 +534,7 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 					i++;
 				}
 				xAxisLabel.setText("x_Axis: cells");
-				yAxisLabel.setText("y-Axis: " + units[1]);
+				yAxisLabel.setText("y-Axis: " + units[1] + "x" + units[2]);
 				zAxisLabel.setText("");
 			}
 			
@@ -656,7 +656,7 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 					i++;
 				}
 				xAxisLabel.setText("x_Axis: pins");
-				yAxisLabel.setText("y-Axis: " + units[1]);
+				yAxisLabel.setText("y-Axis: " + units[1] + "x" + units[2]);
 				zAxisLabel.setText("");
 			}
 			
@@ -686,7 +686,7 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 					i++;
 				}
 				xAxisLabel.setText("x_Axis: pins");
-				yAxisLabel.setText("y-Axis: " + units[1]);
+				yAxisLabel.setText("y-Axis: " + units[1] + "x" + units[2]);
 				zAxisLabel.setText("");
 			}
 			
@@ -782,8 +782,8 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 				}
 				this.diagram = wiz.makeAndAttachHistogram(this.diagramPanel, data);
 			}
-			xAxisLabel.setText("x_Axis: input transition");
-			yAxisLabel.setText("y-Axis: " + units[1]);
+			xAxisLabel.setText("x_Axis: index1");
+			yAxisLabel.setText("y-Axis: " + units[1] + "x" + units[2]);
 			zAxisLabel.setText("");
 			updateStatDisplay();
 		}
@@ -833,9 +833,9 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 					}
 					this.diagram = wiz.makeAndAttachHeatMap(this.diagramPanel, data);
 				}
-				xAxisLabel.setText("x_Axis: input transition");
-				yAxisLabel.setText("y-Axis: output capacitance");
-				zAxisLabel.setText("z-Axis: " + units[1]);
+				xAxisLabel.setText("x_Axis: index1");
+				yAxisLabel.setText("y-Axis: index2");
+				zAxisLabel.setText("color: " + units[1] + "x" + units[2]);
 				updateStatDisplay();
 			}
 			
@@ -875,9 +875,9 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 					}
 					this.diagram = wiz.makeAndAttachHeatMap(this.diagramPanel, data);
 				}
-				xAxisLabel.setText("x_Axis: input transition");
-				yAxisLabel.setText("y-Axis: output capacitance");
-				zAxisLabel.setText("z-Axis: " + units[0]);
+				xAxisLabel.setText("x_Axis: index1");
+				yAxisLabel.setText("y-Axis: index2");
+				zAxisLabel.setText("color: " + units[0]);
 				updateStatDisplay();
 			}
 		}
