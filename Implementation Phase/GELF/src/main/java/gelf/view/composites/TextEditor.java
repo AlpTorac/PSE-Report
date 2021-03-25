@@ -52,8 +52,6 @@ public class TextEditor extends ElementManipulator implements KeyListener, Updat
 	 * Initializes the text editor.
 	 * @param element Element opened in the editor
 	 * @param p Opened project
-	 * @param o The outliner
-	 * @param subwindows The subwindow area
 	 * @param width Width of this panel
 	 * @param height Height of this panel
 	 */
