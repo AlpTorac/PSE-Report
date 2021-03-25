@@ -665,8 +665,7 @@ public class Comparer extends ElementManipulator implements ComponentListener {
 						Iterator<Timing> timIt = timings.iterator();
 						while (timIt.hasNext()) {		
 							Timing curTim = timIt.next();
-							if (timingSense == curTim.getTimSense() &&
-									timingType == curTim.getTimType() &&
+							if (timingType == curTim.getTimType() &&
 									timingGroup == curTim.getTimGroup()) {
 								values[j] = curTim.getStats().getAvg();
 								stringAr[j] = curOutPin.getName();
