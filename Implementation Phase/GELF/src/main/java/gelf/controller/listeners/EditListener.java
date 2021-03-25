@@ -3,9 +3,6 @@ package gelf.controller.listeners;
 import gelf.model.exceptions.*;
 import gelf.model.commands.TextEditCommand;
 import gelf.model.elements.Element;
-import gelf.view.composites.Outliner;
-import gelf.view.composites.SubWindow.ManipulatorType;
-import gelf.view.composites.SubWindowArea;
 import gelf.view.composites.TextEditor;
 
 import java.awt.event.ActionEvent;
@@ -45,13 +42,6 @@ public class EditListener implements ActionListener{
 			editor.revert();
 			return;
 		}
-		
-		
-
-		editor.getSubWindow().setElement(element);
-		editor.getSubWindow().setManipulatorType(ManipulatorType.TEXT_EDITOR);
-		
-		
 		
 	}
 	

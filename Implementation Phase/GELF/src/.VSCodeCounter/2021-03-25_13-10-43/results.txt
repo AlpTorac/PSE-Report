@@ -1,0 +1,204 @@
+Date : 2021-03-25 13:10:43
+Directory : c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main
+Total : 157 files,  11880 codes, 3255 comments, 2351 blanks, all 17486 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| Java     |        157 |     11,880 |      3,255 |      2,351 |     17,486 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++-----------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                                                    | files      | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                                                       |        157 |     11,880 |      3,255 |      2,351 |     17,486 |
+| java                                                                                                                                    |        157 |     11,880 |      3,255 |      2,351 |     17,486 |
+| java\gelf                                                                                                                               |        157 |     11,880 |      3,255 |      2,351 |     17,486 |
+| java\gelf\controller                                                                                                                    |         20 |        896 |        217 |        244 |      1,357 |
+| java\gelf\controller\listeners                                                                                                          |         18 |        804 |        138 |        209 |      1,151 |
+| java\gelf\model                                                                                                                         |         49 |      3,570 |      1,112 |        638 |      5,320 |
+| java\gelf\model\commands                                                                                                                |         12 |        548 |        268 |        100 |        916 |
+| java\gelf\model\compilers                                                                                                               |          1 |        137 |         43 |         10 |        190 |
+| java\gelf\model\elements                                                                                                                |         21 |      1,988 |        276 |        414 |      2,678 |
+| java\gelf\model\elements\attributes                                                                                                     |         12 |        478 |         72 |        141 |        691 |
+| java\gelf\model\exceptions                                                                                                              |          7 |         49 |         21 |         14 |         84 |
+| java\gelf\model\parsers                                                                                                                 |          1 |        527 |        329 |         32 |        888 |
+| java\gelf\model\project                                                                                                                 |          7 |        321 |        175 |         68 |        564 |
+| java\gelf\view                                                                                                                          |         88 |      7,414 |      1,926 |      1,469 |     10,809 |
+| java\gelf\view\components                                                                                                               |         14 |        351 |         55 |         81 |        487 |
+| java\gelf\view\composites                                                                                                               |         14 |      2,706 |        261 |        404 |      3,371 |
+| java\gelf\view\diagrams                                                                                                                 |         52 |      3,438 |      1,462 |        801 |      5,701 |
+| java\gelf\view\diagrams\builder                                                                                                         |          8 |        441 |        265 |         84 |        790 |
+| java\gelf\view\diagrams\components                                                                                                      |         19 |      1,371 |        351 |        310 |      2,032 |
+| java\gelf\view\diagrams\data                                                                                                            |          3 |        359 |        116 |         98 |        573 |
+| java\gelf\view\diagrams\indicator                                                                                                       |          7 |        223 |        118 |         53 |        394 |
+| java\gelf\view\diagrams\overlayer                                                                                                       |          4 |        379 |        125 |         99 |        603 |
+| java\gelf\view\diagrams\type                                                                                                            |          4 |        236 |         55 |         62 |        353 |
+| java\gelf\view\representation                                                                                                           |          8 |        919 |        148 |        183 |      1,250 |
++-----------------------------------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-----------------------------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                                                                                | language | code       | comment    | blank      | total      |
++-----------------------------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\controller\Event.java                                      | Java     |         24 |         63 |         25 |        112 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\controller\EventManager.java                               | Java     |         68 |         16 |         10 |         94 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\controller\listeners\CompareListener.java                  | Java     |         67 |          9 |         12 |         88 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\controller\listeners\CopyListener.java                     | Java     |         41 |          8 |         11 |         60 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\controller\listeners\DeleteCellListener.java               | Java     |         58 |          8 |         12 |         78 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\controller\listeners\EditListener.java                     | Java     |         33 |         10 |         16 |         59 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\controller\listeners\LoadListener.java                     | Java     |         19 |          4 |          7 |         30 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\controller\listeners\MergeListener.java                    | Java     |         45 |          8 |          9 |         62 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\controller\listeners\OpenElementListener.java              | Java     |         54 |          9 |         20 |         83 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\controller\listeners\PasteListener.java                    | Java     |         35 |          8 |          8 |         51 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\controller\listeners\PropertiesListener.java               | Java     |         33 |          0 |         11 |         44 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\controller\listeners\RedoListener.java                     | Java     |         24 |          4 |          7 |         35 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\controller\listeners\RemoveListener.java                   | Java     |         70 |          8 |         10 |         88 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\controller\listeners\RenameListener.java                   | Java     |         78 |         14 |         16 |        108 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\controller\listeners\SaveAllListener.java                  | Java     |         30 |          5 |          8 |         43 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\controller\listeners\SaveAsListener.java                   | Java     |         63 |          8 |         11 |         82 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\controller\listeners\SaveListener.java                     | Java     |         60 |          8 |         11 |         79 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\controller\listeners\ScaleListener.java                    | Java     |         30 |          8 |         15 |         53 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\controller\listeners\SearchListener.java                   | Java     |         46 |         15 |         19 |         80 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\controller\listeners\UndoListener.java                     | Java     |         18 |          4 |          6 |         28 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\commands\Command.java                                | Java     |          6 |         16 |          5 |         27 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\commands\CommandHistory.java                         | Java     |         68 |         57 |         15 |        140 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\commands\ConflictData.java                           | Java     |         15 |         22 |          6 |         43 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\commands\DeleteCommand.java                          | Java     |         28 |         17 |          7 |         52 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\commands\MergeCommand.java                           | Java     |         56 |         18 |          7 |         81 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\commands\NameConflictResolver.java                   | Java     |         67 |         29 |          7 |        103 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\commands\OpenFileCommand.java                        | Java     |         60 |         15 |         14 |         89 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\commands\PasteCommand.java                           | Java     |         72 |         24 |         13 |        109 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\commands\RenameCommand.java                          | Java     |         23 |         17 |          8 |         48 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\commands\ResolutionMethod.java                       | Java     |          4 |          6 |          2 |         12 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\commands\ScaleCommand.java                           | Java     |         86 |         15 |          6 |        107 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\commands\TextEditCommand.java                        | Java     |         63 |         32 |         10 |        105 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\compilers\LibertyCompiler.java                       | Java     |        137 |         43 |         10 |        190 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\elements\Cell.java                                   | Java     |        513 |         95 |         67 |        675 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\elements\CompareElementByName.java                   | Java     |          7 |         11 |          4 |         22 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\elements\Element.java                                | Java     |         49 |          4 |         18 |         71 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\elements\HigherElement.java                          | Java     |        122 |          5 |         34 |        161 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\elements\InputPin.java                               | Java     |         85 |         15 |         14 |        114 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\elements\Library.java                                | Java     |        439 |         51 |         74 |        564 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\elements\OutputPin.java                              | Java     |        203 |         15 |         31 |        249 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\elements\Pin.java                                    | Java     |         55 |          4 |         20 |         79 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\elements\Stat.java                                   | Java     |         37 |          4 |         11 |         52 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\elements\attributes\Attribute.java                   | Java     |         13 |          6 |          8 |         27 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\elements\attributes\InAttribute.java                 | Java     |         76 |         12 |         22 |        110 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\elements\attributes\InputPower.java                  | Java     |         29 |         12 |          8 |         49 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\elements\attributes\Leakage.java                     | Java     |         83 |         13 |         22 |        118 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\elements\attributes\OutAttribute.java                | Java     |        105 |         13 |         27 |        145 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\elements\attributes\OutputPower.java                 | Java     |         37 |          5 |         10 |         52 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\elements\attributes\PowerGroup.java                  | Java     |         12 |          0 |          5 |         17 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\elements\attributes\Timing.java                      | Java     |         54 |          5 |         14 |         73 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\elements\attributes\TimingGroup.java                 | Java     |         13 |          0 |          5 |         18 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\elements\attributes\TimingKey.java                   | Java     |         29 |          6 |         10 |         45 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\elements\attributes\TimingSense.java                 | Java     |         12 |          0 |          5 |         17 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\elements\attributes\TimingType.java                  | Java     |         15 |          0 |          5 |         20 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\exceptions\ExceedingFileSizeException.java           | Java     |          7 |          3 |          2 |         12 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\exceptions\InvalidArgumentException.java             | Java     |          7 |          3 |          2 |         12 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\exceptions\InvalidComparisonException.java           | Java     |          7 |          3 |          2 |         12 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\exceptions\InvalidFileFormatException.java           | Java     |          7 |          3 |          2 |         12 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\exceptions\InvalidNameException.java                 | Java     |          7 |          3 |          2 |         12 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\exceptions\TooManyPanelsOpenedException.java         | Java     |          7 |          3 |          2 |         12 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\exceptions\TooManySelectedException.java             | Java     |          7 |          3 |          2 |         12 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\parsers\LibertyParser.java                           | Java     |        527 |        329 |         32 |        888 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\project\FileChooserOpen.java                         | Java     |         47 |          0 |         11 |         58 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\project\FileChooserSave.java                         | Java     |         51 |          0 |         12 |         63 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\project\FileManager.java                             | Java     |         47 |          5 |         10 |         62 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\project\Interpolator.java                            | Java     |         82 |         38 |          7 |        127 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\project\Model.java                                   | Java     |         38 |         37 |         11 |         86 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\project\Project.java                                 | Java     |         52 |         86 |         15 |        153 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\model\project\Updatable.java                               | Java     |          4 |          9 |          2 |         15 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\components\Button.java                                | Java     |         66 |          0 |         14 |         80 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\components\Checkbox.java                              | Java     |         10 |          3 |          3 |         16 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\components\DropdownSelector.java                      | Java     |          7 |          3 |          3 |         13 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\components\InputBox.java                              | Java     |          4 |          3 |          3 |         10 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\components\Label.java                                 | Java     |         31 |          0 |          9 |         40 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\components\Menu.java                                  | Java     |         78 |          0 |         16 |         94 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\components\MenuBar.java                               | Java     |          7 |          3 |          2 |         12 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\components\MenuItem.java                              | Java     |         24 |          3 |          6 |         33 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\components\Panel.java                                 | Java     |         11 |          3 |          3 |         17 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\components\ScrollPane.java                            | Java     |          4 |          3 |          3 |         10 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\components\TextPane.java                              | Java     |          4 |          3 |          3 |         10 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\components\Tree.java                                  | Java     |          4 |          3 |          3 |         10 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\components\TreeMouseAdapter.java                      | Java     |         92 |         24 |         11 |        127 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\components\Window.java                                | Java     |          9 |          4 |          2 |         15 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\composites\ColorTheme.java                            | Java     |         16 |          0 |          5 |         21 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\composites\Comparer.java                              | Java     |        771 |         32 |        117 |        920 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\composites\ElementManipulator.java                    | Java     |         27 |          3 |          8 |         38 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\composites\HierarchyRenderer.java                     | Java     |         71 |          0 |          9 |         80 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\composites\InfoBar.java                               | Java     |         49 |         15 |          8 |         72 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\composites\InfoBarID.java                             | Java     |          4 |          0 |          1 |          5 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\composites\MainWindow.java                            | Java     |        166 |         44 |         27 |        237 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\composites\MergeDialog.java                           | Java     |        176 |         19 |         36 |        231 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\composites\Outliner.java                              | Java     |        172 |         20 |         23 |        215 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\composites\SettingsDialog.java                        | Java     |          7 |          3 |          3 |         13 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\composites\SubWindow.java                             | Java     |        154 |         13 |         22 |        189 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\composites\SubWindowArea.java                         | Java     |         61 |          8 |         10 |         79 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\composites\TextEditor.java                            | Java     |        202 |         55 |         47 |        304 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\composites\Visualizer.java                            | Java     |        830 |         49 |         88 |        967 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\DiagramDirector.java                         | Java     |         20 |         18 |          9 |         47 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\DiagramWizard.java                           | Java     |        121 |         86 |         19 |        226 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\IDiagram.java                                | Java     |         47 |         91 |          4 |        142 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\IDiagramOverlayer.java                       | Java     |          6 |         12 |          2 |         20 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\IDiagramViewHelper.java                      | Java     |          6 |         14 |          2 |         22 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\IDiagramWizard.java                          | Java     |         23 |         75 |          4 |        102 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\SettingsProvider.java                        | Java     |        206 |        136 |         55 |        397 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\builder\BarChartBuilder.java                 | Java     |         46 |         25 |         11 |         82 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\builder\DiagramBuilder.java                  | Java     |         53 |         49 |          5 |        107 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\builder\HeatMapBuilder.java                  | Java     |         28 |         22 |          5 |         55 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\builder\HistogramBuilder.java                | Java     |         38 |         22 |          8 |         68 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\builder\IBarChartBuilder.java                | Java     |         41 |         20 |         10 |         71 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\builder\IDiagramBuilder.java                 | Java     |        128 |         89 |         15 |        232 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\builder\IHeatMapBuilder.java                 | Java     |         68 |         16 |         17 |        101 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\builder\IHistogramBuilder.java               | Java     |         39 |         22 |         13 |         74 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\components\BarChartBar.java                  | Java     |         37 |          4 |          7 |         48 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\components\BiColorScale.java                 | Java     |         45 |          6 |         14 |         65 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\components\DiagramAxis.java                  | Java     |        258 |         75 |         55 |        388 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\components\DiagramBar.java                   | Java     |        105 |         12 |         34 |        151 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\components\DiagramColorScale.java            | Java     |        178 |         38 |         27 |        243 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\components\DiagramComponent.java             | Java     |         72 |         44 |          8 |        124 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\components\DiagramComponentFactory.java      | Java     |         49 |          5 |         10 |         64 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\components\DiagramLine.java                  | Java     |        108 |         24 |         25 |        157 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\components\DiagramValueDisplayComponent.java | Java     |         38 |         26 |         10 |         74 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\components\DiagramValueLabel.java            | Java     |        117 |         13 |         30 |        160 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\components\HasAttachablePart.java            | Java     |          6 |         15 |          2 |         23 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\components\HeatMapLabel.java                 | Java     |         22 |          6 |          8 |         36 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\components\HistogramBar.java                 | Java     |         17 |          4 |          4 |         25 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\components\HoverLabel.java                   | Java     |        142 |         28 |         32 |        202 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\components\Hoverable.java                    | Java     |         52 |         27 |          9 |         88 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\components\PositionIn2DDiagram.java          | Java     |         55 |          8 |         14 |         77 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\components\PositionInFrame.java              | Java     |         43 |          8 |         12 |         63 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\components\SolidAxis.java                    | Java     |         15 |          4 |          5 |         24 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\components\SolidLine.java                    | Java     |         12 |          4 |          4 |         20 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\data\DiagramData.java                        | Java     |        268 |         40 |         69 |        377 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\data\DiagramDataExtractionStrategy.java      | Java     |         13 |         28 |          3 |         44 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\data\ValueIndexExtractor.java                | Java     |         78 |         48 |         26 |        152 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\indicator\DiagramViewHelper.java             | Java     |         66 |         54 |          8 |        128 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\indicator\DiagramViewHelperFactory.java      | Java     |         27 |          5 |         10 |         42 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\indicator\HelperLineDisplayer.java           | Java     |         20 |          4 |          7 |         31 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\indicator\IndicatorIdentifier.java           | Java     |          7 |         20 |          2 |         29 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\indicator\ValueLine.java                     | Java     |         29 |         12 |         11 |         52 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\indicator\ValueLineDisplayer.java            | Java     |         45 |          8 |         11 |         64 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\indicator\ViewHelperComponent.java           | Java     |         29 |         15 |          4 |         48 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\overlayer\BarChartOverlayStrategy.java       | Java     |         70 |          5 |         17 |         92 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\overlayer\DiagramOverlayStrategy.java        | Java     |        244 |        111 |         63 |        418 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\overlayer\DiagramOverlayer.java              | Java     |         13 |          5 |          5 |         23 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\overlayer\HistogramOverlayStrategy.java      | Java     |         52 |          4 |         14 |         70 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\type\BarChart.java                           | Java     |         12 |          7 |          3 |         22 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\type\Diagram.java                            | Java     |        185 |         33 |         49 |        267 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\type\HeatMap.java                            | Java     |         27 |          8 |          7 |         42 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\diagrams\type\Histogram.java                          | Java     |         12 |          7 |          3 |         22 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\representation\CellImageGenerator.java                | Java     |         80 |         12 |         10 |        102 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\representation\CellPanel.java                         | Java     |        347 |         42 |         75 |        464 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\representation\DataPanel.java                         | Java     |        105 |         25 |         23 |        153 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\representation\ICellImageGenerator.java               | Java     |          5 |          8 |          5 |         18 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\representation\LibraryComparePanel.java               | Java     |         86 |          9 |         19 |        114 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\representation\LibraryPanel.java                      | Java     |         69 |         20 |         15 |        104 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\representation\PinComparePanel.java                   | Java     |         95 |         12 |         15 |        122 |
+| c:\Users\Casper\git3\PSE-Report\Implementation Phase\GELF\src\main\java\gelf\view\representation\PinCompareSubPanel.java                | Java     |        132 |         20 |         21 |        173 |
+| Total                                                                                                                                   |          |     11,880 |      3,255 |      2,351 |     17,486 |
++-----------------------------------------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
