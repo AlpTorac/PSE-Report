@@ -276,6 +276,9 @@ public class CellPanel extends Panel implements MouseListener, ItemListener, Act
 			    }
 		}
 		else {
+            imagePanel.add(Box.createVerticalStrut(5));
+			imagePanel.add(cellButton, Component.CENTER_ALIGNMENT);//
+			imagePanel.add(imageLabel, Component.CENTER_ALIGNMENT);//
 		    for(int i= 0; i < inputPins.size(); i++) {
 				Button cellButton = new Button(inputPins.get(i).getName());
 				cellButton.setForeground(Color.WHITE);
