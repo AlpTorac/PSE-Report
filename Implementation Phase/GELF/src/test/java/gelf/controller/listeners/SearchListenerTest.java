@@ -2,25 +2,16 @@ package gelf.controller.listeners;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-
-import javax.swing.JTextArea;
-import javax.swing.JTree;
-import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
 
 import org.junit.jupiter.api.Test;
 
 import gelf.model.elements.Library;
-import gelf.model.elements.attributes.InputPower;
 import gelf.model.exceptions.InvalidFileFormatException;
 import gelf.model.parsers.LibertyParser;
 import gelf.model.project.Model;
 import gelf.view.composites.Outliner;
-import gelf.view.composites.TextEditor;
 
 class SearchListenerTest {
 	String libraryExample = "library(typical) { \r\n" + 
@@ -159,7 +150,9 @@ class SearchListenerTest {
 		
 		LibertyParser.setUp();
 		Library lib = LibertyParser.parseLibrary(libraryExample);
-		Model.getInstance().getCurrentProject().getLibraries().add(lib);
+		ArrayList<Library> libraries = new ArrayList<Library>();
+		libraries.add(lib);
+		Model.getInstance().getCurrentProject().setLibraries(libraries);
 		Outliner o = new Outliner(0, 0, Model.getInstance().getCurrentProject());
 		
 		@SuppressWarnings("deprecation")
@@ -169,15 +162,26 @@ class SearchListenerTest {
 		SearchListener lis = new SearchListener(o);
 		
 		o.tree.expandRow(0);
-						
+								
+		o.searchBox.setText("typical");
+		lis.keyPressed(key);
+		
+		o.searchBox.setText("A1");
+		lis.keyPressed(key);
+		
+		o.searchBox.setText("Z");
+		lis.keyPressed(key);
+
+		o.searchBox.setText("AND2_X1");
+		lis.keyPressed(key);
+		
+		lis.keyTyped(key);
+		lis.keyReleased(key);
+		
 		o.searchBox.setText("");
 		lis.keyPressed(key);
 		
 		assertTrue(o.tree.isCollapsed(0));
-		
-
-		o.searchBox.setText("AND2_X1");
-		lis.keyPressed(key);
 		
 	}
 }
