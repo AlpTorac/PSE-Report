@@ -49,10 +49,11 @@ public class MergeListener implements ActionListener {
 			}
 		}
 		String name = JOptionPane.showInputDialog(new JFrame(), "Please enter a name for the new library", "Merge", JOptionPane.OK_CANCEL_OPTION);
-		if (name == null || name == "") {
-			JOptionPane.showMessageDialog(new JFrame(), "Merging cancelled", "Alert", JOptionPane.WARNING_MESSAGE);
+		if (!name.matches("\\w+")) {
+        	JOptionPane.showMessageDialog(new JFrame(), "Not a valid name", "Error", JOptionPane.ERROR_MESSAGE);
 			return;
-		}
+        	
+        }
 		MergeCommand merge = new MergeCommand(name, libraries);
 		merge.execute();
 	}

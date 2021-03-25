@@ -16,7 +16,7 @@ public class FileChooserSave extends JFrame {
 
    public FileChooserSave(String title) {
       super(title);
-      fc.setPreferredSize(new Dimension(800, 600));
+      fc.setPreferredSize(new Dimension(700, 500));
       fc.addChoosableFileFilter(new FileFilter() {
          @Override
          public boolean accept(File file) {
