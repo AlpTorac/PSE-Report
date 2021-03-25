@@ -37,10 +37,7 @@ public class TextEditor extends ElementManipulator implements KeyListener, Updat
 	private JTextArea textArea;	
 	private JScrollPane scrollPane;
 	private JPanel lowerPanel;
-	private Button updateButton;
-	private Outliner outliner;
-	private SubWindowArea subwindows;
-	
+	private Button updateButton;	
 	private int trace;
 	
 	private Element element;
@@ -50,7 +47,6 @@ public class TextEditor extends ElementManipulator implements KeyListener, Updat
 	private final Highlighter hl;
 	private final Highlighter.HighlightPainter painter;
 	
-    private SubWindow subwindow;
 	
 	/**
 	 * Initializes the text editor.
@@ -61,13 +57,10 @@ public class TextEditor extends ElementManipulator implements KeyListener, Updat
 	 * @param width Width of this panel
 	 * @param height Height of this panel
 	 */
-    public TextEditor(Element element, Project p, Outliner o, SubWindow subwindow, SubWindowArea subwindows, int width, int height){
+    public TextEditor(Element element, Project p, int width, int height){
         super(element, p, width, height);
         hl = new DefaultHighlighter(); 
         p.addUpdatable(this);
-        this.subwindows = subwindows;
-        this.subwindow = subwindow;
-        this.outliner = o;
         painter = new DefaultHighlighter.DefaultHighlightPainter(HL_COLOR);
         setup();
         this.setElement(element);
@@ -189,10 +182,6 @@ public class TextEditor extends ElementManipulator implements KeyListener, Updat
         this.document = newText;
     	textArea.setText("");
     	textArea.setText(document);
-    }
-    
-    public SubWindow getSubWindow() {
-    	return subwindow;
     }
     
     /**

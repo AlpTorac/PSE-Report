@@ -63,7 +63,7 @@ public class SubWindow extends Panel {
         //element manipulators
         this.eVisualizer = new Visualizer(e,this, p, 300, 100);
         this.eVisualizer.setVisible(true);
-        this.eTextEditor = new TextEditor(e, p, o, this, parent, 200, 100);
+        this.eTextEditor = new TextEditor(e, p, 200, 100);
         this.eTextEditor.setVisible(true);
         this.activeManipulator = eVisualizer;
         // style
