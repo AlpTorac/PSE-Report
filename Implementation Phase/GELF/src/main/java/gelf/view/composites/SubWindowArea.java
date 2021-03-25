@@ -56,7 +56,7 @@ public class SubWindowArea extends Panel {
     public void addSubWindow(SubWindow window) {
         if (subWindows.size() < maxSubWindows) {
             subWindows.add(window);
-            this.windowPanel.add(window);
+            this.windowPanel.add(window, 0);
             this.revalidate();
             this.repaint();
         } else {
