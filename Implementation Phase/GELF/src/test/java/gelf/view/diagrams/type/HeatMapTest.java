@@ -2,12 +2,12 @@ package gelf.view.diagrams.type;
 
 import java.awt.Container;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import edu.emory.mathcs.backport.java.util.Arrays;
 import gelf.view.diagrams.DiagramWizard;
 import gelf.view.diagrams.IDiagramWizard;
 import gelf.view.diagrams.TestCase;
