@@ -9,6 +9,7 @@ import gelf.model.elements.attributes.InputPower;
 import gelf.model.elements.attributes.OutputPower;
 import gelf.model.elements.attributes.Timing;
 import gelf.model.project.Model;
+import gelf.model.project.Project;
 
 /**
  * Scales an attribute to a given scale
@@ -76,31 +77,12 @@ public class ScaleCommand implements Command {
      */
     public void undo() {
     	if (scaleValue == 0) {
-    		replaceElementData(element, oldEl);
+    		Project.replaceElementData(element, oldEl);
     	}
     	else {
     		scaleValue = 1 / scaleValue;
     		execute();
     	}
 		currentModel.getCurrentProject().inform();
-    }
-    public void replaceElementData(Element element, Element dataElement) {
-        if (element instanceof Library) {
-            Library lib = (Library) element;
-            Library dataLib = (Library) dataElement;
-            lib.replaceData(dataLib);
-        } else if (element instanceof Cell) {
-            Cell cell = (Cell) element;
-            Cell dataCell = (Cell) dataElement;
-            cell.replaceData(dataCell);
-        } else if (element instanceof InputPin) {
-            InputPin pin = (InputPin) element;
-            InputPin dataPin = (InputPin) dataElement;
-            pin.replaceData(dataPin);
-        } else {
-            OutputPin pin = (OutputPin) element;
-            OutputPin dataPin = (OutputPin) dataElement;
-            pin.replaceData(dataPin);
-        }
     }
 }

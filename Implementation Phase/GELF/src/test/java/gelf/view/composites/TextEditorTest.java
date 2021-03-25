@@ -120,7 +120,7 @@ ArrayList<Cell> cells = new ArrayList<Cell>();
 		Project p = Model.getInstance().getCurrentProject();
 		SubWindow s = new SubWindow(cell, p, null, null, 0, 0);
 		Visualizer v = new Visualizer(cell, s, p, 0, 0);
-		TextEditor editor = new TextEditor(cell, p, null, s, null, 100, 100);
+		TextEditor editor = new TextEditor(cell, p, 100, 100);
 		Highlighter.HighlightPainter painter = new DefaultHighlighter.DefaultHighlightPainter(Color.BLUE);
 		editor.highlightText(0, painter);
 		editor.update();

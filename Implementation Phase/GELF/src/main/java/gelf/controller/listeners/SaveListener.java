@@ -13,7 +13,6 @@ import gelf.model.elements.Library;
 import gelf.model.elements.Pin;
 import gelf.model.project.Model;
 import gelf.view.composites.Outliner;
-import gelf.view.composites.SubWindowArea;
 
 /**
  * Listener for saving changes.

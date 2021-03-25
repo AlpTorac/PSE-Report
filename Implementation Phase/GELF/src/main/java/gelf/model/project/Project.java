@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 
+import gelf.model.elements.Cell;
 import gelf.model.elements.CompareElementByName;
 import gelf.model.elements.Element;
+import gelf.model.elements.InputPin;
 import gelf.model.elements.Library;
+import gelf.model.elements.OutputPin;
 
 /**
  * Class that keeps track of the current project state.
@@ -49,26 +52,25 @@ public class Project {
      * @param oldElement the element to be replaced
      * @param newElement the element it is replaced with
      */
-    /*
-     * @Deprecated public void replaceElement(Element oldElement, Element
-     * newElement) { if (newElement instanceof Library) { Library newLibrary =
-     * (Library) newElement; libraries.remove(oldElement);
-     * libraries.add(newLibrary); } else if (newElement instanceof Cell) { Cell
-     * newCell = (Cell) newElement; Cell oldCell = (Cell) oldElement;
-     * ArrayList<Cell> cells = oldCell.getParentLibrary().getCells();
-     * cells.remove(oldCell); cells.add(newCell);
-     * newCell.setParentLibrary(oldCell.getParentLibrary());
-     * newCell.getParentLibrary().setCells(cells); } else if (newElement instanceof
-     * InputPin) { InputPin newPin = (InputPin) newElement; InputPin oldPin =
-     * (InputPin) oldElement; ArrayList<InputPin> pins =
-     * oldPin.getParent().getInPins(); pins.remove(oldPin); pins.add(newPin);
-     * newPin.setParent(oldPin.getParent()); newPin.getParent().setInPins(pins); }
-     * else { OutputPin newPin = (OutputPin) newElement; OutputPin oldPin =
-     * (OutputPin) oldElement; ArrayList<OutputPin> pins =
-     * oldPin.getParent().getOutPins(); pins.remove(oldPin); pins.add(newPin);
-     * oldPin.setParent(oldPin.getParent()); newPin.getParent().setOutPins(pins); }
-     * }
-     */
+    public static void replaceElementData(Element element, Element dataElement) {
+        if (element instanceof Library) {
+            Library lib = (Library) element;
+            Library dataLib = (Library) dataElement;
+            lib.replaceData(dataLib);
+        } else if (element instanceof Cell) {
+            Cell cell = (Cell) element;
+            Cell dataCell = (Cell) dataElement;
+            cell.replaceData(dataCell);
+        } else if (element instanceof InputPin) {
+            InputPin pin = (InputPin) element;
+            InputPin dataPin = (InputPin) dataElement;
+            pin.replaceData(dataPin);
+        } else {
+            OutputPin pin = (OutputPin) element;
+            OutputPin dataPin = (OutputPin) dataElement;
+            pin.replaceData(dataPin);
+        }
+    }
 
     /**
      * Unsubscribes a component that no longer needs to be informed to avoid memory

@@ -7,8 +7,6 @@ import gelf.model.elements.Pin;
 import gelf.model.project.Model;
 import gelf.model.commands.RenameCommand;
 import gelf.view.composites.Outliner;
-import gelf.view.composites.SubWindow;
-import gelf.view.composites.SubWindowArea;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,16 +21,14 @@ import javax.swing.JOptionPane;
 public class RenameListener implements ActionListener {
 	
 	private Outliner outliner;
-	private SubWindowArea subwindows;
 	
 	/**
 	 * Initializes the listener.
 	 * @param outliner The outliner.
 	 * @param subwindows The subwindow area
 	 */
-	public RenameListener(Outliner outliner, SubWindowArea subwindows) {
+	public RenameListener(Outliner outliner) {
 		this.outliner = outliner;
-		this.subwindows = subwindows;
 	}
 	
 	@Override

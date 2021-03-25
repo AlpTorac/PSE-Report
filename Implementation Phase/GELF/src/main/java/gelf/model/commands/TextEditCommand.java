@@ -62,7 +62,7 @@ public class TextEditCommand implements Command {
      * Executes the command by replacing the active element data with the new data
      */
     public void execute() {
-        replaceElementData(element, newElementClone);
+        Project.replaceElementData(element, newElementClone);
         currentModel.getCurrentCommandHistory().addCommand(this);
         currentProject.inform();
     }
@@ -71,34 +71,7 @@ public class TextEditCommand implements Command {
      * Undoes the command by replacing the active element data with the old one
      */
     public void undo() {
-        replaceElementData(element, oldElementClone);
+        Project.replaceElementData(element, oldElementClone);
         currentProject.inform();
-    }
-
-    /**
-     * Replaces the element data on on element so that the reference of that element
-     * does not change and it keeps its File data
-     * 
-     * @param element     the element to be replaced
-     * @param dataElement the element containing the data
-     */
-    private void replaceElementData(Element element, Element dataElement) {
-        if (element instanceof Library) {
-            Library lib = (Library) element;
-            Library dataLib = (Library) dataElement;
-            lib.replaceData(dataLib);
-        } else if (element instanceof Cell) {
-            Cell cell = (Cell) element;
-            Cell dataCell = (Cell) dataElement;
-            cell.replaceData(dataCell);
-        } else if (element instanceof InputPin) {
-            InputPin pin = (InputPin) element;
-            InputPin dataPin = (InputPin) dataElement;
-            pin.replaceData(dataPin);
-        } else {
-            OutputPin pin = (OutputPin) element;
-            OutputPin dataPin = (OutputPin) dataElement;
-            pin.replaceData(dataPin);
-        }
     }
 }

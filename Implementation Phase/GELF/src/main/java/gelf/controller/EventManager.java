@@ -65,7 +65,7 @@ public class EventManager {
 		listeners.put(Event.PASTE, new PasteListener(view.outliner));
 		listeners.put(Event.MERGE, new MergeListener(view.outliner));
 		listeners.put(Event.SEARCH, new SearchListener(view.outliner));
-		listeners.put(Event.RENAME, new RenameListener(view.outliner, view.subWindowArea));
+		listeners.put(Event.RENAME, new RenameListener(view.outliner));
 		listeners.put(Event.SAVE, new SaveListener(view.outliner));
 		listeners.put(Event.SAVEAS, new SaveAsListener(view.outliner));
 		listeners.put(Event.SAVEALL, new SaveAllListener());
