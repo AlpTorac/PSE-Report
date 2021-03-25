@@ -1,11 +1,14 @@
 package gelf.controller.listeners;
 
 import gelf.model.commands.PasteCommand;
+import gelf.model.elements.Cell;
+import gelf.model.elements.Element;
 import gelf.model.elements.Library;
 import gelf.model.project.Model;
 import gelf.view.composites.Outliner;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Iterator;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -38,6 +41,11 @@ public class PasteListener implements ActionListener {
 		}
 		if (outliner.getSelectedElements().get(0) instanceof Library) {
 			Library destinationLibrary = (Library) outliner.getSelectedElements().get(0);
+			Iterator<Element> i = Model.getInstance().getCurrentProject().getCopiedElements().iterator();
+			if (i.hasNext() && ((Cell)i.next()).getParentLibrary().getName() == destinationLibrary.getName()) {
+				JOptionPane.showMessageDialog(new JFrame(), "Cannot copy and paste to the same library.", "Error", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 			PasteCommand paste = new PasteCommand(destinationLibrary);
 			paste.execute();
 		}
