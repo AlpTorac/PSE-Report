@@ -61,30 +61,34 @@ public class ValueIndexExtractor extends DiagramDataExtractionStrategy {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected ArrayList<float[]> extractValues(Collection<?> data) {
-		ArrayList<float[]> listOfValues = new ArrayList<float[]>();
-		
-		if (this.numberOfIndices == 0 && data != null) {
-			listOfValues.addAll((Collection<? extends float[]>) data);
+		if (data != null) {
+			ArrayList<float[]> listOfValues = new ArrayList<float[]>();
+			
+			if (this.numberOfIndices == 0) {
+				listOfValues.addAll((Collection<? extends float[]>) data);
+				return listOfValues;
+			}
+			
+			Iterator<float[]> it = (Iterator<float[]>) data.iterator();
+			
+			for (int i = 0; i < this.numberOfIndices; i++) {
+				it.next();
+			}
+			
+			while (it.hasNext()) {
+				listOfValues.add(it.next());
+			}
+			
 			return listOfValues;
+		} else {
+			return null;
 		}
-		
-		Iterator<float[]> it = (Iterator<float[]>) data.iterator();
-		
-		for (int i = 0; i < this.numberOfIndices; i++) {
-			it.next();
-		}
-		
-		while (it.hasNext()) {
-			listOfValues.add(it.next());
-		}
-		
-		return listOfValues;
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	protected ArrayList<float[]> extractIndices(Collection<?> data) {
-		if (this.numberOfIndices > 0) {
+		if (data != null && this.numberOfIndices > 0) {
 			ArrayList<float[]> listOfIndices = new ArrayList<float[]>();
 			
 			Iterator<float[]> it = (Iterator<float[]>) data.iterator();

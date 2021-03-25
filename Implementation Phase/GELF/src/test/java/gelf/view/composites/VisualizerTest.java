@@ -207,11 +207,7 @@ class VisualizerTest {
 					}
 					if (c.getOutPins() != null) {
 						for (OutputPin op : c.getOutPins()) {
-							try {
-								subWindow.setElement(op);
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
+							subWindow.setElement(op);
 						}
 					}
 				}
