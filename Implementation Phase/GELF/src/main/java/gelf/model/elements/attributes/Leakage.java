@@ -22,7 +22,7 @@ public class Leakage extends Attribute {
 
 	@Override
 	public Leakage clone() {
-		Leakage clonedLeakage = new Leakage(values);
+		Leakage clonedLeakage = new Leakage(values.clone());
 		clonedLeakage.setParentCell(parentCell);
 		return clonedLeakage;
 	}
