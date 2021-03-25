@@ -55,7 +55,7 @@ public class MainWindow extends Window implements Updatable {
     Color cBackground = ColorTheme.frame;
     Image icon = Toolkit.getDefaultToolkit().getImage("src/main/resources/AppIcon.png");
     // other
-    String version = "0.0.0";
+    String version = "0.0.1";
 
     public MainWindow(String name, int width, int height, Project project) {
         // MainWindow setup
