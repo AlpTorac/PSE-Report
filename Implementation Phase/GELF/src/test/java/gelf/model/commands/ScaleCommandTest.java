@@ -18,6 +18,7 @@ import gelf.model.elements.attributes.Timing;
 import gelf.model.elements.attributes.TimingGroup;
 import gelf.model.elements.attributes.TimingSense;
 import gelf.model.elements.attributes.TimingType;
+import gelf.model.project.Project;
 
 class ScaleCommandTest {
 	
@@ -173,10 +174,10 @@ class ScaleCommandTest {
 		scale10.execute();
 		scale11.execute();
 		scale12.execute();
-		scale2.replaceElementData(library, library);
-		scale2.replaceElementData(cell1, cell1);
-		scale2.replaceElementData(inPin1, inPin1);
-		scale2.replaceElementData(outPin1, outPin1);
+		Project.replaceElementData(library, library);
+		Project.replaceElementData(cell1, cell1);
+		Project.replaceElementData(inPin1, inPin1);
+		Project.replaceElementData(outPin1, outPin1);
 		
 		float[] expected = {0.000302f * 5f, 0.0003592f * 5f, 0.0003661f * 5f, 0.0003644f * 5f, 
 				  0.000366f * 5f, 0.0003663f * 5f, 0.0003662f * 5f};
