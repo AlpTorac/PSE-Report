@@ -245,8 +245,9 @@ public class Cell extends HigherElement {
 				pin2.setParent(this);
 			}
 		}
-		setIndex1(dataCell.getIndex1().clone());
-		setIndex2(dataCell.getIndex2().clone());
+		if (dataCell.getIndex1() !=  null) {
+			setIndex1(dataCell.getIndex1().clone());
+			setIndex2(dataCell.getIndex2().clone());}
 	}
 
 	/**

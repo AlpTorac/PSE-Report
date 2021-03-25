@@ -111,7 +111,7 @@ public class TextEditor extends ElementManipulator implements KeyListener, Updat
     	searchBox.addKeyListener(this);
     	this.add(lowerPanel);
     	lowerPanel.add(updateButton);
-    	updateButton.addActionListener(new EditListener(this, outliner, subwindows));
+    	updateButton.addActionListener(new EditListener(this));
     }
     
     /**
