@@ -22,8 +22,7 @@ public class OpenFileCommand implements Command {
 	private String libraryContent;
 	private Model currentModel = Model.getInstance();
 
-	public OpenFileCommand() {
-	}
+	public OpenFileCommand() {}
 
 	/**
 	 * Executes the command by calling openFile() from FileManager
@@ -63,7 +62,7 @@ public class OpenFileCommand implements Command {
 	 * @return String content of the file
 	 * @throws IOException
 	 */
-	private String readFile(String pathname) throws IOException {
+	public String readFile(String pathname) throws IOException {
 
 		File file = new File(pathname);
 		StringBuilder fileContents = new StringBuilder((int) file.length());
