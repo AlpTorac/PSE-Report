@@ -831,7 +831,7 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 						diagram.removeFromContainer();
 						diagram = null;
 					}
-					this.diagram = wiz.makeAndAttachHeatMap(this.diagramPanel, data);
+					if (data.get(0) != null && data.get(1) != null) this.diagram = wiz.makeAndAttachHeatMap(this.diagramPanel, data);
 				}
 				xAxisLabel.setText("x_Axis: index1");
 				yAxisLabel.setText("y-Axis: index2");
