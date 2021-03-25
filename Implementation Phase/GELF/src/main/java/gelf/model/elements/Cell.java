@@ -205,7 +205,7 @@ public class Cell extends HigherElement {
 	public void replaceData(Cell originalDataCell) {
 		Cell dataCell = originalDataCell.clone();
 		setName(dataCell.getName());
-		setLeakages(dataCell.getLeakages());
+		setLeakages(dataCell.getLeakages().clone());
 		setDefaultLeakage(dataCell.getDefaultLeakage());
 		setSearched(dataCell.getSearched());
 		setHasShownElements(dataCell.isHasShownElements());
@@ -245,8 +245,9 @@ public class Cell extends HigherElement {
 				pin2.setParent(this);
 			}
 		}
-		setIndex1(dataCell.getIndex1());
-		setIndex2(dataCell.getIndex2());
+		if (dataCell.getIndex1() !=  null) {
+			setIndex1(dataCell.getIndex1().clone());
+			setIndex2(dataCell.getIndex2().clone());}
 	}
 
 	/**

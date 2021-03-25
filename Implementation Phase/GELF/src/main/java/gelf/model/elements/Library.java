@@ -112,9 +112,11 @@ public class Library extends HigherElement {
 				cell2.setParentLibrary(this);
 			}
 		}
-		setUnits(dataLib.getUnits());
-        setIndex1(dataLib.getIndex1());
-	    setIndex2(dataLib.getIndex2());
+		if (dataLib.getUnits() != null) {setUnits(dataLib.getUnits().clone());}
+		if (dataLib.getIndex1() != null) {
+        setIndex1(dataLib.getIndex1().clone());
+	    setIndex2(dataLib.getIndex2().clone());
+		}
         setElementContent(dataLib.getElementContent());
 	}
     
