@@ -111,10 +111,13 @@ class ScaleCommandTest {
 		
 		float[] values = {0.00291f, 0.003117f, 0.003117f, 0.005393f, 
     			0.003113f, 0.005081f, 0.004988f, 0.01069f};
+		float[] values2 = {0.00291f, 0.003117f, 0.003117f, 0.005393f, 
+    			0.003113f, 0.005081f, 0.004988f, 0.01069f};
     	Leakage leakage = new Leakage(values);
+    	Leakage leakage2 = new Leakage(values2);
 		
 		Cell cell1 = new Cell("cell1", index1, index2, null, inPinList, outPinList, leakage, 1);
-		Cell cell2 = new Cell("cell2", index1, index2, null, inPinList, outPinList, leakage, 1);
+		Cell cell2 = new Cell("cell2", index1, index2, null, inPinList, outPinList, leakage2, 1);
 		
 		inPin1.setParent(cell1);
 		inPin2.setParent(cell1);
@@ -132,7 +135,7 @@ class ScaleCommandTest {
 		cell1.setParentLibrary(library);
 		cell2.setParentLibrary(library);
 		
-		ScaleCommand scale = new ScaleCommand(5f, inPin, null, 
+		ScaleCommand scale1 = new ScaleCommand(5f, inPin, null, 
 	    		inPow, null, null);
 		ScaleCommand scale2 = new ScaleCommand(5f, library, "Timing", 
 	    		null, null, null);
@@ -162,7 +165,7 @@ class ScaleCommandTest {
 	    		null, null, timing1);
 		
 	
-		scale.execute();
+		scale1.execute();
 		scale2.execute();
 		scale3.execute();
 		scale4.execute();
@@ -182,7 +185,12 @@ class ScaleCommandTest {
 		float[] expected = {0.000302f * 5f, 0.0003592f * 5f, 0.0003661f * 5f, 0.0003644f * 5f, 
 				  0.000366f * 5f, 0.0003663f * 5f, 0.0003662f * 5f};
 		
+		float[] expected2 = {0.00291f * 5f * 5f, 0.003117f * 5f * 5f, 
+				0.003117f * 5f * 5f, 0.005393f * 5f * 5f, 
+    			0.003113f * 5f * 5f, 0.005081f * 5f * 5f, 0.004988f * 5f * 5f, 0.01069f * 5f * 5f};
+		
 		Assertions.assertArrayEquals(expected, inPow.getValues());
+		Assertions.assertArrayEquals(expected2, cell1.getLeakages().getValues());
 	}
 	
 	@Test

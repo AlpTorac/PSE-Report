@@ -246,6 +246,13 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
   	}
 
 	private void initDropdowns() {
+		//reset values
+		attribute = Attribute.values()[0];
+		powerGroup = PowerGroup.values()[0];
+		timingSense = TimingSense.values()[0];
+		timingGroup = TimingGroup.values()[0];
+		timingType = TimingType.values()[0];
+		
 		this.dropdowns.removeAll();
 
 		libDropdown = new JComboBox<Attribute>();
@@ -831,7 +838,7 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
 						diagram.removeFromContainer();
 						diagram = null;
 					}
-					this.diagram = wiz.makeAndAttachHeatMap(this.diagramPanel, data);
+					if (data.size() >= 2 && data.get(0) != null && data.get(1) != null) this.diagram = wiz.makeAndAttachHeatMap(this.diagramPanel, data);
 				}
 				xAxisLabel.setText("x_Axis: index1");
 				yAxisLabel.setText("y-Axis: index2");
