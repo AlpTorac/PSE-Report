@@ -1,5 +1,8 @@
 package gelf.model.elements.attributes;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import gelf.model.project.Interpolator;
 
 /**
@@ -35,14 +38,28 @@ public class InputPower extends InAttribute {
 	 * 
 	 * @param secIndex  Index of the attribute to compare
 	 * @param secValues Values of the attribute to compare
-	 * @return First attributes values for the second attributes index as [0],
-	 *         second attributes values for first attributes index as [1]
+	 * @return data[0] are the first attributes values according to the unified indexes,
+	 *         data[1] are the second attributes values according to the unified indexes,
+	 *         data[2] are the unified indexes
 	 */
 	public float[][] createComparedAttribute(float[] secIndex, float[] secValues) {
+		ArrayList<Float> indexes = new ArrayList<Float>();
+		float[] unifIndex = new float[this.index1.length + secIndex.length];
+		for (int i = 0; i < this.index1.length; i++) {
+			indexes.add(this.index1[i]);
+		}
+		for (int i = 0; i < secIndex.length; i++) {
+			indexes.add(secIndex[i]);
+		}
+		Collections.sort(indexes);
+		for (int i = 0; i < unifIndex.length; i++) {
+			unifIndex[i] = indexes.get(i);
+		}
 		Interpolator interpolator = new Interpolator();
 		float[][] data = new float[2][];
-		data[0] = interpolator.interpolate(this.index1, this.values, secIndex);
-		data[1] = interpolator.interpolate(secIndex, secValues, this.index1);
+		data[0] = interpolator.interpolate(this.index1, this.values, unifIndex);
+		data[1] = interpolator.interpolate(secIndex, secValues, unifIndex);
+		data[2] = unifIndex;
 		return data;
 	}
 }
