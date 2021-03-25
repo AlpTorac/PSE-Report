@@ -8,7 +8,9 @@ import gelf.model.commands.CommandHistory;
 import gelf.model.parsers.LibertyParser;
 
 /**
- * Keeps track of the component classes the whole model as well as instantiating them
+ * Keeps track of the component classes the whole model as well as instantiating
+ * them
+ * 
  * @author Xhulio Pernoca
  */
 public class Model {
@@ -30,23 +32,25 @@ public class Model {
         currentCommandHistory = new CommandHistory();
         LibertyParser.setUp();
     }
-    
+
     /**
-     * Formats a number to correspond to the Liberty file specified format
-     * Not certain about the format of bigger numbers
+     * Formats a number to correspond to the Liberty file specified format Not
+     * certain about the format of bigger numbers
+     * 
      * @param number the number to be formatted
      * @return the formatted String of the number
      */
     public static String formatFloat(float number) {
-    	if ((number < 0.0001 || number > 1000000) && number != 0) {
+        if ((number < 0.0001 || number > 1000000) && number != 0) {
             return scFormat.format(number).toLowerCase();
-    	} else {
-    		return format.format(number);
-    	}
+        } else {
+            return format.format(number);
+        }
     }
 
     /**
      * Gets the instance of the model
+     * 
      * @return the instance of the model
      */
     public static Model getInstance() {
@@ -55,6 +59,7 @@ public class Model {
 
     /**
      * Gets the current working project
+     * 
      * @return the current working project
      */
     public Project getCurrentProject() {
@@ -63,6 +68,7 @@ public class Model {
 
     /**
      * Gets the CommandHistory
+     * 
      * @return the CommandHistory
      */
     public CommandHistory getCurrentCommandHistory() {
@@ -70,8 +76,8 @@ public class Model {
     }
 
     /**
-     * Informs the project that changes have been made in one of the Settings, 
-     * which haven't been added as of yet
+     * Informs the project that changes have been made in one of the Settings, which
+     * haven't been added as of yet
      */
     public void inform() {
         currentProject.inform();

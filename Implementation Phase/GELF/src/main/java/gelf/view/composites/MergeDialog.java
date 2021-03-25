@@ -56,7 +56,7 @@ public class MergeDialog extends JDialog implements ActionListener, WindowListen
 	 * @param cell1 Left cell
 	 * @param cell2 Right cell
 	 */
-	private void setup(Cell cell1, Cell cell2) {
+	public void setup(Cell cell1, Cell cell2) {
 		this.setModal(true);
 		panel = new Panel(this.getWidth(), this.getWidth());
 		panel.setLayout(new GridBagLayout());
@@ -105,7 +105,7 @@ public class MergeDialog extends JDialog implements ActionListener, WindowListen
 		panel.add(leftBox, c);
 
 		renameLeft = new Button("Rename");
-		renameLeft.setBackground(new Color(0.4f, 0.4f, 0.4f));
+		renameLeft.setBackground(ColorTheme.section);
 		renameLeft.setForeground(Color.WHITE);
 		c.weightx = 0.5;
 		c.weighty = 0.5;
@@ -128,7 +128,7 @@ public class MergeDialog extends JDialog implements ActionListener, WindowListen
 		panel.add(rightBox, c);
 
 		renameRight = new Button("Rename");
-		renameRight.setBackground(new Color(0.4f, 0.4f, 0.4f));
+		renameRight.setBackground(ColorTheme.section);
 		renameRight.setForeground(Color.WHITE);
 		c.weightx = 0.5;
 		c.weighty = 0.5;
@@ -139,7 +139,7 @@ public class MergeDialog extends JDialog implements ActionListener, WindowListen
 		panel.add(renameRight, c);
 
 		keepLeft = new Button("Keep this element");
-		keepLeft.setBackground(new Color(0.4f, 0.4f, 0.4f));
+		keepLeft.setBackground(ColorTheme.section);
 		keepLeft.setForeground(Color.WHITE);
 		c.weightx = 0.5;
 		c.weighty = 0.5;
@@ -149,7 +149,7 @@ public class MergeDialog extends JDialog implements ActionListener, WindowListen
 		panel.add(keepLeft, c);
 
 		keepRight = new Button("Keep this element");
-		keepRight.setBackground(new Color(0.4f, 0.4f, 0.4f));
+		keepRight.setBackground(ColorTheme.section);
 		keepRight.setForeground(Color.WHITE);
 		c.weightx = 0.5;
 		c.weighty = 0.5;

@@ -4,42 +4,44 @@ import java.util.Arrays;
 
 import gelf.model.elements.Cell;
 import gelf.model.elements.Stat;
+
 /**
  * Keeps and calculates data of leakages
+ * 
  * @author Kerem Kara
  *
  */
 public class Leakage extends Attribute {
-    private float[] values;
-    private Cell parentCell;
-    private String[] outputFunctions;
-    
-    public Leakage(float[] values) {
-    	this.values = values;
-    }
-    
+	private float[] values;
+	private Cell parentCell;
+	private String[] outputFunctions;
+
+	public Leakage(float[] values) {
+		this.values = values;
+	}
+
 	@Override
-    public Leakage clone() {
-    	Leakage clonedLeakage = new Leakage(values);
-    	clonedLeakage.setParentCell(parentCell);
-    	return clonedLeakage;
-    }
-    
-    public Cell getParentCell() {
-    	return parentCell;
-    }
-    
-    public void setParentCell(Cell parentCell) {
-    	this.parentCell = parentCell;
-    }
-    
-    public float[] getValues() {
-    	return values;
-    }
-    
-    public void setValues(float[] values) {
-    	this.values = values;
-    }
+	public Leakage clone() {
+		Leakage clonedLeakage = new Leakage(values.clone());
+		clonedLeakage.setParentCell(parentCell);
+		return clonedLeakage;
+	}
+
+	public Cell getParentCell() {
+		return parentCell;
+	}
+
+	public void setParentCell(Cell parentCell) {
+		this.parentCell = parentCell;
+	}
+
+	public float[] getValues() {
+		return values;
+	}
+
+	public void setValues(float[] values) {
+		this.values = values;
+	}
 
 	@Override
 	public void scale(float scaleValue) {
@@ -47,7 +49,7 @@ public class Leakage extends Attribute {
 			values[i] *= scaleValue;
 		}
 	}
-	
+
 	@Override
 	public void calculate() {
 		float min = values[0];
@@ -55,53 +57,51 @@ public class Leakage extends Attribute {
 		float sum = 0;
 		float avg = 0;
 		float med = 0;
-		
+
 		// calculates minimum of the values
 		for (int i = 0; i < values.length; i++) {
-			min = Math.min(min, values[i]);		
+			min = Math.min(min, values[i]);
 		}
-		
+
 		// calculates maximum of the values
 		for (int i = 0; i < values.length; i++) {
-			max = Math.max(max, values[i]);		
+			max = Math.max(max, values[i]);
 		}
-		
+
 		// calculates sum of the values
 		for (int i = 0; i < values.length; i++) {
 			sum += values[i];
 		}
-		
+
 		// calculates average of the values
 		avg = sum / values.length;
-		
+
 		// sorts array of the values to find median
 		float[] temp = new float[values.length];
 		for (int i = 0; i < values.length; i++) {
 			temp[i] = values[i];
 		}
 		Arrays.sort(temp);
-		
+
 		// calculates median according to the number of values being odd or even
 		if (values.length % 2 == 1) {
 			med = temp[temp.length / 2];
-		}
-		else {
+		} else {
 			float medSum = temp[temp.length / 2 - 1] + temp[temp.length / 2];
-			med = medSum / (float)2;
+			med = medSum / (float) 2;
 		}
-		
+
 		// creates new Stat or changes the existing one
 		if (stats != null) {
 			stats.setAvg(avg);
 			stats.setMax(max);
 			stats.setMin(min);
 			stats.setMed(med);
-		}
-		else {
+		} else {
 			stats = new Stat(min, max, avg, med);
 		}
 	}
-	
+
 	@Override
 	public Stat getStats() {
 		return super.getStats();

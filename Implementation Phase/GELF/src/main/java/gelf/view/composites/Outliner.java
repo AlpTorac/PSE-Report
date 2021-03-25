@@ -128,6 +128,8 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener,
         root.removeAllChildren();
         DefaultTreeModel treeModel = (DefaultTreeModel) this.tree.getModel();
         treeModel.nodeStructureChanged(root);
+
+        // creates a list to save the expanded nodes
         ArrayList<DefaultMutableTreeNode> ls = new ArrayList<DefaultMutableTreeNode>();
         ls.add(root);
 
@@ -166,6 +168,7 @@ public class Outliner extends Panel implements Updatable, TreeSelectionListener,
         this.repaint();
         tree.setRootVisible(false);
         
+        // expands nodes that used to be expanded
         for (DefaultMutableTreeNode element: ls) {
             tree.expandPath(new TreePath(element.getPath()));
         }

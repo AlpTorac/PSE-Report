@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.awt.event.WindowEvent;
 
 import gelf.controller.EventManager;
 import gelf.model.commands.Command;
@@ -48,9 +49,11 @@ public class MainWindow extends Window implements Updatable {
     public InfoBar infoBar;
     public Outliner outliner;
     public SubWindowArea subWindowArea;
+
+    private MainWindow _this = this;
     // colors/graphics
     Color cBackground = ColorTheme.frame;
-    Image icon = Toolkit.getDefaultToolkit().getImage("src/main/java/gelf/view/composites/Images/AppIcon.png");
+    Image icon = Toolkit.getDefaultToolkit().getImage("src/main/resources/AppIcon.png");
     // other
     String version = "0.0.0";
 
@@ -139,6 +142,12 @@ public class MainWindow extends Window implements Updatable {
                 // does nothing
             }
         };
+        ActionListener closeAction = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                _this.dispatchEvent(new WindowEvent(_this, WindowEvent.WINDOW_CLOSING));
+            }
+        };
 
         // file menu items
         this.itemNew = initMenuItem("New", noAction);
@@ -146,7 +155,7 @@ public class MainWindow extends Window implements Updatable {
         this.itemSave = initMenuItem("Save", noAction);
         this.itemSaveAll = initMenuItem("Save All", noAction);
         this.itemSaveAs = initMenuItem("Save As", noAction);
-        this.itemClose = initMenuItem("Close", noAction);
+        this.itemClose = initMenuItem("Close", closeAction);
 
         // edit menu items
         this.itemUndo = initMenuItem("Undo", noAction);
