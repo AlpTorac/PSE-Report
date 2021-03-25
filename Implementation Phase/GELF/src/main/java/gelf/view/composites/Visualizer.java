@@ -246,6 +246,13 @@ public class Visualizer extends ElementManipulator implements Updatable, Compone
   	}
 
 	private void initDropdowns() {
+		//reset values
+		attribute = Attribute.values()[0];
+		powerGroup = PowerGroup.values()[0];
+		timingSense = TimingSense.values()[0];
+		timingGroup = TimingGroup.values()[0];
+		timingType = TimingType.values()[0];
+		
 		this.dropdowns.removeAll();
 
 		libDropdown = new JComboBox<Attribute>();
