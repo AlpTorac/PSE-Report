@@ -1,15 +1,17 @@
 package gelf.controller.listeners;
 
-import gelf.model.elements.Element;
+import gelf.model.elements.Cell;
+import gelf.model.elements.InputPin;
+import gelf.model.elements.Library;
+import gelf.model.elements.OutputPin;
+import gelf.model.project.Model;
 import gelf.view.composites.Outliner;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
 
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
 
 /**
  * Listens the search bar of the outliner.
@@ -35,21 +37,30 @@ public class SearchListener implements KeyListener {
 	 * @param name Searched name.
 	 */
 	public void traverseAndExpandTree(JTree tree, DefaultMutableTreeNode node, String name) {
-		ArrayList<TreePath> elements = new ArrayList<TreePath>();
-		if (!node.getUserObject().equals("Root") && ((Element) node.getUserObject()).getName().equals(name)) {
-			elements.add(new TreePath(node.getPath()));
-			node = (DefaultMutableTreeNode) node.getParent();
-			if (!node.isLeaf()) {
-				tree.expandPath(new TreePath(node.getPath()));
+		for (Library library: Model.getInstance().getCurrentProject().getLibraries()) {
+			if (library.getName().startsWith(name)) {
+				library.setExpanded(true);
 			}
-			return;
+			for (Cell cell: library.getCells()) {
+				
+				if (cell.getName().startsWith(name)) {
+					library.setExpanded(true);
+				}
+				for (InputPin pin: cell.getInPins()) {
+					if (pin.getName().startsWith(name)) {
+						pin.getParent().setExpanded(true);
+					}
+				}
+				for (OutputPin pin: cell.getOutPins()) {
+					if (pin.getName().startsWith(name)) {
+						pin.getParent().setExpanded(true);
+					}
+				}
+			}	
 		}
-		for (int i = 0; i < node.getChildCount(); i++) {
-			traverseAndExpandTree(tree, (DefaultMutableTreeNode)node.getChildAt(i), name);
-		}
-		tree.setSelectionPaths(elements.toArray(new TreePath[elements.size()]));
+		Model.getInstance().inform();
 		
-		
+					
 	}
 	
 	@Override
@@ -59,7 +70,14 @@ public class SearchListener implements KeyListener {
 			JTree tree = outliner.tree;
 			DefaultMutableTreeNode root = (DefaultMutableTreeNode) tree.getModel().getRoot();
             if (name.equals("") || name.equals(" ") || name == null) {
-				tree.collapsePath(new TreePath(root.getPath()));
+				for (Library library: Model.getInstance().getCurrentProject().getLibraries()) {
+					for (Cell cell: library.getCells()) {
+						cell.setExpanded(false);
+					}
+					library.setExpanded(false);
+				}
+				Model.getInstance().inform();
+				return;
 			}
 			traverseAndExpandTree(tree, root, name);	
 	
