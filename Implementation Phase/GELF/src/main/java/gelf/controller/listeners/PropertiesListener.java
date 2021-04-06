@@ -21,7 +21,7 @@ public class PropertiesListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (!outliner.getSelectedElements().isEmpty() && outliner.getSelectedElements().size() == 1) {
 			if (outliner.getSelectedElements().get(0) instanceof Library) {
-				if (!((Library) outliner.getSelectedElements().get(0)).getInnerPath().contains(".|//")) {
+				if (!((Library) outliner.getSelectedElements().get(0)).getInnerPath().contains(".")) {
 					JOptionPane.showMessageDialog(new JFrame(), "The library does not exist as a file. Please use the 'Save As...'  option first", "Error", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
